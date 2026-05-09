@@ -415,7 +415,10 @@
             position: sticky;
             top: 64px;
             z-index: 50;
+            background: var(--bg);
+            padding: 4px 0 6px;
         }
+        html.light .stats-bar { background: #f0f0eb; }
 
         .stat-card {
             background: rgba(5,5,5,0.8);
@@ -506,6 +509,13 @@
         .sidebar-header {
             padding-bottom: 10px;
             border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .sidebar-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .sidebar-title {
@@ -519,11 +529,32 @@
             margin-bottom: 4px;
         }
 
+        .sidebar-chevron {
+            display: none;
+            font-size: 0.6rem;
+            color: var(--muted);
+            transition: transform 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-chevron.open {
+            transform: rotate(180deg);
+        }
+
         .sidebar-count {
             font-family: var(--font-mono);
             font-size: 0.65rem;
             color: var(--muted);
             letter-spacing: 0.03em;
+        }
+
+        .sidebar-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
         }
 
         .sidebar-progress {
@@ -548,10 +579,22 @@
                 width: 100%;
                 position: relative;
                 top: 0;
+                max-height: none;
+                height: auto !important;
+                overflow: visible;
+            }
+            .sidebar-header {
+                cursor: pointer;
+                user-select: none;
+                padding-bottom: 8px;
+            }
+            .sidebar-chevron { display: inline; }
+            .sidebar-body {
+                display: none;
                 max-height: 200px;
                 overflow-y: auto;
-                height: auto !important;
             }
+            .sidebar-body.expanded { display: flex; }
         }
 
         /* Question card — glassmorphism */
@@ -1815,24 +1858,29 @@
 
                 <!-- Right column: vertical navigator sidebar -->
                 <aside class="quiz-sidebar" id="questionNavWrapper" style="display: none;">
-                    <div class="sidebar-header">
-                        <span class="sidebar-title">🗺 Fragen-Übersicht</span>
+                    <div class="sidebar-header" id="sidebarToggle" role="button" aria-expanded="false">
+                        <div class="sidebar-header-row">
+                            <span class="sidebar-title">🗺 Fragen-Übersicht</span>
+                            <span class="sidebar-chevron" id="sidebarChevron">▼</span>
+                        </div>
                         <span class="sidebar-count" id="navProgressSummary"></span>
                     </div>
-                    <div class="progress-bar" style="margin-bottom: 4px;">
-                        <div class="progress-fill" id="progressFill"></div>
+                    <div class="sidebar-body" id="sidebarBody">
+                        <div class="progress-bar" style="margin-bottom: 4px;">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" style="margin-top: 0; margin-bottom: 4px;">
+                            <span id="progressLeft"></span>
+                            <span id="progressPercent"></span>
+                        </div>
+                        <div class="question-nav-legend">
+                            <span><span class="legend-swatch" style="background:var(--gold);"></span>Aktuell</span>
+                            <span><span class="legend-swatch" style="background:var(--green);"></span>Richtig</span>
+                            <span><span class="legend-swatch" style="background:var(--red);"></span>Falsch</span>
+                            <span><span class="legend-swatch" style="background:var(--border);"></span>Offen</span>
+                        </div>
+                        <div class="question-nav-grid" id="questionNavGrid"></div>
                     </div>
-                    <div class="progress-text" style="margin-top: 0; margin-bottom: 4px;">
-                        <span id="progressLeft"></span>
-                        <span id="progressPercent"></span>
-                    </div>
-                    <div class="question-nav-legend">
-                        <span><span class="legend-swatch" style="background:var(--gold);"></span>Aktuell</span>
-                        <span><span class="legend-swatch" style="background:var(--green);"></span>Richtig</span>
-                        <span><span class="legend-swatch" style="background:var(--red);"></span>Falsch</span>
-                        <span><span class="legend-swatch" style="background:var(--border);"></span>Offen</span>
-                    </div>
-                    <div class="question-nav-grid" id="questionNavGrid"></div>
                 </aside>
             </div>
         </section>
@@ -2439,6 +2487,16 @@
             const navWrapper = document.getElementById('questionNavWrapper');
             navWrapper.style.display = mode === 'exam' ? 'none' : 'flex';
 
+            // Always start with sidebar collapsed on mobile
+            if (window.innerWidth <= 720) {
+                const sidebarBody = document.getElementById('sidebarBody');
+                const sidebarChevron = document.getElementById('sidebarChevron');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                if (sidebarBody) sidebarBody.classList.remove('expanded');
+                if (sidebarChevron) sidebarChevron.classList.remove('open');
+                if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+            }
+
             showScreen('quiz');
             displayQuestion();
         }
@@ -2927,6 +2985,15 @@
         // ============================================================
         initTheme();
         initHomeScreen();
+
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            if (window.innerWidth > 720) return;
+            const body = document.getElementById('sidebarBody');
+            const chevron = document.getElementById('sidebarChevron');
+            const expanded = body.classList.toggle('expanded');
+            chevron.classList.toggle('open', expanded);
+            this.setAttribute('aria-expanded', String(expanded));
+        });
     </script>
 </body>
 </html>
