@@ -3021,9 +3021,9 @@
                 state.currentQuestions.sort(() => Math.random() - 0.5);
             }
 
-            // Show sidebar navigator in non-exam modes, hide in exam
+            // Show sidebar navigator in all modes
             const navWrapper = document.getElementById('questionNavWrapper');
-            navWrapper.style.display = mode === 'exam' ? 'none' : 'flex';
+            navWrapper.style.display = 'flex';
 
             // Always start with sidebar collapsed on mobile
             if (window.innerWidth <= 720) {
