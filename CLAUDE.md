@@ -38,11 +38,11 @@ JS field refs: `q.en`, `q.options_en`, `q.explanation_de`, `q.explanation_en`, `
 
 | Mode | Filter | Count | Timer | Navigator |
 |------|--------|-------|-------|-----------|
-| Alle Fragen | `!q.berlin && !q.appExtra` | 300 | — | ✓ |
+| Alle Fragen | `!q.berlin && !q.appExtra` | 310 | — | ✓ |
 | Berlin-Modus | `q.berlin` | 10 | — | ✓ |
-| Prüfungssimulation | 30 random general + 3 random Berlin | 33 | 60 min | — |
+| Prüfungssimulation | 30 random general + 3 random Berlin | 33 | 60 min | ✓ |
 
-Exam draw uses `!q.berlin && !q.appExtra` so it pulls only from the official 300. "Alle Fragen" includes all 310.
+Exam draw uses `!q.berlin && !q.appExtra` so it pulls only from the official 300. "Alle Fragen" shows all 310 (Q1–Q310). Navigator sidebar is visible in all three modes.
 
 ## Design system — Neon Velocity (applied 2026-05-09)
 
@@ -88,7 +88,7 @@ let state = {
 ## UX features
 
 - **Home screen:** brutalist hero border box → mode cards (Luminosity Cards, staggered reveal) → collapsed study plan accordion.
-- **Question navigator:** permanent vertical sidebar (`.quiz-sidebar`, 196px, `id="questionNavWrapper"`) to the right of the question card. Contains: lime mono title, answered counter (`id="navProgressSummary"`), progress bar (`id="progressFill"`), 2×2 legend grid, scrollable question number grid (`id="questionNavGrid"`). Hidden in exam mode. Always rendered via `renderQuestionNav()` on every question change — no toggle. Sidebar height is synced to `.quiz-main` height via `requestAnimationFrame` in `displayQuestion()`.
+- **Question navigator:** permanent vertical sidebar (`.quiz-sidebar`, 196px, `id="questionNavWrapper"`) to the right of the question card. Contains: lime mono title, answered counter (`id="navProgressSummary"`), progress bar (`id="progressFill"`), 2×2 legend grid, scrollable question number grid (`id="questionNavGrid"`). Visible in all modes including exam. Always rendered via `renderQuestionNav()` on every question change — no toggle. Sidebar height is synced to `.quiz-main` height via `requestAnimationFrame` in `displayQuestion()`.
 - **Quiz layout:** `.quiz-layout { display: block; position: relative }` — `.quiz-main` fills width with `margin-right: calc(196px + spacing-lg)`; `.quiz-sidebar` is `position: absolute; top:0; bottom:0; right:0`.
 - **English inline options:** when bilingual toggle is ON, each text option button shows the English translation on a second line (`.option-en-text`, italic, `var(--sub-text)`, separated by `border-top`). Rendered inside `.opt-text-wrap` (column flex). `#questionEnglish` block shows only the English question text, not per-option lines.
 - **Bilingual toggle:** lime ghost pill; toggles `#questionEnglish`, `.option-en-text` elements, and `#explanationEnglish` simultaneously.
@@ -102,12 +102,12 @@ let state = {
 
 - Single-file HTML, no build step. Google Fonts is the only permitted external dep.
 - localStorage for theme only; quiz state is stateless per session by design.
-- Re-scrape: WebFetch blocked on the source site — use browser extraction. `get_page_text()` truncates base64; extract per-question with `JSON.stringify(window.__pN[i])`.
+- Re-scrape: WebFetch blocked on the source site — use Claude-in-Chrome JS extraction. `window.__pN` does not exist; scrape via DOM: `.questions-question-text` (question + id), `.question-answers-list li` (options), `li .question-answer-right` span marks the correct option. General pages: `/fragen?page=N` (1–11). Berlin: `/fragen/be`. Store results in `window.__scraped` and retrieve in chunks to avoid MCP truncation.
 - `pip install` and outbound HTTP to Anthropic API blocked by network proxy.
 
 ## Regen pattern
 
-Rebuild QUESTIONS from JSON: read file → serialise as JS array literal → regex-replace `const QUESTIONS = [\s\S]*?\];` inside the HTML. Validate: IDs contiguous 1–320, no duplicates, `node --check` on extracted `<script>` block.
+Run `node regen_questions.js` from the project root. The script reads `questions-final-extended.json`, extracts the six `option_images` SVG arrays from the existing HTML using balanced bracket counting (naive regex truncates when SVG content contains `]`), serialises all 320 questions as JS object literals, and replaces the `QUESTIONS` array in-place. After running: validate with `node --check` on the extracted `<script>` block, confirm 320 questions / IDs 1–320 / no duplicates, then `cp einbuergerungstest-berlin.html index.html`.
 
 ## Hosting
 
