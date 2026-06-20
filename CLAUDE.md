@@ -18,8 +18,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - Google Fonts is the only intended external network dependency.
 - Dark/light theme uses `localStorage` key `theme`.
 - Learning progress IS persisted (reintroduced 2026-06-20): spaced-repetition records
-  under `localStorage` key `eib_progress_v1`, and a resumable in-progress session under
-  `eib_session_v1`. A "Fortschritt zurücksetzen" control clears them.
+  under `localStorage` key `eib_progress_v1`, a resumable in-progress session under
+  `eib_session_v1`, and a results history under `eib_history_v1`. A "Fortschritt
+  zurücksetzen" control clears all three.
+- Each question has a `category`; the home screen offers topic practice, a results-history
+  trend, and a bilingual glossary. Questions can be read aloud via the Web Speech API (TTS).
+- SEO/meta, Open Graph/Twitter cards, `favicon.svg` and `og-image.svg` are in `<head>`;
+  JSON-LD (LearningResource) is included. NO service worker is registered (sw.js stays a
+  kill switch) — PWA/offline remains intentionally deferred.
+- The 10 `appExtra` questions (Q301-310) are general (NOT Berlin) and remain EXCLUDED from
+  all pools until verified against the official catalogue.
 
 ## Tracked Files
 
