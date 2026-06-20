@@ -31,9 +31,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 ## Tracked Files
 
+- `TODO.md` - current project status + open TODOs (image assets, appExtra verification,
+  deferred features). Check/update this when picking up or finishing work.
 - `index.html` - production app served by GitHub Pages; loads `questions.json` at runtime.
 - `questions.json` - question data, source of truth. Generated from the good `QUESTIONS`
   data via `tools/extract-questions.js` (NOT from `questions-final-extended.json`).
+  Each question carries a `category` (see `tools/categorize.js`).
 - `img/` - real image-question assets (+ `ATTRIBUTIONS.md` fetch manifest). Some assets are
   still pending fetch (egress blocked Wikimedia); the app shows a "Bild fehlt" fallback for any
   missing image and otherwise works.
