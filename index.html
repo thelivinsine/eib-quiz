@@ -1540,6 +1540,53 @@
             z-index: 1;
         }
 
+        /* ---- Home: practice by topic ---- */
+        .topic-section { margin-top: var(--spacing-2xl); }
+        .topic-heading {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: var(--spacing-md);
+        }
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+        }
+        .topic-chip {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            text-align: left;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--spacing-md);
+            cursor: pointer;
+            color: var(--text);
+            transition: border-color 0.3s var(--ease-spring), transform 0.2s var(--ease-spring), background 0.3s var(--ease-spring);
+        }
+        .topic-chip:hover {
+            border-color: var(--border-hover);
+            background: var(--lime-dim);
+            transform: translateY(-2px);
+        }
+        .topic-chip-icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
+        .topic-chip-body { display: flex; flex-direction: column; min-width: 0; }
+        .topic-chip-name { font-weight: 700; font-size: 0.95rem; }
+        .topic-chip-meta {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+        @media (max-width: 560px) {
+            .topic-grid { grid-template-columns: 1fr; }
+        }
+
         /* ---- Home: progress / readiness + resume ---- */
         .resume-banner {
             display: flex;
@@ -1634,6 +1681,9 @@
             <div class="modes-grid" id="modesGrid">
                 <!-- Populated by JavaScript -->
             </div>
+
+            <!-- Practice by topic (populated by JavaScript) -->
+            <div class="topic-section" id="topicSection"></div>
         </section>
 
         <!-- Quiz Screen -->
@@ -1767,6 +1817,16 @@
         // ============================================================
         let QUESTIONS = []; // loaded from questions.json (see loadQuestions)
 
+        // Topic categories (key -> bilingual label + icon). Must match tools/categorize.js.
+        const CATEGORIES = {
+            rights:   { de: 'Grundrechte & Verfassung',          en: 'Fundamental Rights & Constitution', icon: '⚖️' },
+            politics: { de: 'Demokratie, Wahlen & Staat',        en: 'Democracy, Elections & State',      icon: '🗳️' },
+            history:  { de: 'Geschichte',                        en: 'History',                           icon: '📜' },
+            society:  { de: 'Gesellschaft, Soziales & Wirtschaft', en: 'Society, Welfare & Economy',       icon: '🤝' },
+            symbols:  { de: 'Symbole, Geografie & Europa',       en: 'Symbols, Geography & Europe',       icon: '🦅' },
+            berlin:   { de: 'Berlin',                            en: 'Berlin',                            icon: '🏙️' },
+        };
+
         // ============================================================
         // APPLICATION STATE
         // ============================================================
@@ -1868,6 +1928,7 @@
             try {
                 localStorage.setItem(SESSION_KEY, JSON.stringify({
                     mode: state.currentMode,
+                    topic: state.currentTopic || null,
                     ids: state.currentQuestions.map(q => q.id),
                     idx: state.currentQuestionIndex,
                     answered: state.answered,
@@ -1925,7 +1986,55 @@
         // ============================================================
         function initHomeScreen() {
             renderModes();
+            renderTopics();
             renderHomeStatus();
+        }
+
+        // Verified pool used everywhere (excludes unverified appExtra questions).
+        function pool() { return QUESTIONS.filter(q => !q.appExtra); }
+
+        function renderTopics() {
+            const el = document.getElementById('topicSection');
+            if (!el) return;
+            const all = pool();
+            const chips = Object.entries(CATEGORIES).map(([key, meta]) => {
+                const qs = all.filter(q => q.category === key);
+                if (!qs.length) return '';
+                const mastered = qs.filter(q => progress[q.id] && (progress[q.id].box || 1) >= 4).length;
+                return `
+                    <button class="topic-chip" onclick="startTopic('${key}')">
+                        <span class="topic-chip-icon">${meta.icon}</span>
+                        <span class="topic-chip-body">
+                            <span class="topic-chip-name">${meta.de}</span>
+                            <span class="topic-chip-meta">${qs.length} Fragen · ${mastered} gemeistert</span>
+                        </span>
+                    </button>`;
+            }).join('');
+            el.innerHTML = `
+                <div class="topic-heading">Nach Thema üben</div>
+                <div class="topic-grid">${chips}</div>`;
+        }
+
+        function startTopic(catKey) {
+            const qs = pool().filter(q => q.category === catKey);
+            if (!qs.length) return;
+            state.currentMode = 'topic';
+            state.currentTopic = catKey;
+            state.currentQuestionIndex = 0;
+            state.answered = {};
+            state.correct = 0;
+            state.incorrect = 0;
+            state.showExplanation = false;
+            state.missedQuestions = [];
+            state.examStartTime = null;
+            state.generalCorrect = 0;
+            state.berlinCorrect = 0;
+            state.currentQuestions = qs;
+            clearSession();
+            document.getElementById('questionNavWrapper').style.display = 'flex';
+            document.getElementById('timer').style.display = 'none';
+            showScreen('quiz');
+            displayQuestion();
         }
 
         function renderHomeStatus() {
@@ -1939,11 +2048,14 @@
             const sess = getSavedSession();
             if (sess && Array.isArray(sess.ids) && sess.ids.length) {
                 const labels = { allQuestions: 'Alle Fragen', berlin: 'Berlin-Modus', review: 'Smart Review' };
+                const sessLabel = sess.mode === 'topic'
+                    ? (CATEGORIES[sess.topic] ? CATEGORIES[sess.topic].de : 'Thema')
+                    : (labels[sess.mode] || sess.mode);
                 const answered = sess.answered ? Object.keys(sess.answered).length : 0;
                 html += `
                     <div class="resume-banner">
                         <div class="resume-text">
-                            ⏸ Sitzung fortsetzen — <strong>${labels[sess.mode] || sess.mode}</strong>,
+                            ⏸ Sitzung fortsetzen — <strong>${sessLabel}</strong>,
                             ${answered}/${sess.ids.length} beantwortet
                         </div>
                         <div class="resume-actions">
@@ -1974,6 +2086,7 @@
             const qs = sess.ids.map(id => byId.get(id)).filter(Boolean);
             if (!qs.length) { clearSession(); renderHomeStatus(); return; }
             state.currentMode = sess.mode;
+            state.currentTopic = sess.topic || null;
             state.currentQuestions = qs;
             state.currentQuestionIndex = Math.min(sess.idx || 0, qs.length - 1);
             state.answered = sess.answered || {};
@@ -2068,6 +2181,7 @@
 
         function startMode(mode) {
             state.currentMode = mode;
+            state.currentTopic = null;
             state.currentQuestionIndex = 0;
             state.answered = {};
             state.correct = 0;
@@ -2131,7 +2245,8 @@
 
             // Question content
             document.getElementById('questionNum').textContent = `Frage ${state.currentQuestionIndex + 1}`;
-            document.getElementById('questionCategory').textContent = q.berlin ? 'Berlin' : 'Allgemein';
+            document.getElementById('questionCategory').textContent =
+                (q.category && CATEGORIES[q.category]) ? CATEGORIES[q.category].de : (q.berlin ? 'Berlin' : 'Allgemein');
             document.getElementById('questionText').textContent = q.de;
             document.getElementById('questionEnglish').innerHTML = `<div>${q.en}</div>`;
             document.getElementById('questionEnglish').classList.remove('show');
@@ -2392,7 +2507,8 @@
                 allQuestions: 'Lernrunde beendet! 📚',
                 berlin:       'Berlin-Runde beendet! 🏙️',
                 mistakes:     'Fehler-Runde beendet! 🔁',
-                review:       'Smart Review beendet! 🔁'
+                review:       'Smart Review beendet! 🔁',
+                topic:        'Themen-Runde beendet! 📚'
             };
             document.getElementById('endTitle').textContent = titles[state.currentMode] || 'Fertig! 🎉';
 
@@ -2547,17 +2663,20 @@
                 if (!resumable) clearSession();
                 document.getElementById('timer').style.display = 'none';
                 renderModes();
+                renderTopics();
                 renderHomeStatus();
                 showScreen('home');
             }
         });
 
         document.getElementById('restartBtn').addEventListener('click', () => {
-            startMode(state.currentMode);
+            if (state.currentMode === 'topic') startTopic(state.currentTopic);
+            else startMode(state.currentMode);
         });
 
         document.getElementById('homeBtn').addEventListener('click', () => {
             renderModes();
+            renderTopics();
             renderHomeStatus();
             showScreen('home');
         });
