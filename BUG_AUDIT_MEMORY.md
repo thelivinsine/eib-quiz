@@ -1,5 +1,27 @@
 # EIB Bug Audit Memory
 
+## 2026-06-20 — Real image assets + persistence (branch `claude/web-app-audit-improvements-mf8kvi`)
+
+Deliberate, scoped follow-up to the audit. NOT a revival of the May 28 architecture.
+
+- Question data externalized to `questions.json`, **generated from the known-good `QUESTIONS`
+  array in `index.html`** via `tools/extract-questions.js` — explicitly NOT from the corrupted
+  `questions-final-extended.json`. `index.html` now `fetch`es it at runtime (needs http, not file://).
+- Image questions (Q21/130/209/226/311/318) rewired from inline-SVG doodles to real `<img>`
+  assets under `img/`; placeholder labels ("Option 1") replaced with descriptive labels used by
+  alt text + the review screen. Q55 given its missing Reichstag image. `correct` indices preserved.
+- Persistence reintroduced on purpose (overrides the old "session-only" rule): Leitner
+  spaced-repetition under `eib_progress_v1`, resumable session under `eib_session_v1`, a new
+  "Smart Review" mode, a home readiness panel, and a "Fortschritt zurücksetzen" reset.
+- Locally authored assets committed: 4 ballots (Q130) + exact-spec EU flag/distractor (Q226).
+  19 real assets (coats of arms, maps, UN/NATO flags, Reichstag photo) are PENDING — the build
+  env's egress blocked Wikimedia. App shows a "Bild fehlt" fallback for any missing image. See
+  `ATTRIBUTIONS.md` for the fetch manifest.
+- Validation: `node tools/validate.js` passes (320 contiguous, no dupes, structure, spot-checks);
+  extracted `<script>` passes `node --check`; SR/session logic unit-tested against shims.
+
+---
+
 Date: 2026-05-29
 
 ## Current Production State

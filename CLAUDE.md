@@ -10,22 +10,42 @@
 
 ## App Shape
 
-Single-file vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
+Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
-- Google Fonts is the only intended external dependency.
+- `index.html` loads question data at runtime from `questions.json` via `fetch`
+  (so the app must be served over http/https, not opened via `file://`).
+- Google Fonts is the only intended external network dependency.
 - Dark/light theme uses `localStorage` key `theme`.
-- Quiz state should remain session-only unless persistence is explicitly reintroduced.
+- Learning progress IS persisted (reintroduced 2026-06-20): spaced-repetition records
+  under `localStorage` key `eib_progress_v1`, and a resumable in-progress session under
+  `eib_session_v1`. A "Fortschritt zurücksetzen" control clears them.
 
 ## Tracked Files
 
-- `index.html` - production app served by GitHub Pages.
+- `index.html` - production app served by GitHub Pages; loads `questions.json` at runtime.
+- `questions.json` - question data, source of truth. Generated from the good `QUESTIONS`
+  data via `tools/extract-questions.js` (NOT from `questions-final-extended.json`).
+- `img/` - real image-question assets (+ `ATTRIBUTIONS.md` fetch manifest). Some assets are
+  still pending fetch (egress blocked Wikimedia); the app shows a "Bild fehlt" fallback for any
+  missing image and otherwise works.
+- `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
+  image questions to real asset paths and descriptive labels.
+- `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
 - `sw.js` - temporary rollback kill switch.
 - `einbuergerungstest-berlin.html` - May 28 standalone source file; currently not production.
-- `questions-final-extended.json` - May 28 JSON source; currently known to contain corrupted question data.
+- `questions-final-extended.json` - May 28 JSON source; known to contain corrupted data. Do NOT use.
 - `regen_questions.js` - May 28 regen tool; do not run until JSON is repaired.
 - `manifest.json` - May 28 PWA artifact; currently unused by production.
 - `BUG_AUDIT_MEMORY.md` - concise audit/rollback memory.
+
+## Image Questions
+
+Image questions (Q21, Q130, Q209, Q226, Q311, Q318) use real asset files in `img/`,
+referenced as `option_images: ["img/.../x.svg", ...]` and rendered as `<img>` (no longer
+inline-SVG doodles). Q55 ("Was zeigt dieses Bild?") uses `image: "img/q55-reichstag.webp"`.
+Image-option `options` are descriptive labels (not "Option 1"). See `ATTRIBUTIONS.md` for the
+pending-asset fetch manifest. Keep the `correct` index pointing at the correct asset.
 
 ## Known May 28 Regression
 
@@ -39,10 +59,14 @@ Do not publish from `questions-final-extended.json` until it has been repaired a
 
 Before publishing any app change:
 
-1. Extract the final `<script>` block from `index.html`.
-2. Run `node --check` on the extracted script.
-3. Verify 320 questions, contiguous IDs 1-320, and no duplicates.
-4. Spot-check previously corrupted questions Q6, Q7, Q9, Q10, Q12, Q15, Q16, Q28.
+1. Question data lives in `questions.json` (source of truth) — edit it directly.
+   (`tools/extract-questions.js` was the one-time migration from index.html; it no-ops now.)
+2. Run `node tools/validate.js` (320 questions, contiguous IDs 1-320, no duplicates,
+   structure valid, spot-checks Q6/7/9/10/12/15/16/28, lists any missing image assets).
+3. Extract the final `<script>` block from `index.html` and run `node --check` on it.
+4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the six
+   image questions + Q55 render (or show the "Bild fehlt" fallback for not-yet-fetched assets),
+   progress persists across reload, and Smart Review surfaces due/weak questions.
 5. Confirm production `index.html` does not unintentionally re-register the old PWA service worker.
 
 ## Future Repair Order
