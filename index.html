@@ -1587,6 +1587,70 @@
             .topic-grid { grid-template-columns: 1fr; }
         }
 
+        /* ---- Question header actions (TTS + bilingual) ---- */
+        .question-meta-actions { display: flex; align-items: center; gap: var(--spacing-sm); }
+        .speak-btn {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            line-height: 1;
+            color: var(--text);
+            transition: border-color 0.2s var(--ease-spring), background 0.2s;
+        }
+        .speak-btn:hover { border-color: var(--border-hover); background: var(--lime-dim); }
+
+        /* ---- Home: results history ---- */
+        .history-section { margin-top: var(--spacing-2xl); }
+        .hist-exam {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        .hist-exam-stats {
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-sm);
+            font-size: 0.85rem; color: var(--sub-text); margin-bottom: var(--spacing-md);
+        }
+        .hist-exam-stats strong { color: var(--text); }
+        .hist-bars { display: flex; align-items: flex-end; gap: 4px; height: 52px; }
+        .hist-bar { width: 14px; border-radius: 3px 3px 0 0; display: inline-block; }
+        .hist-bar.pass { background: var(--green); }
+        .hist-bar.fail { background: var(--red); }
+        .hist-list { display: flex; flex-direction: column; gap: 6px; }
+        .hist-row {
+            display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;
+            font-size: 0.82rem; color: var(--sub-text);
+            padding: 8px var(--spacing-md);
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+        }
+        .hist-mode { font-weight: 700; color: var(--text); }
+        .hist-date { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+        .hist-score { margin-left: auto; font-family: var(--font-mono); }
+        .hist-badge { font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: var(--radius-pill); }
+        .hist-badge.pass { background: rgba(57,217,138,0.15); color: var(--green); }
+        .hist-badge.fail { background: rgba(255,77,77,0.15); color: var(--red); }
+
+        /* ---- Home: glossary ---- */
+        .glossary-section { margin-top: var(--spacing-2xl); }
+        .glossary-wrap {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: var(--spacing-md) var(--spacing-lg);
+        }
+        .glossary-summary {
+            cursor: pointer; font-weight: 700; font-size: 0.95rem; list-style: none;
+        }
+        .glossary-summary::-webkit-details-marker { display: none; }
+        .gloss-list { margin-top: var(--spacing-md); display: flex; flex-direction: column; gap: 6px; }
+        .gloss-item { border-top: 1px solid var(--border); padding-top: 8px; }
+        .gloss-item summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; color: var(--lime); list-style: none; }
+        .gloss-item summary::-webkit-details-marker { display: none; }
+        .gloss-def { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; font-size: 0.85rem; color: var(--sub-text); }
+        .gloss-en { font-style: italic; color: var(--muted); }
+
         /* ---- Home: progress / readiness + resume ---- */
         .resume-banner {
             display: flex;
@@ -1684,6 +1748,12 @@
 
             <!-- Practice by topic (populated by JavaScript) -->
             <div class="topic-section" id="topicSection"></div>
+
+            <!-- Results history (populated by JavaScript) -->
+            <div class="history-section" id="historySection"></div>
+
+            <!-- Glossary (populated by JavaScript) -->
+            <div class="glossary-section" id="glossarySection"></div>
         </section>
 
         <!-- Quiz Screen -->
@@ -1706,7 +1776,10 @@
                                 <span class="question-num" id="questionNum"></span>
                                 <span class="question-category" id="questionCategory"></span>
                             </div>
-                            <button class="bilingual-toggle" id="bilingualToggle">🌐 EN</button>
+                            <div class="question-meta-actions">
+                                <button class="speak-btn" id="speakBtn" title="Frage vorlesen" aria-label="Frage vorlesen">🔊</button>
+                                <button class="bilingual-toggle" id="bilingualToggle">🌐 EN</button>
+                            </div>
                         </div>
 
                         <div class="question-text" id="questionText" tabindex="-1"></div>
@@ -1919,7 +1992,26 @@
         }
         function clearProgress() {
             progress = {};
-            try { localStorage.removeItem(PROGRESS_KEY); localStorage.removeItem(SESSION_KEY); } catch (e) {}
+            history = [];
+            try {
+                localStorage.removeItem(PROGRESS_KEY);
+                localStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem(HISTORY_KEY);
+            } catch (e) {}
+        }
+
+        // ---- results history ----
+        const HISTORY_KEY = 'eib_history_v1';
+        let history = [];
+        function loadHistory() {
+            try { const raw = localStorage.getItem(HISTORY_KEY); history = raw ? JSON.parse(raw) : []; }
+            catch (e) { history = []; }
+            if (!Array.isArray(history)) history = [];
+        }
+        function recordResult(entry) {
+            history.push(entry);
+            if (history.length > 50) history = history.slice(-50);
+            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch (e) {}
         }
 
         // ---- in-progress session resume (non-exam modes) ----
@@ -1987,6 +2079,8 @@
         function initHomeScreen() {
             renderModes();
             renderTopics();
+            renderHistory();
+            renderGlossary();
             renderHomeStatus();
         }
 
@@ -2035,6 +2129,104 @@
             document.getElementById('timer').style.display = 'none';
             showScreen('quiz');
             displayQuestion();
+        }
+
+        // ============================================================
+        // RESULTS HISTORY (home)
+        // ============================================================
+        function renderHistory() {
+            const el = document.getElementById('historySection');
+            if (!el) return;
+            if (!history.length) { el.innerHTML = ''; return; }
+
+            const exams = history.filter(h => h.mode === 'exam');
+            let examBlock = '';
+            if (exams.length) {
+                const passed = exams.filter(h => h.passed).length;
+                const best = Math.max(...exams.map(h => h.percent));
+                const bars = exams.slice(-12).map(h => {
+                    const ht = Math.max(8, Math.round(h.percent * 0.5)); // 0..50px
+                    return `<span class="hist-bar ${h.passed ? 'pass' : 'fail'}" style="height:${ht}px" title="${h.percent}% – ${h.passed ? 'bestanden' : 'nicht bestanden'}"></span>`;
+                }).join('');
+                examBlock = `
+                    <div class="hist-exam">
+                        <div class="hist-exam-stats">
+                            <span><strong>${passed}/${exams.length}</strong> Prüfungen bestanden</span>
+                            <span>Bestleistung <strong>${best}%</strong></span>
+                        </div>
+                        <div class="hist-bars">${bars}</div>
+                    </div>`;
+            }
+
+            const labels = { exam: '🎯 Prüfung', allQuestions: '📋 Alle Fragen', berlin: '🏙️ Berlin', review: '🔁 Review', topic: '📚 Thema', mistakes: '🔁 Fehler' };
+            const rows = history.slice(-6).reverse().map(h => {
+                const d = new Date(h.ts);
+                const date = d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) + ' ' +
+                             d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                const badge = h.mode === 'exam' ? `<span class="hist-badge ${h.passed ? 'pass' : 'fail'}">${h.passed ? 'Bestanden' : 'Nicht bestanden'}</span>` : '';
+                return `<div class="hist-row"><span class="hist-mode">${labels[h.mode] || h.mode}</span><span class="hist-date">${date}</span><span class="hist-score">${h.correct}/${h.total} · ${h.percent}%</span>${badge}</div>`;
+            }).join('');
+
+            el.innerHTML = `<div class="topic-heading">Verlauf</div>${examBlock}<div class="hist-list">${rows}</div>`;
+        }
+
+        // ============================================================
+        // GLOSSARY (home) — key civic/legal terms, bilingual
+        // ============================================================
+        const GLOSSARY = [
+            { term: 'Grundgesetz', de: 'Die Verfassung Deutschlands (seit 1949). Regelt Grundrechte und Staatsaufbau.', en: 'Germany’s constitution (since 1949). Defines basic rights and the structure of the state.' },
+            { term: 'Grundrechte', de: 'Im Grundgesetz garantierte Rechte, z. B. Meinungs- und Religionsfreiheit.', en: 'Rights guaranteed by the Basic Law, e.g. freedom of opinion and religion.' },
+            { term: 'Rechtsstaat', de: 'Staat, in dem alle – auch der Staat selbst – an Recht und Gesetz gebunden sind.', en: 'A state where everyone, including the state itself, is bound by law.' },
+            { term: 'Sozialstaat', de: 'Staat, der für soziale Sicherheit sorgt (z. B. Kranken-, Rentenversicherung).', en: 'A state that provides social security (e.g. health and pension insurance).' },
+            { term: 'Föderalismus', de: 'Aufteilung der Macht zwischen Bund und den 16 Bundesländern.', en: 'Division of power between the federation and the 16 federal states.' },
+            { term: 'Bundestag', de: 'Das gewählte Parlament Deutschlands; beschließt die Gesetze.', en: 'Germany’s elected parliament; passes the laws.' },
+            { term: 'Bundesrat', de: 'Vertretung der 16 Bundesländer auf Bundesebene.', en: 'Body representing the 16 federal states at the national level.' },
+            { term: 'Bundespräsident/in', de: 'Das Staatsoberhaupt; wird von der Bundesversammlung gewählt.', en: 'The head of state; elected by the Federal Convention.' },
+            { term: 'Bundeskanzler/in', de: 'Regierungschef/in; leitet die Bundesregierung.', en: 'Head of government; leads the federal government.' },
+            { term: 'Koalition', de: 'Zusammenschluss mehrerer Parteien, um gemeinsam zu regieren.', en: 'Several parties joining together to govern.' },
+            { term: 'Opposition', de: 'Abgeordnete, die nicht zur Regierung gehören.', en: 'Members of parliament not part of the government.' },
+            { term: 'Gewaltenteilung', de: 'Trennung in Legislative, Exekutive und Judikative.', en: 'Separation into legislative, executive and judicial powers.' },
+            { term: 'Volkssouveränität', de: 'Alle Staatsgewalt geht vom Volke aus (Art. 20 GG).', en: 'All state power emanates from the people (Art. 20 Basic Law).' },
+            { term: 'Meinungsfreiheit', de: 'Das Recht, seine Meinung frei zu äußern (Art. 5 GG).', en: 'The right to express one’s opinion freely (Art. 5 Basic Law).' },
+            { term: 'Freizügigkeit', de: 'Das Recht, Wohnort und Aufenthalt frei zu wählen (Art. 11 GG).', en: 'The right to freely choose one’s place of residence (Art. 11 Basic Law).' },
+            { term: 'Asylrecht', de: 'Schutz für politisch Verfolgte (Art. 16a GG); gilt nur für Ausländer.', en: 'Protection for the politically persecuted (Art. 16a); applies only to foreigners.' },
+            { term: 'Soziale Marktwirtschaft', de: 'Wirtschaftsordnung, die freien Markt mit sozialem Ausgleich verbindet.', en: 'An economic system combining a free market with social balance.' },
+            { term: 'Ministerpräsident/in', de: 'Regierungschef/in eines Bundeslandes (außer Stadtstaaten).', en: 'Head of government of a federal state (except city-states).' },
+        ];
+
+        function renderGlossary() {
+            const el = document.getElementById('glossarySection');
+            if (!el) return;
+            const items = GLOSSARY.map(g => `
+                <details class="gloss-item">
+                    <summary>${g.term}</summary>
+                    <div class="gloss-def"><span>${g.de}</span><span class="gloss-en">${g.en}</span></div>
+                </details>`).join('');
+            el.innerHTML = `
+                <details class="glossary-wrap">
+                    <summary class="glossary-summary">📖 Glossar — wichtige Begriffe (${GLOSSARY.length})</summary>
+                    <div class="gloss-list">${items}</div>
+                </details>`;
+        }
+
+        // ============================================================
+        // TEXT-TO-SPEECH (German question read-aloud)
+        // ============================================================
+        const ttsSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
+        function speakQuestion() {
+            if (!ttsSupported) return;
+            const q = state.currentQuestions[state.currentQuestionIndex];
+            if (!q) return;
+            const synth = window.speechSynthesis;
+            if (synth.speaking) { synth.cancel(); return; } // toggle off
+            const parts = [q.de, ...q.options.filter(o => o && !/^img\//.test(o))];
+            const utt = new SpeechSynthesisUtterance(parts.join('. '));
+            utt.lang = 'de-DE';
+            utt.rate = 0.95;
+            const deVoice = synth.getVoices().find(v => v.lang && v.lang.startsWith('de'));
+            if (deVoice) utt.voice = deVoice;
+            synth.cancel();
+            synth.speak(utt);
         }
 
         function renderHomeStatus() {
@@ -2502,6 +2694,17 @@
             const percent = Math.round((state.correct / total) * 100);
             const isExam = state.currentMode === 'exam';
 
+            // Record this round in the results history.
+            recordResult({
+                ts: Date.now(),
+                mode: state.currentMode,
+                topic: state.currentTopic || null,
+                correct: state.correct,
+                total,
+                percent,
+                passed: isExam ? state.correct >= 17 : null
+            });
+
             const titles = {
                 exam:         'Prüfungssimulation beendet! 🎯',
                 allQuestions: 'Lernrunde beendet! 📚',
@@ -2622,6 +2825,7 @@
         document.getElementById('lightBtn').addEventListener('click', () => setTheme('light'));
 
         document.getElementById('nextBtn').addEventListener('click', () => {
+            if (ttsSupported) window.speechSynthesis.cancel();
             state.currentQuestionIndex++;
             state.showExplanation = false;
             if (state.currentQuestionIndex < state.currentQuestions.length) {
@@ -2630,6 +2834,12 @@
                 endQuiz();
             }
         });
+
+        const _speakBtn = document.getElementById('speakBtn');
+        if (_speakBtn) {
+            if (!ttsSupported) _speakBtn.style.display = 'none';
+            else _speakBtn.addEventListener('click', speakQuestion);
+        }
 
         document.getElementById('bilingualToggle').addEventListener('click', () => {
             state.showEnglish = !state.showEnglish;
@@ -2660,10 +2870,12 @@
                 : 'Quiz beenden und zur Startseite? Dein Fortschritt in dieser Runde geht verloren.';
             if (confirm(msg)) {
                 if (state.timerInterval) clearInterval(state.timerInterval);
+                if (ttsSupported) window.speechSynthesis.cancel();
                 if (!resumable) clearSession();
                 document.getElementById('timer').style.display = 'none';
                 renderModes();
                 renderTopics();
+                renderHistory();
                 renderHomeStatus();
                 showScreen('home');
             }
@@ -2675,8 +2887,10 @@
         });
 
         document.getElementById('homeBtn').addEventListener('click', () => {
+            if (ttsSupported) window.speechSynthesis.cancel();
             renderModes();
             renderTopics();
+            renderHistory();
             renderHomeStatus();
             showScreen('home');
         });
@@ -2709,6 +2923,7 @@
         // INITIALIZATION
         // ============================================================
         loadProgress();
+        loadHistory();
         initTheme();
 
         async function loadQuestions() {
