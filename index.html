@@ -3,10 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Einbürgerungstest — Berlin Quiz</title>
+    <title>Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen (DE/EN)</title>
+    <meta name="description" content="Kostenlos für den Einbürgerungstest Berlin üben: alle 310 amtlichen Fragen, Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice for Berlin.">
+    <meta name="keywords" content="Einbürgerungstest, Berlin, Leben in Deutschland, Test, Quiz, deutsche Staatsbürgerschaft, German citizenship test, Prüfung">
+    <meta name="author" content="EIB Quiz">
+    <meta name="theme-color" content="#050505">
+    <link rel="canonical" href="https://thelivinsine.github.io/eib-quiz/">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Einbürgerungstest Berlin Quiz">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:title" content="Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen">
+    <meta property="og:description" content="Übe kostenlos alle 310 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
+    <meta property="og:url" content="https://thelivinsine.github.io/eib-quiz/">
+    <meta property="og:image" content="https://thelivinsine.github.io/eib-quiz/og-image.svg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen">
+    <meta name="twitter:description" content="Übe kostenlos alle 310 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
+    <meta name="twitter:image" content="https://thelivinsine.github.io/eib-quiz/og-image.svg">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Einbürgerungstest Berlin Quiz",
+      "description": "Kostenloser Übungstest für den Einbürgerungstest Berlin mit 310 amtlichen Fragen, Prüfungssimulation und Spaced-Repetition-Wiederholung.",
+      "educationalLevel": "Adult education",
+      "inLanguage": ["de", "en"],
+      "learningResourceType": "Quiz",
+      "isAccessibleForFree": true,
+      "url": "https://thelivinsine.github.io/eib-quiz/"
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="questions.json" as="fetch">
     <style>
         /* Design tokens — Neon Velocity */
         :root {
@@ -29,7 +70,7 @@
             --green: #39d98a;
 
             --text:     #ffffff;
-            --muted:    rgba(255,255,255,0.4);
+            --muted:    rgba(255,255,255,0.58);
             --sub-text: rgba(255,255,255,0.65);
 
             --radius:      14px;
@@ -68,7 +109,7 @@
             --green: #1a8a55;
 
             --text:     #0a0a0a;
-            --muted:    rgba(0,0,0,0.50);
+            --muted:    rgba(0,0,0,0.62);
             --sub-text: rgba(0,0,0,0.72);
         }
 
@@ -1713,6 +1754,25 @@
             .progress-stat { padding: var(--spacing-sm); }
             .progress-stat .ps-num { font-size: 1.1rem; }
         }
+
+        /* ---- Accessibility: visible keyboard focus ---- */
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 3px solid var(--lime);
+            outline-offset: 2px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* ---- Accessibility: respect reduced-motion ---- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1792,7 +1852,7 @@
 
                         <div id="keyboardHintContainer"></div>
 
-                        <div class="explanation" id="explanation">
+                        <div class="explanation" id="explanation" role="status" aria-live="polite">
                             <div class="explanation-header" id="explanationHeader"></div>
                             <div class="explanation-text" id="explanationText"></div>
                             <div class="explanation-english" id="explanationEnglish"></div>
