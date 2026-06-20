@@ -246,97 +246,6 @@
             }
         }
 
-        /* Study Plan */
-        .study-plan {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-xl);
-            backdrop-filter: blur(12px);
-        }
-
-        .study-plan-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .study-plan-header h2 {
-            margin-bottom: 0;
-        }
-
-        .lang-toggle-btn {
-            background: var(--lime);
-            color: #000;
-            border: none;
-            padding: var(--spacing-sm) var(--spacing-lg);
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-weight: 600;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .lang-toggle-btn:hover {
-            box-shadow: 0 0 16px var(--lime-glow);
-        }
-
-        .study-plan-grid {
-            display: grid;
-            gap: var(--spacing-lg);
-        }
-
-        .day-card {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: var(--spacing-lg);
-            display: grid;
-            grid-template-columns: 60px 1fr;
-            gap: var(--spacing-lg);
-            transition: border-color 0.3s var(--ease-spring);
-        }
-
-        .day-card:hover {
-            border-color: var(--border-hover);
-        }
-
-        .day-num {
-            font-family: var(--font-mono);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--lime);
-            display: flex;
-            align-items: center;
-        }
-
-        .day-content h3 {
-            margin-bottom: var(--spacing-sm);
-            font-size: 1rem;
-        }
-
-        .day-activity {
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        .day-content.english {
-            display: none;
-            margin-top: var(--spacing-md);
-            padding-top: var(--spacing-md);
-            border-top: 1px solid var(--border);
-            font-style: italic;
-            color: var(--sub-text);
-        }
-
-        .day-card.show-english .day-content.english {
-            display: block;
-        }
-
         /* Mode cards — Luminosity Cards */
         .modes-grid {
             display: grid;
@@ -1185,110 +1094,6 @@
             outline-offset: -2px;
         }
 
-        /* ---- Study plan accordion ---- */
-        .study-plan {
-            margin-top: var(--spacing-2xl);
-        }
-
-        .study-plan-toggle-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            font-size: 0.78rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            font-family: var(--font-mono);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: border-color 0.25s var(--ease-spring);
-        }
-
-        .study-plan-toggle-btn:hover {
-            border-color: var(--border-hover);
-        }
-
-        .study-plan-chevron {
-            font-size: 0.7rem;
-            transition: transform 0.25s var(--ease-spring);
-            display: inline-block;
-        }
-
-        .study-plan-chevron.open {
-            transform: rotate(90deg);
-        }
-
-        .study-plan-header-actions {
-            display: none;
-            align-items: center;
-            gap: var(--spacing-sm);
-            flex-wrap: wrap;
-        }
-
-        .study-plan-header-actions.visible {
-            display: flex;
-        }
-
-        .expand-all-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 4px var(--spacing-md);
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            font-size: 0.72rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.06em;
-            transition: border-color 0.25s var(--ease-spring), color 0.25s;
-        }
-
-        .expand-all-btn:hover {
-            border-color: var(--border-hover);
-            color: var(--text);
-        }
-
-        /* ---- Day card collapsible ---- */
-        .day-card {
-            cursor: pointer;
-        }
-
-        .day-card-body {
-            display: none;
-            margin-top: var(--spacing-md);
-        }
-
-        .day-card.expanded .day-card-body {
-            display: block;
-        }
-
-        .day-card-summary {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--spacing-md);
-        }
-
-        .day-card-summary-text {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-
-        .day-card-chevron {
-            color: var(--muted);
-            font-size: 0.7rem;
-            transition: transform 0.2s var(--ease-spring);
-            flex-shrink: 0;
-        }
-
-        .day-card.expanded .day-card-chevron {
-            transform: rotate(180deg);
-        }
-
         /* ---- Keyboard hint strip ---- */
         .keyboard-hint {
             display: flex;
@@ -1729,45 +1534,6 @@
             }
         }
 
-        /* ---- Study plan teaser ---- */
-        .study-plan-teaser {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--spacing-md);
-            background: var(--lime-dim);
-            border: 1px solid rgba(191,255,0,0.2);
-            border-radius: var(--radius);
-            padding: 12px var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            cursor: pointer;
-            transition: background 0.25s var(--ease-spring), border-color 0.25s var(--ease-spring);
-        }
-        html.light .study-plan-teaser {
-            background: rgba(60,130,0,0.08);
-            border-color: rgba(60,130,0,0.2);
-        }
-        .study-plan-teaser:hover {
-            background: rgba(191,255,0,0.14);
-            border-color: rgba(191,255,0,0.4);
-        }
-        html.light .study-plan-teaser:hover {
-            background: rgba(60,130,0,0.15);
-        }
-        .study-plan-teaser-text {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--lime);
-        }
-        .study-plan-teaser-arrow {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--lime);
-            flex-shrink: 0;
-        }
-
         /* ---- Main container z-index fix (above body::after glow) ---- */
         main {
             position: relative;
@@ -1861,35 +1627,12 @@
                 <p class="hero-sub">Staatsbürgerschaft · Citizenship · 2025</p>
             </div>
 
-            <!-- Study plan teaser -->
-            <div class="study-plan-teaser" id="studyPlanTeaser">
-                <span class="study-plan-teaser-text">📅 Neu hier? Starte mit dem 8-Tage-Lernplan</span>
-                <span class="study-plan-teaser-arrow">↓ Anzeigen</span>
-            </div>
-
             <!-- Progress / readiness + resume (populated by JavaScript) -->
             <div id="homeStatus"></div>
 
             <!-- Mode Selection (primary CTA — above the fold) -->
             <div class="modes-grid" id="modesGrid">
                 <!-- Populated by JavaScript -->
-            </div>
-
-            <!-- Study Plan (collapsed by default) -->
-            <div class="study-plan" id="studyPlanSection">
-                <div class="study-plan-header">
-                    <button class="study-plan-toggle-btn" id="studyPlanToggle">
-                        <span class="study-plan-chevron" id="studyPlanChevron">▶</span>
-                        📅 8-Tage-Lernplan
-                    </button>
-                    <div class="study-plan-header-actions" id="studyPlanActions">
-                        <button class="expand-all-btn" id="expandAllBtn">Alle aufklappen</button>
-                        <button class="lang-toggle-btn" id="planLangBtn">🇬🇧 Show English</button>
-                    </div>
-                </div>
-                <div class="study-plan-grid" id="studyPlanGrid" style="display: none;">
-                    <!-- Populated by JavaScript -->
-                </div>
             </div>
         </section>
 
@@ -2023,18 +1766,6 @@
         // choices.
         // ============================================================
         let QUESTIONS = []; // loaded from questions.json (see loadQuestions)
-
-        // Study plan data
-        const STUDY_PLAN = [
-            { day: 1, focus_de: "Politik & Demokratie", activity_de: "Fragen 1–50", focus_en: "Politics & Democracy", activity_en: "Questions 1–50" },
-            { day: 2, focus_de: "Geschichte & Nationalsymbole", activity_de: "Fragen 51–100", focus_en: "History & National Symbols", activity_en: "Questions 51–100" },
-            { day: 3, focus_de: "Recht & Verfassung", activity_de: "Fragen 101–160", focus_en: "Law & Constitution", activity_en: "Questions 101–160" },
-            { day: 4, focus_de: "Gesellschaft & Alltag", activity_de: "Fragen 161–220", focus_en: "Society & Everyday Life", activity_en: "Questions 161–220" },
-            { day: 5, focus_de: "Europa & Internationales", activity_de: "Fragen 221–270", focus_en: "Europe & International Affairs", activity_en: "Questions 221–270" },
-            { day: 6, focus_de: "Gemischte Wiederholung", activity_de: "Fragen 261–310", focus_en: "Mixed Revision", activity_en: "Questions 261–310" },
-            { day: 7, focus_de: "Berlin-Spezifisch + Schwächen", activity_de: "Berlin-Modus + verpasste Fragen", focus_en: "Berlin-Specific + Weak Areas", activity_en: "Berlin Mode + missed questions" },
-            { day: 8, focus_de: "Prüfungssimulation", activity_de: "Vollständige Prüfungssimulation", focus_en: "Exam Simulation", activity_en: "Full exam simulation" }
-        ];
 
         // ============================================================
         // APPLICATION STATE
@@ -2193,7 +1924,6 @@
         // HOME SCREEN
         // ============================================================
         function initHomeScreen() {
-            renderStudyPlan();
             renderModes();
             renderHomeStatus();
         }
@@ -2258,57 +1988,6 @@
             document.getElementById('timer').style.display = 'none';
             showScreen('quiz');
             displayQuestion();
-        }
-
-        function renderStudyPlan() {
-            const grid = document.getElementById('studyPlanGrid');
-            grid.innerHTML = STUDY_PLAN.map(day => `
-                <div class="day-card" onclick="toggleDayCard(this)">
-                    <div class="day-num">Tag ${day.day}</div>
-                    <div style="flex: 1; min-width: 0;">
-                        <div class="day-card-summary">
-                            <span class="day-card-summary-text">${day.focus_de}</span>
-                            <span class="day-card-chevron">▼</span>
-                        </div>
-                        <div class="day-card-body">
-                            <div class="day-content">
-                                <div class="day-activity">${day.activity_de}</div>
-                            </div>
-                            <div class="day-content english" style="display: none;">
-                                <div style="margin-top: var(--spacing-sm); font-style: italic; color: var(--sub-text);">
-                                    <strong>${day.focus_en}</strong><br>
-                                    <span class="day-activity">${day.activity_en}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function toggleDayCard(el) {
-            el.classList.toggle('expanded');
-        }
-
-        function toggleStudyPlan() {
-            const grid = document.getElementById('studyPlanGrid');
-            const chevron = document.getElementById('studyPlanChevron');
-            const actions = document.getElementById('studyPlanActions');
-            const isHidden = grid.style.display === 'none';
-            grid.style.display = isHidden ? '' : 'none';
-            chevron.classList.toggle('open', isHidden);
-            actions.classList.toggle('visible', isHidden);
-        }
-
-        function toggleAllDays() {
-            const btn = document.getElementById('expandAllBtn');
-            const cards = document.querySelectorAll('.day-card');
-            const anyCollapsed = [...cards].some(c => !c.classList.contains('expanded'));
-            cards.forEach(c => {
-                if (anyCollapsed) c.classList.add('expanded');
-                else c.classList.remove('expanded');
-            });
-            btn.textContent = anyCollapsed ? 'Alle einklappen' : 'Alle aufklappen';
         }
 
         function renderModes() {
@@ -2849,32 +2528,6 @@
 
         const _navToggle = document.getElementById('questionNavToggle');
         if (_navToggle) _navToggle.addEventListener('click', toggleQuestionNav);
-
-        document.getElementById('studyPlanToggle').addEventListener('click', toggleStudyPlan);
-
-        document.getElementById('studyPlanTeaser').addEventListener('click', () => {
-            const grid = document.getElementById('studyPlanGrid');
-            if (grid.style.display === 'none') toggleStudyPlan();
-            document.getElementById('studyPlanSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        document.getElementById('expandAllBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleAllDays();
-        });
-
-        document.getElementById('planLangBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            const cards = document.querySelectorAll('.day-card');
-            const btn = document.getElementById('planLangBtn');
-            const showEn = btn.textContent.includes('Show');
-            cards.forEach(card => {
-                card.querySelectorAll('.day-content.english').forEach(el => {
-                    el.style.display = showEn ? 'block' : 'none';
-                });
-            });
-            btn.textContent = showEn ? '🇬🇧 Hide English' : '🇬🇧 Show English';
-        });
 
         document.getElementById('backBtn').addEventListener('click', () => {
             if (state.currentQuestionIndex > 0) {
