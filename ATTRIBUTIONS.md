@@ -1,5 +1,14 @@
 # Image Assets — Attributions & Fetch Manifest
 
+> ## ⏸ STATUS: PARKED (2026-06-20)
+> Fetching the 19 real assets is **parked** for later. The app is fully functional in the
+> meantime — any missing image shows a "Bild fehlt" fallback. Nothing else depends on this.
+>
+> **To resume:** allowlist `upload.wikimedia.org` + `commons.wikimedia.org` in the
+> environment's network egress settings, then fetch the assets in the manifest below and
+> run `node tools/validate.js` until the warning count is 0. (Alternatively, drop the files
+> in by hand — no network needed.) 6 of 25 assets are already committed; 19 remain.
+
 The image questions reference real asset files under `img/`. Assets that could be
 produced locally (ballots + the exact-spec EU flag/distractor) are already committed.
 The remaining assets must be sourced from open/public-domain repositories — the egress
