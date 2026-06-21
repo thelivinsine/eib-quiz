@@ -2995,12 +2995,15 @@
         // pull-to-refresh / reload — that would tuck the hero under the
         // sticky header. Always start at the top.
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-        window.scrollTo(0, 0);
-        window.addEventListener('load', () => window.scrollTo(0, 0));
+        // Use instant (not smooth) — html{scroll-behavior:smooth} would otherwise
+        // animate these resets and they could be interrupted mid-scroll.
+        const toTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        toTop();
+        window.addEventListener('load', toTop);
         // PWA resume / bfcache restore: keep the home screen pinned to the top
         // so the hero is never tucked under the sticky header.
         window.addEventListener('pageshow', () => {
-            if (state.currentScreen === 'home') window.scrollTo(0, 0);
+            if (state.currentScreen === 'home') toTop();
         });
 
         loadProgress();
@@ -3021,6 +3024,13 @@
                 return;
             }
             initHomeScreen();
+            // The home content renders here (async), making the page tall enough to
+            // scroll. Reset to the top now so a pull-to-refresh can't leave the hero
+            // tucked under the sticky header. rAF covers post-layout reflow.
+            if (state.currentScreen === 'home') {
+                toTop();
+                requestAnimationFrame(toTop);
+            }
         }
         loadQuestions();
 
