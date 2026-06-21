@@ -43,7 +43,9 @@ function classify(q) {
       'wiedervereinig', '1945', '1949', '1933', '1939', '1989', '1990', '1953', '1961', '1848', '1933',
       'jüdisch', 'juden', 'judentum', 'holocaust', ' sed', 'stunde null', 'montagsdemonstration',
       'besatzung', 'alliiert', 'geschichte', 'jahrhundert', 'nationalsozialisten', 'drittes reich',
-      'widerstand', 'stasi', 'vor wie vielen jahren', 'vor etwa', 'weimarer republik', 'kaiserreich']))
+      'dritte reich', 'widerstand', 'stasi', 'vor wie vielen jahren', 'vor etwa', 'weimarer republik',
+      'kaiserreich', 'wirtschaftswunder', 'eiserner vorhang', 'warschauer pakt', 'gastarbeiter',
+      'deutschen einheit', 'tag der deutschen', '3. oktober']))
     return 'history';
 
   // Fundamental rights & constitution
@@ -58,7 +60,8 @@ function classify(q) {
       'opposition', 'koalition', 'demokratie', 'parlament', 'bundespräsident', 'minister', 'gewaltenteilung',
       'volkssouveränität', 'legislative', 'exekutive', 'judikative', 'bundesland', 'bundesländer',
       'föderal', 'ministerpräsident', 'landtag', 'gemeinde', 'kommune', 'verwaltung', 'staatsgewalt',
-      'verfassungsgericht', 'fraktion', 'bundesstaat', 'wahlrecht', 'schöffe', 'staatsform', 'politik']))
+      'staatliche gewalt', 'staatsoberhaupt', 'monarchie', 'verfassungsgericht', 'fraktion',
+      'bundesstaat', 'wahlrecht', 'schöffe', 'staatsform', 'politik']))
     return 'politics';
 
   // Everything else: society, welfare, economy, religion, work, education, family

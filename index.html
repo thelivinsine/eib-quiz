@@ -12,7 +12,8 @@
 
     <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="apple-touch-icon" href="img/icons/icon-192.png">
+    <link rel="manifest" href="manifest.json">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -21,13 +22,15 @@
     <meta property="og:title" content="Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen">
     <meta property="og:description" content="Übe kostenlos alle 310 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
     <meta property="og:url" content="https://thelivinsine.github.io/eib-quiz/">
-    <meta property="og:image" content="https://thelivinsine.github.io/eib-quiz/og-image.svg">
+    <meta property="og:image" content="https://thelivinsine.github.io/eib-quiz/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen">
     <meta name="twitter:description" content="Übe kostenlos alle 310 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
-    <meta name="twitter:image" content="https://thelivinsine.github.io/eib-quiz/og-image.svg">
+    <meta name="twitter:image" content="https://thelivinsine.github.io/eib-quiz/og-image.png">
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -3011,6 +3014,13 @@
             chevron.classList.toggle('open', expanded);
             this.setAttribute('aria-expanded', String(expanded));
         });
+
+        // ---- Service worker (offline / installable PWA) ----
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            });
+        }
     </script>
 </body>
 </html>

@@ -5,8 +5,11 @@
 - Live site is GitHub Pages from the `main` branch root.
 - Production entry point is `index.html`.
 - On 2026-05-29 production was rolled back to the May 9 app version in commit `d2b1527`.
-- `sw.js` is intentionally a kill switch for the May 28 service worker. Keep it until returning visitors have had time to receive the unregister/cache-clear update.
-- The rolled-back `index.html` does not register a service worker and does not reference `manifest.json`.
+- PWA is intentionally re-enabled (2026-06-20): `sw.js` is now a real offline cache (NOT
+  the old kill switch) and `index.html` registers it and links `manifest.json`. The SW is
+  network-first for HTML + `questions.json` (so updates always win online) and cleans up all
+  old caches — including the May-28 `eib-quiz*` caches — on activate, which subsumes the old
+  kill switch. Bump `CACHE` in `sw.js` to invalidate cached static assets.
 
 ## App Shape
 
@@ -23,9 +26,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   zurücksetzen" control clears all three.
 - Each question has a `category`; the home screen offers topic practice, a results-history
   trend, and a bilingual glossary. Questions can be read aloud via the Web Speech API (TTS).
-- SEO/meta, Open Graph/Twitter cards, `favicon.svg` and `og-image.svg` are in `<head>`;
-  JSON-LD (LearningResource) is included. NO service worker is registered (sw.js stays a
-  kill switch) — PWA/offline remains intentionally deferred.
+- SEO/meta, Open Graph/Twitter cards (`og-image.png`), `favicon.svg` and JSON-LD
+  (LearningResource) are in `<head>`. The app is an installable PWA with offline support
+  (`manifest.json` + `sw.js`); icons live in `img/icons/`.
 - The 10 `appExtra` questions (Q301-310) are general (NOT Berlin) and remain EXCLUDED from
   all pools until verified against the official catalogue.
 
@@ -43,11 +46,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
   image questions to real asset paths and descriptive labels.
 - `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
-- `sw.js` - temporary rollback kill switch.
+- `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
+- `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
+- `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
 - `einbuergerungstest-berlin.html` - May 28 standalone source file; currently not production.
 - `questions-final-extended.json` - May 28 JSON source; known to contain corrupted data. Do NOT use.
 - `regen_questions.js` - May 28 regen tool; do not run until JSON is repaired.
-- `manifest.json` - May 28 PWA artifact; currently unused by production.
 - `BUG_AUDIT_MEMORY.md` - concise audit/rollback memory.
 
 ## Image Questions
@@ -78,7 +82,8 @@ Before publishing any app change:
 4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the six
    image questions + Q55 render (or show the "Bild fehlt" fallback for not-yet-fetched assets),
    progress persists across reload, and Smart Review surfaces due/weak questions.
-5. Confirm production `index.html` does not unintentionally re-register the old PWA service worker.
+5. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
+   When changing cached static assets, bump `CACHE` in `sw.js`.
 
 ## Future Repair Order
 

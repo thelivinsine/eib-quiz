@@ -1,18 +1,18 @@
 {
   "name": "Einbürgerungstest Berlin Quiz",
-  "short_name": "EIB Berlin",
-  "description": "Bilingualer Einbürgerungstest Quiz App für das Land Berlin (Deutsch/Englisch)",
-  "start_url": "./index.html",
+  "short_name": "EIB Quiz",
+  "description": "Kostenlos für den Einbürgerungstest Berlin üben: 310 amtliche Fragen, Prüfungssimulation, Themen-Training und Smart Review.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#050505",
-  "theme_color": "#BFFF00",
+  "theme_color": "#050505",
   "icons": [
-    {
-      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%23BFFF00'><rect width='512' height='512' rx='100' fill='%23050505'/><text x='50%25' y='65%25' font-family='sans-serif' font-weight='800' font-size='220' fill='%23BFFF00' text-anchor='middle'>EIB</text></svg>",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    { "src": "img/icons/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "img/icons/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
+    { "src": "img/icons/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" }
   ]
 }
