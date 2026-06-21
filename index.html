@@ -2991,6 +2991,13 @@
         // ============================================================
         // INITIALIZATION
         // ============================================================
+        // Don't let the browser restore a partial scroll offset after a
+        // pull-to-refresh / reload — that would tuck the hero under the
+        // sticky header. Always start at the top.
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+        window.addEventListener('load', () => window.scrollTo(0, 0));
+
         loadProgress();
         loadHistory();
         initTheme();
