@@ -16,9 +16,11 @@ framework, no service worker.
 - Practice by topic (every question has a `category`).
 - Results history with an exam pass-rate trend (`eib_history_v1`).
 - Audio read-aloud (Web Speech API / TTS) and a bilingual glossary.
-- SEO/meta, Open Graph + Twitter cards, JSON-LD, `favicon.svg`, `og-image.svg`.
+- SEO/meta, Open Graph + Twitter cards (rasterized `og-image.png`), JSON-LD, `favicon.svg`.
 - Accessibility: higher-contrast text, `:focus-visible`, `prefers-reduced-motion`,
   `aria-live` results.
+- Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
+  HTML/data, PNG app icons in `img/icons/`).
 
 **Quiz pool:** 300 general + 10 Berlin = **310 verified** questions in use.
 The 10 `appExtra` questions (Q301–310) are excluded — see open point #2.
@@ -50,11 +52,9 @@ pools. Need to confirm they are real official-catalogue questions before folding
 ### 3. Deferred features (by choice, not blocked)
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
-- **Service worker / offline PWA** — intentionally NOT added; `sw.js` stays the kill
-  switch for returning May-28 visitors. Revisit only once that cleanup window is safely
-  past (see `CLAUDE.md`).
 
-### 4. Nice-to-haves / polish (optional)
-- Swap `og-image.svg` for a rasterized PNG (better social-scraper support) once image
-  tooling/egress is available.
-- Refine topic categories by spot-reviewing edge cases (`tools/categorize.js`).
+### 4. Done
+- ~~Service worker / offline PWA~~ — done 2026-06-20: real caching SW (network-first for
+  HTML/data) + installable manifest; cleans up old May-28 caches on activate.
+- ~~Rasterize the OG image~~ — done: `og-image.png` (1200×630) via resvg-js.
+- ~~Refine topic categories~~ — done: targeted keyword fixes in `tools/categorize.js`.
