@@ -863,7 +863,13 @@
             gap: var(--spacing-md);
             margin-top: var(--spacing-lg);
             flex-wrap: wrap;
+            align-items: center;
         }
+        /* Deterministic quiz-button layout on every screen width:
+           Zurück + Beenden on the left, Weiter (primary) pushed to the right. */
+        #backBtn { order: 1; }
+        #quitBtn { order: 2; }
+        #nextBtn { order: 3; margin-left: auto; }
 
         button {
             font-family: var(--font-mono);
