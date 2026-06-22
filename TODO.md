@@ -1,12 +1,12 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-06-20_
+_Last updated: 2026-06-21_
 
 ## Project status
 
 Vanilla HTML/CSS/JS quiz for the German citizenship test (Berlin variant), served by
 GitHub Pages from `main` (`index.html` + `questions.json` + `img/`). No build step, no
-framework, no service worker.
+framework. Installable PWA with offline support.
 
 **Shipped and live:**
 - Real-asset image questions with a "Bild fehlt" fallback (partial — see open point #1).
@@ -58,3 +58,16 @@ pools. Need to confirm they are real official-catalogue questions before folding
   HTML/data) + installable manifest; cleans up old May-28 caches on activate.
 - ~~Rasterize the OG image~~ — done: `og-image.png` (1200×630) via resvg-js.
 - ~~Refine topic categories~~ — done: targeted keyword fixes in `tools/categorize.js`.
+- ~~Mobile: quiz buttons reflowed wrong~~ — done: deterministic flex order
+  (Zurück+Beenden left, Weiter right).
+- ~~Mobile: hero cut off after pull-to-refresh~~ — done: `scrollRestoration='manual'` +
+  reset to top after the async home render (instant behavior) + on load/pageshow.
+
+## Notes for future work
+- **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
+  and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
+- **Branch/merge:** because PRs are squash-merged, reset the working branch to `origin/main`
+  (or cherry-pick) before the next change to avoid squash conflicts.
+- **Egress:** verifying the live site / fetching Wikimedia & GitHub raw is blocked by the
+  environment egress allowlist (see open points 1 & 2). Pages deploy status is checkable via
+  the GitHub Actions API ("pages build and deployment" runs).
