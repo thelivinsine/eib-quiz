@@ -50,11 +50,9 @@ for (const q of questions) {
     errors.push(`${where}: correct index ${q.correct} out of range`);
   }
   if (typeof q.en !== 'string') errors.push(`${where}: missing en`);
-  // General questions must have a German explanation; imported state questions are
-  // German-only from the official source (no explanations), so allow empty there.
-  if (typeof q.explanation_de !== 'string') errors.push(`${where}: missing explanation_de`);
-  else if (!q.state && !q.explanation_de.trim()) errors.push(`${where}: empty explanation_de`);
-  if (typeof q.explanation_en !== 'string') errors.push(`${where}: missing explanation_en`);
+  // Every question (general + state) must have both explanations.
+  if (typeof q.explanation_de !== 'string' || !q.explanation_de.trim()) errors.push(`${where}: missing explanation_de`);
+  if (typeof q.explanation_en !== 'string' || !q.explanation_en.trim()) errors.push(`${where}: missing explanation_en`);
 
   // Image option grids
   if (q.option_images) {

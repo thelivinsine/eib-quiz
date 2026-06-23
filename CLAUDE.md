@@ -37,8 +37,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   310 general + the selected state's 10. State questions carry `state` (code) + `stateName` and
   are bilingual (DE/EN). `tools/import-states.js` (re)generates the 15 non-BE state sets from
   `tools/data/official-catalogue-bamf-2026-02.json`; `tools/translate-states.js` adds the
-  English `en`/`options_en` (the official source is German-only). State questions have no
-  explanations (the official source provides none).
+  English `en`/`options_en` (the official source is German-only); `tools/explain-states.js`
+  adds bilingual `explanation_de`/`explanation_en` (generated from the templated stem + correct
+  answer). Every question now has both explanations.
 
 ## Tracked Files
 

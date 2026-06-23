@@ -55,6 +55,9 @@ image questions** for the 15 imported states (~120, under `img/states/<code>/`).
   home state-picker (`tools/import-states.js`).
 - ~~English translations for imported state questions~~ — done 2026-06-23: all 150 non-Berlin
   state questions now bilingual via `tools/translate-states.js`.
+- ~~Explanations where missing~~ — done 2026-06-23: bilingual explanations added to all 150
+  state questions via `tools/explain-states.js`; **every question now has DE+EN explanations**
+  (validate enforces it).
 - ~~Mobile: quiz buttons reflowed wrong~~ — done: deterministic flex order
   (Zurück+Beenden left, Weiter right).
 - ~~Mobile: hero cut off after pull-to-refresh~~ — done: `scrollRestoration='manual'` +
