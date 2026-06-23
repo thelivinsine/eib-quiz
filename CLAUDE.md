@@ -29,8 +29,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - SEO/meta, Open Graph/Twitter cards (`og-image.png`), `favicon.svg` and JSON-LD
   (LearningResource) are in `<head>`. The app is an installable PWA with offline support
   (`manifest.json` + `sw.js`); icons live in `img/icons/`.
-- The 10 `appExtra` questions (Q301-310) are general (NOT Berlin) and remain EXCLUDED from
-  all pools until verified against the official catalogue.
+- The former 10 `appExtra` questions (Q301-310) were verified against the official
+  catalogue (2026-06-21, via public catalogue sites) — all are real official questions with
+  correct answers — and are now INCLUDED in all pools. Quiz pool is 310 general + 10 Berlin = 320.
 
 ## Tracked Files
 
