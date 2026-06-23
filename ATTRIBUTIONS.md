@@ -101,3 +101,21 @@ curl -L -A "$UA" -o img/q21/bundeswappen.svg \
 ```
 
 When fetching, record each file's exact license and author above for CC-BY assets.
+
+---
+
+## Question data — state-specific questions
+
+The 15 non-Berlin Bundesland question sets were imported from the official BAMF
+"Leben in Deutschland" / Einbürgerungstest catalogue via the open dataset
+**adalbero/LebenInDeutschland** (`Puppeteer/data/run-2026-02-15/dataLid.json`,
+BAMF source), committed here as `tools/data/official-catalogue-bamf-2026-02.json`
+and wired in by `tools/import-states.js`. These questions are German-only (the
+official source has no English translations/explanations).
+
+### Pending: state image (Wappen/flag) questions
+Each state has 1–2 image questions whose options are coats of arms/flags. The
+referenced files under `img/states/<code>/` are not yet on disk, so the app shows
+the "Bild fehlt" fallback. Source the real artwork from Wikimedia Commons
+("Coat of arms of <State>" / "Flagge <State>") once egress allows, then run
+`node tools/validate.js` to confirm. (Berlin's image questions already exist.)

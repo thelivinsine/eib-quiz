@@ -19,8 +19,18 @@ const questions = JSON.parse(fs.readFileSync(path.join(ROOT, 'questions.json'), 
 const errors = [];
 const missingAssets = [];
 
-// 1. Count
-if (questions.length !== 320) errors.push(`Expected 320 questions, got ${questions.length}`);
+// 1. Count (310 general + 16 states x 10 = 470)
+if (questions.length !== 470) errors.push(`Expected 470 questions, got ${questions.length}`);
+
+// 1b. State coverage: every state has exactly 10 questions
+const STATE_CODES = ['BW','BY','BE','BB','HB','HH','HE','MV','NI','NW','RP','SL','SN','ST','SH','TH'];
+const byState = {};
+questions.filter(q => q.state).forEach(q => { byState[q.state] = (byState[q.state] || 0) + 1; });
+for (const code of STATE_CODES) {
+  if (byState[code] !== 10) errors.push(`State ${code}: expected 10 questions, got ${byState[code] || 0}`);
+}
+const generalCount = questions.filter(q => !q.state).length;
+if (generalCount !== 310) errors.push(`Expected 310 general questions, got ${generalCount}`);
 
 // 2. Contiguous IDs 1..N, no duplicates
 const ids = questions.map(q => q.id);
@@ -40,7 +50,10 @@ for (const q of questions) {
     errors.push(`${where}: correct index ${q.correct} out of range`);
   }
   if (typeof q.en !== 'string') errors.push(`${where}: missing en`);
-  if (typeof q.explanation_de !== 'string' || !q.explanation_de.trim()) errors.push(`${where}: missing explanation_de`);
+  // General questions must have a German explanation; imported state questions are
+  // German-only from the official source (no explanations), so allow empty there.
+  if (typeof q.explanation_de !== 'string') errors.push(`${where}: missing explanation_de`);
+  else if (!q.state && !q.explanation_de.trim()) errors.push(`${where}: empty explanation_de`);
   if (typeof q.explanation_en !== 'string') errors.push(`${where}: missing explanation_en`);
 
   // Image option grids

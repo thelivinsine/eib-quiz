@@ -22,20 +22,21 @@ framework. Installable PWA with offline support.
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
-**Quiz pool:** 310 general + 10 Berlin = **320** questions in use (the former 10 `appExtra`
-questions were verified against the official catalogue on 2026-06-21 and folded in).
+**Quiz pool:** 310 general + 16 Bundesländer × 10 = **470** questions. The user picks a state
+on the home screen; the active pool is 310 general + the selected state's 10. (All 300 official
+general questions are covered — verified against the BAMF catalogue, 0 missing.)
 
 ---
 
 ## Open TODOs
 
-### 1. Fetch the 19 remaining real image assets  — _blocked (egress)_
-Coats of arms (Q21, Q209, Q311), locator maps (Q318), UN/NATO flags (Q226), and the
-Reichstag photo (Q55) are still placeholders; the app shows a "Bild fehlt" fallback.
+### 1. Fetch the remaining real image assets  — _blocked (egress)_
+~139 image files are still placeholders (the app shows a "Bild fehlt" fallback): the
+general coats of arms / maps / flags / Reichstag photo (19), plus the **state Wappen/flag
+image questions** for the 15 imported states (~120, under `img/states/<code>/`).
 - **Blocker:** environment egress blocks `upload.wikimedia.org` / `commons.wikimedia.org`.
-- **To resume:** allowlist those hosts, then fetch per the manifest and run
-  `node tools/validate.js` until the warning count is 0. Full per-file source list and
-  resume steps are in `ATTRIBUTIONS.md`.
+- **To resume:** allowlist those hosts, fetch per the manifest, run `node tools/validate.js`
+  until the warning count is 0. See `ATTRIBUTIONS.md`.
 - Already done locally: 4 Q130 ballots + exact-spec EU flag/distractor.
 
 ### 3. Deferred features (by choice, not blocked)
@@ -49,6 +50,9 @@ Reichstag photo (Q55) are still placeholders; the app shows a "Bild fehlt" fallb
 - ~~Refine topic categories~~ — done: targeted keyword fixes in `tools/categorize.js`.
 - ~~Verify & include the 10 `appExtra` questions~~ — done 2026-06-21: all 10 confirmed real
   official questions (correct answers match) via public catalogue sites; folded into the pool.
+- ~~Catalogue coverage check + all-states import~~ — done 2026-06-23: verified 0 missing vs the
+  official 300; fixed 21 ü-mojibake questions; imported all 16 states (470 total) with a
+  home state-picker (`tools/import-states.js`).
 - ~~Mobile: quiz buttons reflowed wrong~~ — done: deterministic flex order
   (Zurück+Beenden left, Weiter right).
 - ~~Mobile: hero cut off after pull-to-refresh~~ — done: `scrollRestoration='manual'` +
