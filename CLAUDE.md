@@ -31,7 +31,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   (`manifest.json` + `sw.js`); icons live in `img/icons/`.
 - The former 10 `appExtra` questions (Q301-310) were verified against the official
   catalogue (2026-06-21, via public catalogue sites) — all are real official questions with
-  correct answers — and are now INCLUDED in all pools. Quiz pool is 310 general + 10 Berlin = 320.
+  correct answers — and are now INCLUDED in all pools.
+- All 16 Bundesländer are supported: 310 general + 16×10 state = 470 questions. The user picks
+  a state on the home screen (`localStorage` key `eib_state`, default `BE`); the active pool is
+  310 general + the selected state's 10. State questions carry `state` (code) + `stateName`;
+  Berlin (BE) keeps its bilingual data, the other 15 are German-only (official source has no
+  English). `tools/import-states.js` (re)generates the 15 non-BE state sets from
+  `tools/data/official-catalogue-bamf-2026-02.json`.
 
 ## Tracked Files
 
@@ -47,6 +53,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
   image questions to real asset paths and descriptive labels.
 - `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
+- `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
+  `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see ATTRIBUTIONS.md).
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
@@ -77,7 +85,8 @@ Before publishing any app change:
 
 1. Question data lives in `questions.json` (source of truth) — edit it directly.
    (`tools/extract-questions.js` was the one-time migration from index.html; it no-ops now.)
-2. Run `node tools/validate.js` (320 questions, contiguous IDs 1-320, no duplicates,
+2. Run `node tools/validate.js` (470 questions, contiguous IDs 1-470, no duplicates,
+   16 states × 10 + 310 general,
    structure valid, spot-checks Q6/7/9/10/12/15/16/28, lists any missing image assets).
 3. Extract the final `<script>` block from `index.html` and run `node --check` on it.
 4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the six

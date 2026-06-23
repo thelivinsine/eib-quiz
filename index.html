@@ -1701,6 +1701,39 @@
         .gloss-def { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; font-size: 0.85rem; color: var(--sub-text); }
         .gloss-en { font-style: italic; color: var(--muted); }
 
+        /* ---- Home: state picker ---- */
+        .state-picker {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        .state-picker label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .state-picker select {
+            flex: 1;
+            min-width: 160px;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-sm);
+            padding: 8px var(--spacing-md);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .state-picker select:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+
         /* ---- Home: progress / readiness + resume ---- */
         .resume-banner {
             display: flex;
@@ -1966,8 +1999,35 @@
             history:  { de: 'Geschichte',                        en: 'History',                           icon: '📜' },
             society:  { de: 'Gesellschaft, Soziales & Wirtschaft', en: 'Society, Welfare & Economy',       icon: '🤝' },
             symbols:  { de: 'Symbole, Geografie & Europa',       en: 'Symbols, Geography & Europe',       icon: '🦅' },
-            berlin:   { de: 'Berlin',                            en: 'Berlin',                            icon: '🏙️' },
         };
+        // Topic chips cover the general themes only (state questions live under Bundesland mode).
+        const TOPIC_KEYS = ['rights', 'politics', 'history', 'society', 'symbols'];
+
+        // German federal states (code -> name), display order. Each has 10 state-specific questions.
+        const STATES = {
+            BW: 'Baden-Württemberg', BY: 'Bayern', BE: 'Berlin', BB: 'Brandenburg',
+            HB: 'Bremen', HH: 'Hamburg', HE: 'Hessen', MV: 'Mecklenburg-Vorpommern',
+            NI: 'Niedersachsen', NW: 'Nordrhein-Westfalen', RP: 'Rheinland-Pfalz', SL: 'Saarland',
+            SN: 'Sachsen', ST: 'Sachsen-Anhalt', SH: 'Schleswig-Holstein', TH: 'Thüringen',
+        };
+        const STATE_KEY = 'eib_state';
+        let selectedState = (() => {
+            try { return localStorage.getItem(STATE_KEY) || 'BE'; } catch (e) { return 'BE'; }
+        })();
+        function setSelectedState(code) {
+            selectedState = STATES[code] ? code : 'BE';
+            try { localStorage.setItem(STATE_KEY, selectedState); } catch (e) {}
+        }
+        // Question pools driven by the selected state.
+        function generalQuestions() { return QUESTIONS.filter(q => !q.state); }            // 310
+        function stateQuestions()   { return QUESTIONS.filter(q => q.state === selectedState); } // 10
+        function activePool()       { return [...generalQuestions(), ...stateQuestions()]; }     // 320
+        function onStateChange(code) {
+            setSelectedState(code);
+            renderModes();
+            renderTopics();
+            renderHomeStatus();
+        }
 
         // ============================================================
         // APPLICATION STATE
@@ -1988,7 +2048,7 @@
             missedQuestions: [],   // {q, userAnswerIdx} for wrong-answer review
             examStartTime: null,   // Date.now() when exam begins
             generalCorrect: 0,     // correct non-berlin answers (exam sub-score)
-            berlinCorrect: 0,      // correct berlin answers (exam sub-score)
+            stateCorrect: 0,      // correct berlin answers (exam sub-score)
             answered: {}           // overridden below; kept here for shape reference
         };
 
@@ -2033,7 +2093,7 @@
             saveProgress();
         }
         function masteredCount() {
-            return Object.values(progress).filter(r => (r.box || 1) >= 4).length;
+            return activePool().filter(q => { const r = progress[q.id]; return r && (r.box || 1) >= 4; }).length;
         }
         function overallAccuracy() {
             let c = 0, t = 0;
@@ -2042,7 +2102,7 @@
         }
         // Smart Review queue: due (weakest box first), then unseen, then nearest-due — capped.
         function buildReviewQueue(limit = 25) {
-            const pool = QUESTIONS.filter(q => !q.appExtra);
+            const pool = activePool();
             const now = Date.now();
             const due = pool.filter(q => progress[q.id] && progress[q.id].due <= now)
                 .sort((a, b) => (progress[a.id].box - progress[b.id].box) || (progress[a.id].due - progress[b.id].due));
@@ -2057,7 +2117,7 @@
         }
         function reviewDueCount() {
             const now = Date.now();
-            return QUESTIONS.filter(q => !q.appExtra && progress[q.id] && progress[q.id].due <= now).length;
+            return activePool().filter(q => progress[q.id] && progress[q.id].due <= now).length;
         }
         function clearProgress() {
             progress = {};
@@ -2090,6 +2150,7 @@
                 localStorage.setItem(SESSION_KEY, JSON.stringify({
                     mode: state.currentMode,
                     topic: state.currentTopic || null,
+                    stateCode: state.stateCode || null,
                     ids: state.currentQuestions.map(q => q.id),
                     idx: state.currentQuestionIndex,
                     answered: state.answered,
@@ -2153,14 +2214,12 @@
             renderHomeStatus();
         }
 
-        // Verified pool used everywhere (excludes unverified appExtra questions).
-        function pool() { return QUESTIONS.filter(q => !q.appExtra); }
-
         function renderTopics() {
             const el = document.getElementById('topicSection');
             if (!el) return;
-            const all = pool();
-            const chips = Object.entries(CATEGORIES).map(([key, meta]) => {
+            const all = generalQuestions();
+            const chips = TOPIC_KEYS.map(key => {
+                const meta = CATEGORIES[key];
                 const qs = all.filter(q => q.category === key);
                 if (!qs.length) return '';
                 const mastered = qs.filter(q => progress[q.id] && (progress[q.id].box || 1) >= 4).length;
@@ -2179,7 +2238,7 @@
         }
 
         function startTopic(catKey) {
-            const qs = pool().filter(q => q.category === catKey);
+            const qs = generalQuestions().filter(q => q.category === catKey);
             if (!qs.length) return;
             state.currentMode = 'topic';
             state.currentTopic = catKey;
@@ -2191,7 +2250,7 @@
             state.missedQuestions = [];
             state.examStartTime = null;
             state.generalCorrect = 0;
-            state.berlinCorrect = 0;
+            state.stateCorrect = 0;
             state.currentQuestions = qs;
             clearSession();
             document.getElementById('questionNavWrapper').style.display = 'flex';
@@ -2301,17 +2360,28 @@
         function renderHomeStatus() {
             const el = document.getElementById('homeStatus');
             if (!el) return;
-            const totalPool = QUESTIONS.filter(q => !q.appExtra).length;
+            const totalPool = activePool().length;
             const seen = Object.keys(progress).length;
             let html = '';
+
+            // State selector — choose your Bundesland (drives Bundesland mode + exam + review).
+            const stateOpts = Object.entries(STATES)
+                .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`).join('');
+            html += `
+                <div class="state-picker">
+                    <label for="stateSelect">📍 Bundesland</label>
+                    <select id="stateSelect" onchange="onStateChange(this.value)">${stateOpts}</select>
+                </div>`;
 
             // Resume banner (only if a saved in-progress session exists)
             const sess = getSavedSession();
             if (sess && Array.isArray(sess.ids) && sess.ids.length) {
-                const labels = { allQuestions: 'Alle Fragen', berlin: 'Berlin-Modus', review: 'Smart Review' };
+                const labels = { allQuestions: 'Alle Fragen', bundesland: 'Bundesland', review: 'Smart Review' };
                 const sessLabel = sess.mode === 'topic'
                     ? (CATEGORIES[sess.topic] ? CATEGORIES[sess.topic].de : 'Thema')
-                    : (labels[sess.mode] || sess.mode);
+                    : sess.mode === 'bundesland'
+                        ? (STATES[sess.stateCode] || 'Bundesland')
+                        : (labels[sess.mode] || sess.mode);
                 const answered = sess.answered ? Object.keys(sess.answered).length : 0;
                 html += `
                     <div class="resume-banner">
@@ -2348,6 +2418,7 @@
             if (!qs.length) { clearSession(); renderHomeStatus(); return; }
             state.currentMode = sess.mode;
             state.currentTopic = sess.topic || null;
+            state.stateCode = sess.stateCode || selectedState;
             state.currentQuestions = qs;
             state.currentQuestionIndex = Math.min(sess.idx || 0, qs.length - 1);
             state.answered = sess.answered || {};
@@ -2357,7 +2428,7 @@
             state.missedQuestions = [];
             state.examStartTime = null;
             state.generalCorrect = 0;
-            state.berlinCorrect = 0;
+            state.stateCorrect = 0;
             document.getElementById('questionNavWrapper').style.display = 'flex';
             document.getElementById('timer').style.display = 'none';
             showScreen('quiz');
@@ -2378,10 +2449,10 @@
                     <div class="mode-badge badge-gold">310 Fragen</div>
                     <div><span class="mode-start-btn">Starten →</span></div>
                 </div>
-                <div class="mode-card" onclick="startMode('berlin')">
+                <div class="mode-card" onclick="startMode('bundesland')">
                     <div class="mode-icon">🏙️</div>
-                    <h3>Berlin-Modus</h3>
-                    <div class="mode-description">Nur die 10 Berlin-spezifischen Fragen</div>
+                    <h3>Bundesland</h3>
+                    <div class="mode-description">Die 10 Fragen für ${STATES[selectedState]}</div>
                     <div class="mode-time-est">⏱ ca. 5 Min</div>
                     <div class="mode-pips">${pips(1, 3)}</div>
                     <div class="mode-badge badge-green">10 Fragen</div>
@@ -2390,7 +2461,7 @@
                 <div class="mode-card" onclick="startMode('exam')">
                     <div class="mode-icon">🎯</div>
                     <h3>Prüfungssimulation</h3>
-                    <div class="mode-description">30 allgemeine + 3 Berlin-Fragen, zufällig — 60 Min Zeitlimit</div>
+                    <div class="mode-description">30 allgemeine + 3 Bundesland-Fragen (${STATES[selectedState]}), zufällig — 60 Min Zeitlimit</div>
                     <div class="mode-time-est">⏱ ca. 45 Min + Timer</div>
                     <div class="mode-pips">${pips(3, 3)}</div>
                     <div class="mode-badge badge-red">33 Fragen</div>
@@ -2451,12 +2522,13 @@
             state.missedQuestions = [];
             state.examStartTime = null;
             state.generalCorrect = 0;
-            state.berlinCorrect = 0;
+            state.stateCorrect = 0;
+            state.stateCode = selectedState;
 
             if (mode === 'allQuestions') {
-                state.currentQuestions = QUESTIONS.filter(q => !q.berlin && !q.appExtra);
-            } else if (mode === 'berlin') {
-                state.currentQuestions = QUESTIONS.filter(q => q.berlin);
+                state.currentQuestions = generalQuestions();
+            } else if (mode === 'bundesland') {
+                state.currentQuestions = stateQuestions();
             } else if (mode === 'review') {
                 state.currentQuestions = buildReviewQueue(25);
                 if (!state.currentQuestions.length) {
@@ -2464,9 +2536,9 @@
                     return;
                 }
             } else if (mode === 'exam') {
-                const general = [...QUESTIONS.filter(q => !q.berlin && !q.appExtra)].sort(() => Math.random() - 0.5).slice(0, 30);
-                const berlin = [...QUESTIONS.filter(q => q.berlin)].sort(() => Math.random() - 0.5).slice(0, 3);
-                state.currentQuestions = [...general, ...berlin];
+                const general = [...generalQuestions()].sort(() => Math.random() - 0.5).slice(0, 30);
+                const st = [...stateQuestions()].sort(() => Math.random() - 0.5).slice(0, 3);
+                state.currentQuestions = [...general, ...st];
                 state.examStartTime = Date.now();
                 startTimer();
             }
@@ -2507,7 +2579,8 @@
             // Question content
             document.getElementById('questionNum').textContent = `Frage ${state.currentQuestionIndex + 1}`;
             document.getElementById('questionCategory').textContent =
-                (q.category && CATEGORIES[q.category]) ? CATEGORIES[q.category].de : (q.berlin ? 'Berlin' : 'Allgemein');
+                q.state ? (q.stateName || STATES[q.state] || 'Bundesland')
+                    : ((q.category && CATEGORIES[q.category]) ? CATEGORIES[q.category].de : 'Allgemein');
             document.getElementById('questionText').textContent = q.de;
             document.getElementById('questionEnglish').innerHTML = `<div>${q.en}</div>`;
             document.getElementById('questionEnglish').classList.remove('show');
@@ -2650,7 +2723,7 @@
             // Update score and sub-scores
             if (idx === q.correct) {
                 state.correct++;
-                if (q.berlin) state.berlinCorrect++;
+                if (q.state) state.stateCorrect++;
                 else state.generalCorrect++;
             } else {
                 state.incorrect++;
@@ -2819,8 +2892,8 @@
                             <div class="breakdown-number" style="color: var(--gold)">${state.generalCorrect}</div>
                         </div>
                         <div class="breakdown-item">
-                            <div class="breakdown-label">Berlin (von 3)</div>
-                            <div class="breakdown-number" style="color: var(--gold)">${state.berlinCorrect}</div>
+                            <div class="breakdown-label">${STATES[state.stateCode] || 'Bundesland'} (von 3)</div>
+                            <div class="breakdown-number" style="color: var(--gold)">${state.stateCorrect}</div>
                         </div>
                         <div class="breakdown-item">
                             <div class="breakdown-label">Zeit</div>
@@ -2880,7 +2953,7 @@
             state.missedQuestions = [];
             state.examStartTime = null;
             state.generalCorrect = 0;
-            state.berlinCorrect = 0;
+            state.stateCorrect = 0;
             document.getElementById('questionNavWrapper').style.display = 'flex';
             document.getElementById('timer').style.display = 'none';
             showScreen('quiz');
