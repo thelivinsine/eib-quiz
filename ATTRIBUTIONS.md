@@ -110,8 +110,9 @@ The 15 non-Berlin Bundesland question sets were imported from the official BAMF
 "Leben in Deutschland" / Einbürgerungstest catalogue via the open dataset
 **adalbero/LebenInDeutschland** (`Puppeteer/data/run-2026-02-15/dataLid.json`,
 BAMF source), committed here as `tools/data/official-catalogue-bamf-2026-02.json`
-and wired in by `tools/import-states.js`. These questions are German-only (the
-official source has no English translations/explanations).
+and wired in by `tools/import-states.js`. The official source is German-only; English
+`en`/`options_en` were added by `tools/translate-states.js` (dictionary-based). State
+questions have no explanations (the official source provides none).
 
 ### Pending: state image (Wappen/flag) questions
 Each state has 1–2 image questions whose options are coats of arms/flags. The

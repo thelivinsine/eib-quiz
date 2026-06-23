@@ -8,7 +8,7 @@
 //    old `eib-quiz*` caches from the May-28 PWA), then claims clients.
 //  Bump CACHE when shipping changes that must invalidate cached static assets.
 
-const CACHE = 'eib-cache-2026-06-23b';
+const CACHE = 'eib-cache-2026-06-23c';
 
 const PRECACHE = [
   './',

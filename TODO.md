@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-06-21_
+_Last updated: 2026-06-23_
 
 ## Project status
 
@@ -22,9 +22,9 @@ framework. Installable PWA with offline support.
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
-**Quiz pool:** 310 general + 16 Bundesländer × 10 = **470** questions. The user picks a state
-on the home screen; the active pool is 310 general + the selected state's 10. (All 300 official
-general questions are covered — verified against the BAMF catalogue, 0 missing.)
+**Quiz pool:** 310 general + 16 Bundesländer × 10 = **470** questions, all **bilingual (DE/EN)**.
+The user picks a state on the home screen; the active pool is 310 general + the selected state's
+10. (All 300 official general questions are covered — verified against the BAMF catalogue, 0 missing.)
 
 ---
 
@@ -53,10 +53,33 @@ image questions** for the 15 imported states (~120, under `img/states/<code>/`).
 - ~~Catalogue coverage check + all-states import~~ — done 2026-06-23: verified 0 missing vs the
   official 300; fixed 21 ü-mojibake questions; imported all 16 states (470 total) with a
   home state-picker (`tools/import-states.js`).
+- ~~English translations for imported state questions~~ — done 2026-06-23: all 150 non-Berlin
+  state questions now bilingual via `tools/translate-states.js`.
 - ~~Mobile: quiz buttons reflowed wrong~~ — done: deterministic flex order
   (Zurück+Beenden left, Weiter right).
 - ~~Mobile: hero cut off after pull-to-refresh~~ — done: `scrollRestoration='manual'` +
   reset to top after the async home render (instant behavior) + on load/pageshow.
+
+## Session developments (2026-06-20 → 2026-06-23)
+
+Merged to `main` (PR #):
+- **#3** Real image assets (Q21/130/209/226/311/318 → `<img>`; fixed Q55) + externalized
+  `questions.json` + persistent progress with spaced repetition (Smart Review, resume, readiness).
+- **#4** Removed the 8-day study plan.
+- **#5** Practice by topic (added a `category` to every question).
+- **#6** Results history (exam pass-rate trend), audio read-aloud (TTS), bilingual glossary.
+- **#7** SEO/meta + Open Graph/Twitter + JSON-LD + favicon; accessibility (contrast,
+  `:focus-visible`, reduced-motion, `aria-live`); safe performance.
+- **#8 / #14** Documentation (status + TODOs).
+- **#9** Installable PWA with offline support (real `sw.js`, manifest, PNG icons) +
+  rasterized `og-image.png` + topic-category tuning.
+- **#10** Fixed quiz nav buttons reflowing on mobile (deterministic order).
+- **#11–#13** Fixed the homepage hero being cut off after pull-to-refresh (scroll reset after
+  async render; PWA cache bump).
+- **#15** Verified & folded in the 10 former `appExtra` questions (all real official questions).
+- **#16** Diffed against the official BAMF catalogue: 0 missing; fixed 21 `ü`-mojibake questions.
+- **#17** Imported all 16 Bundesländer (470 questions) with a home state picker.
+- **(this change)** English translations for all 150 imported state questions (bilingual).
 
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs

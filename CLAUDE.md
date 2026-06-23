@@ -34,10 +34,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   correct answers — and are now INCLUDED in all pools.
 - All 16 Bundesländer are supported: 310 general + 16×10 state = 470 questions. The user picks
   a state on the home screen (`localStorage` key `eib_state`, default `BE`); the active pool is
-  310 general + the selected state's 10. State questions carry `state` (code) + `stateName`;
-  Berlin (BE) keeps its bilingual data, the other 15 are German-only (official source has no
-  English). `tools/import-states.js` (re)generates the 15 non-BE state sets from
-  `tools/data/official-catalogue-bamf-2026-02.json`.
+  310 general + the selected state's 10. State questions carry `state` (code) + `stateName` and
+  are bilingual (DE/EN). `tools/import-states.js` (re)generates the 15 non-BE state sets from
+  `tools/data/official-catalogue-bamf-2026-02.json`; `tools/translate-states.js` adds the
+  English `en`/`options_en` (the official source is German-only). State questions have no
+  explanations (the official source provides none).
 
 ## Tracked Files
 
@@ -55,6 +56,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see ATTRIBUTIONS.md).
+- `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
+  (dictionary-based: templated stems + translated semantic options, verbatim proper nouns).
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
