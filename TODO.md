@@ -22,8 +22,8 @@ framework. Installable PWA with offline support.
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
-**Quiz pool:** 300 general + 10 Berlin = **310 verified** questions in use.
-The 10 `appExtra` questions (Q301–310) are excluded — see open point #2.
+**Quiz pool:** 310 general + 10 Berlin = **320** questions in use (the former 10 `appExtra`
+questions were verified against the official catalogue on 2026-06-21 and folded in).
 
 ---
 
@@ -38,17 +38,6 @@ Reichstag photo (Q55) are still placeholders; the app shows a "Bild fehlt" fallb
   resume steps are in `ATTRIBUTIONS.md`.
 - Already done locally: 4 Q130 ballots + exact-spec EU flag/distractor.
 
-### 2. Verify & decide on the 10 `appExtra` questions (Q301–310)  — _blocked (egress)_
-They are general/federal civic questions (NOT Berlin) and are currently excluded from all
-pools. Need to confirm they are real official-catalogue questions before folding in.
-- Confidence today: Q301, Q307, Q308, Q309 clearly real; Q303, Q304, Q306 plausible;
-  Q302, Q305, Q310 questionable.
-- **Blocker:** can't fetch an authoritative copy (Wikimedia egress blocked;
-  `api.github.com` / code search rate-limited on the shared IP).
-- **To resume:** allowlist `raw.githubusercontent.com` + `api.github.com` (or drop the
-  official catalogue text into the repo), diff the 10 against the official 310, then fold
-  in only verified ones (remove the `appExtra` flag) and re-run validation.
-
 ### 3. Deferred features (by choice, not blocked)
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
@@ -58,6 +47,8 @@ pools. Need to confirm they are real official-catalogue questions before folding
   HTML/data) + installable manifest; cleans up old May-28 caches on activate.
 - ~~Rasterize the OG image~~ — done: `og-image.png` (1200×630) via resvg-js.
 - ~~Refine topic categories~~ — done: targeted keyword fixes in `tools/categorize.js`.
+- ~~Verify & include the 10 `appExtra` questions~~ — done 2026-06-21: all 10 confirmed real
+  official questions (correct answers match) via public catalogue sites; folded into the pool.
 - ~~Mobile: quiz buttons reflowed wrong~~ — done: deterministic flex order
   (Zurück+Beenden left, Weiter right).
 - ~~Mobile: hero cut off after pull-to-refresh~~ — done: `scrollRestoration='manual'` +
