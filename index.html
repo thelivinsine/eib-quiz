@@ -141,6 +141,7 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: clip;   /* no horizontal scroll/slide on mobile (clip keeps sticky working) */
         }
 
         body {
@@ -2130,7 +2131,7 @@
             font-family: var(--font-head); font-weight: 800; font-size: 1.05rem;
             letter-spacing: -0.02em;
         }
-        .dash-state { display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 180px; justify-content: flex-end; }
+        .dash-state { display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 0; justify-content: flex-end; }
         .dash-state label {
             font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em;
             text-transform: uppercase; color: var(--muted); white-space: nowrap;
@@ -2139,7 +2140,7 @@
             background: var(--surface2); color: var(--text);
             border: 1px solid var(--border-hover); border-radius: var(--radius-sm);
             padding: 8px var(--spacing-md); font-family: var(--font-body); font-size: 0.9rem;
-            cursor: pointer; max-width: 220px;
+            cursor: pointer; min-width: 0; max-width: 220px;
         }
         .dash-state select:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
         .dash-body { display: flex; align-items: center; gap: var(--spacing-lg); }
@@ -2171,10 +2172,16 @@
         .ds-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 3px; display: block; }
         .dash .resume-banner { margin-top: var(--spacing-lg); margin-bottom: 0; }
         .dash .progress-reset { margin: var(--spacing-md) 0 0; }
+        @media (max-width: 560px) {
+            /* Stack the header so the Bundesland picker gets the full width and never
+               overflows the card (a <select> otherwise sizes to its longest option). */
+            .dash-head { flex-direction: column; align-items: stretch; gap: var(--spacing-sm); }
+            .dash-state { width: 100%; justify-content: space-between; }
+            .dash-state select { flex: 1; max-width: none; }
+        }
         @media (max-width: 520px) {
             .dash-body { flex-direction: column; }
             .dash-stats { width: 100%; }
-            .dash-state { justify-content: flex-start; }
         }
 
         /* ---- SVG icons on cards/chips (replace emoji) ---- */
