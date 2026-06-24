@@ -93,6 +93,10 @@ Merged to `main` (PR #):
   results, slim quiz progress bar, per-question entrance transitions, and answered-state
   option feedback (dim non-answers, pop the pick). Logic unchanged.
 
+- **(this change)** Home reimagined as a dashboard: a "Übersicht" card with an animated
+  readiness ring (% mastered), key stats (Gemeistert/Fällig/Trefferquote) and the integrated
+  Bundesland picker, replacing the flat stat-tile stack.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
