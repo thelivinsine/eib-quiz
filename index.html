@@ -78,6 +78,7 @@
 
             --radius:      14px;
             --radius-sm:   8px;
+            --radius-lg:   20px;
             --radius-pill: 9999px;
 
             --spacing-sm: 8px;
@@ -85,6 +86,14 @@
             --spacing-lg: 24px;
             --spacing-xl: 32px;
             --spacing-2xl: 48px;
+
+            /* Elevation & finish (premium UI layer) */
+            --shadow-sm:  0 1px 2px rgba(0,0,0,0.35);
+            --shadow-md:  0 10px 30px -12px rgba(0,0,0,0.55);
+            --shadow-lg:  0 28px 64px -20px rgba(0,0,0,0.70);
+            --glow:       0 14px 50px -16px var(--lime-glow);
+            --card-grad:  linear-gradient(155deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
+            --hairline:   linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
 
             --font-head: 'Plus Jakarta Sans', sans-serif;
             --font-mono: 'Geist Mono', monospace;
@@ -114,6 +123,13 @@
             --text:     #0a0a0a;
             --muted:    rgba(0,0,0,0.62);
             --sub-text: rgba(0,0,0,0.72);
+
+            --shadow-sm:  0 1px 2px rgba(0,0,0,0.08);
+            --shadow-md:  0 10px 30px -14px rgba(0,0,0,0.22);
+            --shadow-lg:  0 28px 64px -22px rgba(0,0,0,0.28);
+            --glow:       0 14px 50px -16px var(--lime-glow);
+            --card-grad:  linear-gradient(155deg, rgba(255,255,255,0.85), rgba(255,255,255,0.5));
+            --hairline:   linear-gradient(90deg, transparent, rgba(0,0,0,0.10), transparent);
         }
 
         /* Reset */
@@ -1814,6 +1830,235 @@
                 transition-duration: 0.001ms !important;
                 scroll-behavior: auto !important;
             }
+        }
+
+        /* ============================================================
+           PREMIUM UI REDESIGN LAYER (2026-06-24)
+           Restyles existing components for a high-end, modern feel.
+           Palette unchanged — only depth, type, spacing & motion.
+           ============================================================ */
+
+        /* ---- Global finish ---- */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            letter-spacing: -0.005em;
+        }
+        ::selection { background: var(--lime); color: #000; }
+        * { scrollbar-width: thin; scrollbar-color: var(--border-hover) transparent; }
+        *::-webkit-scrollbar { width: 10px; height: 10px; }
+        *::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+        *::-webkit-scrollbar-thumb:hover { background: var(--border-hover); background-clip: padding-box; }
+
+        /* Softer, layered ambient — two subtle lime blooms instead of one */
+        body::after {
+            top: -30%; width: 100vw; height: 80vw;
+            background:
+                radial-gradient(40% 50% at 78% 8%, rgba(191,255,0,0.10), transparent 70%),
+                radial-gradient(45% 45% at 12% 18%, rgba(191,255,0,0.07), transparent 70%);
+        }
+        html.light body::after {
+            background:
+                radial-gradient(40% 50% at 78% 8%, rgba(60,130,0,0.07), transparent 70%),
+                radial-gradient(45% 45% at 12% 18%, rgba(60,130,0,0.05), transparent 70%);
+        }
+        body::before { opacity: 0.025; }
+
+        main { padding-top: var(--spacing-2xl); }
+
+        /* ---- Type scale: crisper hierarchy ---- */
+        h1 { letter-spacing: -0.03em; }
+        h2 { font-size: clamp(1.15rem, 2.2vw, 1.45rem); letter-spacing: -0.03em; }
+
+        /* ---- Header: refined sticky bar with hairline ---- */
+        header {
+            border-bottom: none;
+            background: color-mix(in srgb, var(--bg) 72%, transparent);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            position: sticky; top: 0; z-index: 100;
+        }
+        header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--hairline); }
+        .header-text h1 { font-weight: 800; letter-spacing: 0.14em; }
+        .theme-toggle { border-radius: var(--radius-pill); box-shadow: var(--shadow-sm); }
+        .theme-toggle-btn.active { box-shadow: 0 0 0 1px rgba(0,0,0,0.05), 0 2px 10px var(--lime-glow); }
+
+        /* ---- Shared premium card surface ---- */
+        .mode-card, .question-card, .state-picker, .progress-stat, .topic-chip,
+        .hist-exam, .hist-row, .glossary-wrap, .resume-banner, .score-display,
+        .review-item, .stat-card {
+            background: var(--card-grad);
+            backdrop-filter: blur(14px) saturate(1.2);
+            -webkit-backdrop-filter: blur(14px) saturate(1.2);
+            border: 1px solid var(--border);
+        }
+
+        /* ---- Hero ---- */
+        .hero-border-box {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            background: var(--card-grad);
+            position: relative; overflow: hidden;
+        }
+        .hero-border-box::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(70% 120% at 85% -10%, var(--lime-dim), transparent 60%);
+        }
+        .hero-border-box h2 {
+            font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+            line-height: 1.08; background-clip: text; -webkit-background-clip: text;
+        }
+        .hero-sub { letter-spacing: 0.22em; }
+
+        /* ---- Mode cards: depth + lift + accent ---- */
+        .modes-grid { gap: var(--spacing-lg); }
+        .mode-card {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-xl) var(--spacing-lg);
+            transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-spring),
+                        border-color 0.4s var(--ease-spring), background 0.4s var(--ease-spring);
+        }
+        .mode-card::after {
+            content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 2px;
+            background: var(--lime); border-radius: 2px; opacity: 0; transform: scaleX(0.4);
+            transition: opacity 0.4s var(--ease-spring), transform 0.4s var(--ease-spring);
+            box-shadow: 0 0 16px var(--lime-glow);
+        }
+        .mode-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+        .mode-card:hover::after { opacity: 1; transform: scaleX(1); }
+        .mode-icon {
+            font-size: 1.5rem; line-height: 1; letter-spacing: normal;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 54px; height: 54px; margin-bottom: var(--spacing-md);
+            background: var(--lime-dim); border: 1px solid var(--border-hover);
+            border-radius: 16px;
+        }
+        .mode-card h3 { font-size: 1.15rem; letter-spacing: -0.02em; }
+        .mode-pip { transition: background 0.3s var(--ease-spring), box-shadow 0.3s; }
+        .mode-pip.filled { box-shadow: 0 0 8px var(--lime-glow); }
+        .mode-badge { box-shadow: var(--shadow-sm); }
+        .mode-start-btn { font-weight: 700; }
+
+        /* ---- Home panels (picker / progress / history / glossary / resume) ---- */
+        .state-picker, .resume-banner, .hist-exam, .glossary-wrap, .progress-stat, .hist-row {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        .state-picker { box-shadow: var(--shadow-md); }
+        .state-picker select { box-shadow: var(--shadow-sm); transition: border-color 0.2s var(--ease-spring), box-shadow 0.2s; }
+        .progress-panel { gap: var(--spacing-md); }
+        .progress-stat { transition: transform 0.3s var(--ease-spring), border-color 0.3s; }
+        .progress-stat:hover { transform: translateY(-3px); border-color: var(--border-hover); }
+        .progress-stat .ps-num { text-shadow: 0 0 24px var(--lime-glow); font-variant-numeric: tabular-nums; }
+        .resume-banner { box-shadow: var(--shadow-md); }
+
+        .topic-heading, .hist-list + *, .topic-section .topic-heading {
+            font-weight: 700;
+        }
+        .topic-chip {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s var(--ease-spring), border-color 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+        .topic-chip:hover { transform: translateY(-4px); box-shadow: var(--shadow-md), var(--glow); }
+        .topic-chip-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 12px;
+            background: var(--lime-dim); border: 1px solid var(--border);
+        }
+
+        /* ---- Stats bar (in quiz) ---- */
+        .stat-card { border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+        .stat-value { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+        /* ---- Question card ---- */
+        .question-card {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: clamp(var(--spacing-lg), 4vw, var(--spacing-2xl));
+        }
+        .question-num { font-weight: 700; }
+        .question-category {
+            background: var(--lime-dim); color: var(--lime);
+            padding: 3px 10px; border-radius: var(--radius-pill);
+            border: 1px solid var(--border-hover); font-weight: 600;
+        }
+        .question-text { font-size: clamp(1.1rem, 2.4vw, 1.45rem); line-height: 1.45; letter-spacing: -0.02em; }
+        .speak-btn:hover, .bilingual-toggle:hover { transform: translateY(-1px); }
+
+        /* ---- Option buttons: tactile, refined states ---- */
+        .options { gap: 12px; }
+        .option-btn {
+            border-radius: var(--radius);
+            transition: transform 0.18s var(--ease-spring), border-color 0.25s, background 0.25s, box-shadow 0.25s;
+        }
+        .option-btn:not(:disabled):hover {
+            border-color: var(--border-hover);
+            background: var(--lime-dim);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .option-btn:not(:disabled):active { transform: translateY(0) scale(0.99); }
+        .opt-letter {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 30px; height: 30px; border-radius: 9px;
+            background: var(--surface2); border: 1px solid var(--border);
+            font-family: var(--font-mono); font-weight: 600; flex-shrink: 0;
+            transition: background 0.25s, color 0.25s, border-color 0.25s;
+        }
+        .option-btn:not(:disabled):hover .opt-letter { background: var(--lime); color: #000; border-color: var(--lime); }
+        .option-btn.correct { box-shadow: 0 0 0 1px var(--green), var(--shadow-md); }
+        .option-btn.incorrect { box-shadow: 0 0 0 1px var(--red); }
+
+        /* ---- Explanation card ---- */
+        .explanation { border-radius: var(--radius); border-left-width: 4px; box-shadow: var(--shadow-sm); }
+        .explanation-header { font-size: 0.8rem; }
+
+        /* ---- Primary / secondary buttons ---- */
+        .btn-primary, .btn-secondary { border-radius: var(--radius-pill); font-weight: 700; }
+        .btn-primary {
+            background: linear-gradient(180deg, color-mix(in srgb, var(--lime) 92%, #fff), var(--lime));
+            box-shadow: 0 8px 24px -8px var(--lime-glow), inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -8px var(--lime-glow), inset 0 1px 0 rgba(255,255,255,0.4); }
+        .btn-secondary { backdrop-filter: blur(8px); }
+
+        /* ---- Progress bar in sidebar ---- */
+        .progress-fill {
+            background: linear-gradient(90deg, color-mix(in srgb, var(--lime) 70%, #39d98a), var(--lime));
+            box-shadow: 0 0 14px var(--lime-glow);
+        }
+
+        /* ---- Question navigator chips ---- */
+        .q-nav-btn { transition: transform 0.18s var(--ease-spring), background 0.2s, color 0.2s, border-color 0.2s; }
+        .q-nav-btn:hover { transform: translateY(-2px); border-color: var(--border-hover); }
+        .qnav-current { box-shadow: 0 0 0 2px var(--lime), 0 0 14px var(--lime-glow); }
+
+        /* ---- End screen: premium score ---- */
+        .score-display { border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+        .score-number {
+            font-size: clamp(2.6rem, 8vw, 3.6rem);
+            text-shadow: 0 0 50px var(--lime-glow); letter-spacing: -0.05em;
+        }
+        .pass-fail.pass { text-shadow: 0 0 24px rgba(57,217,138,0.4); }
+        .breakdown-number { font-variant-numeric: tabular-nums; }
+
+        /* ---- Entrance motion: stagger home & quiz blocks ---- */
+        @keyframes premIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: no-preference) {
+            #homeScreen.active > * { animation: premIn 0.55s var(--ease-spring) both; }
+            #homeScreen.active > *:nth-child(2) { animation-delay: 0.05s; }
+            #homeScreen.active > *:nth-child(3) { animation-delay: 0.10s; }
+            #homeScreen.active > *:nth-child(4) { animation-delay: 0.15s; }
+            #homeScreen.active > *:nth-child(5) { animation-delay: 0.20s; }
+            #homeScreen.active > *:nth-child(n+6) { animation-delay: 0.24s; }
+            #quizScreen.active .question-card { animation: premIn 0.5s var(--ease-spring) both; }
         }
     </style>
 </head>

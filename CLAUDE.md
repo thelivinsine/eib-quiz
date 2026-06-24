@@ -16,6 +16,10 @@
 Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
+- Visual styling: a "Premium UI redesign layer" at the END of the `<style>` block overrides/
+  refines earlier component rules (depth, type, motion). Keep the lime/dark palette tokens; when
+  restyling, prefer editing that layer. New design tokens: `--shadow-sm/md/lg`, `--glow`,
+  `--card-grad`, `--hairline`, `--radius-lg`.
 - `index.html` loads question data at runtime from `questions.json` via `fetch`
   (so the app must be served over http/https, not opened via `file://`).
 - Google Fonts is the only intended external network dependency.
