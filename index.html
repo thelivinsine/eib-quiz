@@ -1899,16 +1899,14 @@
         .hero-border-box {
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
-            background: var(--card-grad);
-            position: relative; overflow: hidden;
-        }
-        .hero-border-box::before {
-            content: ''; position: absolute; inset: 0; pointer-events: none;
-            background: radial-gradient(70% 120% at 85% -10%, var(--lime-dim), transparent 60%);
+            /* smooth, symmetric fill — soft top glow over a subtle sheen (no seam) */
+            background:
+                radial-gradient(120% 150% at 50% -45%, var(--lime-dim), transparent 55%),
+                var(--card-grad);
         }
         .hero-border-box h2 {
             font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-            line-height: 1.08; background-clip: text; -webkit-background-clip: text;
+            line-height: 1.08;
         }
         .hero-sub { letter-spacing: 0.22em; }
 
