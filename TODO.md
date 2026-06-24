@@ -97,6 +97,11 @@ Merged to `main` (PR #):
   readiness ring (% mastered), key stats (Gemeistert/Fällig/Trefferquote) and the integrated
   Bundesland picker, replacing the flat stat-tile stack.
 
+- **(this change)** Fixed the dashboard readiness ring reading 0% for active users
+  (now = % of the active pool currently answered correctly, not strict Leitner-mastered) and
+  the stray round-cap dot at 0%. Removed the mode-card difficulty pips; replaced all card/chip
+  emoji with inline SVG line-icons; harmonized count badges (outlined) + meta row + buttons.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
