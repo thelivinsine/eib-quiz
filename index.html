@@ -2176,6 +2176,32 @@
             .dash-stats { width: 100%; }
             .dash-state { justify-content: flex-start; }
         }
+
+        /* ---- SVG icons on cards/chips (replace emoji) ---- */
+        .mode-icon { color: var(--lime); }
+        .mode-icon svg { width: 26px; height: 26px; }
+        .topic-chip-icon { color: var(--lime); font-size: 0; }
+        .topic-chip-icon svg { width: 20px; height: 20px; }
+        .mode-card:hover .mode-icon { background: var(--lime); border-color: var(--lime); color: #001a00; }
+        .mode-card .mode-icon { transition: background 0.4s var(--ease-spring), color 0.4s var(--ease-spring), border-color 0.4s var(--ease-spring); }
+
+        /* ---- Mode-card meta row (badge + time), pips removed ---- */
+        .mode-meta {
+            display: flex; align-items: center; justify-content: center;
+            gap: var(--spacing-sm); flex-wrap: wrap; margin: var(--spacing-md) 0 var(--spacing-lg);
+        }
+        .mode-meta .mode-time-est { margin: 0; text-transform: none; letter-spacing: 0.02em; font-size: 0.74rem; opacity: 0.85; }
+        .mode-badge { padding: 5px 12px; letter-spacing: 0.06em; }
+        /* subtler, outlined count badges for harmony with the lime icon chip */
+        .badge-gold  { background: var(--lime-dim); color: var(--lime); border: 1px solid var(--border-hover); box-shadow: none; }
+        html.light .badge-gold { color: var(--lime); }
+        .badge-green { background: rgba(57,217,138,0.12); color: var(--green); border: 1px solid rgba(57,217,138,0.4); }
+        .badge-red   { background: rgba(255,77,77,0.12); color: var(--red); border: 1px solid rgba(255,77,77,0.4); }
+
+        /* ---- Mode start button: clearer, with arrow nudge ---- */
+        .mode-start-btn { margin-top: 0; }
+        .msb-arrow { display: inline-block; transition: transform 0.3s var(--ease-spring); }
+        .mode-card:hover .msb-arrow { transform: translateX(4px); }
     </style>
 </head>
 <body>
@@ -2375,6 +2401,20 @@
         };
         // Topic chips cover the general themes only (state questions live under Bundesland mode).
         const TOPIC_KEYS = ['rights', 'politics', 'history', 'society', 'symbols'];
+
+        // Inline line-icons (24x24, currentColor) — replace emoji on cards/chips.
+        const _svg = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+        const ICONS = {
+            allQuestions: _svg('<circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/>'),
+            bundesland: _svg('<path d="M12 21s-6-5.4-6-10a6 6 0 1 1 12 0c0 4.6-6 10-6 10Z"/><circle cx="12" cy="11" r="2.2"/>'),
+            exam: _svg('<circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3.6"/><circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none"/>'),
+            review: _svg('<polyline points="17 2 21 6 17 10"/><path d="M3 12V10a4 4 0 0 1 4-4h14"/><polyline points="7 22 3 18 7 14"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/>'),
+            rights: _svg('<path d="M12 3v18"/><path d="M8 21h8"/><path d="M5 7h14"/><path d="M7 7l-3 6a3 3 0 0 0 6 0Z"/><path d="M17 7l-3 6a3 3 0 0 0 6 0Z"/>'),
+            politics: _svg('<polygon points="12 3 21 8 3 8 12 3"/><line x1="3" y1="21" x2="21" y2="21"/><line x1="5" y1="11" x2="5" y2="18"/><line x1="10" y1="11" x2="10" y2="18"/><line x1="14" y1="11" x2="14" y2="18"/><line x1="19" y1="11" x2="19" y2="18"/>'),
+            history: _svg('<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/>'),
+            society: _svg('<circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.4a3 3 0 0 1 0 5.2"/><path d="M17.5 14a6 6 0 0 1 3.5 6"/>'),
+            symbols: _svg('<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/>'),
+        };
 
         // German federal states (code -> name), display order. Each has 10 state-specific questions.
         const STATES = {
@@ -2598,7 +2638,7 @@
                 const mastered = qs.filter(q => progress[q.id] && (progress[q.id].box || 1) >= 4).length;
                 return `
                     <button class="topic-chip" onclick="startTopic('${key}')">
-                        <span class="topic-chip-icon">${meta.icon}</span>
+                        <span class="topic-chip-icon">${ICONS[key] || meta.icon}</span>
                         <span class="topic-chip-body">
                             <span class="topic-chip-name">${meta.de}</span>
                             <span class="topic-chip-meta">${qs.length} Fragen · ${mastered} gemeistert</span>
@@ -2733,12 +2773,16 @@
         function renderHomeStatus() {
             const el = document.getElementById('homeStatus');
             if (!el) return;
-            const totalPool = activePool().length;
+            const pool = activePool();
+            const totalPool = pool.length;
             const seen = Object.keys(progress).length;
             const mastered = masteredCount();
             const due = reviewDueCount();
             const acc = overallAccuracy();
-            const ready = totalPool ? Math.round(mastered / totalPool * 100) : 0;
+            // Readiness = share of the active pool you currently get right (last answer correct).
+            // Grows as soon as you practice — unlike "mastered" (Leitner box >= 4).
+            const known = pool.filter(q => { const r = progress[q.id]; return r && (r.streak || 0) > 0; }).length;
+            const ready = totalPool ? Math.round(known / totalPool * 100) : 0;
 
             const stateOpts = Object.entries(STATES)
                 .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`).join('');
@@ -2805,6 +2849,7 @@
             const lbl = document.getElementById('readyRingPct');
             if (!bar || !lbl) return;
             const C = 314; // 2*PI*r(50)
+            bar.style.opacity = pct > 0 ? '1' : '0'; // avoid the stray round-cap dot at 0%
             bar.style.strokeDashoffset = C;
             lbl.textContent = '0%';
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2848,46 +2893,28 @@
 
         function renderModes() {
             const grid = document.getElementById('modesGrid');
-            const pips = (filled, total) => Array.from({length: total}, (_, i) =>
-                `<span class="mode-pip${i < filled ? ' filled' : ''}"></span>`).join('');
-            grid.innerHTML = `
-                <div class="mode-card" onclick="startMode('allQuestions')">
-                    <div class="mode-icon">📋</div>
-                    <h3>Alle Fragen</h3>
-                    <div class="mode-description">Alle 310 allgemeinen Fragen der Reihe nach</div>
-                    <div class="mode-time-est">⏱ ca. 60–90 Min</div>
-                    <div class="mode-pips">${pips(2, 3)}</div>
-                    <div class="mode-badge badge-gold">310 Fragen</div>
-                    <div><span class="mode-start-btn">Starten →</span></div>
-                </div>
-                <div class="mode-card" onclick="startMode('bundesland')">
-                    <div class="mode-icon">🏙️</div>
-                    <h3>Bundesland</h3>
-                    <div class="mode-description">Die 10 Fragen für ${STATES[selectedState]}</div>
-                    <div class="mode-time-est">⏱ ca. 5 Min</div>
-                    <div class="mode-pips">${pips(1, 3)}</div>
-                    <div class="mode-badge badge-green">10 Fragen</div>
-                    <div><span class="mode-start-btn">Starten →</span></div>
-                </div>
-                <div class="mode-card" onclick="startMode('exam')">
-                    <div class="mode-icon">🎯</div>
-                    <h3>Prüfungssimulation</h3>
-                    <div class="mode-description">30 allgemeine + 3 Bundesland-Fragen (${STATES[selectedState]}), zufällig — 60 Min Zeitlimit</div>
-                    <div class="mode-time-est">⏱ ca. 45 Min + Timer</div>
-                    <div class="mode-pips">${pips(3, 3)}</div>
-                    <div class="mode-badge badge-red">33 Fragen</div>
-                    <div><span class="mode-start-btn">Starten →</span></div>
-                </div>
-                <div class="mode-card" onclick="startMode('review')">
-                    <div class="mode-icon">🔁</div>
-                    <h3>Smart Review</h3>
-                    <div class="mode-description">Fällige und schwache Fragen, automatisch ausgewählt (Spaced Repetition)</div>
-                    <div class="mode-time-est">⏱ ca. 10–15 Min</div>
-                    <div class="mode-pips">${pips(2, 3)}</div>
-                    <div class="mode-badge badge-gold">${reviewDueCount() || 'bis zu 25'} ${reviewDueCount() ? 'fällig' : 'Fragen'}</div>
-                    <div><span class="mode-start-btn">Starten →</span></div>
-                </div>
-            `;
+            const due = reviewDueCount();
+            const card = (mode, icon, title, desc, badge, badgeClass, time) => `
+                <div class="mode-card" onclick="startMode('${mode}')">
+                    <div class="mode-icon">${icon}</div>
+                    <h3>${title}</h3>
+                    <div class="mode-description">${desc}</div>
+                    <div class="mode-meta">
+                        <span class="mode-badge ${badgeClass}">${badge}</span>
+                        <span class="mode-time-est">${time}</span>
+                    </div>
+                    <span class="mode-start-btn">Starten <span class="msb-arrow">→</span></span>
+                </div>`;
+            grid.innerHTML =
+                card('allQuestions', ICONS.allQuestions, 'Alle Fragen',
+                     'Alle 310 allgemeinen Fragen der Reihe nach', '310 Fragen', 'badge-gold', 'ca. 60–90 Min') +
+                card('bundesland', ICONS.bundesland, 'Bundesland',
+                     `Die 10 Fragen für ${STATES[selectedState]}`, '10 Fragen', 'badge-green', 'ca. 5 Min') +
+                card('exam', ICONS.exam, 'Prüfungssimulation',
+                     `30 allgemeine + 3 Bundesland-Fragen (${STATES[selectedState]}), zufällig — 60 Min Zeitlimit`, '33 Fragen', 'badge-red', 'ca. 45 Min + Timer') +
+                card('review', ICONS.review, 'Smart Review',
+                     'Fällige und schwache Fragen, automatisch ausgewählt (Spaced Repetition)',
+                     due ? `${due} fällig` : 'bis zu 25', 'badge-gold', 'ca. 10–15 Min');
         }
 
         // ============================================================
@@ -3260,6 +3287,7 @@
             const color = passed === true ? 'var(--green)' : passed === false ? 'var(--red)' : 'var(--lime)';
             bar.style.stroke = color;
             pctEl.style.color = passed === false ? 'var(--red)' : (passed === true ? 'var(--green)' : 'var(--lime)');
+            bar.style.opacity = percent > 0 ? '1' : '0'; // avoid stray round-cap dot at 0%
             bar.style.strokeDashoffset = C;            // reset
             pctEl.textContent = '0%';
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
