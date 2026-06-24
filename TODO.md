@@ -84,10 +84,14 @@ Merged to `main` (PR #):
 - **#17** Imported all 16 Bundesländer (470 questions) with a home state picker.
 - **#18** English translations for all 150 imported state questions (bilingual).
 - **#19** Bilingual explanations for all state questions (every question now has DE+EN).
-- **(this change)** Premium UI redesign: appended a "Premium UI redesign layer" at the end of
+- **#20** Premium UI redesign: appended a "Premium UI redesign layer" at the end of
   `<style>` (palette unchanged) — depth/shadows, refined type scale, elevated cards & mode
   tiles, tactile option buttons, refined header/hero/buttons/score, entrance motion. Pure
   CSS (no markup/JS changes); verified via Puppeteer screenshots (home dark+light, quiz, end).
+
+- **(this change)** Reimagined core-loop UX: animated score ring + percentage count-up on
+  results, slim quiz progress bar, per-question entrance transitions, and answered-state
+  option feedback (dim non-answers, pop the pick). Logic unchanged.
 
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
