@@ -141,6 +141,7 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: clip;   /* no horizontal scroll/slide on mobile (clip keeps sticky working) */
         }
 
         body {
@@ -2130,7 +2131,7 @@
             font-family: var(--font-head); font-weight: 800; font-size: 1.05rem;
             letter-spacing: -0.02em;
         }
-        .dash-state { display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 180px; justify-content: flex-end; }
+        .dash-state { display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; min-width: 0; justify-content: flex-end; }
         .dash-state label {
             font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em;
             text-transform: uppercase; color: var(--muted); white-space: nowrap;
@@ -2139,7 +2140,7 @@
             background: var(--surface2); color: var(--text);
             border: 1px solid var(--border-hover); border-radius: var(--radius-sm);
             padding: 8px var(--spacing-md); font-family: var(--font-body); font-size: 0.9rem;
-            cursor: pointer; max-width: 220px;
+            cursor: pointer; min-width: 0; max-width: 220px;
         }
         .dash-state select:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
         .dash-body { display: flex; align-items: center; gap: var(--spacing-lg); }
@@ -2158,7 +2159,7 @@
             color: var(--lime); letter-spacing: -0.03em; text-shadow: 0 0 24px var(--lime-glow);
             font-variant-numeric: tabular-nums;
         }
-        .ready-ring-sub { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+        .ready-ring-sub { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
         .dash-stats { display: flex; gap: var(--spacing-sm); flex: 1; }
         .dash-stat {
             flex: 1; text-align: center; background: var(--surface);
@@ -2171,10 +2172,16 @@
         .ds-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 3px; display: block; }
         .dash .resume-banner { margin-top: var(--spacing-lg); margin-bottom: 0; }
         .dash .progress-reset { margin: var(--spacing-md) 0 0; }
+        @media (max-width: 560px) {
+            /* Stack the header so the Bundesland picker gets the full width and never
+               overflows the card (a <select> otherwise sizes to its longest option). */
+            .dash-head { flex-direction: column; align-items: stretch; gap: var(--spacing-sm); }
+            .dash-state { width: 100%; justify-content: space-between; }
+            .dash-state select { flex: 1; max-width: none; }
+        }
         @media (max-width: 520px) {
             .dash-body { flex-direction: column; }
             .dash-stats { width: 100%; }
-            .dash-state { justify-content: flex-start; }
         }
 
         /* ---- SVG icons on cards/chips (replace emoji) ---- */
@@ -2775,14 +2782,13 @@
             if (!el) return;
             const pool = activePool();
             const totalPool = pool.length;
-            const seen = Object.keys(progress).length;
             const mastered = masteredCount();
             const due = reviewDueCount();
             const acc = overallAccuracy();
-            // Readiness = share of the active pool you currently get right (last answer correct).
-            // Grows as soon as you practice — unlike "mastered" (Leitner box >= 4).
-            const known = pool.filter(q => { const r = progress[q.id]; return r && (r.streak || 0) > 0; }).length;
-            const ready = totalPool ? Math.round(known / totalPool * 100) : 0;
+            const answeredInPool = pool.filter(q => progress[q.id]).length;
+            // Headline ring = accuracy (Trefferquote): a meaningful number from the first
+            // answer that renders as a real arc, not a tiny broken-looking sliver.
+            const ring = acc;
 
             const stateOpts = Object.entries(STATES)
                 .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`).join('');
@@ -2821,27 +2827,27 @@
                         </div>
                     </div>
                     <div class="dash-body">
-                        <div class="ready-ring-wrap" title="${ready}% gemeistert">
+                        <div class="ready-ring-wrap" title="${ring}% Trefferquote">
                             <svg class="ready-ring" viewBox="0 0 120 120" aria-hidden="true">
                                 <circle class="ready-ring-track" cx="60" cy="60" r="50"></circle>
                                 <circle class="ready-ring-bar" id="readyRingBar" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle>
                             </svg>
                             <div class="ready-ring-center">
                                 <span class="ready-ring-pct" id="readyRingPct">0%</span>
-                                <span class="ready-ring-sub">bereit</span>
+                                <span class="ready-ring-sub">Trefferquote</span>
                             </div>
                         </div>
                         <div class="dash-stats">
-                            <div class="dash-stat"><span class="ds-num">${mastered}<span class="ds-of">/${totalPool}</span></span><span class="ds-label">Gemeistert</span></div>
+                            <div class="dash-stat"><span class="ds-num">${answeredInPool}<span class="ds-of">/${totalPool}</span></span><span class="ds-label">Beantwortet</span></div>
+                            <div class="dash-stat"><span class="ds-num">${mastered}</span><span class="ds-label">Gemeistert</span></div>
                             <div class="dash-stat"><span class="ds-num">${due}</span><span class="ds-label">Fällig</span></div>
-                            <div class="dash-stat"><span class="ds-num">${acc}<span class="ds-of">%</span></span><span class="ds-label">Trefferquote</span></div>
                         </div>
                     </div>
                     ${resumeHtml}
-                    ${seen > 0 ? `<button class="progress-reset" onclick="if(confirm('Gesamten Lernfortschritt zurücksetzen?')){clearProgress();renderHomeStatus();renderModes();renderTopics();renderHistory();}">Fortschritt zurücksetzen</button>` : ''}
+                    ${answeredInPool > 0 ? `<button class="progress-reset" onclick="if(confirm('Gesamten Lernfortschritt zurücksetzen?')){clearProgress();renderHomeStatus();renderModes();renderTopics();renderHistory();}">Fortschritt zurücksetzen</button>` : ''}
                 </div>`;
 
-            animateReadyRing(ready);
+            animateReadyRing(ring);
         }
 
         function animateReadyRing(pct) {
@@ -2849,7 +2855,7 @@
             const lbl = document.getElementById('readyRingPct');
             if (!bar || !lbl) return;
             const C = 314; // 2*PI*r(50)
-            bar.style.opacity = pct > 0 ? '1' : '0'; // avoid the stray round-cap dot at 0%
+            bar.style.opacity = pct >= 2 ? '1' : '0'; // hide tiny arcs (round cap would show a stray dot)
             bar.style.strokeDashoffset = C;
             lbl.textContent = '0%';
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

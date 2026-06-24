@@ -102,6 +102,16 @@ Merged to `main` (PR #):
   the stray round-cap dot at 0%. Removed the mode-card difficulty pips; replaced all card/chip
   emoji with inline SVG line-icons; harmonized count badges (outlined) + meta row + buttons.
 
+- **(this change)** Dashboard ring now shows **Trefferquote (accuracy)** — a real, meaningful
+  arc from the first answer — instead of a near-zero "% of 320 mastered/known" that looked
+  broken; stats are now Beantwortet / Gemeistert / Fällig. Tiny arcs (<2%) hide the bar so the
+  round cap never shows a stray dot.
+
+- **#24** Fixed the Bundesland select overflowing the dashboard card and the resulting
+  horizontal slide on mobile: the picker stacks full-width (min-width:0 so the select can
+  shrink below its longest option), plus `html { overflow-x: clip }` as a guard. Measured
+  scrollWidth == innerWidth at 360/390/414px. Also: dashboard ring now shows Trefferquote.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
