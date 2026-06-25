@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-06-23_
+_Last updated: 2026-06-25_
 
 ## Project status
 
@@ -89,28 +89,22 @@ Merged to `main` (PR #):
   tiles, tactile option buttons, refined header/hero/buttons/score, entrance motion. Pure
   CSS (no markup/JS changes); verified via Puppeteer screenshots (home dark+light, quiz, end).
 
-- **(this change)** Reimagined core-loop UX: animated score ring + percentage count-up on
-  results, slim quiz progress bar, per-question entrance transitions, and answered-state
-  option feedback (dim non-answers, pop the pick). Logic unchanged.
-
-- **(this change)** Home reimagined as a dashboard: a "Übersicht" card with an animated
-  readiness ring (% mastered), key stats (Gemeistert/Fällig/Trefferquote) and the integrated
-  Bundesland picker, replacing the flat stat-tile stack.
-
-- **(this change)** Fixed the dashboard readiness ring reading 0% for active users
-  (now = % of the active pool currently answered correctly, not strict Leitner-mastered) and
-  the stray round-cap dot at 0%. Removed the mode-card difficulty pips; replaced all card/chip
-  emoji with inline SVG line-icons; harmonized count badges (outlined) + meta row + buttons.
-
-- **(this change)** Dashboard ring now shows **Trefferquote (accuracy)** — a real, meaningful
-  arc from the first answer — instead of a near-zero "% of 320 mastered/known" that looked
-  broken; stats are now Beantwortet / Gemeistert / Fällig. Tiny arcs (<2%) hide the bar so the
-  round cap never shows a stray dot.
-
-- **#24** Fixed the Bundesland select overflowing the dashboard card and the resulting
-  horizontal slide on mobile: the picker stacks full-width (min-width:0 so the select can
-  shrink below its longest option), plus `html { overflow-x: clip }` as a guard. Measured
-  scrollWidth == innerWidth at 360/390/414px. Also: dashboard ring now shows Trefferquote.
+- **#21** Reimagined core-loop UX: animated score ring + percentage count-up on results,
+  slim quiz progress bar, per-question entrance transitions, and answered-state option
+  feedback (dim non-answers, pop the pick). Logic unchanged.
+- **#22** Home reimagined as a dashboard: a "Übersicht" card with an animated readiness ring,
+  key stats (Gemeistert/Fällig/Trefferquote) and the integrated Bundesland picker, replacing
+  the flat stat-tile stack.
+- **#23** Fixed the dashboard readiness ring reading 0% for active users; removed the
+  mode-card difficulty pips; replaced all card/chip emoji with inline SVG line-icons;
+  harmonized count badges (outlined) + meta row + buttons.
+- **#24** Dashboard ring now shows **Trefferquote (accuracy)** — a meaningful arc from the
+  first answer. Fixed the Bundesland select overflowing the dashboard card and the resulting
+  horizontal slide on mobile: picker stacks full-width (`min-width:0`), plus
+  `html { overflow-x: clip }` as a guard. Tiny arcs (<2%) hide the bar so the round cap
+  never shows a stray dot.
+- **#25** Fixed the hero background fill (diagonal seam from bad `::before` override in
+  premium layer); restored the label chip; smooth symmetric gradient in both themes.
 
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
