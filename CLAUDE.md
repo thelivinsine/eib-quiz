@@ -20,6 +20,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   refines earlier component rules (depth, type, motion). Keep the lime/dark palette tokens; when
   restyling, prefer editing that layer. New design tokens: `--shadow-sm/md/lg`, `--glow`,
   `--card-grad`, `--hairline`, `--radius-lg`.
+- **Dashboard home:** the home screen is a dashboard with an animated SVG readiness ring
+  showing **Trefferquote (accuracy)**, key stats (Beantwortet/Gemeistert/Fällig), and the
+  integrated Bundesland picker — all inside a single "Übersicht" card. The ring uses
+  `stroke-dasharray`/`dashoffset` with a spring-ease animation; arcs <2% hide the bar to
+  avoid a stray round-cap dot.
+- **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
+  inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
+  When adding new icons, add them there (not as emoji or external SVGs).
+- **Animated results:** the results screen shows an SVG score ring with a percentage count-up
+  animation (green=pass, red=fail). The quiz has a slim animated progress bar and per-question
+  entrance transitions. All motion respects `prefers-reduced-motion`.
+- `html { overflow-x: clip }` prevents horizontal scroll on mobile (guard against overflows).
 - `index.html` loads question data at runtime from `questions.json` via `fetch`
   (so the app must be served over http/https, not opened via `file://`).
 - Google Fonts is the only intended external network dependency.
@@ -63,6 +75,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
   (dictionary-based: templated stems + translated semantic options, verbatim proper nouns).
+- `tools/explain-states.js` - adds bilingual `explanation_de`/`explanation_en` to the 150
+  non-Berlin state questions (template-based from question stem + correct answer).
+- `tools/categorize.js` - assigns a `category` to every question (rights/politics/history/
+  society/symbols) using question text + correct answer keyword matching.
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
