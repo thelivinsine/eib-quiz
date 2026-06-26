@@ -39,10 +39,14 @@ image questions** for the 15 imported states (~120, under `img/states/<code>/`).
   until the warning count is 0. See `ATTRIBUTIONS.md`.
 - Already done locally: 4 Q130 ballots + exact-spec EU flag/distractor.
 
-### 2. Redesign: Bold Retro-Modernist editorial system — _planned (do with Opus)_
-Reimagine the front end with the design brief below. This **replaces the current lime/dark
-"Neon Velocity" premium layer**; keep all functionality (pools, spaced repetition, sessions,
-history, TTS, glossary, state picker, PWA). To be implemented with Opus.
+### 2. Redesign: Bold Retro-Modernist editorial system — _✅ DONE (2026-06-26)_
+Implemented. Replaced the lime/dark "Neon Velocity"/"Premium UI" layer with a
+**"Bold Retro-Modernist editorial layer"** (end of `<style>`) + rewritten `:root`/`html.light`
+tokens. All functionality preserved (pools, spaced repetition, sessions, history, TTS, glossary,
+state picker, PWA). Two themes (Charcoal default / Beige `.light`) on the brief's palette;
+Montserrat + Open Sans; solid offset shadows; hard 90° edges; grayscale→color images; infinite
+marquee ticker; hero watermark. Verified via Chromium screenshots (home dark+light, quiz,
+answered, end). The original design brief is preserved below for reference.
 
 > # Summary
 >
