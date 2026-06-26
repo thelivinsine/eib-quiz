@@ -1,5 +1,12 @@
 # EIB Quiz Project Memory
 
+## Workflow Preference
+
+- **Ship via PR + merge.** When changes are ready, open a pull request into `main`
+  and merge it (squash) — don't leave finished work sitting on a feature branch.
+  Merging `main` publishes to production (GitHub Pages), so only merge work that's
+  been validated.
+
 ## Current Production
 
 - Live site is GitHub Pages from the `main` branch root.
