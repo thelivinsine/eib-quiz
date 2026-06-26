@@ -79,6 +79,9 @@
 
             --red:   #BC2C2C;
             --green: #2E7D46;
+            /* Brand red is too dark to read AS TEXT on the charcoal bg (~2:1);
+               this brightened coral-red is used for red text/icons on dark. */
+            --red-text: #F2705C;
 
             --text:     #F5F1E3;
             --muted:    rgba(245,241,227,0.60);
@@ -130,6 +133,8 @@
 
             --red:   #BC2C2C;
             --green: #2E7D46;
+            /* On beige the brand red reads fine as text, so keep it. */
+            --red-text: #BC2C2C;
 
             --text:     #2C2C2C;
             --muted:    rgba(44,44,44,0.62);
@@ -354,7 +359,7 @@
             font-weight: 600;
             letter-spacing: 0.35em;
             text-transform: uppercase;
-            color: var(--lime);
+            color: var(--red-text);
             margin-bottom: var(--spacing-lg);
             display: block;
         }
@@ -426,7 +431,7 @@
             font-family: var(--font-mono);
             font-size: 1rem;
             font-weight: 600;
-            color: var(--lime);
+            color: var(--red-text);
             font-variant-numeric: tabular-nums;
         }
 
@@ -506,7 +511,7 @@
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--lime);
+            color: var(--red-text);
             margin-bottom: 4px;
         }
 
@@ -621,7 +626,7 @@
         .bilingual-toggle {
             background: transparent;
             border: 1px solid var(--border-hover);
-            color: var(--lime);
+            color: var(--red-text);
             padding: 5px var(--spacing-md);
             border-radius: var(--radius-pill);
             cursor: pointer;
@@ -740,7 +745,7 @@
 
         .option-btn:not(.option-btn--image).incorrect::before {
             content: '✗';
-            color: var(--red);
+            color: var(--red-text);
             font-weight: 700;
             font-size: 1rem;
             margin-right: 10px;
@@ -752,14 +757,14 @@
             font-family: var(--font-mono);
             font-size: 0.72rem;
             font-weight: 600;
-            color: var(--lime);
+            color: var(--red-text);
             margin-right: 10px;
             flex-shrink: 0;
             opacity: 0.85;
             letter-spacing: 0.05em;
         }
         .option-btn.correct .opt-letter { color: var(--green); opacity: 1; }
-        .option-btn.incorrect .opt-letter { color: var(--red); opacity: 1; }
+        .option-btn.incorrect .opt-letter { color: var(--red-text); opacity: 1; }
 
         /* Wrapper that stacks German text + English sub-text vertically */
         .opt-text-wrap {
@@ -949,7 +954,7 @@
         /* Ghost Button */
         .btn-secondary {
             background: transparent;
-            color: var(--lime);
+            color: var(--red-text);
             border: 1px solid var(--border-hover);
             transition: background 0.25s var(--ease-spring),
                         box-shadow 0.25s var(--ease-spring);
@@ -979,7 +984,7 @@
             font-family: var(--font-head);
             font-size: clamp(2rem, 5vw, 2.8rem);
             font-weight: 800;
-            color: var(--lime);
+            color: var(--red-text);
             margin-bottom: var(--spacing-md);
             letter-spacing: -0.04em;
             text-shadow: 0 0 40px var(--lime-glow);
@@ -1011,7 +1016,7 @@
         }
 
         .pass-fail.fail {
-            color: var(--red);
+            color: var(--red-text);
             border: 1px solid var(--red);
             background: rgba(255,77,77,0.08);
         }
@@ -1081,13 +1086,13 @@
             font-variant-numeric: tabular-nums;
             font-size: clamp(1.4rem, 4vw, 1.9rem);
             font-weight: 600;
-            color: var(--lime);
+            color: var(--red-text);
             margin-top: 4px;
             letter-spacing: 0.04em;
         }
 
         .timer.danger .timer-display {
-            color: var(--red);
+            color: var(--red-text);
         }
 
         /* Responsive */
@@ -1218,7 +1223,7 @@
             padding: 1px 6px;
             font-size: 0.82em;
             font-family: var(--font-mono);
-            color: var(--lime);
+            color: var(--red-text);
         }
 
         /* ---- Pacing indicator ---- */
@@ -1251,7 +1256,7 @@
         }
         .mode-card:hover .mode-start-btn {
             border-color: var(--lime);
-            color: var(--lime);
+            color: var(--red-text);
             background: var(--lime-dim);
         }
 
@@ -1300,7 +1305,7 @@
         }
 
         .review-section-header h2 {
-            color: var(--red);
+            color: var(--red-text);
             margin-bottom: 0;
         }
 
@@ -1350,7 +1355,7 @@
         .review-answer.user-wrong {
             background: rgba(255,77,77,0.08);
             border: 1px solid rgba(255,77,77,0.3);
-            color: var(--red);
+            color: var(--red-text);
         }
 
         .review-answer.correct-ans {
@@ -1517,7 +1522,7 @@
         .q-nav-btn.qnav-current {
             border-color: var(--lime);
             background: var(--lime-dim);
-            color: var(--lime);
+            color: var(--red-text);
             font-weight: 700;
             box-shadow: 0 0 8px var(--lime-glow);
         }
@@ -1531,7 +1536,7 @@
         .q-nav-btn.qnav-incorrect {
             border-color: var(--red);
             background: rgba(255,77,77,0.1);
-            color: var(--red);
+            color: var(--red-text);
         }
 
         @media (max-width: 500px) {
@@ -1582,7 +1587,7 @@
             font-size: 0.62rem;
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: var(--lime);
+            color: var(--red-text);
             white-space: nowrap;
         }
 
@@ -1715,7 +1720,7 @@
         .hist-score { margin-left: auto; font-family: var(--font-mono); }
         .hist-badge { font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: var(--radius-pill); }
         .hist-badge.pass { background: rgba(57,217,138,0.15); color: var(--green); }
-        .hist-badge.fail { background: rgba(255,77,77,0.15); color: var(--red); }
+        .hist-badge.fail { background: rgba(255,77,77,0.15); color: var(--red-text); }
 
         /* ---- Home: glossary ---- */
         .glossary-section { margin-top: var(--spacing-2xl); }
@@ -1729,7 +1734,7 @@
         .glossary-summary::-webkit-details-marker { display: none; }
         .gloss-list { margin-top: var(--spacing-md); display: flex; flex-direction: column; gap: 6px; }
         .gloss-item { border-top: 1px solid var(--border); padding-top: 8px; }
-        .gloss-item summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; color: var(--lime); list-style: none; }
+        .gloss-item summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; color: var(--red-text); list-style: none; }
         .gloss-item summary::-webkit-details-marker { display: none; }
         .gloss-def { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; font-size: 0.85rem; color: var(--sub-text); }
         .gloss-en { font-style: italic; color: var(--muted); }
@@ -1801,7 +1806,7 @@
             font-family: var(--font-mono);
             font-size: 1.4rem;
             font-weight: 600;
-            color: var(--lime);
+            color: var(--red-text);
         }
         .progress-stat .ps-label {
             font-size: 0.7rem;
@@ -1823,7 +1828,7 @@
             cursor: pointer;
             text-decoration: underline;
         }
-        .progress-reset:hover { color: var(--red); }
+        .progress-reset:hover { color: var(--red-text); }
         @media (max-width: 520px) {
             .progress-panel { grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); }
             .progress-stat { padding: var(--spacing-sm); }
@@ -1973,7 +1978,7 @@
             font-size: 1rem; letter-spacing: 0.2em; color: #2C2C2C;
             padding: 0 1.4rem;
         }
-        .ticker-track span::after { content: '✦'; padding-left: 1.4rem; color: var(--lime); }
+        .ticker-track span::after { content: '✦'; padding-left: 1.4rem; color: var(--red-text); }
         @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
 
@@ -3124,7 +3129,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Falsch</div>
-                    <div class="stat-value" style="color: var(--red)">${state.incorrect}</div>
+                    <div class="stat-value" style="color: var(--red-text)">${state.incorrect}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Score</div>
@@ -3561,7 +3566,7 @@
                 console.error('Failed to load questions.json', e);
                 const grid = document.getElementById('modesGrid');
                 if (grid) grid.innerHTML =
-                    '<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--red);">' +
+                    '<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--red-text);">' +
                     'Fragen konnten nicht geladen werden. Bitte die Seite über einen Webserver öffnen (nicht per file://) und neu laden.</div>';
                 return;
             }

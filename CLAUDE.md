@@ -28,7 +28,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   **Charcoal** (deep charcoal bg, beige text), `.light` = **Beige signature** (warm beige bg,
   charcoal text). Palette: Retro Red `#BC2C2C` (primary, mapped to `--lime`), Vintage Blue
   `#5DA4C9` (`--blue`), Sunny Yellow `#FCD758` (`--gold`), Warm Beige `#F5F1E3`, Charcoal
-  `#2C2C2C`. The `--ink` token (= `--border`) is the heavy border/offset-shadow color — a
+  `#2C2C2C`. Brand red `#BC2C2C` is used for **fills** (header bar, badges, buttons — white text
+  on top), but it's too dark to read AS TEXT on the charcoal bg (~2:1), so red text/icons use the
+  `--red-text` token instead: a brightened coral-red `#F2705C` on dark, the brand `#BC2C2C` on
+  light (where it reads fine). Use `--red-text` for any red text/icon; keep `--lime`/`--red` for
+  fills and borders. The `--ink` token (= `--border`) is the heavy border/offset-shadow color — a
   **muted warm taupe** (`#8E887A` on dark, `#5A5246` on light), deliberately lower-contrast than
   the body text so borders don't read as stark white/black; `--text` stays full beige/charcoal
   for legibility. Hard 90° edges everywhere (`--radius*: 0`, plus a global `border-radius:0`); solid
