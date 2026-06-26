@@ -45,12 +45,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - SEO/meta, Open Graph/Twitter cards (`og-image.png`), `favicon.svg` and JSON-LD
   (LearningResource) are in `<head>`. The app is an installable PWA with offline support
   (`manifest.json` + `sw.js`); icons live in `img/icons/`.
-- The former 10 `appExtra` questions (Q301-310) were verified against the official
-  catalogue (2026-06-21, via public catalogue sites) — all are real official questions with
-  correct answers — and are now INCLUDED in all pools.
-- All 16 Bundesländer are supported: 310 general + 16×10 state = 470 questions. The user picks
+- The former 10 `appExtra` questions (Q301-310) were removed (2026-06-26) — they were not
+  part of the official BAMF catalogue PDF (which has exactly 300 general questions).
+- All 16 Bundesländer are supported: 300 general + 16×10 state = 460 questions. The user picks
   a state on the home screen (`localStorage` key `eib_state`, default `BE`); the active pool is
-  310 general + the selected state's 10. State questions carry `state` (code) + `stateName` and
+  300 general + the selected state's 10. State questions carry `state` (code) + `stateName` and
   are bilingual (DE/EN). `tools/import-states.js` (re)generates the 15 non-BE state sets from
   `tools/data/official-catalogue-bamf-2026-02.json`; `tools/translate-states.js` adds the
   English `en`/`options_en` (the official source is German-only); `tools/explain-states.js`
@@ -109,8 +108,8 @@ Before publishing any app change:
 
 1. Question data lives in `questions.json` (source of truth) — edit it directly.
    (`tools/extract-questions.js` was the one-time migration from index.html; it no-ops now.)
-2. Run `node tools/validate.js` (470 questions, contiguous IDs 1-470, no duplicates,
-   16 states × 10 + 310 general,
+2. Run `node tools/validate.js` (460 questions, contiguous IDs 1-460, no duplicates,
+   16 states × 10 + 300 general,
    structure valid, spot-checks Q6/7/9/10/12/15/16/28, lists any missing image assets).
 3. Extract the final `<script>` block from `index.html` and run `node --check` on it.
 4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the six
