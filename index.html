@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen (DE/EN)</title>
-    <meta name="description" content="Kostenlos für den Einbürgerungstest Berlin üben: alle 310 amtlichen Fragen, Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice for Berlin.">
+    <title>Einbürgerungstest Berlin — kostenloser Test mit 300 Fragen (DE/EN)</title>
+    <meta name="description" content="Kostenlos für den Einbürgerungstest Berlin üben: alle 300 amtlichen Fragen, Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice for Berlin.">
     <meta name="keywords" content="Einbürgerungstest, Berlin, Leben in Deutschland, Test, Quiz, deutsche Staatsbürgerschaft, German citizenship test, Prüfung">
     <meta name="author" content="EIB Quiz">
     <meta name="theme-color" content="#050505">
@@ -19,8 +19,8 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Einbürgerungstest Berlin Quiz">
     <meta property="og:locale" content="de_DE">
-    <meta property="og:title" content="Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen">
-    <meta property="og:description" content="Übe kostenlos alle 310 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
+    <meta property="og:title" content="Einbürgerungstest Berlin — kostenloser Test mit 300 Fragen">
+    <meta property="og:description" content="Übe kostenlos alle 300 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
     <meta property="og:url" content="https://thelivinsine.github.io/eib-quiz/">
     <meta property="og:image" content="https://thelivinsine.github.io/eib-quiz/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -28,8 +28,8 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Einbürgerungstest Berlin — kostenloser Test mit 310 Fragen">
-    <meta name="twitter:description" content="Übe kostenlos alle 310 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
+    <meta name="twitter:title" content="Einbürgerungstest Berlin — kostenloser Test mit 300 Fragen">
+    <meta name="twitter:description" content="Übe kostenlos alle 300 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
     <meta name="twitter:image" content="https://thelivinsine.github.io/eib-quiz/og-image.png">
 
     <!-- Structured data -->
@@ -38,7 +38,7 @@
       "@context": "https://schema.org",
       "@type": "LearningResource",
       "name": "Einbürgerungstest Berlin Quiz",
-      "description": "Kostenloser Übungstest für den Einbürgerungstest Berlin mit 310 amtlichen Fragen, Prüfungssimulation und Spaced-Repetition-Wiederholung.",
+      "description": "Kostenloser Übungstest für den Einbürgerungstest Berlin mit 300 amtlichen Fragen, Prüfungssimulation und Spaced-Repetition-Wiederholung.",
       "educationalLevel": "Adult education",
       "inLanguage": ["de", "en"],
       "learningResourceType": "Quiz",
@@ -2378,22 +2378,11 @@
 
     <script>
         // ============================================================
-        // DATA: 320 questions with translations and explanations (310 general + 10 Berlin)
+        // DATA: 460 questions (300 general + 16×10 state)
         // ------------------------------------------------------------
-        // Numbering note: IDs run contiguously Q1–Q320 and use this app's
-        // internal numbering, NOT the official BAMF Gesamtfragenkatalog
-        // sequence. Q1–Q310 are general (`berlin: false`); Q311–Q320 are
-        // Berlin-specific (`berlin: true`).
-        //
-        // The official BAMF general pool contains 300 questions; Q301–Q310
-        // here are genuine BAMF questions (Die Linke founding, national
-        // anthem author, Personalausweis, Montagsdemonstration, Stunde
-        // Null, etc.) that carry different official catalogue numbers.
-        // Treat IDs as app-local identifiers, not BAMF refs.
-        //
-        // Questions Q21, Q130, Q209, Q226, Q311, Q318 carry an
-        // `option_images` array of inline SVGs rendered as visual answer
-        // choices.
+        // IDs run contiguously Q1–Q460. Q1–Q300 are the 300 official BAMF
+        // general questions; Q301–Q460 are the 16 state-specific sets
+        // (10 each). IDs are app-local identifiers, not BAMF catalogue numbers.
         // ============================================================
         let QUESTIONS = []; // loaded from questions.json (see loadQuestions)
 
@@ -2438,9 +2427,9 @@
             try { localStorage.setItem(STATE_KEY, selectedState); } catch (e) {}
         }
         // Question pools driven by the selected state.
-        function generalQuestions() { return QUESTIONS.filter(q => !q.state); }            // 310
+        function generalQuestions() { return QUESTIONS.filter(q => !q.state); }            // 300
         function stateQuestions()   { return QUESTIONS.filter(q => q.state === selectedState); } // 10
-        function activePool()       { return [...generalQuestions(), ...stateQuestions()]; }     // 320
+        function activePool()       { return [...generalQuestions(), ...stateQuestions()]; }     // 310
         function onStateChange(code) {
             setSelectedState(code);
             renderModes();
@@ -2912,7 +2901,7 @@
                 </div>`;
             grid.innerHTML =
                 card('allQuestions', ICONS.allQuestions, 'Alle Fragen',
-                     'Alle 310 allgemeinen Fragen der Reihe nach', '310 Fragen', 'badge-gold', 'ca. 60–90 Min') +
+                     'Alle 300 allgemeinen Fragen der Reihe nach', '300 Fragen', 'badge-gold', 'ca. 60–90 Min') +
                 card('bundesland', ICONS.bundesland, 'Bundesland',
                      `Die 10 Fragen für ${STATES[selectedState]}`, '10 Fragen', 'badge-green', 'ca. 5 Min') +
                 card('exam', ICONS.exam, 'Prüfungssimulation',
