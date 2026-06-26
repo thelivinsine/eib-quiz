@@ -64,8 +64,8 @@
             --bg:       #242424;
             --surface:  #2C2C2C;
             --surface2: #383838;
-            --ink:      #F5F1E3;   /* beige — heavy borders & solid offset shadows on dark */
-            --border:   #F5F1E3;
+            --ink:      #8E887A;   /* muted warm taupe — softer borders & offset shadows on dark (text stays full beige) */
+            --border:   #8E887A;
             --border-hover: #FCD758;
 
             --lime:      #BC2C2C;  /* primary brand = Retro Red */
@@ -116,8 +116,8 @@
             --bg:       #F5F1E3;
             --surface:  #FFFFFF;
             --surface2: #ECE6D5;
-            --ink:      #2C2C2C;   /* charcoal — heavy borders & solid offset shadows on beige */
-            --border:   #2C2C2C;
+            --ink:      #5A5246;   /* muted warm taupe — softer borders & offset shadows on beige (text stays full charcoal) */
+            --border:   #5A5246;
             --border-hover: #BC2C2C;
 
             --lime:      #BC2C2C;
@@ -1669,13 +1669,18 @@
         .question-meta-actions { display: flex; align-items: center; gap: var(--spacing-sm); }
         .speak-btn {
             background: var(--surface2);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             border-radius: var(--radius-pill);
             cursor: pointer;
-            padding: 4px 10px;
-            font-size: 0.85rem;
+            padding: 5px 11px;
+            font-size: 1rem;
             line-height: 1;
             color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            min-height: 32px;
             transition: border-color 0.2s var(--ease-spring), background 0.2s;
         }
         .speak-btn:hover { border-color: var(--border-hover); background: var(--lime-dim); }
@@ -2084,12 +2089,12 @@
         }
         .question-english { border-left: 6px solid var(--gold); background: var(--surface2); font-style: normal; }
 
-        /* ---- Grayscale → color imagery ---- */
+        /* ---- Catalogue imagery: always shown in true colours (faithful to the
+               official BAMF catalogue), never tinted/grayscaled by the theme ---- */
         .question-image, .option-btn--image img {
-            filter: grayscale(100%); transition: filter 0.5s ease-in-out;
+            filter: none;
             border: 3px solid var(--ink);
         }
-        .question-image:hover, .option-btn--image:hover img { filter: grayscale(0%); }
 
         /* ---- Option buttons: square, heavy border, fill on interaction ---- */
         .options { gap: 12px; }
