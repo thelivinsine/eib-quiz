@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-06-25_
+_Last updated: 2026-06-26_
 
 ## Project status
 
@@ -22,22 +22,19 @@ framework. Installable PWA with offline support.
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
-**Quiz pool:** 310 general + 16 Bundesländer × 10 = **470** questions, all **bilingual (DE/EN)**.
-The user picks a state on the home screen; the active pool is 310 general + the selected state's
-10. (All 300 official general questions are covered — verified against the BAMF catalogue, 0 missing.)
+**Quiz pool:** 300 general + 16 Bundesländer × 10 = **460** questions, all **bilingual (DE/EN)**.
+The user picks a state on the home screen; the active pool is 300 general + the selected state's
+10. All questions match the official BAMF catalogue PDF (verified, 0 missing). **43 image
+questions** are wired to real assets extracted from the catalogue PDF (option-image grids for
+coats of arms / maps / flags, plus prompt-image photos).
 
 ---
 
 ## Open TODOs
 
-### 1. Fetch the remaining real image assets  — _blocked (egress)_
-~139 image files are still placeholders (the app shows a "Bild fehlt" fallback): the
-general coats of arms / maps / flags / Reichstag photo (19), plus the **state Wappen/flag
-image questions** for the 15 imported states (~120, under `img/states/<code>/`).
-- **Blocker:** environment egress blocks `upload.wikimedia.org` / `commons.wikimedia.org`.
-- **To resume:** allowlist those hosts, fetch per the manifest, run `node tools/validate.js`
-  until the warning count is 0. See `ATTRIBUTIONS.md`.
-- Already done locally: 4 Q130 ballots + exact-spec EU flag/distractor.
+### 1. Image assets — _✅ DONE (2026-06-26)_
+All 43 image questions now have real assets extracted from the official BAMF catalogue PDF.
+`node tools/validate.js` reports 0 missing assets. See `ATTRIBUTIONS.md` for sources/credits.
 
 ### 2. Redesign: Bold Retro-Modernist editorial system — _✅ DONE (2026-06-26)_
 Implemented. Replaced the lime/dark "Neon Velocity"/"Premium UI" layer with a
@@ -123,10 +120,10 @@ answered, end). The original design brief is preserved below for reference.
   HTML/data) + installable manifest; cleans up old May-28 caches on activate.
 - ~~Rasterize the OG image~~ — done: `og-image.png` (1200×630) via resvg-js.
 - ~~Refine topic categories~~ — done: targeted keyword fixes in `tools/categorize.js`.
-- ~~Verify & include the 10 `appExtra` questions~~ — done 2026-06-21: all 10 confirmed real
-  official questions (correct answers match) via public catalogue sites; folded into the pool.
+- ~~Verify & include the 10 `appExtra` questions~~ — done 2026-06-21: confirmed real official
+  questions; later removed (2026-06-26) as they duplicated catalogue entries.
 - ~~Catalogue coverage check + all-states import~~ — done 2026-06-23: verified 0 missing vs the
-  official 300; fixed 21 ü-mojibake questions; imported all 16 states (470 total) with a
+  official 300; fixed 21 ü-mojibake questions; imported all 16 states (460 total) with a
   home state-picker (`tools/import-states.js`).
 - ~~English translations for imported state questions~~ — done 2026-06-23: all 150 non-Berlin
   state questions now bilingual via `tools/translate-states.js`.
@@ -180,6 +177,14 @@ Merged to `main` (PR #):
   never shows a stray dot.
 - **#25** Fixed the hero background fill (diagonal seam from bad `::before` override in
   premium layer); restored the label chip; smooth symmetric gradient in both themes.
+- **#26** Documentation: session changelog cleanup + Bold Retro-Modernist redesign brief.
+- **#27** Extracted all catalogue images from the official BAMF PDF and wired 43 image
+  questions into the app (option-image grids + prompt-image photos); in-app photo credits.
+- **#28** Removed 10 non-catalogue `appExtra` questions (Q301-310); renumbered state
+  questions for contiguous IDs (460 total: 300 general + 160 state).
+- **#29** Bold Retro-Modernist editorial redesign: new palette (Retro Red / Vintage Blue /
+  Sunny Yellow / Warm Beige / Charcoal), Montserrat + Open Sans typography, solid offset
+  shadows, hard 90° edges, marquee ticker, hero watermark, grayscale→color images.
 
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs

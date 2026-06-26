@@ -73,9 +73,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - `questions.json` - question data, source of truth. Generated from the good `QUESTIONS`
   data via `tools/extract-questions.js` (NOT from `questions-final-extended.json`).
   Each question carries a `category` (see `tools/categorize.js`).
-- `img/` - real image-question assets (+ `ATTRIBUTIONS.md` fetch manifest). Some assets are
-  still pending fetch (egress blocked Wikimedia); the app shows a "Bild fehlt" fallback for any
-  missing image and otherwise works.
+- `img/` - real image-question assets extracted from the official BAMF catalogue PDF (43
+  image questions). All assets present; `ATTRIBUTIONS.md` has sources and credits.
 - `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
   image questions to real asset paths and descriptive labels.
 - `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
@@ -87,6 +86,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   non-Berlin state questions (template-based from question stem + correct answer).
 - `tools/categorize.js` - assigns a `category` to every question (rights/politics/history/
   society/symbols) using question text + correct answer keyword matching.
+- `tools/extract-catalogue-images.py` - parses the official BAMF PDF to enumerate all image
+  questions and extract/crop image assets.
+- `tools/wire-catalogue-images.py` - wires extracted images into `questions.json` (sets
+  `option_images`, `image`, `image_credit` fields).
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
@@ -97,11 +100,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 ## Image Questions
 
-Image questions (Q21, Q130, Q209, Q226, Q311, Q318) use real asset files in `img/`,
-referenced as `option_images: ["img/.../x.svg", ...]` and rendered as `<img>` (no longer
-inline-SVG doodles). Q55 ("Was zeigt dieses Bild?") uses `image: "img/q55-reichstag.webp"`.
-Image-option `options` are descriptive labels (not "Option 1"). See `ATTRIBUTIONS.md` for the
-pending-asset fetch manifest. Keep the `correct` index pointing at the correct asset.
+**43 image questions** total, all extracted from the official BAMF catalogue PDF:
+
+- **Option-image questions** (4-image grids: coats of arms, maps, flags): general Q21, Q209,
+  Q226 + each state's Wappen (Q301, Q311, Q321, … every `*1`) and map/flag (Q308, Q318, …
+  every `*8`). These use `option_images: ["img/…", …]` and descriptive `options` labels.
+- **Prompt-image questions** (single photo above text answers): Q55 (Reichstag), Q70, Q130,
+  Q176, Q181, Q187, Q216, Q235. These use `image: "img/…"` and keep text options.
+- **In-app credits** via the `image_credit` field, rendered under the image as a small caption.
+
+Assets live in `img/` (per-question folders like `img/q21/`, `img/states/<CODE>/`, or
+standalone files like `img/q55-reichstag.webp`). Some state assets are still pending fetch
+(egress blocked Wikimedia); the app shows a "Bild fehlt" fallback. See `ATTRIBUTIONS.md` for
+sources and credits. Keep the `correct` index pointing at the correct asset.
 
 ## Known May 28 Regression
 
@@ -121,8 +132,8 @@ Before publishing any app change:
    16 states × 10 + 300 general,
    structure valid, spot-checks Q6/7/9/10/12/15/16/28, lists any missing image assets).
 3. Extract the final `<script>` block from `index.html` and run `node --check` on it.
-4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the six
-   image questions + Q55 render (or show the "Bild fehlt" fallback for not-yet-fetched assets),
+4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, image
+   questions render (or show the "Bild fehlt" fallback for not-yet-fetched assets),
    progress persists across reload, and Smart Review surfaces due/weak questions.
 5. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
    When changing cached static assets, bump `CACHE` in `sw.js`.
@@ -132,7 +143,7 @@ Before publishing any app change:
 If reviving the May 28 architecture:
 
 1. Repair `questions-final-extended.json` first.
-2. Confirm the six image questions keep valid `option_images`: Q21, Q130, Q209, Q226, Q311, Q318.
+2. Confirm image questions keep valid `option_images`/`image` paths (43 total; see Image Questions section).
 3. Run `node regen_questions.js`.
 4. Copy the regenerated source to `index.html`.
 5. Re-run the validation checklist.
