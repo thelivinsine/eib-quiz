@@ -16,10 +16,19 @@
 Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
-- Visual styling: a "Premium UI redesign layer" at the END of the `<style>` block overrides/
-  refines earlier component rules (depth, type, motion). Keep the lime/dark palette tokens; when
-  restyling, prefer editing that layer. New design tokens: `--shadow-sm/md/lg`, `--glow`,
-  `--card-grad`, `--hairline`, `--radius-lg`.
+- Visual styling: a **"Bold Retro-Modernist editorial layer"** at the END of the `<style>` block
+  overrides/refines earlier component rules. Two themes share the brief's palette — default =
+  **Charcoal** (deep charcoal bg, beige text), `.light` = **Beige signature** (warm beige bg,
+  charcoal text). Palette: Retro Red `#BC2C2C` (primary, mapped to `--lime`), Vintage Blue
+  `#5DA4C9` (`--blue`), Sunny Yellow `#FCD758` (`--gold`), Warm Beige `#F5F1E3`, Charcoal
+  `#2C2C2C`. The `--ink` token is the heavy border/offset-shadow color (beige on dark, charcoal
+  on light). Hard 90° edges everywhere (`--radius*: 0`, plus a global `border-radius:0`); solid
+  offset shadows (`--shadow-sm/md/lg` = Npx Npx 0 `--ink`), NO soft shadows/rounded corners.
+  Fonts: Montserrat (`--font-head`, 700–900 uppercase tight headlines) + Open Sans (`--font-body`/
+  `--font-mono` utility labels). Images are grayscale→color on hover. Home has an infinite
+  marquee ticker (`.ticker`) and the hero shows a watermark via `::after`. When restyling, prefer
+  editing the editorial layer and the `:root`/`html.light` tokens. NOTE: dashboard/ring/score
+  geometry (`.dash*`, `.ready-ring*`, `.score-ring*`) lives in this layer — keep it when editing.
 - **Dashboard home:** the home screen is a dashboard with an animated SVG readiness ring
   showing **Trefferquote (accuracy)**, key stats (Beantwortet/Gemeistert/Fällig), and the
   integrated Bundesland picker — all inside a single "Übersicht" card. The ring uses
