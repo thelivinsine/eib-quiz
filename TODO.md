@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-06-25_
+_Last updated: 2026-06-26_
 
 ## Project status
 
@@ -22,9 +22,10 @@ framework. Installable PWA with offline support.
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
-**Quiz pool:** 310 general + 16 Bundesländer × 10 = **470** questions, all **bilingual (DE/EN)**.
-The user picks a state on the home screen; the active pool is 310 general + the selected state's
-10. (All 300 official general questions are covered — verified against the BAMF catalogue, 0 missing.)
+**Quiz pool:** 300 general + 16 Bundesländer × 10 = **460** questions, all **bilingual (DE/EN)**.
+The user picks a state on the home screen; the active pool is 300 general + the selected state's
+10. (All 300 official general questions are covered — verified against the BAMF catalogue, 0 missing.
+The 10 former `appExtra` questions Q301–310 were removed in PR #28 — not in the official PDF.)
 
 ---
 
@@ -44,9 +45,11 @@ Implemented. Replaced the lime/dark "Neon Velocity"/"Premium UI" layer with a
 **"Bold Retro-Modernist editorial layer"** (end of `<style>`) + rewritten `:root`/`html.light`
 tokens. All functionality preserved (pools, spaced repetition, sessions, history, TTS, glossary,
 state picker, PWA). Two themes (Charcoal default / Beige `.light`) on the brief's palette;
-Montserrat + Open Sans; solid offset shadows; hard 90° edges; grayscale→color images; infinite
-marquee ticker; hero watermark. Verified via Chromium screenshots (home dark+light, quiz,
-answered, end). The original design brief is preserved below for reference.
+Montserrat + Open Sans; solid offset shadows; hard 90° edges; infinite marquee ticker; hero
+watermark. Verified via Chromium screenshots (home dark+light, quiz, answered, end). The original
+design brief is preserved below for reference. (Post-launch refinement, 2026-06-26: the brief's
+grayscale→color-on-hover image treatment was reversed — catalogue images now always show in true
+colour. See the session block below.)
 
 > # Summary
 >
@@ -180,6 +183,27 @@ Merged to `main` (PR #):
   never shows a stray dot.
 - **#25** Fixed the hero background fill (diagonal seam from bad `::before` override in
   premium layer); restored the label chip; smooth symmetric gradient in both themes.
+
+## Session developments (2026-06-26)
+
+Merged to `main` (PR #):
+- **#26** Docs: session changelog cleanup + the Bold Retro-Modernist redesign brief.
+- **#27** Extracted all catalogue images from the BAMF PDF and wired them into the quiz
+  (image-option assets under `img/` and `img/states/<code>/`).
+- **#28** Removed the 10 former `appExtra` questions (Q301–310) — not in the official BAMF
+  PDF (300 general questions). Pool is now 300 general + 160 state = 460.
+- **#29** Redesign UI: the Bold Retro-Modernist editorial system (see point #2 above).
+- **#30** Theme/readability pass: muted the heavy border/offset-shadow colour (`--ink`/`--border`)
+  to a warm taupe (`#8E887A` dark, `#5A5246` light) so borders no longer read as stark
+  white/black — body `--text` stays full beige/charcoal, so legibility is unchanged. Removed the
+  `grayscale(100%)` image filter so **catalogue images always show in their true official colours**
+  (the old hover-to-colour never triggered on touch devices). Made the quiz read-aloud (🔊) button
+  a clearly outlined pill so it's no longer a faint dark-on-dark control.
+- **#31** Docs: recorded the **ship-via-PR-and-merge** workflow preference in `CLAUDE.md`.
+- **#32** Red-text legibility on dark: brand red `#BC2C2C` only clears ~2:1 as text on charcoal,
+  so added a `--red-text` token (coral `#F2705C` on dark, brand `#BC2C2C` on light) and routed all
+  red text/icons to it (stat values, score, FALSCH, bilingual toggle, timer, keyboard hints,
+  review/results). Red **fills/borders** keep the brand red.
 
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
