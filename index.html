@@ -2282,6 +2282,7 @@
                         <div class="question-english" id="questionEnglish"></div>
 
                         <img id="questionImage" class="question-image" style="display: none;">
+                        <div id="imageCredit" style="display: none; font-size: 0.68rem; color: var(--muted); text-align: center; margin: -4px 0 6px;"></div>
 
                         <div class="options" id="optionsContainer"></div>
                         <div id="answerHint" style="display:none; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: center; padding: var(--spacing-sm) 0; margin-top: 2px;">Wähle eine Antwort · Select an answer</div>
@@ -3031,13 +3032,21 @@
             document.getElementById('questionEnglish').innerHTML = `<div>${q.en}</div>`;
             document.getElementById('questionEnglish').classList.remove('show');
 
+            const imgCredit = document.getElementById('imageCredit');
             if (q.image) {
                 const qImg = document.getElementById('questionImage');
                 qImg.src = q.image;
                 qImg.alt = q.de;
                 qImg.style.display = 'block';
+                if (q.image_credit) {
+                    imgCredit.textContent = q.image_credit;
+                    imgCredit.style.display = 'block';
+                } else {
+                    imgCredit.style.display = 'none';
+                }
             } else {
                 document.getElementById('questionImage').style.display = 'none';
+                imgCredit.style.display = 'none';
             }
 
             // Options

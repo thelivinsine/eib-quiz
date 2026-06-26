@@ -1,122 +1,62 @@
-# Image Assets — Attributions & Fetch Manifest
+# Image Assets — Attributions & Source
 
-> ## ⏸ STATUS: PARKED (2026-06-20)
-> Fetching the 19 real assets is **parked** for later. The app is fully functional in the
-> meantime — any missing image shows a "Bild fehlt" fallback. Nothing else depends on this.
->
-> **To resume:** allowlist `upload.wikimedia.org` + `commons.wikimedia.org` in the
-> environment's network egress settings, then fetch the assets in the manifest below and
-> run `node tools/validate.js` until the warning count is 0. (Alternatively, drop the files
-> in by hand — no network needed.) 6 of 25 assets are already committed; 19 remain.
+> ## ✅ STATUS: COMPLETE (2026-06-25)
+> All 43 image questions now have their real images, extracted directly from the official
+> **BAMF "Gesamtfragenkatalog – Leben in Deutschland"** PDF
+> (`img/gesamtfragenkatalog-lebenindeutschland.pdf`, committed for reference) via
+> `tools/extract-catalogue-images.py` + `tools/wire-catalogue-images.py`.
+> `node tools/validate.js` reports 0 missing assets.
 
-The image questions reference real asset files under `img/`. Assets that could be
-produced locally (ballots + the exact-spec EU flag/distractor) are already committed.
-The remaining assets must be sourced from open/public-domain repositories — the egress
-policy in the build environment blocked `upload.wikimedia.org`, so they are **pending**.
+## Source
 
-To complete them, either:
-1. **Allowlist** `upload.wikimedia.org` (and `commons.wikimedia.org`) in the environment's
-   network egress settings, then re-run the fetch, **or**
-2. **Drop the files** into the exact paths listed below (any equivalent open/PD artwork).
+Every option/prompt image is a crop of the official BAMF catalogue PDF (rendered at ~300 DPI,
+cropped to the per-image bounding boxes detected in the PDF). The catalogue is the authoritative
+question source published by the Bundesamt für Migration und Flüchtlinge (BAMF).
 
-After adding files, run `node tools/validate.js` — the "fetch manifest" warning should
-shrink to zero.
+## The 43 image questions
 
----
+- **Option-image (4 pictures), 19:** Q21, Q209, Q226 + the 16 state *Wappen* questions
+  (`img/q21/o*.png`, `img/q209/o*.png`, `img/q226/o*.png`, `img/states/<CODE>/<CODE>-1-*.png`).
+  Q21 and Q209 share the same 4 pictures (Bundeswappen / Chi-Rho / Bundeswehr-Kreuz / DDR-Emblem).
+- **Composite image + "1/2/3/4" answers, 17:** Q130 (ballots) + the 16 state *map* questions
+  (`img/q130/ballots.png`, `img/states/<CODE>/<CODE>-8.png`). The catalogue presents these as a
+  single image with four numbered pointers, so they are modelled as one prompt image + numbered
+  answers.
+- **Prompt-image + text answers, 7:** Q55, Q70, Q176, Q181, Q187, Q216, Q235.
 
-## Already committed (authored locally)
+## Licensing
 
-| File | What | Source |
+- **Coats of arms, flags, the DDR flag, locator maps, occupation-zone map, ballot graphic** —
+  official/heraldic works (amtliche Werke, §5 UrhG) or simple geometric/diagrammatic works; not
+  copyright-protected.
+- **Photographs** carry the credits below (captured from the PDF and shown in-app under the image
+  via the `image_credit` field). These are official Bundestag/Bundesregierung press photos and are
+  **© all rights reserved** — they are reproduced here for this educational quiz with attribution.
+  If strict licensing is required, swap them for CC-BY/PD equivalents (the `image_credit` field and
+  these paths are the only things to update):
+
+| Question | Image | Credit |
 |---|---|---|
-| `img/q130/ballot-valid.svg` | Valid ballot (one cross per column) | Original SVG (generic ballot layout) |
-| `img/q130/ballot-two-marks.svg` | Invalid: two crosses in one column | Original SVG |
-| `img/q130/ballot-defaced.svg` | Invalid: crossed-out ballot | Original SVG |
-| `img/q130/ballot-empty.svg` | Invalid: empty ballot | Original SVG |
-| `img/q226/flag-eu.svg` | EU flag (12 gold stars, exact geometry) | Original SVG to official spec |
-| `img/q226/flag-eu-wrong.svg` | Distractor: wrong star count | Original SVG |
+| Q55  | `img/q55-reichstag.webp` | © Deutscher Bundestag/Achim Melde |
+| Q70  | `img/q70-heinemann-schmidt.png` | © Bundesregierung/Engelbert Reineke |
+| Q181 | `img/q181-brandt-kniefall.png` | © Bundesregierung/Engelbert Reineke |
+| Q216 | `img/q216-bundesadler.png` | © Deutscher Bundestag/Janine Schmitz |
+| Q235 | `img/q235-mitterrand-kohl-verdun.png` | © Bundesregierung/Richard Schulze-Vorberg |
+| Q176 | `img/q176-besatzungszonen.png` | (diagram — no credit in catalogue) |
+| Q187 | `img/q187-ddr-flagge.png` | (flag — no credit in catalogue) |
 
-These are original works (CC0 / no attribution required).
-
----
-
-## Pending — to fetch from open/PD sources
-
-Public-domain note: German federal/state coats of arms and the GDR emblem are official
-works (amtliche Werke, §5 UrhG) — not copyright-protected. The EU/UN/NATO flags are
-freely usable. The Reichstag photo must be a CC-BY/CC-BY-SA or PD image (record its author).
-
-### Q21 — Wappen der Bundesrepublik (`img/q21/`)
-| File | Subject | Suggested Wikimedia Commons source |
-|---|---|---|
-| `bundeswappen.svg` *(correct)* | Federal coat of arms | `Coat_of_arms_of_Germany.svg` |
-| `reichswappen-weimar.svg` | Weimar Republic arms | `Reichswappen_Deutsches_Reich_(Weimarer_Republik).svg` |
-| `wappen-kaiserreich.svg` | German Empire arms | `Wappen_Deutsches_Reich_(1889-1918).svg` |
-| `wappen-preussen.svg` | Prussia arms | `Wappen_Preußen.svg` |
-
-### Q209 — Wappen der DDR (`img/q209/`)
-| File | Subject | Source |
-|---|---|---|
-| `emblem-ddr.svg` *(correct)* | GDR state emblem | `Coat_of_arms_of_East_Germany.svg` |
-| `emblem-udssr.svg` | USSR state emblem | `State_Emblem_of_the_Soviet_Union.svg` |
-| `emblem-polen.svg` | People's Republic of Poland | `Herb_PRL.svg` |
-| `emblem-csssr.svg` | Czechoslovakia (ČSSR) | `Czechoslovakia_(1960–1990)_coat_of_arms.svg` |
-
-### Q226 — Flagge der EU (`img/q226/`)
-| File | Subject | Source |
-|---|---|---|
-| `flag-un.svg` | United Nations flag | `Flag_of_the_United_Nations.svg` |
-| `flag-nato.svg` | NATO flag | `Flag_of_NATO.svg` |
-
-### Q311 — Wappen Berlin (`img/q311/`)
-| File | Subject | Source |
-|---|---|---|
-| `wappen-berlin.svg` *(correct)* | Berlin (bear) | `Coat_of_arms_of_Berlin.svg` |
-| `wappen-hamburg.svg` | Hamburg | `Coat_of_arms_of_Hamburg.svg` |
-| `wappen-bremen.svg` | Bremen | `Coat_of_arms_of_Bremen.svg` |
-| `wappen-brandenburg.svg` | Brandenburg | `Coat_of_arms_of_Brandenburg.svg` |
-
-### Q318 — Welches Bundesland ist Berlin? (`img/q318/`) — locator maps
-| File | Subject | Source |
-|---|---|---|
-| `map-berlin.svg` *(correct)* | Germany, Berlin highlighted | `Germany_Laender_Berlin.svg` |
-| `map-bayern.svg` | Bavaria highlighted | `Germany_Laender_Bayern.svg` |
-| `map-nrw.svg` | NRW highlighted | `Germany_Laender_Nordrhein-Westfalen.svg` |
-| `map-sachsen.svg` | Saxony highlighted | `Germany_Laender_Sachsen.svg` |
-
-### Q55 — Reichstag (`img/q55-reichstag.webp`)
-| File | Subject | Source |
-|---|---|---|
-| `q55-reichstag.webp` | Reichstag building, Berlin | Any CC-BY/PD Commons photo, e.g. `Reichstag_building_Berlin_view_from_west_before_sunset.jpg` (convert to WebP). **Record author + license here when added.** |
-
----
-
-## Recommended fetch command (once egress allows Wikimedia)
+## Regenerating
 
 ```bash
-UA="EIBQuizBot/1.0 (educational; contact thelivinsine@gmail.com)"
-# Use Special:FilePath to resolve the current file URL, e.g.:
-curl -L -A "$UA" -o img/q21/bundeswappen.svg \
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_of_Germany.svg"
-# (optionally) optimize: svgo img/**/*.svg
+pip install pymupdf pillow
+python3 tools/extract-catalogue-images.py extract   # -> img/upload/_pdf/ crops + tools/data/catalogue-image-map.json
+python3 tools/wire-catalogue-images.py              # builds final assets + updates questions.json
+node tools/validate.js                              # expect 0 missing assets
 ```
-
-When fetching, record each file's exact license and author above for CC-BY assets.
-
----
 
 ## Question data — state-specific questions
 
-The 15 non-Berlin Bundesland question sets were imported from the official BAMF
-"Leben in Deutschland" / Einbürgerungstest catalogue via the open dataset
-**adalbero/LebenInDeutschland** (`Puppeteer/data/run-2026-02-15/dataLid.json`,
-BAMF source), committed here as `tools/data/official-catalogue-bamf-2026-02.json`
-and wired in by `tools/import-states.js`. The official source is German-only; English
-`en`/`options_en` were added by `tools/translate-states.js` (dictionary-based). State
-questions have no explanations (the official source provides none).
-
-### Pending: state image (Wappen/flag) questions
-Each state has 1–2 image questions whose options are coats of arms/flags. The
-referenced files under `img/states/<code>/` are not yet on disk, so the app shows
-the "Bild fehlt" fallback. Source the real artwork from Wikimedia Commons
-("Coat of arms of <State>" / "Flagge <State>") once egress allows, then run
-`node tools/validate.js` to confirm. (Berlin's image questions already exist.)
+The 15 non-Berlin Bundesland question sets were imported from the official BAMF catalogue via the
+open dataset **adalbero/LebenInDeutschland**, committed as
+`tools/data/official-catalogue-bamf-2026-02.json` and wired by `tools/import-states.js`; English
+strings via `tools/translate-states.js`.
