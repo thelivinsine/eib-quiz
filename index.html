@@ -349,6 +349,104 @@
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
+           LANDING HERO (top of home; CTA scrolls to the bento content)
+           ============================================================ */
+        .hero-landing {
+            position: relative;
+            min-height: min(88svh, 860px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-2xl) 0 72px;
+            margin-bottom: var(--spacing-2xl);
+        }
+        /* soft dual-accent glow behind the headline */
+        .hero-landing::before {
+            content: '';
+            position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(560px 340px at 50% 28%, var(--accent-soft), transparent 70%),
+                radial-gradient(420px 300px at 78% 12%, rgba(251,146,60,0.10), transparent 72%);
+        }
+        .hero-inner { max-width: 780px; display: flex; flex-direction: column; align-items: center; }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 9px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--teal-deep);
+            background: var(--teal-tint);
+            border: 1px solid var(--accent-line);
+            padding: 7px 15px; border-radius: var(--radius-pill);
+            margin-bottom: var(--spacing-lg);
+        }
+        html:not(.light) .hero-badge { color: var(--teal); }
+        .hero-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+
+        .hero-headline {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: clamp(2rem, 6.6vw, 4.75rem);
+            line-height: 1.04;
+            letter-spacing: -0.045em;
+            color: var(--text);
+        }
+        .hero-mark {
+            white-space: nowrap;
+            background: linear-gradient(var(--apricot), var(--apricot)) no-repeat left 92%;
+            background-size: 100% 0.14em;
+            padding-bottom: 0.03em;
+        }
+        .hero-lead {
+            max-width: 620px;
+            margin: var(--spacing-lg) auto 0;
+            color: var(--sub-text);
+            font-size: clamp(1rem, 1.6vw, 1.18rem);
+            line-height: 1.6;
+        }
+        .hero-cta-row {
+            display: flex; flex-wrap: wrap; gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-xl);
+        }
+        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: 15px 30px; font-size: 1rem; }
+        .hero-cta-row .btn-primary svg { width: 18px; height: 18px; }
+
+        .hero-trust {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 10px 22px;
+            margin-top: var(--spacing-xl);
+        }
+        .hero-trust > span {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.86rem; font-weight: 500; color: var(--sub-text);
+        }
+        .hero-trust > span svg {
+            width: 17px; height: 17px; flex-shrink: 0;
+            color: var(--teal);
+            padding: 2px;
+            border-radius: 50%;
+            background: var(--teal-tint);
+        }
+
+        .hero-scroll {
+            position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+            width: 42px; height: 42px; border-radius: 50%;
+            display: grid; place-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-soft);
+            color: var(--muted);
+            animation: heroBounce 2s var(--ease) infinite;
+        }
+        .hero-scroll:hover { color: var(--accent); border-color: var(--accent-line); }
+        .hero-scroll svg { width: 20px; height: 20px; }
+        @keyframes heroBounce { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 7px); } }
+
+        #homeMain { scroll-margin-top: 84px; }
+
+        /* ============================================================
            HOME BENTO
            ============================================================ */
         .bento-top {
@@ -899,15 +997,39 @@
         <!-- Home Screen -->
         <section id="homeScreen" class="screen active">
 
+            <!-- Landing hero: copy + CTA that scrolls down to the bento content -->
+            <div class="hero-landing">
+                <div class="hero-inner">
+                    <span class="hero-badge">Leben in Deutschland · Berlin &amp; alle Länder</span>
+                    <h1 class="hero-headline">Bestehe deinen <span class="hero-mark">Einbürgerungstest</span> beim ersten Versuch.</h1>
+                    <p class="hero-lead">Übe alle 300 amtlichen Fragen plus deine 10 Landesfragen. Mit smarter Wiederholung, echter Prüfungssimulation und Erklärungen auf Deutsch und Englisch. Kostenlos, ohne Konto, direkt im Browser.</p>
+                    <div class="hero-cta-row">
+                        <button class="btn-primary" onclick="scrollToMain()">Jetzt üben
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                        </button>
+                        <button class="btn-secondary" onclick="startMode('exam')">Prüfung simulieren</button>
+                    </div>
+                    <div class="hero-trust">
+                        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>300 amtliche Fragen</span>
+                        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>16 Bundesländer</span>
+                        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Deutsch &amp; Englisch</span>
+                        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>100% kostenlos</span>
+                    </div>
+                </div>
+                <button class="hero-scroll" onclick="scrollToMain()" aria-label="Zum Inhalt scrollen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+            </div>
+
             <!-- Signature bento: overview anchor + CTA + Bundesland map + mastery stat -->
-            <div class="bento-top">
+            <div class="bento-top" id="homeMain">
                 <!-- Overview anchor (2x2) — readiness ring + stats (populated by JS) -->
                 <div id="homeStatus"></div>
 
                 <!-- CTA / hero tile (charcoal, 2-wide) -->
                 <div class="cta-tile" id="ctaTile">
-                    <span class="eyebrow cta-eyebrow">Leben in Deutschland</span>
-                    <h1 class="cta-title">Werde bereit für den <span class="hero-accent">Einbürgerungstest</span>.</h1>
+                    <span class="eyebrow cta-eyebrow">Direkt starten</span>
+                    <h2 class="cta-title">Werde bereit für den <span class="hero-accent">Einbürgerungstest</span>.</h2>
                     <div class="cta-actions">
                         <button class="btn-primary" onclick="startMode('exam')">Prüfung starten <span aria-hidden="true">→</span></button>
                         <span class="cta-note">33 Fragen · 60 Min · zufällig</span>
@@ -1304,6 +1426,15 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenName + 'Screen').classList.add('active');
             state.currentScreen = screenName;
+        }
+
+        // Landing hero CTA: smooth-scroll down to the main bento content
+        // (respects reduced-motion; scroll-margin-top offsets the sticky header).
+        function scrollToMain() {
+            const el = document.getElementById('homeMain');
+            if (!el) return;
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
         }
 
         // ============================================================
