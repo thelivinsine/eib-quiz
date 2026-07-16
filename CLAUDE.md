@@ -23,26 +23,34 @@
 Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
-- Visual styling: a **"Bold Retro-Modernist editorial layer"** at the END of the `<style>` block
-  overrides/refines earlier component rules. Two themes share the brief's palette — default =
-  **Charcoal** (deep charcoal bg, beige text), `.light` = **Beige signature** (warm beige bg,
-  charcoal text). Palette: Retro Red `#BC2C2C` (primary, mapped to `--lime`), Vintage Blue
-  `#5DA4C9` (`--blue`), Sunny Yellow `#FCD758` (`--gold`), Warm Beige `#F5F1E3`, Charcoal
-  `#2C2C2C`. Brand red `#BC2C2C` is used for **fills** (header bar, badges, buttons — white text
-  on top), but it's too dark to read AS TEXT on the charcoal bg (~2:1), so red text/icons use the
-  `--red-text` token instead: a brightened coral-red `#F2705C` on dark, the brand `#BC2C2C` on
-  light (where it reads fine). Use `--red-text` for any red text/icon; keep `--lime`/`--red` for
-  fills and borders. The `--ink` token (= `--border`) is the heavy border/offset-shadow color — a
-  **muted warm taupe** (`#8E887A` on dark, `#5A5246` on light), deliberately lower-contrast than
-  the body text so borders don't read as stark white/black; `--text` stays full beige/charcoal
-  for legibility. Hard 90° edges everywhere (`--radius*: 0`, plus a global `border-radius:0`); solid
-  offset shadows (`--shadow-sm/md/lg` = Npx Npx 0 `--ink`), NO soft shadows/rounded corners.
-  Fonts: Montserrat (`--font-head`, 700–900 uppercase tight headlines) + Open Sans (`--font-body`/
-  `--font-mono` utility labels). Catalogue images are always shown in their **true colours**
-  (faithful to the official BAMF catalogue), never grayscaled/tinted by the theme. Home has an infinite
-  marquee ticker (`.ticker`) and the hero shows a watermark via `::after`. When restyling, prefer
-  editing the editorial layer and the `:root`/`html.light` tokens. NOTE: dashboard/ring/score
-  geometry (`.dash*`, `.ready-ring*`, `.score-ring*`) lives in this layer — keep it when editing.
+- Visual styling: a **"Berlin Civic Terminal"** design system (redesigned 2026-07-16). One
+  cohesive `<style>` block in `index.html` (no more layered "editorial override" — the whole block
+  IS the system). POV: German civic design × Berlin poster grit × dev-tool. Two themes share the
+  palette — default = **Graphite** (deep near-black `#0C0D11` bg, `--text` `#ECEDF1`), `.light` =
+  warm **Paper** (`#F2F0E9` bg, graphite ink `#17181B`). Palette: **Cobalt** is the PRIMARY accent
+  (mapped to `--lime`): `#6C93FF` on dark / `#2D54D8` on light — readable as TEXT *and* used for
+  fills (solid fills use `--accent-fill`; button/gradient use `--accent-grad`; `--on-accent` = white
+  text on it). **Signal Gold** is the secondary accent (`--gold` `#F5C13D` dark / bronze `#A9760A`
+  light — the light value is a real bronze so gold reads as text; `--on-gold` = dark text on gold
+  fills). `--blue` is a distinct **teal-cyan** (`#35C9E0`/`#0E8FA6`) for info/time so it doesn't
+  clash with cobalt. Semantic `--green` (correct) / `--red`+`--red-text` (wrong) as usual. Design
+  language: **soft instrument-panel radii** (`--radius:12px`, `sm:8`, `lg:18`, pill:999 — NOT the
+  old hard 0), **soft layered shadows** (`--shadow-sm/md/lg`, no more offset shadows), **hairline
+  borders** (`--border` = low-alpha white/ink). Type: **Bricolage Grotesque** (`--font-head`,
+  display headings & big numbers) + **Inter** (`--font-body`) + **JetBrains Mono** (`--font-mono` —
+  used heavily for system labels, meta, numbers, the wordmark). Signature personality touches
+  (keep these when restyling): a faint **blueprint grid** + single cobalt corner-glow on
+  `body::before/::after`; a **blinking terminal caret** (`.brand-caret`) after the `eib_` wordmark;
+  mono **section headings** prefixed with `//` (`.topic-heading::before`); **editorial index numbers**
+  on mode cards (`.mode-card::after` via CSS `counter`); a **gold highlight-underline** on the hero
+  keyword (`.hero-accent`); mode/stat cards tinted per-slot via `nth-child` + `--card-accent`.
+  Catalogue images are always shown in their **true colours** (faithful to the official BAMF
+  catalogue), never grayscaled/tinted by the theme. The old retro marquee ticker + hero border-box
+  were removed; the hero is now eyebrow + Bricolage headline + sub + mono feature chips. NOTE:
+  dashboard/ring/score geometry (`.dash*`, `.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377)
+  is preserved so the JS ring animations still work — keep the `stroke-dasharray` values when editing.
+  Several legacy token NAMES (`--lime`, `--gold`, `--blue`, `--green`, `--red`, `--red-text`, `--ink`,
+  spacing) are kept because the `<script>` writes them into inline styles — don't rename them.
 - **Dashboard home:** the home screen is a dashboard with an animated SVG readiness ring
   showing **Trefferquote (accuracy)**, key stats (Beantwortet/Gemeistert/Fällig), and the
   integrated Bundesland picker — all inside a single "Übersicht" card. The ring uses
