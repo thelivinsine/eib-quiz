@@ -23,39 +23,40 @@
 Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
-- Visual styling: a **"Berlin Civic Terminal"** design system (redesigned 2026-07-16). One
-  cohesive `<style>` block in `index.html` (no more layered "editorial override" — the whole block
-  IS the system). POV: German civic design × Berlin poster grit × dev-tool. Two themes share the
-  palette — default = **Graphite** (deep near-black `#0C0D11` bg, `--text` `#ECEDF1`), `.light` =
-  warm **Paper** (`#F2F0E9` bg, graphite ink `#17181B`). Palette: **Cobalt** is the PRIMARY accent
-  (mapped to `--lime`): `#6C93FF` on dark / `#2D54D8` on light — readable as TEXT *and* used for
-  fills (solid fills use `--accent-fill`; button/gradient use `--accent-grad`; `--on-accent` = white
-  text on it). **Signal Gold** is the secondary accent (`--gold` `#F5C13D` dark / bronze `#A9760A`
-  light — the light value is a real bronze so gold reads as text; `--on-gold` = dark text on gold
-  fills). `--blue` is a distinct **teal-cyan** (`#35C9E0`/`#0E8FA6`) for info/time so it doesn't
-  clash with cobalt. Semantic `--green` (correct) / `--red`+`--red-text` (wrong) as usual. Design
-  language: **soft instrument-panel radii** (`--radius:12px`, `sm:8`, `lg:18`, pill:999 — NOT the
-  old hard 0), **soft layered shadows** (`--shadow-sm/md/lg`, no more offset shadows), **hairline
-  borders** (`--border` = low-alpha white/ink). Type: **Bricolage Grotesque** (`--font-head`,
-  display headings & big numbers) + **Inter** (`--font-body`) + **JetBrains Mono** (`--font-mono` —
-  used heavily for system labels, meta, numbers, the wordmark). Signature personality touches
-  (keep these when restyling): a faint **blueprint grid** + single cobalt corner-glow on
-  `body::before/::after`; a **blinking terminal caret** (`.brand-caret`) after the `eib_` wordmark;
-  mono **section headings** prefixed with `//` (`.topic-heading::before`); **editorial index numbers**
-  on mode cards (`.mode-card::after` via CSS `counter`); a **gold highlight-underline** on the hero
-  keyword (`.hero-accent`); mode/stat cards tinted per-slot via `nth-child` + `--card-accent`.
-  Catalogue images are always shown in their **true colours** (faithful to the official BAMF
-  catalogue), never grayscaled/tinted by the theme. The old retro marquee ticker + hero border-box
-  were removed; the hero is now eyebrow + Bricolage headline + sub + mono feature chips. NOTE:
-  dashboard/ring/score geometry (`.dash*`, `.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377)
-  is preserved so the JS ring animations still work — keep the `stroke-dasharray` values when editing.
-  Several legacy token NAMES (`--lime`, `--gold`, `--blue`, `--green`, `--red`, `--red-text`, `--ink`,
-  spacing) are kept because the `<script>` writes them into inline styles — don't rename them.
-- **Dashboard home:** the home screen is a dashboard with an animated SVG readiness ring
-  showing **Trefferquote (accuracy)**, key stats (Beantwortet/Gemeistert/Fällig), and the
-  integrated Bundesland picker — all inside a single "Übersicht" card. The ring uses
-  `stroke-dasharray`/`dashoffset` with a spring-ease animation; arcs <2% hide the bar to
-  avoid a stray round-cap dot.
+- Visual styling: a **Bento** design system (redesigned 2026-07-16, adapted from a superdesign.dev
+  bento profile brief). One cohesive `<style>` block in `index.html` (no layered overrides — the
+  whole block IS the system). POV: clean, confident bento — big friendly **rounded-[26px] tiles**
+  (`--radius-lg`), full-**pill** buttons/chips, two soft layered shadows (`--shadow-soft`/`--shadow-lift`),
+  a faint **24px dotted grid** on `body` (`--grid-dot`), and a **DISCIPLINED accent duo**: one **teal**
+  primary + one warm **apricot** pop, most tiles white/charcoal with a hairline border. Two themes
+  share the palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is
+  the default look; dark = **charcoal** (canvas `#131418`). NOTE the theme wiring: the JS toggles the
+  `.light` class and DEFAULTS to light (`initTheme` only goes dark if `localStorage.theme==='dark'`);
+  an inline pre-paint `<script>` in `<head>` adds `.light` before first paint to avoid FOUC, and
+  `setTheme` also updates `#themeColorMeta`. Palette → legacy token names (JS writes these into inline
+  styles, DON'T rename): **teal** = `--accent`/`--lime` (`#0F9D8F` light / `#17B5A4` dark; `--teal-deep`,
+  `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold` (`#E07A1F`
+  light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`, `--apricot-tint`); `--blue`
+  = info/time; semantic `--green` (correct) / `--red`+`--red-text` (wrong). `--ink-tile` = the charcoal
+  fill for dark tiles. `.tile` (and dash/mode/etc.) share the tile look and a **springy hover-lift**
+  (`translateY(-4px)`, `--ease-spring` = `cubic-bezier(.34,1.56,.64,1)`). Type: **Bricolage Grotesque**
+  (`--font-head`, display + big numbers) + **Inter** (`--font-body`); `--font-mono` is aliased to Inter
+  (kept only so JS refs resolve). Uppercase tracked (0.16em) micro-labels are tile eyebrows (`.eyebrow`
+  + shared list). Icons stay **inline SVG** via `ICONS`/`_svg()` (NOT Phosphor/Iconify — offline-first,
+  Google Fonts is the only external dep). Catalogue images always show in **true colours**. NOTE:
+  ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved so the JS ring
+  animations still work — keep the `stroke-dasharray` values.
+- **Bento home:** the home screen is a **bento grid** (`.bento-top`, 4-col → collapses to 2/1). Tiles:
+  a 2×2 white **overview anchor** (`#homeStatus`/`.dash` — the Trefferquote readiness ring centered over
+  a Beantwortet/Gemeistert/Fällig stat row, + resume banner + reset); a 2-wide charcoal **CTA tile**
+  (`.cta-tile`, static HTML — "Prüfung starten" launches exam, apricot hero-underline + teal glow); a
+  teal-tint **Bundesland map tile** (`#bundeslandTile`/`renderBundeslandTile` — inline-SVG street grid +
+  apricot `.map-pin` + the moved `#stateSelect` picker + local time); and a solid-teal **mastery stat
+  tile** (`#statTile`/`renderStatTile` — `masteredCount()/pool` + accuracy trend chip). Then the 4 mode
+  tiles (`#modesGrid`), topics/history/glossary as full-width tiles. `renderBundeslandTile()` +
+  `renderStatTile()` are called from `initHomeScreen`, `onStateChange`, the progress-reset, and the
+  quit/home handlers (so mastery/state stay fresh). The ring uses `stroke-dasharray`/`dashoffset` with a
+  spring-ease animation; arcs <2% hide the bar to avoid a stray round-cap dot.
 - **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
   inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
   When adding new icons, add them there (not as emoji or external SVGs).
