@@ -23,31 +23,40 @@
 Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
-- Visual styling: a **"Bold Retro-Modernist editorial layer"** at the END of the `<style>` block
-  overrides/refines earlier component rules. Two themes share the brief's palette — default =
-  **Charcoal** (deep charcoal bg, beige text), `.light` = **Beige signature** (warm beige bg,
-  charcoal text). Palette: Retro Red `#BC2C2C` (primary, mapped to `--lime`), Vintage Blue
-  `#5DA4C9` (`--blue`), Sunny Yellow `#FCD758` (`--gold`), Warm Beige `#F5F1E3`, Charcoal
-  `#2C2C2C`. Brand red `#BC2C2C` is used for **fills** (header bar, badges, buttons — white text
-  on top), but it's too dark to read AS TEXT on the charcoal bg (~2:1), so red text/icons use the
-  `--red-text` token instead: a brightened coral-red `#F2705C` on dark, the brand `#BC2C2C` on
-  light (where it reads fine). Use `--red-text` for any red text/icon; keep `--lime`/`--red` for
-  fills and borders. The `--ink` token (= `--border`) is the heavy border/offset-shadow color — a
-  **muted warm taupe** (`#8E887A` on dark, `#5A5246` on light), deliberately lower-contrast than
-  the body text so borders don't read as stark white/black; `--text` stays full beige/charcoal
-  for legibility. Hard 90° edges everywhere (`--radius*: 0`, plus a global `border-radius:0`); solid
-  offset shadows (`--shadow-sm/md/lg` = Npx Npx 0 `--ink`), NO soft shadows/rounded corners.
-  Fonts: Montserrat (`--font-head`, 700–900 uppercase tight headlines) + Open Sans (`--font-body`/
-  `--font-mono` utility labels). Catalogue images are always shown in their **true colours**
-  (faithful to the official BAMF catalogue), never grayscaled/tinted by the theme. Home has an infinite
-  marquee ticker (`.ticker`) and the hero shows a watermark via `::after`. When restyling, prefer
-  editing the editorial layer and the `:root`/`html.light` tokens. NOTE: dashboard/ring/score
-  geometry (`.dash*`, `.ready-ring*`, `.score-ring*`) lives in this layer — keep it when editing.
-- **Dashboard home:** the home screen is a dashboard with an animated SVG readiness ring
-  showing **Trefferquote (accuracy)**, key stats (Beantwortet/Gemeistert/Fällig), and the
-  integrated Bundesland picker — all inside a single "Übersicht" card. The ring uses
-  `stroke-dasharray`/`dashoffset` with a spring-ease animation; arcs <2% hide the bar to
-  avoid a stray round-cap dot.
+- Visual styling: a **Bento** design system (redesigned 2026-07-16, adapted from a superdesign.dev
+  bento profile brief). One cohesive `<style>` block in `index.html` (no layered overrides — the
+  whole block IS the system). POV: clean, confident bento — big friendly **rounded-[26px] tiles**
+  (`--radius-lg`), full-**pill** buttons/chips, two soft layered shadows (`--shadow-soft`/`--shadow-lift`),
+  a faint **24px dotted grid** on `body` (`--grid-dot`), and a **DISCIPLINED accent duo**: one **teal**
+  primary + one warm **apricot** pop, most tiles white/charcoal with a hairline border. Two themes
+  share the palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is
+  the default look; dark = **charcoal** (canvas `#131418`). NOTE the theme wiring: the JS toggles the
+  `.light` class and DEFAULTS to light (`initTheme` only goes dark if `localStorage.theme==='dark'`);
+  an inline pre-paint `<script>` in `<head>` adds `.light` before first paint to avoid FOUC, and
+  `setTheme` also updates `#themeColorMeta`. Palette → legacy token names (JS writes these into inline
+  styles, DON'T rename): **teal** = `--accent`/`--lime` (`#0F9D8F` light / `#17B5A4` dark; `--teal-deep`,
+  `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold` (`#E07A1F`
+  light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`, `--apricot-tint`); `--blue`
+  = info/time; semantic `--green` (correct) / `--red`+`--red-text` (wrong). `--ink-tile` = the charcoal
+  fill for dark tiles. `.tile` (and dash/mode/etc.) share the tile look and a **springy hover-lift**
+  (`translateY(-4px)`, `--ease-spring` = `cubic-bezier(.34,1.56,.64,1)`). Type: **Bricolage Grotesque**
+  (`--font-head`, display + big numbers) + **Inter** (`--font-body`); `--font-mono` is aliased to Inter
+  (kept only so JS refs resolve). Uppercase tracked (0.16em) micro-labels are tile eyebrows (`.eyebrow`
+  + shared list). Icons stay **inline SVG** via `ICONS`/`_svg()` (NOT Phosphor/Iconify — offline-first,
+  Google Fonts is the only external dep). Catalogue images always show in **true colours**. NOTE:
+  ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved so the JS ring
+  animations still work — keep the `stroke-dasharray` values.
+- **Bento home:** the home screen is a **bento grid** (`.bento-top`, 4-col → collapses to 2/1). Tiles:
+  a 2×2 white **overview anchor** (`#homeStatus`/`.dash` — the Trefferquote readiness ring centered over
+  a Beantwortet/Gemeistert/Fällig stat row, + resume banner + reset); a 2-wide charcoal **CTA tile**
+  (`.cta-tile`, static HTML — "Prüfung starten" launches exam, apricot hero-underline + teal glow); a
+  teal-tint **Bundesland map tile** (`#bundeslandTile`/`renderBundeslandTile` — inline-SVG street grid +
+  apricot `.map-pin` + the moved `#stateSelect` picker + local time); and a solid-teal **mastery stat
+  tile** (`#statTile`/`renderStatTile` — `masteredCount()/pool` + accuracy trend chip). Then the 4 mode
+  tiles (`#modesGrid`), topics/history/glossary as full-width tiles. `renderBundeslandTile()` +
+  `renderStatTile()` are called from `initHomeScreen`, `onStateChange`, the progress-reset, and the
+  quit/home handlers (so mastery/state stay fresh). The ring uses `stroke-dasharray`/`dashoffset` with a
+  spring-ease animation; arcs <2% hide the bar to avoid a stray round-cap dot.
 - **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
   inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
   When adding new icons, add them there (not as emoji or external SVGs).
