@@ -88,22 +88,43 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   adds bilingual `explanation_de`/`explanation_en` (generated from the templated stem + correct
   answer). Every question now has both explanations.
 
+## Repo Layout
+
+Root holds exactly what GitHub Pages serves; everything else is foldered.
+
+```
+/                 live site (served from main root)
+  index.html      production app; loads questions.json at runtime
+  questions.json  question data, source of truth
+  sw.js           service worker (offline; network-first for HTML/questions.json)
+  manifest.json   PWA manifest (name, icons, theme); linked from index.html
+  favicon.svg, og-image.png (+ og-image.svg source)
+  .nojekyll       stops Pages running Jekyll
+  CLAUDE.md       this file
+img/              image-question assets + ATTRIBUTIONS.md, icons/, states/
+tools/            data-generation + validation scripts (not served)
+docs/             project notes (TODO.md, BUG_AUDIT_MEMORY.md)
+legacy/           May 28 build; not production, do NOT publish from it
+```
+
+Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.json`,
+`./favicon.svg`, `./manifest.json`, `./img/icons/icon-{192,512}.png` by path.
+
 ## Tracked Files
 
-- `TODO.md` - current project status + open TODOs (image assets, appExtra verification,
-  deferred features). Check/update this when picking up or finishing work.
 - `index.html` - production app served by GitHub Pages; loads `questions.json` at runtime.
 - `questions.json` - question data, source of truth. Generated from the good `QUESTIONS`
-  data via `tools/extract-questions.js` (NOT from `questions-final-extended.json`).
+  data via `tools/extract-questions.js` (NOT from `legacy/questions-final-extended.json`).
   Each question carries a `category` (see `tools/categorize.js`).
-- `img/` - real image-question assets (+ `ATTRIBUTIONS.md` fetch manifest). Some assets are
-  still pending fetch (egress blocked Wikimedia); the app shows a "Bild fehlt" fallback for any
-  missing image and otherwise works.
+- `img/` - real image-question assets (+ `img/ATTRIBUTIONS.md` source manifest).
+- `docs/TODO.md` - current project status + open TODOs. Check/update this when picking
+  up or finishing work.
+- `docs/BUG_AUDIT_MEMORY.md` - concise audit/rollback memory.
 - `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
   image questions to real asset paths and descriptive labels.
 - `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
-  `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see ATTRIBUTIONS.md).
+  `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
   (dictionary-based: templated stems + translated semantic options, verbatim proper nouns).
 - `tools/explain-states.js` - adds bilingual `explanation_de`/`explanation_en` to the 150
@@ -113,10 +134,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
-- `einbuergerungstest-berlin.html` - May 28 standalone source file; currently not production.
-- `questions-final-extended.json` - May 28 JSON source; known to contain corrupted data. Do NOT use.
-- `regen_questions.js` - May 28 regen tool; do not run until JSON is repaired.
-- `BUG_AUDIT_MEMORY.md` - concise audit/rollback memory.
+- `legacy/` - May 28 build (standalone HTML, corrupted JSON, old regen tool). See
+  `legacy/README.md`. Do NOT publish from it.
 
 ## Image Questions
 
@@ -154,9 +173,9 @@ Before publishing any app change:
 
 If reviving the May 28 architecture:
 
-1. Repair `questions-final-extended.json` first.
+1. Repair `legacy/questions-final-extended.json` first.
 2. Confirm the six image questions keep valid `option_images`: Q21, Q130, Q209, Q226, Q311, Q318.
-3. Run `node regen_questions.js`.
+3. Run `node legacy/regen_questions.js`.
 4. Copy the regenerated source to `index.html`.
 5. Re-run the validation checklist.
 6. Decide explicitly whether PWA, bookmarks, focus mode, dashboard, TTS, and tooltips belong in production.

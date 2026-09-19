@@ -16,7 +16,7 @@ Deliberate, scoped follow-up to the audit. NOT a revival of the May 28 architect
 - Locally authored assets committed: 4 ballots (Q130) + exact-spec EU flag/distractor (Q226).
   19 real assets (coats of arms, maps, UN/NATO flags, Reichstag photo) are PENDING — the build
   env's egress blocked Wikimedia. App shows a "Bild fehlt" fallback for any missing image. See
-  `ATTRIBUTIONS.md` for the fetch manifest.
+  `img/ATTRIBUTIONS.md` for the fetch manifest.
 - Validation: `node tools/validate.js` passes (320 contiguous, no dupes, structure, spot-checks);
   extracted `<script>` passes `node --check`; SR/session logic unit-tested against shims.
 
@@ -66,8 +66,8 @@ node -e "/* validate 320 questions, IDs 1-320, no duplicates, image question IDs
 
 Repair order if reviving the May 28 architecture:
 
-1. Repair `questions-final-extended.json` first.
-2. Run `node regen_questions.js`.
+1. Repair `legacy/questions-final-extended.json` first.
+2. Run `node legacy/regen_questions.js`.
 3. Copy regenerated app to `index.html`.
 4. Validate script parse and dataset invariants.
 5. Fix `Alle Fragen`, timer cleanup, and decide whether persistence/focus mode should stay.

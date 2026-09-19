@@ -37,7 +37,7 @@ general coats of arms / maps / flags / Reichstag photo (19), plus the **state Wa
 image questions** for the 15 imported states (~120, under `img/states/<code>/`).
 - **Blocker:** environment egress blocks `upload.wikimedia.org` / `commons.wikimedia.org`.
 - **To resume:** allowlist those hosts, fetch per the manifest, run `node tools/validate.js`
-  until the warning count is 0. See `ATTRIBUTIONS.md`.
+  until the warning count is 0. See `img/ATTRIBUTIONS.md`.
 - Already done locally: 4 Q130 ballots + exact-spec EU flag/distractor.
 
 ### 2. Redesign: Bold Retro-Modernist editorial system — _✅ DONE (2026-06-26)_
