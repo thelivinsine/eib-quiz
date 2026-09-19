@@ -106,7 +106,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`.btn-*`, the header `.seg-btn` switches, `#stateSelect`); `#stateSelect` is `font-size: 16px` so iOS Safari
   does not zoom on focus; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
   header respect `env(safe-area-inset-*)`. Under 620px the mode cards become a single-column list
-  (icon beside the title), the three overview stats stay three columns, and the exam timer goes to
+  (icon beside the title), the three overview stats stay three columns, the quiz readout row wraps
+  without its hairlines, and the exam timer goes to
   one line. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
 - **The home screen is four named sections, not a grid of tiles** (restructured 2026-09-19).
@@ -152,9 +153,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     single row separated by **hairlines** (`.dash-stats` border-left, `.dash-stat + .dash-stat`);
     they were four nested rounded wells inside a rounded card, which is the containers-inside-
     containers look. There is no `OVERVIEW` eyebrow — the section heading above already says it,
-    and the `dash.eyebrow` key is gone. `Reset progress` sits right-aligned on the card's own
-    footer rule (`.dash-foot`), out of the reading path, rather than centred under the numbers
-    where it read as the card's conclusion.
+    and the `dash.eyebrow` key is gone. `Reset progress` is a **corner glyph**
+    (`.progress-reset`, `ICONS.reset`, absolutely positioned top-right of `.dash`, 44px square
+    so it keeps its touch target, `title` + `aria-label` for its name). It had a footer rule and
+    a 44px band of its own — a whole row for something you press once a year. `.dash-foot` and
+    `dash-stats`' right padding is what keeps the band clear of it.
   - The counter for questions due is the one stat allowed to draw attention
     (`.dash-stat--due`): **a coloured numeral only**. It was an apricot-tinted slab, which on
     charcoal reads as brown mud and buys no more attention than the colour alone. The others are
@@ -167,15 +170,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     and state modes it governs — not in the overview card, which only reports.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
-- **The navigator groups a long ordered round by category.** `renderQuestionNav()` builds
+- **The navigator offers three views, and the reader picks one** (2026-09-19). `#navActions`
+  holds a `.seg.qnav-seg` — the same segmented control as the header switches — with **Linear /
+  Shuffle / Topics**. `state.navView` (`'linear' | 'shuffle' | 'categories'`) is what the
+  navigator draws; `state.shuffled` stays the ORDER, so `setNavView()` calls `shuffleRound()`
+  only when the order actually has to change and otherwise just repaints. Both are persisted in
+  the session and both reset on every entry into a round. Grouping is no longer inferred from
+  the round's length — it happens when the reader asks for it.
+- **The navigator groups a round by category when asked.** `renderQuestionNav()` builds
   `<details class="qnav-group">` per `q.category` (state questions group under the state name).
   The group holding the current question is always open; a group the reader opened by hand stays
   open, and the *previously* active one collapses — otherwise a lap of the round leaves every
   category expanded. Open state is carried across re-renders by reading the DOM about to be
   replaced, plus `navLastActiveKey`; there is no separate store to keep in sync.
-  - **Groups appear only when they earn their keep.** A shuffled round, a round of 40 or fewer,
-    or a round that is all one category renders the flat grid — one `<details>` over the whole
-    list is a lid, not a grouping.
+  - **Topics is offered only when there is more than one.** A round that is all one category
+    drops the button and renders the flat grid — one `<details>` over the whole list is a lid,
+    not a grouping.
   - `.question-nav-grid` is `repeat(auto-fill, minmax(44px, 1fr))`. Measured: 4 columns of
     47px in the 256px sidebar (its own scrollbar takes ~17px of the content box) and 14 across
     in the full-width strip below 940px. Cells are finger-sized in both.
@@ -195,7 +205,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   every answer by question id
   (answers are keyed by POSITION, so a re-order silently reassigns them otherwise), and keeps the
   reader on the question they were looking at. Every entry into a round resets the flag; the flag
-  is persisted in the session so a resume renders the navigator the right way.
+  is persisted in the session so a resume renders the navigator the right way. It is reached
+  through `setNavView()`, not from a button of its own.
 - **The question navigator is bounded by the viewport, never by its contents.** 300 cells in five
   columns is a 2700px column: the sidebar grew to match, `position: sticky` stopped meaning
   anything, and the numbers painted down the page outside the card. `.quiz-sidebar` caps at
@@ -237,14 +248,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     page scroll are gone; `displayQuestion()` resets `#questionBody.scrollTop` instead, and
     `#timer` / `.quiz-sidebar` are no longer `position: sticky` — there is nothing to stick to.
 - **Inside a session the header shows a back button, not the logo**, and the only buttons under
-  the question are Back and Next. `#quitBtn` is gone; `#sessionBack` carries it, with one
+  the question are Previous (left) and Next (right) — the row maps to the direction each
+  button moves you. `#quitBtn` is gone; `#sessionBack` carries it, with one
   branch — from the quiz it confirms first, from the results screen it goes straight home.
   Both buttons are driven by **`disabled`, never `display`**, so the pinned row cannot change
   height as you answer, and the Enter shortcut reads the same property the button does.
   `#sessionBack`'s accessible name is `nav.backAria` ("Back to the start page"), **not** the
-  `nav.back` on its face: `#backBtn` is also called "Back" and is also on screen, and one of
-  the two abandons the round. The aria label still contains the visible word, so WCAG 2.5.3
-  holds. Leaving a session cancels speech on **both** branches — the results-screen path
+  `nav.back` on its face: one of the two buttons on screen abandons the round. The aria label
+  still contains the visible word, so WCAG 2.5.3 holds. `#backBtn` says **`quiz.prev`**
+  (Previous / Vorherige), not "Back"/"Zurück" — two buttons reading "Zurück" in German, one of
+  which leaves the round, is the collision this key exists to avoid. Leaving a session cancels speech on **both** branches — the results-screen path
   silently did not, while the Home button beside it did.
 - **The quiz stats bar's SCORE is accuracy so far; the results screen's is the whole round.**
   They are different numbers on purpose and neither should be "fixed" to match the other.
@@ -253,8 +266,40 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the round's length, because a round you left 260 questions blank in is not 75%.
 - **The navigator states progress once.** It used to carry a second copy of `.quiz-progress`,
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
-  number a fourth time. `updateProgress()` writes to one element, `#questionNum` carries its
-  own total (`quiz.questionOf`), and the stats bar is three columns.
+  number a fourth time. `updateProgress()` writes to one element and `#questionNum` carries its
+  own total (`quiz.questionOf`).
+- **The quiz chrome above the card is a progress bar, then one line of readouts** (2026-09-19).
+  `.quiz-progress` is the first child of `#quizScreen`, above `#statsBar`, and spans the card
+  and the navigator. The four readouts — correct, wrong, score, **answered `n / total`** — are
+  **not tiles**: `.stat` is a value and a label on one line, separated by hairlines, the same
+  move as the home overview band. Four boxed cards cost a whole row of height the question card
+  needed. The answered count came from the navigator's header (`.sidebar-count` /
+  `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
+  - **The keyboard hint sits beside the readouts, not inside the card.**
+    `#keyboardHintContainer` is the second child of `.quiz-topbar`; as a pill in the card it
+    pushed the options down and then moved them back up when it was dismissed. It is hidden
+    under `@media (hover: none)` **and** below 940px — there is no keyboard to hint at on a
+    phone or a tablet, and in a narrow window it wraps the topbar onto a second row.
+  - **The card is compact so the scrollbar is the exception, not the default.**
+    `.question-card` is `padding: 14px` (the documented 16px-card / 10px-option concentric
+    pair), the meta row and `.quiz-nav` take `--spacing-sm`, and `.options` takes `--spacing-md`.
+    At 994x734 a four-option text question fits with no scroller at all; a four-IMAGE question
+    or an open explanation still scrolls `.question-body`, which is what it is for.
+- **The sizing scale was tightened for a page of sections** (2026-09-20). `--spacing-lg`
+  24 -> **20**, `--spacing-xl` 32 -> **28**, `--spacing-2xl` 48 -> **40**; `.home-section`
+  56px -> 40px. The steps were set when the home screen was a wall of bento tiles. `--spacing-xs`
+  / `-sm` / `-md` are the rhythm INSIDE a control and did not move. Display numbers came down
+  one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
+  1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
+  (56 -> 50px), `.btn-lg` (50 -> 46px) and the glossary rows.
+  - **The header's switches are the one deliberate exception to the 44px floor.** `.seg-btn`
+    is 30px (36px under `@media (pointer: coarse)`), and `.brand` / `.session-back` are 38px
+    (44px on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
+    everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px.
+    WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the rest of the app holds to.
+  - **In a session the header drops its bottom hairline** (`body.in-session header`). The page
+    does not scroll there, so there is nothing to separate the header from — the rule was just
+    a line drawn across a locked screen.
 - **UI language: English by default, German optional** (added 2026-09-19). The switch is the
   left segmented control in the header (`#langEn` / `#langDe`), persisted under `localStorage`
   key `eib_lang`, defaulting to `en`.
