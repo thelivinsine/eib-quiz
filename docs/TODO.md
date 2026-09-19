@@ -257,6 +257,15 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   option 0.9rem in a 42px row (48px on coarse pointers) with a 26px letter chip, explanation
   0.86rem, and the speak/translate buttons 34px.
 
+## Session developments (2026-09-20, mobile proportions)
+
+- Expanded, the mobile navigator is capped so the whole panel stays under **35%** of the screen
+  (`.sidebar-body.expanded` at 26svh); measured 34.2% at 360x780 with the question still above it.
+- The quiz readouts got **bigger** (1.3rem desktop / 1.15rem mobile) and the row tightened to a
+  9px gap and 0.58rem labels so all four stay on one line at 360px in DE as well as EN.
+- The mobile header got **much smaller**: seg buttons 26px, back button 32px, brand mark 28px,
+  header padding 6px — 44px total header height, down from ~56.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).

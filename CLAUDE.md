@@ -106,9 +106,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`.btn-*`, the header `.seg-btn` switches, `#stateSelect`); `#stateSelect` is `font-size: 16px` so iOS Safari
   does not zoom on focus; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
   header respect `env(safe-area-inset-*)`. Under 620px the mode cards become a single-column list
-  (icon beside the title), the three overview stats stay three columns, the quiz readout row wraps
-  without its hairlines, and the exam timer goes to
-  one line. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
+  (icon beside the title), the three overview stats stay three columns, and the exam timer goes
+  to one line. The quiz readouts drop their hairlines and tighten to a 9px gap so all four stay
+  on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
+  the numbers went UP to 1.15rem rather than down. The header goes the other way: it is a strip
+  you glance at, so `.header-controls .seg-btn` is 26px, `.session-back` 32px and the brand mark
+  28px — stated in the 620px block, after the coarse-pointer floor, so source order decides. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
 - **The home screen is four named sections, not a grid of tiles** (restructured 2026-09-19).
   Each `<section class="home-section">` opens with a `.section-head` (`<h2>` + one line of
@@ -314,8 +317,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     are 8px apart, and the footer stands 14px clear of the last option. Chrome crowds itself;
     the question and its answers get the room.
   - **Expanded below 940px the panel takes a SHARE of the screen, not all of it.**
-    `.sidebar-body.expanded` caps at `42svh` (with a `vh` line first) and the numbers scroll
-    inside it, so the question stays on screen above and the card shrinks into what is left.
+    `.sidebar-body.expanded` caps at `26svh` (with a `vh` line first), which puts the WHOLE
+    panel — header and padding included — just under **35%** of the screen, and the numbers
+    scroll inside it, so the question stays on screen above and the card shrinks into what is
+    left.
     It used to cover the card outright (`position: absolute; inset: 0`), which was right when
     the strip was at the top of the screen and wrong now that it is at the bottom — you lost
     the question you were answering the moment you opened the overview.
