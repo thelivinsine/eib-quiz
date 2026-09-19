@@ -189,5 +189,6 @@ sets.
 - **Egress:** verifying the live site / fetching Wikimedia & GitHub raw is blocked by the
   environment egress allowlist. Pages deploy status is checkable via the GitHub Actions API
   ("pages build and deployment" runs).
-- **Don't shuffle with `sort(() => Math.random() - 0.5)`** — it is heavily biased. Use the
-  `sample()` helper in `index.html`.
+- **Code gotchas** (biased shuffle, shadowed globals, mode-key renames, `lang="en"`) live in
+  the Gotchas section of `CLAUDE.md`, which loads into every session. The reasoning behind
+  each one is in the 2026-09-19 session block above.
