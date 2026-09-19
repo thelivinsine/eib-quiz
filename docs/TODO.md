@@ -275,6 +275,18 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
 - **The rule above Previous/Next is gone** everywhere, and the buttons are 38px / 0.84rem.
 - **Below 940px the card stretches again** so the two buttons hold one position on every
   question, right above the overview strip (measured identical at 677px on Q1 and Q2 at 375px).
+- **Contrast fixed in both themes.** With the card gone, an option is a tile on the CANVAS:
+  light takes `--surface` (#FFF on #F2F3F5 — it was `--surface2`, a 1.02 step and the whole of
+  the washed-out look) and dark goes one rung higher to `--surface2` (1.36), chip `--surface3`.
+- **Icon-only buttons look like buttons again** (speak, translate, hint dismiss, home reset):
+  borderless-until-hover made them read as decorations.
+- **The question block is centred** in the room it has (`justify-content: safe center`, plus
+  `margin-block: auto` on the content-sized card above 940px), and the meta line moved inside
+  `.question-body` so it travels with the question.
+- **Thin scrollbars** (6px, `--border-hover` thumb) on every scroller the app owns.
+- **The explanation lost its 3px left accent**; the hairline carries the hue.
+- Below 940px the hint container is hidden outright and the layout gap drops to 8px, so
+  Previous/Next sit 24px above the overview strip rather than 86px.
 - **More air around the question**: 3px progress bar, `--spacing-xl` between the status row and
   the question, `--spacing-lg` between the question and its options, `--spacing-lg` page padding
   in session.

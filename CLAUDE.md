@@ -72,12 +72,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Elevation and hover point in opposite directions in light mode.** Raised surfaces go **up**
     towards white (`--surface` above `--canvas`, `--surface2` inset inside it); hover goes **down**
     into grey (`--hover`). In dark, both go up. Hover is a fill change, never a lift.
-  - **An answer option is a well INSIDE the card, so it takes `--surface2`.** It was
-    `--surface` inside a `--surface` card: in light that is white on white, separated by one
-    hairline. Its letter chip takes `--surface3` so the ladder stays concentric (card →
-    option → chip), and the dimmed-after-answering state is a **text tier only** — the fill it
-    used to borrow is now the base. Hover is `--surface3` in both themes: darker than
-    `--surface2` in light, lighter in dark, so one value steps the right way on both ladders.
+  - **An answer option is a tile ON THE CANVAS** (2026-09-20), because the card around it is
+    gone. In light it takes `--surface` (#FFF, the measured 1.11 page step) — it was
+    `--surface2`, which is #F5F6F8 on a #F2F3F5 page, a 1.02 step and the whole of the
+    "washed out" look. **Dark carries it one rung higher** (`--surface2`, 1.36 above the
+    canvas, chip `--surface3`): `--surface` at 1.16 is the right step for a big tile and too
+    quiet for a 42px row you are meant to reach for, and the dark ramp has the room light does
+    not. Hover is `--hover`, the token that already knows each theme's direction. The
+    dimmed-after-answering state is a **text tier only**.
   - **Every text tier is a solid hex value, never opacity** — `--text` / `--sub-text` / `--muted` /
     `--faint`, all clearing 4.5:1 on both `--surface` and `--canvas` in both themes.
     `node --test tools/contrast.test.mjs` reads the tokens out of `index.html` and asserts it.
@@ -324,9 +326,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     inside the card the label row gives the question `--spacing-md`, the question gives the
     options `--spacing-lg`, and options are 8px apart. Chrome crowds itself; the question and
     its answers get the room.
-  - **The label row above the question is plain text.** `.question-category` is `--faint` after
-    a `·`, not a bordered pill, and the speak/translate buttons are borderless until hover — a
-    chip and two outlined buttons made the row above the question busier than the question.
+  - **The label row above the question is plain text, and it travels WITH the question.**
+    `.question-category` is `--faint` after a `·`, not a bordered pill. The row lives inside
+    `.question-body`, so it is part of the centred block rather than pinned at the top with the
+    slack under it.
+  - **An icon-only control keeps its hairline and fill.** Speak, translate, the hint's dismiss
+    and the home card's reset were quiet to the point of not looking clickable; each is a
+    bordered pill on the tile fill again. Quiet is a colour and a size, not the absence of a
+    button.
+  - **The question block is CENTRED in the room it has.** `.question-body` is a flex column
+    with `justify-content: safe center`, and above 940px the content-sized card adds
+    `margin-block: auto`. `safe` is load-bearing: plain `center` in a scroller clips content
+    that outgrows the box at the TOP, with no way to scroll back up; a browser that does not
+    know the keyword drops the declaration and gets top alignment, which is a degradation
+    rather than a break.
+  - **Every scroller the app owns gets one thin bar** — `scrollbar-width: thin` plus a 6px
+    `::-webkit-scrollbar` with a `--border-hover` thumb on a transparent track, sitting in the
+    gutter each scroller already reserves.
+  - **The explanation is a tinted box with a hairline, not a slab.** The 3px left accent said
+    right-or-wrong a third time, after the tint and the green/red header; the hairline takes
+    the hue instead.
   - **Expanded below 940px the panel takes a SHARE of the screen, not all of it.**
     `.sidebar-body.expanded` caps at `26svh` (with a `vh` line first), which puts the WHOLE
     panel — header and padding included — just under **35%** of the screen, and the numbers

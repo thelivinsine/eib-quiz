@@ -394,7 +394,7 @@
            stretched down the screen with its buttons pinned to the bottom. It can
            still SHRINK, which is what keeps .question-body's scroller working on a
            long question. */
-        body.in-session .question-card { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
+        body.in-session .question-card { flex: 0 1 auto; min-height: 0; margin-block: auto; display: flex; flex-direction: column; }
         /* The only element on the quiz screen with a scrollbar. `contain` stops a
            flick past the last option rubber-banding the locked page behind it. */
         /* hidden on x: the pick animation scales the chosen option by 1.5%, which
@@ -404,9 +404,40 @@
            the text, rather than hard against the last word of the question. The
            negative margin is what puts it there; padding-right alone would just
            narrow the content and leave the bar where it was. */
+        /* The question sits in the MIDDLE of whatever room it has, rather than at the
+           top with the slack dumped underneath it. `safe` is what makes that legal in a
+           scroller: without it, centred content that outgrows the box is clipped at the
+           top with no way to scroll back up. A browser that does not know the keyword
+           drops the declaration and gets the old top alignment, which is a degradation
+           rather than a break. Children do not shrink — a squashed image is not
+           centring. */
         .question-body {
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
             padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
+            display: flex; flex-direction: column; justify-content: safe center;
+        }
+        .question-body > * { flex-shrink: 0; }
+
+        /* One thin bar for every scroller the app owns. The platform default is a
+           15px slab against the last word of the question; this is 6px of hairline
+           in the gutter each scroller already reserves. */
+        .question-body, #questionNavGrid, .sidebar-body, body.in-session #endScreen.active {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-hover) transparent;
+        }
+        .question-body::-webkit-scrollbar,
+        #questionNavGrid::-webkit-scrollbar,
+        .sidebar-body::-webkit-scrollbar,
+        body.in-session #endScreen.active::-webkit-scrollbar { width: 6px; height: 6px; }
+        .question-body::-webkit-scrollbar-track,
+        #questionNavGrid::-webkit-scrollbar-track,
+        .sidebar-body::-webkit-scrollbar-track,
+        body.in-session #endScreen.active::-webkit-scrollbar-track { background: transparent; }
+        .question-body::-webkit-scrollbar-thumb,
+        #questionNavGrid::-webkit-scrollbar-thumb,
+        .sidebar-body::-webkit-scrollbar-thumb,
+        body.in-session #endScreen.active::-webkit-scrollbar-thumb {
+            background: var(--border-hover); border-radius: var(--radius-pill);
         }
         /* Nothing scrolls past the timer or the navigator any more, so neither
            has anything to stick to. */
@@ -664,8 +695,8 @@
             position: absolute; top: 6px; right: 6px;
             display: inline-flex; align-items: center; justify-content: center;
             width: 44px; height: 44px;
-            background: none; border: 1px solid transparent; border-radius: var(--radius-pill);
-            color: var(--faint);
+            background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-pill);
+            color: var(--muted);
             transition: color 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease);
         }
         .progress-reset svg { width: 17px; height: 17px; }
@@ -994,10 +1025,11 @@
         }
         .question-category::before { content: '·'; margin-right: 8px; color: var(--faint); }
         .question-meta-actions { display: flex; gap: 6px; flex-shrink: 0; }
-        /* Quiet until you reach for them: they are tools for the question, not
-           part of it. The border and fill arrive on hover. */
+        /* These are buttons and have to look like buttons: an icon floating on the
+           page is a decoration. They stay small and quiet — a hairline and the tile
+           fill — but never borderless. */
         .speak-btn, .bilingual-toggle {
-            border: 1px solid transparent; background: none; color: var(--muted);
+            border: 1px solid var(--border); background: var(--surface); color: var(--sub-text);
             font-size: 0.72rem; font-weight: 600;
             min-height: 34px; padding: 0 10px; border-radius: var(--radius-pill);
             display: inline-flex; align-items: center; justify-content: center;
@@ -1014,7 +1046,7 @@
         }
         .speak-btn svg, .bilingual-toggle svg { width: 16px; height: 16px; }
         .bilingual-toggle { gap: 6px; }
-        .speak-btn:hover, .bilingual-toggle:hover { border-color: var(--border); background: var(--surface2); color: var(--text); }
+        .speak-btn:hover, .bilingual-toggle:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .bilingual-toggle.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
 
         .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
@@ -1032,26 +1064,37 @@
             padding: 9px 11px;
             /* concentric: a 16px card with 14px of padding holds a 10px option. */
             border: 1px solid var(--border); border-radius: var(--radius-sm);
-            /* --surface2, not --surface: an option is a well inside the card, and
-               painting it the card's own fill left white-on-white in light mode,
-               held apart by one hairline. 1.08 light / 1.12 dark, both above the
-               1.05 nesting floor. */
-            background: var(--surface2); color: var(--text);
+            /* --surface, not --surface2: there is no card around these any more, so
+               an option is a tile on the CANVAS, and the canvas is what it has to
+               separate from. --surface2 in light is #F5F6F8 on a #F2F3F5 page — 1.02,
+               which is the washed-out look; --surface is the measured 1.11 tile step.
+               Dark gets the same rung for the same reason. */
+            background: var(--surface); color: var(--text);
             font-size: 0.9rem; line-height: 1.4;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
+        /* Dark carries the option one rung higher than light does. --surface is 1.16
+           above the canvas, which is the right step for a big tile and too quiet for a
+           42px row you are meant to reach for; --surface2 is 1.36 and reads as a card
+           on the page. Light has no such room (white is the top of its ramp), and does
+           not need it — #FFF on #F2F3F5 is already the measured tile step. */
+        html:not(.light) .option-btn { background: var(--surface2); }
+        html:not(.light) .opt-letter { background: var(--surface3); }
+        html:not(.light) .option-btn:hover:not(:disabled) { background: var(--surface3); }
+
         @media (hover: hover) {
-            /* --surface3 in both themes: darker than --surface2 in light, lighter in
-               dark, so one value steps the right way on both ladders. */
-            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--surface3); }
+            /* --hover is the token that already knows which way each theme steps:
+               DOWN into grey in light, UP in dark. */
+            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--hover); }
         }
-        .option-btn:active:not(:disabled) { background: var(--surface3); }
+        .option-btn:active:not(:disabled) { background: var(--hover); }
         .option-btn:disabled { cursor: default; }
         .opt-letter {
             flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
             font-weight: 600; font-size: 0.76rem;
-            color: var(--muted); background: var(--surface3); border: 1px solid var(--border);
+            /* The chip is the well inside the option now that the option is the tile. */
+            color: var(--muted); background: var(--surface2); border: 1px solid var(--border);
             transition: border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
         @media (hover: hover) {
@@ -1081,16 +1124,21 @@
         .option-btn--image.img-missing .opt-img::after { content: attr(data-missing); font-size: 0.78rem; color: var(--muted); }
         .option-btn--image.img-missing .opt-img img { display: none; }
 
-        .keyboard-hint { position: relative; padding: 5px 6px 5px 12px; background: var(--surface2); border: 1px solid var(--border-soft); border-radius: var(--radius-pill); font-size: 0.72rem; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+        .keyboard-hint { position: relative; padding: 5px 6px 5px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: 0.72rem; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
-        kbd { font-size: 0.68rem; padding: 2px 7px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
-        .keyboard-hint-close { margin-left: 4px; background: none; border: none; color: var(--muted); font-size: 1rem; line-height: 1; padding: 0 6px; }
-        .keyboard-hint-close:hover { color: var(--text); }
+        kbd { font-size: 0.68rem; padding: 2px 7px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
+        .keyboard-hint-close {
+            margin-left: 4px; width: 22px; height: 22px; flex-shrink: 0;
+            display: grid; place-items: center;
+            background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-pill);
+            color: var(--muted); font-size: 0.95rem; line-height: 1;
+        }
+        .keyboard-hint-close:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
 
-        .explanation { display: none; margin-top: var(--spacing-md); padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface2); border-left: 3px solid var(--accent); animation: fadeUp 0.28s var(--ease) both; }
+        .explanation { display: none; margin-top: var(--spacing-md); padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); animation: fadeUp 0.28s var(--ease) both; }
         .explanation.show { display: block; }
-        .explanation.correct { border-left-color: var(--green); background: var(--green-dim); }
-        .explanation.incorrect { border-left-color: var(--red); background: var(--red-dim); }
+        .explanation.correct { border-color: var(--green); background: var(--green-dim); }
+        .explanation.incorrect { border-color: var(--red); background: var(--red-dim); }
         .explanation-header { font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; margin-bottom: 5px; letter-spacing: -0.01em; }
         .explanation.correct .explanation-header { color: var(--green); }
         .explanation.incorrect .explanation-header { color: var(--red-text); }
@@ -1276,9 +1324,15 @@
             body.in-session .question-card { flex: 1; }
             .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
-            /* Below this the topbar wraps and the hint costs the card a whole row,
-               for a tip that is only ever shown once. */
+            /* Below this the hint costs the card a row for a tip that is only ever
+               shown once — and there is no keyboard to hint at. The CONTAINER goes
+               too: hidden content still left its top margin between the buttons and
+               the overview strip. */
             .keyboard-hint { display: none; }
+            #keyboardHintContainer { display: none; }
+            /* The buttons and the strip below them are one band at the bottom of the
+               screen, so they sit close enough to read as one. */
+            .quiz-layout { gap: var(--spacing-sm); }
             .sidebar-chevron { display: grid; }
             .sidebar-chevron.open { transform: rotate(180deg); }
             .sidebar-body { display: none; }
@@ -1517,6 +1571,7 @@
                     </div>
 
                     <div class="question-card">
+                        <div class="question-body" id="questionBody">
                         <div class="question-meta">
                             <div>
                                 <span class="question-num" id="questionNum"></span>
@@ -1527,8 +1582,6 @@
                                 <button class="bilingual-toggle" id="bilingualToggle"></button>
                             </div>
                         </div>
-
-                        <div class="question-body" id="questionBody">
                         <div class="question-text" id="questionText" tabindex="-1" lang="de"></div>
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
