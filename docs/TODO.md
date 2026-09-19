@@ -211,7 +211,23 @@ Reworked the quiz screen's chrome against a screenshot review, plus one home-scr
 - **Reset progress is a corner glyph.** `.dash-foot` is gone; `.progress-reset` is a 44px
   icon button in the top-right of the overview card (`ICONS.reset`, `title` + `aria-label`).
 
-Verified in the browser at 994px and 375px, both themes, EN and DE: no page scroll on the
+Second round, same session:
+
+- **Header switches shrank.** `.seg-btn` 38 -> 30px (36px on coarse pointers), `.brand` and
+  `.session-back` 44 -> 38px (44px on coarse). The 44px floor still holds for everything that
+  is content.
+- **No hairline under the header in a session** — the page does not scroll there.
+- **A global compact pass.** `--spacing-lg/xl/2xl` 24/32/48 -> 20/28/40, `.home-section`
+  56 -> 40px, the hero one step shorter, and every display numeral one step down. The whole
+  home screen's hero + overview card now fit one 755px viewport.
+- **The keyboard hint left the question card** for `.quiz-topbar`, right of the readouts, and
+  is hidden below 940px as well as under `@media (hover: none)`.
+- **Previous is on the left, Next on the right** (the pairing tried first was reverted).
+- Collapsed below 940px the navigator strip is 6px-padded — it was a 76px box around one
+  line of text.
+- `CACHE` bumped to `eib-cache-2026-09-20-compact-chrome`.
+
+Verified in the browser at 1400px, 994px, 768px and 375px, both themes, EN and DE: no page scroll on the
 quiz or results screens, `scrollWidth === innerWidth` at 375px, `node --check` on the script
 and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate.js` clean.
 

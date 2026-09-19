@@ -248,9 +248,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     page scroll are gone; `displayQuestion()` resets `#questionBody.scrollTop` instead, and
     `#timer` / `.quiz-sidebar` are no longer `position: sticky` — there is nothing to stick to.
 - **Inside a session the header shows a back button, not the logo**, and the only buttons under
-  the question are Previous and Next, **paired on the right** (`.quiz-nav` is `flex-end`) —
-  they move along one axis, and a button stranded at the far left reads as an exit.
-  `#quitBtn` is gone; `#sessionBack` carries it, with one
+  the question are Previous (left) and Next (right) — the row maps to the direction each
+  button moves you. `#quitBtn` is gone; `#sessionBack` carries it, with one
   branch — from the quiz it confirms first, from the results screen it goes straight home.
   Both buttons are driven by **`disabled`, never `display`**, so the pinned row cannot change
   height as you answer, and the Enter shortcut reads the same property the button does.
@@ -276,11 +275,31 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   move as the home overview band. Four boxed cards cost a whole row of height the question card
   needed. The answered count came from the navigator's header (`.sidebar-count` /
   `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
+  - **The keyboard hint sits beside the readouts, not inside the card.**
+    `#keyboardHintContainer` is the second child of `.quiz-topbar`; as a pill in the card it
+    pushed the options down and then moved them back up when it was dismissed. It is hidden
+    under `@media (hover: none)` **and** below 940px — there is no keyboard to hint at on a
+    phone or a tablet, and in a narrow window it wraps the topbar onto a second row.
   - **The card is compact so the scrollbar is the exception, not the default.**
     `.question-card` is `padding: 14px` (the documented 16px-card / 10px-option concentric
     pair), the meta row and `.quiz-nav` take `--spacing-sm`, and `.options` takes `--spacing-md`.
     At 994x734 a four-option text question fits with no scroller at all; a four-IMAGE question
     or an open explanation still scrolls `.question-body`, which is what it is for.
+- **The sizing scale was tightened for a page of sections** (2026-09-20). `--spacing-lg`
+  24 -> **20**, `--spacing-xl` 32 -> **28**, `--spacing-2xl` 48 -> **40**; `.home-section`
+  56px -> 40px. The steps were set when the home screen was a wall of bento tiles. `--spacing-xs`
+  / `-sm` / `-md` are the rhythm INSIDE a control and did not move. Display numbers came down
+  one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
+  1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
+  (56 -> 50px), `.btn-lg` (50 -> 46px) and the glossary rows.
+  - **The header's switches are the one deliberate exception to the 44px floor.** `.seg-btn`
+    is 30px (36px under `@media (pointer: coarse)`), and `.brand` / `.session-back` are 38px
+    (44px on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
+    everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px.
+    WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the rest of the app holds to.
+  - **In a session the header drops its bottom hairline** (`body.in-session header`). The page
+    does not scroll there, so there is nothing to separate the header from — the rule was just
+    a line drawn across a locked screen.
 - **UI language: English by default, German optional** (added 2026-09-19). The switch is the
   left segmented control in the header (`#langEn` / `#langDe`), persisted under `localStorage`
   key `eib_lang`, defaulting to `en`.
