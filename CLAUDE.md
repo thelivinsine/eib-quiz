@@ -297,7 +297,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
   number a fourth time. `updateProgress()` writes to one element and `#questionNum` carries its
   own total (`quiz.questionOf`).
-- **The progress bar is a track with quarters, not a hairline** (2026-09-20). 8px, pill,
+- **The progress bar is a track with quarters, not a hairline** (2026-09-20). It carries
+  `--spacing-2xl` beneath it, so the readouts, the question and the navigator all start a clear
+  step below it rather than crowding the top of the screen. 8px, pill,
   `--surface3`, with the fill's leading edge lit by a 12px gradient tip so it is findable on a
   300-question round, and `::after` drawing quarter marks in `--canvas` **over** the fill — so
   a three-quarters-full bar reads as three quarters rather than as "mostly".
@@ -317,21 +319,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     no hairline, no padding, so the question's left edge is the column's left edge and the
     **options are the only boxes**. A card around a card around four cards is the
     containers-in-containers look, and the outer one carried no information.
-  - **`.quiz-layout` is a 2x2 grid and every child is placed by hand** (2026-09-20). Row 1 is
-    the question column — `.quiz-main`, holding the readouts and then the question — beside the
-    navigator; row 2 is `.quiz-nav`, **under the question column only**. Both row-1 items
-    stretch, so the panel **starts level with the readouts** and **ends level with the bottom
-    of the question's content area**, rather than running on past it to the buttons.
-    Auto-placement would put the footer row beside the panel, so all three carry an explicit
-    `grid-area`, and the 940px block re-places them as question / buttons / strip. Row gap is
-    0; the mobile strip takes a 10px `margin-top` instead, or it sits flush against Previous.
+  - **`.quiz-layout` is two columns and one row** (2026-09-20): the question column
+    (`.quiz-main` — readouts, question, then `.quiz-nav`) beside the navigator. The column gap
+    is `--spacing-xl`; below 940px it is one column and the strip takes a 10px `margin-top`,
+    or it sits flush against Previous.
+  - **The navigator's height is FIXED, and the question's is not.** `clamp(300px, 56svh, 680px)`
+    with `align-self: start` and `max-height: 100%` (a `vh` line first, as everywhere). Sized
+    against the question's own content it held a different height on every question, which is
+    movement with nothing behind it. Below 940px the rule is undone — down there the navigator
+    is a collapsed strip, and a 450px strip is 450px of nothing.
+  - **The question column is content-sized, capped by its grid area.** `.question-card` is
+    `flex: 0 1 auto` so Previous and Next sit under the answers rather than at the foot of a
+    half-empty column, and `body.in-session .quiz-main { max-height: 100% }` is what makes the
+    card SHRINK instead of spilling out of a locked screen — that is the cap
+    `.question-body`'s scroller hangs off.
   - **The question block is TOP-aligned under the readouts, not centred.** Centring it opened a
     gap between the readouts and the question they report on, and pushed the question away from
     the panel's top edge; the readouts now sit `--spacing-md` above the question (measured
     16px) and the slack falls below the answers, where the panel's own bottom edge already is.
-  - **The card fills its row** (`flex: 1`), so the question's content area ends where the panel
-    does and Previous/Next sit in their own row below both — one position on every question,
-    and on a phone directly above the overview strip where a thumb can learn them.
+  - Below 940px the card goes back to filling its area, so the two buttons hold one position
+    on every question, directly above the overview strip where a thumb can learn them.
   - **There is no rule above Previous and Next**, and the buttons are 34px / 0.8rem — smaller
     than a page-level action, because you press them a hundred times a round and they should
     not weigh as much as the question. **The keyboard hint rides between them**, inside
@@ -544,6 +551,10 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 **43 image questions**, all extracted from the official BAMF catalogue PDF. Every asset is
 present (`node tools/validate.js` reports 0 missing).
 
+- **A four-image grid is capped at 70% of the question's width** (`.options--image`,
+  `max-width: 70%`; 72% in the one-column phone layout) and a prompt image at 294px. At full
+  width the pictures dwarfed the question they belonged to, and a four-image question no longer
+  needs the body scroller at 1100x800.
 - **Option-image questions (19)** — 4-image grids, rendered as `<img>` from
   `option_images: ["img/…", …]` with descriptive `options` labels (never "Option 1"):
   general Q21, Q209, Q226, plus each state's Wappen question (Q301, Q311, Q321, … every `*1`).

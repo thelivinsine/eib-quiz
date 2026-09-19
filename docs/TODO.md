@@ -325,6 +325,20 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
 - **Wider gutters in session**: `--spacing-xl` sides instead of `--spacing-lg`, and the same
   value as the column gap between the question and the panel (measured 28px each).
 
+## Session developments (2026-09-20, fixed panel + picture scale)
+
+- **The navigator's height is fixed on desktop** — `clamp(300px, 56svh, 680px)`, `align-self:
+  start`, `max-height: 100%`; undone below 940px where it is a collapsed strip. A first pass
+  measured it against the question's content in JS (`syncNavHeight`, exact to a pixel); it was
+  removed on request — a panel that changes height on every question is movement with nothing
+  behind it.
+- **The footer row rejoined the question column** and the card is content-sized again, so
+  Previous/Next sit under the answers. `body.in-session .quiz-main { max-height: 100% }` is
+  what keeps a long question shrinking into its scroller instead of spilling out.
+- **`--spacing-2xl` under the progress bar**, so everything starts a clear step lower.
+- **Image options scaled down 30%** (`.options--image { max-width: 70% }`, prompt image 294px):
+  a four-image question now fits without the body scroller at 1100x800.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).

@@ -389,14 +389,17 @@
         /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
            tallest item, so the card pushed the nav bar off the bottom of a locked
            screen while the grid itself sat comfortably inside it. */
-        body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: stretch; }
-        body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; }
+        body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: start; grid-template-rows: minmax(0, 1fr); }
+        body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; }
         /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
            four-option question sits at the top of the column instead of being
            stretched down the screen with its buttons pinned to the bottom. It can
            still SHRINK, which is what keeps .question-body's scroller working on a
            long question. */
-        body.in-session .question-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+        /* Content-sized, so Previous and Next sit under the answers instead of at the
+           foot of a half-empty column. It can still SHRINK, which is what keeps
+           .question-body's scroller working on a long question. */
+        body.in-session .question-card { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
         /* The only element on the quiz screen with a scrollbar. `contain` stops a
            flick past the last option rubber-banding the locked page behind it. */
         /* hidden on x: the pick animation scales the chosen option by 1.5%, which
@@ -444,7 +447,16 @@
         /* Nothing scrolls past the timer or the navigator any more, so neither
            has anything to stick to. */
         body.in-session #timer { position: static; }
-        body.in-session .quiz-sidebar { position: static; max-height: none; }
+        /* A FIXED pane, not a mirror of the question: measured against the question's
+           content it held a different height on every question, which is movement with
+           nothing behind it. vh first, as everywhere else, so a browser without svh
+           keeps a cap; max-height keeps it inside a short viewport. */
+        body.in-session .quiz-sidebar {
+            position: static; align-self: start;
+            height: clamp(300px, 56vh, 680px);
+            height: clamp(300px, 56svh, 680px);
+            max-height: 100%;
+        }
 
         /* Below this the container has less room than the card's own PINNED parts —
            meta row, padding and nav bar come to about 150px before a single word of
@@ -988,25 +1000,15 @@
         .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.3rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
         .stat-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
 
-        /* Row 1 is the question column — readouts, then the question — beside the
-           navigator; row 2 is the footer row, under the question column only. Both
-           row-1 items stretch, so the panel STARTS level with the readouts and ENDS
-           level with the bottom of the question's content, rather than running on
-           past the explanation to the buttons. Every child is placed by hand:
-           auto-placement would put the footer row beside the panel. */
+        /* The question column — readouts, question, buttons — beside the navigator.
+           Column gap only, and wider than the page's rhythm: the two are different
+           jobs and should not read as one block. */
         .quiz-layout {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
-            grid-template-rows: minmax(0, 1fr) auto;
-            /* Column gap only, and wider than the page's rhythm: the question and the
-               navigator are two different jobs and should not read as one block. The
-               row gap stays 0 — the footer row carries its own margin. */
             gap: 0 var(--spacing-xl);
             align-items: start;
         }
-        .quiz-main    { grid-area: 1 / 1 / 2 / 2; }
-        .quiz-sidebar { grid-area: 1 / 2 / 2 / 3; }
-        .quiz-nav     { grid-area: 2 / 1 / 3 / 2; }
         .quiz-main { min-width: 0; }
 
         /* The exam timer follows you down the page. It used to scroll away at the
@@ -1026,7 +1028,7 @@
            quarters marked so a length means something at a glance, and a bright tip on
            the fill so the leading edge is findable on a 300-question round. */
         .quiz-progress {
-            position: relative; height: 8px; margin-bottom: 14px; flex-shrink: 0;
+            position: relative; height: 8px; margin-bottom: var(--spacing-2xl); flex-shrink: 0;
             background: var(--surface3); border-radius: var(--radius-pill);
             overflow: hidden;
         }
@@ -1098,7 +1100,7 @@
         .question-text:focus { outline: none; }
         .question-english { display: none; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
         .question-english.show { display: block; }
-        .question-image { width: 100%; max-width: 420px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+        .question-image { width: 100%; max-width: 294px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
         .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-lg); }
@@ -1159,7 +1161,7 @@
         .option-btn.just-picked { animation: pickPop 0.28s var(--ease); }
         @keyframes pickPop { 0% { transform: scale(1); } 45% { transform: scale(1.015); } 100% { transform: scale(1); } }
 
-        .options--image { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+        .options--image { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); max-width: 70%; }
         .option-btn--image { flex-direction: column; align-items: stretch; padding: 10px; gap: 10px; }
         .option-btn--image { min-height: 0; }
         .opt-img { display: block; border-radius: var(--radius-xs); overflow: hidden; background: var(--surface2); border: 1px solid var(--border-soft); aspect-ratio: 4 / 3; }
@@ -1350,10 +1352,7 @@
             /* Three secondary cards stay three across: two columns orphans one of
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
-            .quiz-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto auto; }
-            .quiz-main    { grid-area: 1 / 1 / 2 / 2; }
-            .quiz-nav     { grid-area: 2 / 1 / 3 / 2; }
-            .quiz-sidebar { grid-area: 3 / 1 / 4 / 2; }
+            .quiz-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
             /* The question comes first and the collapsed navigator sits UNDER it: on a
                phone the strip was the first thing on the screen, competing with the
                question for the reader's first look. The card takes the flexible row,
@@ -1375,7 +1374,10 @@
                them. The question itself stays top-aligned inside .question-body.
                (There is no rule above them: pinned, it would float in open space —
                and it separated nothing on a wide screen either.) */
-            .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); margin-top: 10px; }
+            /* The fixed pane height is a DESKTOP rule: down here the navigator is a
+               collapsed strip, and a 450px strip is 450px of nothing. */
+            body.in-session .quiz-sidebar { height: auto; max-height: none; align-self: auto; }
+            .quiz-sidebar { width: auto; position: static; padding: 6px var(--spacing-md); margin-top: 10px; }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
                shown once — and there is no keyboard to hint at. The CONTAINER goes
@@ -1511,7 +1513,7 @@
         }
 
         @media (max-width: 400px) {
-            .options--image { grid-template-columns: 1fr; }
+            .options--image { grid-template-columns: 1fr; max-width: 72%; }
         }
     </style>
 </head>
@@ -1652,6 +1654,11 @@
 
                     </div>
 
+                    <div class="quiz-nav">
+                        <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.prev"></span></button>
+                        <div id="keyboardHintContainer"></div>
+                        <button class="btn-primary" id="nextBtn"></button>
+                    </div>
                 </div>
 
                 <!-- Right column: vertical navigator sidebar -->
@@ -1667,15 +1674,6 @@
                         <div class="question-nav-grid" id="questionNavGrid"></div>
                     </div>
                 </aside>
-
-                <!-- Its own row, under the question column only: the panel beside it
-                     then ends where the question's content ends, not where the
-                     buttons do. -->
-                <div class="quiz-nav">
-                    <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.prev"></span></button>
-                    <div id="keyboardHintContainer"></div>
-                    <button class="btn-primary" id="nextBtn"></button>
-                </div>
             </div>
 
         </section>
