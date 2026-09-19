@@ -261,7 +261,7 @@
            steps it UP. Both stay inside the 1.10-1.25 band.
            ============================================================ */
         .hist-list, .hist-exam, .glossary-wrap, .question-card, .quiz-sidebar,
-        .stat-card, .breakdown-item, .review-item, .score-display {
+        .breakdown-item, .review-item, .score-display {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
@@ -544,6 +544,7 @@
 
         /* ---- Overview card: ring headline + three counters ---- */
         .dash {
+            position: relative;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
@@ -619,6 +620,7 @@
 
         .dash-stats {
             display: grid; grid-template-columns: repeat(3, 1fr);
+            padding-right: 40px;
             align-items: center;
             min-width: 0;
             border-left: 1px solid var(--border);
@@ -649,21 +651,19 @@
         .resume-text strong { color: var(--text); font-size: 0.95rem; }
         .resume-actions { display: flex; gap: 8px; }
 
-        /* The escape hatch sits on the card's own footer rule, right-aligned and
-           out of the reading path — not centred under the numbers, where it
-           read as the card's conclusion. */
-        .dash-foot {
-            display: flex; justify-content: flex-end;
-            margin-top: var(--spacing-md);
-            border-top: 1px solid var(--border);
-        }
+        /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
+           44px band for something you press once a year cost more height than the
+           numbers above it. It keeps its 44px touch target by being 44px square. */
         .progress-reset {
-            background: none; border: none; color: var(--faint);
-            font-size: 0.8rem; font-weight: 500;
-            min-height: 44px; padding: 0 16px;
-            transition: color 0.2s var(--ease);
+            position: absolute; top: 6px; right: 6px;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px;
+            background: none; border: 1px solid transparent; border-radius: var(--radius-pill);
+            color: var(--faint);
+            transition: color 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease);
         }
-        .progress-reset:hover { color: var(--red-text); text-decoration: underline; text-underline-offset: 3px; }
+        .progress-reset svg { width: 17px; height: 17px; }
+        .progress-reset:hover { color: var(--red-text); background: var(--hover); border-color: var(--border); }
 
         /* ============================================================
            MODE CARDS — one featured, three peers
@@ -907,15 +907,18 @@
         }
         .btn-group { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap; }
 
-        /* The card's pinned footer. Back left, Next right, and neither button is
-           ever allowed to change the row's height - a row that reflows as you
-           answer cannot be pinned under your thumb. */
+        /* The card's pinned footer. Previous and Next sit together on the right
+           as one pair - they move along the same axis, and a button stranded at
+           the far left reads as an exit. Neither is ever allowed to change the
+           row's height: a row that reflows as you answer cannot be pinned under
+           your thumb. */
         .quiz-nav {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-            padding-top: var(--spacing-md);
+            display: flex; align-items: center; justify-content: flex-end;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+            padding-top: var(--spacing-sm);
             border-top: 1px solid var(--border);
+            flex-shrink: 0;
         }
         #nextBtn:disabled { visibility: hidden; }
         #backBtn:disabled { color: var(--faint); border-color: var(--border-soft); background: var(--surface2); cursor: default; }
@@ -923,9 +926,16 @@
         /* ============================================================
            QUIZ SCREEN
            ============================================================ */
-        .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); }
-        .stat-card { padding: 11px 14px; border-radius: var(--radius); display: flex; flex-direction: column; gap: 4px; }
-        .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.25rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+        /* NOT tiles. Four numbers boxed in four cards is the containers-inside-
+           containers look, and it spent a row of height the question card needs.
+           Same move as the home overview band: figures separated by hairlines,
+           label and value on one line. */
+        .stats-bar { display: flex; flex-wrap: wrap; align-items: baseline; margin-bottom: var(--spacing-md); }
+        .stat { display: flex; align-items: baseline; gap: 8px; padding: 0 var(--spacing-md); }
+        .stat:first-child { padding-left: 0; }
+        .stat + .stat { border-left: 1px solid var(--border); }
+        .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.15rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+        .stat-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
 
         .quiz-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--spacing-md); align-items: start; }
         .quiz-main { min-width: 0; }
@@ -943,14 +953,17 @@
         #timer.danger .timer-display { color: var(--red-text); }
         .pacing-info { font-size: 0.74rem; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
 
-        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: var(--spacing-md); }
+        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: var(--spacing-md); flex-shrink: 0; }
         .quiz-progress > span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent-grad); transition: width 0.45s var(--ease-spring); }
 
-        .question-card { padding: var(--spacing-lg); border-radius: var(--radius); }
+        /* 14px against the card's 16px radius is the documented concentric pair
+           (card 16 -> option 10). It was 24px, which cost the question body 20px
+           of height for nothing. */
+        .question-card { padding: 14px; border-radius: var(--radius); }
         .q-enter { animation: qEnter 0.4s var(--ease-spring) both; }
         @keyframes qEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); flex-shrink: 0; }
         .question-meta > div:first-child { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .question-num { color: var(--accent-text); flex-shrink: 0; }
         .question-category {
@@ -983,10 +996,10 @@
         .question-text:focus { outline: none; }
         .question-english { display: none; margin-top: 10px; padding-top: 12px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.98rem; line-height: 1.5; }
         .question-english.show { display: block; }
-        .question-image { width: 100%; max-width: 420px; margin: var(--spacing-lg) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+        .question-image { width: 100%; max-width: 420px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
-        .options { display: flex; flex-direction: column; gap: 10px; margin-top: var(--spacing-lg); }
+        .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-md); }
         .option-btn {
             display: flex; align-items: center; gap: var(--spacing-md);
             width: 100%; text-align: left;
@@ -1078,7 +1091,6 @@
         .sidebar-header { cursor: default; }
         .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
         .sidebar-chevron { display: none; color: var(--muted); transition: transform 0.25s var(--ease); }
-        .sidebar-count { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
         /* Same gutter as .question-body — the nav numbers were touching the bar. */
         .sidebar-body {
             margin-top: var(--spacing-md); min-height: 0; overflow-y: auto;
@@ -1114,25 +1126,18 @@
         .qnav-group-count { flex-shrink: 0; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
         .qnav-group > .question-nav-grid { padding: 4px 0 10px; }
 
-        /* Shuffle is a round-level control, so it sits above the numbers it re-orders. */
+        /* Order/view is a round-level control, so it sits above the numbers it
+           re-orders. Same segmented control as the header switches — three
+           mutually exclusive views is exactly what that pattern is for. */
         #navActions:empty { display: none; }
         #navActions { margin: var(--spacing-sm) 0 2px; }
-        .qnav-shuffle {
-            display: inline-flex; align-items: center; gap: 7px;
-            min-height: 36px; padding: 0 12px;
-            border: 1px solid var(--border); border-radius: var(--radius-pill);
-            background: var(--surface2); color: var(--sub-text);
-            font-size: 0.78rem; font-weight: 600;
-            transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
-        }
-        .qnav-shuffle svg { width: 14px; height: 14px; }
-        .qnav-shuffle:hover { background: var(--hover); border-color: var(--border-hover); color: var(--text); }
-        .qnav-shuffle.is-on { color: var(--accent-text); border-color: var(--accent-line); background: var(--accent-soft); }
+        .qnav-seg { display: flex; width: 100%; }
+        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 6px; font-size: 0.72rem; min-height: 34px; }
 
         /* Stated after the base rules above, not with the other coarse-pointer
            overrides earlier in the sheet — same specificity, so source order decides. */
         @media (pointer: coarse) {
-            .qnav-shuffle, .qnav-group-head { min-height: 44px; }
+            .qnav-seg .seg-btn, .qnav-group-head { min-height: 44px; }
         }
         .q-nav-btn { aspect-ratio: 1; min-height: 34px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: 0.74rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
@@ -1253,7 +1258,7 @@
             /* Stacked, the hairline that separated ring from stats becomes the
                rule under the ring. */
             .dash-body { grid-template-columns: 1fr; justify-items: center; gap: var(--spacing-md); }
-            .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--spacing-md); }
+            .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--spacing-md); padding-right: 0; }
             .ready-ring-wrap { width: 128px; height: 128px; }
             .ready-ring-pct { font-size: 1.6rem; }
             /* The picker goes full width under its section heading rather than
@@ -1315,10 +1320,11 @@
             .timer-label { margin-right: 8px; }
             .timer-display { font-size: 1.35rem; }
             .pacing-info { margin-left: 8px; }
-            .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-            .stat-card { padding: 9px 8px; align-items: center; text-align: center; }
-            .stat-value { font-size: 1.1rem; }
-            .stat-card .stat-label { font-size: 0.56rem; letter-spacing: 0.03em; }
+            .stats-bar { column-gap: 12px; row-gap: 4px; }
+            .stat { padding: 0; gap: 6px; }
+            .stat + .stat { border-left: none; }
+            .stat-value { font-size: 1rem; }
+            .stat .stat-label { font-size: 0.56rem; letter-spacing: 0.03em; }
             .exam-subscores { grid-template-columns: 1fr; }
             .score-display { padding: var(--spacing-lg) var(--spacing-md); }
             .score-ring-wrap { width: 150px; height: 150px; }
@@ -1425,6 +1431,8 @@
 
         <!-- Quiz Screen -->
         <section id="quizScreen" class="screen">
+            <div class="quiz-progress" aria-hidden="true"><span id="quizProgressFill"></span></div>
+
             <div class="stats-bar" id="statsBar">
                 <!-- Populated by JavaScript -->
             </div>
@@ -1436,8 +1444,6 @@
                         <div class="timer-label" data-i18n="quiz.time"></div>
                         <div class="timer-display" id="timerDisplay">60:00</div>
                     </div>
-
-                    <div class="quiz-progress" aria-hidden="true"><span id="quizProgressFill"></span></div>
 
                     <div class="question-card">
                         <div class="question-meta">
@@ -1471,7 +1477,7 @@
                         </div>
 
                         <div class="quiz-nav">
-                            <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.back"></span></button>
+                            <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.prev"></span></button>
                             <button class="btn-primary" id="nextBtn"></button>
                         </div>
                     </div>
@@ -1484,7 +1490,6 @@
                             <span class="sidebar-title" data-i18n="qnav.overview"></span>
                             <span class="sidebar-chevron" id="sidebarChevron">▼</span>
                         </div>
-                        <span class="sidebar-count" id="navProgressSummary"></span>
                     </div>
                     <div class="sidebar-body" id="sidebarBody">
                         <div id="navActions"></div>
@@ -1575,8 +1580,8 @@
             trophy: _svg('<path d="M8 4h8v4a4 4 0 0 1-8 0Z"/><path d="M8 6H5a2 2 0 0 0 0 4h3"/><path d="M16 6h3a2 2 0 0 1 0 4h-3"/><path d="M10 14h4"/><path d="M9 20h6"/><path d="M12 14v6"/>'),
             translate: _svg('<path d="M4 5h11"/><path d="M9 3v2"/><path d="M12.5 5c-.6 4.6-3.7 8.6-8 10.4"/><path d="M6.5 8.5c.9 2.6 2.9 4.7 5.5 5.8"/><path d="M13 21l4.2-10 4.2 10"/><path d="M14.6 17.3h5.2"/>'),
             speaker: _svg('<path d="M4 9.5v5a1 1 0 0 0 1 1h2.6l3.6 3a.8.8 0 0 0 1.3-.6V6.1a.8.8 0 0 0-1.3-.6l-3.6 3H5a1 1 0 0 0-1 1Z"/><path d="M16.2 9.2a4 4 0 0 1 0 5.6"/><path d="M18.8 6.6a7.6 7.6 0 0 1 0 10.8"/>'),
-            shuffle: _svg('<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>'),
             arrowRight: _svg('<line x1="5" y1="12" x2="18" y2="12"/><polyline points="13 7 18 12 13 17"/>'),
+            reset: _svg('<path d="M3.5 12a8.5 8.5 0 1 1 2.8 6.3"/><polyline points="3 6.5 3.5 12 9 11.5"/>'),
             trendUp: _svg('<polyline points="4 16 10 10 14 14 20 7"/><polyline points="15 7 20 7 20 12"/>'),
         };
 
@@ -1732,12 +1737,13 @@
             'quiz.stat.correct':   { en: 'Correct',                 de: 'Richtig' },
             'quiz.stat.wrong':     { en: 'Wrong',                   de: 'Falsch' },
             'quiz.stat.score':     { en: 'Score',                   de: 'Score' },
+            'quiz.stat.answered':  { en: 'Answered',                de: 'Beantwortet' },
             'quiz.time':           { en: 'Time',                    de: 'Zeit' },
             'quiz.speak':          { en: 'Read the question aloud', de: 'Frage vorlesen' },
             'quiz.showEn':         { en: 'Show the English',        de: 'Auf Englisch anzeigen' },
             'quiz.hideEn':         { en: 'Hide the English',        de: 'Englisch ausblenden' },
             'quiz.pick':           { en: 'Pick an answer',          de: 'Wähle eine Antwort' },
-            'quiz.back':           { en: 'Back',                    de: 'Zurück' },
+            'quiz.prev':           { en: 'Previous',                de: 'Vorherige' },
             'quiz.next':           { en: 'Next',                    de: 'Weiter' },
             'quiz.finish':         { en: 'Finish',                  de: 'Abschließen' },
             'quiz.correct':        { en: '✓ Correct',               de: '✓ Richtig' },
@@ -1751,9 +1757,10 @@
 
             // navigator
             'qnav.overview':       { en: 'Question overview',       de: 'Fragen-Übersicht' },
-            'qnav.answered':       { en: '{n}/{total} answered',    de: '{n}/{total} beantwortet' },
             'qnav.shuffle':        { en: 'Shuffle',                 de: 'Mischen' },
-            'qnav.inOrder':        { en: 'Back in order',           de: 'Reihenfolge zurück' },
+            'qnav.linear':         { en: 'Linear',                  de: 'Linear' },
+            'qnav.categories':     { en: 'Topics',                  de: 'Themen' },
+            'qnav.view':           { en: 'Question order',          de: 'Reihenfolge' },
 
             // end screen
             'end.exam':            { en: 'Exam simulation complete', de: 'Prüfungssimulation beendet' },
@@ -1853,7 +1860,8 @@
             missedQuestions: [],   // {q, userAnswerIdx} for wrong-answer review
             examStartTime: null,   // Date.now() when exam begins
             elapsedSecs: null,     // seconds taken, frozen at endQuiz so the results repaint
-            shuffled: false,       // the round is in random order, so the navigator drops its groups
+            shuffled: false,       // the round is in random order, not the order it was built in
+            navView: 'linear',     // which of the navigator's three views is on
             baseOrder: null,       // question ids in the order the round was built, captured on first shuffle
             generalCorrect: 0,     // correct general answers (exam sub-score)
             stateCorrect: 0,       // correct state answers (exam sub-score)
@@ -1968,6 +1976,7 @@
                     idx: state.currentQuestionIndex,
                     answered: state.answered,
                     shuffled: state.shuffled,
+                    navView: state.navView,
                     baseOrder: state.baseOrder,
                     correct: state.correct,
                     incorrect: state.incorrect,
@@ -2103,6 +2112,7 @@
             state.currentMode = 'topic';
             state.currentTopic = catKey;
             state.shuffled = false;
+            state.navView = 'linear';
             state.baseOrder = null;
             state.currentQuestionIndex = 0;
             state.answered = {};
@@ -2288,7 +2298,7 @@
                         </div>
                     </div>
                     ${resumeHtml}
-                    ${answeredInPool > 0 ? `<div class="dash-foot"><button class="progress-reset" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${t('dash.reset')}</button></div>` : ''}
+                    ${answeredInPool > 0 ? `<button class="progress-reset" title="${t('dash.reset')}" aria-label="${t('dash.reset')}" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${ICONS.reset}</button>` : ''}
                 </div>`;
 
             animateReadyRing(ring);
@@ -2331,6 +2341,7 @@
             state.currentQuestionIndex = Math.min(sess.idx || 0, qs.length - 1);
             state.answered = sess.answered || {};
             state.shuffled = !!sess.shuffled;
+            state.navView = sess.navView || (state.shuffled ? 'shuffle' : 'linear');
             state.baseOrder = Array.isArray(sess.baseOrder) ? sess.baseOrder : null;
             state.correct = sess.correct || 0;
             state.incorrect = sess.incorrect || 0;
@@ -2386,21 +2397,32 @@
         // ============================================================
         function renderQuestionNav() {
             const total = state.currentQuestions.length;
-            const answered = Object.keys(state.answered).length;
-            document.getElementById('navProgressSummary').textContent = t('qnav.answered', { n: answered, total });
             // Self-correcting: even if a resize event is missed, the header's semantics
             // are right again the next time the panel renders.
             syncNavHeaderRole();
 
-            // Shuffle belongs to rounds you work through in order; an exam is
-            // already random and a 10-question set has nothing to gain.
+            const groups = new Map();
+            state.currentQuestions.forEach((q, i) => {
+                const k = navGroupKey(q);
+                if (!groups.has(k)) groups.set(k, []);
+                groups.get(k).push(i);
+            });
+
+            // Three views of the same round: shuffle re-orders it, linear and topics
+            // are the built order shown flat or grouped. Topics is offered only when
+            // there is more than one — one <details> over the whole list is a lid.
             const actions = document.getElementById('navActions');
             if (actions) {
-                actions.innerHTML = total > 40
-                    ? `<button class="qnav-shuffle${state.shuffled ? ' is-on' : ''}" onclick="shuffleRound()">
-                           ${ICONS.shuffle}<span>${state.shuffled ? t('qnav.inOrder') : t('qnav.shuffle')}</span>
-                       </button>`
-                    : '';
+                const seg = (view, label) =>
+                    `<button class="seg-btn${state.navView === view ? ' active' : ''}"
+                             aria-pressed="${state.navView === view}"
+                             onclick="setNavView('${view}')">${label}</button>`;
+                actions.innerHTML = total < 2 ? '' :
+                    `<div class="seg qnav-seg" role="group" aria-label="${t('qnav.view')}">
+                        ${seg('linear', t('qnav.linear'))}
+                        ${seg('shuffle', t('qnav.shuffle'))}
+                        ${groups.size > 1 ? seg('categories', t('qnav.categories')) : ''}
+                    </div>`;
             }
 
             const cell = i => {
@@ -2417,17 +2439,10 @@
 
             const el = document.getElementById('questionNavGrid');
 
-            const groups = new Map();
-            state.currentQuestions.forEach((q, i) => {
-                const k = navGroupKey(q);
-                if (!groups.has(k)) groups.set(k, []);
-                groups.get(k).push(i);
-            });
-
-            // A shuffled round has no meaningful groups — its numbers ARE the order.
-            // A short round does not need them, and a round that is all one category
-            // would just get a lid over the whole list.
-            if (state.shuffled || total <= 40 || groups.size < 2) {
+            // Grouping is a view the reader picks, not something inferred from the
+            // round's length. It still falls back to the flat grid when there is
+            // nothing to group by.
+            if (state.navView !== 'categories' || groups.size < 2) {
                 el.className = 'question-nav-grid';
                 el.innerHTML = Array.from({ length: total }, (_, i) => cell(i)).join('');
                 return;
@@ -2506,6 +2521,20 @@
             displayQuestion();
         }
 
+        /**
+         * The navigator's three views. Shuffle is an ORDER, so switching to or away
+         * from it re-orders the round (shuffleRound re-keys the answers); linear and
+         * topics are the same order drawn two ways, so they only repaint.
+         */
+        function setNavView(view) {
+            if (state.navView === view) return;
+            const wantShuffled = view === 'shuffle';
+            state.navView = view;
+            if (wantShuffled !== state.shuffled) { shuffleRound(); return; }
+            saveSession();
+            renderQuestionNav();
+        }
+
         function toggleQuestionNav() {} // sidebar is always open
 
         function jumpToQuestion(qIdx) {
@@ -2534,6 +2563,7 @@
             state.stateCorrect = 0;
             state.stateCode = selectedState;
             state.shuffled = false;
+            state.navView = 'linear';
             state.baseOrder = null;
 
             if (mode === 'allQuestions') {
@@ -2704,18 +2734,28 @@
             const answered = state.correct + state.incorrect;
             const score = answered > 0 ? Math.round((state.correct / answered) * 100) : 0;
 
+            // Answered counts the questions you have a pick for, which is what the
+            // navigator's header used to state; correct+incorrect is the accuracy
+            // pair above and deliberately a different number.
+            const done = Object.keys(state.answered).length;
+            const total = state.currentQuestions.length;
+
             document.getElementById('statsBar').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-label">${t('quiz.stat.correct')}</div>
-                    <div class="stat-value" style="color: var(--green)">${state.correct}</div>
+                <div class="stat">
+                    <span class="stat-value" style="color: var(--green)">${state.correct}</span>
+                    <span class="stat-label">${t('quiz.stat.correct')}</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">${t('quiz.stat.wrong')}</div>
-                    <div class="stat-value" style="color: var(--red-text)">${state.incorrect}</div>
+                <div class="stat">
+                    <span class="stat-value" style="color: var(--red-text)">${state.incorrect}</span>
+                    <span class="stat-label">${t('quiz.stat.wrong')}</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">${t('quiz.stat.score')}</div>
-                    <div class="stat-value">${score}%</div>
+                <div class="stat">
+                    <span class="stat-value">${score}%</span>
+                    <span class="stat-label">${t('quiz.stat.score')}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">${done}<span class="stat-of"> / ${total}</span></span>
+                    <span class="stat-label">${t('quiz.stat.answered')}</span>
                 </div>
             `;
         }
@@ -3013,6 +3053,7 @@
             if (qs.length === 0) return;
             state.currentMode = 'mistakes';
             state.shuffled = false;
+            state.navView = 'linear';
             state.baseOrder = null;
             state.currentQuestions = qs;
             state.currentQuestionIndex = 0;

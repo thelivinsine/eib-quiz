@@ -184,6 +184,37 @@ every question bilingual with DE+EN explanations, 0 missing image assets. The 13
 question stems are legitimate — the official catalogue repeats stems with different option
 sets.
 
+## Session developments (2026-09-19, quiz-screen pass)
+
+Reworked the quiz screen's chrome against a screenshot review, plus one home-screen item.
+
+- **Progress bar first, then one line of readouts.** `.quiz-progress` moved out of
+  `.quiz-main` to the top of `#quizScreen`, above `#statsBar`, so it spans the card and the
+  navigator.
+- **The stats are no longer tiles.** `.stat` is a value + label on one line with hairline
+  separators (`.stat-card` left the tile list and the class is gone). A fourth readout,
+  **answered `n / total`**, joined them; it used to live in the navigator's header
+  (`.sidebar-count` and `qnav.answered` were deleted). Measured 20px tall on desktop and
+  17px at 375px, against ~60px for the old four tiles.
+- **The card was compacted so the scrollbar is the exception.** `padding: 14px`,
+  `--spacing-sm` on the meta row and `.quiz-nav`, `--spacing-md` on `.options`. At 994x734 a
+  four-option text question now fits with `scrollHeight === clientHeight`; a four-image
+  question still scrolls, which is the case the scroller exists for.
+- **Back → Previous, paired with Next.** `quiz.back` became `quiz.prev`
+  (Previous / **Vorherige** — "Zurück" was already the header's word for leaving the round),
+  and `.quiz-nav` is `justify-content: flex-end`.
+- **The navigator's shuffle toggle became three views.** Linear / Shuffle / Topics in a
+  `.seg.qnav-seg`, driven by `state.navView` via `setNavView()`; `state.shuffled` stays the
+  order and `shuffleRound()` is called only when the order has to change. Grouping is now the
+  reader's choice rather than inferred from the round's length; Topics is dropped when the
+  round has fewer than two categories. `ICONS.shuffle` went with the old button.
+- **Reset progress is a corner glyph.** `.dash-foot` is gone; `.progress-reset` is a 44px
+  icon button in the top-right of the overview card (`ICONS.reset`, `title` + `aria-label`).
+
+Verified in the browser at 994px and 375px, both themes, EN and DE: no page scroll on the
+quiz or results screens, `scrollWidth === innerWidth` at 375px, `node --check` on the script
+and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate.js` clean.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
