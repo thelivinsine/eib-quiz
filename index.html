@@ -80,17 +80,17 @@
 
             --canvas:    #131418;
             --bg:        #131418;
-            --surface:   #1B1D23;   /* tile — 1.09 above canvas */
-            --surface2:  #23262E;   /* inset well inside a tile */
-            --surface3:  #2C303A;   /* track / rail */
-            --ink-tile:  #262A33;   /* CTA tile — the top of the dark ladder, 1.28 on canvas */
-            --hover:     #262931;   /* hover steps UP in dark */
+            --surface:   #202229;   /* tile — 1.16 above canvas, the measured card band */
+            --surface2:  #282B33;   /* inset well inside a tile — 1.12 on it */
+            --surface3:  #31353F;   /* track / rail */
+            --ink-tile:  #2B2F38;   /* the charcoal-fill tile — top of the dark ladder */
+            --hover:     #2B2E36;   /* hover steps UP in dark */
 
-            --border:       #30343E;   /* 1.35 on tile */
-            --border-soft:  #262A33;
-            --border-hover: #3C414D;
-            --ink:          #30343E;   /* legacy alias (borders) */
-            --hairline:     #30343E;
+            --border:       #353943;   /* 1.30 on tile */
+            --border-soft:  #2B2F38;
+            --border-hover: #414652;
+            --ink:          #353943;   /* legacy alias (borders) */
+            --hairline:     #353943;
 
             /* Primary TEAL */
             --teal:       #17B5A4;
@@ -100,6 +100,7 @@
             --accent-text:  #17B5A4;
             --accent-fill:  #0E9C8D;
             --accent-soft:  #16302E;
+            --accent-hover: #183634;   /* the tinted card under the pointer — one step UP */
             --accent-line:  #1E5B54;
             --accent-grad:  linear-gradient(135deg, #0E9C8D 0%, #17B5A4 100%);
             --on-accent:    #06201D;
@@ -107,7 +108,6 @@
             /* Contrast APRICOT */
             --apricot:      #FB923C;
             --apricot-deep: #FB923C;
-            --apricot-tint: #3A2A18;
             --on-apricot:   #1E1205;
 
             /* legacy names read by JS inline styles */
@@ -116,7 +116,6 @@
             --lime-glow: rgba(23,181,164,0.30);
             --gold:      #FB923C;
             --gold-dim:  #3A2A18;
-            --gold-line: #5C4222;
             --on-gold:   #1E1205;
 
             --blue:      #7FB4FF;
@@ -127,10 +126,10 @@
             --red-text:  #FB7185;
             --red-dim:   #341A20;
 
-            --text:     #ECEDEF;   /* 14.4 on tile */
-            --sub-text: #B9BCC4;   /*  8.9 */
-            --muted:    #9296A0;   /*  5.7 */
-            --faint:    #838792;   /*  4.7 */
+            --text:     #ECEDEF;   /* 13.6 on tile */
+            --sub-text: #B9BCC4;   /*  8.4 */
+            --muted:    #9BA0AA;   /*  6.1 on tile */
+            --faint:    #8B8F9A;   /*  4.9 on tile */
             --on-dark:  #FFFFFF;
 
             --radius:      16px;
@@ -185,13 +184,13 @@
             --accent-text:  #0B7D72;
             --accent-fill:  #0B7D72;   /* white on it = 5.01 */
             --accent-soft:  #EDF7F4;
+            --accent-hover: #DCEEE9;   /* the tinted card under the pointer — one step DOWN */
             --accent-line:  #BEE0DA;
             --accent-grad:  linear-gradient(135deg, #0B7D72 0%, #0F9D8F 100%);
             --on-accent:    #FFFFFF;
 
             --apricot:      #E07A1F;
             --apricot-deep: #B45309;
-            --apricot-tint: #FDF4EA;
             --on-apricot:   #17181C;
 
             --lime:      #0B7D72;
@@ -199,7 +198,6 @@
             --lime-glow: rgba(11,125,114,0.22);
             --gold:      #B45309;                  /* text-safe apricot: 5.02 on white */
             --gold-dim:  #FDF4EA;
-            --gold-line: #EFD8BD;
             --on-gold:   #17181C;
 
             --blue:      #1D4ED8;
@@ -627,15 +625,16 @@
             align-items: center;
         }
         @media (hover: hover) {
-            .mode-card--featured:hover { background: var(--accent-line); border-color: var(--accent); }
+            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--accent); }
         }
-        .mode-card--featured:active { background: var(--accent-line); }
+        .mode-card--featured:active { background: var(--accent-hover); }
         .mode-card--featured .mode-icon { grid-area: icon; align-self: start; width: 44px; height: 44px; margin-bottom: 0; background: var(--accent-fill); color: var(--on-accent); }
-        .mode-card--featured:hover .mode-icon { background: var(--accent-fill); color: var(--on-accent); }
         .mode-card--featured .mode-icon svg { width: 26px; height: 26px; }
         .mode-card--featured .mode-title { grid-area: title; font-size: 1.3rem; color: var(--text); }
         .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
-        .mode-card--featured .mode-meta { grid-area: meta; margin: 10px 0 0; color: var(--muted); }
+        /* --sub-text, not --muted: the quietest tier clears AA on the resting
+           tint by 4.74 in dark, so a hover step of any size would break it. */
+        .mode-card--featured .mode-meta { grid-area: meta; margin: 10px 0 0; color: var(--sub-text); }
         .mode-card--featured .mode-start-btn {
             grid-area: action;
             justify-self: end;
@@ -649,7 +648,7 @@
            leaves the meta row to the one fact that varies (what is due). */
         .mode-time {
             position: absolute; top: var(--spacing-md); right: var(--spacing-md);
-            font-size: 0.75rem; color: var(--faint);
+            font-size: 0.75rem; color: var(--muted);
             font-variant-numeric: tabular-nums;
         }
         /* The peers repeat no "Start" (the card is the button), but they still
@@ -658,7 +657,7 @@
             position: absolute; bottom: var(--spacing-md); right: var(--spacing-md);
             width: 28px; height: 28px; border-radius: 50%;
             display: grid; place-items: center;
-            background: var(--surface2); color: var(--muted);
+            background: var(--surface2); color: var(--sub-text);
             font-size: 0.9rem; line-height: 1;
             transition: color 0.18s var(--ease), background 0.18s var(--ease), transform 0.25s var(--ease-spring);
         }
@@ -670,7 +669,7 @@
             width: 36px; height: 36px;
             border-radius: 10px;
             display: grid; place-items: center;
-            color: var(--muted);
+            color: var(--sub-text);
             background: var(--surface2);
             margin-bottom: 14px;
             transition: color 0.18s var(--ease), background 0.18s var(--ease);
@@ -681,17 +680,19 @@
         }
         .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; letter-spacing: -0.02em; margin-bottom: 4px; }
         .mode-description {
-            color: var(--muted); font-size: 0.87rem; line-height: 1.5;
+            color: var(--sub-text); font-size: 0.87rem; line-height: 1.5;
             margin-bottom: 10px;
         }
         /* A chip states a fact; the fact is small and grey. Only work that is
            actually waiting gets a colour. */
         .mode-meta {
             display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
-            margin-top: auto; padding-right: 36px;
-            font-size: 0.8rem; color: var(--faint);
+            margin-top: auto;
+            font-size: 0.8rem; color: var(--muted);
             font-variant-numeric: tabular-nums;
         }
+        /* Clearance for .mode-go, which only the peers render. */
+        .mode-card:not(.mode-card--featured) .mode-meta { padding-right: 36px; }
         .mode-flag {
             font-size: 0.75rem; font-weight: 600;
             padding: 2px 8px; border-radius: var(--radius-pill);
@@ -1121,7 +1122,6 @@
             .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--spacing-md); }
             .ready-ring-wrap { width: 128px; height: 128px; }
             .ready-ring-pct { font-size: 1.6rem; }
-            .dash-head { margin-bottom: var(--spacing-md); }
             /* The picker goes full width under its section heading rather than
                squeezing onto the same line as it. */
             .section-head--row { align-items: stretch; }

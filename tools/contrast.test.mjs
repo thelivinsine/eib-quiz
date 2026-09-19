@@ -113,9 +113,10 @@ const AA_LARGE = 3;
 const PAIRS = [
   ["text", "surface", AA, "question text and headings in a tile"],
   ["text", "canvas", AA, "anything painted straight onto the page"],
-  ["sub-text", "surface", AA, "lead paragraphs and explanation bodies"],
-  ["muted", "surface", AA, "eyebrows, mode-card descriptions, the nav legend"],
+  ["sub-text", "surface", AA, "lead paragraphs, explanation bodies, mode-card descriptions"],
+  ["muted", "surface", AA, "eyebrows, the nav legend, a mode card's meta and time"],
   ["muted", "surface2", AA, "the dimmed options after an answer, hint rows"],
+  ["sub-text", "surface2", AA, "the glyph in a mode card's icon and arrow chips"],
   ["faint", "surface", AA, "the /310 denominator and the mode time estimate"],
   ["faint", "canvas", AA, "the same two, where a tile is not behind them"],
 
@@ -137,8 +138,12 @@ const PAIRS = [
   // on accent-soft rather than on a tile — the same tiers, a different ground.
   ["text", "accent-soft", AA, "the featured exam card title"],
   ["sub-text", "accent-soft", AA, "the featured exam card description"],
-  ["muted", "accent-soft", AA, "the featured exam card meta line"],
-  ["text", "accent-line", AA, "the same title, with the card hovered"],
+  ["muted", "accent-soft", AA, "the resume banner's mode-and-count line"],
+  // A whole card switches ground on hover, so every tier that lands on it is
+  // listed. Asserting the headline alone is what let the meta line ship at
+  // 2.65 in dark.
+  ["text", "accent-hover", AA, "the featured exam card title, hovered"],
+  ["sub-text", "accent-hover", AA, "its description and meta line, hovered"],
 ];
 
 // Two fills that sit against each other. Three edge treatments, three floors — see
@@ -165,16 +170,25 @@ const FILLS = [
   // The featured card's tint is not a step in lightness against paper-grey, so
   // the hairline is the whole separation and has to clear the edge floor alone.
   ["accent", "canvas", HAIRLINE, "the featured exam card's teal edge against the page"],
-  ["accent-line", "accent-soft", STATE, "that card under the pointer"],
+  ["accent-hover", "accent-soft", STATE, "that card under the pointer"],
 ];
 
 // Colours written as literals rather than tokens. The block parser above only sees the two
 // token blocks, so anything hardcoded in a rule is invisible to PAIRS, and has to be asserted
-// here by value instead. The featured exam card used to fill this list; it is painted in
-// tokens now and its pairs live in PAIRS above. Empty is the right state — a literal added to
-// a rule belongs here the same day.
+// here by value instead. The grounds are token values, resolved by hand for the theme the rule
+// applies in. A literal added to a rule belongs here the same day.
 // [foreground, ground, floor, what it is].
-const LITERAL_PAIRS = { light: [], dark: [] };
+const LITERAL_PAIRS = {
+  light: [
+    ['#fff', '#17181C', AA, 'the brand mark letter (html.light .brand-mark) on --ink-tile'],
+    ['#fff', '#047857', AA, 'the letter on the correct answer chip, on --green'],
+    ['#fff', '#C81E33', AA, 'the letter on the wrong answer chip, on --red'],
+  ],
+  dark: [
+    ['#06231a', '#34D399', AA, 'the letter on the correct answer chip, on --green'],
+    ['#2a0710', '#FB7185', AA, 'the letter on the wrong answer chip, on --red'],
+  ],
+};
 
 // The pairs the app knowingly fails, each on an explicit decision. Measured, not deleted.
 // Empty is the right starting state.
