@@ -336,6 +336,10 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   Previous/Next sit under the answers. `body.in-session .quiz-main { max-height: 100% }` is
   what keeps a long question shrinking into its scroller instead of spilling out.
 - **`--spacing-2xl` under the progress bar**, so everything starts a clear step lower.
+- **The footer row has a resting position on desktop**: a 50svh floor under `.question-body`
+  puts Previous/Next at 622-623 of an 800px viewport (78%, 177px below) on every ordinary
+  question; longer questions push them down from there. On mobile the floor is dropped and the
+  column stretches, pinning them 10px above the overview strip on every question.
 - **Image options scaled down 30%** (`.options--image { max-width: 70% }`, prompt image 294px):
   a four-image question now fits without the body scroller at 1100x800.
 
