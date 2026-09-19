@@ -1,6 +1,6 @@
 # Focused session view
 
-**Branch** `ui/focused-session-view` · **Status** planned, not started · **Written** 2026-09-19
+**Branch** `ui/focused-session-view` · **Status** shipped 2026-09-19 · **Written** 2026-09-19
 
 The home screen stays a page you scroll. Everything downstream of pressing Start becomes an
 **app view**: one screenful, chrome that belongs to the session rather than to the site, and a
@@ -203,3 +203,26 @@ The checklist in CLAUDE.md, in full, plus:
 - No new radius or spacing system beyond the four values in §6.
 - No change to how questions, progress or sessions are stored.
 - The home screen keeps its page scroll and its hero, untouched.
+
+---
+
+## What the build changed about the plan
+
+Written up after the fact; the sections above are left as they were.
+
+- **§1 needed two things the plan did not predict.** `grid-template-rows: minmax(0, 1fr)` on
+  `.quiz-layout` — an auto row sizes to its tallest item, so the card pushed the nav bar off a
+  locked screen while the grid sat comfortably inside it. And `overflow: hidden auto` on both
+  scrollers rather than `overflow-y: auto`, because setting one axis makes the other `auto`
+  and the pick animation's 1.015 scale flashed a horizontal scrollbar on every answer.
+- **§1, mobile.** The plan kept the expanded navigator's `max-height` and assumed the card
+  would cope. It did not: a 45vh panel above a locked card left about 130px for the question.
+  The panel now covers the card (`:has(.sidebar-body.expanded)` → `position: absolute`).
+- **§3 used `disabled` rather than `visibility`.** The Enter shortcut read
+  `nextBtn.style.display !== 'none'`, so a visibility switch would have silently broken it.
+  One property now drives the button, the CSS and the keyboard guard.
+- **§5 turned up a bug outside its scope.** `updateStats()` only ran on a question change, so
+  the Correct / Wrong / Score cards lagged a full question behind the answer just given. Fixed
+  where the state changes.
+- **§6 missed one concentric corner.** `.option-btn` was on `--radius` (16px) and had to come
+  down to `--radius-sm` when §5 touched the same rule.

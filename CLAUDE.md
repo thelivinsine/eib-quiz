@@ -26,7 +26,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - Visual styling: a **quiet bento** design system (redesigned 2026-07-16, minimalised 2026-09-19
   against `claude-context-kit/docs/reference/theme-{light,dark}.md`). One cohesive `<style>` block
   in `index.html` (no layered overrides — the whole block IS the system). POV: white/charcoal tiles
-  on a flat canvas, **rounded-[20px]** (`--radius-lg`), full-**pill** buttons/chips, and a
+  on a flat canvas, **rounded-[16px]** (`--radius`), full-**pill** buttons/chips, and a
   **DISCIPLINED accent duo**: one **teal** primary + one warm **apricot** pop. Two themes share the
   palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is the
   default look; dark = **charcoal** (canvas `#131418`).
@@ -48,12 +48,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     against the canvas, under `theme-light.md`'s 1.05 nesting and 1.10 hairline floors, and
     invisible beside the 1.11 every other tile manages. Dark hid it (1.30) because the dark ramp
     has the room. A tile on the page takes `--surface` + `--border`, full stop.
+  - **Rounding is one three-step scale plus a pill, and there is no fourth value.**
+    `--radius-xs: 4px` (bars, tracks, swatches, the image inside an image option),
+    `--radius-sm: 10px` (wells, nav cells, letter chips, thumbnails, `kbd`), `--radius: 16px`
+    (every tile and card), `--radius-pill`. `--radius-lg` and `--radius-xl` were deleted, and
+    eight radii — five of them literals a token search never finds — collapsed into these.
+    Nested corners follow **inner = outer − padding, snapped to the nearest step**: a 16px card
+    with 14px of padding holds a 10px option, a 10px option with 10px of padding holds its
+    image at 4px. A radius written as a literal is a bug, not a special case.
   - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
     `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
     under something that genuinely floats, and nothing in this app does.
   - **Elevation and hover point in opposite directions in light mode.** Raised surfaces go **up**
     towards white (`--surface` above `--canvas`, `--surface2` inset inside it); hover goes **down**
     into grey (`--hover`). In dark, both go up. Hover is a fill change, never a lift.
+  - **An answer option is a well INSIDE the card, so it takes `--surface2`.** It was
+    `--surface` inside a `--surface` card: in light that is white on white, separated by one
+    hairline. Its letter chip takes `--surface3` so the ladder stays concentric (card →
+    option → chip), and the dimmed-after-answering state is a **text tier only** — the fill it
+    used to borrow is now the base. Hover is `--surface3` in both themes: darker than
+    `--surface2` in light, lighter in dark, so one value steps the right way on both ladders.
   - **Every text tier is a solid hex value, never opacity** — `--text` / `--sub-text` / `--muted` /
     `--faint`, all clearing 4.5:1 on both `--surface` and `--canvas` in both themes.
     `node --test tools/contrast.test.mjs` reads the tokens out of `index.html` and asserts it.
@@ -178,8 +192,39 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `calc(100svh - var(--header-h) - 24px)`, preceded by the same value in `vh` so a browser that
   does not know `svh` keeps a cap instead of dropping the declaration, and `.sidebar-body`
   scrolls inside it. Nothing sets the sidebar's height from JS.
-- `showScreen()` resets the scroll to the top. It is the one door every screen change goes
-  through; no caller scrolls on its own.
+- **`showScreen()` is the one door, and it carries `body.in-session`.** Every screen past the
+  home screen is an app view; the class is what makes it one, and nothing else branches on the
+  screen name to do it.
+- **The page does not scroll outside the home screen** (2026-09-19). `body.in-session main` is
+  pinned to `calc(100svh - var(--header-h))` (the `vh` fallback stated first, as with
+  `.quiz-sidebar`), and exactly one region inside it scrolls: `.question-body` on the quiz
+  screen, `#endScreen` itself on the results screen. `.question-meta` and `.quiz-nav` are
+  pinned either side of the card's scroller.
+  - **The `min-height: 0` chain is load-bearing**: `main` → `.screen.active` → `.quiz-layout`
+    → `.quiz-main` → `.question-card` → `.question-body`. A flex child defaults to
+    `min-height: auto`, and one missing link lets the column grow past the viewport again.
+  - **`.quiz-layout` needs `grid-template-rows: minmax(0, 1fr)`.** An auto row sizes to its
+    tallest item, so the card pushed the nav bar off the bottom of a locked screen while the
+    grid itself sat comfortably inside it.
+  - **Both scrollers are `overflow: hidden auto`, not `overflow-y: auto`.** Setting one axis
+    makes the other `auto` too, and the pick animation's 1.015 scale flashed a horizontal
+    scrollbar on every answer.
+  - **Below 940px an expanded navigator covers the card, it does not push it down**
+    (`:has(.sidebar-body.expanded)` → `position: absolute; inset: 0`). At 45vh above a locked
+    card it left about 130px for the question. A browser without `:has` gets the old
+    push-down behaviour, which is a degradation rather than a break.
+  - No caller scrolls the page. The four `window.scrollTo` calls that used to paper over the
+    page scroll are gone; `displayQuestion()` resets `#questionBody.scrollTop` instead, and
+    `#timer` / `.quiz-sidebar` are no longer `position: sticky` — there is nothing to stick to.
+- **Inside a session the header shows a back button, not the logo**, and the only buttons under
+  the question are Back and Next. `#quitBtn` is gone; `#sessionBack` carries it, with one
+  branch — from the quiz it confirms first, from the results screen it goes straight home.
+  Both buttons are driven by **`disabled`, never `display`**, so the pinned row cannot change
+  height as you answer, and the Enter shortcut reads the same property the button does.
+- **The navigator states progress once.** It used to carry a second copy of `.quiz-progress`,
+  the same percentage in words, and a four-swatch legend; the stats bar restated the question
+  number a fourth time. `updateProgress()` writes to one element, `#questionNum` carries its
+  own total (`quiz.questionOf`), and the stats bar is three columns.
 - **UI language: English by default, German optional** (added 2026-09-19). The switch is the
   left segmented control in the header (`#langEn` / `#langDe`), persisted under `localStorage`
   key `eib_lang`, defaulting to `en`.
@@ -290,8 +335,8 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
   `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
   LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens, which the block
-  parser cannot see. It is empty — the featured exam card, which used to fill it, is painted in
-  tokens now.
+  parser cannot see — five today (the brand-mark letter, and the letter on the correct/wrong
+  answer chips in each theme), matching the rule stated under the home-screen section.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
@@ -352,7 +397,9 @@ Before publishing any app change:
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43
    image questions render, progress persists across reload, and Smart Review surfaces
    due/weak questions. Check the page at 375px wide: `document.documentElement.scrollWidth`
-   must equal the viewport width.
+   must equal the viewport width. **On the quiz and results screens `scrollHeight` must also
+   equal `innerHeight`** — check it at 375 / 620 / 940 / 1400px, on a four-image question with
+   the explanation open, and with the mobile navigator both collapsed and expanded.
 7. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
    When changing cached static assets, bump `CACHE` in `sw.js`. A stale service worker will
    serve the old page during local testing — clear it before judging a change.
