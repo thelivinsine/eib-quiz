@@ -311,6 +311,20 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   and no practice path hid it; `startMode()` now clears the interval and hides it for every
   non-exam mode.
 
+## Session developments (2026-09-20, panel rows and gutters)
+
+- **The panel starts at the readouts and ends at the question's content.** `.quiz-topbar` moved
+  back into `.quiz-main` and `.quiz-nav` moved OUT of the card into its own grid row under the
+  question column: row 1 is question-column + panel (both stretched), row 2 is the buttons.
+  Measured at 1100x800 — panel top 100 = readouts top 100, panel bottom 733 = question body
+  bottom 733, buttons at 749.
+- **The question is top-aligned under the readouts again** (16px), so the readouts sit next to
+  the question they report on rather than a centred block's worth of gap away.
+- **One cell size for both layouts**: `minmax(30px, 1fr)`, 4px gap, 30px min-height — measured
+  32x32, six across in the sidebar. The sidebar's cells were a third bigger than the strip's.
+- **Wider gutters in session**: `--spacing-xl` sides instead of `--spacing-lg`, and the same
+  value as the column gap between the question and the panel (measured 28px each).
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
