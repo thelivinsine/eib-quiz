@@ -308,6 +308,24 @@
         html.light .brand-mark { color: #fff; }
         .brand-name { font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; color: var(--text); }
 
+        /* Inside a session the logo is a link that loses your round, dressed as a
+           logo. Body.in-session swaps the two; nothing branches in JS. */
+        .session-back {
+            display: none;
+            align-items: center; gap: 8px;
+            min-height: 44px; padding: 0 14px 0 10px;
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            color: var(--sub-text); font-size: 0.88rem; font-weight: 600;
+            transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
+        }
+        .session-back:hover { background: var(--hover); border-color: var(--border-hover); color: var(--text); }
+        .session-back-icon { display: grid; place-items: center; }
+        /* The icon set has one arrow. This is the same one, mirrored. */
+        .session-back-icon svg { width: 18px; height: 18px; transform: scaleX(-1); }
+        body.in-session .brand { display: none; }
+        body.in-session .session-back { display: inline-flex; }
+
         .header-controls { display: flex; align-items: center; gap: var(--spacing-sm); }
         .seg {
             display: inline-flex;
@@ -819,6 +837,19 @@
         }
         .btn-group { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap; }
 
+        /* The card's pinned footer. Back left, Next right, and neither button is
+           ever allowed to change the row's height - a row that reflows as you
+           answer cannot be pinned under your thumb. */
+        .quiz-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border);
+        }
+        #nextBtn:disabled { visibility: hidden; }
+        #backBtn:disabled { color: var(--faint); border-color: var(--border-soft); background: var(--surface2); cursor: default; }
+
         /* ============================================================
            QUIZ SCREEN
            ============================================================ */
@@ -1207,6 +1238,10 @@
                 <span class="brand-mark" aria-hidden="true">E</span>
                 <span class="brand-name">eib</span>
             </button>
+            <button class="session-back" id="sessionBack" data-i18n-aria="nav.back">
+                <span class="session-back-icon" aria-hidden="true"></span>
+                <span data-i18n="nav.back"></span>
+            </button>
             <div class="header-controls">
                 <div class="seg" role="group" data-i18n-aria="nav.language">
                     <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
@@ -1331,10 +1366,9 @@
                             <div class="explanation-english" id="explanationEnglish" lang="en"></div>
                         </div>
 
-                        <div class="btn-group">
-                            <button class="btn-secondary" id="backBtn" style="display: none;">← <span data-i18n="quiz.back"></span></button>
-                            <button class="btn-primary" id="nextBtn" style="display: none;"></button>
-                            <button class="btn-secondary" id="quitBtn">← <span data-i18n="quiz.quit"></span></button>
+                        <div class="quiz-nav">
+                            <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.back"></span></button>
+                            <button class="btn-primary" id="nextBtn"></button>
                         </div>
                     </div>
                 </div>
@@ -1505,6 +1539,7 @@
         const I18N = {
             // header
             'nav.home':            { en: 'Go to start page',        de: 'Zur Startseite' },
+            'nav.back':            { en: 'Back',                    de: 'Zurück' },
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
@@ -1598,7 +1633,6 @@
             'quiz.back':           { en: 'Back',                    de: 'Zurück' },
             'quiz.next':           { en: 'Next',                    de: 'Weiter' },
             'quiz.finish':         { en: 'Finish',                  de: 'Abschließen' },
-            'quiz.quit':           { en: 'Quit',                    de: 'Beenden' },
             'quiz.correct':        { en: '✓ Correct',               de: '✓ Richtig' },
             'quiz.wrong':          { en: '✗ Wrong',                 de: '✗ Falsch' },
             'quiz.rightAnswer':    { en: ' — correct answer: ',     de: ' — richtige Antwort: ' },
@@ -1879,6 +1913,9 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenName + 'Screen').classList.add('active');
             state.currentScreen = screenName;
+            // Everything past the home screen is an app view: locked to the viewport,
+            // a back button where the logo was. One class carries both.
+            document.body.classList.toggle('in-session', screenName !== 'home');
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
@@ -2246,7 +2283,7 @@
             document.getElementById('navProgressSummary').textContent = t('qnav.answered', { n: answered, total });
             // Self-correcting: even if a resize event is missed, the header's semantics
             // are right again the next time the panel renders.
-            syncNavHeaderRole();
+        syncNavHeaderRole();
 
             // Shuffle belongs to rounds you work through in order; an exam is
             // already random and a 10-question set has nothing to gain.
@@ -2516,7 +2553,7 @@
 
             // Show back button when not on the first question
             const backBtn = document.getElementById('backBtn');
-            backBtn.style.display = state.currentQuestionIndex > 0 ? 'block' : 'none';
+            backBtn.disabled = state.currentQuestionIndex === 0;
 
             // Restore answered state if this question was already answered (via navigator jump)
             const prevAnswer = state.answered[state.currentQuestionIndex];
@@ -2531,13 +2568,13 @@
                 if (optsEl) optsEl.classList.add('answered');
                 showExplanation(q, prevAnswer === q.correct);
                 const nextBtn = document.getElementById('nextBtn');
-                nextBtn.style.display = 'block';
+                nextBtn.disabled = false;
                 nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length
                     ? t('quiz.finish') : t('quiz.next') + ' →';
             } else {
                 if (optsEl) optsEl.classList.remove('answered');
                 document.getElementById('explanation').classList.remove('show');
-                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('nextBtn').disabled = true;
                 document.getElementById('answerHint').style.display = 'block';
                 // Focus question text (non-interactive) so Space can't accidentally select option A
                 document.getElementById('questionText').focus({ preventScroll: true });
@@ -2613,7 +2650,7 @@
 
             // Show next button and scroll it into view
             const nextBtn = document.getElementById('nextBtn');
-            nextBtn.style.display = 'block';
+            nextBtn.disabled = false;
             nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' →';
             setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
             setTimeout(() => nextBtn.focus(), 600);
@@ -2919,7 +2956,14 @@
             }
         });
 
-        document.getElementById('quitBtn').addEventListener('click', () => {
+        // One handler, one branch: leaving a round in progress asks first, leaving
+        // the results screen has nothing left to lose.
+        document.getElementById('sessionBack').addEventListener('click', () => {
+            if (state.currentScreen !== 'quiz') {
+                initHomeScreen();
+                showScreen('home');
+                return;
+            }
             const resumable = state.currentMode !== 'exam' && state.currentMode !== 'mistakes';
             const msg = resumable ? t('quit.resumable') : t('quit.lost');
             if (confirm(msg)) {
@@ -2962,7 +3006,7 @@
                     e.preventDefault();
                     focused.click();
                 }
-            } else if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
+            } else if (e.key === 'Enter' && !nextBtn.disabled) {
                 nextBtn.click();
             }
         });
@@ -3055,6 +3099,8 @@
         document.getElementById('sidebarToggle').addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNavPanel(); }
         });
+        // One arrow in the icon set; the back button mirrors it in CSS.
+        document.querySelector('.session-back-icon').innerHTML = ICONS.arrowRight;
         syncNavHeaderRole();
         // resize rather than a matchMedia change listener: the latter did not fire under
         // viewport emulation, and this has to be right at whatever width the reader lands on.
