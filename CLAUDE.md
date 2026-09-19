@@ -194,7 +194,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `#navActions` is fixed at its top and **`#questionNavGrid` is the scroller** (the rule is
     written against the id, because the renderer swaps the element's class between
     `.question-nav-grid` and `.question-nav-groups`). The mobile `.expanded` panel is
-    `display: flex` for the same reason.
+    `display: flex` for the same reason, and the grid needs **`align-content: start`**: a grid
+    defaults to `stretch`, so as a flex child that FILLS the panel its auto rows stretched and
+    every cell came out a tall rounded slab with the row gap swallowed. Extra room belongs at
+    the bottom of the list.
   - **The collapse control is a drawn chevron** (`ICONS.chevron` in a 30px round hit target,
     filled at boot beside `.session-back-icon`), not a `▼` dingbat — the glyph rendered at a
     different weight and baseline in every font stack. CSS rotates it on `.open`.
@@ -447,6 +450,11 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
 - **Mode keys are `allQuestions` / `bundesland` / `exam` / `review` / `topic` / `mistakes`.**
   There is no `berlin` mode — two label maps kept a stale `berlin` key and silently fell
   through. When renaming a mode, grep every lookup map.
+- **An option image is never `loading="lazy"`.** It IS the answer you are choosing, so it is
+  always above the fold and deferring it buys nothing — and the deferred load raced the rest
+  of the round's requests and came back `net::ERR_FAILED` often enough to paint "Bild fehlt"
+  over a file that was sitting right there (reproducible against `python -m http.server`; the
+  same `<img>` loaded on the spot once its `src` was re-set without the attribute).
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,

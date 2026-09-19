@@ -275,6 +275,10 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
 - **The rule above Previous/Next is gone** everywhere, and the buttons are 38px / 0.84rem.
 - **Below 940px the card stretches again** so the two buttons hold one position on every
   question, right above the overview strip (measured identical at 677px on Q1 and Q2 at 375px).
+- **The navigator's cells were stretching.** `#questionNavGrid` became a flex child that fills
+  the panel, and a grid defaults to `align-content: stretch` — so the auto rows grew and every
+  cell was a tall slab with no row gap. `align-content: start` puts the slack at the bottom.
+- **Option images no longer carry `loading="lazy"`** — see the gotcha in CLAUDE.md.
 - **Contrast fixed in both themes.** With the card gone, an option is a tile on the CANVAS:
   light takes `--surface` (#FFF on #F2F3F5 — it was `--surface2`, a 1.02 step and the whole of
   the washed-out look) and dark goes one rung higher to `--surface2` (1.36), chip `--surface3`.

@@ -1183,6 +1183,12 @@
            list carry the id, so the rule is written against that and not the class
            the renderer swaps. */
         #questionNavGrid {
+            /* align-content: start is load-bearing. A grid defaults to stretch, and
+               this one is now a flex child that FILLS the panel — so with fewer cells
+               than room, the auto rows stretched to fit and every cell came out a tall
+               rounded slab instead of the square the aspect-ratio asks for, with the
+               row gap swallowed. Extra room belongs at the bottom of the list. */
+            align-content: start;
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
             padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
         }
@@ -2800,7 +2806,7 @@
                 if (hasImages) {
                     return `
                 <button class="option-btn option-btn--image" onclick="selectAnswer(${idx})" id="option-${idx}" aria-label="${String.fromCharCode(65 + idx)}: ${opt}">
-                    <span class="opt-img" data-missing="${t('quiz.imgMissing')}"><img src="${q.option_images[idx]}" alt="${opt}" loading="lazy" onerror="this.closest('.option-btn').classList.add('img-missing')"></span>
+                    <span class="opt-img" data-missing="${t('quiz.imgMissing')}"><img src="${q.option_images[idx]}" alt="${opt}" decoding="async" onerror="this.closest('.option-btn').classList.add('img-missing')"></span>
                     <span class="opt-num">${String.fromCharCode(65 + idx)} — ${opt}</span>
                 </button>`;
                 }
