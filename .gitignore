@@ -1,0 +1,5 @@
+# Local scratch / sandbox clones
+work/
+
+# Loose source PDFs kept locally (the catalogue lives at img/ and is tracked)
+/*.pdf
