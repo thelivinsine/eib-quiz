@@ -96,6 +96,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     and state modes it governs — not in the overview card, which only reports.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
+- **The navigator groups a long ordered round by category.** `renderQuestionNav()` builds
+  `<details class="qnav-group">` per `q.category` (state questions group under the state name).
+  The group holding the current question is always open; a group the reader opened by hand stays
+  open, and the *previously* active one collapses — otherwise a lap of the round leaves every
+  category expanded. Open state is carried across re-renders by reading the DOM about to be
+  replaced, plus `navLastActiveKey`; there is no separate store to keep in sync.
+  - **Groups appear only when they earn their keep.** A shuffled round, a round of 40 or fewer,
+    or a round that is all one category renders the flat grid — one `<details>` over the whole
+    list is a lid, not a grouping.
+  - `.question-nav-grid` is `repeat(auto-fill, minmax(44px, 1fr))`, so it is 5 across in the
+    256px sidebar and ~14 across in the full-width strip below 940px, cells finger-sized in both.
+- **`NAV_COLLAPSE_AT` is the one number for the navigator's collapse.** The stylesheet's 940px
+  breakpoint and the two JS guards must agree: they read 720 against a 940 breakpoint once, and
+  between those widths the CSS hid the panel while the toggle refused to open it.
+- **`state.shuffled` re-orders a round, and `state.answered` moves with it.** `shuffleRound()`
+  toggles between `sample()` order and catalogue order, remaps every answer by question id
+  (answers are keyed by POSITION, so a re-order silently reassigns them otherwise), and keeps the
+  reader on the question they were looking at. Every entry into a round resets the flag; the flag
+  is persisted in the session so a resume renders the navigator the right way.
 - **The question navigator is bounded by the viewport, never by its contents.** 300 cells in five
   columns is a 2700px column: the sidebar grew to match, `position: sticky` stopped meaning
   anything, and the numbers painted down the page outside the card. `.quiz-sidebar` caps at
