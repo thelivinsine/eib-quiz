@@ -260,7 +260,7 @@
            hover is not a lift: light steps the fill DOWN into grey, dark
            steps it UP. Both stay inside the 1.10-1.25 band.
            ============================================================ */
-        .hist-list, .hist-exam, .glossary-wrap, .question-card, .quiz-sidebar,
+        .hist-list, .hist-exam, .glossary-wrap, .quiz-sidebar,
         .breakdown-item, .review-item, .score-display {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -389,7 +389,12 @@
            screen while the grid itself sat comfortably inside it. */
         body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
         body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; }
-        body.in-session .question-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+        /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
+           four-option question sits at the top of the column instead of being
+           stretched down the screen with its buttons pinned to the bottom. It can
+           still SHRINK, which is what keeps .question-body's scroller working on a
+           long question. */
+        body.in-session .question-card { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
         /* The only element on the quiz screen with a scrollbar. `contain` stops a
            flick past the last option rubber-banding the locked page behind it. */
         /* hidden on x: the pick animation scales the chosen option by 1.5%, which
@@ -915,8 +920,8 @@
         .quiz-nav {
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--spacing-sm);
-            margin-top: var(--spacing-sm);
-            padding-top: var(--spacing-sm);
+            margin-top: 14px;
+            padding-top: 12px;
             border-top: 1px solid var(--border);
             flex-shrink: 0;
         }
@@ -930,15 +935,17 @@
            containers look, and it spent a row of height the question card needs.
            Same move as the home overview band: figures separated by hairlines,
            label and value on one line. */
-        /* The readouts sit left, the keyboard hint right — the hint is about the
-           screen, not about the question, and inside the card it pushed the options
-           down and then vanished, moving them back up. */
+        /* The readouts line up with the question column and centre over it — they
+           report on the round you are reading, not on the whole screen. */
         .quiz-topbar {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex; align-items: center; justify-content: center;
             gap: var(--spacing-md); flex-wrap: wrap;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-lg); flex-shrink: 0;
         }
-        .stats-bar { display: flex; flex-wrap: wrap; align-items: baseline; }
+        .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; }
+        /* Under the question, out of the reading path: it is a tip about the screen,
+           not a part of the question. */
+        #keyboardHintContainer { flex-shrink: 0; display: flex; justify-content: center; margin-top: var(--spacing-md); }
         .stat { display: flex; align-items: baseline; gap: 8px; padding: 0 var(--spacing-md); }
         .stat:first-child { padding-left: 0; }
         .stat + .stat { border-left: 1px solid var(--border); }
@@ -961,37 +968,39 @@
         #timer.danger .timer-display { color: var(--red-text); }
         .pacing-info { font-size: 0.74rem; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
 
-        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: var(--spacing-md); flex-shrink: 0; }
+        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 10px; flex-shrink: 0; }
         .quiz-progress > span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent-grad); transition: width 0.45s var(--ease-spring); }
 
-        /* 14px against the card's 16px radius is the documented concentric pair
-           (card 16 -> option 10). It was 24px, which cost the question body 20px
-           of height for nothing. */
-        .question-card { padding: 14px; border-radius: var(--radius); }
+        /* NOT a tile. The question sits on the page and the options are the boxes
+           inside it — a card around a card around four cards is the containers-in-
+           containers look, and the outer one carried no information. No fill, no
+           hairline, no padding: the question's left edge is the column's left edge. */
+        .question-card { padding: 0; }
         .q-enter { animation: qEnter 0.4s var(--ease-spring) both; }
         @keyframes qEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); flex-shrink: 0; }
+        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: 14px; flex-shrink: 0; }
         .question-meta > div:first-child { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .question-num { color: var(--accent-text); flex-shrink: 0; }
         .question-category {
-            font-size: 0.72rem; font-weight: 500; color: var(--muted);
-            padding: 4px 10px; border-radius: var(--radius-pill);
+            font-size: 0.68rem; font-weight: 500; color: var(--muted);
+            padding: 3px 9px; border-radius: var(--radius-pill);
             background: var(--surface2); border: 1px solid var(--border-soft);
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .question-meta-actions { display: flex; gap: 6px; flex-shrink: 0; }
         .speak-btn, .bilingual-toggle {
             border: 1px solid var(--border); background: var(--surface2); color: var(--sub-text);
-            font-size: 0.76rem; font-weight: 600;
-            min-height: 40px; padding: 0 12px; border-radius: var(--radius-pill);
+            font-size: 0.72rem; font-weight: 600;
+            min-height: 34px; padding: 0 10px; border-radius: var(--radius-pill);
             display: inline-flex; align-items: center; justify-content: center;
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
-        .speak-btn { min-width: 40px; padding: 0 10px; }
+        .speak-btn { min-width: 34px; padding: 0 9px; }
         /* On a touch screen every one of these is a finger target, not a cursor target. */
         @media (pointer: coarse) {
             .speak-btn, .bilingual-toggle, .session-back, .brand { min-height: 44px; }
+            .option-btn { min-height: 48px; }
             .header-controls .seg-btn { min-height: 36px; }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: 40px; }
@@ -1001,19 +1010,19 @@
         .speak-btn:hover, .bilingual-toggle:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .bilingual-toggle.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
 
-        .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.18rem, 2.2vw, 1.45rem); line-height: 1.35; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
+        .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
         .question-text:focus { outline: none; }
-        .question-english { display: none; margin-top: 10px; padding-top: 12px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.98rem; line-height: 1.5; }
+        .question-english { display: none; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
         .question-english.show { display: block; }
         .question-image { width: 100%; max-width: 420px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
         .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-md); }
         .option-btn {
-            display: flex; align-items: center; gap: var(--spacing-md);
+            display: flex; align-items: center; gap: 10px;
             width: 100%; text-align: left;
-            min-height: 50px;
-            padding: 11px 13px;
+            min-height: 42px;
+            padding: 9px 11px;
             /* concentric: a 16px card with 14px of padding holds a 10px option. */
             border: 1px solid var(--border); border-radius: var(--radius-sm);
             /* --surface2, not --surface: an option is a well inside the card, and
@@ -1021,7 +1030,7 @@
                held apart by one hairline. 1.08 light / 1.12 dark, both above the
                1.05 nesting floor. */
             background: var(--surface2); color: var(--text);
-            font-size: 1rem; line-height: 1.45;
+            font-size: 0.9rem; line-height: 1.4;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
         @media (hover: hover) {
@@ -1032,9 +1041,9 @@
         .option-btn:active:not(:disabled) { background: var(--surface3); }
         .option-btn:disabled { cursor: default; }
         .opt-letter {
-            flex-shrink: 0; width: 30px; height: 30px; border-radius: var(--radius-sm);
+            flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
-            font-weight: 600; font-size: 0.84rem;
+            font-weight: 600; font-size: 0.76rem;
             color: var(--muted); background: var(--surface3); border: 1px solid var(--border);
             transition: border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
@@ -1042,7 +1051,7 @@
             .option-btn:hover:not(:disabled) .opt-letter { border-color: var(--border-hover); color: var(--text); }
         }
         .opt-text-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-        .option-en-text { display: none; font-size: 0.82rem; color: var(--muted); font-style: italic; }
+        .option-en-text { display: none; font-size: 0.78rem; color: var(--muted); font-style: italic; }
         .option-en-text.show { display: block; }
         /* The dim is a text tier now; the fill it used to borrow is the base. */
         .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); }
@@ -1065,29 +1074,28 @@
         .option-btn--image.img-missing .opt-img::after { content: attr(data-missing); font-size: 0.78rem; color: var(--muted); }
         .option-btn--image.img-missing .opt-img img { display: none; }
 
-        #answerHint { color: var(--muted); }
         .keyboard-hint { position: relative; padding: 5px 6px 5px 12px; background: var(--surface2); border: 1px solid var(--border-soft); border-radius: var(--radius-pill); font-size: 0.72rem; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
         kbd { font-size: 0.68rem; padding: 2px 7px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
         .keyboard-hint-close { margin-left: 4px; background: none; border: none; color: var(--muted); font-size: 1rem; line-height: 1; padding: 0 6px; }
         .keyboard-hint-close:hover { color: var(--text); }
 
-        .explanation { display: none; margin-top: var(--spacing-md); padding: var(--spacing-md); border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface2); border-left: 3px solid var(--accent); animation: fadeUp 0.28s var(--ease) both; }
+        .explanation { display: none; margin-top: var(--spacing-md); padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface2); border-left: 3px solid var(--accent); animation: fadeUp 0.28s var(--ease) both; }
         .explanation.show { display: block; }
         .explanation.correct { border-left-color: var(--green); background: var(--green-dim); }
         .explanation.incorrect { border-left-color: var(--red); background: var(--red-dim); }
-        .explanation-header { font-family: var(--font-head); font-weight: 600; font-size: 1rem; margin-bottom: 6px; letter-spacing: -0.01em; }
+        .explanation-header { font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; margin-bottom: 5px; letter-spacing: -0.01em; }
         .explanation.correct .explanation-header { color: var(--green); }
         .explanation.incorrect .explanation-header { color: var(--red-text); }
-        .explanation-text { color: var(--sub-text); font-size: 0.92rem; line-height: 1.6; }
-        .explanation-english { display: none; margin-top: 8px; color: var(--muted); font-size: 0.86rem; font-style: italic; }
+        .explanation-text { color: var(--sub-text); font-size: 0.86rem; line-height: 1.55; }
+        .explanation-english { display: none; margin-top: 6px; color: var(--muted); font-size: 0.8rem; font-style: italic; }
         .explanation-english.show { display: block; }
 
         /* Sidebar navigator */
         .quiz-sidebar {
-            width: 256px;
+            width: 248px;
             border-radius: var(--radius);
-            padding: var(--spacing-md);
+            padding: 12px;
             position: sticky;
             top: calc(var(--header-h) + 8px);
             /* Never taller than the screen — otherwise it is not sticky, it is just long.
@@ -1097,17 +1105,36 @@
             max-height: calc(100svh - var(--header-h) - 24px);
             display: flex; flex-direction: column;
         }
-        .sidebar-header { cursor: default; }
-        .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
-        .sidebar-chevron { display: none; color: var(--muted); transition: transform 0.25s var(--ease); }
+        .sidebar-header { cursor: default; flex-shrink: 0; }
+        .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; min-height: 24px; }
+        /* A drawn chevron in a hit target, not a dingbat: the glyph rendered at a
+           different weight and baseline in every font stack. */
+        .sidebar-chevron {
+            display: none; flex-shrink: 0;
+            width: 30px; height: 30px; border-radius: var(--radius-pill);
+            place-items: center; color: var(--muted);
+            border: 1px solid var(--border); background: var(--surface2);
+            transition: transform 0.25s var(--ease), color 0.2s var(--ease), background 0.2s var(--ease);
+        }
+        .sidebar-chevron svg { width: 16px; height: 16px; }
+        .sidebar-header:hover .sidebar-chevron { color: var(--text); background: var(--hover); }
         /* Same gutter as .question-body — the nav numbers were touching the bar. */
         .sidebar-body {
-            margin-top: var(--spacing-md); min-height: 0; overflow-y: auto;
+            margin-top: 10px; min-height: 0;
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        /* The grid is the scroller, not the panel: the view switcher above it is a
+           control OVER the list and used to scroll away with it. Both views of the
+           list carry the id, so the rule is written against that and not the class
+           the renderer swaps. */
+        #questionNavGrid {
+            flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
             padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
         }
-        /* Five across in the 256px sidebar, many more across the full-width strip
-           on a narrow screen — the cells stay finger-sized either way. */
-        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
+        /* Five across in the sidebar, many more across the full-width strip on a
+           narrow screen. 40px still clears the 24px AA target with room, and holds a
+           three-digit number — which a shuffled round shows. */
+        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 5px; }
 
         /* Collapsible category groups. The group holding the current question is
            always open; anything else the reader opened stays open across renders. */
@@ -1116,7 +1143,7 @@
         .qnav-group + .qnav-group { border-top: 1px solid var(--border-soft); padding-top: 4px; }
         .qnav-group-head {
             display: flex; align-items: center; gap: 8px;
-            min-height: 36px; padding: 0 4px;
+            min-height: 32px; padding: 0 4px;
             cursor: pointer; list-style: none;
             font-size: 0.78rem; font-weight: 600; color: var(--sub-text);
         }
@@ -1139,9 +1166,9 @@
            re-orders. Same segmented control as the header switches — three
            mutually exclusive views is exactly what that pattern is for. */
         #navActions:empty { display: none; }
-        #navActions { margin: var(--spacing-sm) 0 2px; }
+        #navActions { flex-shrink: 0; margin: 0 0 10px; }
         .qnav-seg { display: flex; width: 100%; }
-        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 6px; font-size: 0.72rem; min-height: 34px; }
+        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 6px; font-size: 0.7rem; min-height: 30px; }
 
         /* Stated after the base rules above, not with the other coarse-pointer
            overrides earlier in the sheet — same specificity, so source order decides. */
@@ -1218,31 +1245,32 @@
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
             .quiz-layout { grid-template-columns: minmax(0, 1fr); }
-            /* The collapsed navigator sits above the card and takes what it
-               needs; the card takes everything left, and no more. */
-            body.in-session .quiz-layout { position: relative; grid-template-rows: auto minmax(0, 1fr); }
-            /* Expanded, it COVERS the card rather than pushing it down. In a locked
-               viewport a 45vh panel above the card left about 130px for the question
-               — the meta row, a rule, and Back. :has is the whole switch; a browser
-               without it just gets today's push-down behaviour. */
-            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) {
-                position: absolute; inset: 0; z-index: 30;
-                background: var(--surface); max-height: none;
-            }
-            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) .sidebar-body {
-                max-height: none; flex: 1; min-height: 0;
-            }
+            /* The question comes first and the collapsed navigator sits UNDER it: on a
+               phone the strip was the first thing on the screen, competing with the
+               question for the reader's first look. The card takes the flexible row,
+               the strip takes what it needs. */
+            body.in-session .quiz-layout { position: relative; grid-template-rows: minmax(0, 1fr) auto; }
+            /* Expanded, the panel takes a share of the screen and no more: it grows
+               up from the bottom to 42% of the viewport and the numbers scroll INSIDE
+               it, so the question stays on screen above. It used to cover the card
+               outright (absolute; inset: 0), which is fine when the strip is at the
+               top of the screen and wrong now that it is at the bottom — you lost the
+               question you were answering the moment you opened the overview. The card
+               shrinks into what is left; .question-body is its scroller. */
+            body.in-session .quiz-sidebar { z-index: 30; }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
-            .quiz-sidebar { width: auto; position: static; order: -1; max-height: none; padding: 6px var(--spacing-md); }
+            .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
             /* Below this the topbar wraps and the hint costs the card a whole row,
                for a tip that is only ever shown once. */
             .keyboard-hint { display: none; }
-            .sidebar-chevron { display: block; }
+            .sidebar-chevron { display: grid; }
             .sidebar-chevron.open { transform: rotate(180deg); }
             .sidebar-body { display: none; }
-            .sidebar-body.expanded { display: block; max-height: 45vh; }
+            /* flex, not block: the grid inside it is the scroller now. vh first, as
+               everywhere else, so a browser without svh keeps a cap. */
+            .sidebar-body.expanded { display: flex; max-height: 42vh; max-height: 42svh; }
         }
 
         @media (max-width: 620px) {
@@ -1323,7 +1351,10 @@
             .header-controls { gap: 6px; }
             .seg-btn { padding: 0 9px; font-size: 0.7rem; }
             .question-card { padding: var(--spacing-md); }
-            .question-text { font-size: 1.15rem; }
+            .question-text { font-size: 1.05rem; }
+            body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
+            .quiz-topbar { margin-bottom: var(--spacing-md); }
+            .question-meta { margin-bottom: 12px; }
             /* The tiles carry their own height on a wide grid; on a phone they
                only need to hold their content. */
             #statTile { min-height: 0; }
@@ -1447,16 +1478,15 @@
         <section id="quizScreen" class="screen">
             <div class="quiz-progress" aria-hidden="true"><span id="quizProgressFill"></span></div>
 
-            <div class="quiz-topbar">
-                <div class="stats-bar" id="statsBar">
-                    <!-- Populated by JavaScript -->
-                </div>
-                <div id="keyboardHintContainer"></div>
-            </div>
-
             <div class="quiz-layout">
                 <!-- Left column: question card (+ timer for exam mode) -->
                 <div class="quiz-main">
+                    <div class="quiz-topbar">
+                        <div class="stats-bar" id="statsBar">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
                     <div id="timer" style="display: none; margin-bottom: var(--spacing-md);">
                         <div class="timer-label" data-i18n="quiz.time"></div>
                         <div class="timer-display" id="timerDisplay">60:00</div>
@@ -1482,7 +1512,6 @@
                         <div id="imageCredit" style="display: none; font-size: 0.68rem; color: var(--muted); text-align: center; margin: -4px 0 6px;"></div>
 
                         <div class="options" id="optionsContainer" lang="de"></div>
-                        <div id="answerHint" data-i18n="quiz.pick" style="display:none; font-size: 0.85rem; color: var(--muted); text-align: center; padding: var(--spacing-sm) 0; margin-top: 2px;"></div>
 
                         <div class="explanation" id="explanation" role="status" aria-live="polite">
                             <div class="explanation-header" id="explanationHeader"></div>
@@ -1496,6 +1525,8 @@
                             <button class="btn-primary" id="nextBtn"></button>
                         </div>
                     </div>
+
+                    <div id="keyboardHintContainer"></div>
                 </div>
 
                 <!-- Right column: vertical navigator sidebar -->
@@ -1503,7 +1534,7 @@
                     <div class="sidebar-header" id="sidebarToggle" aria-controls="sidebarBody">
                         <div class="sidebar-header-row">
                             <span class="sidebar-title" data-i18n="qnav.overview"></span>
-                            <span class="sidebar-chevron" id="sidebarChevron">▼</span>
+                            <span class="sidebar-chevron" id="sidebarChevron"></span>
                         </div>
                     </div>
                     <div class="sidebar-body" id="sidebarBody">
@@ -1596,6 +1627,7 @@
             translate: _svg('<path d="M4 5h11"/><path d="M9 3v2"/><path d="M12.5 5c-.6 4.6-3.7 8.6-8 10.4"/><path d="M6.5 8.5c.9 2.6 2.9 4.7 5.5 5.8"/><path d="M13 21l4.2-10 4.2 10"/><path d="M14.6 17.3h5.2"/>'),
             speaker: _svg('<path d="M4 9.5v5a1 1 0 0 0 1 1h2.6l3.6 3a.8.8 0 0 0 1.3-.6V6.1a.8.8 0 0 0-1.3-.6l-3.6 3H5a1 1 0 0 0-1 1Z"/><path d="M16.2 9.2a4 4 0 0 1 0 5.6"/><path d="M18.8 6.6a7.6 7.6 0 0 1 0 10.8"/>'),
             arrowRight: _svg('<line x1="5" y1="12" x2="18" y2="12"/><polyline points="13 7 18 12 13 17"/>'),
+            chevron: _svg('<polyline points="6 9.5 12 15.5 18 9.5"/>'),
             reset: _svg('<path d="M3.5 12a8.5 8.5 0 1 1 2.8 6.3"/><polyline points="3 6.5 3.5 12 9 11.5"/>'),
             trendUp: _svg('<polyline points="4 16 10 10 14 14 20 7"/><polyline points="15 7 20 7 20 12"/>'),
         };
@@ -1757,7 +1789,6 @@
             'quiz.speak':          { en: 'Read the question aloud', de: 'Frage vorlesen' },
             'quiz.showEn':         { en: 'Show the English',        de: 'Auf Englisch anzeigen' },
             'quiz.hideEn':         { en: 'Hide the English',        de: 'Englisch ausblenden' },
-            'quiz.pick':           { en: 'Pick an answer',          de: 'Wähle eine Antwort' },
             'quiz.prev':           { en: 'Previous',                de: 'Vorherige' },
             'quiz.next':           { en: 'Next',                    de: 'Weiter' },
             'quiz.finish':         { en: 'Finish',                  de: 'Abschließen' },
@@ -2449,7 +2480,8 @@
                     cls += ans === state.currentQuestions[i].correct
                         ? ' qnav-correct' : ' qnav-incorrect';
                 }
-                return `<button class="${cls}" onclick="jumpToQuestion(${i})" title="${t('quiz.question', { n: i + 1 })}">${i + 1}</button>`;
+                const n = roundNumber(i);
+                return `<button class="${cls}" onclick="jumpToQuestion(${i})" title="${t('quiz.question', { n })}">${n}</button>`;
             };
 
             const el = document.getElementById('questionNavGrid');
@@ -2460,6 +2492,7 @@
             if (state.navView !== 'categories' || groups.size < 2) {
                 el.className = 'question-nav-grid';
                 el.innerHTML = Array.from({ length: total }, (_, i) => cell(i)).join('');
+                showCurrentCell(el);
                 return;
             }
 
@@ -2488,13 +2521,34 @@
                     </details>`;
             }).join('');
 
-            // Keep the question you are on in view inside the scrolling panel.
+            showCurrentCell(el);
+        }
+
+        /**
+         * Keep the question you are on in view inside the scrolling panel. It used
+         * to run only in the grouped branch, so in a 300-cell flat list — and in
+         * shuffle, where the numbers give you no way to guess where you are — the
+         * current cell was routinely off screen.
+         */
+        function showCurrentCell(el) {
             const cur = el.querySelector('.qnav-current');
             if (cur) cur.scrollIntoView({ block: 'nearest' });
         }
 
         // The group that was open purely because it was active, last render.
         let navLastActiveKey = null;
+
+        /**
+         * The number a question wears. In a shuffled round it is the question's
+         * place in the round as BUILT, not its current position — otherwise the
+         * navigator reads 1, 2, 3 in every view and a shuffle is invisible. The
+         * cells stay in the round's current order, so shuffled they read 42, 7, 190.
+         */
+        function roundNumber(i) {
+            if (!state.shuffled || !state.baseOrder) return i + 1;
+            const pos = state.baseOrder.indexOf(state.currentQuestions[i].id);
+            return pos >= 0 ? pos + 1 : i + 1;
+        }
 
         /** Which navigator group a question belongs to. */
         function navGroupKey(q) { return q.state ? 'state' : (q.category || 'other'); }
@@ -2636,7 +2690,7 @@
 
             // Question content
             document.getElementById('questionNum').textContent =
-                t('quiz.questionOf', { n: state.currentQuestionIndex + 1, total: state.currentQuestions.length });
+                t('quiz.questionOf', { n: roundNumber(state.currentQuestionIndex), total: state.currentQuestions.length });
             document.getElementById('questionCategory').textContent =
                 q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
@@ -2714,7 +2768,6 @@
             const prevAnswer = state.answered[state.currentQuestionIndex];
             const optsEl = document.getElementById('optionsContainer');
             if (prevAnswer !== undefined) {
-                document.getElementById('answerHint').style.display = 'none';
                 document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
                 document.getElementById('option-' + q.correct).classList.add('correct');
                 if (prevAnswer !== q.correct) {
@@ -2730,7 +2783,6 @@
                 if (optsEl) optsEl.classList.remove('answered');
                 document.getElementById('explanation').classList.remove('show');
                 document.getElementById('nextBtn').disabled = true;
-                document.getElementById('answerHint').style.display = 'block';
                 // Focus question text (non-interactive) so Space can't accidentally select option A
                 document.getElementById('questionText').focus({ preventScroll: true });
             }
@@ -2785,8 +2837,6 @@
         function selectAnswer(idx) {
             const q = state.currentQuestions[state.currentQuestionIndex];
             state.answered[state.currentQuestionIndex] = idx;
-
-            document.getElementById('answerHint').style.display = 'none';
 
             // Disable all buttons; dim the unchosen
             document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
@@ -3279,6 +3329,7 @@
         });
         // One arrow in the icon set; the back button mirrors it in CSS.
         document.querySelector('.session-back-icon').innerHTML = ICONS.arrowRight;
+        document.getElementById('sidebarChevron').innerHTML = ICONS.chevron;
         syncNavHeaderRole();
         // resize rather than a matchMedia change listener: the latter did not fire under
         // viewport emulation, and this has to be right at whatever width the reader lands on.

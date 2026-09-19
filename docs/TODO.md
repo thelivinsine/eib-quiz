@@ -231,6 +231,32 @@ Verified in the browser at 1400px, 994px, 768px and 375px, both themes, EN and D
 quiz or results screens, `scrollWidth === innerWidth` at 375px, `node --check` on the script
 and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate.js` clean.
 
+## Session developments (2026-09-20, navigator + density)
+
+- **Shuffle now looks shuffled.** `roundNumber()` gives every cell the question's place in the
+  round as built, so a shuffled navigator reads 48, 263, 123 rather than 1, 2, 3. `#questionNum`
+  uses the same helper, so the card and the clicked cell agree.
+- **`showCurrentCell()` runs in the flat branch too** — it only ran when the list was grouped,
+  so in a 300-cell list the current cell was usually off screen.
+- **The overview panel:** the Linear/Shuffle/Topics switcher is pinned and `#questionNavGrid`
+  is the scroller; sidebar 256 -> 248px with 12px padding; cells `minmax(40px)` with a 5px gap
+  (5 columns, room for three digits); group heads and the seg one step shorter.
+- **The question stopped being a box.** `.question-card` has no fill, hairline or padding; the
+  options are the only boxes on the column. It is also `flex: 0 1 auto`, so it is content-sized
+  rather than stretched down the screen with its buttons pinned to the bottom.
+- **The readouts moved into the question column** (`.quiz-topbar` is now the first child of
+  `.quiz-main`) and centre on it; the progress bar stays full-width above.
+- **The keyboard hint moved under the card**, and "Pick an answer" (`quiz.pick`, `#answerHint`)
+  was deleted.
+- **The navigator's collapse control is `ICONS.chevron`** in a round 30px target, not `▼`.
+- **Spacing pass on the question view.** Status band tight to itself and `--spacing-lg` clear
+  of the question; meta -> question 14px, question -> options 16px, option gap 8px, footer 14px
+  clear of the last option; 16px side gutter in session below 620px. Below 940px the collapsed
+  navigator moved under the question.
+- **Question and options compacted:** question `clamp(1.02, 1.5vw, 1.18rem)` (was 1.18-1.45),
+  option 0.9rem in a 42px row (48px on coarse pointers) with a 26px letter chip, explanation
+  0.86rem, and the speak/translate buttons 34px.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
