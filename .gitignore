@@ -1,5 +1,7 @@
-# Local scratch / sandbox clones
+# Local-only scratch: source PDFs, notes, sandbox clones. Never committed.
+local/
 work/
 
-# Loose source PDFs kept locally (the catalogue lives at img/ and is tracked)
+# Guard against loose PDFs landing back at the repo root
+# (the real catalogue is tracked at img/gesamtfragenkatalog-lebenindeutschland.pdf)
 /*.pdf
