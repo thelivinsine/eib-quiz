@@ -372,7 +372,9 @@
                keeps a cap, rather than dropping both and growing. */
             height: calc(100vh - var(--header-h));
             height: calc(100svh - var(--header-h));
-            padding: var(--spacing-lg);
+            /* Wider gutters than the page uses: in a session the question is the only
+               thing on screen, and it should not run to the edges. */
+            padding: var(--spacing-lg) var(--spacing-xl);
             padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
             overflow: hidden;
             display: flex;
@@ -414,7 +416,7 @@
         .question-body {
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
             padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
-            display: flex; flex-direction: column; justify-content: safe center;
+            display: flex; flex-direction: column;
         }
         .question-body > * { flex-shrink: 0; }
 
@@ -972,7 +974,7 @@
         .quiz-topbar {
             display: flex; align-items: center; justify-content: center;
             gap: var(--spacing-md); flex-wrap: wrap;
-            margin-bottom: var(--spacing-xl); flex-shrink: 0;
+            margin-bottom: var(--spacing-md); flex-shrink: 0;
         }
         .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 22px; row-gap: 4px; }
         /* It rides in the footer row, between the two buttons: out of the reading
@@ -986,22 +988,25 @@
         .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.3rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
         .stat-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
 
-        /* Row 1 is the readout strip over the question column; row 2 is the question
-           and the navigator side by side. Both row-2 items stretch, so the panel is
-           exactly as tall as the question section — it used to start above the
-           readouts and run the full column while the question floated in the middle
-           of it. Every child is placed explicitly: auto-placement would put
-           .quiz-main in row 1, beside the readouts. */
+        /* Row 1 is the question column — readouts, then the question — beside the
+           navigator; row 2 is the footer row, under the question column only. Both
+           row-1 items stretch, so the panel STARTS level with the readouts and ENDS
+           level with the bottom of the question's content, rather than running on
+           past the explanation to the buttons. Every child is placed by hand:
+           auto-placement would put the footer row beside the panel. */
         .quiz-layout {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
-            grid-template-rows: auto minmax(0, 1fr);
-            gap: 0 var(--spacing-md);
+            grid-template-rows: minmax(0, 1fr) auto;
+            /* Column gap only, and wider than the page's rhythm: the question and the
+               navigator are two different jobs and should not read as one block. The
+               row gap stays 0 — the footer row carries its own margin. */
+            gap: 0 var(--spacing-xl);
             align-items: start;
         }
-        .quiz-topbar  { grid-area: 1 / 1 / 2 / 2; }
-        .quiz-main    { grid-area: 2 / 1 / 3 / 2; }
-        .quiz-sidebar { grid-area: 2 / 2 / 3 / 3; }
+        .quiz-main    { grid-area: 1 / 1 / 2 / 2; }
+        .quiz-sidebar { grid-area: 1 / 2 / 2 / 3; }
+        .quiz-nav     { grid-area: 2 / 1 / 3 / 2; }
         .quiz-main { min-width: 0; }
 
         /* The exam timer follows you down the page. It used to scroll away at the
@@ -1232,10 +1237,10 @@
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
             padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
         }
-        /* Five across in the sidebar, many more across the full-width strip on a
-           narrow screen. 40px still clears the 24px AA target with room, and holds a
+        /* Six across in the sidebar, many more across the full-width strip on a
+           narrow screen. 34px clears the 24px AA target with room and still holds a
            three-digit number — which a shuffled round shows. */
-        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 5px; }
+        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); gap: 4px; }
 
         /* Collapsible category groups. The group holding the current question is
            always open; anything else the reader opened stays open across renders. */
@@ -1276,7 +1281,7 @@
         @media (pointer: coarse) {
             .qnav-seg .seg-btn, .qnav-group-head { min-height: 44px; }
         }
-        .q-nav-btn { aspect-ratio: 1; min-height: 34px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: 0.74rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
+        .q-nav-btn { aspect-ratio: 1; min-height: 30px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .q-nav-btn.qnav-current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); font-weight: 700; }
         .q-nav-btn.qnav-correct { background: var(--green-dim); border-color: color-mix(in srgb, var(--green) 55%, transparent); color: var(--green); }
@@ -1345,8 +1350,9 @@
             /* Three secondary cards stay three across: two columns orphans one of
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
-            .quiz-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; }
-            .quiz-main    { grid-area: 2 / 1 / 3 / 2; }
+            .quiz-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto auto; }
+            .quiz-main    { grid-area: 1 / 1 / 2 / 2; }
+            .quiz-nav     { grid-area: 2 / 1 / 3 / 2; }
             .quiz-sidebar { grid-area: 3 / 1 / 4 / 2; }
             /* The question comes first and the collapsed navigator sits UNDER it: on a
                phone the strip was the first thing on the screen, competing with the
@@ -1370,10 +1376,6 @@
                (There is no rule above them: pinned, it would float in open space —
                and it separated nothing on a wide screen either.) */
             .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); margin-top: 10px; }
-            /* Full-width, the 40px cells became big slabs. Smaller and tighter here:
-               still well over the 24px AA target, and more of the round in view. */
-            .question-nav-grid { grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 4px; }
-            .q-nav-btn { min-height: 30px; font-size: 0.7rem; }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
                shown once — and there is no keyboard to hint at. The CONTAINER goes
@@ -1608,14 +1610,14 @@
             <div class="quiz-progress" aria-hidden="true"><span id="quizProgressFill"></span></div>
 
             <div class="quiz-layout">
-                <!-- Left column: question card (+ timer for exam mode) -->
-                <div class="quiz-topbar">
-                    <div class="stats-bar" id="statsBar">
-                        <!-- Populated by JavaScript -->
-                    </div>
-                </div>
-
+                <!-- Left column: readouts, then the question (+ timer for exam mode) -->
                 <div class="quiz-main">
+                    <div class="quiz-topbar">
+                        <div class="stats-bar" id="statsBar">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
                     <div id="timer" style="display: none; margin-bottom: var(--spacing-md);">
                         <div class="timer-label" data-i18n="quiz.time"></div>
                         <div class="timer-display" id="timerDisplay">60:00</div>
@@ -1648,11 +1650,6 @@
                         </div>
                         </div>
 
-                        <div class="quiz-nav">
-                            <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.prev"></span></button>
-                            <div id="keyboardHintContainer"></div>
-                            <button class="btn-primary" id="nextBtn"></button>
-                        </div>
                     </div>
 
                 </div>
@@ -1670,6 +1667,15 @@
                         <div class="question-nav-grid" id="questionNavGrid"></div>
                     </div>
                 </aside>
+
+                <!-- Its own row, under the question column only: the panel beside it
+                     then ends where the question's content ends, not where the
+                     buttons do. -->
+                <div class="quiz-nav">
+                    <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.prev"></span></button>
+                    <div id="keyboardHintContainer"></div>
+                    <button class="btn-primary" id="nextBtn"></button>
+                </div>
             </div>
 
         </section>

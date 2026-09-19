@@ -104,6 +104,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
+- **In a session the page keeps wider side gutters** than the home screen: `--spacing-xl`
+  (28px) rather than `--spacing-lg`, because the question is the only thing on screen and
+  should not run to the edges. Below 620px it drops back to `--spacing-md`.
 - **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
   (`.btn-*`, the header `.seg-btn` switches, `#stateSelect`); `#stateSelect` is `font-size: 16px` so iOS Safari
   does not zoom on focus; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
@@ -210,13 +213,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Topics is offered only when there is more than one.** A round that is all one category
     drops the button and renders the flat grid — one `<details>` over the whole list is a lid,
     not a grouping.
-  - Below 940px the cells drop to `minmax(34px, 1fr)` with a 4px gap and a 30px `min-height`
-    (measured 35x35, 8 across at 375px): full-width, the 40px cells were slabs, and this keeps
-    more of the round in view while clearing the 24px WCAG 2.5.8 target.
-  - `.question-nav-grid` is `repeat(auto-fill, minmax(40px, 1fr))` in a 248px sidebar with
-    12px padding — 5 columns, and wide enough for the three-digit number a shuffled round
-    shows. 40px clears the 24px WCAG 2.5.8 target; below 940px the strip is full-width and the
-    cells are wider still.
+  - `.question-nav-grid` is `repeat(auto-fill, minmax(30px, 1fr))` with a 4px gap and a 30px
+    `min-height` — **one size for both layouts**; the sidebar's cells used to be a third bigger
+    than the strip's for no reason but history. Measured 32x32, six across in the 248px
+    sidebar, more on the full-width strip. It clears the 24px WCAG 2.5.8 target and still holds
+    the three-digit number a shuffled round shows.
 - **`NAV_COLLAPSE_AT` is the one number for the navigator's collapse.** The stylesheet's 940px
   breakpoint and the JS guards must agree: they read 720 against a 940 breakpoint once, and
   between those widths the CSS hid the panel while the toggle refused to open it.
@@ -317,18 +318,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     **options are the only boxes**. A card around a card around four cards is the
     containers-in-containers look, and the outer one carried no information.
   - **`.quiz-layout` is a 2x2 grid and every child is placed by hand** (2026-09-20). Row 1 is
-    the readout strip over the question column; row 2 is the question and the navigator side by
-    side, both stretched — so **the panel is exactly as tall as the question section**, top and
-    bottom. It used to start above the readouts and run the whole column while the question
-    floated in the middle of it. Auto-placement would drop `.quiz-main` into row 1 beside the
-    readouts, so `.quiz-topbar` / `.quiz-main` / `.quiz-sidebar` all carry an explicit
-    `grid-area`, and the 940px block re-places them as three stacked rows. Row gap is 0 (row 1
-    carries its own margin); the mobile strip takes a 10px `margin-top` instead, or it sits
-    flush against the Previous button.
-  - **The card fills its row** (`flex: 1`), so `.quiz-nav` parks at the bottom of the column:
-    Previous and Next hold ONE position on every question, level with the bottom of the
-    navigator panel and, on a phone, directly above the overview strip where a thumb can learn
-    them. The content inside stays centred, so a short question is not dragged down with it.
+    the question column — `.quiz-main`, holding the readouts and then the question — beside the
+    navigator; row 2 is `.quiz-nav`, **under the question column only**. Both row-1 items
+    stretch, so the panel **starts level with the readouts** and **ends level with the bottom
+    of the question's content area**, rather than running on past it to the buttons.
+    Auto-placement would put the footer row beside the panel, so all three carry an explicit
+    `grid-area`, and the 940px block re-places them as question / buttons / strip. Row gap is
+    0; the mobile strip takes a 10px `margin-top` instead, or it sits flush against Previous.
+  - **The question block is TOP-aligned under the readouts, not centred.** Centring it opened a
+    gap between the readouts and the question they report on, and pushed the question away from
+    the panel's top edge; the readouts now sit `--spacing-md` above the question (measured
+    16px) and the slack falls below the answers, where the panel's own bottom edge already is.
+  - **The card fills its row** (`flex: 1`), so the question's content area ends where the panel
+    does and Previous/Next sit in their own row below both — one position on every question,
+    and on a phone directly above the overview strip where a thumb can learn them.
   - **There is no rule above Previous and Next**, and the buttons are 34px / 0.8rem — smaller
     than a page-level action, because you press them a hundred times a round and they should
     not weigh as much as the question. **The keyboard hint rides between them**, inside
