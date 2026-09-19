@@ -822,7 +822,7 @@
         /* ============================================================
            QUIZ SCREEN
            ============================================================ */
-        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); }
+        .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); }
         .stat-card { padding: 11px 14px; border-radius: var(--radius); display: flex; flex-direction: column; gap: 4px; }
         .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.25rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 
@@ -971,12 +971,6 @@
         .sidebar-chevron { display: none; color: var(--muted); transition: transform 0.25s var(--ease); }
         .sidebar-count { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
         .sidebar-body { margin-top: var(--spacing-md); min-height: 0; overflow-y: auto; }
-        .progress-bar { height: 5px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; }
-        .progress-fill { height: 100%; width: 0; background: var(--accent-grad); border-radius: inherit; transition: width 0.4s var(--ease-spring); }
-        .progress-text { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-        .question-nav-legend { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: var(--spacing-md) 0; font-size: 0.72rem; color: var(--muted); }
-        .question-nav-legend > span { display: inline-flex; align-items: center; gap: 5px; }
-        .legend-swatch { width: 9px; height: 9px; border-radius: var(--radius-xs); display: inline-block; }
         /* Five across in the 256px sidebar, many more across the full-width strip
            on a narrow screen — the cells stay finger-sized either way. */
         .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
@@ -1188,7 +1182,7 @@
             .timer-label { margin-right: 8px; }
             .timer-display { font-size: 1.35rem; }
             .pacing-info { margin-left: 8px; }
-            .stats-bar { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+            .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 6px; }
             .stat-card { padding: 9px 8px; align-items: center; text-align: center; }
             .stat-value { font-size: 1.1rem; }
             .stat-card .stat-label { font-size: 0.56rem; letter-spacing: 0.03em; }
@@ -1355,20 +1349,7 @@
                         <span class="sidebar-count" id="navProgressSummary"></span>
                     </div>
                     <div class="sidebar-body" id="sidebarBody">
-                        <div class="progress-bar" style="margin-bottom: 4px;">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <div class="progress-text" style="margin-top: 0; margin-bottom: 4px;">
-                            <span id="progressLeft"></span>
-                            <span id="progressPercent"></span>
-                        </div>
                         <div id="navActions"></div>
-                        <div class="question-nav-legend">
-                            <span><span class="legend-swatch" style="background:var(--accent);"></span><span data-i18n="qnav.current"></span></span>
-                            <span><span class="legend-swatch" style="background:var(--green);"></span><span data-i18n="qnav.correct"></span></span>
-                            <span><span class="legend-swatch" style="background:var(--red);"></span><span data-i18n="qnav.wrong"></span></span>
-                            <span><span class="legend-swatch" style="background:var(--border-hover);"></span><span data-i18n="qnav.open"></span></span>
-                        </div>
                         <div class="question-nav-grid" id="questionNavGrid"></div>
                     </div>
                 </aside>
@@ -1604,8 +1585,8 @@
 
             // quiz
             'quiz.question':       { en: 'Question {n}',            de: 'Frage {n}' },
+            'quiz.questionOf':     { en: 'Question {n} / {total}',  de: 'Frage {n} / {total}' },
             'quiz.general':        { en: 'General',                 de: 'Allgemein' },
-            'quiz.stat.question':  { en: 'Question',                de: 'Frage' },
             'quiz.stat.correct':   { en: 'Correct',                 de: 'Richtig' },
             'quiz.stat.wrong':     { en: 'Wrong',                   de: 'Falsch' },
             'quiz.stat.score':     { en: 'Score',                   de: 'Score' },
@@ -1630,11 +1611,6 @@
             // navigator
             'qnav.overview':       { en: 'Question overview',       de: 'Fragen-Übersicht' },
             'qnav.answered':       { en: '{n}/{total} answered',    de: '{n}/{total} beantwortet' },
-            'qnav.progress':       { en: 'Question {n} of {total}', de: 'Frage {n} von {total}' },
-            'qnav.current':        { en: 'Current',                 de: 'Aktuell' },
-            'qnav.correct':        { en: 'Correct',                 de: 'Richtig' },
-            'qnav.wrong':          { en: 'Wrong',                   de: 'Falsch' },
-            'qnav.open':           { en: 'Unanswered',              de: 'Offen' },
             'qnav.shuffle':        { en: 'Shuffle',                 de: 'Mischen' },
             'qnav.inOrder':        { en: 'Back in order',           de: 'Reihenfolge zurück' },
 
@@ -2467,7 +2443,8 @@
             updateProgress(progress);
 
             // Question content
-            document.getElementById('questionNum').textContent = t('quiz.question', { n: state.currentQuestionIndex + 1 });
+            document.getElementById('questionNum').textContent =
+                t('quiz.questionOf', { n: state.currentQuestionIndex + 1, total: state.currentQuestions.length });
             document.getElementById('questionCategory').textContent =
                 q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
@@ -2577,10 +2554,6 @@
 
             document.getElementById('statsBar').innerHTML = `
                 <div class="stat-card">
-                    <div class="stat-label">${t('quiz.stat.question')}</div>
-                    <div class="stat-value">${state.currentQuestionIndex + 1}/${total}</div>
-                </div>
-                <div class="stat-card">
                     <div class="stat-label">${t('quiz.stat.correct')}</div>
                     <div class="stat-value" style="color: var(--green)">${state.correct}</div>
                 </div>
@@ -2595,12 +2568,11 @@
             `;
         }
 
+        // One bar, above the card. The navigator used to carry a second copy of it
+        // plus the same number written out twice more.
         function updateProgress(percent) {
-            document.getElementById('progressFill').style.width = percent + '%';
             const qpf = document.getElementById('quizProgressFill');
             if (qpf) qpf.style.width = percent + '%';
-            document.getElementById('progressLeft').textContent = t('qnav.progress', { n: state.currentQuestionIndex + 1, total: state.currentQuestions.length });
-            document.getElementById('progressPercent').textContent = Math.round(percent) + '%';
         }
 
         function selectAnswer(idx) {
