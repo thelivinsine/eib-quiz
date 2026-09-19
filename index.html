@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Einbürgerungstest Berlin — kostenloser Test mit 300 Fragen (DE/EN)</title>
-    <meta name="description" content="Kostenlos für den Einbürgerungstest Berlin üben: alle 300 amtlichen Fragen, Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice for Berlin.">
-    <meta name="keywords" content="Einbürgerungstest, Berlin, Leben in Deutschland, Test, Quiz, deutsche Staatsbürgerschaft, German citizenship test, Prüfung">
+    <title>Einbürgerungstest — kostenloser Test, 300 Fragen + alle 16 Bundesländer (DE/EN)</title>
+    <meta name="description" content="Kostenlos für den Einbürgerungstest üben: alle 300 amtlichen Fragen plus die 10 Landesfragen jedes Bundeslandes (460 gesamt), Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice, all 16 federal states.">
+    <meta name="keywords" content="Einbürgerungstest, Leben in Deutschland, Bundesland, Berlin, Bayern, Test, Quiz, deutsche Staatsbürgerschaft, German citizenship test, Prüfung">
     <meta name="author" content="EIB Quiz">
     <meta name="theme-color" content="#F2F3F5" id="themeColorMeta">
     <link rel="canonical" href="https://thelivinsine.github.io/eib-quiz/">
@@ -20,10 +20,10 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Einbürgerungstest Berlin Quiz">
+    <meta property="og:site_name" content="Einbürgerungstest Quiz">
     <meta property="og:locale" content="de_DE">
-    <meta property="og:title" content="Einbürgerungstest Berlin — kostenloser Test mit 300 Fragen">
-    <meta property="og:description" content="Übe kostenlos alle 300 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
+    <meta property="og:title" content="Einbürgerungstest — kostenloser Test, 300 Fragen + alle 16 Bundesländer">
+    <meta property="og:description" content="Übe kostenlos alle 300 amtlichen Fragen plus deine 10 Landesfragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
     <meta property="og:url" content="https://thelivinsine.github.io/eib-quiz/">
     <meta property="og:image" content="https://thelivinsine.github.io/eib-quiz/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -31,8 +31,8 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Einbürgerungstest Berlin — kostenloser Test mit 300 Fragen">
-    <meta name="twitter:description" content="Übe kostenlos alle 300 amtlichen Fragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
+    <meta name="twitter:title" content="Einbürgerungstest — kostenloser Test, 300 Fragen + alle 16 Bundesländer">
+    <meta name="twitter:description" content="Übe kostenlos alle 300 amtlichen Fragen plus deine 10 Landesfragen: Prüfungssimulation, Themen-Training und Smart Review. Deutsch & Englisch.">
     <meta name="twitter:image" content="https://thelivinsine.github.io/eib-quiz/og-image.png">
 
     <!-- Structured data -->
@@ -40,8 +40,8 @@
     {
       "@context": "https://schema.org",
       "@type": "LearningResource",
-      "name": "Einbürgerungstest Berlin Quiz",
-      "description": "Kostenloser Übungstest für den Einbürgerungstest Berlin mit 300 amtlichen Fragen, Prüfungssimulation und Spaced-Repetition-Wiederholung.",
+      "name": "Einbürgerungstest Quiz — alle Bundesländer",
+      "description": "Kostenloser Übungstest für den Einbürgerungstest mit allen 300 amtlichen Fragen plus den 10 Landesfragen jedes der 16 Bundesländer, Prüfungssimulation und Spaced-Repetition-Wiederholung.",
       "educationalLevel": "Adult education",
       "inLanguage": ["de", "en"],
       "learningResourceType": "Quiz",
@@ -1087,7 +1087,7 @@
                         </div>
 
                         <div class="question-text" id="questionText" tabindex="-1"></div>
-                        <div class="question-english" id="questionEnglish"></div>
+                        <div class="question-english" id="questionEnglish" lang="en"></div>
 
                         <img id="questionImage" class="question-image" style="display: none;">
                         <div id="imageCredit" style="display: none; font-size: 0.68rem; color: var(--muted); text-align: center; margin: -4px 0 6px;"></div>
@@ -1100,7 +1100,7 @@
                         <div class="explanation" id="explanation" role="status" aria-live="polite">
                             <div class="explanation-header" id="explanationHeader"></div>
                             <div class="explanation-text" id="explanationText"></div>
-                            <div class="explanation-english" id="explanationEnglish"></div>
+                            <div class="explanation-english" id="explanationEnglish" lang="en"></div>
                         </div>
 
                         <div class="btn-group">
@@ -1231,7 +1231,11 @@
         };
         const STATE_KEY = 'eib_state';
         let selectedState = (() => {
-            try { return localStorage.getItem(STATE_KEY) || 'BE'; } catch (e) { return 'BE'; }
+            // Validate here too, not only in setSelectedState — an unrecognised code gives an
+            // empty state pool, i.e. a silent 30-question "33-question" exam still scored
+            // against the 17/33 threshold.
+            try { const c = localStorage.getItem(STATE_KEY); return STATES[c] ? c : 'BE'; }
+            catch (e) { return 'BE'; }
         })();
         function setSelectedState(code) {
             selectedState = STATES[code] ? code : 'BE';
@@ -1241,6 +1245,17 @@
         function generalQuestions() { return QUESTIONS.filter(q => !q.state); }            // 300
         function stateQuestions()   { return QUESTIONS.filter(q => q.state === selectedState); } // 10
         function activePool()       { return [...generalQuestions(), ...stateQuestions()]; }     // 310
+        // Unbiased random sample (Fisher-Yates). NOT sort(() => Math.random() - 0.5): that
+        // comparator is inconsistent, and it made early catalogue questions ~7x likelier to
+        // land in an exam than late ones.
+        function sample(arr, n) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a.slice(0, n);
+        }
         function onStateChange(code) {
             setSelectedState(code);
             renderModes();
@@ -1258,7 +1273,7 @@
             currentMode: null,
             currentQuestionIndex: 0,
             currentQuestions: [],
-            answered: [],
+            answered: {},          // { [questionIndex]: chosenOptionIndex }
             correct: 0,
             incorrect: 0,
             showEnglish: false,
@@ -1268,9 +1283,8 @@
             themeDark: true,
             missedQuestions: [],   // {q, userAnswerIdx} for wrong-answer review
             examStartTime: null,   // Date.now() when exam begins
-            generalCorrect: 0,     // correct non-berlin answers (exam sub-score)
-            stateCorrect: 0,      // correct berlin answers (exam sub-score)
-            answered: {}           // overridden below; kept here for shape reference
+            generalCorrect: 0,     // correct general answers (exam sub-score)
+            stateCorrect: 0,       // correct state answers (exam sub-score)
         };
 
         // ============================================================
@@ -1316,9 +1330,15 @@
         function masteredCount() {
             return activePool().filter(q => { const r = progress[q.id]; return r && (r.box || 1) >= 4; }).length;
         }
+        // Scoped to the active pool, like every other number on the overview tile —
+        // otherwise switching Bundesland silently keeps the old state's answers in the ring.
         function overallAccuracy() {
             let c = 0, t = 0;
-            for (const r of Object.values(progress)) { c += r.correct || 0; t += (r.correct || 0) + (r.wrong || 0); }
+            for (const q of activePool()) {
+                const r = progress[q.id];
+                if (!r) continue;
+                c += r.correct || 0; t += (r.correct || 0) + (r.wrong || 0);
+            }
             return t ? Math.round(c / t * 100) : 0;
         }
         // Smart Review queue: due (weakest box first), then unseen, then nearest-due — capped.
@@ -1342,7 +1362,7 @@
         }
         function clearProgress() {
             progress = {};
-            history = [];
+            resultsHistory = [];
             try {
                 localStorage.removeItem(PROGRESS_KEY);
                 localStorage.removeItem(SESSION_KEY);
@@ -1352,16 +1372,16 @@
 
         // ---- results history ----
         const HISTORY_KEY = 'eib_history_v1';
-        let history = [];
+        let resultsHistory = [];
         function loadHistory() {
-            try { const raw = localStorage.getItem(HISTORY_KEY); history = raw ? JSON.parse(raw) : []; }
-            catch (e) { history = []; }
-            if (!Array.isArray(history)) history = [];
+            try { const raw = localStorage.getItem(HISTORY_KEY); resultsHistory = raw ? JSON.parse(raw) : []; }
+            catch (e) { resultsHistory = []; }
+            if (!Array.isArray(resultsHistory)) resultsHistory = [];
         }
         function recordResult(entry) {
-            history.push(entry);
-            if (history.length > 50) history = history.slice(-50);
-            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch (e) {}
+            resultsHistory.push(entry);
+            if (resultsHistory.length > 50) resultsHistory = resultsHistory.slice(-50);
+            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(resultsHistory)); } catch (e) {}
         }
 
         // ---- in-progress session resume (non-exam modes) ----
@@ -1563,9 +1583,9 @@
         function renderHistory() {
             const el = document.getElementById('historySection');
             if (!el) return;
-            if (!history.length) { el.innerHTML = ''; return; }
+            if (!resultsHistory.length) { el.innerHTML = ''; return; }
 
-            const exams = history.filter(h => h.mode === 'exam');
+            const exams = resultsHistory.filter(h => h.mode === 'exam');
             let examBlock = '';
             if (exams.length) {
                 const passed = exams.filter(h => h.passed).length;
@@ -1584,8 +1604,8 @@
                     </div>`;
             }
 
-            const labels = { exam: '🎯 Prüfung', allQuestions: '📋 Alle Fragen', berlin: '🏙️ Berlin', review: '🔁 Review', topic: '📚 Thema', mistakes: '🔁 Fehler' };
-            const rows = history.slice(-6).reverse().map(h => {
+            const labels = { exam: '🎯 Prüfung', allQuestions: '📋 Alle Fragen', bundesland: '🏙️ Bundesland', review: '🔁 Review', topic: '📚 Thema', mistakes: '🔁 Fehler' };
+            const rows = resultsHistory.slice(-6).reverse().map(h => {
                 const d = new Date(h.ts);
                 const date = d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) + ' ' +
                              d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
@@ -1626,7 +1646,7 @@
             const items = GLOSSARY.map(g => `
                 <details class="gloss-item">
                     <summary>${g.term}</summary>
-                    <div class="gloss-def"><span>${g.de}</span><span class="gloss-en">${g.en}</span></div>
+                    <div class="gloss-def"><span>${g.de}</span><span class="gloss-en" lang="en">${g.en}</span></div>
                 </details>`).join('');
             el.innerHTML = `
                 <details class="glossary-wrap">
@@ -1748,7 +1768,9 @@
             if (!sess) return;
             const byId = new Map(QUESTIONS.map(q => [q.id, q]));
             const qs = sess.ids.map(id => byId.get(id)).filter(Boolean);
-            if (!qs.length) { clearSession(); renderHomeStatus(); return; }
+            // `answered` is keyed by position in sess.ids, so dropping any id shifts every
+            // later answer onto the wrong question. Nothing sane to resume — discard it.
+            if (!qs.length || qs.length !== sess.ids.length) { clearSession(); renderHomeStatus(); return; }
             state.currentMode = sess.mode;
             state.currentTopic = sess.topic || null;
             state.stateCode = sess.stateCode || selectedState;
@@ -1758,7 +1780,12 @@
             state.correct = sess.correct || 0;
             state.incorrect = sess.incorrect || 0;
             state.showExplanation = false;
-            state.missedQuestions = [];
+            // Rebuild the wrong-answer list from the saved answers — otherwise the end
+            // screen only reviews mistakes made after the resume. Derived, not persisted,
+            // so sessions saved by older builds resume correctly too.
+            state.missedQuestions = Object.entries(state.answered)
+                .filter(([i, a]) => qs[i] && a !== qs[i].correct)
+                .map(([i, a]) => ({ q: qs[i], userAnswerIdx: a }));
             state.examStartTime = null;
             state.generalCorrect = 0;
             state.stateCorrect = 0;
@@ -1827,6 +1854,13 @@
         }
 
         function startMode(mode) {
+            // Bail before touching state — a half-reset state with the previous round's
+            // questions still in it is worse than not starting.
+            const reviewQueue = mode === 'review' ? buildReviewQueue(25) : null;
+            if (reviewQueue && !reviewQueue.length) {
+                alert('Noch nichts zu wiederholen — beantworte zuerst ein paar Fragen.');
+                return;
+            }
             state.currentMode = mode;
             state.currentTopic = null;
             state.currentQuestionIndex = 0;
@@ -1845,15 +1879,9 @@
             } else if (mode === 'bundesland') {
                 state.currentQuestions = stateQuestions();
             } else if (mode === 'review') {
-                state.currentQuestions = buildReviewQueue(25);
-                if (!state.currentQuestions.length) {
-                    alert('Noch nichts zu wiederholen — beantworte zuerst ein paar Fragen.');
-                    return;
-                }
+                state.currentQuestions = reviewQueue;
             } else if (mode === 'exam') {
-                const general = [...generalQuestions()].sort(() => Math.random() - 0.5).slice(0, 30);
-                const st = [...stateQuestions()].sort(() => Math.random() - 0.5).slice(0, 3);
-                state.currentQuestions = [...general, ...st];
+                state.currentQuestions = [...sample(generalQuestions(), 30), ...sample(stateQuestions(), 3)];
                 state.examStartTime = Date.now();
                 startTimer();
             }
@@ -1937,7 +1965,7 @@
                 const enClass = enText && state.showEnglish ? ' show' : '';
                 return `
                 <button class="option-btn" onclick="selectAnswer(${idx})" id="option-${idx}">
-                    <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}">${enText}</span>` : ''}</span>
+                    <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}" lang="en">${enText}</span>` : ''}</span>
                 </button>`;
             }).join('');
 
@@ -2212,7 +2240,7 @@
             const titles = {
                 exam:         'Prüfungssimulation beendet! 🎯',
                 allQuestions: 'Lernrunde beendet! 📚',
-                berlin:       'Berlin-Runde beendet! 🏙️',
+                bundesland:   'Bundesland-Runde beendet! 🏙️',
                 mistakes:     'Fehler-Runde beendet! 🔁',
                 review:       'Smart Review beendet! 🔁',
                 topic:        'Themen-Runde beendet! 📚'
@@ -2291,7 +2319,7 @@
                                 </div>
                                 <div class="review-explanation">
                                     ${q.explanation_de}
-                                    ${state.showEnglish ? `<div class="review-explanation-en">${q.explanation_en}</div>` : ''}
+                                    ${state.showEnglish ? `<div class="review-explanation-en" lang="en">${q.explanation_en}</div>` : ''}
                                 </div>
                             </div>`).join('')}
                     </div>`;

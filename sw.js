@@ -8,7 +8,7 @@
 //    old `eib-quiz*` caches from the May-28 PWA), then claims clients.
 //  Bump CACHE when shipping changes that must invalidate cached static assets.
 
-const CACHE = 'eib-cache-2026-07-16-bento';
+const CACHE = 'eib-cache-2026-09-19-audit-fixes';
 
 const PRECACHE = [
   './',
@@ -53,8 +53,11 @@ self.addEventListener('fetch', event => {
     event.respondWith((async () => {
       try {
         const res = await fetch(req);
-        const cache = await caches.open(CACHE);
-        cache.put(req, res.clone());
+        // Only cache real successes — otherwise a 404/500 becomes the offline fallback.
+        if (res.ok) {
+          const cache = await caches.open(CACHE);
+          cache.put(req, res.clone());
+        }
         return res;
       } catch (e) {
         const cached = await caches.match(req);

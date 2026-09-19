@@ -20,7 +20,7 @@
 
 ## App Shape
 
-Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
+Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 
 - No framework or build step.
 - Visual styling: a **Bento** design system (redesigned 2026-07-16, adapted from a superdesign.dev
@@ -88,6 +88,23 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   adds bilingual `explanation_de`/`explanation_en` (generated from the templated stem + correct
   answer). Every question now has both explanations.
 
+## Gotchas
+
+Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs/TODO.md`.
+
+- **Never shuffle with `.sort(() => Math.random() - 0.5)`.** It is heavily biased — it made
+  early catalogue questions ~7x likelier to be drawn into an exam than late ones. Use the
+  `sample()` Fisher-Yates helper next to `activePool()`.
+- **Don't shadow browser globals in the one big `<script>` scope.** It is a single top-level
+  scope, so a `let history` silently shadowed `window.history` and killed the
+  `scrollRestoration` fix for months. The results array is named `resultsHistory` for this
+  reason; keep it that way.
+- **Mode keys are `allQuestions` / `bundesland` / `exam` / `review` / `topic` / `mistakes`.**
+  There is no `berlin` mode — two label maps kept a stale `berlin` key and silently fell
+  through. When renaming a mode, grep every lookup map.
+- **English text needs `lang="en"`.** The page is `<html lang="de">`, so untagged English is
+  read aloud with a German voice.
+
 ## Repo Layout
 
 Root holds exactly what GitHub Pages serves; everything else is foldered.
@@ -100,6 +117,7 @@ Root holds exactly what GitHub Pages serves; everything else is foldered.
   manifest.json   PWA manifest (name, icons, theme); linked from index.html
   favicon.svg, og-image.png (+ og-image.svg source)
   .nojekyll       stops Pages running Jekyll
+  .gitignore      ignores local/ scratch dir
   CLAUDE.md       this file
 img/              image-question assets + ATTRIBUTIONS.md, icons/, states/
 tools/            data-generation + validation scripts (not served)
@@ -182,6 +200,7 @@ Before publishing any app change:
    due/weak questions.
 5. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
    When changing cached static assets, bump `CACHE` in `sw.js`.
+6. Exam simulation: 30 general + 3 state = 33 questions, 60-minute timer, pass at 17/33.
 
 ## Future Repair Order
 
