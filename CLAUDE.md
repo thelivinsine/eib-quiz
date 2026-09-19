@@ -291,9 +291,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The quiz chrome above the card is a progress bar, then one line of readouts** (2026-09-19).
   `.quiz-progress` is the first child of `#quizScreen`, above `#statsBar`, and spans the card
   and the navigator. The four readouts — correct, wrong, score, **answered `n / total`** — are
-  **not tiles**: `.stat` is a value and a label on one line, separated by hairlines, the same
-  move as the home overview band. Four boxed cards cost a whole row of height the question card
-  needed. The answered count came from the navigator's header (`.sidebar-count` /
+  **not tiles and carry no separators**: a value and a label on one line, 22px of whitespace
+  apart. Four boxed cards cost a whole row of height the question card needed, and four numbers
+  divided by three hairlines is six things to look at. The labels sit in `--faint` at 0.63rem so
+  the numbers carry the row, and **a zero gets no colour** — green and red arrive with the first
+  right or wrong answer rather than lighting a traffic light that is reporting nothing. The answered count came from the navigator's header (`.sidebar-count` /
   `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
   - **The keyboard hint sits UNDER the card**, the last child of `.quiz-main`; as a pill in
     the card it pushed the options down and then moved them back up when it was dismissed. It
@@ -306,16 +308,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     no hairline, no padding, so the question's left edge is the column's left edge and the
     **options are the only boxes**. A card around a card around four cards is the
     containers-in-containers look, and the outer one carried no information.
-  - **The card is content-sized, not stretched.** `body.in-session .question-card` is
-    `flex: 0 1 auto` — it takes the height it needs, so a four-option question sits at the top
-    of the column instead of being dragged down the screen with its buttons pinned to the
-    bottom. It can still SHRINK, which is what keeps `.question-body`'s scroller working on a
-    long question; a four-image question still fills the column and scrolls.
+  - **The card is content-sized above 940px, stretched below it.** `flex: 0 1 auto` on a wide
+    screen: the card takes the height it needs, so a four-option question sits at the top of
+    the column rather than being dragged down with its buttons at the bottom. It can still
+    SHRINK, which is what keeps `.question-body`'s scroller working on a long question. Below
+    940px it goes back to `flex: 1` **on purpose**: that parks `.quiz-nav` at the bottom of the
+    column, so Previous and Next hold ONE position on every question, directly above the
+    overview strip, where a thumb can learn them.
+  - **There is no rule above Previous and Next.** Pinned on a phone it floated in open space,
+    and on a wide screen it separated the buttons from nothing. The buttons themselves are
+    38px / 0.84rem — smaller than a page-level action, because you press them a hundred times
+    a round and they should not weigh as much as the question.
   - **The question view's spacing says what matters.** The status band is tight to itself
-    (bar 10px above the readouts) and a full `--spacing-lg` away from the question; inside the
-    card the label row gives the question 14px, the question gives the options 16px, options
-    are 8px apart, and the footer stands 14px clear of the last option. Chrome crowds itself;
-    the question and its answers get the room.
+    (a 3px bar, 14px above the readouts) and a full `--spacing-xl` away from the question;
+    inside the card the label row gives the question `--spacing-md`, the question gives the
+    options `--spacing-lg`, and options are 8px apart. Chrome crowds itself; the question and
+    its answers get the room.
+  - **The label row above the question is plain text.** `.question-category` is `--faint` after
+    a `·`, not a bordered pill, and the speak/translate buttons are borderless until hover — a
+    chip and two outlined buttons made the row above the question busier than the question.
   - **Expanded below 940px the panel takes a SHARE of the screen, not all of it.**
     `.sidebar-body.expanded` caps at `26svh` (with a `vh` line first), which puts the WHOLE
     panel — header and padding included — just under **35%** of the screen, and the numbers

@@ -266,6 +266,19 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
 - The mobile header got **much smaller**: seg buttons 26px, back button 32px, brand mark 28px,
   header padding 6px — 44px total header height, down from ~56.
 
+## Session developments (2026-09-20, quiet chrome)
+
+- **The status row lost its separators**: 22px of whitespace instead of three hairlines,
+  `--faint` 0.63rem labels, and **zeros are neutral** — green/red arrive with the first answer.
+- **The label row above the question is plain text**: the category is `--faint` after a dot
+  rather than a bordered pill, and speak/translate are borderless until hover.
+- **The rule above Previous/Next is gone** everywhere, and the buttons are 38px / 0.84rem.
+- **Below 940px the card stretches again** so the two buttons hold one position on every
+  question, right above the overview strip (measured identical at 677px on Q1 and Q2 at 375px).
+- **More air around the question**: 3px progress bar, `--spacing-xl` between the status row and
+  the question, `--spacing-lg` between the question and its options, `--spacing-lg` page padding
+  in session.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
