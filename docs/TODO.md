@@ -18,7 +18,8 @@ framework. Installable PWA with offline support.
 - Audio read-aloud (Web Speech API / TTS) and a bilingual glossary.
 - SEO/meta, Open Graph + Twitter cards (rasterized `og-image.png`), JSON-LD, `favicon.svg`.
 - Accessibility: `:focus-visible`, `prefers-reduced-motion`, `aria-live` results,
-  `lang="en"` on the English text. Light-theme colour contrast still fails AA — see #2a.
+  `lang="en"` on English text and `lang="de"` on the German exam text, WCAG AA contrast in
+  both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets.
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
@@ -44,20 +45,22 @@ which is the live description of the visual system. The old Retro-Modernist brie
 been removed from this file: it described a design that is no longer in the tree and
 was misleading to anyone picking up UI work.
 
-### 2a. Open UI items from the 2026-09-19 accuracy audit — _not started_
-Deliberately left out of the audit fix PR so as not to collide with in-flight UI work.
-All three are CSS/palette changes:
-- **Light-theme contrast fails WCAG AA.** Measured against the `#F2F3F5` canvas:
-  `--gold` `#E07A1F` = **2.71:1** (fails even large-text AA at 3.0), `--accent`
-  `#0F9D8F` = **3.03:1**, `--green` `#0E9F6E` = **3.05:1**. `--gold` is used as text
-  on `.badge-gold` and the exam sub-score numbers; `--accent` on `.question-num`, the
-  bilingual toggle and the current-question nav chip. Dark theme passes (6.8–9.6:1).
-  Note `CLAUDE.md` currently claims `#E07A1F` "reads as text on paper" — it does not.
-- **Exam timer scrolls out of view.** `#timer` sits at roughly `top: -130px` once you
-  are on question 1, so a 60-minute timed simulation runs with an invisible countdown.
-  Needs `position: sticky`.
-- **Touch targets under 44px on mobile.** `darkBtn`/`lightBtn` at 27px,
-  `.progress-reset` at 15px.
+### 2a. UI items from the 2026-09-19 accuracy audit — _done 2026-09-19_
+Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were deferred for.
+- **Light-theme contrast** — fixed by re-picking the palette against
+  `claude-context-kit/docs/reference/theme-light.md`: `--gold` `#E07A1F` → `#B45309` (5.02 on
+  white), `--accent` `#0F9D8F` → `#0B7D72` (5.01), `--green` `#0E9F6E` → `#047857` (5.48).
+  Two more the audit did not list also failed and are fixed: `--faint` at 2.6:1, and white on
+  the light `--accent-fill` at 3.4:1 (the primary button and the mastery tile).
+  `node --test tools/contrast.test.mjs` now asserts every pair in both themes, so this cannot
+  regress quietly. `CLAUDE.md`'s claim that `#E07A1F` "reads as text on paper" is gone.
+- **Exam timer scrolls out of view** — fixed: `#timer` is `position: sticky` at
+  `top: var(--header-h)`, and `syncHeaderHeight()` measures the real header rather than
+  guessing a breakpoint (it is 69px on a phone, not the 56px a fixed value would have used).
+- **Touch targets under 44px** — fixed: the theme/language switches are 46px controls, the
+  progress-reset link is 44px, and a `@media (pointer: coarse)` block takes the question-card
+  icon buttons and the navigator cells to 44px. Audited live at 375px: every `button`,
+  `select` and `summary` on screen measures ≥44px.
 
 ### 3. Deferred features (by choice, not blocked)
 - **Streaks / daily goal** (was point 4) — skipped on request.
