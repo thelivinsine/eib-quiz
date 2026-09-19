@@ -249,6 +249,10 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
 - **The keyboard hint moved under the card**, and "Pick an answer" (`quiz.pick`, `#answerHint`)
   was deleted.
 - **The navigator's collapse control is `ICONS.chevron`** in a round 30px target, not `▼`.
+- **Spacing pass on the question view.** Status band tight to itself and `--spacing-lg` clear
+  of the question; meta -> question 14px, question -> options 16px, option gap 8px, footer 14px
+  clear of the last option; 16px side gutter in session below 620px. Below 940px the collapsed
+  navigator moved under the question.
 - **Question and options compacted:** question `clamp(1.02, 1.5vw, 1.18rem)` (was 1.18-1.45),
   option 0.9rem in a 42px row (48px on coarse pointers) with a 26px letter chip, explanation
   0.86rem, and the speak/translate buttons 34px.

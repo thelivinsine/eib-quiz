@@ -308,6 +308,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     of the column instead of being dragged down the screen with its buttons pinned to the
     bottom. It can still SHRINK, which is what keeps `.question-body`'s scroller working on a
     long question; a four-image question still fills the column and scrolls.
+  - **The question view's spacing says what matters.** The status band is tight to itself
+    (bar 10px above the readouts) and a full `--spacing-lg` away from the question; inside the
+    card the label row gives the question 14px, the question gives the options 16px, options
+    are 8px apart, and the footer stands 14px clear of the last option. Chrome crowds itself;
+    the question and its answers get the room.
+  - **Below 940px the navigator sits UNDER the question, not above it.** As the first thing on
+    a phone screen the strip competed with the question for the reader's first look; at the
+    bottom it is also where a thumb already is. `.quiz-layout`'s rows are
+    `minmax(0, 1fr) auto` there, and `.quiz-sidebar` no longer carries `order: -1`.
   - **The readouts sit over the question column and centre on it.** `.quiz-topbar` is the first
     child of `.quiz-main`, not of `#quizScreen`: they report on the question you are reading.
     The progress bar stays at screen level, above everything, spanning the card and the

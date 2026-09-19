@@ -920,8 +920,8 @@
         .quiz-nav {
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--spacing-sm);
-            margin-top: var(--spacing-sm);
-            padding-top: var(--spacing-sm);
+            margin-top: 14px;
+            padding-top: 12px;
             border-top: 1px solid var(--border);
             flex-shrink: 0;
         }
@@ -940,12 +940,12 @@
         .quiz-topbar {
             display: flex; align-items: center; justify-content: center;
             gap: var(--spacing-md); flex-wrap: wrap;
-            margin-bottom: 12px; flex-shrink: 0;
+            margin-bottom: var(--spacing-lg); flex-shrink: 0;
         }
         .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; }
         /* Under the question, out of the reading path: it is a tip about the screen,
            not a part of the question. */
-        #keyboardHintContainer { flex-shrink: 0; display: flex; justify-content: center; margin-top: 12px; }
+        #keyboardHintContainer { flex-shrink: 0; display: flex; justify-content: center; margin-top: var(--spacing-md); }
         .stat { display: flex; align-items: baseline; gap: 8px; padding: 0 var(--spacing-md); }
         .stat:first-child { padding-left: 0; }
         .stat + .stat { border-left: 1px solid var(--border); }
@@ -968,7 +968,7 @@
         #timer.danger .timer-display { color: var(--red-text); }
         .pacing-info { font-size: 0.74rem; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
 
-        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: var(--spacing-md); flex-shrink: 0; }
+        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 10px; flex-shrink: 0; }
         .quiz-progress > span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent-grad); transition: width 0.45s var(--ease-spring); }
 
         /* NOT a tile. The question sits on the page and the options are the boxes
@@ -979,7 +979,7 @@
         .q-enter { animation: qEnter 0.4s var(--ease-spring) both; }
         @keyframes qEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); flex-shrink: 0; }
+        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: 14px; flex-shrink: 0; }
         .question-meta > div:first-child { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .question-num { color: var(--accent-text); flex-shrink: 0; }
         .question-category {
@@ -1010,14 +1010,14 @@
         .speak-btn:hover, .bilingual-toggle:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .bilingual-toggle.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
 
-        .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.02rem, 1.5vw, 1.18rem); line-height: 1.35; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
+        .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
         .question-text:focus { outline: none; }
         .question-english { display: none; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
         .question-english.show { display: block; }
         .question-image { width: 100%; max-width: 420px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
-        .options { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+        .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-md); }
         .option-btn {
             display: flex; align-items: center; gap: 10px;
             width: 100%; text-align: left;
@@ -1080,7 +1080,7 @@
         .keyboard-hint-close { margin-left: 4px; background: none; border: none; color: var(--muted); font-size: 1rem; line-height: 1; padding: 0 6px; }
         .keyboard-hint-close:hover { color: var(--text); }
 
-        .explanation { display: none; margin-top: 12px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface2); border-left: 3px solid var(--accent); animation: fadeUp 0.28s var(--ease) both; }
+        .explanation { display: none; margin-top: var(--spacing-md); padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface2); border-left: 3px solid var(--accent); animation: fadeUp 0.28s var(--ease) both; }
         .explanation.show { display: block; }
         .explanation.correct { border-left-color: var(--green); background: var(--green-dim); }
         .explanation.incorrect { border-left-color: var(--red); background: var(--red-dim); }
@@ -1245,9 +1245,11 @@
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
             .quiz-layout { grid-template-columns: minmax(0, 1fr); }
-            /* The collapsed navigator sits above the card and takes what it
-               needs; the card takes everything left, and no more. */
-            body.in-session .quiz-layout { position: relative; grid-template-rows: auto minmax(0, 1fr); }
+            /* The question comes first and the collapsed navigator sits UNDER it: on a
+               phone the strip was the first thing on the screen, competing with the
+               question for the reader's first look. The card takes the flexible row,
+               the strip takes what it needs. */
+            body.in-session .quiz-layout { position: relative; grid-template-rows: minmax(0, 1fr) auto; }
             /* Expanded, it COVERS the card rather than pushing it down. In a locked
                viewport a 45vh panel above the card left about 130px for the question
                — the meta row, a rule, and Back. :has is the whole switch; a browser
@@ -1261,7 +1263,7 @@
             }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
-            .quiz-sidebar { width: auto; position: static; order: -1; max-height: none; padding: 6px var(--spacing-md); }
+            .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
             /* Below this the topbar wraps and the hint costs the card a whole row,
                for a tip that is only ever shown once. */
@@ -1351,7 +1353,10 @@
             .header-controls { gap: 6px; }
             .seg-btn { padding: 0 9px; font-size: 0.7rem; }
             .question-card { padding: var(--spacing-md); }
-            .question-text { font-size: 1.02rem; }
+            .question-text { font-size: 1.05rem; }
+            body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
+            .quiz-topbar { margin-bottom: var(--spacing-md); }
+            .question-meta { margin-bottom: 12px; }
             /* The tiles carry their own height on a wide grid; on a phone they
                only need to hold their content. */
             #statTile { min-height: 0; }
