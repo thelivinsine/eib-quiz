@@ -236,6 +236,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the two abandons the round. The aria label still contains the visible word, so WCAG 2.5.3
   holds. Leaving a session cancels speech on **both** branches — the results-screen path
   silently did not, while the Home button beside it did.
+- **The quiz stats bar's SCORE is accuracy so far; the results screen's is the whole round.**
+  They are different numbers on purpose and neither should be "fixed" to match the other.
+  `updateStats()` divides by `state.correct + state.incorrect` — one right answer out of 300
+  used to read 0% and stayed near zero for most of a long set. `endQuiz()` keeps dividing by
+  the round's length, because a round you left 260 questions blank in is not 75%.
 - **The navigator states progress once.** It used to carry a second copy of `.quiz-progress`,
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
   number a fourth time. `updateProgress()` writes to one element, `#questionNum` carries its
