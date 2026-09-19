@@ -68,7 +68,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   Each `<section class="home-section">` opens with a `.section-head` (`<h2>` + one line of
   description) so the page reads heading > card title > body. In order: a short
   **`.hero-landing`** (content-sized, one primary action); **Where you stand** (`#homeStatus` —
-  one wide `.dash` card holding the accuracy ring, three counters, the state picker, the resume
+  one wide `.dash` card holding the accuracy ring, three counters, the resume
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
   quieter **History & reference** (`#historySection` + `#glossarySection`).
   - **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
@@ -77,8 +77,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
   - The counter for questions due is the one stat allowed to draw attention
     (`.dash-stat--due`, apricot). The others are neutral.
   - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
-    `renderBundeslandTile()`, `renderStatTile()` and `stateLocalTime()`. The state picker lives
-    in the overview card's `.dash-head`; mastery is one of its counters.
+    `renderBundeslandTile()`, `renderStatTile()` and `stateLocalTime()`. Mastery is one of the
+    overview card's three counters.
+  - **A control belongs to the section it changes.** The state picker (`#statePickerSlot` /
+    `renderStatePicker()`) sits in the Practise section's `.section-head--row`, beside the exam
+    and state modes it governs — not in the overview card, which only reports.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
 - `showScreen()` resets the scroll to the top. It is the one door every screen change goes

@@ -428,6 +428,15 @@
         .home-section:last-child { margin-bottom: 0; }
 
         .section-head { margin-bottom: var(--spacing-md); max-width: 62ch; }
+        /* A section head that carries a control for its own section. */
+        .section-head--row {
+            max-width: none;
+            display: flex; align-items: flex-end; justify-content: space-between;
+            gap: var(--spacing-md); flex-wrap: wrap;
+        }
+        .section-head--row > div { max-width: 62ch; }
+        #statePickerSlot { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-width: 0; }
+        .state-picker-label { display: block; }
         .section-head h2 {
             font-family: var(--font-head);
             font-weight: 600;
@@ -452,13 +461,7 @@
             border-radius: var(--radius-lg);
             padding: var(--spacing-lg);
         }
-        .dash-head {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-            min-width: 0;
-        }
-        .dash-head > .eyebrow { flex-shrink: 0; }
+        .dash-head { margin-bottom: var(--spacing-lg); }
 
         .state-picker {
             position: relative;
@@ -988,7 +991,11 @@
             .ready-ring-wrap { width: 128px; height: 128px; }
             .ready-ring-pct { font-size: 1.6rem; }
             .dash-head { margin-bottom: var(--spacing-md); }
-            .state-picker { flex: 1; justify-content: space-between; }
+            /* The picker goes full width under its section heading rather than
+               squeezing onto the same line as it. */
+            .section-head--row { align-items: stretch; }
+            #statePickerSlot { width: 100%; }
+            .state-picker { width: 100%; justify-content: space-between; }
             .resume-actions { width: 100%; }
             .resume-actions .btn-primary, .resume-actions .btn-secondary { flex: 1; }
 
@@ -996,6 +1003,7 @@
                gets squeezed into a column two words wide. */
             .mode-card--featured {
                 display: flex; flex-direction: column;
+                align-items: stretch;
                 padding: var(--spacing-md);
             }
             .mode-card--featured .mode-icon { width: 38px; height: 38px; margin-bottom: 14px; }
@@ -1118,9 +1126,12 @@
 
             <!-- 2 · Practise — the main event: one featured mode, three secondary. -->
             <section class="home-section">
-                <div class="section-head">
-                    <h2 data-i18n="home.practice.title"></h2>
-                    <p data-i18n="home.practice.lead"></p>
+                <div class="section-head section-head--row">
+                    <div>
+                        <h2 data-i18n="home.practice.title"></h2>
+                        <p data-i18n="home.practice.lead"></p>
+                    </div>
+                    <div id="statePickerSlot"></div>
                 </div>
                 <div class="modes-grid" id="modesGrid"></div>
             </section>
@@ -1385,6 +1396,7 @@
             'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
             'dash.due':            { en: 'Due for review',          de: 'Zur Wiederholung' },
+            'dash.state':          { en: 'Your state',              de: 'Dein Bundesland' },
             'dash.statePick':      { en: 'Choose your state',       de: 'Bundesland wählen' },
             'dash.reset':          { en: 'Reset progress',          de: 'Fortschritt zurücksetzen' },
             'dash.resetConfirm':   { en: 'Reset all learning progress?', de: 'Gesamten Lernfortschritt zurücksetzen?' },
@@ -1738,6 +1750,23 @@
             renderHistory();
             renderGlossary();
             renderHomeStatus();
+            renderStatePicker();
+        }
+
+        /** The state picker sits with the modes it changes, not with the progress it does not. */
+        function renderStatePicker() {
+            const el = document.getElementById('statePickerSlot');
+            if (!el) return;
+            const opts = Object.entries(STATES)
+                .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`)
+                .join('');
+            el.innerHTML = `
+                <span class="eyebrow state-picker-label">${t('dash.state')}</span>
+                <label class="state-picker">
+                    <span class="sr-only">${t('dash.statePick')}</span>
+                    ${ICONS.pin}
+                    <select id="stateSelect" aria-label="${t('dash.statePick')}" onchange="onStateChange(this.value)">${opts}</select>
+                </label>`;
         }
 
         function renderTopics() {
@@ -1901,10 +1930,6 @@
             const ring = overallAccuracy();
             const answeredInPool = pool.filter(q => progress[q.id]).length;
 
-            const stateOpts = Object.entries(STATES)
-                .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`)
-                .join('');
-
             // Resume banner — only when a saved in-progress session exists.
             const sess = getSavedSession();
             let resumeHtml = '';
@@ -1932,11 +1957,6 @@
                 <div class="dash">
                     <div class="dash-head">
                         <span class="eyebrow">${t('dash.eyebrow')}</span>
-                        <label class="state-picker">
-                            <span class="sr-only">${t('dash.statePick')}</span>
-                            ${ICONS.pin}
-                            <select id="stateSelect" aria-label="${t('dash.statePick')}" onchange="onStateChange(this.value)">${stateOpts}</select>
-                        </label>
                     </div>
                     <div class="dash-body">
                         <div class="ready-ring-wrap" title="${ring}% ${t('dash.accuracy')}">
