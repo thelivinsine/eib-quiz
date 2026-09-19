@@ -1250,17 +1250,14 @@
                question for the reader's first look. The card takes the flexible row,
                the strip takes what it needs. */
             body.in-session .quiz-layout { position: relative; grid-template-rows: minmax(0, 1fr) auto; }
-            /* Expanded, it COVERS the card rather than pushing it down. In a locked
-               viewport a 45vh panel above the card left about 130px for the question
-               — the meta row, a rule, and Back. :has is the whole switch; a browser
-               without it just gets today's push-down behaviour. */
-            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) {
-                position: absolute; inset: 0; z-index: 30;
-                background: var(--surface); max-height: none;
-            }
-            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) .sidebar-body {
-                max-height: none; flex: 1; min-height: 0;
-            }
+            /* Expanded, the panel takes a share of the screen and no more: it grows
+               up from the bottom to 42% of the viewport and the numbers scroll INSIDE
+               it, so the question stays on screen above. It used to cover the card
+               outright (absolute; inset: 0), which is fine when the strip is at the
+               top of the screen and wrong now that it is at the bottom — you lost the
+               question you were answering the moment you opened the overview. The card
+               shrinks into what is left; .question-body is its scroller. */
+            body.in-session .quiz-sidebar { z-index: 30; }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
             .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); }
@@ -1271,8 +1268,9 @@
             .sidebar-chevron { display: grid; }
             .sidebar-chevron.open { transform: rotate(180deg); }
             .sidebar-body { display: none; }
-            /* flex, not block: the grid inside it is the scroller now. */
-            .sidebar-body.expanded { display: flex; max-height: 45vh; }
+            /* flex, not block: the grid inside it is the scroller now. vh first, as
+               everywhere else, so a browser without svh keeps a cap. */
+            .sidebar-body.expanded { display: flex; max-height: 42vh; max-height: 42svh; }
         }
 
         @media (max-width: 620px) {
