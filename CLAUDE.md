@@ -72,10 +72,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
   quieter **History & reference** (`#historySection` + `#glossarySection`).
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
-  The test parses the two token blocks; a hex in a rule is invisible to it otherwise.
-- **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
+    The test parses the two token blocks; a hex in a rule is invisible to it otherwise.
+  - **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
     the other three modes are equal-weight peers. There is exactly one primary action per
     section — do not add a second call to start the exam.
+  - **The mode cards carry no per-card accent.** They had one hue each (teal/gold/green/blue)
+    with a matching tinted badge and a matching coloured "Start" link, which is the rainbow
+    `theme-dark.md` §2 warns about: chroma belongs to content and at most one accent. Icons and
+    metadata are grey; the card is the button, so the peers repeat no "Start"; the only colour
+    among them is `.mode-flag`, the apricot chip shown when Smart Review actually has work due.
+  - **The state picker's pill hugs the selected state.** A native `<select>` is as wide as its
+    longest option, so binding the pill to it sized every state to "Mecklenburg-Vorpommern" and
+    left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`
+    span and the `<select>` is a transparent overlay across the pill; `onStateChange` updates the
+    span rather than re-rendering the control, which would drop focus mid-interaction.
   - The counter for questions due is the one stat allowed to draw attention
     (`.dash-stat--due`, apricot). The others are neutral.
   - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
@@ -86,6 +96,41 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     and state modes it governs — not in the overview card, which only reports.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
+- **The navigator groups a long ordered round by category.** `renderQuestionNav()` builds
+  `<details class="qnav-group">` per `q.category` (state questions group under the state name).
+  The group holding the current question is always open; a group the reader opened by hand stays
+  open, and the *previously* active one collapses — otherwise a lap of the round leaves every
+  category expanded. Open state is carried across re-renders by reading the DOM about to be
+  replaced, plus `navLastActiveKey`; there is no separate store to keep in sync.
+  - **Groups appear only when they earn their keep.** A shuffled round, a round of 40 or fewer,
+    or a round that is all one category renders the flat grid — one `<details>` over the whole
+    list is a lid, not a grouping.
+  - `.question-nav-grid` is `repeat(auto-fill, minmax(44px, 1fr))`. Measured: 4 columns of
+    47px in the 256px sidebar (its own scrollbar takes ~17px of the content box) and 14 across
+    in the full-width strip below 940px. Cells are finger-sized in both.
+- **`NAV_COLLAPSE_AT` is the one number for the navigator's collapse.** The stylesheet's 940px
+  breakpoint and the JS guards must agree: they read 720 against a 940 breakpoint once, and
+  between those widths the CSS hid the panel while the toggle refused to open it.
+  - **The sidebar header carries button semantics only where it is a button.** Above the
+    breakpoint the panel is simply open, so `syncNavHeaderRole()` strips `role`, `tabindex` and
+    `aria-expanded`; below it, it sets all three and the header answers Enter and Space. It had
+    announced itself as a collapsed button on a 1400px screen, over an open panel, doing
+    nothing. It runs on boot, on resize, and on every navigator render so a missed resize
+    event cannot leave it lying.
+- **`state.shuffled` re-orders a round, and `state.answered` moves with it.** `shuffleRound()`
+  captures the round's own order into `state.baseOrder` before the first shuffle and restores
+  exactly that — sorting by id was only right for rounds built from the catalogue, and turned a
+  mistakes round (built in the order you missed them) into an order it never had. It remaps
+  every answer by question id
+  (answers are keyed by POSITION, so a re-order silently reassigns them otherwise), and keeps the
+  reader on the question they were looking at. Every entry into a round resets the flag; the flag
+  is persisted in the session so a resume renders the navigator the right way.
+- **The question navigator is bounded by the viewport, never by its contents.** 300 cells in five
+  columns is a 2700px column: the sidebar grew to match, `position: sticky` stopped meaning
+  anything, and the numbers painted down the page outside the card. `.quiz-sidebar` caps at
+  `calc(100svh - var(--header-h) - 24px)`, preceded by the same value in `vh` so a browser that
+  does not know `svh` keeps a cap instead of dropping the declaration, and `.sidebar-body`
+  scrolls inside it. Nothing sets the sidebar's height from JS.
 - `showScreen()` resets the scroll to the top. It is the one door every screen change goes
   through; no caller scrolls on its own.
 - **UI language: English by default, German optional** (added 2026-09-19). The switch is the

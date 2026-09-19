@@ -468,23 +468,38 @@
             position: relative;
             min-width: 0; max-width: 100%;
             display: inline-flex; align-items: center; gap: 8px;
-            padding-left: 12px;
-            background: var(--surface2);
+            min-height: 44px;
+            padding: 0 36px 0 14px;
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
             color: var(--muted);
+            cursor: pointer;
         }
-        .state-picker:focus-within { border-color: var(--accent); }
-        .state-picker svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--accent-text); }
-        .state-picker select {
-            appearance: none; -webkit-appearance: none;
-            background: none; border: none; outline: none;
+        /* The <select> is invisible, so its own focus ring is too. The pill wears it. */
+        .state-picker:focus-within {
+            border-color: var(--accent);
+            outline: 2px solid var(--accent-text);
+            outline-offset: 3px;
+        }
+        .state-picker select:focus-visible { outline: none; }
+        .state-picker svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--muted); }
+        /* The pill hugs this, so it fits "Berlin" as well as it fits
+           "Mecklenburg-Vorpommern". */
+        .state-picker-value {
             color: var(--text);
-            font-size: 16px; font-weight: 600;
-            padding: 0 34px 0 0;
-            min-height: 40px;
-            width: 100%; min-width: 0;
-            text-overflow: ellipsis;
+            font-size: 0.92rem; font-weight: 600;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            min-width: 0;
+        }
+        /* The real control, invisible, over the whole pill. 16px so iOS does not
+           zoom when it opens. */
+        .state-picker select {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            font-size: 16px;
+            border: none;
             cursor: pointer;
         }
         /* the caret, drawn once so the native arrow can stay hidden */
@@ -560,7 +575,6 @@
             gap: var(--spacing-md);
         }
         .mode-card {
-            --card-accent: var(--accent-text);
             grid-column: span 1;
             position: relative;
             padding: var(--spacing-md);
@@ -573,9 +587,6 @@
             font: inherit; color: inherit;
             transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
         }
-        .modes-grid .mode-card:nth-child(2) { --card-accent: var(--gold); }
-        .modes-grid .mode-card:nth-child(3) { --card-accent: var(--green); }
-        .modes-grid .mode-card:nth-child(4) { --card-accent: var(--blue); }
         @media (hover: hover) {
             .mode-card:hover { background: var(--hover); border-color: var(--border-hover); }
         }
@@ -585,7 +596,6 @@
            and the only one that spans the row. */
         .mode-card--featured {
             grid-column: 1 / -1;
-            --card-accent: var(--teal);
             background: var(--ink-tile);
             border-color: var(--border);
             color: var(--on-dark);
@@ -593,7 +603,7 @@
             display: grid;
             grid-template-columns: auto 1fr auto;
             grid-template-areas: "icon title action" "icon desc action" "icon meta action";
-            column-gap: var(--spacing-lg);
+            column-gap: var(--spacing-md);
             align-items: center;
         }
         html.light .mode-card--featured { color: #fff; }
@@ -602,12 +612,13 @@
         }
         html.light .mode-card--featured:hover { background: #24262C; }
         .mode-card--featured:active { background: #2A2E37; }
-        .mode-card--featured .mode-icon { grid-area: icon; width: 52px; height: 52px; margin-bottom: 0; background: rgba(23,181,164,0.16); color: var(--teal); }
+        .mode-card:not(.mode-card--featured) .mode-start-btn { display: none; }
+        .mode-card--featured .mode-icon { grid-area: icon; align-self: start; width: 44px; height: 44px; margin-bottom: 0; background: rgba(23,181,164,0.16); color: var(--teal); }
+        .mode-card--featured:hover .mode-icon { background: rgba(23,181,164,0.22); color: var(--teal); }
         .mode-card--featured .mode-icon svg { width: 26px; height: 26px; }
         .mode-card--featured .mode-title { grid-area: title; font-size: 1.3rem; color: #fff; }
         .mode-card--featured .mode-description { grid-area: desc; color: #B4B7C0; max-width: 52ch; margin-bottom: 0; }
-        .mode-card--featured .mode-meta { grid-area: meta; margin: 8px 0 0; }
-        .mode-card--featured .mode-time-est { color: #9397A1; }
+        .mode-card--featured .mode-meta { grid-area: meta; margin: 10px 0 0; color: #9397A1; }
         .mode-card--featured .mode-start-btn {
             grid-area: action;
             justify-self: end;
@@ -618,32 +629,37 @@
         }
 
         .mode-icon {
-            width: 38px; height: 38px;
-            border-radius: 11px;
+            width: 36px; height: 36px;
+            border-radius: 10px;
             display: grid; place-items: center;
-            color: var(--card-accent);
-            background: color-mix(in srgb, var(--card-accent) 11%, transparent);
+            color: var(--muted);
+            background: var(--surface2);
             margin-bottom: 14px;
+            transition: color 0.18s var(--ease), background 0.18s var(--ease);
         }
-        .mode-icon svg { width: 20px; height: 20px; }
-        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.02em; margin-bottom: 4px; }
+        .mode-icon svg { width: 19px; height: 19px; }
+        @media (hover: hover) {
+            .mode-card:hover .mode-icon { color: var(--accent-text); background: var(--accent-soft); }
+        }
+        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; letter-spacing: -0.02em; margin-bottom: 4px; }
         .mode-description {
             color: var(--muted); font-size: 0.87rem; line-height: 1.5;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 10px;
         }
-        .mode-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: auto; margin-bottom: 14px; }
-        .mode-badge {
-            font-size: 0.66rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase;
-            padding: 3px 9px; border-radius: var(--radius-pill);
-            color: var(--card-accent);
-            background: color-mix(in srgb, var(--card-accent) 11%, transparent);
+        /* A chip states a fact; the fact is small and grey. Only work that is
+           actually waiting gets a colour. */
+        .mode-meta {
+            display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+            margin-top: auto;
+            font-size: 0.8rem; color: var(--faint);
+            font-variant-numeric: tabular-nums;
         }
-        .mode-badge.badge-gold  { color: var(--gold);     background: var(--gold-dim); }
-        .mode-badge.badge-green { color: var(--green);    background: var(--green-dim); }
-        .mode-badge.badge-red   { color: var(--red-text); background: var(--red-dim); }
-        .mode-badge.badge-on-dark { color: #17B5A4; background: rgba(23,181,164,0.16); }
-        .mode-time-est { font-size: 0.76rem; color: var(--faint); }
-        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.84rem; font-weight: 600; color: var(--card-accent); }
+        .mode-flag {
+            font-size: 0.75rem; font-weight: 600;
+            padding: 2px 8px; border-radius: var(--radius-pill);
+            color: var(--gold); background: var(--gold-dim);
+        }
+        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.84rem; font-weight: 600; }
         .msb-arrow { transition: transform 0.25s var(--ease-spring); }
         .mode-card:hover .msb-arrow { transform: translateX(3px); }
 
@@ -897,19 +913,80 @@
         .explanation-english.show { display: block; }
 
         /* Sidebar navigator */
-        .quiz-sidebar { width: 256px; border-radius: var(--radius-lg); padding: var(--spacing-md); position: sticky; top: 72px; display: flex; flex-direction: column; }
+        .quiz-sidebar {
+            width: 256px;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            position: sticky;
+            top: calc(var(--header-h) + 8px);
+            /* Never taller than the screen — otherwise it is not sticky, it is just long.
+               vh first: a browser that does not know svh drops that line and keeps this
+               one, rather than dropping the cap and growing to 2900px again. */
+            max-height: calc(100vh - var(--header-h) - 24px);
+            max-height: calc(100svh - var(--header-h) - 24px);
+            display: flex; flex-direction: column;
+        }
         .sidebar-header { cursor: default; }
         .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
         .sidebar-chevron { display: none; color: var(--muted); transition: transform 0.25s var(--ease); }
         .sidebar-count { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
-        .sidebar-body { margin-top: var(--spacing-md); }
+        .sidebar-body { margin-top: var(--spacing-md); min-height: 0; overflow-y: auto; }
         .progress-bar { height: 5px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; }
         .progress-fill { height: 100%; width: 0; background: var(--accent-grad); border-radius: inherit; transition: width 0.4s var(--ease-spring); }
         .progress-text { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
         .question-nav-legend { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: var(--spacing-md) 0; font-size: 0.72rem; color: var(--muted); }
         .question-nav-legend > span { display: inline-flex; align-items: center; gap: 5px; }
         .legend-swatch { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
-        .question-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        /* Five across in the 256px sidebar, many more across the full-width strip
+           on a narrow screen — the cells stay finger-sized either way. */
+        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
+
+        /* Collapsible category groups. The group holding the current question is
+           always open; anything else the reader opened stays open across renders. */
+        .question-nav-groups { display: flex; flex-direction: column; gap: 4px; }
+        .qnav-group { border-radius: var(--radius-sm); }
+        .qnav-group + .qnav-group { border-top: 1px solid var(--border-soft); padding-top: 4px; }
+        .qnav-group-head {
+            display: flex; align-items: center; gap: 8px;
+            min-height: 36px; padding: 0 4px;
+            cursor: pointer; list-style: none;
+            font-size: 0.78rem; font-weight: 600; color: var(--sub-text);
+        }
+        .qnav-group-head::-webkit-details-marker { display: none; }
+        /* One caret, drawn here, rotating on open. */
+        .qnav-group-head::before {
+            content: ''; flex-shrink: 0;
+            width: 6px; height: 6px; margin-left: 2px;
+            border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted);
+            transform: rotate(-45deg);
+            transition: transform 0.18s var(--ease);
+        }
+        .qnav-group[open] > .qnav-group-head::before { transform: rotate(45deg); }
+        .qnav-group-head:hover { color: var(--text); }
+        .qnav-group-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .qnav-group-count { flex-shrink: 0; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
+        .qnav-group > .question-nav-grid { padding: 4px 0 10px; }
+
+        /* Shuffle is a round-level control, so it sits above the numbers it re-orders. */
+        #navActions:empty { display: none; }
+        #navActions { margin: var(--spacing-sm) 0 2px; }
+        .qnav-shuffle {
+            display: inline-flex; align-items: center; gap: 7px;
+            min-height: 36px; padding: 0 12px;
+            border: 1px solid var(--border); border-radius: var(--radius-pill);
+            background: var(--surface2); color: var(--sub-text);
+            font-size: 0.78rem; font-weight: 600;
+            transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
+        }
+        .qnav-shuffle svg { width: 14px; height: 14px; }
+        .qnav-shuffle:hover { background: var(--hover); border-color: var(--border-hover); color: var(--text); }
+        .qnav-shuffle.is-on { color: var(--accent-text); border-color: var(--accent-line); background: var(--accent-soft); }
+
+        /* Stated after the base rules above, not with the other coarse-pointer
+           overrides earlier in the sheet — same specificity, so source order decides. */
+        @media (pointer: coarse) {
+            .qnav-shuffle, .qnav-group-head { min-height: 44px; }
+        }
         .q-nav-btn { aspect-ratio: 1; min-height: 34px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: 8px; font-size: 0.74rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .q-nav-btn.qnav-current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); font-weight: 700; }
@@ -970,15 +1047,16 @@
            RESPONSIVE
            ============================================================ */
         @media (max-width: 940px) {
-            .modes-grid { grid-template-columns: repeat(2, 1fr); }
+            /* Three secondary cards stay three across: two columns orphans one of
+               them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
             .quiz-layout { grid-template-columns: minmax(0, 1fr); }
-            .quiz-sidebar { width: auto; position: static; order: -1; height: auto !important; }
+            .quiz-sidebar { width: auto; position: static; order: -1; max-height: none; }
             .sidebar-header { cursor: pointer; min-height: 44px; display: flex; flex-direction: column; justify-content: center; }
             .sidebar-chevron { display: block; }
             .sidebar-chevron.open { transform: rotate(180deg); }
             .sidebar-body { display: none; }
-            .sidebar-body.expanded { display: block; }
+            .sidebar-body.expanded { display: block; max-height: 45vh; }
         }
 
         @media (max-width: 620px) {
@@ -1224,7 +1302,7 @@
 
                 <!-- Right column: vertical navigator sidebar -->
                 <aside class="quiz-sidebar" id="questionNavWrapper" style="display: none;">
-                    <div class="sidebar-header" id="sidebarToggle" role="button" aria-expanded="false">
+                    <div class="sidebar-header" id="sidebarToggle" aria-controls="sidebarBody">
                         <div class="sidebar-header-row">
                             <span class="sidebar-title" data-i18n="qnav.overview"></span>
                             <span class="sidebar-chevron" id="sidebarChevron">▼</span>
@@ -1239,6 +1317,7 @@
                             <span id="progressLeft"></span>
                             <span id="progressPercent"></span>
                         </div>
+                        <div id="navActions"></div>
                         <div class="question-nav-legend">
                             <span><span class="legend-swatch" style="background:var(--accent);"></span><span data-i18n="qnav.current"></span></span>
                             <span><span class="legend-swatch" style="background:var(--green);"></span><span data-i18n="qnav.correct"></span></span>
@@ -1332,6 +1411,7 @@
             trophy: _svg('<path d="M8 4h8v4a4 4 0 0 1-8 0Z"/><path d="M8 6H5a2 2 0 0 0 0 4h3"/><path d="M16 6h3a2 2 0 0 1 0 4h-3"/><path d="M10 14h4"/><path d="M9 20h6"/><path d="M12 14v6"/>'),
             translate: _svg('<path d="M4 5h11"/><path d="M9 3v2"/><path d="M12.5 5c-.6 4.6-3.7 8.6-8 10.4"/><path d="M6.5 8.5c.9 2.6 2.9 4.7 5.5 5.8"/><path d="M13 21l4.2-10 4.2 10"/><path d="M14.6 17.3h5.2"/>'),
             speaker: _svg('<path d="M4 9.5v5a1 1 0 0 0 1 1h2.6l3.6 3a.8.8 0 0 0 1.3-.6V6.1a.8.8 0 0 0-1.3-.6l-3.6 3H5a1 1 0 0 0-1 1Z"/><path d="M16.2 9.2a4 4 0 0 1 0 5.6"/><path d="M18.8 6.6a7.6 7.6 0 0 1 0 10.8"/>'),
+            shuffle: _svg('<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>'),
             arrowRight: _svg('<line x1="5" y1="12" x2="18" y2="12"/><polyline points="13 7 18 12 13 17"/>'),
             trendUp: _svg('<polyline points="4 16 10 10 14 14 20 7"/><polyline points="15 7 20 7 20 12"/>'),
         };
@@ -1372,6 +1452,8 @@
         }
         function onStateChange(code) {
             setSelectedState(code);
+            const shown = document.querySelector('.state-picker-value');
+            if (shown) shown.textContent = STATES[selectedState];
             renderModes();
             renderTopics();
             renderHomeStatus();
@@ -1384,6 +1466,10 @@
         // German explanation stay German — that is the exam. The per-
         // question translate toggle still reveals each question's English.
         // ============================================================
+        // Below this the navigator is a collapsible strip above the question, not a
+        // column beside it. Must match the 940px breakpoint in the stylesheet.
+        const NAV_COLLAPSE_AT = 940;
+
         const LANG_KEY = 'eib_lang';
         let lang = (() => {
             try { return localStorage.getItem(LANG_KEY) === 'de' ? 'de' : 'en'; }
@@ -1505,6 +1591,8 @@
             'qnav.correct':        { en: 'Correct',                 de: 'Richtig' },
             'qnav.wrong':          { en: 'Wrong',                   de: 'Falsch' },
             'qnav.open':           { en: 'Unanswered',              de: 'Offen' },
+            'qnav.shuffle':        { en: 'Shuffle',                 de: 'Mischen' },
+            'qnav.inOrder':        { en: 'Back in order',           de: 'Reihenfolge zurück' },
 
             // end screen
             'end.exam':            { en: 'Exam simulation complete', de: 'Prüfungssimulation beendet' },
@@ -1604,6 +1692,8 @@
             missedQuestions: [],   // {q, userAnswerIdx} for wrong-answer review
             examStartTime: null,   // Date.now() when exam begins
             elapsedSecs: null,     // seconds taken, frozen at endQuiz so the results repaint
+            shuffled: false,       // the round is in random order, so the navigator drops its groups
+            baseOrder: null,       // question ids in the order the round was built, captured on first shuffle
             generalCorrect: 0,     // correct general answers (exam sub-score)
             stateCorrect: 0,       // correct state answers (exam sub-score)
         };
@@ -1716,6 +1806,8 @@
                     ids: state.currentQuestions.map(q => q.id),
                     idx: state.currentQuestionIndex,
                     answered: state.answered,
+                    shuffled: state.shuffled,
+                    baseOrder: state.baseOrder,
                     correct: state.correct,
                     incorrect: state.incorrect,
                     ts: Date.now()
@@ -1811,8 +1903,8 @@
             el.innerHTML = `
                 <span class="eyebrow state-picker-label">${t('dash.state')}</span>
                 <label class="state-picker">
-                    <span class="sr-only">${t('dash.statePick')}</span>
                     ${ICONS.pin}
+                    <span class="state-picker-value">${STATES[selectedState]}</span>
                     <select id="stateSelect" aria-label="${t('dash.statePick')}" onchange="onStateChange(this.value)">${opts}</select>
                 </label>`;
         }
@@ -1846,6 +1938,8 @@
             if (!qs.length) return;
             state.currentMode = 'topic';
             state.currentTopic = catKey;
+            state.shuffled = false;
+            state.baseOrder = null;
             state.currentQuestionIndex = 0;
             state.answered = {};
             state.correct = 0;
@@ -2075,6 +2169,8 @@
             state.currentQuestions = qs;
             state.currentQuestionIndex = Math.min(sess.idx || 0, qs.length - 1);
             state.answered = sess.answered || {};
+            state.shuffled = !!sess.shuffled;
+            state.baseOrder = Array.isArray(sess.baseOrder) ? sess.baseOrder : null;
             state.correct = sess.correct || 0;
             state.incorrect = sess.incorrect || 0;
             state.showExplanation = false;
@@ -2097,29 +2193,28 @@
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
             const st = STATES[selectedState];
-            const card = (mode, icon, title, desc, badge, badgeClass, time, extra = '') => `
+            const card = (mode, icon, title, desc, meta, extra = '') => `
                 <button class="mode-card ${extra}" onclick="startMode('${mode}')">
                     <span class="mode-icon">${icon}</span>
                     <span class="mode-title">${title}</span>
                     <span class="mode-description">${desc}</span>
-                    <span class="mode-meta">
-                        <span class="mode-badge ${badgeClass}">${badge}</span>
-                        <span class="mode-time-est">${time}</span>
-                    </span>
+                    <span class="mode-meta">${meta}</span>
                     <span class="mode-start-btn">${t('mode.start')} <span class="msb-arrow">→</span></span>
                 </button>`;
+            const dot = ' · ';
             // The exam is the thing this app is for, so it is the only card that
-            // gets the full-width charcoal treatment. The rest are peers.
+            // gets the full-width charcoal treatment. The rest are peers, and the
+            // only colour among them flags questions that are actually due.
             grid.innerHTML =
                 card('exam', ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
-                     t('mode.exam.badge'), 'badge-on-dark', t('mode.exam.time'), 'mode-card--featured') +
+                     t('mode.exam.badge') + dot + t('mode.exam.time'), 'mode-card--featured') +
                 card('allQuestions', ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
-                     t('mode.all.badge'), 'badge-gold', t('mode.all.time')) +
+                     t('mode.all.badge') + dot + t('mode.all.time')) +
                 card('bundesland', ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
-                     t('mode.state.badge'), 'badge-green', t('mode.state.time')) +
+                     t('mode.state.badge') + dot + t('mode.state.time')) +
                 card('review', ICONS.review, t('mode.review.title'), t('mode.review.desc'),
-                     due ? t('mode.review.badgeDue', { n: due }) : t('mode.review.badge'),
-                     due ? 'badge-red' : 'badge-gold', t('mode.review.time'));
+                     (due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>`
+                          : t('mode.review.badge') + dot) + t('mode.review.time'));
         }
 
         // ============================================================
@@ -2129,20 +2224,122 @@
             const total = state.currentQuestions.length;
             const answered = Object.keys(state.answered).length;
             document.getElementById('navProgressSummary').textContent = t('qnav.answered', { n: answered, total });
+            // Self-correcting: even if a resize event is missed, the header's semantics
+            // are right again the next time the panel renders.
+            syncNavHeaderRole();
 
-            document.getElementById('questionNavGrid').innerHTML =
-                Array.from({ length: total }, (_, i) => {
-                    const ans = state.answered[i];
-                    const isCurrent = i === state.currentQuestionIndex;
-                    let cls = 'q-nav-btn';
-                    if (isCurrent) {
-                        cls += ' qnav-current';
-                    } else if (ans !== undefined) {
-                        cls += ans === state.currentQuestions[i].correct
-                            ? ' qnav-correct' : ' qnav-incorrect';
-                    }
-                    return `<button class="${cls}" onclick="jumpToQuestion(${i})" title="Frage ${i + 1}">${i + 1}</button>`;
-                }).join('');
+            // Shuffle belongs to rounds you work through in order; an exam is
+            // already random and a 10-question set has nothing to gain.
+            const actions = document.getElementById('navActions');
+            if (actions) {
+                actions.innerHTML = total > 40
+                    ? `<button class="qnav-shuffle${state.shuffled ? ' is-on' : ''}" onclick="shuffleRound()">
+                           ${ICONS.shuffle}<span>${state.shuffled ? t('qnav.inOrder') : t('qnav.shuffle')}</span>
+                       </button>`
+                    : '';
+            }
+
+            const cell = i => {
+                const ans = state.answered[i];
+                let cls = 'q-nav-btn';
+                if (i === state.currentQuestionIndex) {
+                    cls += ' qnav-current';
+                } else if (ans !== undefined) {
+                    cls += ans === state.currentQuestions[i].correct
+                        ? ' qnav-correct' : ' qnav-incorrect';
+                }
+                return `<button class="${cls}" onclick="jumpToQuestion(${i})" title="${t('quiz.question', { n: i + 1 })}">${i + 1}</button>`;
+            };
+
+            const el = document.getElementById('questionNavGrid');
+
+            const groups = new Map();
+            state.currentQuestions.forEach((q, i) => {
+                const k = navGroupKey(q);
+                if (!groups.has(k)) groups.set(k, []);
+                groups.get(k).push(i);
+            });
+
+            // A shuffled round has no meaningful groups — its numbers ARE the order.
+            // A short round does not need them, and a round that is all one category
+            // would just get a lid over the whole list.
+            if (state.shuffled || total <= 40 || groups.size < 2) {
+                el.className = 'question-nav-grid';
+                el.innerHTML = Array.from({ length: total }, (_, i) => cell(i)).join('');
+                return;
+            }
+
+            // Carry the reader's own open/closed groups across the re-render by reading
+            // the DOM we are about to replace. The previously active group is dropped:
+            // it was open because it held the question, not because anyone chose it, and
+            // keeping it would leave every category expanded after a lap of the round.
+            const stillOpen = new Set(
+                [...el.querySelectorAll('.qnav-group[open]')].map(d => d.dataset.cat)
+            );
+            stillOpen.delete(navLastActiveKey);
+            const activeKey = navGroupKey(state.currentQuestions[state.currentQuestionIndex]);
+
+            navLastActiveKey = activeKey;
+            el.className = 'question-nav-groups';
+            el.innerHTML = [...groups].map(([key, idxs]) => {
+                const done = idxs.filter(i => state.answered[i] !== undefined).length;
+                const open = key === activeKey || stillOpen.has(key);
+                return `
+                    <details class="qnav-group"${open ? ' open' : ''} data-cat="${key}">
+                        <summary class="qnav-group-head">
+                            <span class="qnav-group-name">${navGroupLabel(key)}</span>
+                            <span class="qnav-group-count">${done}/${idxs.length}</span>
+                        </summary>
+                        <div class="question-nav-grid">${idxs.map(cell).join('')}</div>
+                    </details>`;
+            }).join('');
+
+            // Keep the question you are on in view inside the scrolling panel.
+            const cur = el.querySelector('.qnav-current');
+            if (cur) cur.scrollIntoView({ block: 'nearest' });
+        }
+
+        // The group that was open purely because it was active, last render.
+        let navLastActiveKey = null;
+
+        /** Which navigator group a question belongs to. */
+        function navGroupKey(q) { return q.state ? 'state' : (q.category || 'other'); }
+        function navGroupLabel(key) {
+            if (key === 'state') return STATES[state.stateCode] || t('mode.state.title');
+            return CATEGORIES[key] ? catLabel(key) : t('quiz.general');
+        }
+
+        /**
+         * Re-order the round, or put it back in catalogue order.
+         * `state.answered` is keyed by POSITION, so it has to move with the
+         * questions — otherwise every answer lands on a different question.
+         */
+        function shuffleRound() {
+            const qs = state.currentQuestions;
+            if (qs.length < 2) return;
+            const byId = new Map(qs.map(q => [q.id, q]));
+            // Remember the order the round was actually built in. Sorting by id only
+            // matches that for rounds built from the catalogue: a mistakes round is in
+            // the order the questions were missed, and id order was never its order.
+            if (!state.shuffled) state.baseOrder = qs.map(q => q.id);
+            const restored = (state.baseOrder || []).map(id => byId.get(id)).filter(Boolean);
+            const next = state.shuffled
+                ? (restored.length === qs.length ? restored : [...qs].sort((a, b) => a.id - b.id))
+                : sample(qs, qs.length);
+            const wasAt = new Map(qs.map((q, i) => [q.id, i]));
+            const here = qs[state.currentQuestionIndex];
+            const answered = {};
+            next.forEach((q, i) => {
+                const was = wasAt.get(q.id);
+                if (state.answered[was] !== undefined) answered[i] = state.answered[was];
+            });
+            state.currentQuestions = next;
+            state.answered = answered;
+            state.shuffled = !state.shuffled;
+            // stay on the question that was on screen
+            state.currentQuestionIndex = Math.max(0, next.indexOf(here));
+            saveSession();
+            displayQuestion();
         }
 
         function toggleQuestionNav() {} // sidebar is always open
@@ -2173,6 +2370,8 @@
             state.generalCorrect = 0;
             state.stateCorrect = 0;
             state.stateCode = selectedState;
+            state.shuffled = false;
+            state.baseOrder = null;
 
             if (mode === 'allQuestions') {
                 state.currentQuestions = generalQuestions();
@@ -2193,13 +2392,13 @@
             navWrapper.style.display = mode === 'exam' ? 'none' : 'flex';
 
             // Always start with sidebar collapsed on mobile
-            if (window.innerWidth <= 720) {
+            if (window.innerWidth <= NAV_COLLAPSE_AT) {
                 const sidebarBody = document.getElementById('sidebarBody');
                 const sidebarChevron = document.getElementById('sidebarChevron');
                 const sidebarToggle = document.getElementById('sidebarToggle');
                 if (sidebarBody) sidebarBody.classList.remove('expanded');
                 if (sidebarChevron) sidebarChevron.classList.remove('open');
-                if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+                if (sidebarToggle) syncNavHeaderRole();
             }
 
             showScreen('quiz');
@@ -2326,14 +2525,6 @@
             // Always update sidebar navigator
             renderQuestionNav();
 
-            // Sync sidebar height to question column so they bottom-align
-            requestAnimationFrame(() => {
-                const main = document.querySelector('.quiz-main');
-                const sidebar = document.getElementById('questionNavWrapper');
-                if (main && sidebar && sidebar.style.display !== 'none') {
-                    sidebar.style.height = main.offsetHeight + 'px';
-                }
-            });
         }
 
         function updateStats() {
@@ -2648,6 +2839,8 @@
             const qs = state.missedQuestions.map(m => m.q);
             if (qs.length === 0) return;
             state.currentMode = 'mistakes';
+            state.shuffled = false;
+            state.baseOrder = null;
             state.currentQuestions = qs;
             state.currentQuestionIndex = 0;
             state.answered = {};
@@ -2812,14 +3005,44 @@
         }
         loadQuestions();
 
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            if (window.innerWidth > 720) return;
+        /**
+         * Above NAV_COLLAPSE_AT the panel is simply open and the header is a caption,
+         * so it carries no button semantics at all. Below it the header is a real
+         * button: focusable, operable by keyboard, and honest about expanded state.
+         */
+        function syncNavHeaderRole() {
+            const tgl = document.getElementById('sidebarToggle');
+            const body = document.getElementById('sidebarBody');
+            if (!tgl || !body) return;
+            if (window.innerWidth > NAV_COLLAPSE_AT) {
+                tgl.removeAttribute('role');
+                tgl.removeAttribute('tabindex');
+                tgl.removeAttribute('aria-expanded');
+            } else {
+                tgl.setAttribute('role', 'button');
+                tgl.setAttribute('tabindex', '0');
+                tgl.setAttribute('aria-expanded', String(body.classList.contains('expanded')));
+            }
+        }
+
+        function toggleNavPanel() {
+            if (window.innerWidth > NAV_COLLAPSE_AT) return;
             const body = document.getElementById('sidebarBody');
             const chevron = document.getElementById('sidebarChevron');
             const expanded = body.classList.toggle('expanded');
             chevron.classList.toggle('open', expanded);
-            this.setAttribute('aria-expanded', String(expanded));
+            syncNavHeaderRole();
+        }
+
+        document.getElementById('sidebarToggle').addEventListener('click', toggleNavPanel);
+        // A div with role="button" is not operable by keyboard on its own.
+        document.getElementById('sidebarToggle').addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNavPanel(); }
         });
+        syncNavHeaderRole();
+        // resize rather than a matchMedia change listener: the latter did not fire under
+        // viewport emulation, and this has to be right at whatever width the reader lands on.
+        window.addEventListener('resize', syncNavHeaderRole);
 
         // ---- Service worker (offline / installable PWA) ----
         if ('serviceWorker' in navigator) {
