@@ -1231,7 +1231,11 @@
         };
         const STATE_KEY = 'eib_state';
         let selectedState = (() => {
-            try { return localStorage.getItem(STATE_KEY) || 'BE'; } catch (e) { return 'BE'; }
+            // Validate here too, not only in setSelectedState — an unrecognised code gives an
+            // empty state pool, i.e. a silent 30-question "33-question" exam still scored
+            // against the 17/33 threshold.
+            try { const c = localStorage.getItem(STATE_KEY); return STATES[c] ? c : 'BE'; }
+            catch (e) { return 'BE'; }
         })();
         function setSelectedState(code) {
             selectedState = STATES[code] ? code : 'BE';
@@ -1764,7 +1768,9 @@
             if (!sess) return;
             const byId = new Map(QUESTIONS.map(q => [q.id, q]));
             const qs = sess.ids.map(id => byId.get(id)).filter(Boolean);
-            if (!qs.length) { clearSession(); renderHomeStatus(); return; }
+            // `answered` is keyed by position in sess.ids, so dropping any id shifts every
+            // later answer onto the wrong question. Nothing sane to resume — discard it.
+            if (!qs.length || qs.length !== sess.ids.length) { clearSession(); renderHomeStatus(); return; }
             state.currentMode = sess.mode;
             state.currentTopic = sess.topic || null;
             state.stateCode = sess.stateCode || selectedState;
@@ -1850,7 +1856,8 @@
         function startMode(mode) {
             // Bail before touching state — a half-reset state with the previous round's
             // questions still in it is worse than not starting.
-            if (mode === 'review' && !buildReviewQueue(25).length) {
+            const reviewQueue = mode === 'review' ? buildReviewQueue(25) : null;
+            if (reviewQueue && !reviewQueue.length) {
                 alert('Noch nichts zu wiederholen — beantworte zuerst ein paar Fragen.');
                 return;
             }
@@ -1872,7 +1879,7 @@
             } else if (mode === 'bundesland') {
                 state.currentQuestions = stateQuestions();
             } else if (mode === 'review') {
-                state.currentQuestions = buildReviewQueue(25);
+                state.currentQuestions = reviewQueue;
             } else if (mode === 'exam') {
                 state.currentQuestions = [...sample(generalQuestions(), 30), ...sample(stateQuestions(), 3)];
                 state.examStartTime = Date.now();
