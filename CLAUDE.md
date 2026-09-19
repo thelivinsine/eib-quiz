@@ -30,6 +30,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   **DISCIPLINED accent duo**: one **teal** primary + one warm **apricot** pop. Two themes share the
   palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is the
   default look; dark = **charcoal** (canvas `#131418`).
+  - **The dark ladder is calibrated against `theme-dark.md` §1/§3, not eyeballed.** A tile sat
+    1.09 off the canvas where the measured band for a card is 1.15 (PowerToys) to 1.30 (ChatGPT);
+    the whole ramp above `--canvas` moved up by one delta so the shape is unchanged and
+    `--surface` now sits at 1.16. `--muted`/`--faint` were spread apart at the same time — §2
+    warns that four greys at 9/8/7/6 read as one mushy grey, and the tiers now read
+    13.6 / 8.4 / 6.1 / 4.9 on a tile. **Light already cleared its own reference** (a light card
+    is 1.11 on the page against a measured 1.07) and was not touched.
+  - **A mode card's body copy is `--sub-text`, its meta and time are `--muted`.** They were
+    `--muted` and `--faint`: `theme-dark.md` §2 puts a description in the SECONDARY band
+    (7.3-10.2) and reserves ~4.7 for placeholder/disabled text, so the cards were painted almost
+    entirely in the two quietest tiers. The icon and arrow chips' glyphs are `--sub-text` for the
+    same reason.
   - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
     `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
     under something that genuinely floats, and nothing in this app does.
@@ -46,8 +58,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--accent`/`--lime` (`#0B7D72` light / `#17B5A4` dark; plus `--accent-text`, `--teal-deep`,
     `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold`
     (`#B45309` light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`,
-    `--apricot-tint`); `--blue` = info/time; semantic `--green` (correct) / `--red`+`--red-text`
-    (wrong). `--ink-tile` = the charcoal-fill tile — now only the header brand mark; in dark it
+    `--apricot-deep`); `--blue` = info/time; semantic `--green` (correct) / `--red`+`--red-text`
+    (wrong). `--accent-hover` is the tinted card's hover fill — **not** `--accent-line`, which is
+    a border value: as a fill it is a 1.27x jump in light and a saturated mid-teal in dark, which
+    put the featured card's own description and meta under AA the moment you pointed at it. `--ink-tile` = the charcoal-fill tile — now only the header brand mark; in dark it
     is a step **up** the ladder (`#262A33`), because a charcoal tile on a charcoal canvas reads
     as a hole.
   - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
@@ -73,8 +87,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
   quieter **History & reference** (`#historySection` + `#glossarySection`).
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
-    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. The list
-    is currently EMPTY and should stay that way — paint in tokens.
+    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Five
+    literals are listed today (the brand-mark letter, and the letter on the correct/wrong answer
+    chips in each theme); prefer a token, and if a literal is unavoidable it goes in the list the
+    same day.
   - **The exam is the only featured card.** `.mode-card--featured` is full-width and **teal-
     tinted** (`--accent-soft` fill, a saturated `--accent` edge, a solid `--accent-fill` icon
     chip and Start pill); the other three modes are equal-weight peers. There is exactly one
