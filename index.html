@@ -394,11 +394,39 @@
         /* hidden on x: the pick animation scales the chosen option by 1.5%, which
            flashed a horizontal scrollbar on every answer. Nothing in here is ever
            legitimately wider than the card. */
-        .question-body { flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain; }
+        /* The scrollbar sits in the card's own padding with a gutter between it and
+           the text, rather than hard against the last word of the question. The
+           negative margin is what puts it there; padding-right alone would just
+           narrow the content and leave the bar where it was. */
+        .question-body {
+            flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
+            padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
+        }
         /* Nothing scrolls past the timer or the navigator any more, so neither
            has anything to stick to. */
         body.in-session #timer { position: static; }
         body.in-session .quiz-sidebar { position: static; max-height: none; }
+
+        /* Below this the container has less room than the card's own PINNED parts —
+           meta row, padding and nav bar come to about 150px before a single word of
+           the question. At 740x380 (any phone in landscape) .question-body measured
+           0px and .quiz-nav sat at 485px against a 380px viewport, clipped away by
+           main's overflow with no way to scroll to it. Readable content wins over
+           the no-scroll rule, and only where the rule cannot be kept. */
+        @media (max-height: 640px) {
+            body.in-session { overflow: auto; }
+            body.in-session main {
+                height: auto;
+                min-height: calc(100vh - var(--header-h));
+                min-height: calc(100svh - var(--header-h));
+                overflow: visible;
+            }
+            body.in-session .quiz-layout { grid-template-rows: auto; }
+            body.in-session .question-card { flex: 0 0 auto; }
+            body.in-session #endScreen.active { overflow: visible; }
+            /* One scroller, and at this height it is the page. */
+            .question-body { overflow: visible; }
+        }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
@@ -1051,7 +1079,11 @@
         .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
         .sidebar-chevron { display: none; color: var(--muted); transition: transform 0.25s var(--ease); }
         .sidebar-count { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
-        .sidebar-body { margin-top: var(--spacing-md); min-height: 0; overflow-y: auto; }
+        /* Same gutter as .question-body — the nav numbers were touching the bar. */
+        .sidebar-body {
+            margin-top: var(--spacing-md); min-height: 0; overflow-y: auto;
+            padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
+        }
         /* Five across in the 256px sidebar, many more across the full-width strip
            on a narrow screen — the cells stay finger-sized either way. */
         .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
@@ -1197,6 +1229,12 @@
         @media (max-width: 620px) {
             main { padding: var(--spacing-lg) var(--spacing-md); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
             .header-content { padding: 8px var(--spacing-md); }
+            /* body.in-session main outranks the rule above it on specificity alone,
+               media query or not, so the 16px gutter has to be restated here. */
+            body.in-session main {
+                padding: var(--spacing-sm) var(--spacing-md);
+                padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom));
+            }
 
             /* Hero: introduce, then get out of the way. */
             .hero-landing { padding: var(--spacing-lg) 0 var(--spacing-xl); margin-bottom: var(--spacing-lg); }
@@ -1302,7 +1340,7 @@
                 <span class="brand-mark" aria-hidden="true">E</span>
                 <span class="brand-name">eib</span>
             </button>
-            <button class="session-back" id="sessionBack" data-i18n-aria="nav.back">
+            <button class="session-back" id="sessionBack" data-i18n-aria="nav.backAria">
                 <span class="session-back-icon" aria-hidden="true"></span>
                 <span data-i18n="nav.back"></span>
             </button>
@@ -1606,6 +1644,9 @@
             // header
             'nav.home':            { en: 'Go to start page',        de: 'Zur Startseite' },
             'nav.back':            { en: 'Back',                    de: 'Zurück' },
+            // Distinct from quiz.back, which is the previous QUESTION. Both buttons
+            // are on screen at once and one of them abandons the round.
+            'nav.backAria':        { en: 'Back to the start page',  de: 'Zurück zur Startseite' },
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
@@ -2349,7 +2390,7 @@
             document.getElementById('navProgressSummary').textContent = t('qnav.answered', { n: answered, total });
             // Self-correcting: even if a resize event is missed, the header's semantics
             // are right again the next time the panel renders.
-        syncNavHeaderRole();
+            syncNavHeaderRole();
 
             // Shuffle belongs to rounds you work through in order; an exam is
             // already random and a 10-question set has nothing to gain.
@@ -3032,6 +3073,9 @@
         // One handler, one branch: leaving a round in progress asks first, leaving
         // the results screen has nothing left to lose.
         document.getElementById('sessionBack').addEventListener('click', () => {
+            // Either branch leaves the session, so neither may leave a question
+            // being read aloud behind it.
+            if (ttsSupported) window.speechSynthesis.cancel();
             if (state.currentScreen !== 'quiz') {
                 initHomeScreen();
                 showScreen('home');
