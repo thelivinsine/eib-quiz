@@ -341,6 +341,27 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     its area instead, which pins the buttons 10px above the overview strip; that needs
     `align-self: stretch` on `.quiz-main`, because the grid places items at the start and a
     content-sized column gives `flex: 1` nothing to grow into.
+  - **The block below the progress bar starts 15% of the screen down** (2026-09-20).
+    `body.in-session .quiz-layout` takes `margin-top: min(15svh, 50svh - 260px)` (a `vh` line
+    first), which moves the readouts, the question AND the navigator down together — the margin
+    is on the grid, so both columns travel. It is spent out of the slack that already sat under
+    Previous and Next: at 1280x800 the readouts go 126 -> 246 and the buttons 614 -> 734, with
+    66px still beneath them and an ordinary question still not scrolling.
+    - **The cap is not decoration.** 260px is the chrome above and below `.question-body`'s own
+      `50svh` floor; without it, the shift and the floor claim more than the viewport at the
+      short end of the locked band and Next is clipped away with no way to scroll to it
+      (941x645 overflowed by 4px in testing). Above ~750px tall the full 15% applies; below it
+      the SHIFT gives way rather than the question — 90px at 700, 62.5px at 645.
+    - **The exam keeps its old position** (`body.in-exam .quiz-layout { margin-top: 0 }`). The
+      clock takes a row the practice screen does not have, and at 800px tall that row IS the
+      slack: 67px left under the buttons against the 120px this would spend. `in-exam` is set
+      in `showScreen()` beside `in-session`, from `state.currentMode` — not in `startMode()`,
+      so the topic, mistakes and resume paths are covered by the same line. It is ANDed with
+      `screenName !== 'home'`, or the class outlives the round it belongs to.
+    - Below 940px and below `max-height: 640px` the shift is zeroed. Down there the card
+      already fills its area and the buttons are already pinned, so the shift would come
+      straight out of the question; and under 520px tall the capped expression goes negative
+      and would pull the question up under the bar.
   - **The question block is TOP-aligned under the readouts, not centred.** Centring it opened a
     gap between the readouts and the question they report on, and pushed the question away from
     the panel's top edge; the readouts now sit `--spacing-md` above the question (measured
