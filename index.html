@@ -964,13 +964,20 @@
             width: 100%; text-align: left;
             min-height: 56px;
             padding: 13px 14px;
-            border: 1px solid var(--border); border-radius: var(--radius);
-            background: var(--surface); color: var(--text);
+            /* concentric: a 16px card with 14px of padding holds a 10px option. */
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            /* --surface2, not --surface: an option is a well inside the card, and
+               painting it the card's own fill left white-on-white in light mode,
+               held apart by one hairline. 1.08 light / 1.12 dark, both above the
+               1.05 nesting floor. */
+            background: var(--surface2); color: var(--text);
             font-size: 1rem; line-height: 1.45;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
         @media (hover: hover) {
-            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--hover); }
+            /* --surface3 in both themes: darker than --surface2 in light, lighter in
+               dark, so one value steps the right way on both ladders. */
+            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--surface3); }
         }
         .option-btn:active:not(:disabled) { background: var(--surface3); }
         .option-btn:disabled { cursor: default; }
@@ -978,7 +985,7 @@
             flex-shrink: 0; width: 30px; height: 30px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
             font-weight: 600; font-size: 0.84rem;
-            color: var(--muted); background: var(--surface2); border: 1px solid var(--border);
+            color: var(--muted); background: var(--surface3); border: 1px solid var(--border);
             transition: border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
         @media (hover: hover) {
@@ -987,7 +994,8 @@
         .opt-text-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
         .option-en-text { display: none; font-size: 0.82rem; color: var(--muted); font-style: italic; }
         .option-en-text.show { display: block; }
-        .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); background: var(--surface2); }
+        /* The dim is a text tier now; the fill it used to borrow is the base. */
+        .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); }
         .option-btn.correct { border-color: var(--green); background: var(--green-dim); color: var(--text); }
         .option-btn.correct .opt-letter { background: var(--green); border-color: var(--green); color: #fff; }
         html:not(.light) .option-btn.correct .opt-letter { color: #06231a; }
@@ -2715,6 +2723,11 @@
             nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' →';
             setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
             setTimeout(() => nextBtn.focus(), 600);
+
+            // The counters read from state, and state just changed. They were only
+            // repainted on a question change, so they lagged a full question behind
+            // the answer you had just given.
+            updateStats();
 
             // Always refresh sidebar navigator
             renderQuestionNav();

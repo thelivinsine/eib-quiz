@@ -131,6 +131,22 @@ const PAIRS = [
   ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar"],
   ["red-text", "surface", AA, "the FALSCH counter in the quiz stats bar"],
 
+  // The answer states repaint a whole option, so every tier that can land on one
+  // is listed. Asserting the accent alone is what left these unmeasured: the
+  // option label, the explanation body and its English line all sit on the tint.
+  ["text", "green-dim", AA, "the label of the correct option, and its explanation header"],
+  ["text", "red-dim", AA, "the label of the option you picked wrongly"],
+  ["sub-text", "green-dim", AA, "the explanation body under a correct answer"],
+  ["sub-text", "red-dim", AA, "the explanation body under a wrong answer"],
+  ["muted", "green-dim", AA, "the italic English line of a correct explanation"],
+  ["muted", "red-dim", AA, "the same line under a wrong one"],
+
+  // An option is a well inside the card and its letter chip is a well inside the
+  // option, so the two bottom rungs carry text of their own.
+  ["text", "surface2", AA, "an answer option's label"],
+  ["text", "surface3", AA, "the same label with the option hovered"],
+  ["muted", "surface3", AA, "the letter chip on an option, and a dimmed option after answering"],
+
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
   ["on-dark", "ink-tile", AA, "the brand mark in the header"],
 
@@ -162,7 +178,8 @@ const HAIRLINE = 1.1;
 
 const FILLS = [
   ["surface", "canvas", NEST, "a tile, held off the page by this step and its hairline"],
-  ["surface2", "surface", NEST, "a stat well or a dimmed option, inset in a tile"],
+  ["surface2", "surface", NEST, "an answer option or a stat well, inset in a tile"],
+  ["surface3", "surface2", NEST, "an option's letter chip, and the option under the pointer"],
   ["hover", "surface", STATE, "a tile or option under the pointer"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
