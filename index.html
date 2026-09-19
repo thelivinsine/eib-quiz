@@ -949,7 +949,7 @@
         .stat { display: flex; align-items: baseline; gap: 8px; padding: 0 var(--spacing-md); }
         .stat:first-child { padding-left: 0; }
         .stat + .stat { border-left: 1px solid var(--border); }
-        .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.15rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+        .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.3rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
         .stat-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
 
         .quiz-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--spacing-md); align-items: start; }
@@ -1269,8 +1269,10 @@
             .sidebar-chevron.open { transform: rotate(180deg); }
             .sidebar-body { display: none; }
             /* flex, not block: the grid inside it is the scroller now. vh first, as
-               everywhere else, so a browser without svh keeps a cap. */
-            .sidebar-body.expanded { display: flex; max-height: 42vh; max-height: 42svh; }
+               everywhere else, so a browser without svh keeps a cap. 26% here plus the
+               header and the panel's own padding puts the WHOLE panel just under 35%
+               of the screen, which is the budget — the question keeps the rest. */
+            .sidebar-body.expanded { display: flex; max-height: 26vh; max-height: 26svh; }
         }
 
         @media (max-width: 620px) {
@@ -1348,8 +1350,15 @@
 
             .topic-grid { grid-template-columns: 1fr; }
             .sub-card { padding: var(--spacing-md); }
-            .header-controls { gap: 6px; }
-            .seg-btn { padding: 0 9px; font-size: 0.7rem; }
+            .header-content { padding: 6px var(--spacing-md); }
+            .header-controls { gap: 5px; }
+            .seg { padding: 1px; }
+            .header-controls .seg-btn { min-height: 26px; padding: 0 8px; font-size: 0.64rem; }
+            .session-back { min-height: 32px; padding: 0 11px 0 8px; font-size: 0.78rem; gap: 6px; }
+            .session-back-icon svg { width: 15px; height: 15px; }
+            .brand { min-height: 32px; gap: 8px; }
+            .brand-mark { width: 28px; height: 28px; font-size: 0.82rem; }
+            .brand-name { font-size: 0.88rem; }
             .question-card { padding: var(--spacing-md); }
             .question-text { font-size: 1.05rem; }
             body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
@@ -1365,11 +1374,12 @@
             .timer-label { margin-right: 8px; }
             .timer-display { font-size: 1.35rem; }
             .pacing-info { margin-left: 8px; }
-            .stats-bar { column-gap: 12px; row-gap: 4px; }
+            .stats-bar { column-gap: 9px; row-gap: 3px; }
             .stat { padding: 0; gap: 6px; }
             .stat + .stat { border-left: none; }
-            .stat-value { font-size: 1rem; }
-            .stat .stat-label { font-size: 0.56rem; letter-spacing: 0.03em; }
+            .stat-value { font-size: 1.15rem; }
+            .stat { gap: 5px; }
+            .stat .stat-label { font-size: 0.58rem; letter-spacing: 0.02em; }
             .exam-subscores { grid-template-columns: 1fr; }
             .score-display { padding: var(--spacing-lg) var(--spacing-md); }
             .score-ring-wrap { width: 150px; height: 150px; }
