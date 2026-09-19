@@ -177,6 +177,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   only when the order actually has to change and otherwise just repaints. Both are persisted in
   the session and both reset on every entry into a round. Grouping is no longer inferred from
   the round's length — it happens when the reader asks for it.
+- **A shuffled round wears its ORIGINAL numbers** (2026-09-20). `roundNumber(i)` is the
+  question's place in the round as BUILT (its index in `state.baseOrder`), so the cells — which
+  are always in the round's CURRENT order — read 48, 263, 123 once shuffled, and a shuffle is
+  visible instead of invisible. `#questionNum` reads the same helper, so the card and the cell
+  you clicked always agree. Unshuffled it is just `i + 1`.
+  - **`showCurrentCell()` runs in both branches.** The scroll-into-view lived only in the
+    grouped branch, so in a 300-cell flat list — and in shuffle, where the numbers give you no
+    way to guess where you are — the current cell was routinely off screen.
+  - **The view switcher does not scroll with the list.** `.sidebar-body` is a flex column,
+    `#navActions` is fixed at its top and **`#questionNavGrid` is the scroller** (the rule is
+    written against the id, because the renderer swaps the element's class between
+    `.question-nav-grid` and `.question-nav-groups`). The mobile `.expanded` panel is
+    `display: flex` for the same reason.
+  - **The collapse control is a drawn chevron** (`ICONS.chevron` in a 30px round hit target,
+    filled at boot beside `.session-back-icon`), not a `▼` dingbat — the glyph rendered at a
+    different weight and baseline in every font stack. CSS rotates it on `.open`.
 - **The navigator groups a round by category when asked.** `renderQuestionNav()` builds
   `<details class="qnav-group">` per `q.category` (state questions group under the state name).
   The group holding the current question is always open; a group the reader opened by hand stays
@@ -186,9 +202,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Topics is offered only when there is more than one.** A round that is all one category
     drops the button and renders the flat grid — one `<details>` over the whole list is a lid,
     not a grouping.
-  - `.question-nav-grid` is `repeat(auto-fill, minmax(44px, 1fr))`. Measured: 4 columns of
-    47px in the 256px sidebar (its own scrollbar takes ~17px of the content box) and 14 across
-    in the full-width strip below 940px. Cells are finger-sized in both.
+  - `.question-nav-grid` is `repeat(auto-fill, minmax(40px, 1fr))` in a 248px sidebar with
+    12px padding — 5 columns, and wide enough for the three-digit number a shuffled round
+    shows. 40px clears the 24px WCAG 2.5.8 target; below 940px the strip is full-width and the
+    cells are wider still.
 - **`NAV_COLLAPSE_AT` is the one number for the navigator's collapse.** The stylesheet's 940px
   breakpoint and the JS guards must agree: they read 720 against a 940 breakpoint once, and
   between those widths the CSS hid the panel while the toggle refused to open it.
@@ -275,16 +292,33 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   move as the home overview band. Four boxed cards cost a whole row of height the question card
   needed. The answered count came from the navigator's header (`.sidebar-count` /
   `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
-  - **The keyboard hint sits beside the readouts, not inside the card.**
-    `#keyboardHintContainer` is the second child of `.quiz-topbar`; as a pill in the card it
-    pushed the options down and then moved them back up when it was dismissed. It is hidden
-    under `@media (hover: none)` **and** below 940px — there is no keyboard to hint at on a
-    phone or a tablet, and in a narrow window it wraps the topbar onto a second row.
+  - **The keyboard hint sits UNDER the card**, the last child of `.quiz-main`; as a pill in
+    the card it pushed the options down and then moved them back up when it was dismissed. It
+    is hidden under `@media (hover: none)` **and** below 940px — there is no keyboard to hint
+    at on a phone or a tablet.
+  - **There is no "Pick an answer" line.** Four buttons under a question are self-evident, and
+    the string only existed to fill the gap the pinned footer left. `quiz.pick` and `#answerHint`
+    are gone.
+  - **The question is NOT a box** (2026-09-20). `.question-card` left the tile list: no fill,
+    no hairline, no padding, so the question's left edge is the column's left edge and the
+    **options are the only boxes**. A card around a card around four cards is the
+    containers-in-containers look, and the outer one carried no information.
+  - **The card is content-sized, not stretched.** `body.in-session .question-card` is
+    `flex: 0 1 auto` — it takes the height it needs, so a four-option question sits at the top
+    of the column instead of being dragged down the screen with its buttons pinned to the
+    bottom. It can still SHRINK, which is what keeps `.question-body`'s scroller working on a
+    long question; a four-image question still fills the column and scrolls.
+  - **The readouts sit over the question column and centre on it.** `.quiz-topbar` is the first
+    child of `.quiz-main`, not of `#quizScreen`: they report on the question you are reading.
+    The progress bar stays at screen level, above everything, spanning the card and the
+    navigator.
   - **The card is compact so the scrollbar is the exception, not the default.**
-    `.question-card` is `padding: 14px` (the documented 16px-card / 10px-option concentric
-    pair), the meta row and `.quiz-nav` take `--spacing-sm`, and `.options` takes `--spacing-md`.
-    At 994x734 a four-option text question fits with no scroller at all; a four-IMAGE question
-    or an open explanation still scrolls `.question-body`, which is what it is for.
+    The meta row and `.quiz-nav` take `--spacing-sm`, and `.options` 12px. The question
+    is `clamp(1.02rem, 1.5vw, 1.18rem)`, an option is 0.9rem in a 42px row (48px under
+    `@media (pointer: coarse)` — a thumb gets the height back, a mouse does not need it) with a
+    26px letter chip, and the explanation is 0.86rem. At 994x734 a four-option text question
+    fits with no scroller at all; a four-IMAGE question or an open explanation still scrolls
+    `.question-body`, which is what it is for.
 - **The sizing scale was tightened for a page of sections** (2026-09-20). `--spacing-lg`
   24 -> **20**, `--spacing-xl` 32 -> **28**, `--spacing-2xl` 48 -> **40**; `.home-section`
   56px -> 40px. The steps were set when the home screen was a wall of bento tiles. `--spacing-xs`
