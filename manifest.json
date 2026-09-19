@@ -1,18 +1,37 @@
 {
-  "name": "Einbürgerungstest Berlin Quiz",
+  "name": "Einbürgerungstest Quiz — alle Bundesländer",
   "short_name": "EIB Quiz",
-  "description": "Kostenlos für den Einbürgerungstest Berlin üben: 310 amtliche Fragen, Prüfungssimulation, Themen-Training und Smart Review.",
+  "description": "Kostenlos für den Einbürgerungstest üben: alle 300 amtlichen Fragen plus die 10 Landesfragen deiner Bundesland-Wahl (460 gesamt), Prüfungssimulation, Themen-Training und Smart Review.",
   "lang": "de",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#050505",
-  "theme_color": "#050505",
+  "background_color": "#F2F3F5",
+  "theme_color": "#F2F3F5",
   "icons": [
-    { "src": "img/icons/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
-    { "src": "img/icons/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
-    { "src": "img/icons/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
-    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+    {
+      "src": "img/icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    },
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
   ]
 }

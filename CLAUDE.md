@@ -20,7 +20,7 @@
 
 ## App Shape
 
-Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
+Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 
 - No framework or build step.
 - Visual styling: a **Bento** design system (redesigned 2026-07-16, adapted from a superdesign.dev
