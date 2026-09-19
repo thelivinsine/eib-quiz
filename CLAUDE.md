@@ -17,6 +17,16 @@
   network-first for HTML + `questions.json` (so updates always win online) and cleans up all
   old caches — including the May-28 `eib-quiz*` caches — on activate, which subsumes the old
   kill switch. Bump `CACHE` in `sw.js` to invalidate cached static assets.
+- **Network-first only works with `cache: 'reload'`, and both fetch paths need it**
+  (fixed 2026-09-19). A plain `fetch(req)` consults the **browser's HTTP cache** first;
+  GitHub Pages serves `index.html` with `max-age=600`, so the worker's "network" fetch was
+  answered out of that cache without touching the network — and then stored the stale copy
+  as the offline fallback. Caught on the live site right after a deploy: the CDN had the new
+  build, `fetch(url, {cache:'reload'})` got it, and the same URL through the worker returned
+  the old one. A reload did not help, because the reload hit the same HTTP cache. `addAll()`
+  in `install` has the identical default, so a fresh install could seed itself from the very
+  copies it exists to replace. **If a deploy looks like it did not ship, check this before
+  suspecting Pages.**
 
 ## App Shape
 
