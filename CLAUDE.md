@@ -72,10 +72,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
   quieter **History & reference** (`#historySection` + `#glossarySection`).
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
-  The test parses the two token blocks; a hex in a rule is invisible to it otherwise.
-- **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
+    The test parses the two token blocks; a hex in a rule is invisible to it otherwise.
+  - **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
     the other three modes are equal-weight peers. There is exactly one primary action per
     section — do not add a second call to start the exam.
+  - **The mode cards carry no per-card accent.** They had one hue each (teal/gold/green/blue)
+    with a matching tinted badge and a matching coloured "Start" link, which is the rainbow
+    `theme-dark.md` §2 warns about: chroma belongs to content and at most one accent. Icons and
+    metadata are grey; the card is the button, so the peers repeat no "Start"; the only colour
+    among them is `.mode-flag`, the apricot chip shown when Smart Review actually has work due.
+  - **The state picker's pill hugs the selected state.** A native `<select>` is as wide as its
+    longest option, so binding the pill to it sized every state to "Mecklenburg-Vorpommern" and
+    left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`
+    span and the `<select>` is a transparent overlay across the pill; `onStateChange` updates the
+    span rather than re-rendering the control, which would drop focus mid-interaction.
   - The counter for questions due is the one stat allowed to draw attention
     (`.dash-stat--due`, apricot). The others are neutral.
   - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
@@ -86,6 +96,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     and state modes it governs — not in the overview card, which only reports.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
+- **The question navigator is bounded by the viewport, never by its contents.** 300 cells in five
+  columns is a 2700px column: the sidebar grew to match, `position: sticky` stopped meaning
+  anything, and the numbers painted down the page outside the card. `.quiz-sidebar` caps at
+  `calc(100svh - var(--header-h) - 24px)` and `.sidebar-body` scrolls inside it. Nothing sets the
+  sidebar's height from JS.
 - `showScreen()` resets the scroll to the top. It is the one door every screen change goes
   through; no caller scrolls on its own.
 - **UI language: English by default, German optional** (added 2026-09-19). The switch is the
