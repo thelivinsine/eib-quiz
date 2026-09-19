@@ -372,7 +372,7 @@
                keeps a cap, rather than dropping both and growing. */
             height: calc(100vh - var(--header-h));
             height: calc(100svh - var(--header-h));
-            padding: var(--spacing-md) var(--spacing-lg);
+            padding: var(--spacing-lg);
             padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
             overflow: hidden;
             display: flex;
@@ -917,12 +917,13 @@
            the row maps to the direction each button moves you. Neither is ever
            allowed to change the row's height: a row that reflows as you answer
            cannot be pinned under your thumb. */
+        .quiz-nav .btn-primary, .quiz-nav .btn-secondary {
+            min-height: 38px; padding: 0 18px; font-size: 0.84rem;
+        }
         .quiz-nav {
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--spacing-sm);
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
+            margin-top: var(--spacing-md);
             flex-shrink: 0;
         }
         #nextBtn:disabled { visibility: hidden; }
@@ -940,15 +941,17 @@
         .quiz-topbar {
             display: flex; align-items: center; justify-content: center;
             gap: var(--spacing-md); flex-wrap: wrap;
-            margin-bottom: var(--spacing-lg); flex-shrink: 0;
+            margin-bottom: var(--spacing-xl); flex-shrink: 0;
         }
-        .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; }
+        .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 22px; row-gap: 4px; }
         /* Under the question, out of the reading path: it is a tip about the screen,
            not a part of the question. */
         #keyboardHintContainer { flex-shrink: 0; display: flex; justify-content: center; margin-top: var(--spacing-md); }
-        .stat { display: flex; align-items: baseline; gap: 8px; padding: 0 var(--spacing-md); }
-        .stat:first-child { padding-left: 0; }
-        .stat + .stat { border-left: 1px solid var(--border); }
+        /* No ticks between the readouts: four numbers separated by three hairlines
+           is six things to look at. Whitespace does the separating, the labels drop
+           to the quietest tier, and the numbers carry the row. */
+        .stat { display: flex; align-items: baseline; gap: 7px; padding: 0; }
+        .stat .stat-label { color: var(--faint); font-size: 0.63rem; letter-spacing: 0.06em; }
         .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.3rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
         .stat-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
 
@@ -968,7 +971,7 @@
         #timer.danger .timer-display { color: var(--red-text); }
         .pacing-info { font-size: 0.74rem; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
 
-        .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 10px; flex-shrink: 0; }
+        .quiz-progress { height: 3px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 14px; flex-shrink: 0; }
         .quiz-progress > span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent-grad); transition: width 0.45s var(--ease-spring); }
 
         /* NOT a tile. The question sits on the page and the options are the boxes
@@ -979,18 +982,22 @@
         .q-enter { animation: qEnter 0.4s var(--ease-spring) both; }
         @keyframes qEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: 14px; flex-shrink: 0; }
+        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); flex-shrink: 0; }
         .question-meta > div:first-child { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .question-num { color: var(--accent-text); flex-shrink: 0; }
+        /* Plain text after a dot, not a pill. The category is context you glance
+           at; a bordered chip next to the bordered buttons made the row above the
+           question busier than the question. */
         .question-category {
-            font-size: 0.68rem; font-weight: 500; color: var(--muted);
-            padding: 3px 9px; border-radius: var(--radius-pill);
-            background: var(--surface2); border: 1px solid var(--border-soft);
+            font-size: 0.72rem; font-weight: 500; color: var(--faint);
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
+        .question-category::before { content: '·'; margin-right: 8px; color: var(--faint); }
         .question-meta-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        /* Quiet until you reach for them: they are tools for the question, not
+           part of it. The border and fill arrive on hover. */
         .speak-btn, .bilingual-toggle {
-            border: 1px solid var(--border); background: var(--surface2); color: var(--sub-text);
+            border: 1px solid transparent; background: none; color: var(--muted);
             font-size: 0.72rem; font-weight: 600;
             min-height: 34px; padding: 0 10px; border-radius: var(--radius-pill);
             display: inline-flex; align-items: center; justify-content: center;
@@ -1007,7 +1014,7 @@
         }
         .speak-btn svg, .bilingual-toggle svg { width: 16px; height: 16px; }
         .bilingual-toggle { gap: 6px; }
-        .speak-btn:hover, .bilingual-toggle:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
+        .speak-btn:hover, .bilingual-toggle:hover { border-color: var(--border); background: var(--surface2); color: var(--text); }
         .bilingual-toggle.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
 
         .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
@@ -1017,7 +1024,7 @@
         .question-image { width: 100%; max-width: 420px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
-        .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-md); }
+        .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-lg); }
         .option-btn {
             display: flex; align-items: center; gap: 10px;
             width: 100%; text-align: left;
@@ -1260,6 +1267,13 @@
             body.in-session .quiz-sidebar { z-index: 30; }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
+            /* The card stretches again here, which parks .quiz-nav at the bottom of
+               the column — the two buttons then sit in the same place on every
+               question, directly above the overview strip, where a thumb can learn
+               them. The question itself stays top-aligned inside .question-body.
+               (There is no rule above them: pinned, it would float in open space —
+               and it separated nothing on a wide screen either.) */
+            body.in-session .question-card { flex: 1; }
             .quiz-sidebar { width: auto; position: static; max-height: none; padding: 6px var(--spacing-md); }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
             /* Below this the topbar wraps and the hint costs the card a whole row,
@@ -2811,6 +2825,9 @@
             const answered = state.correct + state.incorrect;
             const score = answered > 0 ? Math.round((state.correct / answered) * 100) : 0;
 
+            // A zero is not news: green and red arrive with the first right or wrong
+            // answer, so an untouched round is one neutral row rather than a traffic
+            // light reporting nothing.
             // Answered counts the questions you have a pick for, which is what the
             // navigator's header used to state; correct+incorrect is the accuracy
             // pair above and deliberately a different number.
@@ -2819,11 +2836,11 @@
 
             document.getElementById('statsBar').innerHTML = `
                 <div class="stat">
-                    <span class="stat-value" style="color: var(--green)">${state.correct}</span>
+                    <span class="stat-value"${state.correct ? ' style="color: var(--green)"' : ''}>${state.correct}</span>
                     <span class="stat-label">${t('quiz.stat.correct')}</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value" style="color: var(--red-text)">${state.incorrect}</span>
+                    <span class="stat-value"${state.incorrect ? ' style="color: var(--red-text)"' : ''}>${state.incorrect}</span>
                     <span class="stat-label">${t('quiz.stat.wrong')}</span>
                 </div>
                 <div class="stat">
