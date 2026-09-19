@@ -2696,8 +2696,13 @@
         }
 
         function updateStats() {
-            const total = state.currentQuestions.length;
-            const score = total > 0 ? Math.round((state.correct / total) * 100) : 0;
+            // Accuracy so far, not progress towards the round. The denominator was
+            // the whole round, so one right answer out of 300 read as 0% and the
+            // number stayed near zero for most of a long set. Numerator and
+            // denominator come from the same pair of counters, so they cannot drift
+            // apart the way a separate answered-count could.
+            const answered = state.correct + state.incorrect;
+            const score = answered > 0 ? Math.round((state.correct / answered) * 100) : 0;
 
             document.getElementById('statsBar').innerHTML = `
                 <div class="stat-card">
