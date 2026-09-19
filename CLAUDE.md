@@ -213,6 +213,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (`:has(.sidebar-body.expanded)` → `position: absolute; inset: 0`). At 45vh above a locked
     card it left about 130px for the question. A browser without `:has` gets the old
     push-down behaviour, which is a degradation rather than a break.
+  - **Below `max-height: 640px` the lock is released, deliberately.** The chrome above the
+    card is fixed-height, so on a short viewport the card collapsed below its own pinned
+    parts: at 740x380 — any phone in landscape — `.question-body` measured 0px and
+    `.quiz-nav` sat at 485px, clipped away by `main`'s `overflow: hidden` with no way to
+    scroll to it. Readable content wins over the no-scroll rule, and only where the rule
+    cannot be kept.
+  - **Both scrollers keep a gutter**: `padding-right: var(--spacing-sm)` with a matching
+    negative `margin-right`, so the bar sits in the container's own padding instead of
+    against the last word of the question or the last nav cell. `padding-right` alone just
+    narrows the content and leaves the bar where it was.
   - No caller scrolls the page. The four `window.scrollTo` calls that used to paper over the
     page scroll are gone; `displayQuestion()` resets `#questionBody.scrollTop` instead, and
     `#timer` / `.quiz-sidebar` are no longer `position: sticky` — there is nothing to stick to.
@@ -221,6 +231,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   branch — from the quiz it confirms first, from the results screen it goes straight home.
   Both buttons are driven by **`disabled`, never `display`**, so the pinned row cannot change
   height as you answer, and the Enter shortcut reads the same property the button does.
+  `#sessionBack`'s accessible name is `nav.backAria` ("Back to the start page"), **not** the
+  `nav.back` on its face: `#backBtn` is also called "Back" and is also on screen, and one of
+  the two abandons the round. The aria label still contains the visible word, so WCAG 2.5.3
+  holds. Leaving a session cancels speech on **both** branches — the results-screen path
+  silently did not, while the Home button beside it did.
 - **The navigator states progress once.** It used to carry a second copy of `.quiz-progress`,
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
   number a fourth time. `updateProgress()` writes to one element, `#questionNum` carries its
