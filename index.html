@@ -357,6 +357,48 @@
         }
         .screen { display: none; animation: fadeUp 0.32s var(--ease) both; }
         .screen.active { display: block; }
+
+        /* ------------------------------------------------------------
+           IN-SESSION — everything past the home screen is an app view.
+           The PAGE never scrolls; exactly one region inside it does.
+           The min-height: 0 chain below is load-bearing: a flex child
+           defaults to min-height: auto, and one missing link lets the
+           column grow past the viewport again.
+           ------------------------------------------------------------ */
+        body.in-session { overflow: hidden; }
+        body.in-session main {
+            /* vh first: a browser that does not know svh drops that line and
+               keeps a cap, rather than dropping both and growing. */
+            height: calc(100vh - var(--header-h));
+            height: calc(100svh - var(--header-h));
+            padding: var(--spacing-md) var(--spacing-lg);
+            padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
+            overflow: hidden;
+            display: flex;
+        }
+        body.in-session .screen.active {
+            flex: 1; min-width: 0; min-height: 0;
+            display: flex; flex-direction: column;
+        }
+        /* The results screen has nothing that needs pinning, so it is one
+           scroller and no layout surgery. */
+        body.in-session #endScreen.active { overflow: hidden auto; overscroll-behavior: contain; }
+        /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
+           tallest item, so the card pushed the nav bar off the bottom of a locked
+           screen while the grid itself sat comfortably inside it. */
+        body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+        body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; }
+        body.in-session .question-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+        /* The only element on the quiz screen with a scrollbar. `contain` stops a
+           flick past the last option rubber-banding the locked page behind it. */
+        /* hidden on x: the pick animation scales the chosen option by 1.5%, which
+           flashed a horizontal scrollbar on every answer. Nothing in here is ever
+           legitimately wider than the card. */
+        .question-body { flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain; }
+        /* Nothing scrolls past the timer or the navigator any more, so neither
+           has anything to stick to. */
+        body.in-session #timer { position: static; }
+        body.in-session .quiz-sidebar { position: static; max-height: none; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
@@ -1122,6 +1164,20 @@
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
             .quiz-layout { grid-template-columns: minmax(0, 1fr); }
+            /* The collapsed navigator sits above the card and takes what it
+               needs; the card takes everything left, and no more. */
+            body.in-session .quiz-layout { position: relative; grid-template-rows: auto minmax(0, 1fr); }
+            /* Expanded, it COVERS the card rather than pushing it down. In a locked
+               viewport a 45vh panel above the card left about 130px for the question
+               — the meta row, a rule, and Back. :has is the whole switch; a browser
+               without it just gets today's push-down behaviour. */
+            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) {
+                position: absolute; inset: 0; z-index: 30;
+                background: var(--surface); max-height: none;
+            }
+            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) .sidebar-body {
+                max-height: none; flex: 1; min-height: 0;
+            }
             .quiz-sidebar { width: auto; position: static; order: -1; max-height: none; }
             .sidebar-header { cursor: pointer; min-height: 44px; display: flex; flex-direction: column; justify-content: center; }
             .sidebar-chevron { display: block; }
@@ -1349,6 +1405,7 @@
                             </div>
                         </div>
 
+                        <div class="question-body" id="questionBody">
                         <div class="question-text" id="questionText" tabindex="-1" lang="de"></div>
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
@@ -1364,6 +1421,7 @@
                             <div class="explanation-header" id="explanationHeader"></div>
                             <div class="explanation-text" id="explanationText" lang="de"></div>
                             <div class="explanation-english" id="explanationEnglish" lang="en"></div>
+                        </div>
                         </div>
 
                         <div class="quiz-nav">
@@ -2404,7 +2462,6 @@
         function jumpToQuestion(qIdx) {
             state.currentQuestionIndex = qIdx;
             displayQuestion();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function startMode(mode) {
@@ -2470,6 +2527,10 @@
         function displayQuestion() {
             const q = state.currentQuestions[state.currentQuestionIndex];
             const progress = ((state.currentQuestionIndex + 1) / state.currentQuestions.length) * 100;
+
+            // The card body is the scroller now, so a new question starts at its top.
+            const qBody = document.getElementById('questionBody');
+            if (qBody) qBody.scrollTop = 0;
 
             // Re-trigger the per-question entrance animation.
             const card = document.querySelector('.question-card');
@@ -2952,7 +3013,6 @@
             if (state.currentQuestionIndex > 0) {
                 state.currentQuestionIndex--;
                 displayQuestion();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
 
