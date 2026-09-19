@@ -1545,12 +1545,6 @@
             el.setAttribute('aria-pressed', String(on));
         }
 
-        /** Mark one segment of a segmented switch as chosen — visually and for AT. */
-        function setSegment(el, on) {
-            el.classList.toggle('active', on);
-            el.setAttribute('aria-pressed', String(on));
-        }
-
         /** Look up a chrome string in the active language, filling {placeholders}. */
         function t(key, vars) {
             const entry = I18N[key];
