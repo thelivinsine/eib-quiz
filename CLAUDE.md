@@ -333,6 +333,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     half-empty column, and `body.in-session .quiz-main { max-height: 100% }` is what makes the
     card SHRINK instead of spilling out of a locked screen — that is the cap
     `.question-body`'s scroller hangs off.
+  - **The footer row has a resting position**: `body.in-session .question-body` carries a
+    `50svh` floor (a `vh` line first), so Previous and Next land in the same place on every
+    ordinary question — measured 622/623 of an 800px viewport, 78% down, with 177px beneath
+    them — and a longer question pushes them further down from there until the column hits the
+    viewport and the body starts scrolling. Below 940px the floor is dropped and the card fills
+    its area instead, which pins the buttons 10px above the overview strip; that needs
+    `align-self: stretch` on `.quiz-main`, because the grid places items at the start and a
+    content-sized column gives `flex: 1` nothing to grow into.
   - **The question block is TOP-aligned under the readouts, not centred.** Centring it opened a
     gap between the readouts and the question they report on, and pushed the question away from
     the panel's top edge; the readouts now sit `--spacing-md` above the question (measured

@@ -422,6 +422,14 @@
             display: flex; flex-direction: column;
         }
         .question-body > * { flex-shrink: 0; }
+        /* The footer row holds a position in the lower part of the screen. The body is
+           never shorter than this, so Previous and Next land in the same place on every
+           ordinary question, with room to spare beneath them; a longer question pushes
+           them down from there, until the column hits the viewport and the body starts
+           scrolling instead. vh first, as everywhere else. Below the navigator's
+           breakpoint the card fills its area anyway and the buttons are already pinned,
+           so the floor is dropped — on a short phone it would force an overflow. */
+        body.in-session .question-body { min-height: 50vh; min-height: 50svh; }
 
         /* One thin bar for every scroller the app owns. The platform default is a
            15px slab against the last word of the question; this is 6px of hairline
@@ -1377,6 +1385,15 @@
             /* The fixed pane height is a DESKTOP rule: down here the navigator is a
                collapsed strip, and a 450px strip is 450px of nothing. */
             body.in-session .quiz-sidebar { height: auto; max-height: none; align-self: auto; }
+            /* No floor here: the card fills its area instead, which parks the buttons
+               directly above the overview strip — one position on every question, and
+               the place a thumb is already reaching for. */
+            body.in-session .question-body { min-height: 0; }
+            /* The column has to take the whole row before the card can fill it: the
+               grid places items at the start, so on its own .quiz-main is as tall as
+               its content and flex: 1 has nothing to grow into. */
+            body.in-session .quiz-main { align-self: stretch; }
+            body.in-session .question-card { flex: 1; }
             .quiz-sidebar { width: auto; position: static; padding: 6px var(--spacing-md); margin-top: 10px; }
             .sidebar-header { cursor: pointer; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
