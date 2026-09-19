@@ -210,6 +210,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Topics is offered only when there is more than one.** A round that is all one category
     drops the button and renders the flat grid — one `<details>` over the whole list is a lid,
     not a grouping.
+  - Below 940px the cells drop to `minmax(34px, 1fr)` with a 4px gap and a 30px `min-height`
+    (measured 35x35, 8 across at 375px): full-width, the 40px cells were slabs, and this keeps
+    more of the round in view while clearing the 24px WCAG 2.5.8 target.
   - `.question-nav-grid` is `repeat(auto-fill, minmax(40px, 1fr))` in a 248px sidebar with
     12px padding — 5 columns, and wide enough for the three-digit number a shuffled round
     shows. 40px clears the 24px WCAG 2.5.8 target; below 940px the strip is full-width and the
@@ -293,6 +296,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
   number a fourth time. `updateProgress()` writes to one element and `#questionNum` carries its
   own total (`quiz.questionOf`).
+- **The progress bar is a track with quarters, not a hairline** (2026-09-20). 8px, pill,
+  `--surface3`, with the fill's leading edge lit by a 12px gradient tip so it is findable on a
+  300-question round, and `::after` drawing quarter marks in `--canvas` **over** the fill — so
+  a three-quarters-full bar reads as three quarters rather than as "mostly".
 - **The quiz chrome above the card is a progress bar, then one line of readouts** (2026-09-19).
   `.quiz-progress` is the first child of `#quizScreen`, above `#statsBar`, and spans the card
   and the navigator. The four readouts — correct, wrong, score, **answered `n / total`** — are
@@ -302,10 +309,6 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the numbers carry the row, and **a zero gets no colour** — green and red arrive with the first
   right or wrong answer rather than lighting a traffic light that is reporting nothing. The answered count came from the navigator's header (`.sidebar-count` /
   `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
-  - **The keyboard hint sits UNDER the card**, the last child of `.quiz-main`; as a pill in
-    the card it pushed the options down and then moved them back up when it was dismissed. It
-    is hidden under `@media (hover: none)` **and** below 940px — there is no keyboard to hint
-    at on a phone or a tablet.
   - **There is no "Pick an answer" line.** Four buttons under a question are self-evident, and
     the string only existed to fill the gap the pinned footer left. `quiz.pick` and `#answerHint`
     are gone.
@@ -313,17 +316,24 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     no hairline, no padding, so the question's left edge is the column's left edge and the
     **options are the only boxes**. A card around a card around four cards is the
     containers-in-containers look, and the outer one carried no information.
-  - **The card is content-sized above 940px, stretched below it.** `flex: 0 1 auto` on a wide
-    screen: the card takes the height it needs, so a four-option question sits at the top of
-    the column rather than being dragged down with its buttons at the bottom. It can still
-    SHRINK, which is what keeps `.question-body`'s scroller working on a long question. Below
-    940px it goes back to `flex: 1` **on purpose**: that parks `.quiz-nav` at the bottom of the
-    column, so Previous and Next hold ONE position on every question, directly above the
-    overview strip, where a thumb can learn them.
-  - **There is no rule above Previous and Next.** Pinned on a phone it floated in open space,
-    and on a wide screen it separated the buttons from nothing. The buttons themselves are
-    38px / 0.84rem — smaller than a page-level action, because you press them a hundred times
-    a round and they should not weigh as much as the question.
+  - **`.quiz-layout` is a 2x2 grid and every child is placed by hand** (2026-09-20). Row 1 is
+    the readout strip over the question column; row 2 is the question and the navigator side by
+    side, both stretched — so **the panel is exactly as tall as the question section**, top and
+    bottom. It used to start above the readouts and run the whole column while the question
+    floated in the middle of it. Auto-placement would drop `.quiz-main` into row 1 beside the
+    readouts, so `.quiz-topbar` / `.quiz-main` / `.quiz-sidebar` all carry an explicit
+    `grid-area`, and the 940px block re-places them as three stacked rows. Row gap is 0 (row 1
+    carries its own margin); the mobile strip takes a 10px `margin-top` instead, or it sits
+    flush against the Previous button.
+  - **The card fills its row** (`flex: 1`), so `.quiz-nav` parks at the bottom of the column:
+    Previous and Next hold ONE position on every question, level with the bottom of the
+    navigator panel and, on a phone, directly above the overview strip where a thumb can learn
+    them. The content inside stays centred, so a short question is not dragged down with it.
+  - **There is no rule above Previous and Next**, and the buttons are 34px / 0.8rem — smaller
+    than a page-level action, because you press them a hundred times a round and they should
+    not weigh as much as the question. **The keyboard hint rides between them**, inside
+    `.quiz-nav`: out of the reading path, on a row that already exists, costing the question no
+    height. It is still hidden below 940px and under `@media (hover: none)`.
   - **The question view's spacing says what matters.** The status band is tight to itself
     (a 3px bar, 14px above the readouts) and a full `--spacing-xl` away from the question;
     inside the card the label row gives the question `--spacing-md`, the question gives the
@@ -450,6 +460,10 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
 - **Mode keys are `allQuestions` / `bundesland` / `exam` / `review` / `topic` / `mistakes`.**
   There is no `berlin` mode — two label maps kept a stale `berlin` key and silently fell
   through. When renaming a mode, grep every lookup map.
+- **Only the exam has a clock, and `startMode()` is what enforces it.** `startTimer()` shows
+  `#timer`; nothing on the practice path hid it again, so a round started straight after an
+  exam ran with the exam's timer counting down above the question. `startMode()` now clears the
+  interval and hides the element for every non-exam mode.
 - **An option image is never `loading="lazy"`.** It IS the answer you are choosing, so it is
   always above the fold and deferring it buys nothing — and the deferred load raced the rest
   of the round's requests and came back `net::ERR_FAILED` often enough to paint "Bild fehlt"

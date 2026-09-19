@@ -295,6 +295,22 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   the question, `--spacing-lg` between the question and its options, `--spacing-lg` page padding
   in session.
 
+## Session developments (2026-09-20, layout + progress bar)
+
+- **The navigator panel is exactly as tall as the question section.** `.quiz-layout` became a
+  2x2 grid with explicit `grid-area`s: row 1 is the readout strip over the question column, row
+  2 is question + navigator, both stretched. Measured identical top and bottom at 1100x800.
+- **The card fills its row everywhere**, so Previous/Next sit level with the panel's bottom
+  edge, and the keyboard hint moved INTO that row between the two buttons (buttons down to
+  34px to fit).
+- **The progress bar became a track**: 8px, quarter marks drawn over the fill, lit leading edge.
+- **Mobile navigator cells** are 34px/4px (measured 35x35, 8 across at 375px), and the strip
+  keeps a 10px clearance under the buttons — the grid's row gap is 0 and Previous was sitting
+  flush against it.
+- **Bug: a practice round after an exam kept the exam's clock.** `startTimer()` shows `#timer`
+  and no practice path hid it; `startMode()` now clears the interval and hides it for every
+  non-exam mode.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
