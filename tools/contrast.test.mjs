@@ -156,6 +156,28 @@ const FILLS = [
   ["ink-tile", "canvas", STATE, "the CTA tile against the page"],
 ];
 
+// Colours written as literals rather than tokens. The block parser above only sees the two
+// token blocks, so anything hardcoded in a rule is invisible to PAIRS — and the featured exam
+// card, the most prominent thing on the home screen, is painted entirely in literals. They are
+// asserted here by value so a future nudge cannot drop one under the floor unnoticed.
+// [foreground, ground, floor, what it is].
+const LITERAL_PAIRS = {
+  light: [
+    ['#ffffff', '#17181C', AA, 'the featured exam card title'],
+    ['#B4B7C0', '#17181C', AA, 'the featured card description'],
+    ['#9397A1', '#17181C', AA, 'the featured card time estimate'],
+    ['#17B5A4', '#17181C', AA, 'the 33 QUESTIONS badge on the featured card'],
+    ['#06201D', '#17B5A4', AA, 'the label on the featured card Start button'],
+  ],
+  dark: [
+    ['#ffffff', '#262A33', AA, 'the featured exam card title'],
+    ['#B4B7C0', '#262A33', AA, 'the featured card description'],
+    ['#9397A1', '#262A33', AA, 'the featured card time estimate'],
+    ['#17B5A4', '#262A33', AA, 'the 33 QUESTIONS badge on the featured card'],
+    ['#06201D', '#17B5A4', AA, 'the label on the featured card Start button'],
+  ],
+};
+
 // The pairs the app knowingly fails, each on an explicit decision. Measured, not deleted.
 // Empty is the right starting state.
 const EXEMPT = [];
@@ -175,6 +197,16 @@ const shortfalls = (theme, list) =>
     .filter(({ ratio, floor }) => ratio < floor)
     .map(({ ratio, line }) => line(ratio.toFixed(2)));
 
+const literalShortfalls = (theme) =>
+  LITERAL_PAIRS[theme]
+    .map(([fg, bg, floor, why]) => ({
+      ratio: contrast(parseColour(fg), parseColour(bg)),
+      floor,
+      line: (r) => `${fg} on ${bg}: ${r} < ${floor} — ${why}`,
+    }))
+    .filter(({ ratio, floor }) => ratio < floor)
+    .map(({ ratio, line }) => line(ratio.toFixed(2)));
+
 for (const theme of ["light", "dark"]) {
   test(`${theme}: every text pair clears its floor`, () => {
     assert.deepEqual(shortfalls(theme, PAIRS), [], "text pairs under their floor");
@@ -182,6 +214,10 @@ for (const theme of ["light", "dark"]) {
 
   test(`${theme}: adjacent fills are far enough apart to be two things`, () => {
     assert.deepEqual(shortfalls(theme, FILLS), [], "fills too close to read as two");
+  });
+
+  test(`${theme}: hardcoded colours clear their floor too`, () => {
+    assert.deepEqual(literalShortfalls(theme), [], 'literal colour pairs under their floor');
   });
 
   test(`${theme}: the knowing AA failures are no worse than they were decided to be`, () => {

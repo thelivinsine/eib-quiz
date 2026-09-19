@@ -71,7 +71,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   one wide `.dash` card holding the accuracy ring, three counters, the resume
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
   quieter **History & reference** (`#historySection` + `#glossarySection`).
-  - **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
+  - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
+  The test parses the two token blocks; a hex in a rule is invisible to it otherwise.
+- **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
     the other three modes are equal-weight peers. There is exactly one primary action per
     section — do not add a second call to start the exam.
   - The counter for questions due is the one stat allowed to draw attention
@@ -195,6 +197,8 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `tools/contrast.test.mjs` - reads the colour tokens out of `index.html` and asserts the WCAG
   floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
   `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
+  LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens (the featured
+  exam card is painted entirely in literals, and the block parser cannot see them).
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
