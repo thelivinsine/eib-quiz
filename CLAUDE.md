@@ -47,8 +47,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold`
     (`#B45309` light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`,
     `--apricot-tint`); `--blue` = info/time; semantic `--green` (correct) / `--red`+`--red-text`
-    (wrong). `--ink-tile` = the CTA tile fill — charcoal in light, and a step **up** the ladder
-    (`#262A33`) in dark, because a charcoal tile on a charcoal canvas reads as a hole.
+    (wrong). `--ink-tile` = the charcoal-fill tile — now only the header brand mark; in dark it
+    is a step **up** the ladder (`#262A33`), because a charcoal tile on a charcoal canvas reads
+    as a hole.
   - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
     (`--font-body`); `--font-mono` is aliased to Inter (kept only so JS refs resolve). Display
     weights top out at 700. Uppercase micro-labels tracked at 0.08em are tile eyebrows (`.eyebrow`
@@ -72,10 +73,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
   quieter **History & reference** (`#historySection` + `#glossarySection`).
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
-    The test parses the two token blocks; a hex in a rule is invisible to it otherwise.
-  - **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
-    the other three modes are equal-weight peers. There is exactly one primary action per
-    section — do not add a second call to start the exam.
+    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. The list
+    is currently EMPTY and should stay that way — paint in tokens.
+  - **The exam is the only featured card.** `.mode-card--featured` is full-width and **teal-
+    tinted** (`--accent-soft` fill, a saturated `--accent` edge, a solid `--accent-fill` icon
+    chip and Start pill); the other three modes are equal-weight peers. There is exactly one
+    primary action per section — do not add a second call to start the exam.
+    - It used to be a charcoal slab painted in five hex literals, which put its body text at
+      `#B4B7C0` on near-black while the peers beside it ran at full ink: the loudest card on the
+      page had the weakest type. It now carries the **same `--text`/`--sub-text`/`--muted` tiers
+      as every other tile** — emphasis comes from hue, width and the solid accents, never from
+      dimming words. Its separation from the page is the hairline, not a step in lightness; in
+      light mode the tint and the paper-grey canvas sit at nearly the same luminance, which is
+      exactly the case light mode hands to edges.
+  - **A peer card states its time in the corner and its clickability with an arrow.**
+    `.mode-time` is the estimate stamped top-right, which leaves `.mode-meta` to the one fact
+    that varies (the count, or the apricot due flag). `.mode-go` is the circled arrow at the
+    bottom-right: the cards are buttons but read as readouts on a touch screen, where there is
+    no hover to reveal it. The peers still repeat no "Start" — that stays the featured card's
+    word alone. Descriptions do not restate a number the card already shows.
   - **The mode cards carry no per-card accent.** They had one hue each (teal/gold/green/blue)
     with a matching tinted badge and a matching coloured "Start" link, which is the rainbow
     `theme-dark.md` §2 warns about: chroma belongs to content and at most one accent. Icons and
@@ -86,8 +102,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`
     span and the `<select>` is a transparent overlay across the pill; `onStateChange` updates the
     span rather than re-rendering the control, which would drop focus mid-interaction.
+  - **The overview card is one band, not four boxes.** The ring and the three counters sit in a
+    single row separated by **hairlines** (`.dash-stats` border-left, `.dash-stat + .dash-stat`);
+    they were four nested rounded wells inside a rounded card, which is the containers-inside-
+    containers look. There is no `OVERVIEW` eyebrow — the section heading above already says it,
+    and the `dash.eyebrow` key is gone. `Reset progress` sits right-aligned on the card's own
+    footer rule (`.dash-foot`), out of the reading path, rather than centred under the numbers
+    where it read as the card's conclusion.
   - The counter for questions due is the one stat allowed to draw attention
-    (`.dash-stat--due`, apricot). The others are neutral.
+    (`.dash-stat--due`): **a coloured numeral only**. It was an apricot-tinted slab, which on
+    charcoal reads as brown mud and buys no more attention than the colour alone. The others are
+    neutral.
   - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
     `renderBundeslandTile()`, `renderStatTile()` and `stateLocalTime()`. Mastery is one of the
     overview card's three counters.
@@ -242,8 +267,9 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `tools/contrast.test.mjs` - reads the colour tokens out of `index.html` and asserts the WCAG
   floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
   `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
-  LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens (the featured
-  exam card is painted entirely in literals, and the block parser cannot see them).
+  LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens, which the block
+  parser cannot see. It is empty — the featured exam card, which used to fill it, is painted in
+  tokens now.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions

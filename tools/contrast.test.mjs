@@ -122,7 +122,8 @@ const PAIRS = [
   ["accent-text", "surface", AA, "Starten links, FRAGE n, the active EN toggle"],
   ["accent-text", "accent-soft", AA, "the current question in the navigator grid"],
   ["teal-deep", "teal-tint", AA, "the Bundesland tile label and the Bestanden pill"],
-  ["gold", "gold-dim", AA, "the 300 FRAGEN badge on a mode card"],
+  ["gold", "gold-dim", AA, "the DUE chip on the Smart Review card"],
+  ["gold", "surface", AA, "the due-for-review counter in the overview card"],
   ["green", "green-dim", AA, "the correct answer and its review row"],
   ["red-text", "red-dim", AA, "the wrong answer, its explanation and review row"],
   ["blue", "blue-dim", AA, "the elapsed-time subscore"],
@@ -130,7 +131,14 @@ const PAIRS = [
   ["red-text", "surface", AA, "the FALSCH counter in the quiz stats bar"],
 
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
-  ["on-dark", "ink-tile", AA, "the CTA tile headline"],
+  ["on-dark", "ink-tile", AA, "the brand mark in the header"],
+
+  // The featured exam card is a teal-tinted tile, so its three text tiers land
+  // on accent-soft rather than on a tile — the same tiers, a different ground.
+  ["text", "accent-soft", AA, "the featured exam card title"],
+  ["sub-text", "accent-soft", AA, "the featured exam card description"],
+  ["muted", "accent-soft", AA, "the featured exam card meta line"],
+  ["text", "accent-line", AA, "the same title, with the card hovered"],
 ];
 
 // Two fills that sit against each other. Three edge treatments, three floors — see
@@ -153,30 +161,20 @@ const FILLS = [
   ["hover", "surface", STATE, "a tile or option under the pointer"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  ["ink-tile", "canvas", STATE, "the CTA tile against the page"],
+  ["ink-tile", "canvas", STATE, "the brand mark against the header"],
+  // The featured card's tint is not a step in lightness against paper-grey, so
+  // the hairline is the whole separation and has to clear the edge floor alone.
+  ["accent", "canvas", HAIRLINE, "the featured exam card's teal edge against the page"],
+  ["accent-line", "accent-soft", STATE, "that card under the pointer"],
 ];
 
 // Colours written as literals rather than tokens. The block parser above only sees the two
-// token blocks, so anything hardcoded in a rule is invisible to PAIRS — and the featured exam
-// card, the most prominent thing on the home screen, is painted entirely in literals. They are
-// asserted here by value so a future nudge cannot drop one under the floor unnoticed.
+// token blocks, so anything hardcoded in a rule is invisible to PAIRS, and has to be asserted
+// here by value instead. The featured exam card used to fill this list; it is painted in
+// tokens now and its pairs live in PAIRS above. Empty is the right state — a literal added to
+// a rule belongs here the same day.
 // [foreground, ground, floor, what it is].
-const LITERAL_PAIRS = {
-  light: [
-    ['#ffffff', '#17181C', AA, 'the featured exam card title'],
-    ['#B4B7C0', '#17181C', AA, 'the featured card description'],
-    ['#9397A1', '#17181C', AA, 'the featured card time estimate'],
-    ['#17B5A4', '#17181C', AA, 'the 33 QUESTIONS badge on the featured card'],
-    ['#06201D', '#17B5A4', AA, 'the label on the featured card Start button'],
-  ],
-  dark: [
-    ['#ffffff', '#262A33', AA, 'the featured exam card title'],
-    ['#B4B7C0', '#262A33', AA, 'the featured card description'],
-    ['#9397A1', '#262A33', AA, 'the featured card time estimate'],
-    ['#17B5A4', '#262A33', AA, 'the 33 QUESTIONS badge on the featured card'],
-    ['#06201D', '#17B5A4', AA, 'the label on the featured card Start button'],
-  ],
-};
+const LITERAL_PAIRS = { light: [], dark: [] };
 
 // The pairs the app knowingly fails, each on an explicit decision. Measured, not deleted.
 // Empty is the right starting state.

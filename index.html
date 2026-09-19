@@ -462,7 +462,6 @@
             border-radius: var(--radius-lg);
             padding: var(--spacing-lg);
         }
-        .dash-head { margin-bottom: var(--spacing-lg); }
 
         .state-picker {
             position: relative;
@@ -510,13 +509,16 @@
             transform: rotate(45deg); pointer-events: none;
         }
 
+        /* The ring and the three counters are ONE band, not four boxes. The
+           card is the only container here; inside it the figures are separated
+           by hairlines, which is the same move the rest of the app makes. */
         .dash-body {
             display: grid;
             grid-template-columns: auto 1fr;
-            align-items: center;
-            gap: var(--spacing-xl);
+            align-items: stretch;
+            gap: var(--spacing-lg);
         }
-        .ready-ring-wrap { position: relative; width: 148px; height: 148px; flex-shrink: 0; }
+        .ready-ring-wrap { position: relative; width: 132px; height: 132px; flex-shrink: 0; }
         .ready-ring { width: 100%; height: 100%; display: block; }
         .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 8; }
         .ready-ring-bar {
@@ -528,19 +530,23 @@
         .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: 1.9rem; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
         .ready-ring-sub { margin-top: 6px; font-size: 0.6rem; }
 
-        .dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); min-width: 0; }
+        .dash-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            min-width: 0;
+            border-left: 1px solid var(--border);
+        }
         .dash-stat {
-            background: var(--surface2);
-            border: 1px solid var(--border-soft);
-            border-radius: var(--radius);
-            padding: 14px var(--spacing-md);
-            display: flex; flex-direction: column; gap: 4px;
+            padding: 0 var(--spacing-md);
+            display: flex; flex-direction: column; gap: 7px;
             min-width: 0;
         }
-        /* Something to do today is the one counter allowed to raise its hand. */
-        .dash-stat--due { background: var(--apricot-tint); border-color: var(--gold-line); }
+        .dash-stat + .dash-stat { border-left: 1px solid var(--border); }
+        /* Something to do today is the one counter allowed to raise its hand,
+           and a coloured numeral is the whole of it — a tinted slab behind it
+           reads as brown mud on charcoal and buys no more attention. */
         .dash-stat--due .ds-num { color: var(--gold); }
-        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: 1.55rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--text); }
+        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: 1.75rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--text); }
         .ds-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
 
         .resume-banner {
@@ -556,15 +562,21 @@
         .resume-text strong { color: var(--text); font-size: 0.95rem; }
         .resume-actions { display: flex; gap: 8px; }
 
+        /* The escape hatch sits on the card's own footer rule, right-aligned and
+           out of the reading path — not centred under the numbers, where it
+           read as the card's conclusion. */
+        .dash-foot {
+            display: flex; justify-content: flex-end;
+            margin-top: var(--spacing-md);
+            border-top: 1px solid var(--border);
+        }
         .progress-reset {
-            display: block; margin: var(--spacing-md) auto 0;
-            background: none; border: none; color: var(--muted);
+            background: none; border: none; color: var(--faint);
             font-size: 0.8rem; font-weight: 500;
             min-height: 44px; padding: 0 16px;
-            text-decoration: underline; text-underline-offset: 3px;
             transition: color 0.2s var(--ease);
         }
-        .progress-reset:hover { color: var(--red-text); }
+        .progress-reset:hover { color: var(--red-text); text-decoration: underline; text-underline-offset: 3px; }
 
         /* ============================================================
            MODE CARDS — one featured, three peers
@@ -592,13 +604,21 @@
         }
         .mode-card:active { background: var(--surface3); }
 
-        /* The exam is what the app is for, so it is the only card in charcoal
-           and the only one that spans the row. */
+        /* The exam is what the app is for, so it is the only card that spans the
+           row and the only one wearing the accent. It used to be a charcoal
+           slab, which meant its text ran at #B4B7C0 on near-black while the
+           peers beside it ran at full ink — the loudest card on the page had
+           the weakest type. Now it is a teal-tinted tile carrying the SAME ink
+           tiers as its peers, so the emphasis comes from hue, width and the
+           solid accents, never from dimming the words.
+           Its separation from the page is the hairline, not a step in
+           lightness: in light mode the tint and the paper-grey canvas sit at
+           almost the same luminance, and light mode hands that job to edges. */
         .mode-card--featured {
             grid-column: 1 / -1;
-            background: var(--ink-tile);
-            border-color: var(--border);
-            color: var(--on-dark);
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--text);
             padding: var(--spacing-lg);
             display: grid;
             grid-template-columns: auto 1fr auto;
@@ -606,22 +626,20 @@
             column-gap: var(--spacing-md);
             align-items: center;
         }
-        html.light .mode-card--featured { color: #fff; }
         @media (hover: hover) {
-            .mode-card--featured:hover { background: #22262E; border-color: var(--border-hover); }
+            .mode-card--featured:hover { background: var(--accent-line); border-color: var(--accent); }
         }
-        html.light .mode-card--featured:hover { background: #24262C; }
-        .mode-card--featured:active { background: #2A2E37; }
-        .mode-card--featured .mode-icon { grid-area: icon; align-self: start; width: 44px; height: 44px; margin-bottom: 0; background: rgba(23,181,164,0.16); color: var(--teal); }
-        .mode-card--featured:hover .mode-icon { background: rgba(23,181,164,0.22); color: var(--teal); }
+        .mode-card--featured:active { background: var(--accent-line); }
+        .mode-card--featured .mode-icon { grid-area: icon; align-self: start; width: 44px; height: 44px; margin-bottom: 0; background: var(--accent-fill); color: var(--on-accent); }
+        .mode-card--featured:hover .mode-icon { background: var(--accent-fill); color: var(--on-accent); }
         .mode-card--featured .mode-icon svg { width: 26px; height: 26px; }
-        .mode-card--featured .mode-title { grid-area: title; font-size: 1.3rem; color: #fff; }
-        .mode-card--featured .mode-description { grid-area: desc; color: #B4B7C0; max-width: 52ch; margin-bottom: 0; }
-        .mode-card--featured .mode-meta { grid-area: meta; margin: 10px 0 0; color: #9397A1; }
+        .mode-card--featured .mode-title { grid-area: title; font-size: 1.3rem; color: var(--text); }
+        .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
+        .mode-card--featured .mode-meta { grid-area: meta; margin: 10px 0 0; color: var(--muted); }
         .mode-card--featured .mode-start-btn {
             grid-area: action;
             justify-self: end;
-            background: var(--teal); color: #06201D;
+            background: var(--accent-fill); color: var(--on-accent);
             border-radius: var(--radius-pill);
             min-height: 44px; padding: 0 22px;
             font-size: 0.92rem;
@@ -1097,8 +1115,10 @@
             .section-head p { font-size: 0.88rem; }
             .dash { padding: var(--spacing-md); }
             /* The ring stops being a column of its own and sits above the counters. */
+            /* Stacked, the hairline that separated ring from stats becomes the
+               rule under the ring. */
             .dash-body { grid-template-columns: 1fr; justify-items: center; gap: var(--spacing-md); }
-            .dash-stats { width: 100%; }
+            .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--spacing-md); }
             .ready-ring-wrap { width: 128px; height: 128px; }
             .ready-ring-pct { font-size: 1.6rem; }
             .dash-head { margin-bottom: var(--spacing-md); }
@@ -1123,8 +1143,7 @@
             .mode-card--featured .mode-start-btn { justify-self: stretch; width: 100%; margin-top: 4px; }
             /* Three numbers stay three columns — stacking them turned the
                overview into a screenful of its own. */
-            .dash-stats { width: 100%; gap: 6px; }
-            .dash-stat { padding: 10px 8px; align-items: center; text-align: center; gap: 2px; }
+            .dash-stat { padding: 0 6px; align-items: center; text-align: center; gap: 5px; }
             .ds-num { font-size: 1.3rem; }
             .ds-of { font-size: 0.72rem; }
             .dash-stat .ds-label { font-size: 0.6rem; letter-spacing: 0.04em; }
@@ -1524,7 +1543,6 @@
             'home.more.lead':      { en: 'Past rounds, and the terms the questions assume you know.', de: 'Frühere Runden und die Begriffe, die die Fragen voraussetzen.' },
 
             // overview card
-            'dash.eyebrow':        { en: 'Overview',                de: 'Übersicht' },
             'dash.accuracy':       { en: 'Accuracy',                de: 'Trefferquote' },
             'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
@@ -2116,9 +2134,6 @@
 
             el.innerHTML = `
                 <div class="dash">
-                    <div class="dash-head">
-                        <span class="eyebrow">${t('dash.eyebrow')}</span>
-                    </div>
                     <div class="dash-body">
                         <div class="ready-ring-wrap" title="${ring}% ${t('dash.accuracy')}">
                             <svg class="ready-ring" viewBox="0 0 120 120" aria-hidden="true">
@@ -2132,7 +2147,7 @@
                         </div>
                         <div class="dash-stats">
                             <div class="dash-stat">
-                                <span class="ds-num">${answeredInPool}<span class="ds-of">/${totalPool}</span></span>
+                                <span class="ds-num">${answeredInPool}<span class="ds-of"> / ${totalPool}</span></span>
                                 <span class="ds-label">${t('dash.answered')}</span>
                             </div>
                             <div class="dash-stat">
@@ -2146,7 +2161,7 @@
                         </div>
                     </div>
                     ${resumeHtml}
-                    ${answeredInPool > 0 ? `<button class="progress-reset" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${t('dash.reset')}</button>` : ''}
+                    ${answeredInPool > 0 ? `<div class="dash-foot"><button class="progress-reset" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${t('dash.reset')}</button></div>` : ''}
                 </div>`;
 
             animateReadyRing(ring);
