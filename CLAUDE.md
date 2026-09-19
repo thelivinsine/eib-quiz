@@ -42,6 +42,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (7.3-10.2) and reserves ~4.7 for placeholder/disabled text, so the cards were painted almost
     entirely in the two quietest tiers. The icon and arrow chips' glyphs are `--sub-text` for the
     same reason.
+  - **`--surface2` is a well INSIDE a tile, never a tile on the canvas.** The results screen's
+    two breakdown tiles had overridden the shared tile rule back down to `--surface2` /
+    `--border-soft` while sitting on the page: in light that is 1.03 fill and 1.04 hairline
+    against the canvas, under `theme-light.md`'s 1.05 nesting and 1.10 hairline floors, and
+    invisible beside the 1.11 every other tile manages. Dark hid it (1.30) because the dark ramp
+    has the room. A tile on the page takes `--surface` + `--border`, full stop.
   - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
     `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
     under something that genuinely floats, and nothing in this app does.
