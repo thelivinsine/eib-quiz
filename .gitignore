@@ -5,3 +5,6 @@ work/
 # Guard against loose PDFs landing back at the repo root
 # (the real catalogue is tracked at img/gesamtfragenkatalog-lebenindeutschland.pdf)
 /*.pdf
+
+# Per-machine Claude Code settings; the launch config is shared.
+.claude/settings.local.json

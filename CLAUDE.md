@@ -23,51 +23,95 @@
 Vanilla HTML/CSS/JS quiz for the German citizenship test, Berlin variant.
 
 - No framework or build step.
-- Visual styling: a **Bento** design system (redesigned 2026-07-16, adapted from a superdesign.dev
-  bento profile brief). One cohesive `<style>` block in `index.html` (no layered overrides — the
-  whole block IS the system). POV: clean, confident bento — big friendly **rounded-[26px] tiles**
-  (`--radius-lg`), full-**pill** buttons/chips, two soft layered shadows (`--shadow-soft`/`--shadow-lift`),
-  a faint **24px dotted grid** on `body` (`--grid-dot`), and a **DISCIPLINED accent duo**: one **teal**
-  primary + one warm **apricot** pop, most tiles white/charcoal with a hairline border. Two themes
-  share the palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is
-  the default look; dark = **charcoal** (canvas `#131418`). NOTE the theme wiring: the JS toggles the
-  `.light` class and DEFAULTS to light (`initTheme` only goes dark if `localStorage.theme==='dark'`);
-  an inline pre-paint `<script>` in `<head>` adds `.light` before first paint to avoid FOUC, and
-  `setTheme` also updates `#themeColorMeta`. Palette → legacy token names (JS writes these into inline
-  styles, DON'T rename): **teal** = `--accent`/`--lime` (`#0F9D8F` light / `#17B5A4` dark; `--teal-deep`,
-  `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold` (`#E07A1F`
-  light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`, `--apricot-tint`); `--blue`
-  = info/time; semantic `--green` (correct) / `--red`+`--red-text` (wrong). `--ink-tile` = the charcoal
-  fill for dark tiles. `.tile` (and dash/mode/etc.) share the tile look and a **springy hover-lift**
-  (`translateY(-4px)`, `--ease-spring` = `cubic-bezier(.34,1.56,.64,1)`). Type: **Bricolage Grotesque**
-  (`--font-head`, display + big numbers) + **Inter** (`--font-body`); `--font-mono` is aliased to Inter
-  (kept only so JS refs resolve). Uppercase tracked (0.16em) micro-labels are tile eyebrows (`.eyebrow`
-  + shared list). Icons stay **inline SVG** via `ICONS`/`_svg()` (NOT Phosphor/Iconify — offline-first,
-  Google Fonts is the only external dep). Catalogue images always show in **true colours**. NOTE:
-  ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved so the JS ring
-  animations still work — keep the `stroke-dasharray` values.
-- **Bento home:** the home screen is a **bento grid** (`.bento-top`, 4-col → collapses to 2/1). Tiles:
-  a 2×2 white **overview anchor** (`#homeStatus`/`.dash` — the Trefferquote readiness ring centered over
-  a Beantwortet/Gemeistert/Fällig stat row, + resume banner + reset); a 2-wide charcoal **CTA tile**
-  (`.cta-tile`, static HTML — "Prüfung starten" launches exam, apricot hero-underline + teal glow); a
-  teal-tint **Bundesland map tile** (`#bundeslandTile`/`renderBundeslandTile` — inline-SVG street grid +
-  apricot `.map-pin` + the moved `#stateSelect` picker + local time); and a solid-teal **mastery stat
-  tile** (`#statTile`/`renderStatTile` — `masteredCount()/pool` + accuracy trend chip). Then the 4 mode
-  tiles (`#modesGrid`), topics/history/glossary as full-width tiles. `renderBundeslandTile()` +
-  `renderStatTile()` are called from `initHomeScreen`, `onStateChange`, the progress-reset, and the
-  quit/home handlers (so mastery/state stay fresh). The ring uses `stroke-dasharray`/`dashoffset` with a
-  spring-ease animation; arcs <2% hide the bar to avoid a stray round-cap dot.
+- Visual styling: a **quiet bento** design system (redesigned 2026-07-16, minimalised 2026-09-19
+  against `claude-context-kit/docs/reference/theme-{light,dark}.md`). One cohesive `<style>` block
+  in `index.html` (no layered overrides — the whole block IS the system). POV: white/charcoal tiles
+  on a flat canvas, **rounded-[20px]** (`--radius-lg`), full-**pill** buttons/chips, and a
+  **DISCIPLINED accent duo**: one **teal** primary + one warm **apricot** pop. Two themes share the
+  palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is the
+  default look; dark = **charcoal** (canvas `#131418`).
+  - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
+    `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
+    under something that genuinely floats, and nothing in this app does.
+  - **Elevation and hover point in opposite directions in light mode.** Raised surfaces go **up**
+    towards white (`--surface` above `--canvas`, `--surface2` inset inside it); hover goes **down**
+    into grey (`--hover`). In dark, both go up. Hover is a fill change, never a lift.
+  - **Every text tier is a solid hex value, never opacity** — `--text` / `--sub-text` / `--muted` /
+    `--faint`, all clearing 4.5:1 on both `--surface` and `--canvas` in both themes.
+    `node --test tools/contrast.test.mjs` reads the tokens out of `index.html` and asserts it.
+  - The theme wiring: the JS toggles the `.light` class and DEFAULTS to light (`initTheme` only
+    goes dark if `localStorage.theme==='dark'`); an inline pre-paint `<script>` in `<head>` adds
+    `.light` before first paint to avoid FOUC, and `setTheme` also updates `#themeColorMeta`.
+  - Palette → legacy token names (JS writes these into inline styles, DON'T rename): **teal** =
+    `--accent`/`--lime` (`#0B7D72` light / `#17B5A4` dark; plus `--accent-text`, `--teal-deep`,
+    `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold`
+    (`#B45309` light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`,
+    `--apricot-tint`); `--blue` = info/time; semantic `--green` (correct) / `--red`+`--red-text`
+    (wrong). `--ink-tile` = the CTA tile fill — charcoal in light, and a step **up** the ladder
+    (`#262A33`) in dark, because a charcoal tile on a charcoal canvas reads as a hole.
+  - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
+    (`--font-body`); `--font-mono` is aliased to Inter (kept only so JS refs resolve). Display
+    weights top out at 700. Uppercase micro-labels tracked at 0.08em are tile eyebrows (`.eyebrow`
+    + shared list).
+  - Icons stay **inline SVG** via `ICONS`/`_svg()` (NOT Phosphor/Iconify — offline-first, Google
+    Fonts is the only external dep). Catalogue images always show in **true colours**.
+  - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
+    so the JS ring animations still work — keep the `stroke-dasharray` values.
+- **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
+  (`.btn-*`, the header `.seg-btn` switches, `#stateSelect`); `#stateSelect` is `font-size: 16px` so iOS Safari
+  does not zoom on focus; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
+  header respect `env(safe-area-inset-*)`. Under 620px the mode cards become a single-column list
+  (icon beside the title), the three overview stats stay three columns, and the exam timer goes to
+  one line. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
+  375px after any layout change.
+- **The home screen is four named sections, not a grid of tiles** (restructured 2026-09-19).
+  Each `<section class="home-section">` opens with a `.section-head` (`<h2>` + one line of
+  description) so the page reads heading > card title > body. In order: a short
+  **`.hero-landing`** (content-sized, one primary action); **Where you stand** (`#homeStatus` —
+  one wide `.dash` card holding the accuracy ring, three counters, the state picker, the resume
+  banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
+  quieter **History & reference** (`#historySection` + `#glossarySection`).
+  - **The exam is the only featured card.** `.mode-card--featured` is full-width and charcoal;
+    the other three modes are equal-weight peers. There is exactly one primary action per
+    section — do not add a second call to start the exam.
+  - The counter for questions due is the one stat allowed to draw attention
+    (`.dash-stat--due`, apricot). The others are neutral.
+  - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
+    `renderBundeslandTile()`, `renderStatTile()` and `stateLocalTime()`. The state picker lives
+    in the overview card's `.dash-head`; mastery is one of its counters.
+  - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
+    individual renderers.
+- `showScreen()` resets the scroll to the top. It is the one door every screen change goes
+  through; no caller scrolls on its own.
+- **UI language: English by default, German optional** (added 2026-09-19). The switch is the
+  left segmented control in the header (`#langEn` / `#langDe`), persisted under `localStorage`
+  key `eib_lang`, defaulting to `en`.
+  - **Only the chrome is translated.** Question text, options and `explanation_de` stay German —
+    that is the exam. The per-question translate toggle (`#bilingualToggle`) still reveals each
+    question's `en` / `options_en` / `explanation_en`.
+  - Every chrome string lives in the `I18N` dictionary as `{ en, de }` and is read through
+    `t(key, vars)`, which fills `{placeholders}`. Topic labels go through `catLabel(key)`, which
+    reads `CATEGORIES[key][lang]`.
+  - Static markup carries `data-i18n` (textContent), `data-i18n-html` (innerHTML, for the hero
+    headline's `<span>`) or `data-i18n-aria`. `applyStaticStrings()` fills them; `initLang()`
+    runs on boot and `setLang()` on a switch. **A new visible string goes in `I18N`, never
+    inline** — an untranslated literal is a string that silently stays German.
+  - `setLang()` repaints the screen that is on. `endQuiz()` records the round once and
+    `renderEndScreen()` paints it from `state`, so switching language on the results screen
+    repaints without recording the round a second time.
 - **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
   inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
-  When adding new icons, add them there (not as emoji or external SVGs).
+  When adding new icons, add them there (not as emoji or external SVGs). The question card's
+  read-aloud and translate buttons use `ICONS.speaker` and `ICONS.translate`, not emoji.
 - **Animated results:** the results screen shows an SVG score ring with a percentage count-up
   animation (green=pass, red=fail). The quiz has a slim animated progress bar and per-question
   entrance transitions. All motion respects `prefers-reduced-motion`.
-- `html { overflow-x: clip }` prevents horizontal scroll on mobile (guard against overflows).
+
 - `index.html` loads question data at runtime from `questions.json` via `fetch`
   (so the app must be served over http/https, not opened via `file://`).
 - Google Fonts is the only intended external network dependency.
-- Dark/light theme uses `localStorage` key `theme`.
+- Dark/light theme uses `localStorage` key `theme`; UI language uses `eib_lang`
+  (default `en`).
 - Learning progress IS persisted (reintroduced 2026-06-20): spaced-repetition records
   under `localStorage` key `eib_progress_v1`, a resumable in-progress session under
   `eib_session_v1`, and a results history under `eib_history_v1`. A "Fortschritt
@@ -124,6 +168,9 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
   image questions to real asset paths and descriptive labels.
 - `tools/validate.js` - runs the validation checklist (count/IDs/structure/spot-checks/assets).
+- `tools/contrast.test.mjs` - reads the colour tokens out of `index.html` and asserts the WCAG
+  floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
+  `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
@@ -177,11 +224,17 @@ Before publishing any app change:
    16 states × 10 + 300 general,
    structure valid, spot-checks Q6/7/9/10/12/15/16/28, lists any missing image assets).
 3. Extract the final `<script>` block from `index.html` and run `node --check` on it.
-4. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43
+4. Run `node --test tools/contrast.test.mjs` — it reads the colour tokens out of `index.html`
+   and asserts the text and fill floors in both themes.
+5. Switch the header to DE and back: no chrome string may stay in the other language, and the
+   question text must stay German in both.
+6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43
    image questions render, progress persists across reload, and Smart Review surfaces
-   due/weak questions.
-5. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
-   When changing cached static assets, bump `CACHE` in `sw.js`.
+   due/weak questions. Check the page at 375px wide: `document.documentElement.scrollWidth`
+   must equal the viewport width.
+7. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
+   When changing cached static assets, bump `CACHE` in `sw.js`. A stale service worker will
+   serve the old page during local testing — clear it before judging a change.
 
 ## Future Repair Order
 
