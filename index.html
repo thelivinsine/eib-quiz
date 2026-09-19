@@ -132,11 +132,12 @@
             --faint:    #8B8F9A;   /*  4.9 on tile */
             --on-dark:  #FFFFFF;
 
-            --radius:      16px;
-            --radius-sm:   10px;
-            --radius-lg:   20px;   /* tiles */
-            --radius-xl:   24px;
-            --radius-pill: 999px;
+            /* One three-step scale. Nested corners follow
+               inner = outer - padding, snapped to the nearest step. */
+            --radius-xs:    4px;   /* bars, tracks, swatches, an image inside an option */
+            --radius-sm:   10px;   /* wells, nav cells, letter chips, thumbnails, kbd */
+            --radius:      16px;   /* every tile and card */
+            --radius-pill: 999px;  /* anything that is a control */
 
             --spacing-xs:  6px;
             --spacing-sm:  8px;
@@ -239,7 +240,7 @@
         button { font-family: inherit; cursor: pointer; color: inherit; }
         select { font-family: inherit; }
         ::selection { background: var(--accent-soft); color: var(--text); }
-        :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: 4px; }
+        :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: var(--radius-xs); }
 
         /* Shared eyebrow micro-label */
         .eyebrow, .stat-label, .ds-label, .breakdown-label, .review-q-num,
@@ -263,7 +264,7 @@
         .stat-card, .breakdown-item, .review-item, .score-display {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
         }
         .topic-chip { transition: background 0.18s var(--ease), border-color 0.18s var(--ease); }
         @media (hover: hover) {
@@ -296,7 +297,7 @@
         .brand { display: inline-flex; align-items: center; gap: 11px; min-height: 44px; background: none; border: none; padding: 4px 6px; border-radius: var(--radius-sm); }
         .brand-mark {
             width: 34px; height: 34px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             display: grid; place-items: center;
             font-family: var(--font-head);
             font-weight: 800;
@@ -306,6 +307,24 @@
         }
         html.light .brand-mark { color: #fff; }
         .brand-name { font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; color: var(--text); }
+
+        /* Inside a session the logo is a link that loses your round, dressed as a
+           logo. Body.in-session swaps the two; nothing branches in JS. */
+        .session-back {
+            display: none;
+            align-items: center; gap: 8px;
+            min-height: 44px; padding: 0 14px 0 10px;
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            color: var(--sub-text); font-size: 0.88rem; font-weight: 600;
+            transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
+        }
+        .session-back:hover { background: var(--hover); border-color: var(--border-hover); color: var(--text); }
+        .session-back-icon { display: grid; place-items: center; }
+        /* The icon set has one arrow. This is the same one, mirrored. */
+        .session-back-icon svg { width: 18px; height: 18px; transform: scaleX(-1); }
+        body.in-session .brand { display: none; }
+        body.in-session .session-back { display: inline-flex; }
 
         .header-controls { display: flex; align-items: center; gap: var(--spacing-sm); }
         .seg {
@@ -338,6 +357,48 @@
         }
         .screen { display: none; animation: fadeUp 0.32s var(--ease) both; }
         .screen.active { display: block; }
+
+        /* ------------------------------------------------------------
+           IN-SESSION — everything past the home screen is an app view.
+           The PAGE never scrolls; exactly one region inside it does.
+           The min-height: 0 chain below is load-bearing: a flex child
+           defaults to min-height: auto, and one missing link lets the
+           column grow past the viewport again.
+           ------------------------------------------------------------ */
+        body.in-session { overflow: hidden; }
+        body.in-session main {
+            /* vh first: a browser that does not know svh drops that line and
+               keeps a cap, rather than dropping both and growing. */
+            height: calc(100vh - var(--header-h));
+            height: calc(100svh - var(--header-h));
+            padding: var(--spacing-md) var(--spacing-lg);
+            padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
+            overflow: hidden;
+            display: flex;
+        }
+        body.in-session .screen.active {
+            flex: 1; min-width: 0; min-height: 0;
+            display: flex; flex-direction: column;
+        }
+        /* The results screen has nothing that needs pinning, so it is one
+           scroller and no layout surgery. */
+        body.in-session #endScreen.active { overflow: hidden auto; overscroll-behavior: contain; }
+        /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
+           tallest item, so the card pushed the nav bar off the bottom of a locked
+           screen while the grid itself sat comfortably inside it. */
+        body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+        body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; }
+        body.in-session .question-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+        /* The only element on the quiz screen with a scrollbar. `contain` stops a
+           flick past the last option rubber-banding the locked page behind it. */
+        /* hidden on x: the pick animation scales the chosen option by 1.5%, which
+           flashed a horizontal scrollbar on every answer. Nothing in here is ever
+           legitimately wider than the card. */
+        .question-body { flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain; }
+        /* Nothing scrolls past the timer or the navigator any more, so neither
+           has anything to stick to. */
+        body.in-session #timer { position: static; }
+        body.in-session .quiz-sidebar { position: static; max-height: none; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
@@ -457,7 +518,7 @@
         .dash {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             padding: var(--spacing-lg);
         }
 
@@ -588,7 +649,7 @@
             grid-column: span 1;
             position: relative;
             padding: var(--spacing-md);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             background: var(--surface);
             border: 1px solid var(--border);
             cursor: pointer;
@@ -667,7 +728,7 @@
 
         .mode-icon {
             width: 36px; height: 36px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             display: grid; place-items: center;
             color: var(--sub-text);
             background: var(--surface2);
@@ -717,7 +778,7 @@
         }
         .topic-chip-icon {
             width: 36px; height: 36px; flex-shrink: 0;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             display: grid; place-items: center;
             color: var(--accent-text);
             background: var(--teal-tint);
@@ -726,7 +787,7 @@
         .topic-chip-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
         .topic-chip-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
         .topic-chip-meta { font-size: 0.78rem; color: var(--muted); }
-        .topic-chip-bar { display: block; height: 3px; margin-top: 3px; border-radius: 2px; background: var(--surface3); overflow: hidden; }
+        .topic-chip-bar { display: block; height: 3px; margin-top: 3px; border-radius: var(--radius-xs); background: var(--surface3); overflow: hidden; }
         .topic-chip-bar > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
         .topic-chip-go { flex-shrink: 0; color: var(--faint); display: grid; place-items: center; }
         .topic-chip-go svg { width: 18px; height: 18px; }
@@ -738,7 +799,7 @@
         .sub-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             padding: var(--spacing-md);
             margin-bottom: var(--spacing-sm);
         }
@@ -759,7 +820,7 @@
         .hist-exam-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-sm); font-size: 0.86rem; color: var(--sub-text); margin-bottom: var(--spacing-md); }
         .hist-exam-stats strong { color: var(--text); font-variant-numeric: tabular-nums; }
         .hist-bars { display: flex; align-items: flex-end; gap: 6px; height: 52px; }
-        .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: 4px 4px 2px 2px; background: var(--muted); transition: height 0.4s var(--ease); }
+        .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: var(--radius-xs) var(--radius-xs) 0 0; background: var(--muted); transition: height 0.4s var(--ease); }
         .hist-bar.pass { background: var(--teal-deep); }
         .hist-bar.fail { background: var(--red); }
         .hist-list { border-radius: var(--radius); overflow: hidden; border-color: var(--border-soft); }
@@ -774,7 +835,7 @@
 
         /* Glossary */
         .glossary-section { margin-bottom: var(--spacing-lg); }
-        .glossary-wrap { border-radius: var(--radius-lg); overflow: hidden; }
+        .glossary-wrap { border-radius: var(--radius); overflow: hidden; }
         details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
         details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
         .glossary-summary { padding: var(--spacing-md); min-height: 52px; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: background 0.2s var(--ease); }
@@ -818,10 +879,23 @@
         }
         .btn-group { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap; }
 
+        /* The card's pinned footer. Back left, Next right, and neither button is
+           ever allowed to change the row's height - a row that reflows as you
+           answer cannot be pinned under your thumb. */
+        .quiz-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border);
+        }
+        #nextBtn:disabled { visibility: hidden; }
+        #backBtn:disabled { color: var(--faint); border-color: var(--border-soft); background: var(--surface2); cursor: default; }
+
         /* ============================================================
            QUIZ SCREEN
            ============================================================ */
-        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); }
+        .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); }
         .stat-card { padding: 11px 14px; border-radius: var(--radius); display: flex; flex-direction: column; gap: 4px; }
         .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.25rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 
@@ -844,7 +918,7 @@
         .quiz-progress { height: 4px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: var(--spacing-md); }
         .quiz-progress > span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent-grad); transition: width 0.45s var(--ease-spring); }
 
-        .question-card { padding: var(--spacing-lg); border-radius: var(--radius-lg); }
+        .question-card { padding: var(--spacing-lg); border-radius: var(--radius); }
         .q-enter { animation: qEnter 0.4s var(--ease-spring) both; }
         @keyframes qEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
@@ -881,7 +955,7 @@
         .question-text:focus { outline: none; }
         .question-english { display: none; margin-top: 10px; padding-top: 12px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.98rem; line-height: 1.5; }
         .question-english.show { display: block; }
-        .question-image { width: 100%; max-width: 420px; margin: var(--spacing-lg) auto 0; border-radius: var(--radius); border: 1px solid var(--border); }
+        .question-image { width: 100%; max-width: 420px; margin: var(--spacing-lg) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
         .options { display: flex; flex-direction: column; gap: 10px; margin-top: var(--spacing-lg); }
@@ -890,21 +964,28 @@
             width: 100%; text-align: left;
             min-height: 56px;
             padding: 13px 14px;
-            border: 1px solid var(--border); border-radius: var(--radius);
-            background: var(--surface); color: var(--text);
+            /* concentric: a 16px card with 14px of padding holds a 10px option. */
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            /* --surface2, not --surface: an option is a well inside the card, and
+               painting it the card's own fill left white-on-white in light mode,
+               held apart by one hairline. 1.08 light / 1.12 dark, both above the
+               1.05 nesting floor. */
+            background: var(--surface2); color: var(--text);
             font-size: 1rem; line-height: 1.45;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
         @media (hover: hover) {
-            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--hover); }
+            /* --surface3 in both themes: darker than --surface2 in light, lighter in
+               dark, so one value steps the right way on both ladders. */
+            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--surface3); }
         }
         .option-btn:active:not(:disabled) { background: var(--surface3); }
         .option-btn:disabled { cursor: default; }
         .opt-letter {
-            flex-shrink: 0; width: 30px; height: 30px; border-radius: 9px;
+            flex-shrink: 0; width: 30px; height: 30px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
             font-weight: 600; font-size: 0.84rem;
-            color: var(--muted); background: var(--surface2); border: 1px solid var(--border);
+            color: var(--muted); background: var(--surface3); border: 1px solid var(--border);
             transition: border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
         @media (hover: hover) {
@@ -913,7 +994,8 @@
         .opt-text-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
         .option-en-text { display: none; font-size: 0.82rem; color: var(--muted); font-style: italic; }
         .option-en-text.show { display: block; }
-        .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); background: var(--surface2); }
+        /* The dim is a text tier now; the fill it used to borrow is the base. */
+        .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); }
         .option-btn.correct { border-color: var(--green); background: var(--green-dim); color: var(--text); }
         .option-btn.correct .opt-letter { background: var(--green); border-color: var(--green); color: #fff; }
         html:not(.light) .option-btn.correct .opt-letter { color: #06231a; }
@@ -926,7 +1008,7 @@
         .options--image { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
         .option-btn--image { flex-direction: column; align-items: stretch; padding: 10px; gap: 10px; }
         .option-btn--image { min-height: 0; }
-        .opt-img { display: block; border-radius: var(--radius-sm); overflow: hidden; background: var(--surface2); border: 1px solid var(--border-soft); aspect-ratio: 4 / 3; }
+        .opt-img { display: block; border-radius: var(--radius-xs); overflow: hidden; background: var(--surface2); border: 1px solid var(--border-soft); aspect-ratio: 4 / 3; }
         .opt-img img { width: 100%; height: 100%; object-fit: contain; }
         .option-btn--image .opt-num { font-size: 0.8rem; font-weight: 500; color: var(--sub-text); text-align: center; }
         .option-btn--image.img-missing .opt-img { display: grid; place-items: center; min-height: 120px; }
@@ -936,7 +1018,7 @@
         #answerHint { color: var(--muted); }
         .keyboard-hint { position: relative; margin-top: var(--spacing-md); padding: 9px 14px; background: var(--surface2); border: 1px solid var(--border-soft); border-radius: var(--radius); font-size: 0.76rem; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
-        kbd { font-size: 0.72rem; padding: 2px 8px; border-radius: 7px; background: var(--surface); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
+        kbd { font-size: 0.72rem; padding: 2px 8px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
         .keyboard-hint-close { margin-left: auto; background: none; border: none; color: var(--muted); font-size: 1.1rem; line-height: 1; padding: 0 4px; }
         .keyboard-hint-close:hover { color: var(--text); }
 
@@ -954,7 +1036,7 @@
         /* Sidebar navigator */
         .quiz-sidebar {
             width: 256px;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             padding: var(--spacing-md);
             position: sticky;
             top: calc(var(--header-h) + 8px);
@@ -970,12 +1052,6 @@
         .sidebar-chevron { display: none; color: var(--muted); transition: transform 0.25s var(--ease); }
         .sidebar-count { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
         .sidebar-body { margin-top: var(--spacing-md); min-height: 0; overflow-y: auto; }
-        .progress-bar { height: 5px; background: var(--surface3); border-radius: var(--radius-pill); overflow: hidden; }
-        .progress-fill { height: 100%; width: 0; background: var(--accent-grad); border-radius: inherit; transition: width 0.4s var(--ease-spring); }
-        .progress-text { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-        .question-nav-legend { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: var(--spacing-md) 0; font-size: 0.72rem; color: var(--muted); }
-        .question-nav-legend > span { display: inline-flex; align-items: center; gap: 5px; }
-        .legend-swatch { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
         /* Five across in the 256px sidebar, many more across the full-width strip
            on a narrow screen — the cells stay finger-sized either way. */
         .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
@@ -1026,7 +1102,7 @@
         @media (pointer: coarse) {
             .qnav-shuffle, .qnav-group-head { min-height: 44px; }
         }
-        .q-nav-btn { aspect-ratio: 1; min-height: 34px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: 8px; font-size: 0.74rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
+        .q-nav-btn { aspect-ratio: 1; min-height: 34px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: 0.74rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .q-nav-btn.qnav-current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); font-weight: 700; }
         .q-nav-btn.qnav-correct { background: var(--green-dim); border-color: color-mix(in srgb, var(--green) 55%, transparent); color: var(--green); }
@@ -1037,7 +1113,7 @@
            ============================================================ */
         .end-screen { max-width: 680px; margin: 0 auto; text-align: center; }
         .end-screen > h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(1.6rem, 3.6vw, 2.1rem); letter-spacing: -0.03em; margin-bottom: var(--spacing-lg); }
-        .score-display { border-radius: var(--radius-lg); padding: var(--spacing-xl) var(--spacing-lg); }
+        .score-display { border-radius: var(--radius); padding: var(--spacing-xl) var(--spacing-lg); }
         .score-ring-wrap { position: relative; width: 170px; height: 170px; margin: 0 auto var(--spacing-md); }
         .score-ring { width: 100%; height: 100%; display: block; }
         .score-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
@@ -1096,6 +1172,20 @@
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
             .quiz-layout { grid-template-columns: minmax(0, 1fr); }
+            /* The collapsed navigator sits above the card and takes what it
+               needs; the card takes everything left, and no more. */
+            body.in-session .quiz-layout { position: relative; grid-template-rows: auto minmax(0, 1fr); }
+            /* Expanded, it COVERS the card rather than pushing it down. In a locked
+               viewport a 45vh panel above the card left about 130px for the question
+               — the meta row, a rule, and Back. :has is the whole switch; a browser
+               without it just gets today's push-down behaviour. */
+            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) {
+                position: absolute; inset: 0; z-index: 30;
+                background: var(--surface); max-height: none;
+            }
+            body.in-session .quiz-sidebar:has(.sidebar-body.expanded) .sidebar-body {
+                max-height: none; flex: 1; min-height: 0;
+            }
             .quiz-sidebar { width: auto; position: static; order: -1; max-height: none; }
             .sidebar-header { cursor: pointer; min-height: 44px; display: flex; flex-direction: column; justify-content: center; }
             .sidebar-chevron { display: block; }
@@ -1187,7 +1277,7 @@
             .timer-label { margin-right: 8px; }
             .timer-display { font-size: 1.35rem; }
             .pacing-info { margin-left: 8px; }
-            .stats-bar { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+            .stats-bar { grid-template-columns: repeat(3, 1fr); gap: 6px; }
             .stat-card { padding: 9px 8px; align-items: center; text-align: center; }
             .stat-value { font-size: 1.1rem; }
             .stat-card .stat-label { font-size: 0.56rem; letter-spacing: 0.03em; }
@@ -1211,6 +1301,10 @@
             <button class="brand" onclick="showScreen('home')" data-i18n-aria="nav.home">
                 <span class="brand-mark" aria-hidden="true">E</span>
                 <span class="brand-name">eib</span>
+            </button>
+            <button class="session-back" id="sessionBack" data-i18n-aria="nav.back">
+                <span class="session-back-icon" aria-hidden="true"></span>
+                <span data-i18n="nav.back"></span>
             </button>
             <div class="header-controls">
                 <div class="seg" role="group" data-i18n-aria="nav.language">
@@ -1319,6 +1413,7 @@
                             </div>
                         </div>
 
+                        <div class="question-body" id="questionBody">
                         <div class="question-text" id="questionText" tabindex="-1" lang="de"></div>
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
@@ -1335,11 +1430,11 @@
                             <div class="explanation-text" id="explanationText" lang="de"></div>
                             <div class="explanation-english" id="explanationEnglish" lang="en"></div>
                         </div>
+                        </div>
 
-                        <div class="btn-group">
-                            <button class="btn-secondary" id="backBtn" style="display: none;">← <span data-i18n="quiz.back"></span></button>
-                            <button class="btn-primary" id="nextBtn" style="display: none;"></button>
-                            <button class="btn-secondary" id="quitBtn">← <span data-i18n="quiz.quit"></span></button>
+                        <div class="quiz-nav">
+                            <button class="btn-secondary" id="backBtn">← <span data-i18n="quiz.back"></span></button>
+                            <button class="btn-primary" id="nextBtn"></button>
                         </div>
                     </div>
                 </div>
@@ -1354,20 +1449,7 @@
                         <span class="sidebar-count" id="navProgressSummary"></span>
                     </div>
                     <div class="sidebar-body" id="sidebarBody">
-                        <div class="progress-bar" style="margin-bottom: 4px;">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <div class="progress-text" style="margin-top: 0; margin-bottom: 4px;">
-                            <span id="progressLeft"></span>
-                            <span id="progressPercent"></span>
-                        </div>
                         <div id="navActions"></div>
-                        <div class="question-nav-legend">
-                            <span><span class="legend-swatch" style="background:var(--accent);"></span><span data-i18n="qnav.current"></span></span>
-                            <span><span class="legend-swatch" style="background:var(--green);"></span><span data-i18n="qnav.correct"></span></span>
-                            <span><span class="legend-swatch" style="background:var(--red);"></span><span data-i18n="qnav.wrong"></span></span>
-                            <span><span class="legend-swatch" style="background:var(--border-hover);"></span><span data-i18n="qnav.open"></span></span>
-                        </div>
                         <div class="question-nav-grid" id="questionNavGrid"></div>
                     </div>
                 </aside>
@@ -1523,6 +1605,7 @@
         const I18N = {
             // header
             'nav.home':            { en: 'Go to start page',        de: 'Zur Startseite' },
+            'nav.back':            { en: 'Back',                    de: 'Zurück' },
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
@@ -1603,8 +1686,8 @@
 
             // quiz
             'quiz.question':       { en: 'Question {n}',            de: 'Frage {n}' },
+            'quiz.questionOf':     { en: 'Question {n} / {total}',  de: 'Frage {n} / {total}' },
             'quiz.general':        { en: 'General',                 de: 'Allgemein' },
-            'quiz.stat.question':  { en: 'Question',                de: 'Frage' },
             'quiz.stat.correct':   { en: 'Correct',                 de: 'Richtig' },
             'quiz.stat.wrong':     { en: 'Wrong',                   de: 'Falsch' },
             'quiz.stat.score':     { en: 'Score',                   de: 'Score' },
@@ -1616,7 +1699,6 @@
             'quiz.back':           { en: 'Back',                    de: 'Zurück' },
             'quiz.next':           { en: 'Next',                    de: 'Weiter' },
             'quiz.finish':         { en: 'Finish',                  de: 'Abschließen' },
-            'quiz.quit':           { en: 'Quit',                    de: 'Beenden' },
             'quiz.correct':        { en: '✓ Correct',               de: '✓ Richtig' },
             'quiz.wrong':          { en: '✗ Wrong',                 de: '✗ Falsch' },
             'quiz.rightAnswer':    { en: ' — correct answer: ',     de: ' — richtige Antwort: ' },
@@ -1629,11 +1711,6 @@
             // navigator
             'qnav.overview':       { en: 'Question overview',       de: 'Fragen-Übersicht' },
             'qnav.answered':       { en: '{n}/{total} answered',    de: '{n}/{total} beantwortet' },
-            'qnav.progress':       { en: 'Question {n} of {total}', de: 'Frage {n} von {total}' },
-            'qnav.current':        { en: 'Current',                 de: 'Aktuell' },
-            'qnav.correct':        { en: 'Correct',                 de: 'Richtig' },
-            'qnav.wrong':          { en: 'Wrong',                   de: 'Falsch' },
-            'qnav.open':           { en: 'Unanswered',              de: 'Offen' },
             'qnav.shuffle':        { en: 'Shuffle',                 de: 'Mischen' },
             'qnav.inOrder':        { en: 'Back in order',           de: 'Reihenfolge zurück' },
 
@@ -1902,6 +1979,9 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenName + 'Screen').classList.add('active');
             state.currentScreen = screenName;
+            // Everything past the home screen is an app view: locked to the viewport,
+            // a back button where the logo was. One class carries both.
+            document.body.classList.toggle('in-session', screenName !== 'home');
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
@@ -2269,7 +2349,7 @@
             document.getElementById('navProgressSummary').textContent = t('qnav.answered', { n: answered, total });
             // Self-correcting: even if a resize event is missed, the header's semantics
             // are right again the next time the panel renders.
-            syncNavHeaderRole();
+        syncNavHeaderRole();
 
             // Shuffle belongs to rounds you work through in order; an exam is
             // already random and a 10-question set has nothing to gain.
@@ -2390,7 +2470,6 @@
         function jumpToQuestion(qIdx) {
             state.currentQuestionIndex = qIdx;
             displayQuestion();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function startMode(mode) {
@@ -2457,6 +2536,10 @@
             const q = state.currentQuestions[state.currentQuestionIndex];
             const progress = ((state.currentQuestionIndex + 1) / state.currentQuestions.length) * 100;
 
+            // The card body is the scroller now, so a new question starts at its top.
+            const qBody = document.getElementById('questionBody');
+            if (qBody) qBody.scrollTop = 0;
+
             // Re-trigger the per-question entrance animation.
             const card = document.querySelector('.question-card');
             if (card) { card.classList.remove('q-enter'); void card.offsetWidth; card.classList.add('q-enter'); }
@@ -2466,7 +2549,8 @@
             updateProgress(progress);
 
             // Question content
-            document.getElementById('questionNum').textContent = t('quiz.question', { n: state.currentQuestionIndex + 1 });
+            document.getElementById('questionNum').textContent =
+                t('quiz.questionOf', { n: state.currentQuestionIndex + 1, total: state.currentQuestions.length });
             document.getElementById('questionCategory').textContent =
                 q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
@@ -2538,7 +2622,7 @@
 
             // Show back button when not on the first question
             const backBtn = document.getElementById('backBtn');
-            backBtn.style.display = state.currentQuestionIndex > 0 ? 'block' : 'none';
+            backBtn.disabled = state.currentQuestionIndex === 0;
 
             // Restore answered state if this question was already answered (via navigator jump)
             const prevAnswer = state.answered[state.currentQuestionIndex];
@@ -2553,13 +2637,13 @@
                 if (optsEl) optsEl.classList.add('answered');
                 showExplanation(q, prevAnswer === q.correct);
                 const nextBtn = document.getElementById('nextBtn');
-                nextBtn.style.display = 'block';
+                nextBtn.disabled = false;
                 nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length
                     ? t('quiz.finish') : t('quiz.next') + ' →';
             } else {
                 if (optsEl) optsEl.classList.remove('answered');
                 document.getElementById('explanation').classList.remove('show');
-                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('nextBtn').disabled = true;
                 document.getElementById('answerHint').style.display = 'block';
                 // Focus question text (non-interactive) so Space can't accidentally select option A
                 document.getElementById('questionText').focus({ preventScroll: true });
@@ -2576,10 +2660,6 @@
 
             document.getElementById('statsBar').innerHTML = `
                 <div class="stat-card">
-                    <div class="stat-label">${t('quiz.stat.question')}</div>
-                    <div class="stat-value">${state.currentQuestionIndex + 1}/${total}</div>
-                </div>
-                <div class="stat-card">
                     <div class="stat-label">${t('quiz.stat.correct')}</div>
                     <div class="stat-value" style="color: var(--green)">${state.correct}</div>
                 </div>
@@ -2594,12 +2674,11 @@
             `;
         }
 
+        // One bar, above the card. The navigator used to carry a second copy of it
+        // plus the same number written out twice more.
         function updateProgress(percent) {
-            document.getElementById('progressFill').style.width = percent + '%';
             const qpf = document.getElementById('quizProgressFill');
             if (qpf) qpf.style.width = percent + '%';
-            document.getElementById('progressLeft').textContent = t('qnav.progress', { n: state.currentQuestionIndex + 1, total: state.currentQuestions.length });
-            document.getElementById('progressPercent').textContent = Math.round(percent) + '%';
         }
 
         function selectAnswer(idx) {
@@ -2640,10 +2719,15 @@
 
             // Show next button and scroll it into view
             const nextBtn = document.getElementById('nextBtn');
-            nextBtn.style.display = 'block';
+            nextBtn.disabled = false;
             nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' →';
             setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
             setTimeout(() => nextBtn.focus(), 600);
+
+            // The counters read from state, and state just changed. They were only
+            // repainted on a question change, so they lagged a full question behind
+            // the answer you had just given.
+            updateStats();
 
             // Always refresh sidebar navigator
             renderQuestionNav();
@@ -2942,11 +3026,17 @@
             if (state.currentQuestionIndex > 0) {
                 state.currentQuestionIndex--;
                 displayQuestion();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
 
-        document.getElementById('quitBtn').addEventListener('click', () => {
+        // One handler, one branch: leaving a round in progress asks first, leaving
+        // the results screen has nothing left to lose.
+        document.getElementById('sessionBack').addEventListener('click', () => {
+            if (state.currentScreen !== 'quiz') {
+                initHomeScreen();
+                showScreen('home');
+                return;
+            }
             const resumable = state.currentMode !== 'exam' && state.currentMode !== 'mistakes';
             const msg = resumable ? t('quit.resumable') : t('quit.lost');
             if (confirm(msg)) {
@@ -2989,7 +3079,7 @@
                     e.preventDefault();
                     focused.click();
                 }
-            } else if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
+            } else if (e.key === 'Enter' && !nextBtn.disabled) {
                 nextBtn.click();
             }
         });
@@ -3082,6 +3172,8 @@
         document.getElementById('sidebarToggle').addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNavPanel(); }
         });
+        // One arrow in the icon set; the back button mirrors it in CSS.
+        document.querySelector('.session-back-icon').innerHTML = ICONS.arrowRight;
         syncNavHeaderRole();
         // resize rather than a matchMedia change listener: the latter did not fire under
         // viewport emulation, and this has to be right at whatever width the reader lands on.
