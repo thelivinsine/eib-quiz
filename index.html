@@ -390,6 +390,18 @@
            tallest item, so the card pushed the nav bar off the bottom of a locked
            screen while the grid itself sat comfortably inside it. */
         body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: start; grid-template-rows: minmax(0, 1fr); }
+        /* 15% of the screen of air under the progress bar, so the readouts, the
+           question and the navigator all start lower down. It is spent out of the
+           slack that already sat under Previous and Next, and it is CAPPED against
+           the body's own 50svh floor: 260px is the chrome above and below that
+           floor, so below roughly 750px tall the shift gives way rather than the
+           question. Without the cap it would push the buttons off a locked screen
+           at the short end of the band. vh first, as everywhere else. */
+        body.in-session .quiz-layout { margin-top: min(15vh, 50vh - 260px); margin-top: min(15svh, 50svh - 260px); }
+        /* The exam keeps its position: the clock takes a row the practice screen
+           does not have, and at 800px tall that row IS the slack — measured 67px
+           left under the buttons, against the 120px this would spend. */
+        body.in-exam .quiz-layout { margin-top: 0; }
         body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; }
         /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
            four-option question sits at the top of the column instead of being
@@ -480,7 +492,10 @@
                 min-height: calc(100svh - var(--header-h));
                 overflow: visible;
             }
-            body.in-session .quiz-layout { grid-template-rows: auto auto auto; }
+            /* No lock here, so there is no slack to spend and no resting position to
+               move — and the capped expression would go NEGATIVE below 520px tall,
+               pulling the question up under the progress bar. */
+            body.in-session .quiz-layout { grid-template-rows: auto auto auto; margin-top: 0; }
             body.in-session .question-card { flex: 0 0 auto; }
             body.in-session #endScreen.active { overflow: visible; }
             /* One scroller, and at this height it is the page. */
@@ -1389,6 +1404,10 @@
                directly above the overview strip — one position on every question, and
                the place a thumb is already reaching for. */
             body.in-session .question-body { min-height: 0; }
+            /* Nothing to spend down here either: the card already fills its area and
+               the buttons are already pinned above the strip, so the shift would come
+               straight out of the question and start it scrolling. */
+            body.in-session .quiz-layout { margin-top: 0; }
             /* The column has to take the whole row before the card can fill it: the
                grid places items at the start, so on its own .quiz-main is as tall as
                its content and flex: 1 has nothing to grow into. */
@@ -2228,6 +2247,10 @@
             // Everything past the home screen is an app view: locked to the viewport,
             // a back button where the logo was. One class carries both.
             document.body.classList.toggle('in-session', screenName !== 'home');
+            // The exam's clock costs the question column a row, which is the whole of
+            // the slack the shift under the progress bar spends. Set here rather than
+            // in startMode() so the topic, mistakes and resume paths are covered too.
+            document.body.classList.toggle('in-exam', screenName !== 'home' && state.currentMode === 'exam');
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 

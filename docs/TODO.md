@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-19_
+_Last updated: 2026-09-20_
 
 ## Project status
 
@@ -340,6 +340,13 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   puts Previous/Next at 622-623 of an 800px viewport (78%, 177px below) on every ordinary
   question; longer questions push them down from there. On mobile the floor is dropped and the
   column stretches, pinning them 10px above the overview strip on every question.
+- **The block below the progress bar starts 15% down the screen**: `.quiz-layout` takes
+  `margin-top: min(15svh, 50svh - 260px)`, moving the readouts, the question and the navigator
+  together — at 1280x800 the readouts go 126 -> 246 and Previous/Next 614 -> 734, with 66px
+  still beneath them. The cap keeps the shift and the body's 50svh floor from together
+  outgrowing a locked screen (941x645 overflowed by 4px without it), so below ~750px tall the
+  shift tapers instead of the question. The exam is exempt (`body.in-exam`, set in
+  `showScreen()`): its clock already spends the slack the shift would use.
 - **Image options scaled down 30%** (`.options--image { max-width: 70% }`, prompt image 294px):
   a four-image question now fits without the body scroller at 1100x800.
 
