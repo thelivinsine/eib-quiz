@@ -105,21 +105,32 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Groups appear only when they earn their keep.** A shuffled round, a round of 40 or fewer,
     or a round that is all one category renders the flat grid — one `<details>` over the whole
     list is a lid, not a grouping.
-  - `.question-nav-grid` is `repeat(auto-fill, minmax(44px, 1fr))`, so it is 5 across in the
-    256px sidebar and ~14 across in the full-width strip below 940px, cells finger-sized in both.
+  - `.question-nav-grid` is `repeat(auto-fill, minmax(44px, 1fr))`. Measured: 4 columns of
+    47px in the 256px sidebar (its own scrollbar takes ~17px of the content box) and 14 across
+    in the full-width strip below 940px. Cells are finger-sized in both.
 - **`NAV_COLLAPSE_AT` is the one number for the navigator's collapse.** The stylesheet's 940px
-  breakpoint and the two JS guards must agree: they read 720 against a 940 breakpoint once, and
+  breakpoint and the JS guards must agree: they read 720 against a 940 breakpoint once, and
   between those widths the CSS hid the panel while the toggle refused to open it.
+  - **The sidebar header carries button semantics only where it is a button.** Above the
+    breakpoint the panel is simply open, so `syncNavHeaderRole()` strips `role`, `tabindex` and
+    `aria-expanded`; below it, it sets all three and the header answers Enter and Space. It had
+    announced itself as a collapsed button on a 1400px screen, over an open panel, doing
+    nothing. It runs on boot, on resize, and on every navigator render so a missed resize
+    event cannot leave it lying.
 - **`state.shuffled` re-orders a round, and `state.answered` moves with it.** `shuffleRound()`
-  toggles between `sample()` order and catalogue order, remaps every answer by question id
+  captures the round's own order into `state.baseOrder` before the first shuffle and restores
+  exactly that — sorting by id was only right for rounds built from the catalogue, and turned a
+  mistakes round (built in the order you missed them) into an order it never had. It remaps
+  every answer by question id
   (answers are keyed by POSITION, so a re-order silently reassigns them otherwise), and keeps the
   reader on the question they were looking at. Every entry into a round resets the flag; the flag
   is persisted in the session so a resume renders the navigator the right way.
 - **The question navigator is bounded by the viewport, never by its contents.** 300 cells in five
   columns is a 2700px column: the sidebar grew to match, `position: sticky` stopped meaning
   anything, and the numbers painted down the page outside the card. `.quiz-sidebar` caps at
-  `calc(100svh - var(--header-h) - 24px)` and `.sidebar-body` scrolls inside it. Nothing sets the
-  sidebar's height from JS.
+  `calc(100svh - var(--header-h) - 24px)`, preceded by the same value in `vh` so a browser that
+  does not know `svh` keeps a cap instead of dropping the declaration, and `.sidebar-body`
+  scrolls inside it. Nothing sets the sidebar's height from JS.
 - `showScreen()` resets the scroll to the top. It is the one door every screen change goes
   through; no caller scrolls on its own.
 - **UI language: English by default, German optional** (added 2026-09-19). The switch is the

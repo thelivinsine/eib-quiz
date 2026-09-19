@@ -476,7 +476,13 @@
             color: var(--muted);
             cursor: pointer;
         }
-        .state-picker:focus-within { border-color: var(--accent); }
+        /* The <select> is invisible, so its own focus ring is too. The pill wears it. */
+        .state-picker:focus-within {
+            border-color: var(--accent);
+            outline: 2px solid var(--accent-text);
+            outline-offset: 3px;
+        }
+        .state-picker select:focus-visible { outline: none; }
         .state-picker svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--muted); }
         /* The pill hugs this, so it fits "Berlin" as well as it fits
            "Mecklenburg-Vorpommern". */
@@ -913,7 +919,10 @@
             padding: var(--spacing-md);
             position: sticky;
             top: calc(var(--header-h) + 8px);
-            /* Never taller than the screen — otherwise it is not sticky, it is just long. */
+            /* Never taller than the screen — otherwise it is not sticky, it is just long.
+               vh first: a browser that does not know svh drops that line and keeps this
+               one, rather than dropping the cap and growing to 2900px again. */
+            max-height: calc(100vh - var(--header-h) - 24px);
             max-height: calc(100svh - var(--header-h) - 24px);
             display: flex; flex-direction: column;
         }
@@ -1293,7 +1302,7 @@
 
                 <!-- Right column: vertical navigator sidebar -->
                 <aside class="quiz-sidebar" id="questionNavWrapper" style="display: none;">
-                    <div class="sidebar-header" id="sidebarToggle" role="button" aria-expanded="false">
+                    <div class="sidebar-header" id="sidebarToggle" aria-controls="sidebarBody">
                         <div class="sidebar-header-row">
                             <span class="sidebar-title" data-i18n="qnav.overview"></span>
                             <span class="sidebar-chevron" id="sidebarChevron">▼</span>
@@ -1584,7 +1593,6 @@
             'qnav.open':           { en: 'Unanswered',              de: 'Offen' },
             'qnav.shuffle':        { en: 'Shuffle',                 de: 'Mischen' },
             'qnav.inOrder':        { en: 'Back in order',           de: 'Reihenfolge zurück' },
-            'qnav.shuffled':       { en: 'Shuffled',                de: 'Gemischt' },
 
             // end screen
             'end.exam':            { en: 'Exam simulation complete', de: 'Prüfungssimulation beendet' },
@@ -1685,6 +1693,7 @@
             examStartTime: null,   // Date.now() when exam begins
             elapsedSecs: null,     // seconds taken, frozen at endQuiz so the results repaint
             shuffled: false,       // the round is in random order, so the navigator drops its groups
+            baseOrder: null,       // question ids in the order the round was built, captured on first shuffle
             generalCorrect: 0,     // correct general answers (exam sub-score)
             stateCorrect: 0,       // correct state answers (exam sub-score)
         };
@@ -1798,6 +1807,7 @@
                     idx: state.currentQuestionIndex,
                     answered: state.answered,
                     shuffled: state.shuffled,
+                    baseOrder: state.baseOrder,
                     correct: state.correct,
                     incorrect: state.incorrect,
                     ts: Date.now()
@@ -1929,6 +1939,7 @@
             state.currentMode = 'topic';
             state.currentTopic = catKey;
             state.shuffled = false;
+            state.baseOrder = null;
             state.currentQuestionIndex = 0;
             state.answered = {};
             state.correct = 0;
@@ -2159,6 +2170,7 @@
             state.currentQuestionIndex = Math.min(sess.idx || 0, qs.length - 1);
             state.answered = sess.answered || {};
             state.shuffled = !!sess.shuffled;
+            state.baseOrder = Array.isArray(sess.baseOrder) ? sess.baseOrder : null;
             state.correct = sess.correct || 0;
             state.incorrect = sess.incorrect || 0;
             state.showExplanation = false;
@@ -2212,6 +2224,9 @@
             const total = state.currentQuestions.length;
             const answered = Object.keys(state.answered).length;
             document.getElementById('navProgressSummary').textContent = t('qnav.answered', { n: answered, total });
+            // Self-correcting: even if a resize event is missed, the header's semantics
+            // are right again the next time the panel renders.
+            syncNavHeaderRole();
 
             // Shuffle belongs to rounds you work through in order; an exam is
             // already random and a 10-question set has nothing to gain.
@@ -2302,8 +2317,14 @@
         function shuffleRound() {
             const qs = state.currentQuestions;
             if (qs.length < 2) return;
+            const byId = new Map(qs.map(q => [q.id, q]));
+            // Remember the order the round was actually built in. Sorting by id only
+            // matches that for rounds built from the catalogue: a mistakes round is in
+            // the order the questions were missed, and id order was never its order.
+            if (!state.shuffled) state.baseOrder = qs.map(q => q.id);
+            const restored = (state.baseOrder || []).map(id => byId.get(id)).filter(Boolean);
             const next = state.shuffled
-                ? [...qs].sort((a, b) => a.id - b.id)
+                ? (restored.length === qs.length ? restored : [...qs].sort((a, b) => a.id - b.id))
                 : sample(qs, qs.length);
             const wasAt = new Map(qs.map((q, i) => [q.id, i]));
             const here = qs[state.currentQuestionIndex];
@@ -2350,6 +2371,7 @@
             state.stateCorrect = 0;
             state.stateCode = selectedState;
             state.shuffled = false;
+            state.baseOrder = null;
 
             if (mode === 'allQuestions') {
                 state.currentQuestions = generalQuestions();
@@ -2376,7 +2398,7 @@
                 const sidebarToggle = document.getElementById('sidebarToggle');
                 if (sidebarBody) sidebarBody.classList.remove('expanded');
                 if (sidebarChevron) sidebarChevron.classList.remove('open');
-                if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+                if (sidebarToggle) syncNavHeaderRole();
             }
 
             showScreen('quiz');
@@ -2818,6 +2840,7 @@
             if (qs.length === 0) return;
             state.currentMode = 'mistakes';
             state.shuffled = false;
+            state.baseOrder = null;
             state.currentQuestions = qs;
             state.currentQuestionIndex = 0;
             state.answered = {};
@@ -2982,14 +3005,44 @@
         }
         loadQuestions();
 
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
+        /**
+         * Above NAV_COLLAPSE_AT the panel is simply open and the header is a caption,
+         * so it carries no button semantics at all. Below it the header is a real
+         * button: focusable, operable by keyboard, and honest about expanded state.
+         */
+        function syncNavHeaderRole() {
+            const tgl = document.getElementById('sidebarToggle');
+            const body = document.getElementById('sidebarBody');
+            if (!tgl || !body) return;
+            if (window.innerWidth > NAV_COLLAPSE_AT) {
+                tgl.removeAttribute('role');
+                tgl.removeAttribute('tabindex');
+                tgl.removeAttribute('aria-expanded');
+            } else {
+                tgl.setAttribute('role', 'button');
+                tgl.setAttribute('tabindex', '0');
+                tgl.setAttribute('aria-expanded', String(body.classList.contains('expanded')));
+            }
+        }
+
+        function toggleNavPanel() {
             if (window.innerWidth > NAV_COLLAPSE_AT) return;
             const body = document.getElementById('sidebarBody');
             const chevron = document.getElementById('sidebarChevron');
             const expanded = body.classList.toggle('expanded');
             chevron.classList.toggle('open', expanded);
-            this.setAttribute('aria-expanded', String(expanded));
+            syncNavHeaderRole();
+        }
+
+        document.getElementById('sidebarToggle').addEventListener('click', toggleNavPanel);
+        // A div with role="button" is not operable by keyboard on its own.
+        document.getElementById('sidebarToggle').addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNavPanel(); }
         });
+        syncNavHeaderRole();
+        // resize rather than a matchMedia change listener: the latter did not fire under
+        // viewport emulation, and this has to be right at whatever width the reader lands on.
+        window.addEventListener('resize', syncNavHeaderRole);
 
         // ---- Service worker (offline / installable PWA) ----
         if ('serviceWorker' in navigator) {
