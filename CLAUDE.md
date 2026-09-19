@@ -72,12 +72,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Elevation and hover point in opposite directions in light mode.** Raised surfaces go **up**
     towards white (`--surface` above `--canvas`, `--surface2` inset inside it); hover goes **down**
     into grey (`--hover`). In dark, both go up. Hover is a fill change, never a lift.
-  - **An answer option is a well INSIDE the card, so it takes `--surface2`.** It was
-    `--surface` inside a `--surface` card: in light that is white on white, separated by one
-    hairline. Its letter chip takes `--surface3` so the ladder stays concentric (card →
-    option → chip), and the dimmed-after-answering state is a **text tier only** — the fill it
-    used to borrow is now the base. Hover is `--surface3` in both themes: darker than
-    `--surface2` in light, lighter in dark, so one value steps the right way on both ladders.
+  - **An answer option is a tile ON THE CANVAS** (2026-09-20), because the card around it is
+    gone. In light it takes `--surface` (#FFF, the measured 1.11 page step) — it was
+    `--surface2`, which is #F5F6F8 on a #F2F3F5 page, a 1.02 step and the whole of the
+    "washed out" look. **Dark carries it one rung higher** (`--surface2`, 1.36 above the
+    canvas, chip `--surface3`): `--surface` at 1.16 is the right step for a big tile and too
+    quiet for a 42px row you are meant to reach for, and the dark ramp has the room light does
+    not. Hover is `--hover`, the token that already knows each theme's direction. The
+    dimmed-after-answering state is a **text tier only**.
   - **Every text tier is a solid hex value, never opacity** — `--text` / `--sub-text` / `--muted` /
     `--faint`, all clearing 4.5:1 on both `--surface` and `--canvas` in both themes.
     `node --test tools/contrast.test.mjs` reads the tokens out of `index.html` and asserts it.
@@ -192,7 +194,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `#navActions` is fixed at its top and **`#questionNavGrid` is the scroller** (the rule is
     written against the id, because the renderer swaps the element's class between
     `.question-nav-grid` and `.question-nav-groups`). The mobile `.expanded` panel is
-    `display: flex` for the same reason.
+    `display: flex` for the same reason, and the grid needs **`align-content: start`**: a grid
+    defaults to `stretch`, so as a flex child that FILLS the panel its auto rows stretched and
+    every cell came out a tall rounded slab with the row gap swallowed. Extra room belongs at
+    the bottom of the list.
   - **The collapse control is a drawn chevron** (`ICONS.chevron` in a 30px round hit target,
     filled at boot beside `.session-back-icon`), not a `▼` dingbat — the glyph rendered at a
     different weight and baseline in every font stack. CSS rotates it on `.open`.
@@ -291,9 +296,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The quiz chrome above the card is a progress bar, then one line of readouts** (2026-09-19).
   `.quiz-progress` is the first child of `#quizScreen`, above `#statsBar`, and spans the card
   and the navigator. The four readouts — correct, wrong, score, **answered `n / total`** — are
-  **not tiles**: `.stat` is a value and a label on one line, separated by hairlines, the same
-  move as the home overview band. Four boxed cards cost a whole row of height the question card
-  needed. The answered count came from the navigator's header (`.sidebar-count` /
+  **not tiles and carry no separators**: a value and a label on one line, 22px of whitespace
+  apart. Four boxed cards cost a whole row of height the question card needed, and four numbers
+  divided by three hairlines is six things to look at. The labels sit in `--faint` at 0.63rem so
+  the numbers carry the row, and **a zero gets no colour** — green and red arrive with the first
+  right or wrong answer rather than lighting a traffic light that is reporting nothing. The answered count came from the navigator's header (`.sidebar-count` /
   `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
   - **The keyboard hint sits UNDER the card**, the last child of `.quiz-main`; as a pill in
     the card it pushed the options down and then moved them back up when it was dismissed. It
@@ -306,16 +313,42 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     no hairline, no padding, so the question's left edge is the column's left edge and the
     **options are the only boxes**. A card around a card around four cards is the
     containers-in-containers look, and the outer one carried no information.
-  - **The card is content-sized, not stretched.** `body.in-session .question-card` is
-    `flex: 0 1 auto` — it takes the height it needs, so a four-option question sits at the top
-    of the column instead of being dragged down the screen with its buttons pinned to the
-    bottom. It can still SHRINK, which is what keeps `.question-body`'s scroller working on a
-    long question; a four-image question still fills the column and scrolls.
+  - **The card is content-sized above 940px, stretched below it.** `flex: 0 1 auto` on a wide
+    screen: the card takes the height it needs, so a four-option question sits at the top of
+    the column rather than being dragged down with its buttons at the bottom. It can still
+    SHRINK, which is what keeps `.question-body`'s scroller working on a long question. Below
+    940px it goes back to `flex: 1` **on purpose**: that parks `.quiz-nav` at the bottom of the
+    column, so Previous and Next hold ONE position on every question, directly above the
+    overview strip, where a thumb can learn them.
+  - **There is no rule above Previous and Next.** Pinned on a phone it floated in open space,
+    and on a wide screen it separated the buttons from nothing. The buttons themselves are
+    38px / 0.84rem — smaller than a page-level action, because you press them a hundred times
+    a round and they should not weigh as much as the question.
   - **The question view's spacing says what matters.** The status band is tight to itself
-    (bar 10px above the readouts) and a full `--spacing-lg` away from the question; inside the
-    card the label row gives the question 14px, the question gives the options 16px, options
-    are 8px apart, and the footer stands 14px clear of the last option. Chrome crowds itself;
-    the question and its answers get the room.
+    (a 3px bar, 14px above the readouts) and a full `--spacing-xl` away from the question;
+    inside the card the label row gives the question `--spacing-md`, the question gives the
+    options `--spacing-lg`, and options are 8px apart. Chrome crowds itself; the question and
+    its answers get the room.
+  - **The label row above the question is plain text, and it travels WITH the question.**
+    `.question-category` is `--faint` after a `·`, not a bordered pill. The row lives inside
+    `.question-body`, so it is part of the centred block rather than pinned at the top with the
+    slack under it.
+  - **An icon-only control keeps its hairline and fill.** Speak, translate, the hint's dismiss
+    and the home card's reset were quiet to the point of not looking clickable; each is a
+    bordered pill on the tile fill again. Quiet is a colour and a size, not the absence of a
+    button.
+  - **The question block is CENTRED in the room it has.** `.question-body` is a flex column
+    with `justify-content: safe center`, and above 940px the content-sized card adds
+    `margin-block: auto`. `safe` is load-bearing: plain `center` in a scroller clips content
+    that outgrows the box at the TOP, with no way to scroll back up; a browser that does not
+    know the keyword drops the declaration and gets top alignment, which is a degradation
+    rather than a break.
+  - **Every scroller the app owns gets one thin bar** — `scrollbar-width: thin` plus a 6px
+    `::-webkit-scrollbar` with a `--border-hover` thumb on a transparent track, sitting in the
+    gutter each scroller already reserves.
+  - **The explanation is a tinted box with a hairline, not a slab.** The 3px left accent said
+    right-or-wrong a third time, after the tint and the green/red header; the hairline takes
+    the hue instead.
   - **Expanded below 940px the panel takes a SHARE of the screen, not all of it.**
     `.sidebar-body.expanded` caps at `26svh` (with a `vh` line first), which puts the WHOLE
     panel — header and padding included — just under **35%** of the screen, and the numbers
@@ -417,6 +450,11 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
 - **Mode keys are `allQuestions` / `bundesland` / `exam` / `review` / `topic` / `mistakes`.**
   There is no `berlin` mode — two label maps kept a stale `berlin` key and silently fell
   through. When renaming a mode, grep every lookup map.
+- **An option image is never `loading="lazy"`.** It IS the answer you are choosing, so it is
+  always above the fold and deferring it buys nothing — and the deferred load raced the rest
+  of the round's requests and came back `net::ERR_FAILED` often enough to paint "Bild fehlt"
+  over a file that was sitting right there (reproducible against `python -m http.server`; the
+  same `<img>` loaded on the spot once its `src` was re-set without the attribute).
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,
