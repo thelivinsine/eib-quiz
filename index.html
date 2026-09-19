@@ -1050,7 +1050,13 @@
         .pass-fail.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .pass-fail.fail { color: var(--red-text); background: var(--red-dim); }
         .score-breakdown { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-top: var(--spacing-md); }
-        .breakdown-item { padding: var(--spacing-md); border-radius: var(--radius); background: var(--surface2); border-color: var(--border-soft); }
+        /* It is a tile ON THE PAGE, so it keeps the shared tile fill and hairline
+           from the rule above. It had overridden both back down to the inset-well
+           values, which in light put it at 1.03 fill and 1.04 edge against the
+           canvas — under theme-light.md's 1.05 nesting and 1.10 hairline floors,
+           and invisible beside the 1.11 every other tile manages. --surface2 is
+           for a well INSIDE a tile; on the canvas it is the wrong rung. */
+        .breakdown-item { padding: var(--spacing-md); border-radius: var(--radius); }
         .breakdown-label { margin-bottom: 8px; }
         .breakdown-number { font-family: var(--font-head); font-weight: 600; font-size: 1.8rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
         .pass-threshold-note { font-size: 0.8rem; color: var(--muted); margin: var(--spacing-lg) 0 var(--spacing-md); }
