@@ -1,5 +1,36 @@
 # EIB Bug Audit Memory
 
+Dated record, newest first. **Entries below are historical — they describe the tree as it
+was on their date, not as it is now.** Read `docs/TODO.md` for current state.
+
+Superseded since: the 19 "PENDING" image assets in the 2026-06-20 entry were all obtained
+(2026-06-25, from the official BAMF PDF — 43/43 present, 0 missing); the pool grew from 320
+to **460** (300 general + 16 Bundesländer x 10), so every "320 contiguous" check below now
+reads 460; and the `appExtra` questions referenced in the May 28 notes were removed entirely
+in PR #28.
+
+## 2026-09-19 — Accuracy & quality audit (branch `fix/accuracy-audit`)
+
+Full audit of the shipped app. Data came back clean — 460 questions, contiguous IDs, no
+mojibake, no empty or duplicate options, every question bilingual with DE+EN explanations,
+0 missing image assets. Code did not. Confirmed bugs, all fixed except the UI ones:
+
+- **Exam sampling was ~7x biased.** `.sort(() => Math.random() - 0.5)` is not a shuffle.
+  Measured over 20k simulated exams: Q1 drawn 5022 times, late-catalogue questions 732,
+  against an expected 2000. Replaced with Fisher-Yates `sample()`; ratio now 1.21.
+- **`let history = []` shadowed `window.history`** in the same top-level script scope, so
+  the `scrollRestoration = 'manual'` fix from PRs #11-13 had never run. Renamed
+  `resultsHistory`.
+- **Two stale `berlin` mode keys** after the rename to `bundesland`: end-screen title fell
+  back to "Fertig!", Verlauf printed the raw mode string.
+- **`resumeSession()` dropped `missedQuestions`**, losing the wrong-answer review on resume.
+- **`overallAccuracy()` counted other Bundeslaender's answers** in the Trefferquote ring.
+- **Metadata drift:** manifest claimed 310 questions and pre-Bento `#050505` colours;
+  title/OG/JSON-LD claimed Berlin-only + 300 questions.
+- **Deferred (UI, tracked in `docs/TODO.md` #2a):** light-theme contrast fails WCAG AA
+  (`--gold` 2.71:1, `--accent` 3.03:1, `--green` 3.05:1), the exam timer scrolls out of
+  view, and several touch targets are under 44px.
+
 ## 2026-06-20 — Real image assets + persistence (branch `claude/web-app-audit-improvements-mf8kvi`)
 
 Deliberate, scoped follow-up to the audit. NOT a revival of the May 28 architecture.
