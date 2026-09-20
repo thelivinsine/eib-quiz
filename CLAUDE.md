@@ -501,6 +501,21 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - `setLang()` repaints the screen that is on. `endQuiz()` records the round once and
     `renderEndScreen()` paints it from `state`, so switching language on the results screen
     repaints without recording the round a second time.
+- **The results screen carries a scroll cue** (2026-09-20). `.scroll-cue` / `#endScrollCue`
+  is the same pill as the hero's "Start practising", pinned to the bottom of the viewport,
+  and `scrollEndDown()` moves the screen on by 85% of its height — a 33-question exam review
+  is walked, not jumped.
+  - **It is `position: fixed`, NOT a child of `#endScreen`.** The results screen is the
+    scroller; inside it the cue would scroll away with the content it is advertising.
+  - **It is centred by `left: 0; right: 0; margin-inline: auto`, never `translateX(-50%)`.**
+    It borrows the `fadeUp` animation, which ends on `transform: none` — that wiped the
+    centring the instant the animation finished and left the pill half a width to the right.
+  - `syncEndScrollCue()` shows it only while there IS more below (>24px) and retires it at
+    the bottom, where a scroll-down button would do nothing. It runs from `showScreen()`
+    (behind a `requestAnimationFrame`, since it measures a layout that has not happened
+    yet), from the screen's own scroll, on resize, and on the language switch's repaint.
+    While it is up, `#endScreen.has-cue` reserves a matching strip of bottom padding so the
+    last review item never ends underneath it.
 - **The results card states each number once** (2026-09-20). The score ring's centre already
   carries the percentage AND `n/total`, so the `.score-text` line under it — "22 of 33 correct
   (67%)" — was a pure restatement; it is gone, with `#scoreMessage`, `end.scoreExam` and
