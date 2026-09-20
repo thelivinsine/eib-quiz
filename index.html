@@ -2304,7 +2304,6 @@
                that something was. */
             'end.more':            { en: 'Your answers',            de: 'Deine Antworten' },
             'end.reviewTitle':     { en: 'Review your wrong answers', de: 'Falsche Antworten überprüfen' },
-            'end.examReviewTitle': { en: 'Your answers',              de: 'Deine Antworten' },
             'end.examReviewCount': { en: '{n} questions',             de: '{n} Fragen' },
             'end.aRight':          { en: 'Correct',                   de: 'Richtig' },
             'end.aWrong':          { en: 'Wrong',                     de: 'Falsch' },
@@ -3673,7 +3672,6 @@
                 reviewEl.innerHTML = `
                     <div class="review-section">
                         <div class="review-section-header">
-                            <h2>${t('end.examReviewTitle')}</h2>
                             <div class="review-header-actions">
                                 <span class="review-count">${t('end.examReviewCount', { n: rows.length })}</span>
                                 ${wrongCount ? `<button class="btn-primary btn-sm" onclick="startMistakeMode()">${t('end.retryWrong')}</button>` : ''}
