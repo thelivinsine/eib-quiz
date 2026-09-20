@@ -539,29 +539,20 @@
             /* One scroller, and at this height it is the page. */
             .question-body { overflow: visible; }
         }
-        /* Repeat, Back and the cue on ONE line, fixed to the bottom of the screen so
-           they are there at any scroll position and any size. The results screen is the
-           scroller, so an in-flow row would carry them off the top of it. */
-        .end-bar[hidden] { display: none; }
-        .end-bar {
-            position: fixed; z-index: 120;
-            left: 0; right: 0; bottom: 0;
+        /* In the FLOW, under the band. They were a fixed bar across the bottom, which
+           kept them on screen past the point of being useful — once you are in the review
+           list there is nothing left for "Your answers" to point at. Here they sit with
+           the result they belong to and scroll away behind it. */
+        .end-actions {
             display: flex; align-items: center; justify-content: center;
-            gap: var(--spacing-sm);
-            padding: 12px var(--spacing-md);
-            padding-bottom: calc(12px + env(safe-area-inset-bottom));
-            background: color-mix(in srgb, var(--canvas) 92%, transparent);
-            -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border);
+            gap: var(--spacing-sm); flex-wrap: wrap;
+            margin-top: var(--spacing-xl);
         }
-        .end-bar .btn-primary, .end-bar .btn-secondary { flex: 0 1 auto; min-width: 0; }
-        .end-bar-more { display: inline-flex; align-items: center; gap: 6px; }
-        .end-bar-more svg { width: 15px; height: 15px; }
-        /* Visible but inert at the foot of the list — there is no more to go to, and a
-           button that silently does nothing is worse than one that says so. */
-        .end-bar-more:disabled { opacity: 0.45; cursor: default; }
-        /* The bar floats over the scroller, so the scroller keeps a strip clear for it. */
-        body.in-session #endScreen.active { padding-bottom: 76px; }
+        .end-more { display: inline-flex; align-items: center; gap: 7px; }
+        .end-more svg { width: 16px; height: 16px; }
+        /* Visible but inert when there is nothing below — a control that silently does
+           nothing is worse than one that says so. */
+        .end-more:disabled { opacity: 0.45; cursor: default; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
@@ -876,10 +867,16 @@
 
         /* The time estimate is a corner stamp, not part of the sentence — it
            leaves the meta row to the one fact that varies (what is due). */
+        /* IN the head row, not floating over it. It was absolutely positioned top-right,
+           which worked while the icon was a chip stacked ABOVE the title — the title
+           began on the second line and nothing met it. With the icon and the title now
+           sharing the first line, the estimate landed straight on top of the title:
+           "All questions" printed over "approx. 60-90 min". `margin-left: auto` puts it
+           at the same corner without leaving the flow. */
         .mode-time {
-            position: absolute; top: var(--spacing-md); right: var(--spacing-md);
-            font-size: 0.75rem; color: var(--muted);
-            font-variant-numeric: tabular-nums;
+            margin-left: auto; padding-left: var(--spacing-sm);
+            font-size: 0.75rem; color: var(--muted); white-space: nowrap;
+            font-variant-numeric: tabular-nums; align-self: flex-start;
         }
         /* The peers repeat no "Start" (the card is the button), but they still
            have to LOOK like buttons where there is no hover to reveal it. */
@@ -911,6 +908,7 @@
         }
         /* The icon and the title are one row. */
         .mode-head { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
+        .mode-head .mode-title { min-width: 0; }
         .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; letter-spacing: -0.02em; margin-bottom: 0; }
         .mode-description {
             color: var(--sub-text); font-size: 0.87rem; line-height: 1.5;
@@ -1800,11 +1798,6 @@
             .result-stat { min-width: 30%; }
             .score-ring-wrap { width: 132px; height: 132px; }
             .score-ring-pct { font-size: 2.3rem; }
-            /* Three controls on one line at 390px: they shrink rather than wrap. */
-            .end-bar { gap: 6px; padding: 10px var(--spacing-sm); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-            .end-bar .btn-primary, .end-bar .btn-secondary { padding: 0 12px; font-size: 0.78rem; min-height: 40px; }
-            .end-bar-more span { display: none; }
-            .end-bar-more { padding: 0 12px; }
             .btn-group { flex-direction: column; }
             .btn-group .btn-primary, .btn-group .btn-secondary { width: 100%; justify-content: center; }
             .hist-row { font-size: 0.82rem; gap: 8px; }
@@ -2022,22 +2015,24 @@
                      it — not two wells plus three more cards underneath. -->
                 <div class="result-stats" id="resultStats"></div>
 
+                <!-- IN THE FLOW, under the result they belong to. They are above the fold
+                     because the hero and the band are sized to leave room for them, and
+                     they scroll away once you have gone past — which is the point: after
+                     "More below" there is nothing left for them to say. There is no Back
+                     here; the header already carries one. -->
+                <div class="end-actions">
+                    <button class="btn-primary" id="restartBtn" data-i18n="end.retry"></button>
+                    <button type="button" class="btn-secondary end-more" id="endScrollCue"
+                            onclick="scrollEndDown()" data-i18n-aria="end.more" data-i18n-title="end.more">
+                        <span data-i18n="end.more"></span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                    </button>
+                </div>
+
                 <div id="reviewSection"></div>
             </div>
         </section>
 
-        <!-- Always on screen, always one line: repeat, back, and the cue that says the
-             review is further down. Fixed, because the results screen is the scroller and
-             an in-flow row would carry them off the top. -->
-        <div class="end-bar" id="endBar" hidden>
-            <button class="btn-primary btn-sm" id="restartBtn" data-i18n="end.retry"></button>
-            <button class="btn-secondary btn-sm" id="homeBtn" data-i18n="end.home"></button>
-            <button type="button" class="btn-secondary btn-sm end-bar-more" id="endScrollCue"
-                    onclick="scrollEndDown()" data-i18n-aria="end.more" data-i18n-title="end.more">
-                <span data-i18n="end.more"></span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-            </button>
-        </div>
     </main>
 
     <!-- Image lightbox. One instance for the whole app; the prompt image and every
@@ -2304,7 +2299,10 @@
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
             'end.retry':           { en: 'Again',                   de: 'Nochmal' },
             'end.home':            { en: 'Back',                    de: 'Zurück' },
-            'end.more':            { en: 'More below',               de: 'Mehr unten' },
+            /* It names its destination — the section heading it scrolls to says the same
+               words — which tells you what is down there, where "More below" only said
+               that something was. */
+            'end.more':            { en: 'Your answers',            de: 'Deine Antworten' },
             'end.reviewTitle':     { en: 'Review your wrong answers', de: 'Falsche Antworten überprüfen' },
             'end.examReviewTitle': { en: 'Your answers',              de: 'Deine Antworten' },
             'end.examReviewCount': { en: '{n} questions',             de: '{n} Fragen' },
@@ -2905,12 +2903,15 @@
             // the arrow, and parks its time estimate in the corner.
             const card = (mode, icon, title, desc, meta, time, featured = '') => `
                 <button class="mode-card ${featured}" onclick="startMode('${mode}')">
-                    <span class="mode-head"><span class="mode-icon">${icon}</span><span class="mode-title">${title}</span></span>
+                    <span class="mode-head">
+                        <span class="mode-icon">${icon}</span><span class="mode-title">${title}</span>
+                        ${featured ? '' : `<span class="mode-time">${time}</span>`}
+                    </span>
                     <span class="mode-description">${desc}</span>
                     <span class="mode-meta">${featured ? meta + ' · ' + time : meta}</span>
                     ${featured
                         ? `<span class="mode-start-btn">${t('mode.start')} <span class="msb-arrow">→</span></span>`
-                        : `<span class="mode-time">${time}</span><span class="mode-go" aria-hidden="true">→</span>`}
+                        : `<span class="mode-go" aria-hidden="true">→</span>`}
                 </button>`;
             // The exam is the thing this app is for, so it is the only card that
             // gets the full-width charcoal treatment. The rest are peers, and the
@@ -3596,15 +3597,13 @@
          * the screen's own scroll, to resize, and to every repaint of the results.
          */
         function syncEndScrollCue() {
-            const bar = document.getElementById('endBar');
             const cue = document.getElementById('endScrollCue');
             const el = document.getElementById('endScreen');
-            if (!bar || !cue || !el) return;
-            const onEnd = state.currentScreen === 'end';
-            // The BAR is up for the whole of the results screen — Repeat and Back are
-            // not scroll-dependent. Only the cue knows whether there is more to go to.
-            bar.hidden = !onEnd;
-            cue.disabled = !onEnd || el.scrollHeight - el.scrollTop - el.clientHeight <= 24;
+            if (!cue || !el) return;
+            // The row is in the flow, so nothing has to show or hide it — it is simply
+            // part of the results. All this decides is whether there is anywhere to go.
+            cue.disabled = state.currentScreen !== 'end'
+                || el.scrollHeight - el.scrollTop - el.clientHeight <= 24;
         }
 
         function scrollEndDown() {
@@ -3829,12 +3828,6 @@
         document.getElementById('restartBtn').addEventListener('click', () => {
             if (state.currentMode === 'topic') startTopic(state.currentTopic);
             else startMode(state.currentMode);
-        });
-
-        document.getElementById('homeBtn').addEventListener('click', () => {
-            if (ttsSupported) window.speechSynthesis.cancel();
-            initHomeScreen();
-            showScreen('home');
         });
 
         // Keyboard navigation
