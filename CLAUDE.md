@@ -131,8 +131,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     chips in each theme); prefer a token, and if a literal is unavoidable it goes in the list the
     same day.
   - **The exam is the only featured card.** `.mode-card--featured` is full-width and **teal-
-    tinted** (`--accent-soft` fill, a saturated `--accent` edge, a solid `--accent-fill` icon
-    chip and Start pill); the other three modes are equal-weight peers. There is exactly one
+    tinted** (`--accent-soft` fill, an `--accent-line` edge, a solid `--accent-fill` icon
+    chip and Start pill); the other three modes are equal-weight peers.
+    - **Its edge is `--accent-line`, NOT `--accent`** (2026-09-20). A saturated ring around a
+      tinted fill is the exact treatment `.option-btn.correct` uses for the right answer, so
+      the card read as *selected* on a page where nothing is selectable. `--accent-line` is
+      the same hue one step off the card's own fill — #BEE0DA on #EDF7F4 in light — which
+      separates it from the canvas without borrowing the answer language. Hover matches. There is exactly one
     primary action per section — do not add a second call to start the exam.
     - It used to be a charcoal slab painted in five hex literals, which put its body text at
       `#B4B7C0` on near-black while the peers beside it ran at full ink: the loudest card on the
@@ -173,6 +178,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
     `renderBundeslandTile()`, `renderStatTile()` and `stateLocalTime()`. Mastery is one of the
     overview card's three counters.
+  - **On a phone the state picker's label and control share a row** (2026-09-20).
+    `#statePickerSlot` turns `flex-direction: row` under 620px: stacked, a two-word eyebrow
+    above a full-width pill spent a whole band of the section head on four characters.
   - **A control belongs to the section it changes.** The state picker (`#statePickerSlot` /
     `renderStatePicker()`) sits in the Practise section's `.section-head--row`, beside the exam
     and state modes it governs — not in the overview card, which only reports.
@@ -312,6 +320,34 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the numbers carry the row, and **a zero gets no colour** — green and red arrive with the first
   right or wrong answer rather than lighting a traffic light that is reporting nothing. The answered count came from the navigator's header (`.sidebar-count` /
   `qnav.answered` are gone), so it is stated once, above the fold, on every screen width.
+  - **The phone's chrome was re-spaced around the question** (2026-09-20). Under 620px
+    `.header-content` takes `padding: 16px/12px` — flush to the top edge the switch row read
+    as part of the status bar, and the safe-area inset is ADDED to this, not replaced by it.
+    `body.in-session .quiz-progress` then drops `10px` clear of that row. The room comes back
+    from BELOW the bar: its `--spacing-2xl` is a desktop rhythm, and at `--spacing-lg` down
+    here the four options of an ordinary question still fit without a scroller at 375x667
+    (measured: it scrolled with the gap left at 40px). The tally shrank one step with it —
+    `.stat-value` 1.15 -> 1.02rem, label 0.63 -> 0.58rem — because at the bottom of the column
+    it no longer has to carry the row the way it did at the top.
+  - **On a phone the readouts sit BELOW Previous and Next** (2026-09-20). `.quiz-topbar`
+    takes `order: 1` inside `.quiz-main` under 940px, so the column reads question ->
+    buttons -> tally -> overview strip. At the top they were the first thing on the screen,
+    competing with the question, and they are a running tally you glance at rather than
+    something to lead with. `order` moves them without touching the DOM, so reading and
+    focus order stay question-first. The gap above is `--spacing-2xl` (`--spacing-xl` under
+    620px): the buttons belong to the question, the tally and the strip below do not, and
+    that distance is what says so. **Desktop is unchanged** — the readouts stay over the
+    question column.
+  - **The quiz view's quiet tiers were one rung too quiet** (2026-09-20), measured against
+    `theme-{light,dark}.md` §2. `.opt-letter`'s glyph was `--muted`, which put A/B/C/D at
+    **4.68 on the chip in dark** — the PLACEHOLDER tier (§2 measures 4.67 there) on a label
+    that names the answer you are picking; it is `--sub-text` now, 6.46 dark / 9.29 light.
+    `.stat-label`, `.stat-of` and `.question-category` moved `--faint` -> `--muted`
+    (4.52 -> 5.41 light, 5.67 -> 7.01 dark): at 0.63rem uppercase they were the smallest
+    type on screen in the quietest tier, and on a phone the tally now has to read in one
+    glance from the bottom of the column. `.option-en-text` is `--sub-text` — for a reader
+    using the translation that line IS the answer. **`--faint` is for placeholder and
+    disabled, not for a label you read.**
   - **There is no "Pick an answer" line.** Four buttons under a question are self-evident, and
     the string only existed to fill the gap the pinned footer left. `quiz.pick` and `#answerHint`
     are gone.
@@ -352,12 +388,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       short end of the locked band and Next is clipped away with no way to scroll to it
       (941x645 overflowed by 4px in testing). Above ~750px tall the full 15% applies; below it
       the SHIFT gives way rather than the question — 90px at 700, 62.5px at 645.
-    - **The exam keeps its old position** (`body.in-exam .quiz-layout { margin-top: 0 }`). The
-      clock takes a row the practice screen does not have, and at 800px tall that row IS the
-      slack: 67px left under the buttons against the 120px this would spend. `in-exam` is set
-      in `showScreen()` beside `in-session`, from `state.currentMode` — not in `startMode()`,
-      so the topic, mistakes and resume paths are covered by the same line. It is ANDed with
-      `screenName !== 'home'`, or the class outlives the round it belongs to.
+    - **The exam takes the same shift, but pays for it out of the QUESTION** (2026-09-20).
+      Its clock is a row the practice screen does not have — chrome 341px against 214px —
+      which leaves 67px under the buttons at 800px tall against the 120px the shift spends,
+      so there is no slack to pay from. Inside `@media (min-height: 780px)` the exam drops
+      `.question-body`'s floor and lets `.question-card` fill (with `align-self: stretch` on
+      `.quiz-main`, or `flex: 1` has nothing to grow into). Measured at 1280x800: full 120px
+      shift, readouts 134 -> 254, buttons rock-stable at 792, 0/8 unanswered questions
+      scrolling. The cost is the open explanation, which scrolls at 800 where it did not;
+      at 900 and up it still fits.
+      - **The 780px gate is the whole safety margin, and it was found the hard way.**
+        Ungated, stripping the floor cost 8/8 unanswered questions scrolling at 941x645
+        against 1/8 on the shipped build — for a shift that had already tapered to nothing
+        there. Below 780 the exam keeps the shipped behaviour exactly and simply inherits
+        the shared `min(15svh, 50svh - 260px)`; above it, no cap is needed because the full
+        15svh always fits. Filling also fixes a wobble: content-sized with no floor,
+        Previous/Next wandered 748-776 across a round.
+      - `in-exam` is set in `showScreen()` beside `in-session`, from `state.currentMode` —
+        not in `startMode()`, so the topic, mistakes and resume paths are covered by the same
+        line. It is ANDed with `screenName !== 'home'`, or the class outlives the round.
     - Below 940px and below `max-height: 640px` the shift is zeroed. Down there the card
       already fills its area and the buttons are already pinned, so the shift would come
       straight out of the question; and under 520px tall the capped expression goes negative
@@ -452,6 +501,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - `setLang()` repaints the screen that is on. `endQuiz()` records the round once and
     `renderEndScreen()` paints it from `state`, so switching language on the results screen
     repaints without recording the round a second time.
+- **The results card states each number once** (2026-09-20). The score ring's centre already
+  carries the percentage AND `n/total`, so the `.score-text` line under it — "22 of 33 correct
+  (67%)" — was a pure restatement; it is gone, with `#scoreMessage`, `end.scoreExam` and
+  `end.scoreOther`. The breakdown tiles read **Correct / Wrong** (`Richtig` / `Falsch`), not
+  "Answered correctly" / "Answered wrongly" — the second is not English, and the quiz readouts
+  already use the short pair. `.pass-fail:empty { display: none }` because only an exam has a
+  pass mark and an empty inline-block still spent its margin and padding as a blank band.
 - **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
   inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
   When adding new icons, add them there (not as emoji or external SVGs). The question card's
