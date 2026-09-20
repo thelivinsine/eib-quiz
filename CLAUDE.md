@@ -124,7 +124,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   **`.hero-landing`** (content-sized, one primary action); **Where you stand** (`#homeStatus` —
   one wide `.dash` card holding the accuracy ring, three counters, the resume
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
-  quieter **History & reference** (`#historySection` + `#glossarySection`).
+  quieter **Past rounds & glossary** (`#historySection` + `#glossarySection`) — named that
+  and not "History & reference", because **History is one of the five topics** and the two
+  sections sat three screens apart under the same word.
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
     The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Five
     literals are listed today (the brand-mark letter, and the letter on the correct/wrong answer
@@ -440,7 +442,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Speak, translate, the lightbox close, the home card's reset, the navigator's chevron, a
     peer card's arrow and a topic chip's glyph all dropped their pill/chip: a solid glyph is
     heavy enough to read as a control on its own, and a box round an icon is a container
-    inside a container. The hit target stays (34/44px, and the coarse-pointer floor is
+    inside a container. **A topic chip's glyph is grey at rest and teal on hover**, the same
+    as a mode card's icon — sixteen teal plates were the loudest thing on the home screen,
+    and the colour is worth more as an answer to the pointer than as a default. The hit target stays (34/44px, and the coarse-pointer floor is
     untouched) — only the fill and the hairline are gone, so hover is a COLOUR change, never
     a fill that draws the box back on.
   - **The question block is CENTRED in the room it has.** `.question-body` is a flex column
@@ -527,7 +531,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The results page is a hero, one band and a list** (2026-09-20) — five boxes fewer.
   - **The score is not in a card.** `.score-hero` puts the ring, the verdict pill and the
     pass-mark note straight on the page, the way the question does. A box round a ring
-    says nothing the ring does not.
+    says nothing the ring does not. The ring is **190px** (160 under 620px) and the three
+    actions below it are `btn-sm`-sized (38px, 0.82rem): the ring is the result, the
+    buttons are only what you do next, and with no card around either the ring has to
+    carry the screen on its own.
   - **`.result-stats` is ONE band**, the same move the home overview card makes: correct,
     wrong and — in the exam — general, state and the clock, each a label and a figure,
     hairline-separated. It replaces two wells plus three more cards.
