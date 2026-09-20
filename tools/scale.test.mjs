@@ -51,9 +51,9 @@ const CONTROL_SCALE = [28, 36, 44, 52];
  * the test tells you when.
  */
 const BUDGETS = {
-  literalFontSizes:   [103, "target 0 — every one becomes a --fs-* token in phase 2"],
-  fontSizesBelowFloor: [20, "target 0 — every tier rises to 12px in phase 4"],
-  offScaleSpacing:     [68, "target 0 — phase 3 snaps them to SPACE_SCALE"],
+  literalFontSizes:   [100, "target 0 — every one becomes a --fs-* token in phase 2"],
+  fontSizesBelowFloor: [18, "target 0 — every tier rises to 12px in phase 4"],
+  offScaleSpacing:     [64, "target 0 — phase 3 snaps them to SPACE_SCALE"],
   distinctControlH:    [32, "target 4 — the CONTROL_SCALE, in phase 3"],
   distinctTracking:    [11, "target 3 — --ls-caps / --ls-normal / --ls-display, phase 3"],
   globalLineHeights:    [7, "target ~9 — one per --fs-* pair plus --lh-prose"],

@@ -663,27 +663,16 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: var(--spacing-lg) 0 var(--spacing-xl);
-            margin-bottom: var(--spacing-lg);
+            padding: var(--space-md) 0 var(--space-lg);
+            margin-bottom: var(--space-md);
             border-bottom: 1px solid var(--border);
         }
         .hero-inner { max-width: 780px; display: flex; flex-direction: column; align-items: center; }
 
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-            color: var(--teal-deep);
-            background: var(--teal-tint);
-            border: 1px solid var(--accent-line);
-            padding: 6px 13px; border-radius: var(--radius-pill);
-            margin-bottom: var(--spacing-md);
-        }
-        .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
-
         .hero-headline {
             font-family: var(--font-head);
             font-weight: 700;
-            font-size: clamp(1.7rem, 4.6vw, 2.9rem);
+            font-size: clamp(1.6rem, 3.6vw, 2.4rem);
             line-height: var(--lh-tight);
             letter-spacing: -0.035em;
             color: var(--text);
@@ -696,7 +685,7 @@
         }
         .hero-lead {
             max-width: 620px;
-            margin: var(--spacing-md) auto 0;
+            margin: var(--space-sm) auto 0;
             color: var(--sub-text);
             font-size: clamp(0.98rem, 1.4vw, 1.08rem);
             line-height: var(--lh-prose);
@@ -705,25 +694,10 @@
         .hero-cta-row {
             display: flex; flex-wrap: wrap; gap: var(--spacing-md);
             justify-content: center;
-            margin-top: var(--spacing-lg);
+            margin-top: var(--space-md);
         }
         .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: 14px 28px; font-size: 0.98rem; }
         .hero-cta-row .btn-primary svg { width: 18px; height: 18px; }
-
-        .hero-trust {
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 8px 20px;
-            margin-top: var(--spacing-lg);
-        }
-        .hero-trust { list-style: none; padding: 0; }
-        .hero-trust > li {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.86rem; font-weight: 500; color: var(--sub-text);
-        }
-        .hero-trust > li svg {
-            width: 15px; height: 15px; flex-shrink: 0;
-            color: var(--teal-deep);
-        }
 
 
         /* ============================================================
@@ -731,10 +705,10 @@
            The rhythm is: section heading > card title > body. Every
            section owns one job and says so above itself.
            ============================================================ */
-        .home-section { margin-bottom: 40px; }
+        .home-section { margin-bottom: var(--space-xl); }
         .home-section:last-child { margin-bottom: 0; }
 
-        .section-head { margin-bottom: var(--spacing-md); max-width: 62ch; }
+        .section-head { margin-bottom: var(--space-ms); max-width: 62ch; }
         /* A section head that carries a control for its own section. */
         .section-head--row {
             max-width: none;
@@ -768,7 +742,7 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: var(--spacing-lg);
+            padding: var(--space-md);
         }
 
         .state-picker {
@@ -826,7 +800,7 @@
             align-items: stretch;
             gap: var(--spacing-lg);
         }
-        .ready-ring-wrap { position: relative; width: 112px; height: 112px; flex-shrink: 0; }
+        .ready-ring-wrap { position: relative; width: 88px; height: 88px; flex-shrink: 0; }
         .ready-ring { width: 100%; height: 100%; display: block; }
         .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 8; }
         .ready-ring-bar {
@@ -835,7 +809,7 @@
             transition: stroke-dashoffset 0.95s var(--ease-spring);
         }
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: 1.6rem; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: 1.35rem; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
         .ready-ring-sub { margin-top: 6px; font-size: 0.6rem; }
 
         .dash-stats {
@@ -1029,11 +1003,11 @@
         /* ============================================================
            TOPICS — chips on the page; the section heading names them
            ============================================================ */
-        .topic-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); }
+        .topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-sm); }
         .topic-chip {
-            display: flex; align-items: center; gap: var(--spacing-md);
-            padding: 14px var(--spacing-md);
-            min-height: 72px;
+            display: flex; align-items: center; gap: var(--space-ms);
+            padding: var(--space-sm) var(--space-ms);
+            min-height: 56px;
             text-align: left;
             border-radius: var(--radius);
             background: var(--surface);
@@ -1759,24 +1733,23 @@
             }
 
             /* Hero: introduce, then get out of the way. */
-            .hero-landing { padding: var(--spacing-lg) 0 var(--spacing-xl); margin-bottom: var(--spacing-lg); }
-            .hero-badge { font-size: 0.64rem; letter-spacing: 0.04em; padding: 5px 11px; }
+            .hero-landing { padding: var(--space-ms) 0 var(--space-md); margin-bottom: var(--space-ms); }
             .hero-lead { font-size: 0.95rem; }
-            .hero-cta-row { width: 100%; flex-direction: column; gap: var(--spacing-sm); margin-top: var(--spacing-md); }
+            .hero-cta-row { width: 100%; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-ms); }
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; padding: 13px 22px; }
             .hero-trust { gap: 6px 16px; margin-top: var(--spacing-md); }
             .hero-trust > li { font-size: 0.8rem; }
 
-            .home-section { margin-bottom: 40px; }
+            .home-section { margin-bottom: var(--space-lg); }
             .section-head h2 { font-size: 1.15rem; }
             .section-head p { font-size: 0.88rem; }
-            .dash { padding: var(--spacing-md); }
+            .dash { padding: var(--space-ms); }
             /* The ring stops being a column of its own and sits above the counters. */
             /* Stacked, the hairline that separated ring from stats becomes the
                rule under the ring. */
-            .dash-body { grid-template-columns: 1fr; justify-items: center; gap: var(--spacing-md); }
-            .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--spacing-md); padding-right: 0; }
-            .ready-ring-wrap { width: 128px; height: 128px; }
+            .dash-body { grid-template-columns: 1fr; justify-items: center; gap: var(--space-ms); }
+            .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--space-ms); padding-right: 0; }
+            .ready-ring-wrap { width: 96px; height: 96px; }
             .ready-ring-pct { font-size: 1.6rem; }
             /* The picker goes full width under its section heading rather than
                squeezing onto the same line as it. */
@@ -1961,7 +1934,6 @@
             <!-- Landing hero: the pitch, one primary action, then out of the way. -->
             <div class="hero-landing">
                 <div class="hero-inner">
-                    <span class="hero-badge" data-i18n="hero.badge"></span>
                     <h1 class="hero-headline" data-i18n-html="hero.headline"></h1>
                     <p class="hero-lead" data-i18n="hero.lead"></p>
                     <div class="hero-cta-row">
@@ -1970,12 +1942,6 @@
                             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path transform="rotate(90 12 12)" d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                         </button>
                     </div>
-                    <ul class="hero-trust">
-                        <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M9 19.2 2.6 12.8l1.9-1.9L9 15.4 19.5 4.9l1.9 1.9Z"/></svg><span data-i18n="hero.trust1"></span></li>
-                        <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M9 19.2 2.6 12.8l1.9-1.9L9 15.4 19.5 4.9l1.9 1.9Z"/></svg><span data-i18n="hero.trust2"></span></li>
-                        <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M9 19.2 2.6 12.8l1.9-1.9L9 15.4 19.5 4.9l1.9 1.9Z"/></svg><span data-i18n="hero.trust3"></span></li>
-                        <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M9 19.2 2.6 12.8l1.9-1.9L9 15.4 19.5 4.9l1.9 1.9Z"/></svg><span data-i18n="hero.trust4"></span></li>
-                    </ul>
                 </div>
             </div>
 
@@ -2283,14 +2249,9 @@
             'nav.language':        { en: 'Interface language',      de: 'Sprache der Oberfläche' },
 
             // hero
-            'hero.badge':          { en: 'Life in Germany · Berlin & all states', de: 'Leben in Deutschland · Berlin & alle Länder' },
             'hero.headline':       { en: 'Pass your <span class="hero-mark">citizenship test</span> first time.', de: 'Bestehe deinen <span class="hero-mark">Einbürgerungstest</span> beim ersten Versuch.' },
             'hero.lead':           { en: 'Practise all 300 official questions plus the 10 for your state. Spaced repetition, a real exam simulation, and explanations in German and English. Free, no account, straight in the browser.', de: 'Übe alle 300 amtlichen Fragen plus deine 10 Landesfragen. Mit smarter Wiederholung, echter Prüfungssimulation und Erklärungen auf Deutsch und Englisch. Kostenlos, ohne Konto, direkt im Browser.' },
             'hero.cta':            { en: 'Start practising',        de: 'Jetzt üben' },
-            'hero.trust1':         { en: '300 official questions',  de: '300 amtliche Fragen' },
-            'hero.trust2':         { en: 'All 16 states',           de: '16 Bundesländer' },
-            'hero.trust3':         { en: 'German & English',        de: 'Deutsch & Englisch' },
-            'hero.trust4':         { en: '100% free',               de: '100% kostenlos' },
 
             // home sections
             'home.progress.title': { en: 'Where you stand',         de: 'Dein Stand' },

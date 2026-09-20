@@ -443,24 +443,50 @@ The first phase with actual design intent. Minimum set:
   because the tally came down — the density rule satisfied by lowering chrome,
   not by inflating content.
 
-### Phase 5 — density pass on the home screen
+### Phase 5 — density pass on the home screen ✅ DONE 2026-09-20
 
-Structural, not typographic. Targets, in order of payoff:
+Taken **out of plan order**, before phases 2-4, because phase 1 proved the height
+lives here and not in the type. Structural, not typographic.
 
-- **`.hero-landing` 357/391px → ≤ 200px.** It is a headline and one button
-  occupying half a phone viewport. Its padding is `20px 0 28px` *plus* the
-  section's own 40px margin plus the header — the stacking is the problem, not
-  the hero itself.
-- **`.dash` 154/236px** — one band of a ring and three numerals should not cost
-  a quarter of a phone screen.
-- **`.topic-chip` 72px tall / 526px wide** — at that size it is a list row
-  pretending to be a chip. Either make it a real chip (~32px, `--ctl-sm`) or
-  make it an honest row and drop the chip styling.
-- Re-check `.home-section` 40px margins and `.section-head` 61px once the above
-  lands; they may already be right against a tighter page.
+| @1280x900 | before | after | | @390x844 | before | after |
+|---|---|---|---|---|---|---|
+| `.hero-landing` | 350px | **235** | | `.hero-landing` | 391px | **249** |
+| `.dash` | 154px | **122** | | `.dash` | 236px | **185** |
+| `#topicSection` | 305px | **161** | | | | |
+| document | 2140px | **1861** | | document | 2739px | **2382** |
+| **screens** | 2.38 | **2.07** | | **screens** | 3.25 | **2.82** |
+| **exam card** | top 812, 79px visible | **bottom 759 — fully above the fold** | | **exam card** | top 1029 | **top 786, within screen one** |
 
-Acceptance: the exam card fully visible without scrolling at 1280x900, and
-within the first screen at 390x844.
+**Criteria 10 and 11 are met.** The primary action is now reachable without
+scrolling on a desktop and inside the first screen on a phone.
+
+What changed:
+
+- **The hero dropped its badge and its trust row.** `.hero-badge` was a decorative
+  eyebrow ("Life in Germany · Berlin & all states") restating the page title and the
+  state picker, costing 45px. `.hero-trust` was four tick bullets — *300 official
+  questions · All 16 states · German & English · 100% free* — each of which the
+  `.hero-lead` sentence directly above already says, costing 38px. The lead was kept
+  over the trust row because it is the only place that says what the app *does*
+  (spaced repetition, exam simulation, explanations), and it is the page's SEO copy.
+  `hero.badge` and `hero.trust1`-`4` are gone from `I18N`.
+- Headline clamp `2.9rem` → `2.4rem`; hero padding, lead and CTA margins tightened.
+- **`.dash`'s height IS the ring plus padding** — nothing else in the band is taller —
+  so the ring is the only thing that can shorten it: 112px → 88px desktop. On a phone
+  it was **128px, larger than the desktop's**, stacked *above* the counters where it is
+  pure height; now 96px.
+- **A topic "chip" was 72px tall and 526px wide** — a list row in disguise, five of
+  them in two columns making three rows. `repeat(auto-fit, minmax(230px, 1fr))` puts
+  four across a wide page, so five topics take two rows and the chip is 259px wide.
+- `.home-section` margin 40 → 28px (20 on a phone), `.section-head` 16 → 12px.
+
+**Criteria 8 and 9 (≤1.6 / ≤2.2 screens) are NOT met and were the wrong targets.**
+They were set before the page was broken down. At 1861px the remaining budget is
+hero 235 + overview 188 + Practise 339 + topics 227 + **tail 585**, and the tail is
+`#historySection` at 468px — a real list of past rounds. Reaching 1.6 screens means
+removing or collapsing a section, which is a product decision, not a sizing fix.
+Recommend replacing 8/9 with "the exam card is above the fold", which is what those
+criteria were really proxying for and what 10/11 already state.
 
 ### Phase 6 — verify and document
 
