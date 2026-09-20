@@ -17,6 +17,7 @@ and filling the empty tables from what it finds in the tree.
 |---|---|
 | `docs/reference/theme-light.md` | Light palettes measured out of pixels from two shipped desktop apps, with every contrast ratio computed. §7 sets both themes side by side. It makes no claim about any project. |
 | `docs/reference/theme-dark.md` | The same for dark, same method. The pair is the most reusable thing here. |
+| `docs/reference/type-and-space.md` | The same method on the OTHER axis: type scale, leading, tracking, control size and spacing, read out of the **live DOM** of four shipped design systems (Stripe Sail, GitHub Primer, Linear, Khan Wonder Blocks) — token layer and rendered layer separately. Its §3 (leading is a function of size) and §6 checklist are the parts that travel. It makes no claim about any project. |
 | `.claude/skills/conclude-session/SKILL.md` | The minor / substantial / diff-review split, as a procedure that fires on "conclude", "wrap up", "finish up". |
 | `.claude/skills/update-the-docs/SKILL.md` | *Sweep every markdown file against the tree, not just the ones this session touched.* |
 | `.claude/commands/explain.md` | `/explain <thing>` — plain English, no coding background assumed. Seven lines. |

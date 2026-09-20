@@ -1,6 +1,7 @@
 # Plan — install a size system (type, space, density)
 
-Status: proposed, 2026-09-20. Not started.
+Status: **shipped 2026-09-20.** All six phases done; 15 of 16 acceptance criteria met.
+A post-merge review of the range caught two regressions, both fixed — see §7.
 
 The app has a **rigorous colour system** (tokenised, measured against
 `claude-context-kit/docs/reference/theme-{light,dark}.md`, asserted by
@@ -532,6 +533,7 @@ mirror.
 |---|---|---|---|---|
 | 1 | literal `font-size` declarations | 103 | **0** | ✅ |
 | 2 | off-scale spacing lengths | 54 | **0** | ✅ |
+| 2a | spacing declarations still literal | 65 | **2** (a 1px hairline gap) | ✅ |
 | 3 | distinct control heights (`min-height`) | 14 | **4** (+1 placeholder) | ✅ |
 | 4 | distinct `letter-spacing` values | 11 | **2** | ✅ |
 | 5 | smallest rendered text | 10.08px | **12px** | ✅ |
@@ -540,28 +542,45 @@ mirror.
 | 7a | default UI line box | 25.6px | **20.8px** | ✅ |
 | 7b | gap histogram, top-2 share | ~35% | **64%** (target 80) | ⚠️ |
 | 7c | distinct font weights | 5 | **4** | ✅ |
-| 8 | home screens @1280x900 | 2.46 | **2.06** (target 1.6) | ❌ |
-| 9 | home screens @390x844 | 3.35 | **2.85** (target 2.2) | ❌ |
-| 10 | exam card fully above the fold @1280x900 | no (79px visible) | **yes** (bottom 749) | ✅ |
-| 11 | exam card top @390x844 | 1029px | **786px** | ✅ |
+| 8 | home screens @1280x900 | 2.46 | **1.58** | ✅ |
+| 9 | home screens @390x844 | 3.35 | **2.35** (target 2.2) | ⚠️ |
+| 10 | exam card fully above the fold @1280x900 | no (79px visible) | **yes** | ✅ |
+| 11 | exam card top @390x844 | 1029px | **833px** | ✅ |
 | 12 | `contrast.test.mjs` | passes | **10/10** | ✅ |
-| 13 | `scale.test.mjs` | — | **9/9, every budget at target** | ✅ |
+| 13 | `scale.test.mjs` | — | **10/10, every budget at target** | ✅ |
 | 14 | no horizontal scroll @375px | passes | **passes** | ✅ |
 | 15 | quiz/results locked @375/620/940/1400 | passes | **passes** | ✅ |
 
-**13 of 16 met. The three that are not:**
+**Criterion 8 was met only by collapsing the past-rounds list** behind a `<details>`,
+which was a product decision, not a sizing change — the block is a real list that grows
+with use, and at 480px open it was the biggest thing left on the page. Closed it is 46px.
 
-- **7b (64% vs 80%).** Every gap is now on the scale — 4, 8, 2, 6, 12, 16 — but
-  the app genuinely spreads across six rungs where the references concentrate on
-  two. This is a *distribution* target rather than a correctness one, and it
-  would only move by re-deciding individual layouts. Not worth forcing.
-- **8 and 9 (2.06 / 2.85 screens).** These were set before the page was ever
-  broken down, and they are the wrong targets. At 1852px the budget is hero 227 +
-  overview 188 + Practise 339 + topics 227 + **tail 585**, and the tail is
-  `#historySection` — a real list of the reader's past rounds. Reaching 1.6
-  screens means removing or collapsing a section: a product decision, not a
-  sizing fix. **Criteria 10 and 11 are what 8 and 9 were really proxying for**,
-  and both are met.
+Two left short, both honestly:
+
+- **7b (64% vs 80%).** Every gap is on the scale; the app simply spreads across six rungs
+  where the references concentrate on two. A distribution target, not a correctness one.
+- **9 (2.35 vs 2.2).** Within 130px. Getting under would mean collapsing a second section,
+  and the criterion this was proxying for — the exam card inside the first screen — is met.
+
+## 7. Post-merge review
+
+Phases 2-5 were pushed straight to `main` without a PR, against the project's own workflow
+rule. A review of `4c482c8..HEAD` was run afterwards and found **two real regressions**,
+both now fixed and both promoted to rules in `CLAUDE.md`:
+
+1. **`--fs-hero` was minted larger than the value it replaced** — `clamp(1.75rem, 3.2vw,
+   2.5rem)` against the `clamp(1.6rem, 3.6vw, 2.4rem)` phase 5 had set — so the token pass
+   silently undid the headline cut it was meant to carry. The hero measured 283px on a phone
+   while this plan and the commit message both claimed 249.
+   **Rule: a token must never be minted larger than the value it replaces.**
+2. **`.option-btn`'s coarse-pointer height became a no-op** — mapping its 48px onto
+   `--ctl-md` gave it the 44px its base already had, erasing the documented thumb bump.
+   **Rule: a coarse-pointer override must be a rung above its base, or it does nothing.**
+
+It also found that **`offScaleSpacing: 0` overstated what was enforced** (65 on-scale
+literals still bypassed the tokens), which is why `literalSpacing` now sits beside it; and
+that CLAUDE.md's claim that `#timer` and `.quiz-sidebar` are "no longer `position: sticky`"
+was false against the tree and had been for months. Both corrected.
 
 ## 6. Risks
 

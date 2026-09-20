@@ -2,6 +2,11 @@
 
 **Branch** `ui/focused-session-view` · **Status** shipped 2026-09-19 · **Written** 2026-09-19
 
+> **Its structural decisions still hold; its NUMBERS do not.** Every size and space
+> literal quoted below was replaced by a token on 2026-09-20 — see
+> [`sizing-system.md`](sizing-system.md) and the size-system block in `CLAUDE.md`. Read
+> this for the reasoning about layout and scroll regions, not for values to copy.
+
 The home screen stays a page you scroll. Everything downstream of pressing Start becomes an
 **app view**: one screenful, chrome that belongs to the session rather than to the site, and a
 single scroll region where the content genuinely cannot fit.

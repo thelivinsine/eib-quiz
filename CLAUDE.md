@@ -98,7 +98,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     as a hole.
   - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
     (`--font-body`); `--font-mono` is aliased to Inter (kept only so JS refs resolve). Display
-    weights top out at 700. Uppercase micro-labels tracked at 0.08em are tile eyebrows (`.eyebrow`
+    weights top out at 700. Uppercase micro-labels take `--ls-caps` (0.06em) and are tile eyebrows (`.eyebrow`
     + shared list).
   - **There is a SIZE system now, and it is measured** (2026-09-20), against
     `claude-context-kit/docs/reference/type-and-space.md` — four shipping design systems
@@ -146,6 +146,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
       not the number ("Beantwortet" alone is ~100px). `n / total` is the one readout that
       names itself beside Richtig / Falsch / Score, so it is the one that can give the word up.
+    - **A token must never be minted LARGER than the value it replaces.** `--fs-hero` was
+      first written as `clamp(1.75rem, 3.2vw, 2.5rem)` and silently undid the phase-5 headline
+      cut it was supposed to carry — the hero measured 283px on a phone while the plan and the
+      commit both claimed 249. It is `clamp(1.6rem, 3.6vw, 2.4rem)`, the value phase 5 decided.
+    - **A coarse-pointer override must be a RUNG ABOVE its base, or it does nothing.** Mapping
+      `.option-btn`'s 48px coarse height onto `--ctl-md` gave it the 44px its base already had,
+      so the rule set the value it already carried and the documented thumb bump vanished in
+      silence. It is `--ctl-lg` now. Check any `@media (pointer: coarse)` rule against the base
+      it is meant to raise.
+    - **`offScaleSpacing: 0` does not mean spacing is tokenised**, which is why
+      `literalSpacing` exists beside it: an on-scale literal like `gap: 8px` clears the
+      off-scale check and still bypasses the tokens. Two literals are left by design — the
+      results band's 1px separator gap, a hairline with no rung to snap to.
     - **A snapped value's ties go DOWN**, toward density. Genuine functional clearance is NOT
       snapped — the state picker's caret room is
       `calc(var(--space-xl) + var(--space-sm))`, which keeps the value and still kills the
@@ -163,7 +176,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
-- **In a session the page keeps wider side gutters** than the home screen: `--spacing-xl`
+- **In a session the page keeps wider side gutters** than the home screen: `--space-xl`
   (28px) rather than `--spacing-lg`, because the question is the only thing on screen and
   should not run to the edges. Below 620px it drops back to `--spacing-md`.
 - **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
@@ -173,7 +186,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (icon beside the title), the three overview stats stay three columns, and the exam timer goes
   to one line. The quiz readouts drop their hairlines and tighten to a 9px gap so all four stay
   on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
-  the numbers went UP to 1.15rem rather than down. The header goes the other way: it is a strip
+  the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
   you glance at, so `.header-controls .seg-btn` is 26px, `.session-back` 32px and the brand mark
   28px — stated in the 620px block, after the coarse-pointer floor, so source order decides. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
@@ -254,6 +267,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **A control belongs to the section it changes.** The state picker (`#statePickerSlot` /
     `renderStatePicker()`) sits in the Practise section's `.section-head--row`, beside the exam
     and state modes it governs — not in the overview card, which only reports.
+  - **Past rounds is COLLAPSED behind a `<details>`** (2026-09-20). It was the single biggest
+    block left on the home page (480px) and unlike the hero or the dash it is not padding —
+    it is a real list that GROWS with every round played, so no amount of sizing shortens it.
+    `renderHistory()` reuses the glossary's exact structure (`details.glossary-wrap` +
+    `summary.glossary-summary`) rather than inventing a second collapsing idiom, and the
+    summary carries the count: `hist.title` is now `Past rounds ({n})` / `Frühere Runden ({n})`.
+    That was also the "History" collision the section rename already worried about — History
+    is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58 screens**.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
 - **The navigator offers three views, and the reader picks one** (2026-09-19). `#navActions`
@@ -360,7 +381,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     a browser without `:has` would double-pad the content instead of merely misplacing a bar.
   - No caller scrolls the page. The four `window.scrollTo` calls that used to paper over the
     page scroll are gone; `displayQuestion()` resets `#questionBody.scrollTop` instead, and
-    `#timer` / `.quiz-sidebar` are no longer `position: sticky` — there is nothing to stick to.
+    `#timer` (`top: var(--header-h)`) and `.quiz-sidebar` (`top: calc(var(--header-h) + 8px)`)
+    ARE still `position: sticky` — an earlier version of this line claimed they were not,
+    which was false against the tree for months. Verified 2026-09-20.
 - **Inside a session the header shows a back button, not the logo**, and the only buttons under
   the question are Previous (left) and Next (right) — the row maps to the direction each
   button moves you. `#quitBtn` is gone; `#sessionBack` carries it, with one
@@ -420,7 +443,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     buttons -> tally -> overview strip. At the top they were the first thing on the screen,
     competing with the question, and they are a running tally you glance at rather than
     something to lead with. `order` moves them without touching the DOM, so reading and
-    focus order stay question-first. The gap above is `--spacing-2xl` (`--spacing-xl` under
+    focus order stay question-first. The gap above is `--space-2xl` (`--space-xl` under
     620px): the buttons belong to the question, the tally and the strip below do not, and
     that distance is what says so. **Desktop is unchanged** — the readouts stay over the
     question column.
@@ -443,7 +466,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     containers-in-containers look, and the outer one carried no information.
   - **`.quiz-layout` is two columns and one row** (2026-09-20): the question column
     (`.quiz-main` — readouts, question, then `.quiz-nav`) beside the navigator. The column gap
-    is `--spacing-xl`; below 940px it is one column and the strip takes a 10px `margin-top`,
+    is `--space-xl`; below 940px it is one column and the strip takes a 10px `margin-top`,
     or it sits flush against Previous.
   - **The navigator's height is FIXED, and the question's is not.** `clamp(300px, 56svh, 680px)`
     with `align-self: start` and `max-height: 100%` (a `vh` line first, as everywhere). Sized
@@ -496,7 +519,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.quiz-nav`: out of the reading path, on a row that already exists, costing the question no
     height. It is still hidden below 940px and under `@media (hover: none)`.
   - **The question view's spacing says what matters.** The status band is tight to itself
-    (a 3px bar, 14px above the readouts) and a full `--spacing-xl` away from the question;
+    (a 3px bar, 14px above the readouts) and a full `--space-xl` away from the question;
     inside the card the label row gives the question `--spacing-md`, the question gives the
     options `--spacing-lg`, and options are 8px apart. Chrome crowds itself; the question and
     its answers get the room.
@@ -559,21 +582,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     navigator.
   - **The card is compact so the scrollbar is the exception, not the default.**
     The meta row and `.quiz-nav` take `--spacing-sm`, and `.options` 12px. The question
-    is `clamp(1.02rem, 1.5vw, 1.18rem)`, an option is 0.9rem in a 42px row (48px under
+    is `--fs-lg`, an option is `--fs-md` in a `--ctl-md` row (`--ctl-lg` under
     `@media (pointer: coarse)` — a thumb gets the height back, a mouse does not need it) with a
-    26px letter chip, and the explanation is 0.86rem. At 994x734 a four-option text question
+    26px letter chip, and the explanation is `--fs-sm`. At 994x734 a four-option text question
     fits with no scroller at all; a four-IMAGE question or an open explanation still scrolls
     `.question-body`, which is what it is for.
 - **The sizing scale was tightened for a page of sections** (2026-09-20). `--spacing-lg`
-  24 -> **20**, `--spacing-xl` 32 -> **28**, `--spacing-2xl` 48 -> **40**; `.home-section`
+  24 -> **20**, `--space-xl` 32 -> **28**, `--space-2xl` 48 -> **40**; `.home-section`
   56px -> 40px. The steps were set when the home screen was a wall of bento tiles. `--spacing-xs`
-  / `-sm` / `-md` are the rhythm INSIDE a control and did not move. Display numbers came down
+  / `-sm` / `-md` are the rhythm INSIDE a control and did not move. (The `--spacing-*` names
+  are gone — everything reads `--space-*`.) Display numbers came down
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
   (56 -> 50px), `.btn-lg` (50 -> 46px) and the glossary rows.
   - **The header's switches are the one deliberate exception to the 44px floor.** `.seg-btn`
-    is 30px (36px under `@media (pointer: coarse)`), and `.brand` / `.session-back` are 38px
-    (44px on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
+    is `--ctl-xs` (28px; `--ctl-sm` 36px under `@media (pointer: coarse)`), and `.brand` /
+    `.session-back` are `--ctl-sm` (`--ctl-md` on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
     everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px.
     WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the rest of the app holds to.
   - **In a session the header drops its bottom hairline** (`body.in-session header`). The page

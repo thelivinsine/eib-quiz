@@ -54,6 +54,7 @@ what is in it, in this project's own words rather than in categories.
 | | |
 |---|---|
 | [`reference/theme-light.md`](reference/theme-light.md), [`reference/theme-dark.md`](reference/theme-dark.md) | Two real applications sampled pixel by pixel, and the rules that fall out. **Source material about other apps — it makes no claim about this one.** |
+| [`reference/type-and-space.md`](reference/type-and-space.md) | Four design systems read out of their live DOM — type scale, leading, tracking, control size, spacing. Same disclaimer: **source material about other apps.** |
 | [`reference/nextjs.md`](reference/nextjs.md) | The pinned framework docs index. Names the official page for each topic. *(Keep only if this project is on that framework version; otherwise build the equivalent for the stack in use and delete this row.)* |
 | `reference/` (the rest) | Received material — mockups, specs, example data. **The code never touches it.** |
 
