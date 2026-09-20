@@ -100,7 +100,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (`--font-body`); `--font-mono` is aliased to Inter (kept only so JS refs resolve). Display
     weights top out at 700. Uppercase micro-labels tracked at 0.08em are tile eyebrows (`.eyebrow`
     + shared list).
-  - Icons stay **inline SVG** via `ICONS`/`_svg()` (NOT Phosphor/Iconify — offline-first, Google
+  - Icons stay **inline SVG** via `ICONS`/`_svg()`, solid fills (NOT Phosphor/Iconify — offline-first, Google
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
@@ -124,7 +124,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   **`.hero-landing`** (content-sized, one primary action); **Where you stand** (`#homeStatus` —
   one wide `.dash` card holding the accuracy ring, three counters, the resume
   banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
-  quieter **History & reference** (`#historySection` + `#glossarySection`).
+  quieter **Past rounds & glossary** (`#historySection` + `#glossarySection`) — named that
+  and not "History & reference", because **History is one of the five topics** and the two
+  sections sat three screens apart under the same word.
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
     The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Five
     literals are listed today (the brand-mark letter, and the letter on the correct/wrong answer
@@ -436,10 +438,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.question-category` is `--faint` after a `·`, not a bordered pill. The row lives inside
     `.question-body`, so it is part of the centred block rather than pinned at the top with the
     slack under it.
-  - **An icon-only control keeps its hairline and fill.** Speak, translate, the hint's dismiss
-    and the home card's reset were quiet to the point of not looking clickable; each is a
-    bordered pill on the tile fill again. Quiet is a colour and a size, not the absence of a
-    button.
+  - **An icon has no plate behind it** (2026-09-20, supersedes the hairline-and-fill rule).
+    Speak, translate, the lightbox close, the home card's reset, the navigator's chevron, a
+    peer card's arrow and a topic chip's glyph all dropped their pill/chip: a solid glyph is
+    heavy enough to read as a control on its own, and a box round an icon is a container
+    inside a container. **A topic chip's glyph is grey at rest and teal on hover**, the same
+    as a mode card's icon — sixteen teal plates were the loudest thing on the home screen,
+    and the colour is worth more as an answer to the pointer than as a default. The hit target stays (34/44px, and the coarse-pointer floor is
+    untouched) — only the fill and the hairline are gone, so hover is a COLOUR change, never
+    a fill that draws the box back on.
   - **The question block is CENTRED in the room it has.** `.question-body` is a flex column
     with `justify-content: safe center`, and above 940px the content-sized card adds
     `margin-block: auto`. `safe` is load-bearing: plain `center` in a scroller clips content
@@ -524,7 +531,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The results page is a hero, one band and a list** (2026-09-20) — five boxes fewer.
   - **The score is not in a card.** `.score-hero` puts the ring, the verdict pill and the
     pass-mark note straight on the page, the way the question does. A box round a ring
-    says nothing the ring does not.
+    says nothing the ring does not. The ring is **190px** (160 under 620px) and the three
+    actions below it are `btn-sm`-sized (38px, 0.82rem): the ring is the result, the
+    buttons are only what you do next, and with no card around either the ring has to
+    carry the screen on its own.
   - **`.result-stats` is ONE band**, the same move the home overview card makes: correct,
     wrong and — in the exam — general, state and the clock, each a label and a figure,
     hairline-separated. It replaces two wells plus three more cards.
@@ -615,11 +625,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `--canvas`; nothing on the screen explained them, a bar cut into four reads as four
   somethings, and the readouts already state the count exactly.
 - **The home screen's mode icons are filled glyphs on the title's line** (2026-09-20).
-  `ICONS_FILL` + `_svgFill` render them as duotone solids — a 0.22-opacity ground plus a
-  solid figure, both `currentColor`, so a filled glyph still takes its colour from the
-  text tier around it. The 36px rounded chip behind them is gone (a container inside a
-  container), and `.mode-head` puts the icon beside the title so a card opens with one
-  row that names it rather than two.
+  They are plain `ICONS` entries like every other glyph — the duotone `ICONS_FILL`/`_svgFill`
+  pair is gone now that the whole set is solid. The 36px rounded chip behind them is gone
+  too (a container inside a container), and `.mode-head` puts the icon beside the title so a
+  card opens with one row that names it rather than two.
 - **Image options are square frames you can open** (2026-09-20). `.opt-img` is
   `aspect-ratio: 1 / 1`, not 4/3: the catalogue's crests run 0.78-1.0 in aspect, so in a
   landscape box every one was height-limited and they came out 136-174px wide inside an
@@ -642,10 +651,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
-  inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
-  When adding new icons, add them there (not as emoji or external SVGs). The question card's
-  read-aloud and translate buttons use `ICONS.speaker` and `ICONS.translate`, not emoji.
+- **SVG icon system:** every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+  helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
+  shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
+  detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
+  `fill="currentColor" stroke="none"` and a glyph still takes the colour of the text tier
+  around it. **No stroked icon is left in the app**: the hero's tick bullets and the two
+  scroll arrows are inline solid paths for the same reason
+  (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
+  pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
+  production.
 - **Animated results:** the results screen shows an SVG score ring with a percentage count-up
   animation (green=pass, red=fail). The quiz has a slim animated progress bar and per-question
   entrance transitions. All motion respects `prefers-reduced-motion`.
@@ -754,8 +769,8 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `tools/explain-states.js` - adds bilingual `explanation_de`/`explanation_en` to the 150
   non-Berlin state questions (template-based from question stem + correct answer).
 - `tools/icon-packs.mjs` - renders the whole icon set as a contact sheet in three styles
-  (line = what `ICONS` ships today, copied verbatim so the sheet documents production;
-  duotone = `ICONS_FILL` extended to every icon; solid). `node tools/icon-packs.mjs <dir>`
+  (line = the old stroked set; duotone = a 22% ground plus a solid figure; **solid = what
+  `ICONS` ships today**). `node tools/icon-packs.mjs <dir>`
   writes three HTML sheets; the header comment has the headless-Chrome line that turns each
   into `docs/icon-pack-<style>.png`. A design reference, not part of the build — nothing in
   `index.html` reads it.
