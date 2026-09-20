@@ -532,8 +532,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `border-left` on each cell.** A border lands on the first cell of a WRAPPED row too
       and draws a stray line down the middle of the band on a phone, where five figures
       wrap to two rows. A gap separates in both directions and cannot do that.
-  - **`.end-actions` is IN THE FLOW, under the band** — **Retake the test**, **Retry the
-    wrong ones** and **Your answers**, and no Back. All three actions the results screen
+  - **`.end-actions` is IN THE FLOW, under the band** — the restart, **Retry the wrong
+    ones** and **Your answers**, and no Back.
+    - **The restart names the mode it restarts**: `end.retry` ("Retake the test") in the
+      exam, `end.retryPractice` ("Practise again") everywhere else — the exam is a test you
+      retake, every other mode is practice you repeat. It carries **no `data-i18n`**:
+      `applyStaticStrings()` would stamp the exam's label back over it on every language
+      switch. `renderEndScreen()` owns that text, and `setLang()` re-runs it. All three actions the results screen
     offers live in that one row; Retry used to sit in the review-section header, a second
     home for the same button.
     - Retry is **`hidden` unless `state.missedQuestions` has something**, which is what

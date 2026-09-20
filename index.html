@@ -2025,7 +2025,7 @@
                      "More below" there is nothing left for them to say. There is no Back
                      here; the header already carries one. -->
                 <div class="end-actions">
-                    <button class="btn-primary" id="restartBtn" data-i18n="end.retry"></button>
+                    <button class="btn-primary" id="restartBtn"></button>
                     <button class="btn-secondary" id="retryWrongBtn" data-i18n="end.retryWrong"
                             onclick="startMistakeMode()" hidden></button>
                     <button type="button" class="btn-secondary end-more" id="endScrollCue"
@@ -2303,7 +2303,10 @@
             'end.general':         { en: 'General (of 30)',         de: 'Allgemein (von 30)' },
             'end.stateOf3':        { en: '{state} (of 3)',          de: '{state} (von 3)' },
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
+            /* The exam is a test you retake; every other mode is practice you repeat. The
+               button restarts whatever mode you were in, so it says which. */
             'end.retry':           { en: 'Retake the test',         de: 'Test wiederholen' },
+            'end.retryPractice':   { en: 'Practise again',          de: 'Nochmal üben' },
             'end.home':            { en: 'Back',                    de: 'Zurück' },
             /* It names its destination — the section heading it scrolls to says the same
                words — which tells you what is down there, where "More below" only said
@@ -3669,6 +3672,8 @@
             // something to run — that reads missedQuestions, which holds wrong ANSWERS
             // only, so a paper left blank does not offer it. Set before the exam branch
             // returns, or the exam would never reach it.
+            document.getElementById('restartBtn').textContent =
+                t(isExam ? 'end.retry' : 'end.retryPractice');
             document.getElementById('retryWrongBtn').hidden =
                 state.missedQuestions.filter(m => m && m.q).length === 0;
 
