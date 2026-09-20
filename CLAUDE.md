@@ -508,7 +508,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   "Answered correctly" / "Answered wrongly" — the second is not English, and the quiz readouts
   already use the short pair. `.pass-fail:empty { display: none }` because only an exam has a
   pass mark and an empty inline-block still spent its margin and padding as a blank band.
-- **The exam timer is a LINE, not a tile** (2026-09-20). `#timer` is a flex row — label,
+- **The exam timer is a LINE, not a tile** (2026-09-20). **`startTimer()` must set
+  `display: 'flex'`, not `'block'`** — the stylesheet lays the clock out as a one-line flex
+  row, and an inline `display: block` beats it: the label and the figure stacked again with
+  the row's padding around both, which on a phone read as a band of empty space above the
+  question. The markup's own inline `margin-bottom` went with it, so the row's spacing now
+  lives in the stylesheet where the rest of it is. `#timer` is a flex row — label,
   figure and pacing note all at 0.86rem — with no fill, hairline or radius. Boxed it cost
   ~135px, which is a row the question needed, and it made the exam the one mode whose
   layout had to be special-cased. The danger state pulses opacity, because there is no
