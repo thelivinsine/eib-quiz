@@ -333,6 +333,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (measured: it scrolled with the gap left at 40px). The tally shrank one step with it —
     `.stat-value` 1.15 -> 1.02rem, label 0.63 -> 0.58rem — because at the bottom of the column
     it no longer has to carry the row the way it did at the top.
+  - **On a phone the bar and the button row take the QUESTION's width** (2026-09-20).
+    Below 620px `.question-card` carries `--spacing-md` of padding, which insets the
+    question and its options; `.quiz-progress` hangs off `#quizScreen` and `.quiz-nav`
+    off `.quiz-main`, so neither inherited it and both ran 16px wider at each edge
+    (measured at 390px: question 32-358, bar and buttons 16-374). Both take the same
+    `margin-inline` now, so the bar starts where the question starts and Previous sits
+    under the first option. Only below 620px — above it the card has no padding and the
+    three already agree, and on desktop the bar still spans the card AND the navigator
+    by design.
   - **On a phone the readouts sit BELOW Previous and Next** (2026-09-20). `.quiz-topbar`
     takes `order: 1` inside `.quiz-main` under 940px, so the column reads question ->
     buttons -> tally -> overview strip. At the top they were the first thing on the screen,
