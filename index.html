@@ -384,7 +384,15 @@
         }
         /* The results screen has nothing that needs pinning, so it is one
            scroller and no layout surgery. */
-        body.in-session #endScreen.active { overflow: hidden auto; overscroll-behavior: contain; }
+        /* Its scrollbar belongs at the WINDOW's edge, not 28px inside it: the scroller
+           spans main's side gutters (negative margin) and re-states them as its own
+           padding, so the content does not move and only the bar does. Negative margins
+           rather than :has(), which would leave a browser without it double-padded. */
+        body.in-session #endScreen.active {
+            overflow: hidden auto; overscroll-behavior: contain;
+            margin-inline: calc(-1 * var(--spacing-xl));
+            padding-inline: var(--spacing-xl);
+        }
         /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
            tallest item, so the card pushed the nav bar off the bottom of a locked
            screen while the grid itself sat comfortably inside it. */
@@ -1771,6 +1779,11 @@
             body.in-session .quiz-sidebar { margin-inline: var(--spacing-md); }
             .question-text { font-size: 1.05rem; }
             body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
+            /* Same trade, against the phone's narrower gutter. */
+            body.in-session #endScreen.active {
+                margin-inline: calc(-1 * var(--spacing-md));
+                padding-inline: var(--spacing-md);
+            }
             /* Still below the buttons here — only the gap tightens. margin-bottom stays
                0 from the 940px block; restating it as spacing-md would put a dead row
                under the tally and push the overview strip off a short phone. */

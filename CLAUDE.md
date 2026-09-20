@@ -292,6 +292,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     negative `margin-right`, so the bar sits in the container's own padding instead of
     against the last word of the question or the last nav cell. `padding-right` alone just
     narrows the content and leaves the bar where it was.
+  - **The results screen's bar sits at the WINDOW's edge** (2026-09-20). `#endScreen` is the
+    scroller, and inside `main`'s 28px gutter its bar was drawn 28px in from the right, which
+    on a full-height page reads as a stray line down the middle of nothing. It takes
+    `margin-inline: calc(-1 * var(--spacing-xl))` and re-states the same value as its own
+    `padding-inline` (`--spacing-md` under 620px, where the gutter narrows), so the content
+    does not move and only the bar does. Negative margins rather than `:has()` on `main` —
+    a browser without `:has` would double-pad the content instead of merely misplacing a bar.
   - No caller scrolls the page. The four `window.scrollTo` calls that used to paper over the
     page scroll are gone; `displayQuestion()` resets `#questionBody.scrollTop` instead, and
     `#timer` / `.quiz-sidebar` are no longer `position: sticky` — there is nothing to stick to.
