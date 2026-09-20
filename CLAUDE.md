@@ -540,8 +540,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     620 at 390x667), and scroll away behind you.
     - **There is no Back here.** The header already carries one, and on the results screen
       `#sessionBack` goes straight home — a second one said the same thing twice.
-    - The button is named **`Your answers`**, the same words as the section heading it
-      scrolls to. "More below" only said that something was down there.
+    - The button is named **`Your answers`**, and it is the ONLY place those words
+      appear: the exam review's `<h2>` said them again a line later, so the heading is
+      gone and `end.examReviewTitle` with it. The section is still headed in every other
+      mode, where "Review your wrong answers" says something the button does not.
     - It is **`disabled` when there is nothing below**, not hidden: a control that silently
       does nothing is worse than one that says so.
 - **(superseded) The score card is a ROW, and the counters live inside it** (2026-09-20). It was a
