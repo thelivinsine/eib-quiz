@@ -305,6 +305,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **A control belongs to the section it changes.** The state picker (`#statePickerSlot` /
     `renderStatePicker()`) sits in the Practise section's `.section-head--row`, beside the exam
     and state modes it governs — not in the overview card, which only reports.
+  - **On a phone a section shows its HEADING and not its description** (2026-09-20).
+    `.section-head p { display: none }` under 620px. Each one wraps to two lines down
+    there and the four together cost ~150px — 7% of the page — while "Where you stand",
+    "Practise" and "By topic" already name the section. Desktop keeps them.
+  - **The topic grid stays ONE column on a phone, and two-up was tried and reverted.**
+    At 175px the long labels ("Fundamental Rights & Constitution") wrap to four lines, so
+    a chip went 55px -> 114px and the section got TALLER (314 -> 340). **The label decides
+    this grid, not the icon** — the same reason the desktop rule is `minmax(230px, 1fr)`.
   - **Past rounds is COLLAPSED behind a `<details>`** (2026-09-20). It was the single biggest
     block left on the home page (480px) and unlike the hero or the dash it is not padding —
     it is a real list that GROWS with every round played, so no amount of sizing shortens it.

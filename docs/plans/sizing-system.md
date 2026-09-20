@@ -1,6 +1,6 @@
 # Plan — install a size system (type, space, density)
 
-Status: **shipped 2026-09-20.** All six phases done; 15 of 16 acceptance criteria met.
+Status: **shipped 2026-09-20.** All six phases done; 16 of 17 acceptance criteria met.
 A post-merge review of the range caught two regressions, both fixed — see §7.
 
 The app has a **rigorous colour system** (tokenised, measured against
@@ -551,7 +551,7 @@ mirror.
 | 7b | gap histogram, top-2 share | ~35% | **64%** (target 80) | ⚠️ |
 | 7c | distinct font weights | 5 | **4** | ✅ |
 | 8 | home screens @1280x900 | 2.46 | **1.58** | ✅ |
-| 9 | home screens @390x844 | 3.35 | **2.35** (target 2.2) | ⚠️ |
+| 9 | home screens @390x844 | 3.35 | **2.16** | ✅ |
 | 10 | exam card fully above the fold @1280x900 | no (79px visible) | **yes** | ✅ |
 | 11 | exam card top @390x844 | 1029px | **833px** | ✅ |
 | 12 | `contrast.test.mjs` | passes | **10/10** | ✅ |
@@ -577,8 +577,13 @@ Two left short, both honestly:
   doing five jobs, now `--icon-xs/-sm/-md/-lg/-xl` (14/16/18/22/28), four of them rendering.
   Ring diameters, the scrollbar, the caret and `.sr-only` are exempt because they are not
   icons; hit targets moved to `--ctl-*`.
-- **9 (2.35 vs 2.2).** Within 130px. Getting under would mean collapsing a second section,
-  and the criterion this was proxying for — the exam card inside the first screen — is met.
+- **9 — MET 2026-09-20 at 2.16 screens** (390x844, from 3.35). Two changes: a section's
+  one-line description is hidden under 620px (it wraps to two lines down there and the four
+  cost ~150px, while the headings already name the sections), and `main`'s mobile bottom
+  padding came off 64px, which was reserving a strip for a scroll cue that is
+  `position: fixed` and lives on the results screen. A third change was tried and
+  **reverted**: two-up topic chips made the section TALLER (314 -> 340), because at 175px
+  the long labels wrap to four lines and a chip goes 55px -> 114px.
 
 ## 7. Post-merge review
 

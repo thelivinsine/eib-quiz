@@ -1749,7 +1749,7 @@
         }
 
         @media (max-width: 620px) {
-            main { padding: var(--space-lg) var(--space-md); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+            main { padding: var(--space-lg) var(--space-md); padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom)); }
             /* body.in-session main outranks the rule above it on specificity alone,
                media query or not, so the 16px gutter has to be restated here. */
             body.in-session main {
@@ -1764,6 +1764,11 @@
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; padding: var(--space-ms) var(--space-lg); }
 
             .home-section { margin-bottom: var(--space-lg); }
+            /* A section's one-line description is a desktop affordance. Down here each
+               wraps to two lines and the four of them cost ~150px — 7% of the page —
+               while the headings above them already name the section. The heading stays;
+               the gloss goes. */
+            .section-head p { display: none; }
             .section-head h2 { font-size: var(--fs-lg); }
             .section-head p { font-size: var(--fs-sm); }
             .dash { padding: var(--space-ms); }
@@ -1830,6 +1835,10 @@
             .mode-card:not(.mode-card--featured) .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
             .mode-card:not(.mode-card--featured) .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
 
+            /* ONE column, and two-up was tried and reverted: at 175px the long topic
+               names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
+               went 55px -> 114px and the section got TALLER (314 -> 340). The label is
+               what decides this grid, not the icon. */
             .topic-grid { grid-template-columns: 1fr; }
             .sub-card { padding: var(--space-md); }
             .header-content { padding: var(--space-xs) var(--space-md); }
