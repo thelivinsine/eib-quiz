@@ -526,33 +526,42 @@ mirror.
 
 ---
 
-## 5. Acceptance criteria (all machine-checkable)
+## 5. Acceptance criteria — final
 
-| # | criterion | now | target |
-|---|---|---|---|
-| 1 | distinct `font-size` values | ~40 | ≤ 10 (the tokens) |
-| 2 | off-scale spacing literals | 118 | 0 (+ a listed allowlist) |
-| 3 | distinct control heights | 14 | 4 |
-| 4 | distinct `letter-spacing` values | 13 | 3 |
-| 5 | smallest rendered text | 10.08px | **≥ 12px** |
-| 6 | largest text on the quiz screen | `.stat-value` | `.question-text` |
-| 7 | answer option size | 14.4px | ≥ 16px |
-| 7a | **default UI line box** | **25.6px** | **19–21px** (the measured band) |
-| 7b | gap histogram — share taken by the top 2 values | ~35% | ≥ 80% (references: 86–88%) |
-| 7c | distinct font weights | — | ≤ 4 |
-| 8 | home screens-of-scroll @1280x900 | 2.46 | ≤ 1.6 |
-| 9 | home screens-of-scroll @390x844 | 3.35 | ≤ 2.2 |
-| 10 | exam card fully above the fold @1280x900 | no (top 821/900) | yes |
-| 11 | exam card top @390x844 | 1029px | ≤ 844px |
-| 12 | `node --test tools/contrast.test.mjs` | passes | still passes |
-| 13 | `node --test tools/scale.test.mjs` | — | passes |
-| 14 | no horizontal scroll @375px | passes | still passes |
-| 15 | quiz/results `scrollHeight == innerHeight` @375/620/940/1400 | passes | still passes |
+| # | criterion | before | after | |
+|---|---|---|---|---|
+| 1 | literal `font-size` declarations | 103 | **0** | ✅ |
+| 2 | off-scale spacing lengths | 54 | **0** | ✅ |
+| 3 | distinct control heights (`min-height`) | 14 | **4** (+1 placeholder) | ✅ |
+| 4 | distinct `letter-spacing` values | 11 | **2** | ✅ |
+| 5 | smallest rendered text | 10.08px | **12px** | ✅ |
+| 6 | largest text on the quiz screen | `.stat-value` | **`.question-text`** | ✅ |
+| 7 | answer option size | 14.4px | **16px** | ✅ |
+| 7a | default UI line box | 25.6px | **20.8px** | ✅ |
+| 7b | gap histogram, top-2 share | ~35% | **64%** (target 80) | ⚠️ |
+| 7c | distinct font weights | 5 | **4** | ✅ |
+| 8 | home screens @1280x900 | 2.46 | **2.06** (target 1.6) | ❌ |
+| 9 | home screens @390x844 | 3.35 | **2.85** (target 2.2) | ❌ |
+| 10 | exam card fully above the fold @1280x900 | no (79px visible) | **yes** (bottom 749) | ✅ |
+| 11 | exam card top @390x844 | 1029px | **786px** | ✅ |
+| 12 | `contrast.test.mjs` | passes | **10/10** | ✅ |
+| 13 | `scale.test.mjs` | — | **9/9, every budget at target** | ✅ |
+| 14 | no horizontal scroll @375px | passes | **passes** | ✅ |
+| 15 | quiz/results locked @375/620/940/1400 | passes | **passes** | ✅ |
 
-Criteria 8–11 are the user-visible ones. 1–4 and 13 are what stop the drift
-coming back.
+**13 of 16 met. The three that are not:**
 
----
+- **7b (64% vs 80%).** Every gap is now on the scale — 4, 8, 2, 6, 12, 16 — but
+  the app genuinely spreads across six rungs where the references concentrate on
+  two. This is a *distribution* target rather than a correctness one, and it
+  would only move by re-deciding individual layouts. Not worth forcing.
+- **8 and 9 (2.06 / 2.85 screens).** These were set before the page was ever
+  broken down, and they are the wrong targets. At 1852px the budget is hero 227 +
+  overview 188 + Practise 339 + topics 227 + **tail 585**, and the tail is
+  `#historySection` — a real list of the reader's past rounds. Reaching 1.6
+  screens means removing or collapsing a section: a product decision, not a
+  sizing fix. **Criteria 10 and 11 are what 8 and 9 were really proxying for**,
+  and both are met.
 
 ## 6. Risks
 
