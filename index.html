@@ -540,6 +540,31 @@
             /* One scroller, and at this height it is the page. */
             .question-body { overflow: visible; }
         }
+        /* The same pill as the hero's "Start practising", pinned to the bottom of the
+           screen instead of sitting in the flow. It respects the safe-area inset, and it
+           never covers content it is pointing at because the results screen reserves a
+           matching strip of bottom padding while it is up. */
+        .scroll-cue[hidden] { display: none; }
+        .scroll-cue {
+            position: fixed; z-index: 120;
+            /* Centred by auto margins, NOT translateX(-50%): the fadeUp animation ends on
+               `transform: none`, which wiped the centring the moment it finished and left
+               the pill sitting half a width right of where it belonged. */
+            left: 0; right: 0; margin-inline: auto; width: fit-content;
+            bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+            display: inline-flex; align-items: center; gap: 8px;
+            min-height: 44px; padding: 0 20px;
+            border-radius: var(--radius-pill);
+            background: var(--accent-fill); color: var(--on-accent);
+            border: 1px solid var(--accent-fill);
+            font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            animation: fadeUp 0.28s var(--ease-spring) both;
+            transition: background 0.16s var(--ease);
+        }
+        .scroll-cue svg { width: 17px; height: 17px; }
+        .scroll-cue:hover { background: var(--teal-deep); }
+        /* Room for the pill to sit over, so the last review item is never under it. */
+        body.in-session #endScreen.active.has-cue { padding-bottom: 84px; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
@@ -1951,6 +1976,16 @@
         </section>
 
         <!-- End Screen -->
+        <!-- The results screen is a scroller and the review list below the fold is easy
+             to miss, most of all after an exam, where the whole paper is down there. The
+             cue is FIXED rather than a child of the scroller, or it would scroll away
+             with the content it is advertising. -->
+        <button type="button" class="scroll-cue" id="endScrollCue" hidden
+                onclick="scrollEndDown()" data-i18n-aria="end.more" data-i18n-title="end.more">
+            <span data-i18n="end.more"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </button>
+
         <section id="endScreen" class="screen">
             <div class="end-screen">
                 <h1 id="endTitle"></h1>
@@ -2257,6 +2292,7 @@
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
             'end.retry':           { en: 'Again',                   de: 'Nochmal' },
             'end.home':            { en: 'Back',                    de: 'Zurück' },
+            'end.more':            { en: 'More below',               de: 'Mehr unten' },
             'end.reviewTitle':     { en: 'Review your wrong answers', de: 'Falsche Antworten überprüfen' },
             'end.examReviewTitle': { en: 'Your answers',              de: 'Deine Antworten' },
             'end.examReviewCount': { en: '{n} questions',             de: '{n} Fragen' },
@@ -2319,7 +2355,7 @@
             // this changes the chrome without touching the round in progress.
             initHomeScreen();
             if (state.currentScreen === 'quiz' && state.currentQuestions.length) displayQuestion();
-            if (state.currentScreen === 'end') renderEndScreen();
+            if (state.currentScreen === 'end') { renderEndScreen(); requestAnimationFrame(syncEndScrollCue); }
         }
 
         // ============================================================
@@ -2517,6 +2553,9 @@
             // the slack the shift under the progress bar spends. Set here rather than
             // in startMode() so the topic, mistakes and resume paths are covered too.
             document.body.classList.toggle('in-exam', screenName !== 'home' && state.currentMode === 'exam');
+            // The scroll cue belongs to the results screen only, and the layout it
+            // measures is not laid out until after this paints.
+            requestAnimationFrame(syncEndScrollCue);
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
@@ -3535,6 +3574,31 @@
 
             renderEndScreen();
             showScreen('end');
+            requestAnimationFrame(syncEndScrollCue);
+        }
+
+        /**
+         * The cue is a "there is more" sign, so it is up exactly while there IS more:
+         * it appears when the results screen has content past the fold and goes when you
+         * reach the bottom, where a scroll-down button would do nothing. It is wired to
+         * the screen's own scroll, to resize, and to every repaint of the results.
+         */
+        function syncEndScrollCue() {
+            const cue = document.getElementById('endScrollCue');
+            const el = document.getElementById('endScreen');
+            if (!cue || !el) return;
+            const more = state.currentScreen === 'end'
+                && el.scrollHeight - el.scrollTop - el.clientHeight > 24;
+            cue.hidden = !more;
+            el.classList.toggle('has-cue', more);
+        }
+
+        function scrollEndDown() {
+            const el = document.getElementById('endScreen');
+            if (!el) return;
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            // A screenful at a time, so a 33-question review is walked rather than jumped.
+            el.scrollBy({ top: Math.round(el.clientHeight * 0.85), behavior: reduce ? 'auto' : 'smooth' });
         }
 
         function renderEndScreen() {
@@ -3901,6 +3965,8 @@
         // resize rather than a matchMedia change listener: the latter did not fire under
         // viewport emulation, and this has to be right at whatever width the reader lands on.
         window.addEventListener('resize', syncNavHeaderRole);
+        document.getElementById('endScreen').addEventListener('scroll', syncEndScrollCue, { passive: true });
+        window.addEventListener('resize', syncEndScrollCue);
 
         // ---- Service worker (offline / installable PWA) ----
         if ('serviceWorker' in navigator) {
