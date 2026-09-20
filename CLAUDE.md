@@ -508,7 +508,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   "Answered correctly" / "Answered wrongly" — the second is not English, and the quiz readouts
   already use the short pair. `.pass-fail:empty { display: none }` because only an exam has a
   pass mark and an empty inline-block still spent its margin and padding as a blank band.
-- **The exam timer is a LINE, not a tile** (2026-09-20). `#timer` is a flex row — label,
+- **The exam timer is a LINE, not a tile** (2026-09-20). **`startTimer()` must set
+  `display: 'flex'`, not `'block'`** — the stylesheet lays the clock out as a one-line flex
+  row, and an inline `display: block` beats it: the label and the figure stacked again with
+  the row's padding around both, which on a phone read as a band of empty space above the
+  question. The markup's own inline `margin-bottom` went with it, so the row's spacing now
+  lives in the stylesheet where the rest of it is. `#timer` is a flex row — label,
   figure and pacing note all at 0.86rem — with no fill, hairline or radius. Boxed it cost
   ~135px, which is a row the question needed, and it made the exam the one mode whose
   layout had to be special-cased. The danger state pulses opacity, because there is no
@@ -675,10 +680,15 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 **43 image questions**, all extracted from the official BAMF catalogue PDF. Every asset is
 present (`node tools/validate.js` reports 0 missing).
 
-- **A four-image grid is capped at 70% of the question's width** (`.options--image`,
-  `max-width: 70%`; 72% in the one-column phone layout) and a prompt image at 294px. At full
-  width the pictures dwarfed the question they belonged to, and a four-image question no longer
-  needs the body scroller at 1100x800.
+- **A four-image grid is capped by the VIEWPORT, not just the column** (2026-09-20):
+  `max-width: min(70%, 33svh)`, and `min(92%, 26svh)` under 400px; a prompt image is 294px.
+  Two rows of SQUARE frames plus their labels is a tall block — at 70% of a wide column a
+  four-image question went into the scroller, and the old one-column phone layout overflowed
+  by 757px on a 390px screen. **It stays 2x2 at every width.** The thumbnail only has to be
+  recognisable now that any of them opens full size on a tap, so the cap buys the whole
+  question fitting on screen instead. Measured at 0px overflow for Q21/Q209/Q226 at both
+  390px and 1280px. Under 400px `.opt-num` also drops to 0.72rem — the label is what tips a
+  2x2 over, since "Christusmonogramm (Chi-Rho)" sets in three lines.
 - **Option-image questions (19)** — 4-image grids, rendered as `<img>` from
   `option_images: ["img/…", …]` with descriptive `options` labels (never "Option 1"):
   general Q21, Q209, Q226, plus each state's Wappen question (Q301, Q311, Q321, … every `*1`).

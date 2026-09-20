@@ -340,6 +340,16 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   puts Previous/Next at 622-623 of an 800px viewport (78%, 177px below) on every ordinary
   question; longer questions push them down from there. On mobile the floor is dropped and the
   column stretches, pinning them 10px above the overview strip on every question.
+- **Desktop question view restructured**: the readouts are a grid item of `.quiz-layout`
+  (`"main stats" / "main nav"`), so they sit above the navigator as a 2x2; the navigator starts
+  COLLAPSED at every width with only the Linear/Shuffle/Topics switch showing; and the block
+  rides 20% higher via a 40:60 pair of zero-basis grow spacers, which yield to the question
+  before it scrolls.
+- **Image grids are capped by viewport height** (`min(70%, 33svh)`, `min(92%, 26svh)` under
+  400px) and stay 2x2 at every width, so a four-image question no longer scrolls — 0px
+  overflow at 390px and 1280px.
+- **Mobile: every block matches the question's width** — bar, buttons, tally and the overview
+  panel all take the card's `--spacing-md` inset.
 - **Both gaps now yield to content**: `.quiz-layout` is `flex: 0 1 auto` + `margin-block: auto`,
   so the room above and below the question is spent before `.question-body` scrolls
   (1280x900: 150/126 at rest, 40/16 on a four-image question, body 450 -> 670). The rigid

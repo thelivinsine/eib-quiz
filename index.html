@@ -389,7 +389,26 @@
         /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
            tallest item, so the card pushed the nav bar off the bottom of a locked
            screen while the grid itself sat comfortably inside it. */
-        body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: start; grid-template-rows: minmax(0, 1fr); }
+        /* Two columns, two rows: the question spans both rows on the left, the readouts
+           sit over the navigator on the right. The readouts moved out of .quiz-main to
+           make that possible — they report on the round, and the round's map is what
+           they now sit on top of. */
+        body.in-session .quiz-layout {
+            flex: 1; min-height: 0; align-items: start;
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-rows: auto minmax(0, 1fr);
+            grid-template-areas: "main stats" "main nav";
+        }
+        body.in-session .quiz-main { grid-area: main; }
+        body.in-session .quiz-topbar { grid-area: stats; }
+        body.in-session .quiz-sidebar { grid-area: nav; }
+        /* 2x2 over the panel's width rather than four across: the column is 248px, and
+           four figures on one line there would set in two anyway, raggedly. */
+        body.in-session .quiz-topbar { display: block; margin-bottom: var(--spacing-md); }
+        body.in-session .quiz-topbar .stats-bar {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: var(--spacing-md); row-gap: 8px; justify-items: start;
+        }
         /* The block sits low on the screen, and the room above and below it BOTH give way
            to content before anything scrolls. Auto margins are what buy that: the block
            is content-sized, the leftover splits above and below it, and as the question
@@ -400,7 +419,17 @@
            the same to within a couple of pixels (measured 135px of gap at 900 against a
            133px even split), so this is the same look with the stiffness taken out —
            and the 260px magic number, which had to be re-derived per mode, is gone. */
-        body.in-session .quiz-layout { flex: 0 1 auto; margin-block: auto; }
+        body.in-session .quiz-layout { flex: 0 1 auto; margin-block: 0; }
+        /* 40 above, 60 below: centred would be 50:50, so this puts the block a fifth of
+           the way higher, towards the bar. Both spacers have a ZERO basis and only GROW,
+           which is what makes the lift free — they take only space that is already
+           spare, and the moment the question needs it they are the first thing to go
+           (there is nothing to take from a zero basis). Auto margins could not do this:
+           they split evenly, and a tail with a real basis competed with the question for
+           the shrink instead of yielding to it — measured 67px still sitting under a
+           question that had started scrolling. */
+        body.in-session .quiz-headspace { flex: 4 1 0; min-height: 0; }
+        body.in-session .quiz-tailspace { flex: 6 1 0; min-height: 0; }
         /* The exam needs no special case any more. It used to, because its clock was a
            bordered tile costing ~135px that the practice screen did not have; flattened
            to a 36px line it is close enough to practice that the auto margins above
@@ -481,6 +510,11 @@
             height: clamp(300px, 56svh, 680px);
             max-height: 100%;
         }
+        /* Collapsed — the default — the pane is the header and the view switcher, and
+           nothing more, so it sizes to those rather than holding 56svh of nothing. The
+           fixed height is what an OPEN pane wants, so it only applies when it is open. */
+        body.in-session .quiz-sidebar:not(.nav-open) { height: auto; }
+        .sidebar-body:not(.expanded) > #questionNavGrid { display: none; }
 
         /* Below this the container has less room than the card's own PINNED parts —
            meta row, padding and nav bar come to about 150px before a single word of
@@ -500,6 +534,7 @@
                move — and the capped expression would go NEGATIVE below 520px tall,
                pulling the question up under the progress bar. */
             body.in-session .quiz-layout { grid-template-rows: auto auto auto; flex: 0 0 auto; margin-block: 0; }
+            body.in-session .quiz-headspace, body.in-session .quiz-tailspace { display: none; }
             body.in-session .question-card { flex: 0 0 auto; }
             body.in-session #endScreen.active { overflow: visible; }
             /* One scroller, and at this height it is the page. */
@@ -1062,6 +1097,8 @@
             padding: 0; text-align: center; background: none; border: 0; border-radius: 0;
         }
         #timer .timer-label, #timer .timer-display, #timer .pacing-info { font-size: 0.86rem; line-height: 1.3; }
+        /* One line, so it needs a line's worth of room under it and no more. */
+        body.in-session #timer { margin-bottom: var(--spacing-sm); }
         /* With no border left to pulse, the danger state is carried by the figure. */
         #timer.danger { animation: pulseDanger 1.1s var(--ease) infinite; }
         @keyframes pulseDanger { 50% { opacity: 0.55; } }
@@ -1215,7 +1252,12 @@
         /* margin-inline: auto — the grid is capped at 70% of the column, and without it
            that 30% all fell on the right, so a four-image question sat off-centre under
            a full-width question. */
-        .options--image { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-md); max-width: 70%; margin-inline: auto; }
+        /* Capped against the VIEWPORT, not just the column: two rows of square frames
+           plus their labels is a tall block, and at 70% of a wide column it pushed a
+           four-image question into the scroller. The height cap is what keeps all four
+           on screen — you can open any of them full size, so the thumbnail only has to
+           be recognisable, not readable. */
+        .options--image { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-md); max-width: min(70%, 33svh); margin-inline: auto; }
         .option-btn--image { flex-direction: column; align-items: stretch; padding: 10px; gap: 10px; }
         .option-btn--image { min-height: 0; }
         /* A SQUARE frame, not 4/3. The catalogue's crests run 0.78-1.0 in aspect, so in a
@@ -1322,18 +1364,20 @@
             max-height: calc(100svh - var(--header-h) - 24px);
             display: flex; flex-direction: column;
         }
-        .sidebar-header { cursor: default; flex-shrink: 0; }
+        /* A real button at every width now that the panel collapses on the desktop too. */
+        .sidebar-header { cursor: pointer; flex-shrink: 0; }
         .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; min-height: 24px; }
         /* A drawn chevron in a hit target, not a dingbat: the glyph rendered at a
            different weight and baseline in every font stack. */
         .sidebar-chevron {
-            display: none; flex-shrink: 0;
+            display: grid; flex-shrink: 0;
             width: 30px; height: 30px; border-radius: var(--radius-pill);
             place-items: center; color: var(--muted);
             border: 1px solid var(--border); background: var(--surface2);
             transition: transform 0.25s var(--ease), color 0.2s var(--ease), background 0.2s var(--ease);
         }
         .sidebar-chevron svg { width: 16px; height: 16px; }
+        .sidebar-chevron.open { transform: rotate(180deg); }
         .sidebar-header:hover .sidebar-chevron { color: var(--text); background: var(--hover); }
         /* Same gutter as .question-body — the nav numbers were touching the bar. */
         .sidebar-body {
@@ -1470,7 +1514,14 @@
             /* Three secondary cards stay three across: two columns orphans one of
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
-            .quiz-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+            /* body.in-session-prefixed, or the desktop two-column rule outranks this one
+               and the areas fight: "main stats" against a single column collapsed the
+               question to 12px. */
+            body.in-session .quiz-layout, .quiz-layout {
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: minmax(0, 1fr) auto auto;
+                grid-template-areas: "main" "stats" "nav";
+            }
             /* The question comes first and the collapsed navigator sits UNDER it: on a
                phone the strip was the first thing on the screen, competing with the
                question for the reader's first look. The card takes the flexible row,
@@ -1503,6 +1554,9 @@
                the buttons are already pinned above the strip, so the shift would come
                straight out of the question and start it scrolling. */
             body.in-session .quiz-layout { flex: 1; margin-block: 0; }
+            /* No spare space to split down here — the layout fills its row — and left
+               growing they would take the column and collapse the question to nothing. */
+            body.in-session .quiz-headspace, body.in-session .quiz-tailspace { display: none; }
             /* The readouts move BELOW Previous and Next on a phone. At the top they
                were the first thing on the screen, competing with the question for the
                reader's first look, and they are a running tally you glance at — not
@@ -1511,7 +1565,10 @@
                The gap above is a full --spacing-2xl: the buttons belong to the
                question, the tally and the overview strip below do not, and that
                distance is what says so. */
-            .quiz-topbar { order: 1; margin-top: var(--spacing-2xl); margin-bottom: 0; }
+            body.in-session .quiz-topbar { margin-top: var(--spacing-2xl); margin-bottom: 0; }
+            /* Back to one line down here: the panel's 248px column is what asked for a
+               2x2, and on a phone the row is the full width. */
+            body.in-session .quiz-topbar .stats-bar { display: flex; }
             /* The column has to take the whole row before the card can fill it: the
                grid places items at the start, so on its own .quiz-main is as tall as
                its content and flex: 1 has nothing to grow into. */
@@ -1528,8 +1585,7 @@
             /* The buttons and the strip below them are one band at the bottom of the
                screen, so they sit close enough to read as one. */
             .quiz-layout { gap: 0 var(--spacing-sm); }
-            .sidebar-chevron { display: grid; }
-            .sidebar-chevron.open { transform: rotate(180deg); }
+
             .sidebar-body { display: none; }
             /* flex, not block: the grid inside it is the scroller now. vh first, as
                everywhere else, so a browser without svh keeps a cap. 26% here plus the
@@ -1654,7 +1710,9 @@
                question starts and Previous sits under the first option. Only below
                620px — above it the card has no padding and the three already agree. */
             body.in-session .quiz-progress,
-            .quiz-nav { margin-inline: var(--spacing-md); }
+            .quiz-nav,
+            body.in-session .quiz-topbar,
+            body.in-session .quiz-sidebar { margin-inline: var(--spacing-md); }
             .question-text { font-size: 1.05rem; }
             body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
             /* Still below the buttons here — only the gap tightens. margin-bottom stays
@@ -1699,7 +1757,15 @@
         }
 
         @media (max-width: 400px) {
-            .options--image { grid-template-columns: 1fr; max-width: 72%; }
+            /* Stays 2x2 even here. One column of four square frames is 757px of
+               overflow on a 390px screen; two columns of small thumbnails fit, and a
+               thumbnail only has to be recognisable now that any of them opens full
+               size on a tap. */
+            .options--image { max-width: min(92%, 26svh); }
+            /* The label is what tips a 2x2 over on a narrow screen — "Christusmonogramm
+               (Chi-Rho)" sets in three lines. It only has to name the picture. */
+            .option-btn--image .opt-num { font-size: 0.72rem; line-height: 1.25; }
+            .option-btn--image { padding: 8px; gap: 8px; }
         }
     </style>
 </head>
@@ -1797,16 +1863,25 @@
         <section id="quizScreen" class="screen">
             <div class="quiz-progress" aria-hidden="true"><span id="quizProgressFill"></span></div>
 
-            <div class="quiz-layout">
-                <!-- Left column: readouts, then the question (+ timer for exam mode) -->
-                <div class="quiz-main">
-                    <div class="quiz-topbar">
-                        <div class="stats-bar" id="statsBar">
-                            <!-- Populated by JavaScript -->
-                        </div>
-                    </div>
+            <!-- The two spacers split the free space 40:60, which puts the block a fifth
+                 higher than centred. Both have a ZERO basis and only grow, so they exist
+                 only while there is room to spare and collapse the instant the question
+                 wants it — the question then scrolls, never before. -->
+            <div class="quiz-headspace" aria-hidden="true"></div>
 
-                    <div id="timer" style="display: none; margin-bottom: var(--spacing-md);">
+            <div class="quiz-layout">
+                <!-- The readouts are a grid item of their own: on a wide screen they sit
+                     above the navigator in the right column, on a phone they fall below
+                     the question. Either way they are no longer inside .quiz-main. -->
+                <div class="quiz-topbar">
+                    <div class="stats-bar" id="statsBar">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Left column: the question (+ timer for exam mode) -->
+                <div class="quiz-main">
+                    <div id="timer" style="display: none;">
                         <div class="timer-label" data-i18n="quiz.time"></div>
                         <div class="timer-display" id="timerDisplay">60:00</div>
                     </div>
@@ -1861,6 +1936,7 @@
                     </div>
                 </aside>
             </div>
+            <div class="quiz-tailspace" aria-hidden="true"></div>
 
         </section>
 
@@ -3009,15 +3085,13 @@
             const navWrapper = document.getElementById('questionNavWrapper');
             navWrapper.style.display = mode === 'exam' ? 'none' : 'flex';
 
-            // Always start with sidebar collapsed on mobile
-            if (window.innerWidth <= NAV_COLLAPSE_AT) {
-                const sidebarBody = document.getElementById('sidebarBody');
-                const sidebarChevron = document.getElementById('sidebarChevron');
-                const sidebarToggle = document.getElementById('sidebarToggle');
-                if (sidebarBody) sidebarBody.classList.remove('expanded');
-                if (sidebarChevron) sidebarChevron.classList.remove('open');
-                if (sidebarToggle) syncNavHeaderRole();
-            }
+            // Every round starts with the navigator closed, at any width.
+            const sidebarBody = document.getElementById('sidebarBody');
+            const sidebarChevron = document.getElementById('sidebarChevron');
+            if (sidebarBody) sidebarBody.classList.remove('expanded');
+            if (sidebarChevron) sidebarChevron.classList.remove('open');
+            document.getElementById('questionNavWrapper').classList.remove('nav-open');
+            syncNavHeaderRole();
 
             showScreen('quiz');
             displayQuestion();
@@ -3308,7 +3382,10 @@
         // ============================================================
         function startTimer() {
             const timerEl = document.getElementById('timer');
-            timerEl.style.display = 'block';
+            // 'flex', not 'block': the stylesheet lays the clock out as a one-line flex
+            // row, and an inline `display: block` beats it — the label and the figure
+            // stacked again, with the row's padding around both.
+            timerEl.style.display = 'flex';
             state.timeLeft = 3600; // 60 minutes
 
             state.timerInterval = setInterval(() => {
@@ -3705,32 +3782,32 @@
         loadQuestions();
 
         /**
-         * Above NAV_COLLAPSE_AT the panel is simply open and the header is a caption,
-         * so it carries no button semantics at all. Below it the header is a real
-         * button: focusable, operable by keyboard, and honest about expanded state.
+         * The header is a real button at EVERY width now — the panel starts collapsed on
+         * the desktop too, so it is never the caption over an open panel it used to be.
+         * What collapses differs: on a wide screen the numbers fold away and the
+         * Linear/Shuffle/Topics switch stays on show, because that is the control you
+         * reach for mid-round; on a phone the whole body folds, since a strip there has
+         * no room to keep anything.
          */
         function syncNavHeaderRole() {
             const tgl = document.getElementById('sidebarToggle');
             const body = document.getElementById('sidebarBody');
             if (!tgl || !body) return;
-            if (window.innerWidth > NAV_COLLAPSE_AT) {
-                tgl.removeAttribute('role');
-                tgl.removeAttribute('tabindex');
-                tgl.removeAttribute('aria-expanded');
-            } else {
-                tgl.setAttribute('role', 'button');
-                tgl.setAttribute('tabindex', '0');
-                tgl.setAttribute('aria-expanded', String(body.classList.contains('expanded')));
-            }
+            tgl.setAttribute('role', 'button');
+            tgl.setAttribute('tabindex', '0');
+            tgl.setAttribute('aria-expanded', String(body.classList.contains('expanded')));
         }
 
         function toggleNavPanel() {
-            if (window.innerWidth > NAV_COLLAPSE_AT) return;
             const body = document.getElementById('sidebarBody');
             const chevron = document.getElementById('sidebarChevron');
             const expanded = body.classList.toggle('expanded');
             chevron.classList.toggle('open', expanded);
+            // The aside carries it too: the pane's height rule needs to know, and a
+            // parent cannot be selected from a child without :has().
+            document.getElementById('questionNavWrapper').classList.toggle('nav-open', expanded);
             syncNavHeaderRole();
+            if (expanded) showCurrentCell();
         }
 
         document.getElementById('sidebarToggle').addEventListener('click', toggleNavPanel);
