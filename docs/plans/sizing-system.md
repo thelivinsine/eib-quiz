@@ -415,33 +415,63 @@ results at 1400; no horizontal overflow at any of them; DE↔EN switch clean bot
 ways; `contrast.test.mjs` 10/10; `validate.js` 460 questions OK; `node --check`
 on the app script and `sw.js`. `CACHE` bumped to `eib-cache-2026-09-20-size-tokens`.
 
-### Phase 2 — map 40 font sizes onto 9 tokens
+### Phases 2 + 4 — the ramp and the inversions ✅ DONE 2026-09-20
 
-Mechanical, one selector at a time, with the mapping written into the commit.
-Near-duplicates collapse: `0.84/0.85/0.86/0.87/0.88 → --fs-sm`;
-`0.9/0.92/0.94/0.95 → --fs-base`; `0.6/0.62/0.63/0.64/0.66/0.68/0.69/0.7 →
---fs-2xs` (all eight rise to the 12px floor); `1.3 → --fs-xl` for headings but
-`--fs-md` for the tally (see Phase 4).
+Taken as **one pass**, because they edit the same declarations: deciding a
+token for a `font-size` and deciding whether that size is *right* is one
+decision, and doing them as two passes would have touched every rule twice.
 
-### Phase 3 — snap 118 spacing literals, 14 heights, 13 trackings
+**100 literal `font-size` declarations → 0.** Banded by px, ties resolved by a
+short override list; `--fs-3xl` (36px) was added for the score ring, because the
+eight-step ramp had no step for the one numeral that IS the content of its
+screen. Distribution: 28 × `2xs`, 15 × `xs`, 17 × `sm`, 12 × `base`, 10 × `md`,
+6 × `lg`, 7 × `xl`, 1 × `2xl`, 2 × `3xl`, 1 × `hero`.
 
-Same treatment for `gap`/`padding`/`margin`, `min-height`, `letter-spacing`.
-Largest diff of the plan and the lowest risk, because Phase 0's test proves the
-mapping is complete and screenshots prove nothing moved that shouldn't have.
+The inversions, measured on the quiz screen at 1280x900:
 
-### Phase 4 — fix the hierarchy inversions
+| | before | after |
+|---|---|---|
+| `.question-text` | 20.0px *(2nd)* | **18px — the largest text on the screen** |
+| `.stat-value` (tally) | **20.8px (1st)** | 16px |
+| `.opt-text-wrap` (the answer) | 14.4px | **16px** |
+| smallest rendered tier | 10.08px | **12px** |
 
-The first phase with actual design intent. Minimum set:
+**Criteria 6 and 7 met.** Overrides worth naming: `.option-en-text` took
+`--fs-sm` rather than the band's `2xs` (for a bilingual reader that line *is*
+the answer), and `.state-picker select` is pinned to `--fs-md` because anything
+under 16px makes iOS Safari zoom on focus.
 
-- `.stat-value` **20.8px → 16px** (`--fs-md`), `.stat-label` **10.08 → 12px**
-  (`--fs-2xs`). A tally stops outranking the question.
-- `.opt-text-wrap` **14.4px → 16px** (`--fs-md`). The answer becomes the
-  content it is.
-- `.opt-letter` 12.16 → `--fs-2xs`; `.question-num`, `.question-category`,
-  `.sidebar-title`, `kbd` all → `--fs-2xs` (the 12px floor).
-- `.question-text` 20 → `--fs-lg` (18px), *now the largest thing on the screen*
-  because the tally came down — the density rule satisfied by lowering chrome,
-  not by inflating content.
+**Two regressions from the 12px floor, both predicted in §6, both fixed:**
+
+- **`.ready-ring-sub` could not survive it.** "Trefferquote" as an uppercase
+  tracked micro-label measures **106px at 12px, inside an 88/96px dial** — it
+  only ever fitted because it sat at 9.6px, under the floor. A label that has to
+  break the type scale to fit its container does not belong inside it: the
+  percentage stays, and the name moved to the wrapper's `aria-label`/`title`,
+  where the longest German compound costs nothing.
+- **The four quiz readouts wrapped at 360px in German.** CLAUDE.md requires them
+  on one line. The LABEL is what is wide, not the figure — "Beantwortet" alone
+  sets ~100px at 12px. The answered readout drops its word on a phone
+  (`.stats-bar .stat:last-child .stat-label`): `n / total` is the one readout
+  that names itself beside Richtig / Falsch / Score. Re-measured at 360px in
+  both languages: one row, 237px of figures inside a 296px bar.
+
+### Phase 3 — snap the scales ✅ DONE 2026-09-20
+
+- **54 off-scale spacing lengths → 0.** Snapped to the nearest rung with **ties
+  going down**, because density is the point of the exercise. Three values were
+  not rhythm but *functional clearance* — the state picker's caret offset and
+  the two paddings reserving room for an absolutely-positioned glyph — and became
+  `calc(var(--space-xl) + var(--space-sm))` rather than being snapped, so the
+  value is preserved and the literal still goes.
+- **11 tracking values → 2** (`--ls-caps`, `--ls-display`; `--ls-normal` is the
+  default and needs no declaration).
+- **14 control heights → 4.** `min-height` only. The metric originally also
+  counted `height` and reported 32 — but nearly every literal `height` here is an
+  icon box (22/18/15px) or a layout pane (190/160/96px), a different axis;
+  conflating them measured the wrong thing. The test now says so in a comment.
+  One `min-height` literal remains by design: the 120px floor under a *missing*
+  option image, a placeholder box rather than a control.
 
 ### Phase 5 — density pass on the home screen ✅ DONE 2026-09-20
 

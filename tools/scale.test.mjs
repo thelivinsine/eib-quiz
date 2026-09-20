@@ -38,7 +38,7 @@ import { fileURLToPath } from "node:url";
 const STYLESHEET = "../index.html";
 
 /** The type ramp, as px. Mirrors the --fs-* tokens; see the plan §3.1. Floor is 12. */
-const TYPE_SCALE = [12, 13, 14, 15, 16, 18, 22, 28];
+const TYPE_SCALE = [12, 13, 14, 15, 16, 18, 22, 28, 36];
 
 /** The space scale, as px. Mirrors --space-*; see the plan §3.3. */
 const SPACE_SCALE = [0, 1, 2, 4, 6, 8, 12, 16, 20, 28, 40];
@@ -51,11 +51,13 @@ const CONTROL_SCALE = [28, 36, 44, 52];
  * the test tells you when.
  */
 const BUDGETS = {
-  literalFontSizes:   [100, "target 0 — every one becomes a --fs-* token in phase 2"],
-  fontSizesBelowFloor: [18, "target 0 — every tier rises to 12px in phase 4"],
-  offScaleSpacing:     [64, "target 0 — phase 3 snaps them to SPACE_SCALE"],
-  distinctControlH:    [32, "target 4 — the CONTROL_SCALE, in phase 3"],
-  distinctTracking:    [11, "target 3 — --ls-caps / --ls-normal / --ls-display, phase 3"],
+  literalFontSizes:     [0, "reached 2026-09-20 (phase 2). A literal font-size is now a bug."],
+  fontSizesBelowFloor:  [0, "reached 2026-09-20 (phase 4). 12px is the floor."],
+  offScaleSpacing:      [0, "reached 2026-09-20 (phase 3). Off-scale spacing is now a bug."],
+  // The one left is the 120px floor under a MISSING option image — a placeholder
+  // box, not a control, so it has no business on the control ladder.
+  distinctControlH:     [1, "reached 2026-09-20 (phase 3)."],
+  distinctTracking:     [2, "reached 2026-09-20 (phase 3): --ls-caps and --ls-display."],
   globalLineHeights:    [7, "target ~9 — one per --fs-* pair plus --lh-prose"],
 };
 
@@ -183,8 +185,14 @@ const offScaleSpacing = valuesOf(...SPACING_PROPS).flatMap((d) =>
     .map((n) => `${d.rule.selector} { ${d.prop}: ${d.value} }  <- ${n}px`),
 );
 
+/**
+ * `min-height` ONLY, deliberately. The first version of this metric also counted `height`,
+ * which reported 32 "control heights" — but almost every literal `height` in this sheet is
+ * an icon box (22, 18, 15px) or a layout pane (190, 160, 96px), a different axis entirely.
+ * A control declares `min-height`; conflating the two measured the wrong thing.
+ */
 const distinctControlH = new Set(
-  valuesOf("min-height", "height")
+  valuesOf("min-height")
     .map((d) => px(d.value))
     .filter((n) => n !== null && n > 0),
 ).size;

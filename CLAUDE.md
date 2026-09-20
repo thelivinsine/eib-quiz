@@ -126,8 +126,39 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       reached eleven values. `--ls-caps` / `--ls-normal` / `--ls-display`.
     - **Phase 1's leading fix bought only 3% of the page height** (2.46 -> 2.38 screens
       desktop). Height here is dominated by explicit padding, margins and fixed heights, not
-      inherited leading — `.dash` and `.topic-chip` did not move a pixel. The density work is
-      the plan's phases 3 and 5; do not expect type changes to shorten the page.
+      inherited leading — `.dash` and `.topic-chip` did not move a pixel. The density work was
+      phases 3 and 5; do not expect type changes to shorten the page.
+    - **The ramp is fully applied (phases 2-5 done 2026-09-20).** Every budget in
+      `tools/scale.test.mjs` is at target: 0 literal font-sizes, 0 tiers under 12px, 0
+      off-scale spacing, 2 tracking values, 1 remaining `min-height` literal (the 120px
+      placeholder under a MISSING option image, which is a box and not a control).
+    - **The quiz screen's hierarchy is the right way up now.** `.question-text` is 18px and
+      the largest text on the screen; `.stat-value` came DOWN from 20.8 to 16 and the answer
+      options went UP from 14.4 to 16. Emphasis is made by lowering chrome, never by
+      inflating content.
+    - **A label that has to break the type scale to fit its container does not belong inside
+      it.** The accuracy ring's caption was 9.6px because "Trefferquote" sets 106px at 12px
+      inside an 88px dial. The percentage stays; the NAME moved to the wrapper's
+      `aria-label`/`title`, where the longest German compound costs nothing. `.ready-ring-sub`
+      is gone.
+    - **On a phone the answered readout shows its figure and hides its word**
+      (`.stats-bar .stat:last-child .stat-label`). Once the labels cleared the 12px floor the
+      four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
+      not the number ("Beantwortet" alone is ~100px). `n / total` is the one readout that
+      names itself beside Richtig / Falsch / Score, so it is the one that can give the word up.
+    - **A snapped value's ties go DOWN**, toward density. Genuine functional clearance is NOT
+      snapped — the state picker's caret room is
+      `calc(var(--space-xl) + var(--space-sm))`, which keeps the value and still kills the
+      literal.
+    - **The hero is a headline, a sentence and one button.** Its badge and its four-item
+      trust row both restated that sentence and cost 83px between them; `hero.badge` and
+      `hero.trust1`-`4` are gone from `I18N`. The hero is 350 -> 227px.
+    - **`.dash`'s height IS the accuracy ring plus padding** — nothing else in the band is
+      taller — so the ring is the only thing that can shorten it (112 -> 88px; on a phone it
+      was 128px, *larger* than the desktop's, and is now 96).
+    - **A topic chip is a chip, not a row.** `.topic-grid` is
+      `repeat(auto-fit, minmax(230px, 1fr))`: five topics took three rows of 526px-wide
+      "chips" in two columns, and now take two rows of four.
   - Icons stay **inline SVG** via `ICONS`/`_svg()`, solid fills (NOT Phosphor/Iconify — offline-first, Google
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
