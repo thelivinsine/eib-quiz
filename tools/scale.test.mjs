@@ -54,6 +54,9 @@ const BUDGETS = {
   literalFontSizes:     [0, "reached 2026-09-20 (phase 2). A literal font-size is now a bug."],
   fontSizesBelowFloor:  [0, "reached 2026-09-20 (phase 4). 12px is the floor."],
   offScaleSpacing:      [0, "reached 2026-09-20 (phase 3). Off-scale spacing is now a bug."],
+  // The two left are the results band's 1px separator gap, which is a hairline
+  // rather than rhythm and has no rung to snap to.
+  literalSpacing:       [2, "reached 2026-09-20. Spacing is tokens now, not literals."],
   // The one left is the 120px floor under a MISSING option image — a placeholder
   // box, not a control, so it has no business on the control ladder.
   distinctControlH:     [1, "reached 2026-09-20 (phase 3)."],
@@ -191,6 +194,19 @@ const offScaleSpacing = valuesOf(...SPACING_PROPS).flatMap((d) =>
  * an icon box (22, 18, 15px) or a layout pane (190, 160, 96px), a different axis entirely.
  * A control declares `min-height`; conflating the two measured the wrong thing.
  */
+/**
+ * Spacing declarations still written as a px literal rather than a --space-* token.
+ *
+ * offScaleSpacing reaching 0 does NOT mean spacing is tokenised — it only means no literal
+ * sits BETWEEN the rungs. A `gap: 8px` lands on a rung and sails through, so the sheet can
+ * drift back to literals indefinitely while the off-scale count stays at zero. This is the
+ * companion count, and it is the one that has to reach 0, exactly as literalFontSizes did
+ * for type.
+ */
+const literalSpacing = valuesOf(...SPACING_PROPS).filter((d) =>
+  parts(d.value).some((t) => /^-?[\d.]+(px|rem)$/.test(t) && t !== "0px"),
+).length;
+
 const distinctControlH = new Set(
   valuesOf("min-height")
     .map((d) => px(d.value))
@@ -207,6 +223,7 @@ const MEASURED = {
   literalFontSizes,
   fontSizesBelowFloor,
   offScaleSpacing: offScaleSpacing.length,
+  literalSpacing,
   distinctControlH,
   distinctTracking,
   globalLineHeights,

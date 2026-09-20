@@ -69,7 +69,7 @@
            hover via a springy cubic-bezier.
            Legacy token NAMES preserved so existing JS keeps working:
              --lime (=teal primary) --gold (=apricot) --blue --green
-             --red --red-text --ink --font-mono --spacing-* ...
+             --red --red-text --ink --font-mono --space-* ...
            ============================================================ */
         :root {
             /* ===== DARK canvas (charcoal) — :root is the no-class base =====
@@ -142,8 +142,7 @@
             /* ---- SPACE ----------------------------------------------------------
                The scale was missing its bottom and middle rungs (it jumped 6 -> 8 -> 16),
                which is why half the sheet reached for a literal instead. 2 / 4 / 12 fill
-               them in. `--spacing-*` are kept as aliases so the cleanup can land a rule at
-               a time; they go once nothing reads them.
+               them in. The old `--spacing-*` aliases are gone — nothing reads them.
                Measured against the four systems in
                claude-context-kit/docs/reference/type-and-space.md: 4px and 8px appear in
                every one of them, and ONE value carries 86-88% of a real page's gaps. A flat
@@ -158,12 +157,6 @@
             --space-xl:  28px;
             --space-2xl: 40px;
 
-            --spacing-xs:  var(--space-xs);
-            --spacing-sm:  var(--space-sm);
-            --spacing-md:  var(--space-md);
-            --spacing-lg:  var(--space-lg);
-            --spacing-xl:  var(--space-xl);
-            --spacing-2xl: var(--space-2xl);
 
             /* ---- TYPE -----------------------------------------------------------
                Eight steps, and a font-size written as a literal is a bug — the same rule
@@ -181,7 +174,7 @@
             --fs-2xl:  1.75rem;    /* 28px — display numerals (rings, counters) */
             --fs-3xl:  2.25rem;    /* 36px — the score ring only: on the results screen
                                       the score IS the content, so it keeps the top step */
-            --fs-hero: clamp(1.75rem, 3.2vw, 2.5rem);   /* the one clamp left */
+            --fs-hero: clamp(1.6rem, 3.6vw, 2.4rem);   /* the one clamp left */
 
             /* ---- LEADING --------------------------------------------------------
                Compare the LINE BOX, not the ratio. All four reference systems land their
@@ -358,13 +351,13 @@
         .header-content {
             max-width: var(--maxw);
             margin: 0 auto;
-            padding: var(--space-sm) var(--spacing-lg);
+            padding: var(--space-sm) var(--space-lg);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: var(--spacing-md);
+            gap: var(--space-md);
         }
-        .brand { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: 4px 6px; border-radius: var(--radius-sm); }
+        .brand { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); }
         .brand-mark {
             width: 34px; height: 34px;
             border-radius: var(--radius-sm);
@@ -382,7 +375,7 @@
            logo. Body.in-session swaps the two; nothing branches in JS. */
         .session-back {
             display: none;
-            align-items: center; gap: 8px;
+            align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm);
             background: var(--surface2); border: 1px solid var(--border);
             border-radius: var(--radius-pill);
@@ -397,10 +390,10 @@
         body.in-session .brand { display: none; }
         body.in-session .session-back { display: inline-flex; }
 
-        .header-controls { display: flex; align-items: center; gap: var(--spacing-sm); }
+        .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
         .seg {
             display: inline-flex;
-            padding: 2px; gap: 2px;
+            padding: var(--space-3xs); gap: var(--space-3xs);
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
@@ -423,7 +416,7 @@
            ============================================================ */
         main {
             max-width: var(--maxw); margin: 0 auto;
-            padding: var(--spacing-xl) var(--spacing-lg);
+            padding: var(--space-xl) var(--space-lg);
             padding-bottom: calc(96px + env(safe-area-inset-bottom));
         }
         .screen { display: none; animation: fadeUp 0.32s var(--ease) both; }
@@ -444,8 +437,8 @@
             height: calc(100svh - var(--header-h));
             /* Wider gutters than the page uses: in a session the question is the only
                thing on screen, and it should not run to the edges. */
-            padding: var(--spacing-lg) var(--spacing-xl);
-            padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
+            padding: var(--space-lg) var(--space-xl);
+            padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
             overflow: hidden;
             display: flex;
         }
@@ -461,8 +454,8 @@
            rather than :has(), which would leave a browser without it double-padded. */
         body.in-session #endScreen.active {
             overflow: hidden auto; overscroll-behavior: contain;
-            margin-inline: calc(-1 * var(--spacing-xl));
-            padding-inline: var(--spacing-xl);
+            margin-inline: calc(-1 * var(--space-xl));
+            padding-inline: var(--space-xl);
         }
         /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
            tallest item, so the card pushed the nav bar off the bottom of a locked
@@ -490,10 +483,10 @@
         body.in-session .quiz-sidebar { grid-area: nav; }
         /* 2x2 over the panel's width rather than four across: the column is 248px, and
            four figures on one line there would set in two anyway, raggedly. */
-        body.in-session .quiz-topbar { display: block; margin-bottom: var(--spacing-md); }
+        body.in-session .quiz-topbar { display: block; margin-bottom: var(--space-md); }
         body.in-session .quiz-topbar .stats-bar {
             display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-            column-gap: var(--spacing-md); row-gap: 8px; justify-items: start;
+            column-gap: var(--space-md); row-gap: var(--space-sm); justify-items: start;
         }
         /* The block sits low on the screen, and the room above and below it BOTH give way
            to content before anything scrolls. Auto margins are what buy that: the block
@@ -554,7 +547,7 @@
            centring. */
         .question-body {
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
-            padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
+            padding-right: var(--space-sm); margin-right: calc(var(--space-sm) * -1);
             display: flex; flex-direction: column;
         }
         .question-body > * { flex-shrink: 0; }
@@ -637,13 +630,13 @@
            the result they belong to and scroll away behind it. */
         .end-actions {
             display: flex; align-items: center; justify-content: center;
-            gap: var(--spacing-sm); flex-wrap: wrap;
-            margin-top: var(--spacing-xl);
+            gap: var(--space-sm); flex-wrap: wrap;
+            margin-top: var(--space-xl);
         }
         /* Smaller than a page-level action: the ring above is the result, these are what
            you do next. */
         .end-actions .btn-primary, .end-actions .btn-secondary {
-            min-height: var(--ctl-sm); padding: 0 16px; font-size: var(--fs-xs);
+            min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs);
         }
         .end-more { display: inline-flex; align-items: center; gap: var(--space-xs); }
         .end-more svg { width: 14px; height: 14px; }
@@ -694,11 +687,11 @@
             text-wrap: pretty;
         }
         .hero-cta-row {
-            display: flex; flex-wrap: wrap; gap: var(--spacing-md);
+            display: flex; flex-wrap: wrap; gap: var(--space-md);
             justify-content: center;
             margin-top: var(--space-md);
         }
-        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: var(--space-ms) 28px; font-size: var(--fs-md); }
+        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
         .hero-cta-row .btn-primary svg { width: 18px; height: 18px; }
 
 
@@ -715,7 +708,7 @@
         .section-head--row {
             max-width: none;
             display: flex; align-items: flex-end; justify-content: space-between;
-            gap: var(--spacing-md); flex-wrap: wrap;
+            gap: var(--space-md); flex-wrap: wrap;
         }
         .section-head--row > div { max-width: 62ch; }
         #statePickerSlot { display: flex; flex-direction: column; gap: var(--space-2xs); align-items: flex-start; min-width: 0; }
@@ -728,7 +721,7 @@
             color: var(--text);
         }
         .section-head p {
-            margin-top: 4px;
+            margin-top: var(--space-2xs);
             font-size: var(--fs-base);
             line-height: var(--lh-prose);
             color: var(--muted);
@@ -750,7 +743,7 @@
         .state-picker {
             position: relative;
             min-width: 0; max-width: 100%;
-            display: inline-flex; align-items: center; gap: 8px;
+            display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-md);
             padding: 0 calc(var(--space-xl) + var(--space-sm)) 0 var(--space-ms);
             background: var(--surface);
@@ -800,7 +793,7 @@
             display: grid;
             grid-template-columns: auto 1fr;
             align-items: stretch;
-            gap: var(--spacing-lg);
+            gap: var(--space-lg);
         }
         .ready-ring-wrap { position: relative; width: 88px; height: 88px; flex-shrink: 0; }
         .ready-ring { width: 100%; height: 100%; display: block; }
@@ -815,13 +808,13 @@
 
         .dash-stats {
             display: grid; grid-template-columns: repeat(3, 1fr);
-            padding-right: 40px;
+            padding-right: var(--space-2xl);
             align-items: center;
             min-width: 0;
             border-left: 1px solid var(--border);
         }
         .dash-stat {
-            padding: 0 var(--spacing-md);
+            padding: 0 var(--space-md);
             display: flex; flex-direction: column; gap: var(--space-xs);
             min-width: 0;
         }
@@ -834,17 +827,17 @@
         .ds-of { color: var(--faint); font-size: var(--fs-xs); font-weight: 500; }
 
         .resume-banner {
-            margin-top: var(--spacing-md);
-            padding: var(--space-ms) var(--spacing-md);
+            margin-top: var(--space-md);
+            padding: var(--space-ms) var(--space-md);
             background: var(--accent-soft);
             border: 1px solid var(--accent-line);
             border-radius: var(--radius);
             display: flex; align-items: center; justify-content: space-between;
-            gap: var(--spacing-md); flex-wrap: wrap;
+            gap: var(--space-md); flex-wrap: wrap;
         }
-        .resume-text { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-sm); color: var(--muted); }
+        .resume-text { display: flex; flex-direction: column; gap: var(--space-3xs); font-size: var(--fs-sm); color: var(--muted); }
         .resume-text strong { color: var(--text); font-size: var(--fs-base); }
-        .resume-actions { display: flex; gap: 8px; }
+        .resume-actions { display: flex; gap: var(--space-sm); }
 
         /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
            44px band for something you press once a year cost more height than the
@@ -865,12 +858,12 @@
         .modes-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: var(--spacing-md);
+            gap: var(--space-md);
         }
         .mode-card {
             grid-column: span 1;
             position: relative;
-            padding: var(--spacing-md);
+            padding: var(--space-md);
             border-radius: var(--radius);
             background: var(--surface);
             border: 1px solid var(--border);
@@ -905,11 +898,11 @@
                it, exactly as on the peers beside it. */
             border-color: var(--border);
             color: var(--text);
-            padding: var(--spacing-lg);
+            padding: var(--space-lg);
             display: grid;
             grid-template-columns: 1fr auto;
             grid-template-areas: "title action" "desc action" "meta action";
-            column-gap: var(--spacing-md);
+            column-gap: var(--space-md);
             align-items: center;
         }
         @media (hover: hover) {
@@ -942,14 +935,14 @@
            "All questions" printed over "approx. 60-90 min". `margin-left: auto` puts it
            at the same corner without leaving the flow. */
         .mode-time {
-            margin-left: auto; padding-left: var(--spacing-sm);
+            margin-left: auto; padding-left: var(--space-sm);
             font-size: var(--fs-2xs); color: var(--muted); white-space: nowrap;
             font-variant-numeric: tabular-nums; align-self: flex-start;
         }
         /* The peers repeat no "Start" (the card is the button), but they still
            have to LOOK like buttons where there is no hover to reveal it. */
         .mode-go {
-            position: absolute; bottom: var(--spacing-md); right: var(--spacing-md);
+            position: absolute; bottom: var(--space-md); right: var(--space-md);
             width: 28px; height: 28px;
             display: grid; place-items: center;
             color: var(--muted);
@@ -975,7 +968,7 @@
             .mode-card:hover .mode-icon { color: var(--accent-text); }
         }
         /* The icon and the title are one row. */
-        .mode-head { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: 4px; }
+        .mode-head { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
         .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; }
         .mode-description {
@@ -994,10 +987,10 @@
         .mode-card:not(.mode-card--featured) .mode-meta { padding-right: calc(var(--space-xl) + var(--space-sm)); }
         .mode-flag {
             font-size: var(--fs-2xs); font-weight: 600;
-            padding: 2px 8px; border-radius: var(--radius-pill);
+            padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
-        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: var(--fs-xs); font-weight: 600; }
+        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); font-size: var(--fs-xs); font-weight: 600; }
         .msb-arrow { transition: transform 0.25s var(--ease-spring); }
         .mode-card:hover .msb-arrow { transform: translateX(3px); }
 
@@ -1040,15 +1033,15 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: var(--spacing-md);
-            margin-bottom: var(--spacing-sm);
+            padding: var(--space-md);
+            margin-bottom: var(--space-sm);
         }
-        .sub-card > .eyebrow { display: block; margin-bottom: var(--spacing-md); }
+        .sub-card > .eyebrow { display: block; margin-bottom: var(--space-md); }
         #historySection:empty, #topicSection:empty, #glossarySection:empty { display: none; }
 
         .load-error {
             grid-column: 1 / -1;
-            padding: var(--spacing-lg);
+            padding: var(--space-lg);
             text-align: center;
             color: var(--red-text);
             background: var(--red-dim);
@@ -1056,15 +1049,15 @@
         }
 
         /* History */
-        .hist-exam { padding: var(--spacing-md); border-radius: var(--radius); margin-bottom: var(--spacing-md); background: var(--surface2); border-color: var(--border-soft); }
-        .hist-exam-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-sm); font-size: var(--fs-sm); color: var(--sub-text); margin-bottom: var(--spacing-md); }
+        .hist-exam { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-md); background: var(--surface2); border-color: var(--border-soft); }
+        .hist-exam-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-size: var(--fs-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
         .hist-exam-stats strong { color: var(--text); font-variant-numeric: tabular-nums; }
-        .hist-bars { display: flex; align-items: flex-end; gap: 6px; height: 52px; }
+        .hist-bars { display: flex; align-items: flex-end; gap: var(--space-xs); height: 52px; }
         .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: var(--radius-xs) var(--radius-xs) 0 0; background: var(--muted); transition: height 0.4s var(--ease); }
         .hist-bar.pass { background: var(--teal-deep); }
         .hist-bar.fail { background: var(--red); }
         .hist-list { border-radius: var(--radius); overflow: hidden; border-color: var(--border-soft); }
-        .hist-row { display: flex; align-items: center; gap: var(--spacing-md); padding: 12px var(--spacing-md); border-bottom: 1px solid var(--border-soft); font-size: var(--fs-sm); flex-wrap: wrap; }
+        .hist-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); font-size: var(--fs-sm); flex-wrap: wrap; }
         .hist-row:last-child { border-bottom: none; }
         .hist-mode { font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
         .hist-date { color: var(--muted); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums; }
@@ -1074,20 +1067,22 @@
         .hist-badge.fail { color: var(--red-text); background: var(--red-dim); }
 
         /* Glossary */
-        .glossary-section { margin-bottom: var(--spacing-lg); }
+        .glossary-section { margin-bottom: var(--space-lg); }
         .glossary-wrap { border-radius: var(--radius); overflow: hidden; }
         details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
         details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
-        .glossary-summary { padding: 12px var(--spacing-md); min-height: var(--ctl-md); font-weight: 600; font-size: var(--fs-base); display: flex; align-items: center; gap: 8px; transition: background 0.2s var(--ease); }
+        .glossary-summary { padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); font-weight: 600; font-size: var(--fs-base); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
         .glossary-summary:hover { background: var(--hover); }
         .glossary-summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: var(--fs-lg); line-height: 1; }
         details.glossary-wrap[open] .glossary-summary::after { content: '−'; }
         .gloss-list { border-top: 1px solid var(--border-soft); }
+        .hist-body { padding: var(--space-md); border-top: 1px solid var(--border-soft); }
+        .hist-body .hist-list { border: none; border-radius: 0; }
         .gloss-item { border-bottom: 1px solid var(--border-soft); }
         .gloss-item:last-child { border-bottom: none; }
-        .gloss-item > summary { padding: var(--space-ms) var(--spacing-md); font-weight: 600; font-size: var(--fs-sm); color: var(--text); transition: color 0.2s var(--ease); }
+        .gloss-item > summary { padding: var(--space-ms) var(--space-md); font-weight: 600; font-size: var(--fs-sm); color: var(--text); transition: color 0.2s var(--ease); }
         .gloss-item > summary:hover { color: var(--accent-text); }
-        .gloss-def { padding: 0 var(--spacing-md) var(--space-ms); display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-sm); color: var(--sub-text); }
+        .gloss-def { padding: 0 var(--space-md) var(--space-ms); display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--sub-text); }
         .gloss-en { color: var(--muted); font-style: italic; }
 
         /* ============================================================
@@ -1100,7 +1095,7 @@
             padding: var(--space-ms) var(--space-lg);
             border-radius: var(--radius-pill);
             border: 1px solid transparent;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease);
         }
         .btn-primary { color: var(--on-accent); background: var(--accent-fill); }
@@ -1108,8 +1103,8 @@
         .btn-primary:active { filter: brightness(0.94); }
         .btn-secondary { color: var(--sub-text); background: var(--surface); border-color: var(--border); }
         .btn-secondary:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
-        .btn-lg { min-height: var(--ctl-md); padding: 12px var(--space-lg); font-size: var(--fs-base); }
-        .btn-sm { min-height: var(--ctl-sm); padding: 0 16px; font-size: var(--fs-xs); }
+        .btn-lg { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
+        .btn-sm { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1117,7 +1112,7 @@
             padding: 0; margin: calc(1px * -1); overflow: hidden;
             clip: rect(0 0 0 0); white-space: nowrap; border: 0;
         }
-        .btn-group { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap; }
+        .btn-group { display: flex; gap: var(--space-md); margin-top: var(--space-lg); flex-wrap: wrap; }
 
         /* The card's pinned footer. Previous on the left, Next on the right -
            the row maps to the direction each button moves you. Neither is ever
@@ -1128,8 +1123,8 @@
         }
         .quiz-nav {
             display: flex; align-items: center; justify-content: space-between;
-            gap: var(--spacing-sm);
-            margin-top: var(--spacing-md);
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
             flex-shrink: 0;
         }
         #nextBtn:disabled { visibility: hidden; }
@@ -1146,10 +1141,10 @@
            report on the round you are reading, not on the whole screen. */
         .quiz-topbar {
             display: flex; align-items: center; justify-content: center;
-            gap: var(--spacing-md); flex-wrap: wrap;
-            margin-bottom: var(--spacing-md); flex-shrink: 0;
+            gap: var(--space-md); flex-wrap: wrap;
+            margin-bottom: var(--space-md); flex-shrink: 0;
         }
-        .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: var(--space-lg); row-gap: 4px; }
+        .stats-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: var(--space-lg); row-gap: var(--space-2xs); }
         /* It rides in the footer row, between the two buttons: out of the reading
            path, on a line that already exists, and costing the question no height. */
         #keyboardHintContainer { flex: 0 1 auto; min-width: 0; display: flex; justify-content: center; }
@@ -1171,7 +1166,7 @@
         .quiz-layout {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
-            gap: 0 var(--spacing-xl);
+            gap: 0 var(--space-xl);
             align-items: start;
         }
         .quiz-main { min-width: 0; }
@@ -1183,12 +1178,12 @@
            the label and the figure reading as a single phrase. */
         #timer {
             position: sticky; top: var(--header-h); z-index: 20;
-            display: flex; align-items: baseline; justify-content: center; gap: 8px;
+            display: flex; align-items: baseline; justify-content: center; gap: var(--space-sm);
             padding: 0; text-align: center; background: none; border: 0; border-radius: 0;
         }
         #timer .timer-label, #timer .timer-display, #timer .pacing-info { font-size: var(--fs-sm); line-height: 1.3; }
         /* One line, so it needs a line's worth of room under it and no more. */
-        body.in-session #timer { margin-bottom: var(--spacing-sm); }
+        body.in-session #timer { margin-bottom: var(--space-sm); }
         /* With no border left to pulse, the danger state is carried by the figure. */
         #timer.danger { animation: pulseDanger 1.1s var(--ease) infinite; }
         @keyframes pulseDanger { 50% { opacity: 0.55; } }
@@ -1200,7 +1195,7 @@
            quarters marked so a length means something at a glance, and a bright tip on
            the fill so the leading edge is findable on a 300-question round. */
         .quiz-progress {
-            position: relative; height: 8px; margin-bottom: var(--spacing-2xl); flex-shrink: 0;
+            position: relative; height: 8px; margin-bottom: var(--space-2xl); flex-shrink: 0;
             background: var(--surface3); border-radius: var(--radius-pill);
             overflow: hidden;
         }
@@ -1228,8 +1223,8 @@
         .q-enter { animation: qEnter 0.4s var(--ease-spring) both; }
         @keyframes qEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); flex-shrink: 0; }
-        .question-meta > div:first-child { display: flex; align-items: center; gap: 8px; min-width: 0; }
+        .question-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-md); flex-shrink: 0; }
+        .question-meta > div:first-child { display: flex; align-items: center; gap: var(--space-sm); min-width: 0; }
         .question-num { color: var(--accent-text); flex-shrink: 0; }
         /* Plain text after a dot, not a pill. The category is context you glance
            at; a bordered chip next to the bordered buttons made the row above the
@@ -1241,40 +1236,42 @@
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .question-category:empty { display: none; }
-        .question-category::before { content: '·'; margin-right: 8px; color: var(--faint); }
-        .question-meta-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .question-category::before { content: '·'; margin-right: var(--space-sm); color: var(--faint); }
+        .question-meta-actions { display: flex; gap: var(--space-xs); flex-shrink: 0; }
         /* These are buttons and have to look like buttons: an icon floating on the
            page is a decoration. They stay small and quiet — a hairline and the tile
            fill — but never borderless. */
         .speak-btn, .bilingual-toggle {
             border: none; background: none; color: var(--sub-text);
             font-size: var(--fs-2xs); font-weight: 600;
-            min-height: var(--ctl-sm); padding: 0 6px;
+            min-height: var(--ctl-sm); padding: 0 var(--space-xs);
             display: inline-flex; align-items: center; justify-content: center;
             transition: color 0.16s var(--ease);
         }
-        .speak-btn { min-width: 34px; padding: 0 6px; }
+        .speak-btn { min-width: 34px; padding: 0 var(--space-xs); }
         /* On a touch screen every one of these is a finger target, not a cursor target. */
         @media (pointer: coarse) {
             .speak-btn, .bilingual-toggle, .session-back, .brand { min-height: var(--ctl-md); }
-            .option-btn { min-height: var(--ctl-md); }
+            /* The next rung UP, or this rule sets the height it already had: an answer
+               row is the thing you reach for most, and a thumb gets the height back. */
+            .option-btn { min-height: var(--ctl-lg); }
             .header-controls .seg-btn { min-height: var(--ctl-sm); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
         }
         .speak-btn svg, .bilingual-toggle svg { width: 16px; height: 16px; }
-        .bilingual-toggle { gap: 6px; }
+        .bilingual-toggle { gap: var(--space-xs); }
         .speak-btn:hover, .bilingual-toggle:hover { color: var(--text); }
         .bilingual-toggle.active { color: var(--accent-text); }
 
         .question-text { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); line-height: 1.4; letter-spacing: var(--ls-display); color: var(--text); text-wrap: pretty; }
         .question-text:focus { outline: none; }
-        .question-english { display: none; margin-top: 8px; padding-top: var(--space-sm); border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); line-height: var(--lh-prose); }
+        .question-english { display: none; margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); line-height: var(--lh-prose); }
         .question-english.show { display: block; }
-        .question-image { width: 100%; max-width: 294px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+        .question-image { width: 100%; max-width: 294px; margin: var(--space-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
 
-        .options { display: flex; flex-direction: column; gap: 8px; margin-top: var(--spacing-lg); }
+        .options { display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-lg); }
         .option-btn {
             display: flex; align-items: center; gap: var(--space-sm);
             width: 100%; text-align: left;
@@ -1358,7 +1355,7 @@
            height, so on a wide screen an uncapped row would push the labels off the
            bottom. You can open any of them full size, so a thumbnail only has to be
            recognisable, not readable. */
-        .options--image { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--spacing-md); max-width: min(100%, 72svh); margin-inline: auto; }
+        .options--image { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-md); max-width: min(100%, 72svh); margin-inline: auto; }
         .option-btn--image { flex-direction: column; align-items: stretch; padding: var(--space-sm); gap: var(--space-sm); }
         .option-btn--image { min-height: 0; }
         /* A SQUARE frame, not 4/3. The catalogue's crests run 0.78-1.0 in aspect, so in a
@@ -1377,7 +1374,7 @@
            picture carrying the words, so nothing sits on top of the answer at rest. */
         .opt-img-hover {
             position: absolute; inset: 0; display: grid; place-items: center;
-            padding: 8px; text-align: center;
+            padding: var(--space-sm); text-align: center;
             font-size: var(--fs-2xs); font-weight: 600; line-height: 1.3;
             /* 0.60, not 0.55: the veil lets 45%/40% of the picture through, so the WORST
                case is a white crest, and at 0.55 the composite was #78787A — 4.41 against
@@ -1398,19 +1395,19 @@
 
         /* ---- Image lightbox ---- */
         .img-zoom[hidden] { display: none; }
-        .img-zoom { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: var(--spacing-lg); }
+        .img-zoom { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: var(--space-lg); }
         .img-zoom-backdrop { position: absolute; inset: 0; background: rgba(9, 10, 13, 0.72); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
         .img-zoom-figure {
             position: relative; margin: 0; max-width: min(760px, 100%); max-height: 100%;
-            display: flex; flex-direction: column; gap: var(--spacing-sm);
+            display: flex; flex-direction: column; gap: var(--space-sm);
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: var(--spacing-md);
+            border-radius: var(--radius); padding: var(--space-md);
         }
         /* OFF the picture: in the overlay's own corner, so it never covers a corner of
            the thing you opened it to look at. Clicking anywhere outside the frame closes
            it too — the backdrop fills the rest of the screen. */
         .img-zoom-close {
-            position: absolute; top: var(--spacing-md); right: var(--spacing-md);
+            position: absolute; top: var(--space-md); right: var(--space-md);
             width: 44px; height: 44px; z-index: 2;
             display: grid; place-items: center;
             background: none; border: none; color: var(--sub-text);
@@ -1421,8 +1418,8 @@
         .img-zoom img { display: block; width: 100%; max-height: calc(100svh - 190px); object-fit: contain; border-radius: var(--radius-sm); }
         .img-zoom-caption { font-size: var(--fs-xs); color: var(--sub-text); text-align: center; }
         @media (max-width: 620px) {
-            .img-zoom { padding: var(--spacing-md); }
-            .img-zoom-figure { padding: var(--spacing-sm); }
+            .img-zoom { padding: var(--space-md); }
+            .img-zoom-figure { padding: var(--space-sm); }
         }
         /* overflow-wrap, because `Christusmonogramm` is a single 17-character word: its
            min-content width alone made that column wider than its neighbour, and with
@@ -1433,18 +1430,18 @@
         .option-btn--image.img-missing .opt-img::after { content: attr(data-missing); font-size: var(--fs-2xs); color: var(--muted); }
         .option-btn--image.img-missing .opt-img img { display: none; }
 
-        .keyboard-hint { position: relative; padding: var(--space-2xs) 6px var(--space-2xs) 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--fs-2xs); color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+        .keyboard-hint { position: relative; padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-ms); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--fs-2xs); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
-        kbd { font-size: var(--fs-2xs); padding: 2px var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
+        kbd { font-size: var(--fs-2xs); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
         .keyboard-hint-close {
-            margin-left: 4px; width: 22px; height: 22px; flex-shrink: 0;
+            margin-left: var(--space-2xs); width: 22px; height: 22px; flex-shrink: 0;
             display: grid; place-items: center;
             background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-pill);
             color: var(--muted); font-size: var(--fs-base); line-height: 1;
         }
         .keyboard-hint-close:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
 
-        .explanation { display: none; margin-top: var(--spacing-md); padding: 12px var(--space-ms); border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); animation: fadeUp 0.28s var(--ease) both; }
+        .explanation { display: none; margin-top: var(--space-md); padding: var(--space-ms) var(--space-ms); border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); animation: fadeUp 0.28s var(--ease) both; }
         .explanation.show { display: block; }
         .explanation.correct { border-color: var(--green); background: var(--green-dim); }
         .explanation.incorrect { border-color: var(--red); background: var(--red-dim); }
@@ -1452,14 +1449,14 @@
         .explanation.correct .explanation-header { color: var(--green); }
         .explanation.incorrect .explanation-header { color: var(--red-text); }
         .explanation-text { color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose); }
-        .explanation-english { display: none; margin-top: 6px; color: var(--muted); font-size: var(--fs-xs); font-style: italic; }
+        .explanation-english { display: none; margin-top: var(--space-xs); color: var(--muted); font-size: var(--fs-xs); font-style: italic; }
         .explanation-english.show { display: block; }
 
         /* Sidebar navigator */
         .quiz-sidebar {
             width: 248px;
             border-radius: var(--radius);
-            padding: 12px;
+            padding: var(--space-ms);
             position: sticky;
             top: calc(var(--header-h) + 8px);
             /* Never taller than the screen — otherwise it is not sticky, it is just long.
@@ -1500,21 +1497,21 @@
                row gap swallowed. Extra room belongs at the bottom of the list. */
             align-content: start;
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
-            padding-right: var(--spacing-sm); margin-right: calc(var(--spacing-sm) * -1);
+            padding-right: var(--space-sm); margin-right: calc(var(--space-sm) * -1);
         }
         /* Six across in the sidebar, many more across the full-width strip on a
            narrow screen. 34px clears the 24px AA target with room and still holds a
            three-digit number — which a shuffled round shows. */
-        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); gap: 4px; }
+        .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); gap: var(--space-2xs); }
 
         /* Collapsible category groups. The group holding the current question is
            always open; anything else the reader opened stays open across renders. */
-        .question-nav-groups { display: flex; flex-direction: column; gap: 4px; }
+        .question-nav-groups { display: flex; flex-direction: column; gap: var(--space-2xs); }
         .qnav-group { border-radius: var(--radius-sm); }
-        .qnav-group + .qnav-group { border-top: 1px solid var(--border-soft); padding-top: 4px; }
+        .qnav-group + .qnav-group { border-top: 1px solid var(--border-soft); padding-top: var(--space-2xs); }
         .qnav-group-head {
-            display: flex; align-items: center; gap: 8px;
-            min-height: var(--ctl-sm); padding: 0 4px;
+            display: flex; align-items: center; gap: var(--space-sm);
+            min-height: var(--ctl-sm); padding: 0 var(--space-2xs);
             cursor: pointer; list-style: none;
             font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
         }
@@ -1522,7 +1519,7 @@
         /* One caret, drawn here, rotating on open. */
         .qnav-group-head::before {
             content: ''; flex-shrink: 0;
-            width: 6px; height: 6px; margin-left: 2px;
+            width: 6px; height: 6px; margin-left: var(--space-3xs);
             border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted);
             transform: rotate(-45deg);
             transition: transform 0.18s var(--ease);
@@ -1531,7 +1528,7 @@
         .qnav-group-head:hover { color: var(--text); }
         .qnav-group-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .qnav-group-count { flex-shrink: 0; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
-        .qnav-group > .question-nav-grid { padding: 4px 0 var(--space-sm); }
+        .qnav-group > .question-nav-grid { padding: var(--space-2xs) 0 var(--space-sm); }
 
         /* Order/view is a round-level control, so it sits above the numbers it
            re-orders. Same segmented control as the header switches — three
@@ -1539,7 +1536,7 @@
         #navActions:empty { display: none; }
         #navActions { flex-shrink: 0; margin: 0 0 var(--space-sm); }
         .qnav-seg { display: flex; width: 100%; }
-        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 6px; font-size: var(--fs-2xs); min-height: var(--ctl-xs); }
+        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 var(--space-xs); font-size: var(--fs-2xs); min-height: var(--ctl-xs); }
 
         /* Stated after the base rules above, not with the other coarse-pointer
            overrides earlier in the sheet — same specificity, so source order decides. */
@@ -1558,17 +1555,17 @@
            END SCREEN
            ============================================================ */
         .end-screen { max-width: 680px; margin: 0 auto; text-align: center; }
-        .end-screen > h1 { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-2xl); letter-spacing: var(--ls-display); margin-bottom: var(--spacing-lg); }
+        .end-screen > h1 { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-2xl); letter-spacing: var(--ls-display); margin-bottom: var(--space-lg); }
         /* A ROW, not a stack. The card is 680px wide and held a 170px ring centred in it
            with a pill underneath: 286px tall and empty either side of the ring. The ring
            sits ON the page now: a box around a ring and a verdict says nothing the ring
            does not, and it cost a band of height at the top of every result. */
-        .score-hero { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md); }
+        .score-hero { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); }
         .score-ring-wrap { position: relative; width: 190px; height: 190px; flex-shrink: 0; margin: 0; }
         .score-ring { width: 100%; height: 100%; display: block; }
         .score-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
         .score-ring-bar { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.1s var(--ease-spring); }
-        .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+        .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3xs); }
         .score-ring-pct { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-3xl); letter-spacing: var(--ls-display); line-height: 1; font-variant-numeric: tabular-nums; color: var(--text); }
         .score-ring-center .score-number { font-size: var(--fs-sm); font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
         /* Only an exam has a pass mark, so on every other round this is empty — and an
@@ -1576,7 +1573,7 @@
            the ring. Visible once it has something to say. */
         .pass-fail:empty { display: none; }
         /* align-self so the pill is as wide as its words, inside a stretch column. */
-        .pass-fail { display: inline-block; align-self: center; margin: 0; font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); padding: 8px 20px; border-radius: var(--radius-pill); }
+        .pass-fail { display: inline-block; align-self: center; margin: 0; font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-pill); }
         .pass-fail.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .pass-fail.fail { color: var(--red-text); background: var(--red-dim); }
         /* ONE band, figures separated by hairlines — the same move the home overview card
@@ -1584,7 +1581,7 @@
            each a container holding nothing but a label and a figure. */
         .result-stats {
             display: flex; flex-wrap: wrap; justify-content: center;
-            margin-top: var(--spacing-xl);
+            margin-top: var(--space-xl);
             border: 1px solid var(--border); border-radius: var(--radius);
             /* The separators are a 1px GAP over the band's own colour, not a border on
                each cell: a border-left lands on the first cell of a wrapped row too, and
@@ -1594,7 +1591,7 @@
         }
         .result-stat {
             flex: 1 1 0; min-width: 104px;
-            padding: var(--space-ms) var(--spacing-md);
+            padding: var(--space-ms) var(--space-md);
             display: flex; flex-direction: column; align-items: center; gap: var(--space-2xs);
             background: var(--surface);
         }
@@ -1603,27 +1600,27 @@
         .result-stat .rs-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
         .pass-threshold-note { font-size: var(--fs-xs); color: var(--muted); margin: 0; }
         .pass-threshold-note[hidden] { display: none; }
-        .review-section { margin-top: var(--spacing-xl); text-align: left; }
-        .review-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-wrap: wrap; margin-bottom: var(--spacing-lg); }
+        .review-section { margin-top: var(--space-xl); text-align: left; }
+        .review-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin-bottom: var(--space-lg); }
         /* The exam's header is the count alone — no heading beside it to sit opposite, and
            no button since Retry moved up to the action row — so it centres rather than
            hanging off the left edge. */
         .review-section-header--solo { justify-content: center; }
         .review-section-header h2 { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); letter-spacing: var(--ls-display); }
-        .review-header-actions { display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap; }
+        .review-header-actions { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
         .review-count { color: var(--muted); font-size: var(--fs-sm); }
-        .review-item { padding: var(--spacing-md); border-radius: var(--radius); margin-bottom: var(--spacing-sm); }
-        .review-q-num { margin-bottom: 6px; }
-        .review-q-text { font-weight: 600; font-size: var(--fs-md); line-height: 1.4; margin-bottom: var(--spacing-md); }
-        .review-answers { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-md); }
+        .review-item { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-sm); }
+        .review-q-num { margin-bottom: var(--space-xs); }
+        .review-q-text { font-weight: 600; font-size: var(--fs-md); line-height: 1.4; margin-bottom: var(--space-md); }
+        .review-answers { display: flex; flex-direction: column; gap: var(--space-xs); margin-bottom: var(--space-md); }
         .review-answer { font-size: var(--fs-sm); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
         .review-answer.user-wrong { color: var(--red-text); background: var(--red-dim); }
         .review-answer.correct-ans { color: var(--green); background: var(--green-dim); }
         /* The exam's list carries every question, so it needs a right and a blank too. */
         .review-answer.user-right { color: var(--green); background: var(--green-dim); }
         .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
-        .review-explanation { font-size: var(--fs-sm); color: var(--sub-text); line-height: var(--lh-prose); padding-top: var(--spacing-sm); border-top: 1px solid var(--border-soft); }
-        .review-explanation-en { color: var(--muted); font-style: italic; margin-top: 6px; }
+        .review-explanation { font-size: var(--fs-sm); color: var(--sub-text); line-height: var(--lh-prose); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
+        .review-explanation-en { color: var(--muted); font-style: italic; margin-top: var(--space-xs); }
 
         /* ============================================================
            MOTION PREFERENCES
@@ -1692,10 +1689,10 @@
                reader's first look, and they are a running tally you glance at — not
                something to lead with. `order` moves them without touching the DOM, so
                the reading order stays question-first and the focus order with it.
-               The gap above is a full --spacing-2xl: the buttons belong to the
+               The gap above is a full --space-2xl: the buttons belong to the
                question, the tally and the overview strip below do not, and that
                distance is what says so. */
-            body.in-session .quiz-topbar { margin-top: var(--spacing-2xl); margin-bottom: 0; }
+            body.in-session .quiz-topbar { margin-top: var(--space-2xl); margin-bottom: 0; }
             /* Back to one line down here: the panel's 248px column is what asked for a
                2x2, and on a phone the row is the full width. */
             body.in-session .quiz-topbar .stats-bar { display: flex; }
@@ -1704,7 +1701,7 @@
                its content and flex: 1 has nothing to grow into. */
             body.in-session .quiz-main { align-self: stretch; }
             body.in-session .question-card { flex: 1; }
-            .quiz-sidebar { width: auto; position: static; padding: 6px var(--spacing-md); margin-top: var(--space-sm); }
+            .quiz-sidebar { width: auto; position: static; padding: var(--space-xs) var(--space-md); margin-top: var(--space-sm); }
             .sidebar-header { cursor: pointer; min-height: var(--ctl-md); display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
                shown once — and there is no keyboard to hint at. The CONTAINER goes
@@ -1714,7 +1711,7 @@
             #keyboardHintContainer { display: none; }
             /* The buttons and the strip below them are one band at the bottom of the
                screen, so they sit close enough to read as one. */
-            .quiz-layout { gap: 0 var(--spacing-sm); }
+            .quiz-layout { gap: 0 var(--space-sm); }
 
             .sidebar-body { display: none; }
             /* flex, not block: the grid inside it is the scroller now. vh first, as
@@ -1725,12 +1722,12 @@
         }
 
         @media (max-width: 620px) {
-            main { padding: var(--spacing-lg) var(--spacing-md); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+            main { padding: var(--space-lg) var(--space-md); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
             /* body.in-session main outranks the rule above it on specificity alone,
                media query or not, so the 16px gutter has to be restated here. */
             body.in-session main {
-                padding: var(--spacing-sm) var(--spacing-md);
-                padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom));
+                padding: var(--space-sm) var(--space-md);
+                padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
             }
 
             /* Hero: introduce, then get out of the way. */
@@ -1756,7 +1753,7 @@
             /* Label and control on ONE row: stacked, a two-word eyebrow above a pill
                spent a whole band of the section head on four characters. */
             #statePickerSlot { width: 100%; flex-direction: row; align-items: center;
-                gap: var(--spacing-sm); justify-content: space-between; }
+                gap: var(--space-sm); justify-content: space-between; }
             .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
 
             /* The featured card gives up its side-by-side layout before the text gets
@@ -1767,12 +1764,12 @@
                 grid-template-columns: minmax(0, 1fr) auto;
                 grid-template-areas: "title title" "desc desc" "meta action";
                 align-items: center;
-                row-gap: 4px;
-                padding: var(--spacing-md);
+                row-gap: var(--space-2xs);
+                padding: var(--space-md);
             }
             .mode-card--featured .mode-head { grid-area: title; }
             .mode-card--featured .mode-description { grid-area: desc; }
-            .mode-card--featured .mode-meta { grid-area: meta; margin: 6px 0 0; }
+            .mode-card--featured .mode-meta { grid-area: meta; margin: var(--space-xs) 0 0; }
             /* Left over from when the icon was a 38px chip: the box stayed 38px wide with
                a 20px glyph floating in it, so the glyph sat left of centre with a gap
                before the title and a 14px margin lifting it off the baseline. The icon
@@ -1783,10 +1780,10 @@
             /* Bottom-right, on the meta's line — the peers put their arrow exactly there,
                and a full-width bar made the one card you are meant to compare with them
                read as a different kind of thing. */
-            .mode-card--featured .mode-start-btn { grid-area: action; justify-self: end; align-self: end; width: auto; margin-top: 6px; }
+            .mode-card--featured .mode-start-btn { grid-area: action; justify-self: end; align-self: end; width: auto; margin-top: var(--space-xs); }
             /* Three numbers stay three columns — stacking them turned the
                overview into a screenful of its own. */
-            .dash-stat { padding: 0 6px; align-items: center; text-align: center; gap: var(--space-2xs); }
+            .dash-stat { padding: 0 var(--space-xs); align-items: center; text-align: center; gap: var(--space-2xs); }
             .ds-num { font-size: var(--fs-xl); }
             .ds-of { font-size: var(--fs-2xs); }
             .dash-stat .ds-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
@@ -1795,7 +1792,7 @@
 
             /* The three secondary modes read as a list on a phone: icon beside
                the title, one tap target each, all three in view. */
-            .modes-grid { grid-template-columns: 1fr; gap: var(--spacing-sm); }
+            .modes-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
             .mode-card:not(.mode-card--featured) {
                 display: grid;
                 grid-template-columns: 1fr;
@@ -1804,17 +1801,17 @@
             }
             .mode-card:not(.mode-card--featured) .mode-head { grid-area: title; margin-bottom: 0; }
             .mode-card:not(.mode-card--featured) .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
-            .mode-card:not(.mode-card--featured) .mode-meta { grid-area: meta; margin: 4px 0 0; }
+            .mode-card:not(.mode-card--featured) .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
 
             .topic-grid { grid-template-columns: 1fr; }
-            .sub-card { padding: var(--spacing-md); }
-            .header-content { padding: 6px var(--spacing-md); }
+            .sub-card { padding: var(--space-md); }
+            .header-content { padding: var(--space-xs) var(--space-md); }
             .header-controls { gap: var(--space-2xs); }
             .seg { padding: 1px; }
-            .header-controls .seg-btn { min-height: var(--ctl-xs); padding: 0 8px; font-size: var(--fs-2xs); }
-            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 8px; font-size: var(--fs-2xs); gap: 6px; }
+            .header-controls .seg-btn { min-height: var(--ctl-xs); padding: 0 var(--space-sm); font-size: var(--fs-2xs); }
+            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-xs); }
             .session-back-icon svg { width: 15px; height: 15px; }
-            .brand { min-height: var(--ctl-sm); gap: 8px; }
+            .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
             .brand-mark { width: 28px; height: 28px; font-size: var(--fs-xs); }
             .brand-name { font-size: var(--fs-sm); }
             /* The number and the topic stack instead of sharing a line. Side by side in a
@@ -1822,11 +1819,11 @@
                and it is the half that actually varies. Stacked, both read in full and
                the pair still aligns with the speak/translate buttons opposite, because
                the row centres the two columns against each other. */
-            .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: 2px; }
+            .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
             .question-category { white-space: normal; }
             .question-category::before { content: none; }
-            .question-card { padding: var(--spacing-md); }
-            /* The card's padding insets the question and its options by --spacing-md a
+            .question-card { padding: var(--space-md); }
+            /* The card's padding insets the question and its options by --space-md a
                side; the progress bar hangs off #quizScreen and .quiz-nav off .quiz-main,
                so neither inherited it and both ran 16px wider at each edge than the
                question they belong to. Measured at 390px: question 32-358, bar and
@@ -1836,34 +1833,34 @@
             body.in-session .quiz-progress,
             .quiz-nav,
             body.in-session .quiz-topbar,
-            body.in-session .quiz-sidebar { margin-inline: var(--spacing-md); }
+            body.in-session .quiz-sidebar { margin-inline: var(--space-md); }
             .question-text { font-size: var(--fs-md); }
-            body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
+            body.in-session main { padding-left: var(--space-md); padding-right: var(--space-md); }
             /* Same trade, against the phone's narrower gutter. */
             body.in-session #endScreen.active {
-                margin-inline: calc(-1 * var(--spacing-md));
-                padding-inline: var(--spacing-md);
+                margin-inline: calc(-1 * var(--space-md));
+                padding-inline: var(--space-md);
             }
             /* Still below the buttons here — only the gap tightens. margin-bottom stays
                0 from the 940px block; restating it as spacing-md would put a dead row
                under the tally and push the overview strip off a short phone. */
-            .quiz-topbar { margin-top: var(--spacing-xl); }
-            .question-meta { margin-bottom: 12px; }
+            .quiz-topbar { margin-top: var(--space-xl); }
+            .question-meta { margin-bottom: var(--space-ms); }
             /* The tiles carry their own height on a wide grid; on a phone they
                only need to hold their content. */
             #statTile { min-height: 0; }
             /* Timer becomes one line so the question starts higher. The JS
                owns #timer's own display, so the children go inline instead. */
-            #timer { padding: var(--space-sm) var(--spacing-md); }
+            #timer { padding: var(--space-sm) var(--space-md); }
             /* Already one line at one size; nothing left to collapse down here. */
-            #timer { gap: 6px; }
+            #timer { gap: var(--space-xs); }
             /* The strip needs air above it on a phone: flush to the top edge (or to a
                notch's inset) it read as part of the status bar. The safe-area inset is
                added to this, not replaced by it, so a notched phone gets both. */
-            .header-content { padding-top: 16px; padding-bottom: 12px; }
+            .header-content { padding-top: var(--space-md); padding-bottom: var(--space-ms); }
             /* ...and the progress bar drops clear of that row instead of sitting tight
                under the hairline. */
-            body.in-session .quiz-progress { margin-top: var(--space-sm); margin-bottom: var(--spacing-lg); }
+            body.in-session .quiz-progress { margin-top: var(--space-sm); margin-bottom: var(--space-lg); }
             /* One step down: the tally is a glance, and at the bottom of the column it
                no longer has to carry the row the way it did at the top. */
             .stats-bar { column-gap: var(--space-xs); row-gap: var(--space-3xs); }
@@ -1889,7 +1886,7 @@
             .score-ring-pct { font-size: var(--fs-3xl); }
             .btn-group { flex-direction: column; }
             .btn-group .btn-primary, .btn-group .btn-secondary { width: 100%; justify-content: center; }
-            .hist-row { font-size: var(--fs-xs); gap: 8px; }
+            .hist-row { font-size: var(--fs-xs); gap: var(--space-sm); }
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the
                pictures to still be legible, and down here they would not be. */
@@ -1905,7 +1902,7 @@
             /* The label is what tips a 2x2 over on a narrow screen — "Christusmonogramm
                (Chi-Rho)" sets in three lines. It only has to name the picture. */
             .option-btn--image .opt-num { font-size: var(--fs-2xs); line-height: 1.25; }
-            .option-btn--image { padding: 8px; gap: 8px; }
+            .option-btn--image { padding: var(--space-sm); gap: var(--space-sm); }
         }
     </style>
 </head>
@@ -2307,7 +2304,7 @@
             'topic.meta':          { en: '{n} questions · {m} mastered', de: '{n} Fragen · {m} gemeistert' },
 
             // history
-            'hist.title':          { en: 'History',                 de: 'Verlauf' },
+            'hist.title':          { en: 'Past rounds ({n})',       de: 'Frühere Runden ({n})' },
             'hist.passed':         { en: '{n}/{total} exams passed', de: '{n}/{total} Prüfungen bestanden' },
             'hist.best':           { en: 'Best {p}%',                de: 'Bestleistung {p}%' },
             'hist.pass':           { en: 'Passed',                   de: 'Bestanden' },
@@ -2779,7 +2776,11 @@
                 return `<div class="hist-row"><span class="hist-mode">${modeLabel(h.mode)}</span><span class="hist-date">${date}</span><span class="hist-score">${h.correct}/${h.total} · ${h.percent}%</span>${badge}</div>`;
             }).join('');
 
-            el.innerHTML = `<div class="sub-card"><span class="eyebrow">${t('hist.title')}</span>${examBlock}<div class="hist-list">${rows}</div></div>`;
+            el.innerHTML = `
+                <details class="glossary-wrap">
+                    <summary class="glossary-summary">${t('hist.title', { n: resultsHistory.length })}</summary>
+                    <div class="hist-body">${examBlock}<div class="hist-list">${rows}</div></div>
+                </details>`;
         }
 
         // ============================================================
