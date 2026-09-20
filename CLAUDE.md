@@ -753,6 +753,12 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   (dictionary-based: templated stems + translated semantic options, verbatim proper nouns).
 - `tools/explain-states.js` - adds bilingual `explanation_de`/`explanation_en` to the 150
   non-Berlin state questions (template-based from question stem + correct answer).
+- `tools/icon-packs.mjs` - renders the whole icon set as a contact sheet in three styles
+  (line = what `ICONS` ships today, copied verbatim so the sheet documents production;
+  duotone = `ICONS_FILL` extended to every icon; solid). `node tools/icon-packs.mjs <dir>`
+  writes three HTML sheets; the header comment has the headless-Chrome line that turns each
+  into `docs/icon-pack-<style>.png`. A design reference, not part of the build — nothing in
+  `index.html` reads it.
 - `tools/categorize.js` - assigns a `category` to every question (rights/politics/history/
   society/symbols) using question text + correct answer keyword matching.
 - `tools/extract-catalogue-images.py` - parses the official BAMF PDF to enumerate all image
