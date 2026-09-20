@@ -396,15 +396,22 @@
         /* minmax(0, 1fr) rather than the default auto row: an auto row sizes to its
            tallest item, so the card pushed the nav bar off the bottom of a locked
            screen while the grid itself sat comfortably inside it. */
-        /* Two columns, two rows: the question spans both rows on the left, the readouts
-           sit over the navigator on the right. The readouts moved out of .quiz-main to
-           make that possible — they report on the round, and the round's map is what
-           they now sit on top of. */
+        /* Two columns: the question spans every row on the left, the readouts sit over
+           the navigator on the right. The readouts moved out of .quiz-main to make that
+           possible — they report on the round, and the round's map is what they now sit
+           on top of.
+           The readouts and the navigator are ONE block, and its middle lines up with the
+           question's middle: a 1fr spacer row either side of the pair takes whatever the
+           question column has spare. They only GROW (a zero basis, like the head/tail
+           spacers), so when the pair is the taller of the two they collapse to nothing
+           and the pair sits where it always did. minmax(0, auto) on the nav row keeps
+           the sidebar shrinkable — an auto row would refuse to go below the pane's own
+           height and push it out of a locked screen. */
         body.in-session .quiz-layout {
             flex: 1; min-height: 0; align-items: start;
             grid-template-columns: minmax(0, 1fr) auto;
-            grid-template-rows: auto minmax(0, 1fr);
-            grid-template-areas: "main stats" "main nav";
+            grid-template-rows: minmax(0, 1fr) auto minmax(0, auto) minmax(0, 1fr);
+            grid-template-areas: "main ." "main stats" "main nav" "main .";
         }
         body.in-session .quiz-main { grid-area: main; }
         body.in-session .quiz-topbar { grid-area: stats; }
@@ -442,7 +449,12 @@
            to a 36px line it is close enough to practice that the auto margins above
            balance both. `body.in-exam` is still set — the class is cheap and the next
            exam-only rule will want it — but nothing in the layout reads it. */
-        body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; }
+        /* align-self: center, so the two columns centre on EACH OTHER rather than the
+           question always winning. The spacer rows centre the readouts-and-navigator
+           pair against the question while the question is the taller of the two; open
+           the navigator and the pair becomes the taller, and without this the question
+           stayed pinned to the top and the centres drifted apart again. */
+        body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; align-self: center; }
         /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
            four-option question sits at the top of the column instead of being
            stretched down the screen with its buttons pinned to the bottom. It can
@@ -1273,7 +1285,9 @@
         .option-en-text { display: none; font-size: 0.78rem; color: var(--sub-text); font-style: italic; }
         .option-en-text.show { display: block; }
         /* The dim is a text tier now; the fill it used to borrow is the base. */
-        .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); }
+        /* :not(.picked) too — in the exam the chosen option carries no green or red, so
+           without it the answer you put down is the one thing on the row that dims. */
+        .options.answered .option-btn:not(.correct):not(.incorrect):not(.picked) { color: var(--muted); }
         /* The exam's only answer state: what you put down, said without saying whether
            it is right. Accent rather than green or red, and the letter chip filled so it
            reads at a glance from the navigator's cell colour too. */
@@ -1291,12 +1305,16 @@
         /* margin-inline: auto — the grid is capped at 70% of the column, and without it
            that 30% all fell on the right, so a four-image question sat off-centre under
            a full-width question. */
-        /* Capped against the VIEWPORT, not just the column: two rows of square frames
-           plus their labels is a tall block, and at 70% of a wide column it pushed a
-           four-image question into the scroller. The height cap is what keeps all four
-           on screen — you can open any of them full size, so the thumbnail only has to
-           be recognisable, not readable. */
-        .options--image { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-md); max-width: min(70%, 33svh); margin-inline: auto; }
+        /* ONE row of four, not 2x2. Four pictures you are choosing between are four
+           things to compare, and a 2x2 makes you compare them in two passes; side by
+           side they read in one. It also halves the block's height, which is what pays
+           for the extra width.
+           Capped against the VIEWPORT as well as the column, because the frames are
+           square: the column width sets the frame width and the frame width sets the
+           height, so on a wide screen an uncapped row would push the labels off the
+           bottom. You can open any of them full size, so a thumbnail only has to be
+           recognisable, not readable. */
+        .options--image { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--spacing-md); max-width: min(100%, 72svh); margin-inline: auto; }
         .option-btn--image { flex-direction: column; align-items: stretch; padding: 10px; gap: 10px; }
         .option-btn--image { min-height: 0; }
         /* A SQUARE frame, not 4/3. The catalogue's crests run 0.78-1.0 in aspect, so in a
@@ -1317,7 +1335,11 @@
             position: absolute; inset: 0; display: grid; place-items: center;
             padding: 8px; text-align: center;
             font-size: 0.76rem; font-weight: 600; line-height: 1.3;
-            color: #fff; background: rgba(9, 10, 13, 0.55);
+            /* 0.60, not 0.55: the veil lets 45%/40% of the picture through, so the WORST
+               case is a white crest, and at 0.55 the composite was #78787A — 4.41 against
+               #fff at 0.76rem, under the AA floor. 0.60 composites to #6B6C6E, 5.26. Both
+               literals are registered in tools/contrast.test.mjs (LITERAL_PAIRS). */
+            color: #fff; background: rgba(9, 10, 13, 0.60);
             opacity: 0; transition: opacity 0.16s var(--ease);
         }
         @media (hover: none) { .opt-img-hover { display: none; } }
@@ -1807,14 +1829,14 @@
             /* One step down: the tally is a glance, and at the bottom of the column it
                no longer has to carry the row the way it did at the top. */
             .stats-bar { column-gap: 9px; row-gap: 3px; }
-            .stat { padding: 0; gap: 6px; }
-            .stat + .stat { border-left: none; }
-            /* One size for the figure and its label. Four numbers at 1.02rem beside four
-               labels at 0.58 read as eight things of two different weights; at one size
-               each pair reads as one phrase, which is what it is. */
-            .stat-value, .stat .stat-label, .stat-of { font-size: 0.8rem; }
-            .stat { gap: 4px; }
-            .stat { gap: 5px; }
+            /* One declaration each. Three stacked PRs left three `.stat { gap }` rules
+               (6/4/5px, last won) and set the label's size twice, so the "one size"
+               a comment here claimed was overridden three lines under it. These are
+               the values that were actually rendering. `.stat + .stat` had a
+               `border-left: none` with nothing to cancel — the base rule carries no
+               border since the hairlines between the readouts were dropped. */
+            .stat { padding: 0; gap: 5px; }
+            .stat-value, .stat-of { font-size: 0.8rem; }
             .stat .stat-label { font-size: 0.58rem; letter-spacing: 0.02em; }
             /* Wraps to two rows rather than squeezing five figures into 390px. */
             .result-stat { min-width: 30%; }
@@ -1823,10 +1845,14 @@
             .btn-group { flex-direction: column; }
             .btn-group .btn-primary, .btn-group .btn-secondary { width: 100%; justify-content: center; }
             .hist-row { font-size: 0.82rem; gap: 8px; }
+            /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
+               three-line label — the comparison the single row buys you needs the
+               pictures to still be legible, and down here they would not be. */
+            .options--image { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: min(92%, 33svh); }
         }
 
         @media (max-width: 400px) {
-            /* Stays 2x2 even here. One column of four square frames is 757px of
+            /* Stays 2x2, never one column: four square frames stacked is 757px of
                overflow on a 390px screen; two columns of small thumbnails fit, and a
                thumbnail only has to be recognisable now that any of them opens full
                size on a tap. */
@@ -3305,6 +3331,10 @@
             const optsEl = document.getElementById('optionsContainer');
             if (prevAnswer !== undefined) {
                 document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+                // Set in BOTH branches, or the exam's leaves it at whatever the last
+                // question put there: the same answered question then rendered dimmed
+                // or not depending on which one you arrived from.
+                if (optsEl) optsEl.classList.add('answered');
                 // Revisiting a question in the exam shows what you put down, and still
                 // not whether it was right.
                 if (state.currentMode === 'exam') {
@@ -3315,7 +3345,6 @@
                     if (prevAnswer !== q.correct) {
                         document.getElementById('option-' + prevAnswer).classList.add('incorrect');
                     }
-                    if (optsEl) optsEl.classList.add('answered');
                     showExplanation(q, prevAnswer === q.correct);
                 }
                 const nextBtn = document.getElementById('nextBtn');
@@ -3623,22 +3652,47 @@
          * reach the bottom, where a scroll-down button would do nothing. It is wired to
          * the screen's own scroll, to resize, and to every repaint of the results.
          */
+        /**
+         * What is scrolling the results, and how much is left. Usually #endScreen
+         * itself — but under `max-height: 640px` the lock is released and it is
+         * `overflow: visible`, so it never scrolls and the PAGE does. Measured against
+         * #endScreen regardless, scrollHeight equalled clientHeight, the cue read
+         * "nowhere to go" and sat disabled over a review list entirely below the fold.
+         *
+         * The page branch goes through window, not through an element: `body` carries
+         * `overflow: auto` down here while `html` is what actually scrolls, and
+         * scrollTop/scrollBy on either one of those is not dependable. window.scrollY
+         * and window.scrollBy always mean the viewport.
+         */
+        function endScrollState() {
+            const el = document.getElementById('endScreen');
+            if (el && el.scrollHeight > el.clientHeight) {
+                return {
+                    remaining: el.scrollHeight - el.scrollTop - el.clientHeight,
+                    step: el.clientHeight,
+                    by: (top, behavior) => el.scrollBy({ top, behavior }),
+                };
+            }
+            return {
+                remaining: document.documentElement.scrollHeight - window.scrollY - window.innerHeight,
+                step: window.innerHeight,
+                by: (top, behavior) => window.scrollBy({ top, behavior }),
+            };
+        }
+
         function syncEndScrollCue() {
             const cue = document.getElementById('endScrollCue');
-            const el = document.getElementById('endScreen');
-            if (!cue || !el) return;
+            if (!cue) return;
             // The row is in the flow, so nothing has to show or hide it — it is simply
             // part of the results. All this decides is whether there is anywhere to go.
-            cue.disabled = state.currentScreen !== 'end'
-                || el.scrollHeight - el.scrollTop - el.clientHeight <= 24;
+            cue.disabled = state.currentScreen !== 'end' || endScrollState().remaining <= 24;
         }
 
         function scrollEndDown() {
-            const el = document.getElementById('endScreen');
-            if (!el) return;
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const s = endScrollState();
             // A screenful at a time, so a 33-question review is walked rather than jumped.
-            el.scrollBy({ top: Math.round(el.clientHeight * 0.85), behavior: reduce ? 'auto' : 'smooth' });
+            s.by(Math.round(s.step * 0.85), reduce ? 'auto' : 'smooth');
         }
 
         function renderEndScreen() {
@@ -3976,7 +4030,10 @@
             // parent cannot be selected from a child without :has().
             document.getElementById('questionNavWrapper').classList.toggle('nav-open', expanded);
             syncNavHeaderRole();
-            if (expanded) showCurrentCell();
+            // A frame later: the grid goes from display:none to a flex child of a
+            // max-height panel in this same tick, so scrolling it now measures a
+            // zero-height box and lands nowhere.
+            if (expanded) requestAnimationFrame(() => showCurrentCell(document.getElementById('questionNavGrid')));
         }
 
         document.getElementById('sidebarToggle').addEventListener('click', toggleNavPanel);
@@ -3997,6 +4054,9 @@
         // viewport emulation, and this has to be right at whatever width the reader lands on.
         window.addEventListener('resize', syncNavHeaderRole);
         document.getElementById('endScreen').addEventListener('scroll', syncEndScrollCue, { passive: true });
+        // ...and the page, for the short-viewport case where #endScreen is not the
+        // scroller and its own scroll event therefore never fires.
+        window.addEventListener('scroll', syncEndScrollCue, { passive: true });
         window.addEventListener('resize', syncEndScrollCue);
 
         // ---- Service worker (offline / installable PWA) ----
