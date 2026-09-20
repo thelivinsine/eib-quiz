@@ -5,9 +5,9 @@
 //     --force-device-scale-factor=2 --window-size=1120,980 \
 //     --screenshot=docs/icon-pack-line.png <outdir>/icon-pack-line.html
 //
-// "line" is the set that ships in index.html today (ICONS), copied verbatim so the
-// sheet documents production. "duotone" extends ICONS_FILL — which only covers the
-// four mode icons — to the whole set. "solid" is a third, heavier option.
+// "solid" is the set that ships in index.html today (ICONS) — keep the two in step.
+// "line" is the stroked set it replaced on 2026-09-20, kept for comparison; "duotone"
+// is the same silhouettes with a 22% ground behind the figure.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
