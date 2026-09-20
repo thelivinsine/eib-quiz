@@ -100,6 +100,34 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (`--font-body`); `--font-mono` is aliased to Inter (kept only so JS refs resolve). Display
     weights top out at 700. Uppercase micro-labels tracked at 0.08em are tile eyebrows (`.eyebrow`
     + shared list).
+  - **There is a SIZE system now, and it is measured** (2026-09-20), against
+    `claude-context-kit/docs/reference/type-and-space.md` — four shipping design systems
+    (Stripe Sail, GitHub Primer, Linear, Khan Wonder Blocks) read out of their live DOM, token
+    layer and rendered layer both. `node --test tools/scale.test.mjs` enforces it as a ratchet.
+    `docs/plans/sizing-system.md` is the phased plan; phases 0 and 1 are done.
+    - **Compare the LINE BOX, not the ratio.** All four references land their dominant UI line
+      at 19.5-21px whatever ratio gets them there. This app was `16px x 1.6 = 25.6px`, ~25%
+      taller than any of them, paid once per line everywhere. `body` is `--lh-ui` (1.3) = 20.8px.
+      Three leadings: `--lh-tight` (1.15, display numerals and the hero), `--lh-ui` (the
+      default), `--lh-prose` (1.55, and ONLY running text — `.hero-lead`, `.mode-description`,
+      `.section-head p`, `.explanation-text`, `.review-explanation`, `.question-english`).
+      Unitless on purpose: a length would be inherited verbatim by a 12px label.
+    - **`--fs-2xs` (12px) is the FLOOR.** Of the four references three render nothing below
+      12px and the fourth stops at 13; the 11px tokens that exist went unused on every page
+      measured. Eight steps, 12/13/14/15/16/18/22/28, plus one `--fs-hero` clamp.
+      **A font-size written as a literal is a bug**, exactly as a literal radius is.
+    - **`--space-*` gained its missing rungs** (2, 4, 12 — it jumped 6 -> 8 -> 16, which is
+      *why* half the sheet reached for a literal). `--spacing-*` are aliases now and go once
+      nothing reads them. In the references ONE value carries 86-88% of a page's gaps; a flat
+      gap histogram means the scale is not being used.
+    - **`--ctl-md: 44px` is a token, not just a media query.** Primer and Linear both publish
+      their touch target as one. Four heights: 28 / 36 / 44 / 52.
+    - **Tracking is assigned by TIER, never per component** — per-component is how this
+      reached eleven values. `--ls-caps` / `--ls-normal` / `--ls-display`.
+    - **Phase 1's leading fix bought only 3% of the page height** (2.46 -> 2.38 screens
+      desktop). Height here is dominated by explicit padding, margins and fixed heights, not
+      inherited leading — `.dash` and `.topic-chip` did not move a pixel. The density work is
+      the plan's phases 3 and 5; do not expect type changes to shorten the page.
   - Icons stay **inline SVG** via `ICONS`/`_svg()`, solid fills (NOT Phosphor/Iconify — offline-first, Google
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
@@ -785,6 +813,13 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens, which the block
   parser cannot see — five today (the brand-mark letter, and the letter on the correct/wrong
   answer chips in each theme), matching the rule stated under the home-screen section.
+- `tools/scale.test.mjs` - the size system as a test: the type/space/control/tracking scales,
+  asserted against `index.html` (`node --test tools/scale.test.mjs`). It is a RATCHET — each
+  metric has a budget in `BUDGETS`, and the test fails both when a number rises and when it
+  falls without the budget being lowered in the same commit. Two checks are hard rather than
+  budgeted: no property declared twice for one selector in one scope (the `.stat { gap }` bug
+  class, which shipped three times), and no literal `border-radius`. The `vh`-then-`svh`
+  fallback is the one allowed duplicate.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
@@ -862,6 +897,9 @@ Before publishing any app change:
 3. Extract the final `<script>` block from `index.html` and run `node --check` on it.
 4. Run `node --test tools/contrast.test.mjs` — it reads the colour tokens out of `index.html`
    and asserts the text and fill floors in both themes.
+4b. Run `node --test tools/scale.test.mjs` — the size-system ratchet. If a budget FALLS,
+   lower it in the same commit; the test says so explicitly. If one RISES, that is a
+   regression.
 5. Switch the header to DE and back: no chrome string may stay in the other language, and the
    question text must stay German in both.
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43

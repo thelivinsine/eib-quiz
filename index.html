@@ -139,12 +139,77 @@
             --radius:      16px;   /* every tile and card */
             --radius-pill: 999px;  /* anything that is a control */
 
-            --spacing-xs:  6px;
-            --spacing-sm:  8px;
-            --spacing-md:  16px;
-            --spacing-lg:  20px;
-            --spacing-xl:  28px;
-            --spacing-2xl: 40px;
+            /* ---- SPACE ----------------------------------------------------------
+               The scale was missing its bottom and middle rungs (it jumped 6 -> 8 -> 16),
+               which is why half the sheet reached for a literal instead. 2 / 4 / 12 fill
+               them in. `--spacing-*` are kept as aliases so the cleanup can land a rule at
+               a time; they go once nothing reads them.
+               Measured against the four systems in
+               claude-context-kit/docs/reference/type-and-space.md: 4px and 8px appear in
+               every one of them, and ONE value carries 86-88% of a real page's gaps. A flat
+               histogram means the scale is not being used. */
+            --space-3xs:  2px;
+            --space-2xs:  4px;
+            --space-xs:   6px;
+            --space-sm:   8px;
+            --space-ms:  12px;
+            --space-md:  16px;
+            --space-lg:  20px;
+            --space-xl:  28px;
+            --space-2xl: 40px;
+
+            --spacing-xs:  var(--space-xs);
+            --spacing-sm:  var(--space-sm);
+            --spacing-md:  var(--space-md);
+            --spacing-lg:  var(--space-lg);
+            --spacing-xl:  var(--space-xl);
+            --spacing-2xl: var(--space-2xl);
+
+            /* ---- TYPE -----------------------------------------------------------
+               Eight steps, and a font-size written as a literal is a bug — the same rule
+               the radius scale already holds to. The floor is 12px: of the four reference
+               systems, three render nothing below 12 and the fourth stops at 13, and 11px
+               tokens that exist (Stripe, Linear) went unused on every page measured.
+               --fs-base is 15px, which is Linear's --text-regular exactly. */
+            --fs-2xs:  0.75rem;    /* 12px — meta, captions, nav cells. THE FLOOR. */
+            --fs-xs:   0.8125rem;  /* 13px — secondary labels, dense chrome */
+            --fs-sm:   0.875rem;   /* 14px — buttons, chips, compact UI */
+            --fs-base: 0.9375rem;  /* 15px — card descriptions, body copy */
+            --fs-md:   1rem;       /* 16px — answer options, prominent body */
+            --fs-lg:   1.125rem;   /* 18px — question text, card titles */
+            --fs-xl:   1.375rem;   /* 22px — section headings */
+            --fs-2xl:  1.75rem;    /* 28px — display numerals (rings, score) */
+            --fs-hero: clamp(1.75rem, 3.2vw, 2.5rem);   /* the one clamp left */
+
+            /* ---- LEADING --------------------------------------------------------
+               Compare the LINE BOX, not the ratio. All four reference systems land their
+               dominant UI line at 19.5-21px whatever ratio they use to get there; this app
+               was at 16px x 1.6 = 25.6px, ~25% taller than any of them, paid once per line
+               everywhere. --lh-ui is 1.3, which puts the default at 20.8px and tracks
+               Khan Academy's `size + 4px` law closely across the range that matters
+               (12 -> 15.6, 14 -> 18.2, 16 -> 20.8 against their 16 / 18 / 20).
+               Unitless on purpose: a length would be inherited verbatim by a 12px label.
+               Running text opts UP — Stripe sets prose 1.63 against 1.43 for its chrome. */
+            --lh-tight: 1.15;   /* display numerals, the hero */
+            --lh-ui:    1.3;    /* the default: controls, labels, headings, options */
+            --lh-prose: 1.55;   /* explanation bodies, glossary, section descriptions */
+
+            /* ---- CONTROL HEIGHT -------------------------------------------------
+               Four, replacing fourteen. 44px is named here rather than living only inside
+               the coarse-pointer media query — Primer and Linear both publish their touch
+               target as a token (--control-minTarget-coarse, --min-tap-size). */
+            --ctl-xs: 28px;   /* nav cells, micro chips */
+            --ctl-sm: 36px;   /* header chrome */
+            --ctl-md: 44px;   /* the default, and the WCAG 2.5.5 touch floor */
+            --ctl-lg: 52px;   /* answer options, primary CTA */
+
+            /* ---- TRACKING -------------------------------------------------------
+               Assigned by TIER, never per component — per-component is how this reached
+               eleven values. Positive at the smallest sizes, zero through the middle,
+               negative at display, which is what Linear and Primer both do. */
+            --ls-caps:     0.06em;
+            --ls-normal:   0;
+            --ls-display: -0.02em;
 
             --font-head: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
             --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -228,8 +293,12 @@
             font-family: var(--font-body);
             background: var(--canvas);
             color: var(--text);
-            line-height: 1.6;
-            font-size: 16px;
+            /* 1.3, not 1.6. See --lh-ui: the reference systems all land their dominant UI
+               line box at 19.5-21px, and 16 x 1.6 = 25.6 was paying a quarter of a line of
+               height on every label, chip, button and meta row in the app. Running text
+               opts back up to --lh-prose where it is actually running text. */
+            line-height: var(--lh-ui);
+            font-size: var(--fs-md);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
@@ -408,7 +477,8 @@
            the sidebar shrinkable — an auto row would refuse to go below the pane's own
            height and push it out of a locked screen. */
         body.in-session .quiz-layout {
-            flex: 1; min-height: 0; align-items: start;
+            /* flex lives on the later rule below, beside the auto margins it belongs to. */
+            min-height: 0; align-items: start;
             grid-template-columns: minmax(0, 1fr) auto;
             grid-template-rows: minmax(0, 1fr) auto minmax(0, auto) minmax(0, 1fr);
             grid-template-areas: "main ." "main stats" "main nav" "main .";
@@ -614,7 +684,7 @@
             font-family: var(--font-head);
             font-weight: 700;
             font-size: clamp(1.7rem, 4.6vw, 2.9rem);
-            line-height: 1.08;
+            line-height: var(--lh-tight);
             letter-spacing: -0.035em;
             color: var(--text);
             text-wrap: balance;
@@ -629,7 +699,7 @@
             margin: var(--spacing-md) auto 0;
             color: var(--sub-text);
             font-size: clamp(0.98rem, 1.4vw, 1.08rem);
-            line-height: 1.6;
+            line-height: var(--lh-prose);
             text-wrap: pretty;
         }
         .hero-cta-row {
@@ -655,8 +725,6 @@
             color: var(--teal-deep);
         }
 
-
-        #homeMain { scroll-margin-top: 84px; }
 
         /* ============================================================
            HOME — a page of named sections, not a wall of tiles.
@@ -686,6 +754,7 @@
         .section-head p {
             margin-top: 4px;
             font-size: 0.92rem;
+            line-height: var(--lh-prose);
             color: var(--muted);
         }
         /* The tail is reference material, not something to act on. */
@@ -935,7 +1004,7 @@
         .mode-head .mode-title { min-width: 0; }
         .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; letter-spacing: -0.02em; margin-bottom: 0; }
         .mode-description {
-            color: var(--sub-text); font-size: 0.87rem; line-height: 1.5;
+            color: var(--sub-text); font-size: 0.87rem; line-height: var(--lh-prose);
             margin-bottom: 10px;
         }
         /* A chip states a fact; the fact is small and grey. Only work that is
@@ -1225,7 +1294,7 @@
 
         .question-text { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: -0.015em; color: var(--text); text-wrap: pretty; }
         .question-text:focus { outline: none; }
-        .question-english { display: none; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+        .question-english { display: none; margin-top: 8px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.88rem; line-height: var(--lh-prose); }
         .question-english.show { display: block; }
         .question-image { width: 100%; max-width: 294px; margin: var(--spacing-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         #imageCredit { color: var(--muted); }
@@ -1407,7 +1476,7 @@
         .explanation-header { font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; margin-bottom: 5px; letter-spacing: -0.01em; }
         .explanation.correct .explanation-header { color: var(--green); }
         .explanation.incorrect .explanation-header { color: var(--red-text); }
-        .explanation-text { color: var(--sub-text); font-size: 0.86rem; line-height: 1.55; }
+        .explanation-text { color: var(--sub-text); font-size: 0.86rem; line-height: var(--lh-prose); }
         .explanation-english { display: none; margin-top: 6px; color: var(--muted); font-size: 0.8rem; font-style: italic; }
         .explanation-english.show { display: block; }
 
@@ -1578,7 +1647,7 @@
         /* The exam's list carries every question, so it needs a right and a blank too. */
         .review-answer.user-right { color: var(--green); background: var(--green-dim); }
         .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
-        .review-explanation { font-size: 0.88rem; color: var(--sub-text); line-height: 1.6; padding-top: var(--spacing-sm); border-top: 1px solid var(--border-soft); }
+        .review-explanation { font-size: 0.88rem; color: var(--sub-text); line-height: var(--lh-prose); padding-top: var(--spacing-sm); border-top: 1px solid var(--border-soft); }
         .review-explanation-en { color: var(--muted); font-style: italic; margin-top: 6px; }
 
         /* ============================================================
@@ -1682,7 +1751,6 @@
 
         @media (max-width: 620px) {
             main { padding: var(--spacing-lg) var(--spacing-md); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
-            .header-content { padding: 8px var(--spacing-md); }
             /* body.in-session main outranks the rule above it on specificity alone,
                media query or not, so the 16px gutter has to be restated here. */
             body.in-session main {
@@ -1718,8 +1786,6 @@
             #statePickerSlot { width: 100%; flex-direction: row; align-items: center;
                 gap: var(--spacing-sm); justify-content: space-between; }
             .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
-            .resume-actions { width: 100%; }
-            .resume-actions .btn-primary, .resume-actions .btn-secondary { flex: 1; }
 
             /* The featured card gives up its side-by-side layout before the text gets
                squeezed into a column two words wide — but it stays a GRID, so the meta
