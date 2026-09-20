@@ -146,6 +146,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       dimming words. Its separation from the page is the hairline, not a step in lightness; in
       light mode the tint and the paper-grey canvas sit at nearly the same luminance, which is
       exactly the case light mode hands to edges.
+  - **The featured card's Start sits bottom-right on a phone**, on the meta's line, where
+    the peers put their arrow. Full-width it read as a different kind of thing from the
+    three cards you are meant to compare it with. The mobile card stays a GRID
+    (`"title title" / "desc desc" / "meta action"`) so no markup change was needed.
   - **A peer card states its time in the corner and its clickability with an arrow.**
     `.mode-time` is the estimate stamped top-right, which leaves `.mode-meta` to the one fact
     that varies (the count, or the apricot due flag). `.mode-go` is the circled arrow at the
@@ -518,6 +522,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   identical 235px box — same height, visibly different sizes. `object-fit: contain`
   stays, because these images ARE the answer and cropping one can remove the detail that
   distinguishes it.
+  - **The grid's columns are `minmax(0, 1fr)`, and the labels wrap anywhere.** Plain
+    `1fr` means `minmax(auto, 1fr)`, so the column holding the longest unbreakable word —
+    `Christusmonogramm`, 17 characters — claimed the extra width, and A/C came out
+    visibly smaller than B/D at narrow widths. `overflow-wrap: anywhere` on `.opt-num`
+    stops the label pushing from the inside. All four tiles now measure identically
+    (245px tiles / 223px frames at 780px wide).
   - **The whole picture is the zoom target, and the click must not answer.** The option
     is a `<button>`, so `openZoom()` calls `stopPropagation()` — otherwise looking at an
     image chooses it. Selecting is the label row beneath. On a pointer device the
