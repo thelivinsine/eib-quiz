@@ -340,6 +340,10 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   puts Previous/Next at 622-623 of an 800px viewport (78%, 177px below) on every ordinary
   question; longer questions push them down from there. On mobile the floor is dropped and the
   column stretches, pinning them 10px above the overview strip on every question.
+- **The exam withholds marks until the end**: no green/red, no explanation and no coloured
+  navigator cell during the round (the cell says `qnav-answered`); the results screen then lists
+  the whole paper — right, wrong and blank — beside the result card. The navigator is shown in
+  the exam now, without its view switcher.
 - **Desktop question view restructured**: the readouts are a grid item of `.quiz-layout`
   (`"main stats" / "main nav"`), so they sit above the navigator as a 2x2; the navigator starts
   COLLAPSED at every width with only the Linear/Shuffle/Topics switch showing; and the block

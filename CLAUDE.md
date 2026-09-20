@@ -518,6 +518,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   ~135px, which is a row the question needed, and it made the exam the one mode whose
   layout had to be special-cased. The danger state pulses opacity, because there is no
   border left to pulse.
+- **The exam withholds every mark until the end** (2026-09-20), as the real test does.
+  `selectAnswer()` and the revisit branch of `displayQuestion()` both check
+  `state.currentMode === 'exam'`: the chosen option takes a neutral **`.picked`** (accent,
+  not green or red), no `.correct`/`.incorrect` is set, and `showExplanation()` is not
+  called. Scoring, `recordAnswer()` and `saveSession()` are untouched — only the display
+  changes.
+  - **The navigator leaks it if you let it.** `renderQuestionNav()`'s cell would paint
+    `qnav-correct` / `qnav-incorrect` from `state.answered`, which hands you your score
+    before you have finished the paper. In exam mode a cell takes **`qnav-answered`** —
+    it says answered and nothing more.
+  - **The navigator IS shown in the exam now**, because you need to see what you have
+    done and jump back; what it loses is the view switcher. `#navActions` renders empty
+    in exam mode (`#navActions:empty` collapses the row): shuffling or grouping the paper
+    mid-exam is not a thing the real test does.
+  - **The results screen shows the WHOLE paper, not just the mistakes.** Every other mode
+    marks as you go, so its list is the ones you got wrong; the exam marked nothing, so
+    `renderEndScreen()` builds its list from `state.currentQuestions` + `state.answered` —
+    each question with what you put down, the right answer, and the explanation, including
+    the ones you left **blank**, which `state.missedQuestions` cannot know about (it only
+    collects wrong ANSWERS). Verified: 2 right, 2 wrong, 29 blank over 33.
 - **The exam does not name the topic.** `displayQuestion()` leaves `#questionCategory`
   empty in exam mode (`:empty` hides it and its `·`): telling you a question is about
   "Rights & Freedoms" narrows four answers to two, and the real test does not.

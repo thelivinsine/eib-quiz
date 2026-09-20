@@ -1240,6 +1240,11 @@
         .option-en-text.show { display: block; }
         /* The dim is a text tier now; the fill it used to borrow is the base. */
         .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); }
+        /* The exam's only answer state: what you put down, said without saying whether
+           it is right. Accent rather than green or red, and the letter chip filled so it
+           reads at a glance from the navigator's cell colour too. */
+        .option-btn.picked { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+        .option-btn.picked .opt-letter { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
         .option-btn.correct { border-color: var(--green); background: var(--green-dim); color: var(--text); }
         .option-btn.correct .opt-letter { background: var(--green); border-color: var(--green); color: #fff; }
         html:not(.light) .option-btn.correct .opt-letter { color: #06231a; }
@@ -1445,6 +1450,8 @@
         .q-nav-btn { aspect-ratio: 1; min-height: 30px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .q-nav-btn.qnav-current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); font-weight: 700; }
+        /* Answered, mark withheld — the exam's cell. */
+        .q-nav-btn.qnav-answered { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
         .q-nav-btn.qnav-correct { background: var(--green-dim); border-color: color-mix(in srgb, var(--green) 55%, transparent); color: var(--green); }
         .q-nav-btn.qnav-incorrect { background: var(--red-dim); border-color: color-mix(in srgb, var(--red) 55%, transparent); color: var(--red-text); }
 
@@ -1492,6 +1499,9 @@
         .review-answer { font-size: 0.9rem; padding: 10px 14px; border-radius: var(--radius-sm); }
         .review-answer.user-wrong { color: var(--red-text); background: var(--red-dim); }
         .review-answer.correct-ans { color: var(--green); background: var(--green-dim); }
+        /* The exam's list carries every question, so it needs a right and a blank too. */
+        .review-answer.user-right { color: var(--green); background: var(--green-dim); }
+        .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
         .review-explanation { font-size: 0.88rem; color: var(--sub-text); line-height: 1.6; padding-top: var(--spacing-sm); border-top: 1px solid var(--border-soft); }
         .review-explanation-en { color: var(--muted); font-style: italic; margin-top: 6px; }
 
@@ -2248,6 +2258,11 @@
             'end.retry':           { en: 'Again',                   de: 'Nochmal' },
             'end.home':            { en: 'Back',                    de: 'Zurück' },
             'end.reviewTitle':     { en: 'Review your wrong answers', de: 'Falsche Antworten überprüfen' },
+            'end.examReviewTitle': { en: 'Your answers',              de: 'Deine Antworten' },
+            'end.examReviewCount': { en: '{n} questions',             de: '{n} Fragen' },
+            'end.aRight':          { en: 'Correct',                   de: 'Richtig' },
+            'end.aWrong':          { en: 'Wrong',                     de: 'Falsch' },
+            'end.aBlank':          { en: 'Not answered',              de: 'Nicht beantwortet' },
             'end.reviewCount':     { en: '{n} question',            de: '{n} Frage' },
             'end.reviewCountPl':   { en: '{n} questions',           de: '{n} Fragen' },
             'end.retryWrong':      { en: 'Retry the wrong ones',    de: 'Fehler wiederholen' },
@@ -2886,7 +2901,9 @@
                     `<button class="seg-btn${state.navView === view ? ' active' : ''}"
                              aria-pressed="${state.navView === view}"
                              onclick="setNavView('${view}')">${label}</button>`;
-                actions.innerHTML = total < 2 ? '' :
+                // No switcher in the exam: the paper is the paper, in the order it was
+                // drawn. Empty, so `#navActions:empty` collapses the row entirely.
+                actions.innerHTML = (total < 2 || state.currentMode === 'exam') ? '' :
                     `<div class="seg qnav-seg" role="group" aria-label="${t('qnav.view')}">
                         ${seg('linear', t('qnav.linear'))}
                         ${seg('shuffle', t('qnav.shuffle'))}
@@ -2900,8 +2917,12 @@
                 if (i === state.currentQuestionIndex) {
                     cls += ' qnav-current';
                 } else if (ans !== undefined) {
-                    cls += ans === state.currentQuestions[i].correct
-                        ? ' qnav-correct' : ' qnav-incorrect';
+                    // In the exam a cell says ANSWERED and nothing more. Green and red
+                    // here would hand you the mark the question card is withholding —
+                    // you would know your score before you finished the paper.
+                    cls += state.currentMode === 'exam' ? ' qnav-answered'
+                        : ans === state.currentQuestions[i].correct
+                            ? ' qnav-correct' : ' qnav-incorrect';
                 }
                 const n = roundNumber(i);
                 return `<button class="${cls}" onclick="jumpToQuestion(${i})" title="${t('quiz.question', { n })}">${n}</button>`;
@@ -3081,9 +3102,11 @@
 
             clearSession(); // committed to a fresh round — replace any prior resumable session
 
-            // Show sidebar navigator in non-exam modes, hide in exam
+            // The navigator is shown in the exam too — you need to see which of the 33
+            // you have done and jump back. What it does NOT get is the view switcher:
+            // shuffling or grouping the paper mid-exam is not a thing the real test does.
             const navWrapper = document.getElementById('questionNavWrapper');
-            navWrapper.style.display = mode === 'exam' ? 'none' : 'flex';
+            navWrapper.style.display = 'flex';
 
             // Every round starts with the navigator closed, at any width.
             const sidebarBody = document.getElementById('sidebarBody');
@@ -3211,12 +3234,19 @@
             const optsEl = document.getElementById('optionsContainer');
             if (prevAnswer !== undefined) {
                 document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
-                document.getElementById('option-' + q.correct).classList.add('correct');
-                if (prevAnswer !== q.correct) {
-                    document.getElementById('option-' + prevAnswer).classList.add('incorrect');
+                // Revisiting a question in the exam shows what you put down, and still
+                // not whether it was right.
+                if (state.currentMode === 'exam') {
+                    document.getElementById('option-' + prevAnswer).classList.add('picked');
+                    document.getElementById('explanation').classList.remove('show');
+                } else {
+                    document.getElementById('option-' + q.correct).classList.add('correct');
+                    if (prevAnswer !== q.correct) {
+                        document.getElementById('option-' + prevAnswer).classList.add('incorrect');
+                    }
+                    if (optsEl) optsEl.classList.add('answered');
+                    showExplanation(q, prevAnswer === q.correct);
                 }
-                if (optsEl) optsEl.classList.add('answered');
-                showExplanation(q, prevAnswer === q.correct);
                 const nextBtn = document.getElementById('nextBtn');
                 nextBtn.disabled = false;
                 nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length
@@ -3320,12 +3350,19 @@
             const optsEl = document.getElementById('optionsContainer');
             if (optsEl) optsEl.classList.add('answered');
 
-            // Highlight correct/incorrect, with a pop on the chosen option
-            document.getElementById('option-' + q.correct).classList.add('correct');
+            // In the EXAM nothing is marked: you find out at the end, as in the real
+            // test. The chosen option carries a neutral `.picked` so the paper still
+            // shows what you put down, and no green, red or explanation appears.
+            const isExamRound = state.currentMode === 'exam';
             const picked = document.getElementById('option-' + idx);
-            if (picked) { picked.classList.add('just-picked'); }
-            if (idx !== q.correct) {
-                document.getElementById('option-' + idx).classList.add('incorrect');
+            if (isExamRound) {
+                if (picked) { picked.classList.add('picked', 'just-picked'); }
+            } else {
+                document.getElementById('option-' + q.correct).classList.add('correct');
+                if (picked) { picked.classList.add('just-picked'); }
+                if (idx !== q.correct) {
+                    document.getElementById('option-' + idx).classList.add('incorrect');
+                }
             }
 
             // Update score and sub-scores
@@ -3342,14 +3379,14 @@
             recordAnswer(q, idx === q.correct);
             saveSession();
 
-            // Show explanation
-            showExplanation(q, idx === q.correct);
+            // Show explanation — never in the exam.
+            if (!isExamRound) showExplanation(q, idx === q.correct);
 
             // Show next button and scroll it into view
             const nextBtn = document.getElementById('nextBtn');
             nextBtn.disabled = false;
             nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' →';
-            setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+            if (!isExamRound) setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
             setTimeout(() => nextBtn.focus(), 600);
 
             // The counters read from state, and state just changed. They were only
@@ -3552,8 +3589,45 @@
                 subScoresEl.style.display = 'none';
             }
 
-            // Wrong-answer review list
+            // The EXAM withholds every mark until here, so here it shows the whole paper:
+            // each question, what you put down, and the right answer — including the ones
+            // you left blank, which the wrong-answer list cannot know about.
             const reviewEl = document.getElementById('reviewSection');
+            if (isExam) {
+                const rows = state.currentQuestions.map((q, i) => {
+                    const given = state.answered[i];
+                    const right = given === q.correct;
+                    return { q, given, right, blank: given === undefined };
+                });
+                const wrongCount = rows.filter(r => !r.right).length;
+                reviewEl.innerHTML = `
+                    <div class="review-section">
+                        <div class="review-section-header">
+                            <h2>${t('end.examReviewTitle')}</h2>
+                            <div class="review-header-actions">
+                                <span class="review-count">${t('end.examReviewCount', { n: rows.length })}</span>
+                                ${wrongCount ? `<button class="btn-primary btn-sm" onclick="startMistakeMode()">${t('end.retryWrong')}</button>` : ''}
+                            </div>
+                        </div>
+                        ${rows.map(({ q, given, right, blank }) => `
+                            <div class="review-item${right ? ' review-item--right' : ''}">
+                                <div class="review-q-num">${t('end.reviewQ', { id: q.id })} · ${right ? t('end.aRight') : blank ? t('end.aBlank') : t('end.aWrong')}</div>
+                                <div class="review-q-text" lang="de">${q.de}</div>
+                                <div class="review-answers" lang="de">
+                                    ${blank ? `<div class="review-answer user-blank">— ${t('end.aBlank')}</div>`
+                                            : `<div class="review-answer ${right ? 'user-right' : 'user-wrong'}">${right ? '✓' : '✗'} ${q.options[given]}</div>`}
+                                    ${right ? '' : `<div class="review-answer correct-ans">✓ ${q.options[q.correct]}</div>`}
+                                </div>
+                                <div class="review-explanation" lang="de">
+                                    ${q.explanation_de}
+                                    ${state.showEnglish ? `<div class="review-explanation-en" lang="en">${q.explanation_en}</div>` : ''}
+                                </div>
+                            </div>`).join('')}
+                    </div>`;
+                return;
+            }
+
+            // Every other mode marks as you go, so its list is the ones you got wrong.
             const missed = state.missedQuestions.filter(m => m && m.q);
             if (missed.length > 0) {
                 const count = missed.length === 1
