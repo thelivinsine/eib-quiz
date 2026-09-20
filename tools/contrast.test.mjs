@@ -200,10 +200,16 @@ const LITERAL_PAIRS = {
     ['#fff', '#17181C', AA, 'the brand mark letter (html.light .brand-mark) on --ink-tile'],
     ['#fff', '#047857', AA, 'the letter on the correct answer chip, on --green'],
     ['#fff', '#C81E33', AA, 'the letter on the wrong answer chip, on --red'],
+    // The zoom veil is rgba(9,10,13,0.60) over a PICTURE, so its effective backdrop
+    // depends on the image. #6B6C6E is that veil composited over white — the lightest
+    // an image can be, and therefore the worst case for the label on top of it.
+    ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
   ],
   dark: [
     ['#06231a', '#34D399', AA, 'the letter on the correct answer chip, on --green'],
     ['#2a0710', '#FB7185', AA, 'the letter on the wrong answer chip, on --red'],
+    // Same veil, same worst case: it sits on the image, not on the theme's canvas.
+    ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
   ],
 };
 

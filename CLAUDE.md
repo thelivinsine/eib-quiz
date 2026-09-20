@@ -319,7 +319,6 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `updateStats()` divides by `state.correct + state.incorrect` — one right answer out of 300
   used to read 0% and stayed near zero for most of a long set. `endQuiz()` keeps dividing by
   the round's length, because a round you left 260 questions blank in is not 75%.
-  **In the exam the row states the COUNT and nothing else** — see the exam section below.
 - **The navigator states progress once.** It used to carry a second copy of `.quiz-progress`,
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
   number a fourth time. `updateProgress()` writes to one element and `#questionNum` carries its
@@ -479,8 +478,24 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     a phone screen the strip competed with the question for the reader's first look; at the
     bottom it is also where a thumb already is. `.quiz-layout`'s rows are
     `minmax(0, 1fr) auto` there, and `.quiz-sidebar` no longer carries `order: -1`.
-  - **The readouts sit over the question column and centre on it.** `.quiz-topbar` is the first
-    child of `.quiz-main`, not of `#quizScreen`: they report on the question you are reading.
+  - **The readouts and the navigator are ONE block, and its middle lines up with the
+    question's middle** (2026-09-20). Above 940px `.quiz-layout` is
+    `grid-template-rows: minmax(0, 1fr) auto minmax(0, auto) minmax(0, 1fr)` over
+    `"main ." "main stats" "main nav" "main ."`: a 1fr SPACER row either side of the
+    stats/nav pair takes whatever the question column has spare. Like the head/tail
+    spacers they have a zero basis and only grow, so when the pair is the taller of the
+    two they collapse and nothing moves.
+    - **`.quiz-main` takes `align-self: center`, and that is the other half of it.**
+      The spacers centre the pair against the question while the QUESTION is taller;
+      open the navigator and the pair becomes taller (a 504px pane against a ~500px
+      column at 900px), and without this the question stayed pinned to the top and the
+      centres drifted 36px apart. Measured at delta 0 — closed and open, text and image
+      questions — at 1600x1000, 1280x900, 1024x768 and 980x700.
+    - **The nav row is `minmax(0, auto)`, not `auto`.** The pane carries a fixed
+      `height: clamp(300px, 56svh, 680px)`, and an auto row refuses to go below it —
+      which pushes it out of a locked screen the moment the grid has to shrink.
+    - Below 940px none of this applies: the layout is one column (`"main" "stats" "nav"`)
+      and `.quiz-main` goes back to `align-self: stretch`.
     The progress bar stays at screen level, above everything, spanning the card and the
     navigator.
   - **The card is compact so the scrollbar is the exception, not the default.**
@@ -612,13 +627,6 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   not green or red), no `.correct`/`.incorrect` is set, and `showExplanation()` is not
   called. Scoring, `recordAnswer()` and `saveSession()` are untouched — only the display
   changes.
-  - **The readouts leaked it worst of all** (fixed 2026-09-20). `updateStats()` painted
-    correct / wrong / score above the question, so the one row you cannot avoid looking at
-    handed you the result a question at a time while the options and the navigator both
-    held it back. In exam mode the three marking readouts are not rendered and the row is
-    the **answered count alone** — how far through the paper you are is not a mark. The
-    counters themselves still tick; only the display changes, so `endQuiz()` scores the
-    paper exactly as before.
   - **The navigator leaks it if you let it.** `renderQuestionNav()`'s cell would paint
     `qnav-correct` / `qnav-incorrect` from `state.answered`, which hands you your score
     before you have finished the paper. In exam mode a cell takes **`qnav-answered`** —
@@ -806,15 +814,22 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 **43 image questions**, all extracted from the official BAMF catalogue PDF. Every asset is
 present (`node tools/validate.js` reports 0 missing).
 
-- **A four-image grid is capped by the VIEWPORT, not just the column** (2026-09-20):
-  `max-width: min(70%, 33svh)`, and `min(92%, 26svh)` under 400px; a prompt image is 294px.
-  Two rows of SQUARE frames plus their labels is a tall block — at 70% of a wide column a
-  four-image question went into the scroller, and the old one-column phone layout overflowed
-  by 757px on a 390px screen. **It stays 2x2 at every width.** The thumbnail only has to be
-  recognisable now that any of them opens full size on a tap, so the cap buys the whole
-  question fitting on screen instead. Measured at 0px overflow for Q21/Q209/Q226 at both
-  390px and 1280px. Under 400px `.opt-num` also drops to 0.72rem — the label is what tips a
-  2x2 over, since "Christusmonogramm (Chi-Rho)" sets in three lines.
+- **A four-image grid is ONE ROW above 620px, and 2x2 below it** (2026-09-20). Four pictures
+  you are choosing between are four things to COMPARE, and a 2x2 makes you compare them in
+  two passes. Side by side they read in one — and one row is half the height, which is what
+  pays for the extra width. On a phone the comparison is not worth it: four across a 375px
+  row is an 80px frame under a three-line label, so `@media (max-width: 620px)` puts
+  `grid-template-columns` back to `repeat(2, minmax(0, 1fr))`.
+- **It is capped by the VIEWPORT as well as the column, because the frames are SQUARE.**
+  The column width sets the frame width and the frame width sets the height, so an uncapped
+  row pushes the labels off the bottom of a wide screen. `max-width: min(100%, 72svh)`;
+  `min(92%, 33svh)` under 620px and `min(92%, 26svh)` under 400px (the phone values are what
+  the old 2x2 base rule already computed to, so nothing moved down there). A prompt image is
+  294px. The thumbnail only has to be recognisable now that any of them opens full size on a
+  tap, so the cap buys the whole question fitting on screen instead. Measured with no
+  `.question-body` scroller and no page overflow for Q21/Q209/Q226 at 1600x1000, 1280x900,
+  1024x768, 980x700, 700x820 and 390x844. Under 400px `.opt-num` also drops to 0.72rem — the
+  label is what tips a 2x2 over, since "Christusmonogramm (Chi-Rho)" sets in three lines.
 - **Option-image questions (19)** — 4-image grids, rendered as `<img>` from
   `option_images: ["img/…", …]` with descriptive `options` labels (never "Option 1"):
   general Q21, Q209, Q226, plus each state's Wappen question (Q301, Q311, Q321, … every `*1`).
