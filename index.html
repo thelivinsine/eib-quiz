@@ -1646,6 +1646,15 @@
             .question-category { white-space: normal; }
             .question-category::before { content: none; }
             .question-card { padding: var(--spacing-md); }
+            /* The card's padding insets the question and its options by --spacing-md a
+               side; the progress bar hangs off #quizScreen and .quiz-nav off .quiz-main,
+               so neither inherited it and both ran 16px wider at each edge than the
+               question they belong to. Measured at 390px: question 32-358, bar and
+               buttons 16-374. They take the same inset now, so the bar starts where the
+               question starts and Previous sits under the first option. Only below
+               620px — above it the card has no padding and the three already agree. */
+            body.in-session .quiz-progress,
+            .quiz-nav { margin-inline: var(--spacing-md); }
             .question-text { font-size: 1.05rem; }
             body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
             /* Still below the buttons here — only the gap tightens. margin-bottom stays
