@@ -151,7 +151,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     three cards you are meant to compare it with. The mobile card stays a GRID
     (`"title title" / "desc desc" / "meta action"`) so no markup change was needed.
   - **A peer card states its time in the corner and its clickability with an arrow.**
-    `.mode-time` is the estimate stamped top-right, which leaves `.mode-meta` to the one fact
+    **`.mode-time` sits IN `.mode-head`, pushed right by `margin-left: auto`** — it used to
+    be `position: absolute` top-right, which worked while the icon was a chip stacked ABOVE
+    the title, so the title began on the second line and nothing met it. Once the icon and
+    the title shared the first line the estimate landed straight on top of the title:
+    "All questions" printed over "approx. 60-90 min". In the flow it cannot collide.
+    The estimate is stamped top-right, which leaves `.mode-meta` to the one fact
     that varies (the count, or the apricot due flag). `.mode-go` is the circled arrow at the
     bottom-right: the cards are buttons but read as readouts on a touch screen, where there is
     no hover to reveal it. The peers still repeat no "Start" — that stays the featured card's
@@ -527,13 +532,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `border-left` on each cell.** A border lands on the first cell of a WRAPPED row too
       and draws a stray line down the middle of the band on a phone, where five figures
       wrap to two rows. A gap separates in both directions and cannot do that.
-  - **`.end-bar` is fixed, and holds Repeat, Back and the scroll cue on one line** at every
-    width. The results screen is the scroller, so an in-flow row would carry them off the
-    top of it; `#endScreen` keeps 76px of bottom padding so the last review item never ends
-    underneath. Under 620px the cue drops its label to the arrow alone — that is what keeps
-    three controls on one line at 390px.
-    - The cue is **`disabled` at the foot of the list**, not hidden: the bar is a fixed set
-      of three, and a control that silently does nothing is worse than one that says so.
+  - **`.end-actions` is IN THE FLOW, under the band** — Again and **Your answers**, and no
+    Back. It was briefly a fixed bar across the bottom, which kept the controls on screen
+    long past the point of being useful: once you are in the review list there is nothing
+    left for "Your answers" to point at. In the flow they sit with the result they belong
+    to, are above the fold at every size the app supports (measured bottom 571 at 1280x900,
+    620 at 390x667), and scroll away behind you.
+    - **There is no Back here.** The header already carries one, and on the results screen
+      `#sessionBack` goes straight home — a second one said the same thing twice.
+    - The button is named **`Your answers`**, the same words as the section heading it
+      scrolls to. "More below" only said that something was down there.
+    - It is **`disabled` when there is nothing below**, not hidden: a control that silently
+      does nothing is worse than one that says so.
 - **(superseded) The score card is a ROW, and the counters live inside it** (2026-09-20). It was a
   680px-wide card holding a 150px ring centred above a pill — 286px tall and empty either
   side of the ring — with the CORRECT/WRONG pair as a second 84px band below it. The ring
