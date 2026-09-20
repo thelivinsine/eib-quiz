@@ -516,7 +516,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     yet), from the screen's own scroll, on resize, and on the language switch's repaint.
     While it is up, `#endScreen.has-cue` reserves a matching strip of bottom padding so the
     last review item never ends underneath it.
-- **The score card is a ROW, and the counters live inside it** (2026-09-20). It was a
+- **The results page is a hero, one band and a list** (2026-09-20) — five boxes fewer.
+  - **The score is not in a card.** `.score-hero` puts the ring, the verdict pill and the
+    pass-mark note straight on the page, the way the question does. A box round a ring
+    says nothing the ring does not.
+  - **`.result-stats` is ONE band**, the same move the home overview card makes: correct,
+    wrong and — in the exam — general, state and the clock, each a label and a figure,
+    hairline-separated. It replaces two wells plus three more cards.
+    - **The separators are a 1px `gap` over the band's own background colour, not a
+      `border-left` on each cell.** A border lands on the first cell of a WRAPPED row too
+      and draws a stray line down the middle of the band on a phone, where five figures
+      wrap to two rows. A gap separates in both directions and cannot do that.
+  - **`.end-bar` is fixed, and holds Repeat, Back and the scroll cue on one line** at every
+    width. The results screen is the scroller, so an in-flow row would carry them off the
+    top of it; `#endScreen` keeps 76px of bottom padding so the last review item never ends
+    underneath. Under 620px the cue drops its label to the arrow alone — that is what keeps
+    three controls on one line at 390px.
+    - The cue is **`disabled` at the foot of the list**, not hidden: the bar is a fixed set
+      of three, and a control that silently does nothing is worse than one that says so.
+- **(superseded) The score card is a ROW, and the counters live inside it** (2026-09-20). It was a
   680px-wide card holding a 150px ring centred above a pill — 286px tall and empty either
   side of the ring — with the CORRECT/WRONG pair as a second 84px band below it. The ring
   now sits beside what it reports (verdict, then the two counters), so the card is **192px
