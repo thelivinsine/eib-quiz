@@ -153,6 +153,12 @@ Merged to `main` (PR #):
   red text/icons to it (stat values, score, FALSCH, bilingual toggle, timer, keyboard hints,
   review/results). Red **fills/borders** keep the brand red.
 
+> **Token names in the dated blocks below are as they were on their date.** The
+> `--spacing-*` family was renamed `--space-*` and then deleted on 2026-09-20, and every
+> size literal quoted below became an `--fs-*` / `--ctl-*` / `--icon-*` token on the same
+> day. These entries are a record of what was decided when, not a source of values to
+> copy — `CLAUDE.md` is that.
+
 ## Session developments (2026-09-19)
 
 Full accuracy + quality audit of the app. Findings fixed in the audit PR

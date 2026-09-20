@@ -239,9 +239,17 @@ text:
 --lh-prose: 1.55;   /* .explanation, .glossary-*, .section-head p, .mode-description */
 ```
 
-`body` moves from `1.6` to `--lh-md` (16/20). That single declaration takes the
-app's default line box from **25.6px to 20px** and lands it inside the
-19.5–21px band all four references occupy.
+`body` moves from `1.6` to `--lh-ui` (1.3, = 20.8px). That single declaration
+takes the app's default line box from **25.6px to 20.8px** and lands it inside
+the 19.5-21px band all four references occupy.
+
+> **What actually shipped, against the eight paired tokens proposed above:** three
+> role values — `--lh-tight` (1.15), `--lh-ui` (1.3) and `--lh-prose` (1.55). The
+> per-size pairs were speculative scaffolding for a phase 2 that then assigned sizes
+> directly, and a paired ABSOLUTE line-height cannot be the `body` default anyway:
+> a length is inherited verbatim, so a 12px label would have taken the 16px line box
+> whole. Unitless is what survives inheritance. `--fs-3xs` in §3.1 is likewise a
+> proposal that was dropped — the floor is `--fs-2xs` (12px).
 
 ### 3.3 Spacing — fill the missing rungs, then snap everything
 
