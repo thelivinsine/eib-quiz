@@ -516,6 +516,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     yet), from the screen's own scroll, on resize, and on the language switch's repaint.
     While it is up, `#endScreen.has-cue` reserves a matching strip of bottom padding so the
     last review item never ends underneath it.
+- **The score card is a ROW, and the counters live inside it** (2026-09-20). It was a
+  680px-wide card holding a 150px ring centred above a pill — 286px tall and empty either
+  side of the ring — with the CORRECT/WRONG pair as a second 84px band below it. The ring
+  now sits beside what it reports (verdict, then the two counters), so the card is **192px
+  against the old 386** for card + gap + breakdown, and the review list starts that much
+  higher. Under 620px it stacks again, ring 132px, but the counters stay INSIDE the card:
+  315px against 386.
+  - `.breakdown-item` is a WELL now (`--surface2`, `--radius-sm`), not a tile — it sits
+    inside the score card rather than on the canvas, which is the rung `--surface2` is for.
+  - `.pass-fail` takes `align-self: center` so the pill stays as wide as its words inside a
+    stretch column.
 - **The results card states each number once** (2026-09-20). The score ring's centre already
   carries the percentage AND `n/total`, so the `.score-text` line under it — "22 of 33 correct
   (67%)" — was a pure restatement; it is gone, with `#scoreMessage`, `end.scoreExam` and
