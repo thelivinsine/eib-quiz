@@ -131,13 +131,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     chips in each theme); prefer a token, and if a literal is unavoidable it goes in the list the
     same day.
   - **The exam is the only featured card.** `.mode-card--featured` is full-width and **teal-
-    tinted** (`--accent-soft` fill, an `--accent-line` edge, a solid `--accent-fill` icon
-    chip and Start pill); the other three modes are equal-weight peers.
-    - **Its edge is `--accent-line`, NOT `--accent`** (2026-09-20). A saturated ring around a
-      tinted fill is the exact treatment `.option-btn.correct` uses for the right answer, so
-      the card read as *selected* on a page where nothing is selectable. `--accent-line` is
-      the same hue one step off the card's own fill — #BEE0DA on #EDF7F4 in light — which
-      separates it from the canvas without borrowing the answer language. Hover matches. There is exactly one
+    tinted** (`--accent-soft` fill, a neutral `--border` edge, an `--accent-text` icon and a
+    solid Start pill); the other three modes are equal-weight peers.
+    - **Its edge is the same neutral `--border` every other card wears** (2026-09-20).
+      It was `--accent` and then `--accent-line`, and ANY coloured ring round a tinted fill
+      is the treatment `.option-btn.correct` uses for the right answer — it kept reading as
+      *selected* on a page where nothing is selectable. Its tint and its width are what mark
+      it out; the edge just ends it, exactly as on the peers beside it. There is exactly one
     primary action per section — do not add a second call to start the exam.
     - It used to be a charcoal slab painted in five hex literals, which put its body text at
       `#B4B7C0` on near-black while the peers beside it ran at full ink: the loudest card on the
@@ -377,40 +377,27 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     its area instead, which pins the buttons 10px above the overview strip; that needs
     `align-self: stretch` on `.quiz-main`, because the grid places items at the start and a
     content-sized column gives `flex: 1` nothing to grow into.
-  - **The block below the progress bar starts 15% of the screen down** (2026-09-20).
-    `body.in-session .quiz-layout` takes `margin-top: min(15svh, 50svh - 260px)` (a `vh` line
-    first), which moves the readouts, the question AND the navigator down together — the margin
-    is on the grid, so both columns travel. It is spent out of the slack that already sat under
-    Previous and Next: at 1280x800 the readouts go 126 -> 246 and the buttons 614 -> 734, with
-    66px still beneath them and an ordinary question still not scrolling.
-    - **The cap is not decoration.** 260px is the chrome above and below `.question-body`'s own
-      `50svh` floor; without it, the shift and the floor claim more than the viewport at the
-      short end of the locked band and Next is clipped away with no way to scroll to it
-      (941x645 overflowed by 4px in testing). Above ~750px tall the full 15% applies; below it
-      the SHIFT gives way rather than the question — 90px at 700, 62.5px at 645.
-    - **The exam takes the same shift, but pays for it out of the QUESTION** (2026-09-20).
-      Its clock is a row the practice screen does not have — chrome 341px against 214px —
-      which leaves 67px under the buttons at 800px tall against the 120px the shift spends,
-      so there is no slack to pay from. Inside `@media (min-height: 780px)` the exam drops
-      `.question-body`'s floor and lets `.question-card` fill (with `align-self: stretch` on
-      `.quiz-main`, or `flex: 1` has nothing to grow into). Measured at 1280x800: full 120px
-      shift, readouts 134 -> 254, buttons rock-stable at 792, 0/8 unanswered questions
-      scrolling. The cost is the open explanation, which scrolls at 800 where it did not;
-      at 900 and up it still fits.
-      - **The 780px gate is the whole safety margin, and it was found the hard way.**
-        Ungated, stripping the floor cost 8/8 unanswered questions scrolling at 941x645
-        against 1/8 on the shipped build — for a shift that had already tapered to nothing
-        there. Below 780 the exam keeps the shipped behaviour exactly and simply inherits
-        the shared `min(15svh, 50svh - 260px)`; above it, no cap is needed because the full
-        15svh always fits. Filling also fixes a wobble: content-sized with no floor,
-        Previous/Next wandered 748-776 across a round.
-      - `in-exam` is set in `showScreen()` beside `in-session`, from `state.currentMode` —
-        not in `startMode()`, so the topic, mistakes and resume paths are covered by the same
-        line. It is ANDed with `screenName !== 'home'`, or the class outlives the round.
-    - Below 940px and below `max-height: 640px` the shift is zeroed. Down there the card
-      already fills its area and the buttons are already pinned, so the shift would come
-      straight out of the question; and under 520px tall the capped expression goes negative
-      and would pull the question up under the bar.
+  - **The block below the progress bar sits low, and BOTH gaps yield to content**
+    (2026-09-20). `body.in-session .quiz-layout` is `flex: 0 1 auto` with
+    `margin-block: auto`: the block is content-sized, the leftover splits above and
+    below it, and as the question grows the split shrinks on both sides — only then does
+    `.question-body` scroll. Measured at 1280x900: a short question rests with 150px
+    above / 126px below; a four-image question collapses those to 40 / 16 and the body
+    grows 450 -> 670 BEFORE any scrollbar.
+    - It replaced a rigid `margin-top: min(15svh, 50svh - 260px)`, which held its 120px
+      open at the top of an 800px screen while the reader scrolled a question that had
+      nowhere to go. The resting position is the same to within a couple of pixels
+      (135px of gap at 900 against a 133px even split), so this is the same look with
+      the stiffness taken out — and the 260px magic number, which had to be re-derived
+      per mode, is gone with it.
+    - **The exam needs no special case any more.** It used to (a `min-height: 780px`
+      block that dropped the floor and filled the card) because its clock was a bordered
+      tile costing ~135px the practice screen did not have. Flattened to a 36px line it
+      is close enough to practice that the auto margins balance both: exam at 900 rests
+      124/100 and collapses to 40/16, exactly like practice. `body.in-exam` is still set
+      in `showScreen()`, but no layout rule reads it.
+    - Below 940px and below `max-height: 640px` the layout goes back to `flex: 1` with
+      no auto margins — down there it fills its row and there is no slack to split.
   - **The question block is TOP-aligned under the readouts, not centred.** Centring it opened a
     gap between the readouts and the question they report on, and pushed the question away from
     the panel's top edge; the readouts now sit `--spacing-md` above the question (measured
@@ -508,6 +495,39 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   "Answered correctly" / "Answered wrongly" — the second is not English, and the quiz readouts
   already use the short pair. `.pass-fail:empty { display: none }` because only an exam has a
   pass mark and an empty inline-block still spent its margin and padding as a blank band.
+- **The exam timer is a LINE, not a tile** (2026-09-20). `#timer` is a flex row — label,
+  figure and pacing note all at 0.86rem — with no fill, hairline or radius. Boxed it cost
+  ~135px, which is a row the question needed, and it made the exam the one mode whose
+  layout had to be special-cased. The danger state pulses opacity, because there is no
+  border left to pulse.
+- **The exam does not name the topic.** `displayQuestion()` leaves `#questionCategory`
+  empty in exam mode (`:empty` hides it and its `·`): telling you a question is about
+  "Rights & Freedoms" narrows four answers to two, and the real test does not.
+- **The progress bar is ONE track** (2026-09-20). It carried quarter marks drawn in
+  `--canvas`; nothing on the screen explained them, a bar cut into four reads as four
+  somethings, and the readouts already state the count exactly.
+- **The home screen's mode icons are filled glyphs on the title's line** (2026-09-20).
+  `ICONS_FILL` + `_svgFill` render them as duotone solids — a 0.22-opacity ground plus a
+  solid figure, both `currentColor`, so a filled glyph still takes its colour from the
+  text tier around it. The 36px rounded chip behind them is gone (a container inside a
+  container), and `.mode-head` puts the icon beside the title so a card opens with one
+  row that names it rather than two.
+- **Image options are square frames you can open** (2026-09-20). `.opt-img` is
+  `aspect-ratio: 1 / 1`, not 4/3: the catalogue's crests run 0.78-1.0 in aspect, so in a
+  landscape box every one was height-limited and they came out 136-174px wide inside an
+  identical 235px box — same height, visibly different sizes. `object-fit: contain`
+  stays, because these images ARE the answer and cropping one can remove the detail that
+  distinguishes it.
+  - **The whole picture is the zoom target, and the click must not answer.** The option
+    is a `<button>`, so `openZoom()` calls `stopPropagation()` — otherwise looking at an
+    image chooses it. Selecting is the label row beneath. On a pointer device the
+    invitation is a hover veil over the picture (`quiz.zoomHover`); where there is no
+    hover, one quiet line sits under the question and above the grid (`quiz.zoomHint`).
+    A keyboard cannot click a picture, so **`z` opens the focused option's image**.
+  - The lightbox (`#imgZoom`) is **before the script in the source** — it was after, and
+    the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
+    Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
+    and the button all close it, and closing drops the `src` and restores focus.
 - **SVG icon system:** all UI emoji on mode cards, topic chips, and badges are replaced by
   inline SVG line-icons via the `ICONS` const and `_svg()` helper in the `<script>` block.
   When adding new icons, add them there (not as emoji or external SVGs). The question card's

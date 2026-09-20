@@ -340,6 +340,19 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   puts Previous/Next at 622-623 of an 800px viewport (78%, 177px below) on every ordinary
   question; longer questions push them down from there. On mobile the floor is dropped and the
   column stretches, pinning them 10px above the overview strip on every question.
+- **Both gaps now yield to content**: `.quiz-layout` is `flex: 0 1 auto` + `margin-block: auto`,
+  so the room above and below the question is spent before `.question-body` scrolls
+  (1280x900: 150/126 at rest, 40/16 on a four-image question, body 450 -> 670). The rigid
+  shift and its 260px magic number are gone, and with the timer flattened the exam needs no
+  special case at all.
+- **Exam timer is a line, not a tile**; the exam no longer names the topic; the progress bar is
+  one track (the unexplained quarter marks are gone).
+- **Home mode icons are filled duotone glyphs on the title's line**, with no chip behind them;
+  the featured card's edge is the same neutral hairline as its peers.
+- **Image options are square frames with click-to-zoom**: uniform 1/1 boxes (crests were
+  136-174px wide in an identical box), a hover veil on pointer devices, a quiet line under the
+  question on touch, `z` for the keyboard, and a lightbox whose close button sits off the
+  picture. `openZoom` stops propagation or looking at an image would answer it.
 - **The exam screen takes the 15% too**, paid out of the question rather than slack (its clock
   costs it 341px of chrome against practice's 214px). Inside `@media (min-height: 780px)` it
   drops `.question-body`'s floor and lets the card fill: full 120px shift at 1280x800, buttons
