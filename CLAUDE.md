@@ -319,6 +319,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `updateStats()` divides by `state.correct + state.incorrect` — one right answer out of 300
   used to read 0% and stayed near zero for most of a long set. `endQuiz()` keeps dividing by
   the round's length, because a round you left 260 questions blank in is not 75%.
+  **In the exam the row states the COUNT and nothing else** — see the exam section below.
 - **The navigator states progress once.** It used to carry a second copy of `.quiz-progress`,
   the same percentage in words, and a four-swatch legend; the stats bar restated the question
   number a fourth time. `updateProgress()` writes to one element and `#questionNum` carries its
@@ -611,6 +612,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   not green or red), no `.correct`/`.incorrect` is set, and `showExplanation()` is not
   called. Scoring, `recordAnswer()` and `saveSession()` are untouched — only the display
   changes.
+  - **The readouts leaked it worst of all** (fixed 2026-09-20). `updateStats()` painted
+    correct / wrong / score above the question, so the one row you cannot avoid looking at
+    handed you the result a question at a time while the options and the navigator both
+    held it back. In exam mode the three marking readouts are not rendered and the row is
+    the **answered count alone** — how far through the paper you are is not a mark. The
+    counters themselves still tick; only the display changes, so `endQuiz()` scores the
+    paper exactly as before.
   - **The navigator leaks it if you let it.** `renderQuestionNav()`'s cell would paint
     `qnav-correct` / `qnav-incorrect` from `state.answered`, which hands you your score
     before you have finished the paper. In exam mode a cell takes **`qnav-answered`** —

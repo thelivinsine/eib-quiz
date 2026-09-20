@@ -3353,7 +3353,12 @@
             const done = Object.keys(state.answered).length;
             const total = state.currentQuestions.length;
 
-            document.getElementById('statsBar').innerHTML = `
+            // The exam withholds every mark until the end, and this row was the one
+            // place that did not: the options stay neutral and the navigator's cell
+            // says only "answered", but correct/wrong/score sat above the question
+            // handing you the result a question at a time. Only the count survives
+            // there — how far through the paper you are is not a mark.
+            const marks = state.currentMode === 'exam' ? '' : `
                 <div class="stat">
                     <span class="stat-value"${state.correct ? ' style="color: var(--green)"' : ''}>${state.correct}</span>
                     <span class="stat-label">${t('quiz.stat.correct')}</span>
@@ -3365,7 +3370,10 @@
                 <div class="stat">
                     <span class="stat-value">${score}%</span>
                     <span class="stat-label">${t('quiz.stat.score')}</span>
-                </div>
+                </div>`;
+
+            document.getElementById('statsBar').innerHTML = `
+                ${marks}
                 <div class="stat">
                     <span class="stat-value">${done}<span class="stat-of"> / ${total}</span></span>
                     <span class="stat-label">${t('quiz.stat.answered')}</span>
