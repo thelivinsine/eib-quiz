@@ -532,8 +532,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `border-left` on each cell.** A border lands on the first cell of a WRAPPED row too
       and draws a stray line down the middle of the band on a phone, where five figures
       wrap to two rows. A gap separates in both directions and cannot do that.
-  - **`.end-actions` is IN THE FLOW, under the band** — Again and **Your answers**, and no
-    Back. It was briefly a fixed bar across the bottom, which kept the controls on screen
+  - **`.end-actions` is IN THE FLOW, under the band** — **Retake the test**, **Retry the
+    wrong ones** and **Your answers**, and no Back. All three actions the results screen
+    offers live in that one row; Retry used to sit in the review-section header, a second
+    home for the same button.
+    - Retry is **`hidden` unless `state.missedQuestions` has something**, which is what
+      `startMistakeMode()` reads — a paper left entirely blank has no wrong answers to
+      retry. It is set BEFORE the exam branch's early `return`, or the exam never reaches
+      it.
+    - `.review-section-header--solo` centres the exam's `33 questions`: with the heading
+      gone and Retry moved up, it is the only thing in that row and had nothing to sit
+      opposite. It was briefly a fixed bar across the bottom, which kept the controls on screen
     long past the point of being useful: once you are in the review list there is nothing
     left for "Your answers" to point at. In the flow they sit with the result they belong
     to, are above the fold at every size the app supports (measured bottom 571 at 1280x900,

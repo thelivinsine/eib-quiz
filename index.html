@@ -1526,6 +1526,10 @@
         .pass-threshold-note[hidden] { display: none; }
         .review-section { margin-top: var(--spacing-xl); text-align: left; }
         .review-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-wrap: wrap; margin-bottom: var(--spacing-lg); }
+        /* The exam's header is the count alone — no heading beside it to sit opposite, and
+           no button since Retry moved up to the action row — so it centres rather than
+           hanging off the left edge. */
+        .review-section-header--solo { justify-content: center; }
         .review-section-header h2 { font-family: var(--font-head); font-weight: 600; font-size: 1.15rem; letter-spacing: -0.02em; }
         .review-header-actions { display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap; }
         .review-count { color: var(--muted); font-size: 0.9rem; }
@@ -2022,6 +2026,8 @@
                      here; the header already carries one. -->
                 <div class="end-actions">
                     <button class="btn-primary" id="restartBtn" data-i18n="end.retry"></button>
+                    <button class="btn-secondary" id="retryWrongBtn" data-i18n="end.retryWrong"
+                            onclick="startMistakeMode()" hidden></button>
                     <button type="button" class="btn-secondary end-more" id="endScrollCue"
                             onclick="scrollEndDown()" data-i18n-aria="end.more" data-i18n-title="end.more">
                         <span data-i18n="end.more"></span>
@@ -2297,7 +2303,7 @@
             'end.general':         { en: 'General (of 30)',         de: 'Allgemein (von 30)' },
             'end.stateOf3':        { en: '{state} (of 3)',          de: '{state} (von 3)' },
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
-            'end.retry':           { en: 'Again',                   de: 'Nochmal' },
+            'end.retry':           { en: 'Retake the test',         de: 'Test wiederholen' },
             'end.home':            { en: 'Back',                    de: 'Zurück' },
             /* It names its destination — the section heading it scrolls to says the same
                words — which tells you what is down there, where "More below" only said
@@ -3658,6 +3664,14 @@
             }
             document.getElementById('resultStats').innerHTML = cells;
 
+            // "Retry the wrong ones" sits with the other actions now, not buried in the
+            // review header. It is shown when startMistakeMode() would actually have
+            // something to run — that reads missedQuestions, which holds wrong ANSWERS
+            // only, so a paper left blank does not offer it. Set before the exam branch
+            // returns, or the exam would never reach it.
+            document.getElementById('retryWrongBtn').hidden =
+                state.missedQuestions.filter(m => m && m.q).length === 0;
+
             // The EXAM withholds every mark until here, so here it shows the whole paper:
             // each question, what you put down, and the right answer — including the ones
             // you left blank, which the wrong-answer list cannot know about.
@@ -3668,14 +3682,10 @@
                     const right = given === q.correct;
                     return { q, given, right, blank: given === undefined };
                 });
-                const wrongCount = rows.filter(r => !r.right).length;
                 reviewEl.innerHTML = `
                     <div class="review-section">
-                        <div class="review-section-header">
-                            <div class="review-header-actions">
-                                <span class="review-count">${t('end.examReviewCount', { n: rows.length })}</span>
-                                ${wrongCount ? `<button class="btn-primary btn-sm" onclick="startMistakeMode()">${t('end.retryWrong')}</button>` : ''}
-                            </div>
+                        <div class="review-section-header review-section-header--solo">
+                            <span class="review-count">${t('end.examReviewCount', { n: rows.length })}</span>
                         </div>
                         ${rows.map(({ q, given, right, blank }) => `
                             <div class="review-item${right ? ' review-item--right' : ''}">
@@ -3707,7 +3717,6 @@
                             <h2>${t('end.reviewTitle')}</h2>
                             <div class="review-header-actions">
                                 <span class="review-count">${count}</span>
-                                <button class="btn-primary btn-sm" onclick="startMistakeMode()">${t('end.retryWrong')}</button>
                             </div>
                         </div>
                         ${missed.map(({ q, userAnswerIdx }) => `
