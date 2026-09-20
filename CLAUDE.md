@@ -66,6 +66,28 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Nested corners follow **inner = outer − padding, snapped to the nearest step**: a 16px card
     with 14px of padding holds a 10px option, a 10px option with 10px of padding holds its
     image at 4px. A radius written as a literal is a bug, not a special case.
+  - **In dark mode the HAIRLINE carries the app, because the fills cannot** (2026-09-20).
+    `theme-dark.md` §5: "below ~1.20 between two touching surfaces, stop pushing the fills
+    apart and draw the edge instead" — a tile sits **1.159** off this canvas, under that
+    line — and the same section measures real dividers at **1.59-1.60 ON the panel they sit
+    on**, "deliberately more contrasty than the panel-to-page step: it has to survive being
+    one pixel tall". `--border` was **1.375** on a tile, well under that band, and that is
+    the whole of why dark read flat while light did not. It is `#3E434E` now (1.60 on a
+    tile, 1.86 on the canvas), with `--border-soft` 1.30 and `--border-hover` 2.00.
+    **Raising the EDGE costs the text tiers nothing; raising the FILLS would have cost
+    `--faint` its AA on `--surface2`** (measured 4.15). Light was left alone: its own
+    reference says light "simply cannot make a 1.6 divider without it reading as a heavy
+    rule", and a rendered audit found light clean.
+  - **A home screen's type ladder is hero > section heading > card title > readout > body,
+    and only ONE thing is biggest in a section** (2026-09-20). Four different things had
+    all landed on `--fs-xl`: a section heading, the featured card's title, the overview
+    counters and the ring's percentage — the scale colliding where it needs distinction,
+    which is the exact fault the `--fs-*` ramp exists to remove, reproduced a level up.
+    `.ds-num` and `.mode-card--featured .mode-title` moved to `--fs-lg`. A counter is a
+    READOUT: it reports on its section and does not outrank the heading above it or the
+    card you are meant to press — the same move `.stat-value` made on the quiz screen.
+    The featured card keeps its emphasis where it always had it: hue, width and the solid
+    Start pill, never size.
   - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
     `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
     under something that genuinely floats, and nothing in this app does.
@@ -819,6 +841,16 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   of the round's requests and came back `net::ERR_FAILED` often enough to paint "Bild fehlt"
   over a file that was sitting right there (reproducible against `python -m http.server`; the
   same `<img>` loaded on the spot once its `src` was re-set without the attribute).
+- **Finish the animations before reading a computed style in the preview pane.** The pane
+  does not always paint, and a tab that is not painting leaves CSS transitions at
+  `currentTime: 0, playState: "running"` **forever** — so `getComputedStyle()` returns the
+  transition's START value, not the settled one. This produced four separate phantom
+  contrast failures in one session: the A/B/C/D chips on an answered option measured 1.01
+  and 1.77 (they are really 5.5-8.7), and a whole screen of mode-card text measured 1.12
+  because `--text` was still the dark theme's `#ECEDEF` mid-switch. A fresh element
+  inserted with the same classes computed correctly, which is how it was caught. Call
+  `document.getAnimations().forEach(a => a.finish())` before any measurement, and be
+  suspicious of a ratio that a screenshot plainly contradicts.
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,

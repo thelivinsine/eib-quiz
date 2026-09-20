@@ -200,7 +200,7 @@ Control heights: 15 · 16 · 18 · 24 · 40 · **44** · 56 · 60.
 
 Recorded so nobody mistakes the gaps for findings:
 
-- **No colour or contrast data.** That axis is
+- **No colour or contrast data of its OWN.** That axis is
   [`theme-light.md`](../../claude-context-kit/docs/reference/theme-light.md) /
   [`theme-dark.md`](../../claude-context-kit/docs/reference/theme-dark.md), measured from
   screenshot pixels of PowerToys, ChatGPT desktop and Claude desktop — a different method and
@@ -213,3 +213,45 @@ Recorded so nobody mistakes the gaps for findings:
   its token layer loaded on both, and the rendered sizes match the tokens exactly, so the
   two agree — but the rendered sample is a content page, not the app proper (which needs a
   login).
+
+---
+
+## 7. Addendum — auditing this app's rendered contrast (2026-09-20)
+
+The type/space capture above says nothing about colour, so the contrast question was
+answered separately: by walking **every visible text node in this app** and computing its
+ratio against its **actually composited** background, rather than against the token pairs a
+human listed. `tools/contrast.test.mjs` checks declared tokens and says so in its own header;
+this is the other half, and it is the only way to catch a colour that loses the cascade.
+
+**Result: clean.** Home, quiz, answered-question and results screens, both themes. The one
+flag is the **disabled** Previous button at 4.38, which WCAG 1.4.3 exempts ("inactive user
+interface component") and which uses `--faint`, the tier this project reserves for
+placeholder and disabled.
+
+What the ladder measures against its references:
+
+| | light | dark | reference |
+|---|---|---|---|
+| tile fill off the page | 1.110 | 1.159 | 1.07 light (PowerToys) · 1.15–1.30 dark |
+| hairline on the tile | 1.236 | **1.375 → 1.602** | ~1.22 light · **1.59–1.60 dark** |
+| hairline on the page | 1.113 | 1.593 → 1.856 | 1.14 light |
+| well inside a tile | 1.081 | 1.122 | 1.03–1.22 |
+| text tiers on a tile | 17.7 / 10.1 / 6.0 / 5.0 | 13.6 / 8.4 / 6.1 / 4.9 | ≥4.5 |
+
+**Only dark's hairline was out of band**, and it was raised. Light's low numbers are
+*correct for light* — `theme-light.md` §5 measures dividers at 1.11 on white and says light
+"simply cannot make a 1.6 divider without it reading as a heavy rule". The featured card's
+tint at 1.016 on the canvas looks alarming numerically and reads fine on screen, because a
+contrast ratio measures luminance only and that separation is carried by **hue**.
+
+### The methodological trap, recorded because it cost six round trips
+
+A browser pane that is not painting leaves CSS transitions at `currentTime: 0`,
+`playState: "running"`, indefinitely — so `getComputedStyle()` hands back the **start** value
+of every transitioning property. That fabricated four contrast failures that do not exist:
+letter chips reading 1.01 and 1.77 against a true 5.5–8.7, and an entire screen of card text
+reading 1.12 because `--text` was still the dark theme's `#ECEDEF` part-way through a theme
+switch. The tell was that a freshly inserted element with identical classes computed
+correctly. **Call `document.getAnimations().forEach(a => a.finish())` before measuring, and
+distrust any ratio a screenshot plainly contradicts.**

@@ -86,11 +86,21 @@
             --ink-tile:  #2B2F38;   /* the charcoal-fill tile — top of the dark ladder */
             --hover:     #2B2E36;   /* hover steps UP in dark */
 
-            --border:       #353943;   /* 1.30 on tile */
-            --border-soft:  #2B2F38;
-            --border-hover: #414652;
-            --ink:          #353943;   /* legacy alias (borders) */
-            --hairline:     #353943;
+            /* The hairline carries dark mode, because the FILLS cannot.
+               theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
+               the fills apart and draw the edge instead", and a tile sits 1.159 off this
+               canvas — under that line. The same section measures real dividers at
+               1.59-1.60 ON the panel they sit on, "deliberately more contrasty than the
+               panel-to-page step: it has to survive being one pixel tall". This app's
+               hairline was 1.375 on a tile, well under that band, which is the whole of
+               why dark read flat while light did not. Raising the EDGE costs the text
+               tiers nothing; raising the fills would have cost --faint its AA on
+               --surface2 (measured 4.15). */
+            --border:       #3E434E;   /* 1.60 on tile, 1.86 on canvas */
+            --border-soft:  #313540;   /* 1.30 — the gentler internal rule */
+            --border-hover: #4B515F;   /* 2.00 — still a clear step above --border */
+            --ink:          #3E434E;   /* legacy alias (borders) */
+            --hairline:     #3E434E;
 
             /* Primary TEAL */
             --teal:       #17B5A4;
@@ -823,7 +833,10 @@
            and a coloured numeral is the whole of it — a tinted slab behind it
            reads as brown mud on charcoal and buys no more attention. */
         .dash-stat--due .ds-num { color: var(--gold); }
-        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        /* A counter is a READOUT. It reports on the section it sits in; it does not
+           outrank the heading above it or the cards you are meant to press. Same move
+           .stat-value made on the quiz screen (20.8 -> 16). */
+        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         .ds-of { color: var(--faint); font-size: var(--fs-xs); font-weight: 500; }
 
         .resume-banner {
@@ -912,7 +925,7 @@
         .mode-card--featured .mode-head { grid-area: title; margin-bottom: 0; gap: var(--space-sm); }
         .mode-card--featured .mode-icon { width: 28px; height: 28px; background: none; color: var(--accent-text); }
         .mode-card--featured .mode-icon svg { width: 28px; height: 28px; }
-        .mode-card--featured .mode-title { font-size: var(--fs-xl); color: var(--text); }
+        .mode-card--featured .mode-title { font-size: var(--fs-lg); color: var(--text); }
         .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
         /* --sub-text, not --muted: the quietest tier clears AA on the resting
            tint by 4.74 in dark, so a hover step of any size would break it. */
@@ -1784,7 +1797,7 @@
             /* Three numbers stay three columns — stacking them turned the
                overview into a screenful of its own. */
             .dash-stat { padding: 0 var(--space-xs); align-items: center; text-align: center; gap: var(--space-2xs); }
-            .ds-num { font-size: var(--fs-xl); }
+            .ds-num { font-size: var(--fs-md); }
             .ds-of { font-size: var(--fs-2xs); }
             .dash-stat .ds-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
             .resume-actions { width: 100%; }
