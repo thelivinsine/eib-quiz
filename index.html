@@ -390,19 +390,22 @@
            tallest item, so the card pushed the nav bar off the bottom of a locked
            screen while the grid itself sat comfortably inside it. */
         body.in-session .quiz-layout { flex: 1; min-height: 0; align-items: start; grid-template-rows: minmax(0, 1fr); }
-        /* 15% of the screen of air under the progress bar, so the readouts, the
-           question and the navigator all start lower down. It is spent out of the
-           slack that already sat under Previous and Next, and it is CAPPED against
-           the body's own 50svh floor: 260px is the chrome above and below that
-           floor, so below roughly 750px tall the shift gives way rather than the
-           question. Without the cap it would push the buttons off a locked screen
-           at the short end of the band. vh first, as everywhere else. */
-        body.in-session .quiz-layout { margin-top: min(15vh, 50vh - 260px); margin-top: min(15svh, 50svh - 260px); }
-        /* The exam cannot pay for the shift out of slack: its clock is a row the
-           practice screen does not have (chrome 341px against 214px), which leaves
-           67px under the buttons at 800px tall against the 120px the shift spends. It
-           pays out of the QUESTION instead — see the `min-height: 780px` block below,
-           which is also what stops that being a bad trade on a short screen. */
+        /* The block sits low on the screen, and the room above and below it BOTH give way
+           to content before anything scrolls. Auto margins are what buy that: the block
+           is content-sized, the leftover splits above and below it, and as the question
+           grows the split shrinks to nothing on both sides — only then does
+           .question-body start scrolling. It replaces a rigid `margin-top: min(15svh,
+           50svh - 260px)`, which held its 120px open at the top of an 800px screen while
+           the reader scrolled a question that had nowhere to go. The resting position is
+           the same to within a couple of pixels (measured 135px of gap at 900 against a
+           133px even split), so this is the same look with the stiffness taken out —
+           and the 260px magic number, which had to be re-derived per mode, is gone. */
+        body.in-session .quiz-layout { flex: 0 1 auto; margin-block: auto; }
+        /* The exam needs no special case any more. It used to, because its clock was a
+           bordered tile costing ~135px that the practice screen did not have; flattened
+           to a 36px line it is close enough to practice that the auto margins above
+           balance both. `body.in-exam` is still set — the class is cheap and the next
+           exam-only rule will want it — but nothing in the layout reads it. */
         body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; }
         /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
            four-option question sits at the top of the column instead of being
@@ -413,27 +416,6 @@
            foot of a half-empty column. It can still SHRINK, which is what keeps
            .question-body's scroller working on a long question. */
         body.in-session .question-card { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
-        /* THE EXAM'S 15%, and it is gated on height for a reason. The shift is paid out
-           of the question — the floor goes and the card fills — which is a good trade
-           only while the question still has room to spare. At 780px tall and up it
-           does: 15svh leaves 0/8 unanswered questions scrolling at 800. Below that it
-           does not, and ungated this cost 8/8 scrolling at 941x645 against 1/8 on the
-           shipped build, for a shift that had already tapered to nothing. So short
-           screens keep the shipped behaviour exactly, and no cap is needed in here —
-           at 780px+ the full 15svh always fits.
-           Stated AFTER the in-session rules it overrides (same specificity, so source
-           order decides) and BEFORE the 940px block, which must still win on a phone. */
-        @media (min-height: 780px) {
-            body.in-exam .quiz-layout { margin-top: 15vh; margin-top: 15svh; }
-            /* The floor IS the payment: 50svh + a 120px shift + the clock's row comes
-               to 853px of an 800px screen, so one of the three has to give. */
-            body.in-exam .question-body { min-height: 0; }
-            /* Filling pins Previous and Next to the bottom of the column. Content-sized
-               with no floor they wandered 748-776 across a round; the column has to
-               stretch first or `flex: 1` has nothing to grow into. */
-            body.in-exam .quiz-main { align-self: stretch; }
-            body.in-exam .question-card { flex: 1; }
-        }
         /* The only element on the quiz screen with a scrollbar. `contain` stops a
            flick past the last option rubber-banding the locked page behind it. */
         /* hidden on x: the pick animation scales the chosen option by 1.5%, which
@@ -517,7 +499,7 @@
             /* No lock here, so there is no slack to spend and no resting position to
                move — and the capped expression would go NEGATIVE below 520px tall,
                pulling the question up under the progress bar. */
-            body.in-session .quiz-layout { grid-template-rows: auto auto auto; margin-top: 0; }
+            body.in-session .quiz-layout { grid-template-rows: auto auto auto; flex: 0 0 auto; margin-block: 0; }
             body.in-session .question-card { flex: 0 0 auto; }
             body.in-session #endScreen.active { overflow: visible; }
             /* One scroller, and at this height it is the page. */
@@ -800,27 +782,28 @@
         .mode-card--featured {
             grid-column: 1 / -1;
             background: var(--accent-soft);
-            /* --accent-line, NOT --accent: a saturated ring around a tinted fill is the
-               exact treatment `.option-btn.correct` uses for the right answer, so the
-               featured card read as "selected" on a page where nothing is selectable.
-               --accent-line is the same hue one step off the card's own fill, which
-               separates it from the canvas without borrowing the answer language. */
-            border-color: var(--accent-line);
+            /* The SAME neutral hairline every other card wears. --accent-line was still a
+               green ring, and any coloured ring round a tinted fill is the treatment
+               `.option-btn.correct` uses for the right answer — the card kept reading as
+               selected. Its tint and its width are what mark it out; the edge just ends
+               it, exactly as on the peers beside it. */
+            border-color: var(--border);
             color: var(--text);
             padding: var(--spacing-lg);
             display: grid;
-            grid-template-columns: auto 1fr auto;
-            grid-template-areas: "icon title action" "icon desc action" "icon meta action";
+            grid-template-columns: 1fr auto;
+            grid-template-areas: "title action" "desc action" "meta action";
             column-gap: var(--spacing-md);
             align-items: center;
         }
         @media (hover: hover) {
-            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--accent-line); }
+            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--border-hover); }
         }
         .mode-card--featured:active { background: var(--accent-hover); }
-        .mode-card--featured .mode-icon { grid-area: icon; align-self: start; width: 44px; height: 44px; margin-bottom: 0; background: var(--accent-fill); color: var(--on-accent); }
-        .mode-card--featured .mode-icon svg { width: 26px; height: 26px; }
-        .mode-card--featured .mode-title { grid-area: title; font-size: 1.3rem; color: var(--text); }
+        .mode-card--featured .mode-head { grid-area: title; margin-bottom: 0; gap: 11px; }
+        .mode-card--featured .mode-icon { width: 28px; height: 28px; background: none; color: var(--accent-text); }
+        .mode-card--featured .mode-icon svg { width: 28px; height: 28px; }
+        .mode-card--featured .mode-title { font-size: 1.3rem; color: var(--text); }
         .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
         /* --sub-text, not --muted: the quietest tier clears AA on the resting
            tint by 4.74 in dark, so a hover step of any size would break it. */
@@ -855,20 +838,23 @@
             .mode-card:hover .mode-go { background: var(--accent-soft); color: var(--accent-text); transform: translateX(3px); }
         }
 
+        /* No chip behind it. A 36px rounded well holding a 19px glyph is a container
+           inside a container, and it bought nothing the glyph did not already say. The
+           icon sits ON the title's line instead, so the card opens with one row that
+           names it rather than two. */
         .mode-icon {
-            width: 36px; height: 36px;
-            border-radius: var(--radius-sm);
-            display: grid; place-items: center;
-            color: var(--sub-text);
-            background: var(--surface2);
-            margin-bottom: 14px;
-            transition: color 0.18s var(--ease), background 0.18s var(--ease);
+            display: inline-grid; place-items: center;
+            width: 22px; height: 22px; flex-shrink: 0;
+            color: var(--muted); background: none; border-radius: 0; margin: 0;
+            transition: color 0.18s var(--ease);
         }
-        .mode-icon svg { width: 19px; height: 19px; }
+        .mode-icon svg { width: 22px; height: 22px; }
         @media (hover: hover) {
-            .mode-card:hover .mode-icon { color: var(--accent-text); background: var(--accent-soft); }
+            .mode-card:hover .mode-icon { color: var(--accent-text); }
         }
-        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; letter-spacing: -0.02em; margin-bottom: 4px; }
+        /* The icon and the title are one row. */
+        .mode-head { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
+        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; letter-spacing: -0.02em; margin-bottom: 0; }
         .mode-description {
             color: var(--sub-text); font-size: 0.87rem; line-height: 1.5;
             margin-bottom: 10px;
@@ -1067,16 +1053,21 @@
 
         /* The exam timer follows you down the page. It used to scroll away at the
            first question, so a timed simulation ran with an invisible clock. */
+        /* NOT a tile. A clock is one figure you glance at, and boxing it cost the
+           question a 100px row it needed — it is a line of text now, at one size, with
+           the label and the figure reading as a single phrase. */
         #timer {
             position: sticky; top: var(--header-h); z-index: 20;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 12px var(--spacing-md); text-align: center;
+            display: flex; align-items: baseline; justify-content: center; gap: 8px;
+            padding: 0; text-align: center; background: none; border: 0; border-radius: 0;
         }
-        #timer.danger { border-color: var(--red); background: var(--red-dim); animation: pulseDanger 1.1s var(--ease) infinite; }
-        @keyframes pulseDanger { 50% { border-color: transparent; } }
-        .timer-display { font-family: var(--font-head); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--text); }
+        #timer .timer-label, #timer .timer-display, #timer .pacing-info { font-size: 0.86rem; line-height: 1.3; }
+        /* With no border left to pulse, the danger state is carried by the figure. */
+        #timer.danger { animation: pulseDanger 1.1s var(--ease) infinite; }
+        @keyframes pulseDanger { 50% { opacity: 0.55; } }
+        .timer-display { font-family: var(--font-head); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--text); }
         #timer.danger .timer-display { color: var(--red-text); }
-        .pacing-info { font-size: 0.74rem; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
+        .pacing-info { font-weight: 600; margin-top: 0; font-variant-numeric: tabular-nums; }
 
         /* A 3px hairline told you nothing but "some". This is a real track: 8px, the
            quarters marked so a length means something at a glance, and a bright tip on
@@ -1098,13 +1089,9 @@
             background: linear-gradient(90deg, transparent, var(--on-accent));
             opacity: 0.4;
         }
-        /* Quarter marks, drawn in the page colour so they cut the fill as well as the
-           track — a 3/4-full bar now looks like three quarters, not like "mostly". */
-        .quiz-progress::after {
-            content: ''; position: absolute; inset: 0; pointer-events: none;
-            background: repeating-linear-gradient(to right,
-                transparent 0 calc(25% - 2px), var(--canvas) calc(25% - 2px) 25%);
-        }
+        /* One continuous track. It used to carry quarter marks, which nothing on the
+           screen explained — a bar cut into four reads as four somethings, and the
+           readouts already state the count exactly. */
 
         /* NOT a tile. The question sits on the page and the options are the boxes
            inside it — a card around a card around four cards is the containers-in-
@@ -1126,6 +1113,7 @@
             font-size: 0.72rem; font-weight: 500; color: var(--muted);
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
+        .question-category:empty { display: none; }
         .question-category::before { content: '·'; margin-right: 8px; color: var(--faint); }
         .question-meta-actions { display: flex; gap: 6px; flex-shrink: 0; }
         /* These are buttons and have to look like buttons: an icon floating on the
@@ -1224,11 +1212,71 @@
         .option-btn.just-picked { animation: pickPop 0.28s var(--ease); }
         @keyframes pickPop { 0% { transform: scale(1); } 45% { transform: scale(1.015); } 100% { transform: scale(1); } }
 
-        .options--image { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); max-width: 70%; }
+        /* margin-inline: auto — the grid is capped at 70% of the column, and without it
+           that 30% all fell on the right, so a four-image question sat off-centre under
+           a full-width question. */
+        .options--image { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); max-width: 70%; margin-inline: auto; }
         .option-btn--image { flex-direction: column; align-items: stretch; padding: 10px; gap: 10px; }
         .option-btn--image { min-height: 0; }
-        .opt-img { display: block; border-radius: var(--radius-xs); overflow: hidden; background: var(--surface2); border: 1px solid var(--border-soft); aspect-ratio: 4 / 3; }
+        /* A SQUARE frame, not 4/3. The catalogue's crests run 0.78-1.0 in aspect, so in a
+           landscape box every one of them was height-limited and they came out 136-174px
+           wide against an identical 174px box — same height, visibly different sizes. A
+           square frame is the shape the content actually is, so each image fills it and
+           the four read as one set. `contain` stays: these images ARE the answer and
+           cropping one can remove the detail that distinguishes it. */
+        .opt-img { position: relative; display: block; border-radius: var(--radius-xs); overflow: hidden; background: var(--surface2); border: 1px solid var(--border-soft); aspect-ratio: 1 / 1; }
         .opt-img img { width: 100%; height: 100%; object-fit: contain; }
+        /* The whole picture is the zoom target — the option is a BUTTON, so the click
+           handler stops propagation or looking would answer the question. Selecting is
+           the label row beneath, which is why it keeps its own hover. */
+        .opt-img { cursor: zoom-in; }
+        /* On a pointer device the invitation is the hover itself: a veil over the
+           picture carrying the words, so nothing sits on top of the answer at rest. */
+        .opt-img-hover {
+            position: absolute; inset: 0; display: grid; place-items: center;
+            padding: 8px; text-align: center;
+            font-size: 0.76rem; font-weight: 600; line-height: 1.3;
+            color: #fff; background: rgba(9, 10, 13, 0.55);
+            opacity: 0; transition: opacity 0.16s var(--ease);
+        }
+        @media (hover: none) { .opt-img-hover { display: none; } }
+        @media (hover: hover) {
+            .opt-img:hover .opt-img-hover { opacity: 1; }
+        }
+        .question-image { cursor: zoom-in; }
+        /* Where there is no hover to carry the message, one quiet line does — under the
+           question, above the pictures it is talking about. */
+        .img-zoom-hint { display: none; margin: 0 0 10px; text-align: center; font-size: 0.72rem; color: var(--muted); }
+        @media (hover: none) { .img-zoom-hint { display: block; } }
+
+        /* ---- Image lightbox ---- */
+        .img-zoom[hidden] { display: none; }
+        .img-zoom { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: var(--spacing-lg); }
+        .img-zoom-backdrop { position: absolute; inset: 0; background: rgba(9, 10, 13, 0.72); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+        .img-zoom-figure {
+            position: relative; margin: 0; max-width: min(760px, 100%); max-height: 100%;
+            display: flex; flex-direction: column; gap: var(--spacing-sm);
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: var(--spacing-md);
+        }
+        /* OFF the picture: in the overlay's own corner, so it never covers a corner of
+           the thing you opened it to look at. Clicking anywhere outside the frame closes
+           it too — the backdrop fills the rest of the screen. */
+        .img-zoom-close {
+            position: absolute; top: var(--spacing-md); right: var(--spacing-md);
+            width: 44px; height: 44px; z-index: 2;
+            display: grid; place-items: center; border-radius: var(--radius-pill);
+            background: var(--surface); border: 1px solid var(--border); color: var(--text);
+            cursor: pointer; transition: background 0.16s var(--ease), border-color 0.16s var(--ease);
+        }
+        .img-zoom-close:hover { background: var(--hover); border-color: var(--border-hover); }
+        .img-zoom-close svg { width: 20px; height: 20px; }
+        .img-zoom img { display: block; width: 100%; max-height: calc(100svh - 190px); object-fit: contain; border-radius: var(--radius-sm); }
+        .img-zoom-caption { font-size: 0.82rem; color: var(--sub-text); text-align: center; }
+        @media (max-width: 620px) {
+            .img-zoom { padding: var(--spacing-md); }
+            .img-zoom-figure { padding: var(--spacing-sm); }
+        }
         .option-btn--image .opt-num { font-size: 0.8rem; font-weight: 500; color: var(--sub-text); text-align: center; }
         .option-btn--image.img-missing .opt-img { display: grid; place-items: center; min-height: 120px; }
         .option-btn--image.img-missing .opt-img::after { content: attr(data-missing); font-size: 0.78rem; color: var(--muted); }
@@ -1450,7 +1498,7 @@
             /* Nothing to spend down here either: the card already fills its area and
                the buttons are already pinned above the strip, so the shift would come
                straight out of the question and start it scrolling. */
-            body.in-session .quiz-layout { margin-top: 0; }
+            body.in-session .quiz-layout { flex: 1; margin-block: 0; }
             /* The readouts move BELOW Previous and Next on a phone. At the top they
                were the first thing on the screen, competing with the question for the
                reader's first look, and they are a running tally you glance at — not
@@ -1552,13 +1600,11 @@
             .modes-grid { grid-template-columns: 1fr; gap: var(--spacing-sm); }
             .mode-card:not(.mode-card--featured) {
                 display: grid;
-                grid-template-columns: 38px 1fr;
-                grid-template-areas: "icon title" "icon desc" "icon meta";
-                column-gap: 14px; row-gap: 3px;
-                align-items: center;
+                grid-template-columns: 1fr;
+                grid-template-areas: "title" "desc" "meta";
+                row-gap: 3px;
             }
-            .mode-card:not(.mode-card--featured) .mode-icon { grid-area: icon; align-self: start; margin-bottom: 0; }
-            .mode-card:not(.mode-card--featured) .mode-title { grid-area: title; margin-bottom: 0; }
+            .mode-card:not(.mode-card--featured) .mode-head { grid-area: title; margin-bottom: 0; }
             .mode-card:not(.mode-card--featured) .mode-description { grid-area: desc; margin-bottom: 0; font-size: 0.82rem; }
             .mode-card:not(.mode-card--featured) .mode-meta { grid-area: meta; margin: 4px 0 0; }
 
@@ -1573,6 +1619,14 @@
             .brand { min-height: 32px; gap: 8px; }
             .brand-mark { width: 28px; height: 28px; font-size: 0.82rem; }
             .brand-name { font-size: 0.88rem; }
+            /* The number and the topic stack instead of sharing a line. Side by side in a
+               375px row the topic was the one that lost, ellipsised to "Fundame..." —
+               and it is the half that actually varies. Stacked, both read in full and
+               the pair still aligns with the speak/translate buttons opposite, because
+               the row centres the two columns against each other. */
+            .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: 2px; }
+            .question-category { white-space: normal; }
+            .question-category::before { content: none; }
             .question-card { padding: var(--spacing-md); }
             .question-text { font-size: 1.05rem; }
             body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
@@ -1587,10 +1641,8 @@
             /* Timer becomes one line so the question starts higher. The JS
                owns #timer's own display, so the children go inline instead. */
             #timer { padding: 9px var(--spacing-md); }
-            .timer-label, .timer-display, .pacing-info { display: inline; }
-            .timer-label { margin-right: 8px; }
-            .timer-display { font-size: 1.35rem; }
-            .pacing-info { margin-left: 8px; }
+            /* Already one line at one size; nothing left to collapse down here. */
+            #timer { gap: 6px; }
             /* The strip needs air above it on a phone: flush to the top edge (or to a
                notch's inset) it read as part of the status bar. The safe-area inset is
                added to this, not replaced by it, so a notched phone gets both. */
@@ -1603,9 +1655,11 @@
             .stats-bar { column-gap: 9px; row-gap: 3px; }
             .stat { padding: 0; gap: 6px; }
             .stat + .stat { border-left: none; }
-            .stat-value { font-size: 1.02rem; }
-            .stat .stat-label { font-size: 0.58rem; }
-            .stat-of { font-size: 0.78rem; }
+            /* One size for the figure and its label. Four numbers at 1.02rem beside four
+               labels at 0.58 read as eight things of two different weights; at one size
+               each pair reads as one phrase, which is what it is. */
+            .stat-value, .stat .stat-label, .stat-of { font-size: 0.8rem; }
+            .stat { gap: 4px; }
             .stat { gap: 5px; }
             .stat .stat-label { font-size: 0.58rem; letter-spacing: 0.02em; }
             .exam-subscores { grid-template-columns: 1fr; }
@@ -1826,6 +1880,18 @@
         </section>
     </main>
 
+    <!-- Image lightbox. One instance for the whole app; the prompt image and every
+         option image open it. Hidden from the tree until it is open. -->
+    <div class="img-zoom" id="imgZoom" hidden>
+        <div class="img-zoom-backdrop" id="imgZoomBackdrop"></div>
+        <button type="button" class="img-zoom-close" id="imgZoomClose"
+                data-i18n-aria="quiz.zoomClose" data-i18n-title="quiz.zoomClose"></button>
+        <figure class="img-zoom-figure" role="dialog" aria-modal="true" aria-labelledby="imgZoomCaption">
+            <img id="imgZoomImg" alt="">
+            <figcaption class="img-zoom-caption" id="imgZoomCaption"></figcaption>
+        </figure>
+    </div>
+
     <script>
         // ============================================================
         // DATA: 460 questions (300 general + 16×10 state)
@@ -1849,6 +1915,16 @@
 
         // Inline line-icons (24x24, currentColor) — replace emoji on cards/chips.
         const _svg = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+        // Solid counterpart for the home screen's mode icons. Two tones of the SAME
+        // currentColor — a soft ground plus a solid figure — so a filled glyph still
+        // takes its colour from the text tier around it and needs no palette of its own.
+        const _svgFill = inner => `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">${inner}</svg>`;
+        const ICONS_FILL = {
+            exam: _svgFill('<circle cx="12" cy="12" r="9.2" opacity="0.22"/><circle cx="12" cy="12" r="4.6"/>'),
+            allQuestions: _svgFill('<rect x="3" y="4" width="18" height="16" rx="3.2" opacity="0.22"/><rect x="6.6" y="8.1" width="10.8" height="1.9" rx="0.95"/><rect x="6.6" y="11.6" width="10.8" height="1.9" rx="0.95"/><rect x="6.6" y="15.1" width="6.6" height="1.9" rx="0.95"/>'),
+            bundesland: _svgFill('<path d="M12 22.2s7.1-6.6 7.1-11.7a7.1 7.1 0 1 0-14.2 0C4.9 15.6 12 22.2 12 22.2Z" opacity="0.22"/><circle cx="12" cy="10.5" r="3.1"/>'),
+            review: _svgFill('<circle cx="12" cy="12" r="9.2" opacity="0.22"/><path d="M12.9 5.9l3.5 3.5-3.5 3.5V5.9Z"/><path d="M11.1 18.1l-3.5-3.5 3.5-3.5v7Z"/>'),
+        };
         const ICONS = {
             allQuestions: _svg('<circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/>'),
             bundesland: _svg('<path d="M12 21s-6-5.4-6-10a6 6 0 1 1 12 0c0 4.6-6 10-6 10Z"/><circle cx="12" cy="11" r="2.2"/>'),
@@ -1865,6 +1941,7 @@
             speaker: _svg('<path d="M4 9.5v5a1 1 0 0 0 1 1h2.6l3.6 3a.8.8 0 0 0 1.3-.6V6.1a.8.8 0 0 0-1.3-.6l-3.6 3H5a1 1 0 0 0-1 1Z"/><path d="M16.2 9.2a4 4 0 0 1 0 5.6"/><path d="M18.8 6.6a7.6 7.6 0 0 1 0 10.8"/>'),
             arrowRight: _svg('<line x1="5" y1="12" x2="18" y2="12"/><polyline points="13 7 18 12 13 17"/>'),
             chevron: _svg('<polyline points="6 9.5 12 15.5 18 9.5"/>'),
+            close: _svg('<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>'),
             reset: _svg('<path d="M3.5 12a8.5 8.5 0 1 1 2.8 6.3"/><polyline points="3 6.5 3.5 12 9 11.5"/>'),
             trendUp: _svg('<polyline points="4 16 10 10 14 14 20 7"/><polyline points="15 7 20 7 20 12"/>'),
         };
@@ -2033,6 +2110,10 @@
             'quiz.wrong':          { en: '✗ Wrong',                 de: '✗ Falsch' },
             'quiz.rightAnswer':    { en: ' — correct answer: ',     de: ' — richtige Antwort: ' },
             'quiz.imgMissing':     { en: 'Image missing',           de: 'Bild fehlt' },
+            'quiz.zoomOpen':       { en: 'Enlarge image',           de: 'Bild vergrößern' },
+            'quiz.zoomHover':      { en: 'Click to view larger',    de: 'Klicken zum Vergrößern' },
+            'quiz.zoomClose':      { en: 'Close image',             de: 'Bild schließen' },
+            'quiz.zoomHint':       { en: 'Tap an image to view it larger.', de: 'Tippe auf ein Bild, um es größer zu sehen.' },
             'quiz.kbNav':          { en: 'navigate',                de: 'navigieren' },
             'quiz.kbPick':         { en: 'select',                  de: 'auswählen' },
             'quiz.kbNext':         { en: 'next',                    de: 'weiter' },
@@ -2098,6 +2179,7 @@
             document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
             document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
             document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+            document.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', t(el.dataset.i18nTitle)); });
         }
 
         /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
@@ -2654,8 +2736,7 @@
             // the arrow, and parks its time estimate in the corner.
             const card = (mode, icon, title, desc, meta, time, featured = '') => `
                 <button class="mode-card ${featured}" onclick="startMode('${mode}')">
-                    <span class="mode-icon">${icon}</span>
-                    <span class="mode-title">${title}</span>
+                    <span class="mode-head"><span class="mode-icon">${icon}</span><span class="mode-title">${title}</span></span>
                     <span class="mode-description">${desc}</span>
                     <span class="mode-meta">${featured ? meta + ' · ' + time : meta}</span>
                     ${featured
@@ -2666,13 +2747,13 @@
             // gets the full-width charcoal treatment. The rest are peers, and the
             // only colour among them flags questions that are actually due.
             grid.innerHTML =
-                card('exam', ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
+                card('exam', ICONS_FILL.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
                      t('mode.exam.badge'), t('mode.exam.time'), 'mode-card--featured') +
-                card('allQuestions', ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
+                card('allQuestions', ICONS_FILL.allQuestions, t('mode.all.title'), t('mode.all.desc'),
                      t('mode.all.badge'), t('mode.all.time')) +
-                card('bundesland', ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
+                card('bundesland', ICONS_FILL.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
                      t('mode.state.badge'), t('mode.state.time')) +
-                card('review', ICONS.review, t('mode.review.title'), t('mode.review.desc'),
+                card('review', ICONS_FILL.review, t('mode.review.title'), t('mode.review.desc'),
                      due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>`
                          : t('mode.review.badge'), t('mode.review.time'));
         }
@@ -2939,8 +3020,11 @@
             // Question content
             document.getElementById('questionNum').textContent =
                 t('quiz.questionOf', { n: roundNumber(state.currentQuestionIndex), total: state.currentQuestions.length });
+            // Not in the exam: naming the topic tells you which of the four answers to
+            // look for, and the real test does not.
             document.getElementById('questionCategory').textContent =
-                q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
+                state.currentMode === 'exam' ? ''
+                    : q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
             document.getElementById('questionText').textContent = q.de;
             document.getElementById('questionEnglish').innerHTML = `<div>${q.en}</div>`;
@@ -2952,6 +3036,8 @@
                 qImg.src = q.image;
                 qImg.alt = q.de;
                 qImg.style.display = 'block';
+                qImg.onclick = e => openZoom(e, qImg.getAttribute('src'), q.de);
+                qImg.title = t('quiz.zoomOpen');
                 if (q.image_credit) {
                     imgCredit.textContent = q.image_credit;
                     imgCredit.style.display = 'block';
@@ -2971,7 +3057,7 @@
                 if (hasImages) {
                     return `
                 <button class="option-btn option-btn--image" onclick="selectAnswer(${idx})" id="option-${idx}" aria-label="${String.fromCharCode(65 + idx)}: ${opt}">
-                    <span class="opt-img" data-missing="${t('quiz.imgMissing')}"><img src="${q.option_images[idx]}" alt="${opt}" decoding="async" onerror="this.closest('.option-btn').classList.add('img-missing')"></span>
+                    <span class="opt-img" data-missing="${t('quiz.imgMissing')}" onclick="openZoom(event, '${q.option_images[idx]}', ${JSON.stringify(opt).replace(/'/g, "&#39;").replace(/"/g, '&quot;')})"><img src="${q.option_images[idx]}" alt="${opt}" decoding="async" onerror="this.closest('.option-btn').classList.add('img-missing')"><span class="opt-img-hover" aria-hidden="true">${t('quiz.zoomHover')}</span></span>
                     <span class="opt-num">${String.fromCharCode(65 + idx)} — ${opt}</span>
                 </button>`;
                 }
@@ -2982,6 +3068,13 @@
                     <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}" lang="en">${enText}</span>` : ''}</span>
                 </button>`;
             }).join('');
+            // Says the images can be opened, for the reader who has no hover to discover
+            // it with. Only under an image grid, and only where there is no pointer.
+            document.getElementById('imgZoomHint')?.remove();
+            if (hasImages) {
+                optionsContainer.insertAdjacentHTML('beforebegin',
+                    `<p class="img-zoom-hint" id="imgZoomHint">${t('quiz.zoomHint')}</p>`);
+            }
 
             // Keyboard hint (shown once per session, on first question only)
             const hintContainer = document.getElementById('keyboardHintContainer');
@@ -3084,6 +3177,38 @@
             const qpf = document.getElementById('quizProgressFill');
             if (qpf) qpf.style.width = percent + '%';
         }
+
+        // ---- Image lightbox -------------------------------------------------
+        // One dialog for the prompt image and every option image. `zoomReturn` is what
+        // the reader was on when they opened it — focus goes back there on close, or a
+        // keyboard user is dumped at the top of the document.
+        let zoomReturn = null;
+        function openZoom(e, src, caption) {
+            // An option image lives inside the option BUTTON. Without this, looking at
+            // the picture answers the question.
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            if (!src) return;
+            const box = document.getElementById('imgZoom');
+            const img = document.getElementById('imgZoomImg');
+            img.src = src;
+            img.alt = caption || '';
+            const cap = document.getElementById('imgZoomCaption');
+            cap.textContent = caption || '';
+            cap.style.display = caption ? '' : 'none';
+            zoomReturn = document.activeElement;
+            box.hidden = false;
+            document.getElementById('imgZoomClose').focus();
+        }
+        function closeZoom() {
+            const box = document.getElementById('imgZoom');
+            if (box.hidden) return;
+            box.hidden = true;
+            // Drop the source so a large image is not held for the rest of the round.
+            document.getElementById('imgZoomImg').removeAttribute('src');
+            if (zoomReturn && document.contains(zoomReturn)) zoomReturn.focus();
+            zoomReturn = null;
+        }
+        function zoomIsOpen() { return !document.getElementById('imgZoom').hidden; }
 
         function selectAnswer(idx) {
             const q = state.currentQuestions[state.currentQuestionIndex];
@@ -3465,6 +3590,12 @@
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
+            // The lightbox is modal, so it takes Escape BEFORE the screen check — it can
+            // be opened from the results screen's review list too, not just the quiz.
+            if (zoomIsOpen()) {
+                if (e.key === 'Escape') { e.preventDefault(); closeZoom(); }
+                return; // and it swallows the answer shortcuts while it is up
+            }
             if (state.currentScreen !== 'quiz') return;
             const options = Array.from(document.querySelectorAll('.option-btn:not(:disabled)'));
             const nextBtn = document.getElementById('nextBtn');
@@ -3478,6 +3609,11 @@
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
                     options[(idx - 1 + options.length) % options.length].focus();
+                } else if ((e.key === 'z' || e.key === 'Z') && idx !== -1) {
+                    // The zoom target is the picture itself, which a keyboard cannot
+                    // click. `z` opens the focused option's image instead.
+                    const frame = options[idx].querySelector('.opt-img');
+                    if (frame) { e.preventDefault(); frame.click(); }
                 } else if ((e.key === ' ' || e.key === 'Enter') && idx !== -1) {
                     e.preventDefault();
                     focused.click();
@@ -3578,6 +3714,11 @@
         // One arrow in the icon set; the back button mirrors it in CSS.
         document.querySelector('.session-back-icon').innerHTML = ICONS.arrowRight;
         document.getElementById('sidebarChevron').innerHTML = ICONS.chevron;
+        // Lightbox wiring: the glyph, the two ways out, and the label that follows the
+        // language switch (applyStaticStrings fills the aria-label via data-i18n-aria).
+        document.getElementById('imgZoomClose').innerHTML = ICONS.close;
+        document.getElementById('imgZoomClose').addEventListener('click', closeZoom);
+        document.getElementById('imgZoomBackdrop').addEventListener('click', closeZoom);
         syncNavHeaderRole();
         // resize rather than a matchMedia change listener: the latter did not fire under
         // viewport emulation, and this has to be right at whatever width the reader lands on.
