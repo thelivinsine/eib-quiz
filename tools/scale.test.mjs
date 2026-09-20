@@ -61,6 +61,8 @@ const BUDGETS = {
   // box, not a control, so it has no business on the control ladder.
   distinctControlH:     [1, "reached 2026-09-20 (phase 3)."],
   distinctTracking:     [2, "reached 2026-09-20 (phase 3): --ls-caps and --ls-display."],
+  literalIconSizes:     [0, "reached 2026-09-20. An icon size is --icon-*, a hit target --ctl-*."],
+  gapRungs:             [7, "target ~5 — two rungs should carry the page; 2px and 6px merged away."],
   globalLineHeights:    [7, "target ~9 — one per --fs-* pair plus --lh-prose"],
 };
 
@@ -207,6 +209,18 @@ const literalSpacing = valuesOf(...SPACING_PROPS).filter((d) =>
   parts(d.value).some((t) => /^-?[\d.]+(px|rem)$/.test(t) && t !== "0px"),
 ).length;
 
+/**
+ * Square width+height pairs still written as a px literal — icon glyphs and glyph boxes.
+ * Excluded, because they are not icons: the two ring diameters (layout), the scrollbar,
+ * the state picker's caret and .sr-only. A hit target is --ctl-*, an icon is --icon-*.
+ */
+const ICON_EXEMPT = /ring-wrap|scrollbar|\.sr-only|state-picker::after|qnav-group-head::before|\.opt-letter/;
+const literalIconSizes = RULES.filter((r) => {
+  if (ICON_EXEMPT.test(r.selector)) return false;
+  const d = Object.fromEntries(decls(r.body));
+  return d.width && d.height && d.width === d.height && /^[\d.]+px$/.test(d.width);
+}).length;
+
 const distinctControlH = new Set(
   valuesOf("min-height")
     .map((d) => px(d.value))
@@ -217,6 +231,20 @@ const distinctTracking = new Set(
   valuesOf("letter-spacing").map((d) => d.value).filter((v) => v !== "normal"),
 ).size;
 
+/** Distinct gap rungs in play. The references converge on two doing most of the work. */
+const GAP_TOKEN = { "--space-3xs": 2, "--space-2xs": 4, "--space-xs": 6, "--space-sm": 8,
+  "--space-ms": 12, "--space-md": 16, "--space-lg": 20, "--space-xl": 28, "--space-2xl": 40 };
+const gapRungs = new Set(
+  valuesOf("gap", "row-gap", "column-gap").flatMap((d) =>
+    d.value.split(/\s+/).map((t) => {
+      const m = /^var\((--space-[a-z0-9]+)\)$/.exec(t);
+      if (m) return GAP_TOKEN[m[1]];
+      const px = /^(\d+)px$/.exec(t);
+      return px ? +px[1] : null;
+    }).filter((n) => n !== null),
+  ),
+).size;
+
 const globalLineHeights = new Set(valuesOf("line-height").map((d) => d.value)).size;
 
 const MEASURED = {
@@ -224,6 +252,8 @@ const MEASURED = {
   fontSizesBelowFloor,
   offScaleSpacing: offScaleSpacing.length,
   literalSpacing,
+  literalIconSizes,
+  gapRungs,
   distinctControlH,
   distinctTracking,
   globalLineHeights,

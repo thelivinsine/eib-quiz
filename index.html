@@ -208,6 +208,20 @@
             --ctl-md: 44px;   /* the default, and the WCAG 2.5.5 touch floor */
             --ctl-lg: 52px;   /* answer options, primary CTA */
 
+            /* ---- ICON -----------------------------------------------------------
+               The last axis still written as literals: nine glyph sizes
+               (14/15/16/17/18/20/22/24/28) doing five jobs. Five steps, nearest-with-
+               ties-down, so nothing moved more than 2px. A glyph box with no plate is
+               the same size as its glyph, so these serve both.
+               NOT icons and deliberately left alone: the two ring diameters
+               (--ready/--score rings are layout), the 6px scrollbar, the 7px caret and
+               .sr-only's 1px. A hit target is --ctl-*, not --icon-*. */
+            --icon-xs: 14px;   /* inline, beside small text */
+            --icon-sm: 16px;   /* the default glyph */
+            --icon-md: 18px;   /* a glyph you aim at */
+            --icon-lg: 22px;   /* a card's own mark */
+            --icon-xl: 28px;   /* the featured card only */
+
             /* ---- TRACKING -------------------------------------------------------
                Assigned by TIER, never per component — per-component is how this reached
                eleven values. Positive at the smallest sizes, zero through the middle,
@@ -369,7 +383,7 @@
         }
         .brand { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); }
         .brand-mark {
-            width: 34px; height: 34px;
+            width: var(--ctl-sm); height: var(--ctl-sm);
             border-radius: var(--radius-sm);
             display: grid; place-items: center;
             font-family: var(--font-head);
@@ -395,7 +409,7 @@
         .session-back:hover { background: var(--hover); border-color: var(--border-hover); color: var(--text); }
         .session-back-icon { display: grid; place-items: center; }
         /* The icon set has one arrow. This is the same one, mirrored. */
-        .session-back-icon svg { width: 18px; height: 18px; transform: scaleX(-1); }
+        .session-back-icon svg { width: var(--icon-md); height: var(--icon-md); transform: scaleX(-1); }
         body.in-session header { border-bottom: none; }
         body.in-session .brand { display: none; }
         body.in-session .session-back { display: inline-flex; }
@@ -403,7 +417,7 @@
         .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
         .seg {
             display: inline-flex;
-            padding: var(--space-3xs); gap: var(--space-3xs);
+            padding: var(--space-3xs); gap: var(--space-2xs);
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
@@ -648,8 +662,8 @@
         .end-actions .btn-primary, .end-actions .btn-secondary {
             min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs);
         }
-        .end-more { display: inline-flex; align-items: center; gap: var(--space-xs); }
-        .end-more svg { width: 14px; height: 14px; }
+        .end-more { display: inline-flex; align-items: center; gap: var(--space-sm); }
+        .end-more svg { width: var(--icon-xs); height: var(--icon-xs); }
         /* Visible but inert when there is nothing below — a control that silently does
            nothing is worse than one that says so. */
         .end-more:disabled { opacity: 0.45; cursor: default; }
@@ -702,7 +716,7 @@
             margin-top: var(--space-md);
         }
         .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
-        .hero-cta-row .btn-primary svg { width: 18px; height: 18px; }
+        .hero-cta-row .btn-primary svg { width: var(--icon-md); height: var(--icon-md); }
 
 
         /* ============================================================
@@ -769,7 +783,7 @@
             outline-offset: 3px;
         }
         .state-picker select:focus-visible { outline: none; }
-        .state-picker svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--muted); }
+        .state-picker svg { width: var(--icon-sm); height: var(--icon-sm); flex-shrink: 0; color: var(--muted); }
         /* The pill hugs this, so it fits "Berlin" as well as it fits
            "Mecklenburg-Vorpommern". */
         .state-picker-value {
@@ -825,7 +839,7 @@
         }
         .dash-stat {
             padding: 0 var(--space-md);
-            display: flex; flex-direction: column; gap: var(--space-xs);
+            display: flex; flex-direction: column; gap: var(--space-sm);
             min-width: 0;
         }
         .dash-stat + .dash-stat { border-left: 1px solid var(--border); }
@@ -848,7 +862,7 @@
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--space-md); flex-wrap: wrap;
         }
-        .resume-text { display: flex; flex-direction: column; gap: var(--space-3xs); font-size: var(--fs-sm); color: var(--muted); }
+        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); }
         .resume-text strong { color: var(--text); font-size: var(--fs-base); }
         .resume-actions { display: flex; gap: var(--space-sm); }
 
@@ -858,11 +872,11 @@
         .progress-reset {
             position: absolute; top: 6px; right: 6px;
             display: inline-flex; align-items: center; justify-content: center;
-            width: 44px; height: 44px;
+            width: var(--ctl-md); height: var(--ctl-md);
             background: none; border: none; color: var(--muted);
             transition: color 0.2s var(--ease);
         }
-        .progress-reset svg { width: 17px; height: 17px; }
+        .progress-reset svg { width: var(--icon-md); height: var(--icon-md); }
         .progress-reset:hover { color: var(--red-text); }
 
         /* ============================================================
@@ -923,8 +937,8 @@
         }
         .mode-card--featured:active { background: var(--accent-hover); }
         .mode-card--featured .mode-head { grid-area: title; margin-bottom: 0; gap: var(--space-sm); }
-        .mode-card--featured .mode-icon { width: 28px; height: 28px; background: none; color: var(--accent-text); }
-        .mode-card--featured .mode-icon svg { width: 28px; height: 28px; }
+        .mode-card--featured .mode-icon { width: var(--icon-xl); height: var(--icon-xl); background: none; color: var(--accent-text); }
+        .mode-card--featured .mode-icon svg { width: var(--icon-xl); height: var(--icon-xl); }
         .mode-card--featured .mode-title { font-size: var(--fs-lg); color: var(--text); }
         .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
         /* --sub-text, not --muted: the quietest tier clears AA on the resting
@@ -956,7 +970,7 @@
            have to LOOK like buttons where there is no hover to reveal it. */
         .mode-go {
             position: absolute; bottom: var(--space-md); right: var(--space-md);
-            width: 28px; height: 28px;
+            width: var(--icon-xl); height: var(--icon-xl);
             display: grid; place-items: center;
             color: var(--muted);
             font-size: var(--fs-sm); line-height: 1;
@@ -972,11 +986,11 @@
            names it rather than two. */
         .mode-icon {
             display: inline-grid; place-items: center;
-            width: 22px; height: 22px; flex-shrink: 0;
+            width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
             color: var(--muted); background: none; border-radius: 0; margin: 0;
             transition: color 0.18s var(--ease);
         }
-        .mode-icon svg { width: 22px; height: 22px; }
+        .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         @media (hover: hover) {
             .mode-card:hover .mode-icon { color: var(--accent-text); }
         }
@@ -991,7 +1005,7 @@
         /* A chip states a fact; the fact is small and grey. Only work that is
            actually waiting gets a colour. */
         .mode-meta {
-            display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;
+            display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap;
             margin-top: auto;
             font-size: var(--fs-xs); color: var(--muted);
             font-variant-numeric: tabular-nums;
@@ -1003,7 +1017,7 @@
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
-        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); font-size: var(--fs-xs); font-weight: 600; }
+        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm); font-size: var(--fs-xs); font-weight: 600; }
         .msb-arrow { transition: transform 0.25s var(--ease-spring); }
         .mode-card:hover .msb-arrow { transform: translateX(3px); }
 
@@ -1021,19 +1035,19 @@
             border: 1px solid var(--border);
         }
         .topic-chip-icon {
-            width: 22px; height: 22px; flex-shrink: 0;
+            width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
             display: grid; place-items: center;
             color: var(--muted);
             transition: color 0.18s var(--ease);
         }
-        .topic-chip-icon svg { width: 22px; height: 22px; }
-        .topic-chip-body { display: flex; flex-direction: column; gap: var(--space-3xs); min-width: 0; flex: 1; }
+        .topic-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        .topic-chip-body { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; flex: 1; }
         .topic-chip-name { font-weight: 600; font-size: var(--fs-base); color: var(--text); }
         .topic-chip-meta { font-size: var(--fs-2xs); color: var(--muted); }
         .topic-chip-bar { display: block; height: 3px; margin-top: var(--space-3xs); border-radius: var(--radius-xs); background: var(--surface3); overflow: hidden; }
         .topic-chip-bar > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
         .topic-chip-go { flex-shrink: 0; color: var(--faint); display: grid; place-items: center; }
-        .topic-chip-go svg { width: 18px; height: 18px; }
+        .topic-chip-go svg { width: var(--icon-md); height: var(--icon-md); }
         @media (hover: hover) {
             .topic-chip:hover .topic-chip-icon,
             .topic-chip:hover .topic-chip-go { color: var(--accent-text); }
@@ -1065,7 +1079,7 @@
         .hist-exam { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-md); background: var(--surface2); border-color: var(--border-soft); }
         .hist-exam-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-size: var(--fs-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
         .hist-exam-stats strong { color: var(--text); font-variant-numeric: tabular-nums; }
-        .hist-bars { display: flex; align-items: flex-end; gap: var(--space-xs); height: 52px; }
+        .hist-bars { display: flex; align-items: flex-end; gap: var(--space-sm); height: 52px; }
         .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: var(--radius-xs) var(--radius-xs) 0 0; background: var(--muted); transition: height 0.4s var(--ease); }
         .hist-bar.pass { background: var(--teal-deep); }
         .hist-bar.fail { background: var(--red); }
@@ -1164,7 +1178,7 @@
         /* No ticks between the readouts: four numbers separated by three hairlines
            is six things to look at. Whitespace does the separating, the labels drop
            to the quietest tier, and the numbers carry the row. */
-        .stat { display: flex; align-items: baseline; gap: var(--space-xs); padding: 0; }
+        .stat { display: flex; align-items: baseline; gap: var(--space-sm); padding: 0; }
         /* --muted, not --faint: at 0.63rem uppercase these were the smallest type on the
            screen painted in the quietest tier (4.52 light / 5.67 dark), and on a phone
            the row now sits at the bottom where it has to be legible in one glance.
@@ -1250,7 +1264,7 @@
         }
         .question-category:empty { display: none; }
         .question-category::before { content: '·'; margin-right: var(--space-sm); color: var(--faint); }
-        .question-meta-actions { display: flex; gap: var(--space-xs); flex-shrink: 0; }
+        .question-meta-actions { display: flex; gap: var(--space-sm); flex-shrink: 0; }
         /* These are buttons and have to look like buttons: an icon floating on the
            page is a decoration. They stay small and quiet — a hairline and the tile
            fill — but never borderless. */
@@ -1272,8 +1286,8 @@
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
         }
-        .speak-btn svg, .bilingual-toggle svg { width: 16px; height: 16px; }
-        .bilingual-toggle { gap: var(--space-xs); }
+        .speak-btn svg, .bilingual-toggle svg { width: var(--icon-sm); height: var(--icon-sm); }
+        .bilingual-toggle { gap: var(--space-sm); }
         .speak-btn:hover, .bilingual-toggle:hover { color: var(--text); }
         .bilingual-toggle.active { color: var(--accent-text); }
 
@@ -1333,7 +1347,7 @@
         @media (hover: hover) {
             .option-btn:hover:not(:disabled) .opt-letter { border-color: var(--border-hover); color: var(--text); }
         }
-        .opt-text-wrap { display: flex; flex-direction: column; gap: var(--space-3xs); min-width: 0; }
+        .opt-text-wrap { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
         /* The English line IS the answer for a reader using the translation, so it takes
            the secondary tier rather than the quietest one. */
         .option-en-text { display: none; font-size: var(--fs-2xs); color: var(--sub-text); font-style: italic; }
@@ -1421,13 +1435,13 @@
            it too — the backdrop fills the rest of the screen. */
         .img-zoom-close {
             position: absolute; top: var(--space-md); right: var(--space-md);
-            width: 44px; height: 44px; z-index: 2;
+            width: var(--ctl-md); height: var(--ctl-md); z-index: 2;
             display: grid; place-items: center;
             background: none; border: none; color: var(--sub-text);
             cursor: pointer; transition: color 0.16s var(--ease);
         }
         .img-zoom-close:hover { color: var(--text); }
-        .img-zoom-close svg { width: 20px; height: 20px; }
+        .img-zoom-close svg { width: var(--icon-md); height: var(--icon-md); }
         .img-zoom img { display: block; width: 100%; max-height: calc(100svh - 190px); object-fit: contain; border-radius: var(--radius-sm); }
         .img-zoom-caption { font-size: var(--fs-xs); color: var(--sub-text); text-align: center; }
         @media (max-width: 620px) {
@@ -1447,7 +1461,7 @@
         @media (hover: none) { .keyboard-hint { display: none; } }
         kbd { font-size: var(--fs-2xs); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
         .keyboard-hint-close {
-            margin-left: var(--space-2xs); width: 22px; height: 22px; flex-shrink: 0;
+            margin-left: var(--space-2xs); width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
             display: grid; place-items: center;
             background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-pill);
             color: var(--muted); font-size: var(--fs-base); line-height: 1;
@@ -1486,11 +1500,11 @@
            different weight and baseline in every font stack. */
         .sidebar-chevron {
             display: grid; flex-shrink: 0;
-            width: 30px; height: 30px;
+            width: var(--ctl-xs); height: var(--ctl-xs);
             place-items: center; color: var(--muted);
             transition: transform 0.25s var(--ease), color 0.2s var(--ease);
         }
-        .sidebar-chevron svg { width: 16px; height: 16px; }
+        .sidebar-chevron svg { width: var(--icon-sm); height: var(--icon-sm); }
         .sidebar-chevron.open { transform: rotate(180deg); }
         .sidebar-header:hover .sidebar-chevron { color: var(--text); }
         /* Same gutter as .question-body — the nav numbers were touching the bar. */
@@ -1578,7 +1592,7 @@
         .score-ring { width: 100%; height: 100%; display: block; }
         .score-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
         .score-ring-bar { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.1s var(--ease-spring); }
-        .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3xs); }
+        .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2xs); }
         .score-ring-pct { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-3xl); letter-spacing: var(--ls-display); line-height: 1; font-variant-numeric: tabular-nums; color: var(--text); }
         .score-ring-center .score-number { font-size: var(--fs-sm); font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
         /* Only an exam has a pass mark, so on every other round this is empty — and an
@@ -1625,7 +1639,7 @@
         .review-item { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-sm); }
         .review-q-num { margin-bottom: var(--space-xs); }
         .review-q-text { font-weight: 600; font-size: var(--fs-md); line-height: 1.4; margin-bottom: var(--space-md); }
-        .review-answers { display: flex; flex-direction: column; gap: var(--space-xs); margin-bottom: var(--space-md); }
+        .review-answers { display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-md); }
         .review-answer { font-size: var(--fs-sm); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
         .review-answer.user-wrong { color: var(--red-text); background: var(--red-dim); }
         .review-answer.correct-ans { color: var(--green); background: var(--green-dim); }
@@ -1787,8 +1801,8 @@
                a 20px glyph floating in it, so the glyph sat left of centre with a gap
                before the title and a 14px margin lifting it off the baseline. The icon
                is the glyph now, sized to the title beside it. */
-            .mode-card--featured .mode-icon { width: 24px; height: 24px; margin-bottom: 0; }
-            .mode-card--featured .mode-icon svg { width: 24px; height: 24px; }
+            .mode-card--featured .mode-icon { width: var(--icon-lg); height: var(--icon-lg); margin-bottom: 0; }
+            .mode-card--featured .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
             .mode-card--featured .mode-title { font-size: var(--fs-lg); }
             /* Bottom-right, on the meta's line — the peers put their arrow exactly there,
                and a full-width bar made the one card you are meant to compare with them
@@ -1810,7 +1824,7 @@
                 display: grid;
                 grid-template-columns: 1fr;
                 grid-template-areas: "title" "desc" "meta";
-                row-gap: var(--space-3xs);
+                row-gap: var(--space-2xs);
             }
             .mode-card:not(.mode-card--featured) .mode-head { grid-area: title; margin-bottom: 0; }
             .mode-card:not(.mode-card--featured) .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
@@ -1822,17 +1836,17 @@
             .header-controls { gap: var(--space-2xs); }
             .seg { padding: 1px; }
             .header-controls .seg-btn { min-height: var(--ctl-xs); padding: 0 var(--space-sm); font-size: var(--fs-2xs); }
-            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-xs); }
-            .session-back-icon svg { width: 15px; height: 15px; }
+            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
+            .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
-            .brand-mark { width: 28px; height: 28px; font-size: var(--fs-xs); }
+            .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); font-size: var(--fs-xs); }
             .brand-name { font-size: var(--fs-sm); }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
                the pair still aligns with the speak/translate buttons opposite, because
                the row centres the two columns against each other. */
-            .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
+            .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: var(--space-2xs); }
             .question-category { white-space: normal; }
             .question-category::before { content: none; }
             .question-card { padding: var(--space-md); }
@@ -1866,7 +1880,7 @@
                owns #timer's own display, so the children go inline instead. */
             #timer { padding: var(--space-sm) var(--space-md); }
             /* Already one line at one size; nothing left to collapse down here. */
-            #timer { gap: var(--space-xs); }
+            #timer { gap: var(--space-sm); }
             /* The strip needs air above it on a phone: flush to the top edge (or to a
                notch's inset) it read as part of the status bar. The safe-area inset is
                added to this, not replaced by it, so a notched phone gets both. */
@@ -1876,7 +1890,7 @@
             body.in-session .quiz-progress { margin-top: var(--space-sm); margin-bottom: var(--space-lg); }
             /* One step down: the tally is a glance, and at the bottom of the column it
                no longer has to carry the row the way it did at the top. */
-            .stats-bar { column-gap: var(--space-xs); row-gap: var(--space-3xs); }
+            .stats-bar { column-gap: var(--space-sm); row-gap: var(--space-2xs); }
             /* One declaration each. Three stacked PRs left three `.stat { gap }` rules
                (6/4/5px, last won) and set the label's size twice, so the "one size"
                a comment here claimed was overridden three lines under it. These are

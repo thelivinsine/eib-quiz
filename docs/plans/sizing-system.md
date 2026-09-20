@@ -557,8 +557,18 @@ with use, and at 480px open it was the biggest thing left on the page. Closed it
 
 Two left short, both honestly:
 
-- **7b (64% vs 80%).** Every gap is on the scale; the app simply spreads across six rungs
-  where the references concentrate on two. A distribution target, not a correctness one.
+- **7b — improved 2026-09-20, and stopped short on purpose.** The 2px and 6px rungs were
+  merged away (into 4px and 8px), taking rendered gaps from six rungs at 67% to **five at
+  74%**. The remaining distance to 80% is the 4px-vs-8px distinction itself, and collapsing
+  that would loosen every tight label/value pair in the app to buy a number.
+  **A correction to how this was scored:** the 80% target came from the references'
+  *rendered instance* counts (Khan: 8px on 1470 of 1661 elements), but an earlier pass
+  measured *declared rules*, which is a different quantity — a rule applied to a hundred
+  elements counts once. Rendered is the comparable metric.
+- **Icon sizes — closed 2026-09-20.** The one size axis left as literals: nine glyph sizes
+  doing five jobs, now `--icon-xs/-sm/-md/-lg/-xl` (14/16/18/22/28), four of them rendering.
+  Ring diameters, the scrollbar, the caret and `.sr-only` are exempt because they are not
+  icons; hit targets moved to `--ctl-*`.
 - **9 (2.35 vs 2.2).** Within 130px. Getting under would mean collapsing a second section,
   and the criterion this was proxying for — the exam card inside the first screen — is met.
 

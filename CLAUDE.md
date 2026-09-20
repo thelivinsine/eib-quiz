@@ -144,6 +144,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       gap histogram means the scale is not being used.
     - **`--ctl-md: 44px` is a token, not just a media query.** Primer and Linear both publish
       their touch target as one. Four heights: 28 / 36 / 44 / 52.
+    - **An icon size is `--icon-*`, a hit target is `--ctl-*`, and neither is a literal**
+      (2026-09-20). Nine glyph sizes (14/15/16/17/18/20/22/24/28) were doing five jobs;
+      the scale is `--icon-xs` 14 / `-sm` 16 / `-md` 18 / `-lg` 22 / `-xl` 28 (the featured
+      card only), mapped nearest-with-ties-down so nothing moved more than 2px. Four sizes
+      render now. A glyph box with no plate is the same size as its glyph, so one token
+      serves both. **Not icons, and deliberately still literals**: the two ring diameters
+      (layout), the 6px scrollbar, the 7px caret, `.sr-only`'s 1px and `.opt-letter`'s 26px
+      well — `literalIconSizes` in the test exempts exactly those.
+    - **Two gap rungs should carry the page.** The references measure one value at 86-88%
+      of all rendered gaps (Khan: 8px, 1470 of 1661). This app merged its two near-invisible
+      rungs away — 2px into 4px and 6px into 8px — taking rendered gaps from six rungs at
+      67% to **five at 74%**. It stops there on purpose: the remaining distance to 80% is
+      the 4px-vs-8px distinction, and collapsing that would loosen every tight label/value
+      pair in the app to buy a number. **Compare rendered instances, not declared rules** —
+      the reference's 88% counts elements, and an early attempt to score it off the
+      stylesheet was measuring something else entirely.
     - **Tracking is assigned by TIER, never per component** — per-component is how this
       reached eleven values. `--ls-caps` / `--ls-normal` / `--ls-display`.
     - **Phase 1's leading fix bought only 3% of the page height** (2.46 -> 2.38 screens
