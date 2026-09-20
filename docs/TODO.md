@@ -340,6 +340,21 @@ and `sw.js`, `node --test tools/contrast.test.mjs` (10/10), `node tools/validate
   puts Previous/Next at 622-623 of an 800px viewport (78%, 177px below) on every ordinary
   question; longer questions push them down from there. On mobile the floor is dropped and the
   column stretches, pinning them 10px above the overview strip on every question.
+- **The exam screen takes the 15% too**, paid out of the question rather than slack (its clock
+  costs it 341px of chrome against practice's 214px). Inside `@media (min-height: 780px)` it
+  drops `.question-body`'s floor and lets the card fill: full 120px shift at 1280x800, buttons
+  stable at 792, 0/8 questions scrolling. Gated at 780 because ungated it cost 8/8 scrolling at
+  941x645 against 1/8 on the shipped build.
+- **Phone: the readouts moved below Previous/Next** (`order: 1`, `--spacing-2xl` above), the
+  header row gained 16px of air, the progress bar dropped 10px clear of it and gave the room
+  back from below, and the tally shrank a step. The state picker's label and control share a row.
+- **Contrast in the quiz view**, against `theme-{light,dark}.md` §2: the A/B/C/D chip was at the
+  PLACEHOLDER tier in dark (4.68) and is now 6.46 / 9.29; `.stat-label`, `.stat-of` and
+  `.question-category` went `--faint` -> `--muted` (4.52 -> 5.41 light, 5.67 -> 7.01 dark).
+- **The featured exam card's edge is `--accent-line`, not `--accent`** — a saturated ring round a
+  tinted fill is what marks the CORRECT answer, so the card read as "selected".
+- **The results card states each number once**: the line restating the ring is gone, and the
+  breakdown reads Correct / Wrong.
 - **The block below the progress bar starts 15% down the screen**: `.quiz-layout` takes
   `margin-top: min(15svh, 50svh - 260px)`, moving the readouts, the question and the navigator
   together — at 1280x800 the readouts go 126 -> 246 and Previous/Next 614 -> 734, with 66px

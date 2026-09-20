@@ -398,10 +398,11 @@
            question. Without the cap it would push the buttons off a locked screen
            at the short end of the band. vh first, as everywhere else. */
         body.in-session .quiz-layout { margin-top: min(15vh, 50vh - 260px); margin-top: min(15svh, 50svh - 260px); }
-        /* The exam keeps its position: the clock takes a row the practice screen
-           does not have, and at 800px tall that row IS the slack — measured 67px
-           left under the buttons, against the 120px this would spend. */
-        body.in-exam .quiz-layout { margin-top: 0; }
+        /* The exam cannot pay for the shift out of slack: its clock is a row the
+           practice screen does not have (chrome 341px against 214px), which leaves
+           67px under the buttons at 800px tall against the 120px the shift spends. It
+           pays out of the QUESTION instead — see the `min-height: 780px` block below,
+           which is also what stops that being a bad trade on a short screen. */
         body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; }
         /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
            four-option question sits at the top of the column instead of being
@@ -412,6 +413,27 @@
            foot of a half-empty column. It can still SHRINK, which is what keeps
            .question-body's scroller working on a long question. */
         body.in-session .question-card { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
+        /* THE EXAM'S 15%, and it is gated on height for a reason. The shift is paid out
+           of the question — the floor goes and the card fills — which is a good trade
+           only while the question still has room to spare. At 780px tall and up it
+           does: 15svh leaves 0/8 unanswered questions scrolling at 800. Below that it
+           does not, and ungated this cost 8/8 scrolling at 941x645 against 1/8 on the
+           shipped build, for a shift that had already tapered to nothing. So short
+           screens keep the shipped behaviour exactly, and no cap is needed in here —
+           at 780px+ the full 15svh always fits.
+           Stated AFTER the in-session rules it overrides (same specificity, so source
+           order decides) and BEFORE the 940px block, which must still win on a phone. */
+        @media (min-height: 780px) {
+            body.in-exam .quiz-layout { margin-top: 15vh; margin-top: 15svh; }
+            /* The floor IS the payment: 50svh + a 120px shift + the clock's row comes
+               to 853px of an 800px screen, so one of the three has to give. */
+            body.in-exam .question-body { min-height: 0; }
+            /* Filling pins Previous and Next to the bottom of the column. Content-sized
+               with no floor they wandered 748-776 across a round; the column has to
+               stretch first or `flex: 1` has nothing to grow into. */
+            body.in-exam .quiz-main { align-self: stretch; }
+            body.in-exam .question-card { flex: 1; }
+        }
         /* The only element on the quiz screen with a scrollbar. `contain` stops a
            flick past the last option rubber-banding the locked page behind it. */
         /* hidden on x: the pick animation scales the chosen option by 1.5%, which
@@ -778,7 +800,12 @@
         .mode-card--featured {
             grid-column: 1 / -1;
             background: var(--accent-soft);
-            border-color: var(--accent);
+            /* --accent-line, NOT --accent: a saturated ring around a tinted fill is the
+               exact treatment `.option-btn.correct` uses for the right answer, so the
+               featured card read as "selected" on a page where nothing is selectable.
+               --accent-line is the same hue one step off the card's own fill, which
+               separates it from the canvas without borrowing the answer language. */
+            border-color: var(--accent-line);
             color: var(--text);
             padding: var(--spacing-lg);
             display: grid;
@@ -788,7 +815,7 @@
             align-items: center;
         }
         @media (hover: hover) {
-            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--accent); }
+            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--accent-line); }
         }
         .mode-card--featured:active { background: var(--accent-hover); }
         .mode-card--featured .mode-icon { grid-area: icon; align-self: start; width: 44px; height: 44px; margin-bottom: 0; background: var(--accent-fill); color: var(--on-accent); }
@@ -1019,9 +1046,13 @@
            is six things to look at. Whitespace does the separating, the labels drop
            to the quietest tier, and the numbers carry the row. */
         .stat { display: flex; align-items: baseline; gap: 7px; padding: 0; }
-        .stat .stat-label { color: var(--faint); font-size: 0.63rem; letter-spacing: 0.06em; }
+        /* --muted, not --faint: at 0.63rem uppercase these were the smallest type on the
+           screen painted in the quietest tier (4.52 light / 5.67 dark), and on a phone
+           the row now sits at the bottom where it has to be legible in one glance.
+           --faint is for placeholder and disabled, not for a label you read. */
+        .stat .stat-label { color: var(--muted); font-size: 0.63rem; letter-spacing: 0.06em; }
         .stat-value { font-family: var(--font-head); font-weight: 600; font-size: 1.3rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-        .stat-of { color: var(--faint); font-size: 0.85rem; font-weight: 500; }
+        .stat-of { color: var(--muted); font-size: 0.85rem; font-weight: 500; }
 
         /* The question column — readouts, question, buttons — beside the navigator.
            Column gap only, and wider than the page's rhythm: the two are different
@@ -1089,8 +1120,10 @@
         /* Plain text after a dot, not a pill. The category is context you glance
            at; a bordered chip next to the bordered buttons made the row above the
            question busier than the question. */
+        /* --muted: it names the topic of the question you are reading, which is content,
+           not a placeholder. The separator dot stays in --faint — that IS decoration. */
         .question-category {
-            font-size: 0.72rem; font-weight: 500; color: var(--faint);
+            font-size: 0.72rem; font-weight: 500; color: var(--muted);
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .question-category::before { content: '·'; margin-right: 8px; color: var(--faint); }
@@ -1163,15 +1196,22 @@
             flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
             font-weight: 600; font-size: 0.76rem;
-            /* The chip is the well inside the option now that the option is the tile. */
-            color: var(--muted); background: var(--surface2); border: 1px solid var(--border);
+            /* The chip is the well inside the option now that the option is the tile.
+               Its letter is --sub-text, not --muted: A/B/C/D is how you name the answer
+               you are picking, and --muted put it at 4.68 on the chip in dark — the
+               PLACEHOLDER tier (theme-dark.md §2 measures 4.67 there), on a label that
+               is content. --sub-text lands it in the secondary band, 6.4 dark / 9.2
+               light, and the chip reads at a glance instead of disappearing. */
+            color: var(--sub-text); background: var(--surface2); border: 1px solid var(--border);
             transition: border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
         @media (hover: hover) {
             .option-btn:hover:not(:disabled) .opt-letter { border-color: var(--border-hover); color: var(--text); }
         }
         .opt-text-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-        .option-en-text { display: none; font-size: 0.78rem; color: var(--muted); font-style: italic; }
+        /* The English line IS the answer for a reader using the translation, so it takes
+           the secondary tier rather than the quietest one. */
+        .option-en-text { display: none; font-size: 0.78rem; color: var(--sub-text); font-style: italic; }
         .option-en-text.show { display: block; }
         /* The dim is a text tier now; the fill it used to borrow is the base. */
         .options.answered .option-btn:not(.correct):not(.incorrect) { color: var(--muted); }
@@ -1325,7 +1365,10 @@
         .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
         .score-ring-pct { font-family: var(--font-head); font-weight: 600; font-size: 2.3rem; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; color: var(--text); }
         .score-ring-center .score-number { font-size: 0.9rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
-        .score-text { color: var(--sub-text); font-size: 1rem; margin-top: var(--spacing-sm); }
+        /* Only an exam has a pass mark, so on every other round this is empty — and an
+           empty inline-block still spent its margin and padding as a blank band under
+           the ring. Visible once it has something to say. */
+        .pass-fail:empty { display: none; }
         .pass-fail { display: inline-block; margin-top: var(--spacing-md); font-family: var(--font-head); font-weight: 600; font-size: 1rem; padding: 8px 20px; border-radius: var(--radius-pill); }
         .pass-fail.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .pass-fail.fail { color: var(--red-text); background: var(--red-dim); }
@@ -1408,6 +1451,15 @@
                the buttons are already pinned above the strip, so the shift would come
                straight out of the question and start it scrolling. */
             body.in-session .quiz-layout { margin-top: 0; }
+            /* The readouts move BELOW Previous and Next on a phone. At the top they
+               were the first thing on the screen, competing with the question for the
+               reader's first look, and they are a running tally you glance at — not
+               something to lead with. `order` moves them without touching the DOM, so
+               the reading order stays question-first and the focus order with it.
+               The gap above is a full --spacing-2xl: the buttons belong to the
+               question, the tally and the overview strip below do not, and that
+               distance is what says so. */
+            .quiz-topbar { order: 1; margin-top: var(--spacing-2xl); margin-bottom: 0; }
             /* The column has to take the whole row before the card can fill it: the
                grid places items at the start, so on its own .quiz-main is as tall as
                its content and flex: 1 has nothing to grow into. */
@@ -1467,8 +1519,11 @@
             /* The picker goes full width under its section heading rather than
                squeezing onto the same line as it. */
             .section-head--row { align-items: stretch; }
-            #statePickerSlot { width: 100%; }
-            .state-picker { width: 100%; justify-content: space-between; }
+            /* Label and control on ONE row: stacked, a two-word eyebrow above a pill
+               spent a whole band of the section head on four characters. */
+            #statePickerSlot { width: 100%; flex-direction: row; align-items: center;
+                gap: var(--spacing-sm); justify-content: space-between; }
+            .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
             .resume-actions { width: 100%; }
             .resume-actions .btn-primary, .resume-actions .btn-secondary { flex: 1; }
 
@@ -1521,7 +1576,10 @@
             .question-card { padding: var(--spacing-md); }
             .question-text { font-size: 1.05rem; }
             body.in-session main { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
-            .quiz-topbar { margin-bottom: var(--spacing-md); }
+            /* Still below the buttons here — only the gap tightens. margin-bottom stays
+               0 from the 940px block; restating it as spacing-md would put a dead row
+               under the tally and push the overview strip off a short phone. */
+            .quiz-topbar { margin-top: var(--spacing-xl); }
             .question-meta { margin-bottom: 12px; }
             /* The tiles carry their own height on a wide grid; on a phone they
                only need to hold their content. */
@@ -1533,10 +1591,21 @@
             .timer-label { margin-right: 8px; }
             .timer-display { font-size: 1.35rem; }
             .pacing-info { margin-left: 8px; }
+            /* The strip needs air above it on a phone: flush to the top edge (or to a
+               notch's inset) it read as part of the status bar. The safe-area inset is
+               added to this, not replaced by it, so a notched phone gets both. */
+            .header-content { padding-top: 16px; padding-bottom: 12px; }
+            /* ...and the progress bar drops clear of that row instead of sitting tight
+               under the hairline. */
+            body.in-session .quiz-progress { margin-top: 10px; margin-bottom: var(--spacing-lg); }
+            /* One step down: the tally is a glance, and at the bottom of the column it
+               no longer has to carry the row the way it did at the top. */
             .stats-bar { column-gap: 9px; row-gap: 3px; }
             .stat { padding: 0; gap: 6px; }
             .stat + .stat { border-left: none; }
-            .stat-value { font-size: 1.15rem; }
+            .stat-value { font-size: 1.02rem; }
+            .stat .stat-label { font-size: 0.58rem; }
+            .stat-of { font-size: 0.78rem; }
             .stat { gap: 5px; }
             .stat .stat-label { font-size: 0.58rem; letter-spacing: 0.02em; }
             .exam-subscores { grid-template-columns: 1fr; }
@@ -1731,7 +1800,6 @@
                             <span class="score-number" id="finalScore"></span>
                         </div>
                     </div>
-                    <div class="score-text" id="scoreMessage"></div>
                     <div class="pass-fail" id="passFail"></div>
                 </div>
 
@@ -1985,12 +2053,10 @@
             'end.review':          { en: 'Smart review complete',   de: 'Smart Review beendet' },
             'end.topic':           { en: 'Topic round complete',    de: 'Themen-Runde beendet' },
             'end.done':            { en: 'Done',                    de: 'Fertig' },
-            'end.scoreExam':       { en: '{p}% answered correctly', de: '{p}% richtig beantwortet' },
-            'end.scoreOther':      { en: '{n} of {total} correct ({p}%)', de: '{n} von {total} richtig ({p}%)' },
             'end.pass':            { en: '✓ Passed',                de: '✓ Bestanden' },
             'end.fail':            { en: '✗ Not passed',            de: '✗ Nicht bestanden' },
-            'end.correctCount':    { en: 'Answered correctly',      de: 'Richtig beantwortet' },
-            'end.wrongCount':      { en: 'Answered wrongly',        de: 'Falsch beantwortet' },
+            'end.correctCount':    { en: 'Correct',                 de: 'Richtig' },
+            'end.wrongCount':      { en: 'Wrong',                   de: 'Falsch' },
             'end.threshold':       { en: 'Pass mark: 17 of 33 questions (52%)', de: 'Bestehensgrenze: 17 von 33 Fragen (52 %)' },
             'end.general':         { en: 'General (of 30)',         de: 'Allgemein (von 30)' },
             'end.stateOf3':        { en: '{state} (of 3)',          de: '{state} (von 3)' },
@@ -3216,9 +3282,6 @@
                 : t('end.' + state.currentMode);
 
             document.getElementById('finalScore').textContent = `${state.correct}/${total}`;
-            document.getElementById('scoreMessage').textContent = isExam
-                ? t('end.scoreExam', { p: percent })
-                : t('end.scoreOther', { n: state.correct, total, p: percent });
 
             const passFail = document.getElementById('passFail');
             passFail.textContent = '';
