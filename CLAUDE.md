@@ -297,11 +297,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
   you glance at, so `.header-controls .seg-btn` is `--ctl-xs`, `.session-back` `--ctl-sm` and the
   brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
-  The header carries a **`.header-cta`** ("Start practising") on the home screen only: it
-  is hidden by `body.in-session` — a second action beside the one that abandons your
-  round is a trap — and hidden below 620px, where brand plus nav plus menu plus a button
-  comes to ~390px inside a 343px content width and the hero's own Start now is ten pixels
-  underneath it.
+  **There is no `.header-cta` any more** (2026-09-21, on request). The header used to end
+  in a "Start practising" pill; the hero's own Start sits ten pixels below it on the
+  landing tier and the dashboard tier leads with the mode band, so it only ever repeated
+  something already on screen. `nav.startPractice` went with it; `cta.button` is a
+  different string and stays.
   - **The header has a CENTRE NAV and ONE globe menu** (2026-09-21, per the mockup).
     `.header-nav` is Home / About / FAQs, centred by `margin-inline: auto` and NOT by
     being the middle of a `space-between` row: `.session-back` is `display: none` most of
@@ -318,12 +318,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     together** — a live link still wearing Soon is worse than either alone.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
     thing that says which section you are on, and it is not available to a screen reader.
-  - **The EN/DE and Dark/Light segments live INSIDE `#prefsMenu`**, a native `<details>`
-    whose summary is a globe, the current language code and a caret. A `<details>` so
-    open/close, Enter, Space and focus order are the platform's; the only JS is two
-    listeners closing it on an outside click or Escape. `setLang()` AND `initLang()` both
-    write `#langBadge` — it is a language CODE, the same in both languages, so it is not
-    a `data-i18n` string.
+  - **The LANGUAGE lives inside `#prefsMenu`; the THEME toggle sits in the header row**
+    (2026-09-21, on request). The split is not arbitrary: a language needs a
+    current-value readout, which is what the globe summary gives it, while the theme is a
+    two-state switch you flip on sight and a disclosure cost a click to do something
+    instant. `#prefsMenu` is a native `<details>`, so open/close, Enter, Space and focus
+    order are the platform's; the only JS is two listeners closing it on an outside click
+    or Escape. `setLang()` AND `initLang()` both call `paintLangControls()`, which writes
+    `#langBadge` — a language CODE, the same in both languages, so it is not a
+    `data-i18n` string.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the German flag** in a rounded `--ctl-sm` square, beside a
@@ -379,10 +382,27 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     of its two quietest tiers, for four claims the hero is making. It is `--fs-xs` in
     `--sub-text`. The GLYPH is untouched: the mockup's tinted 52px disc is still the plate
     the icon rule forbids.
-  - **The photograph is `img/hero-reichstag.webp`, 1:1 at every width, and its crop is
-    load-bearing.** Holding one aspect is what lets the overlays be placed in percentages
-    that stay true. It is CC BY-SA 4.0, so `.hero-credit` renders a visible credit under it
-    — that line is the licence, not decoration. `img/ATTRIBUTIONS.md` has the recrop command.
+  - **The photograph is `img/hero-reichstag.webp`, a 1:1 FILE, shown 1:1 above 620px and
+    16/10 below it.** The file itself is square and is not recropped by any of this;
+    `object-fit: cover` on a wider box simply drops the top and bottom, and the centred
+    band it keeps is the good one — full pediment, the whole `DEM DEUTSCHEN VOLKE`
+    inscription and both flags, losing only sky and pavement. On a phone the square was
+    343px tall on a 375px viewport, which pushed the headline below the fold on the one
+    tier whose job is to pitch; 16/10 makes it 214.
+  - **The landscape crop is below 620px ONLY, and that limit is load-bearing.**
+    `.hero-note` is already `display: none` at this width. Above it the note sits over
+    the single patch of clean sky in the frame and **its ink is measured against that
+    sky in `LITERAL_PAIRS`** (`#16233A` on a worst case of `#D0D3D8`). Cropping where
+    the note SHOWS moves the note onto masonry and invalidates the measurement, so
+    extending this rule upward means re-measuring first. `.hero-quote` is unaffected:
+    it is anchored to the bottom-right corner, not to a percentage of the height, and
+    on a phone it covers 31% of the shorter photo, which was checked rather than assumed.
+  - It is CC BY-SA 4.0, and **the credit now lives in the page FOOTER**
+    (`.footer-credit` / `footer.credit`), not under the photo. BY-SA asks for the credit
+    where the work is used, and the footer of the page carrying the photo satisfies that
+    while keeping the hero clean. `.hero-credit` and the `hero.credit` string are gone.
+    That line is the licence, not decoration — do not drop it while the photo is on the
+    page. `img/ATTRIBUTIONS.md` has the recrop command for the FILE.
   - **The handwritten note is top RIGHT and its ink is a literal.** Its ground is a
     photograph, not a token: `#16233A` on a measured worst case of `#D0D3D8`, registered in
     `LITERAL_PAIRS`. That corner is the only clean sky in the frame (the mockup's top-left is
@@ -564,6 +584,24 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58 screens**.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
+- **The page has a FOOTER, and it is the small print's only home** (2026-09-21).
+  `.site-footer` sits after `</main>`: a `--band` panel with a `--border` top hairline,
+  holding the brand mark and lockup on the left and three quiet lines on the right —
+  where the questions come from, that this is **not** an official BAMF service, and the
+  hero photograph's CC BY-SA credit.
+  - **It is hidden by `body.in-session`, and that is not cosmetic.** A session screen is
+    pinned to `calc(100svh - var(--header-h))` and the page must not scroll there;
+    anything after `<main>` adds to the document height and breaks
+    `scrollHeight == innerHeight`. Verified 812/812 at 375px on the quiz screen and
+    900/900 at 1280px on the results screen.
+  - **`main`'s bottom padding came down from a literal 96px to `--space-2xl`** with it.
+    That padding was the home screen's only bottom breathing room (`body.in-session main`
+    overrides it outright), and 96 + the footer's own 40 read as a band of nothing.
+  - The mark is the header's flag SVG **repeated**, not shared: its three bands are the
+    flag's own values written inside the SVG rather than in a rule, so there is no token
+    to share and one duplicated line beats a JS filler for it.
+  - On a phone the two halves stack and `.footer-meta` drops its `text-align: right`:
+    stacked, it has nothing to sit opposite and should read from the same edge as the mark.
 - **The navigator offers three views, and the reader picks one** (2026-09-19). `#navActions`
   holds a `.seg.qnav-seg` — the same segmented control as the header switches — with **Linear /
   Shuffle / Topics**. `state.navView` (`'linear' | 'shuffle' | 'categories'`) is what the
@@ -885,15 +923,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
   and `.btn-lg` (both `--ctl-md` today) and the glossary rows.
-  - **The header's switches STOPPED being the exception to the 44px floor** (2026-09-21),
-    because they stopped being in the header strip: both segments moved inside
-    `#prefsMenu`'s panel, and a menu you deliberately open is not a row you glance at.
-    `.seg-btn`'s base is still `--ctl-xs` (28px, a mouse target), but
-    `.header-controls .seg-btn` now takes **`--ctl-md`** under `@media (pointer: coarse)`,
-    and the 620px rule that used to shrink it back to 28px is **deleted** — stated
-    later in the sheet, it won on source order and silently undid the thumb floor for
-    four options stacked in a 176px panel. `.brand` / `.session-back` are `--ctl-sm`
-    (`--ctl-md` on coarse) and remain the real exception. They are chrome you touch rarely, in a row with nothing else to hit;
+  - **The two segs sit in two places and take two sizes.** In `#prefsMenu`'s panel a menu
+    option is something you aim at, so `.hmenu-panel .seg-btn` takes the ordinary
+    **`--ctl-md`** (44px) under `@media (pointer: coarse)`. In the header ROW the theme
+    toggle is glance-only chrome in a strip with two other things, which is what the
+    `--ctl-sm` exception is for: `.header-controls > .seg .seg-btn`, and **the `>` is
+    load-bearing** — it is what keeps this rule off the panel's seg, which is nested
+    inside `.hmenu`. The 620px rule that used to pin every header seg to 28px is
+    **deleted**: stated later in the sheet it won on source order and silently undid the
+    thumb floor. `.brand` / `.session-back` are `--ctl-sm` (`--ctl-md` on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
     everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px.
     WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the rest of the app holds to.
   - **In a session the header drops its bottom hairline** (`body.in-session header`). The page

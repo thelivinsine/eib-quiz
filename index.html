@@ -572,7 +572,6 @@
            so has no pair to assert — the same reason .brand-mark's flag is exempt. */
         html.light .hmenu-panel { box-shadow: 0 12px 28px rgba(15, 25, 41, 0.12); }
         .hmenu-panel .eyebrow { display: block; }
-        .hmenu-panel .eyebrow + .seg { margin-bottom: var(--space-xs); }
         .hmenu-panel .seg { width: 100%; }
         .hmenu-panel .seg-btn { flex: 1; }
         .seg {
@@ -601,7 +600,11 @@
         main {
             max-width: var(--maxw); margin: 0 auto;
             padding: var(--space-xl) var(--space-lg);
-            padding-bottom: calc(96px + env(safe-area-inset-bottom));
+            /* --space-2xl, down from a literal 96px: that padding was the home screen's
+               only bottom breathing room (body.in-session main overrides it outright), and
+               the footer's own --space-2xl plus its hairline now does that job. 96 + 40
+               read as a band of nothing above the footer. */
+            padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom));
         }
         .screen { display: none; animation: fadeUp 0.32s var(--ease) both; }
         .screen.active { display: block; }
@@ -937,10 +940,6 @@
         }
         .hero-quote p { font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text); }
         .hero-quote-mark { flex: none; width: var(--icon-sm); height: var(--icon-sm); color: var(--muted); }
-        /* CC BY-SA 4.0 asks for the credit where the work is used, not only in a file. */
-        .hero-credit { margin-top: var(--space-sm); font-size: var(--fs-2xs); color: var(--faint); }
-        .hero-credit a { color: inherit; text-decoration: underline; }
-        .hero-credit a:hover { color: var(--accent-text); }
 
         .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
         .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
@@ -1456,16 +1455,45 @@
         .btn-secondary:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
         .btn-lg { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
         .btn-sm { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); }
-        /* The header's own call to action. It sits AFTER .btn-primary on purpose: as a
-           single class it loses every declaration to the one below it otherwise, which
-           is how it first rendered at .btn-primary's full 44px and padding. --ctl-sm
-           because the header is chrome you glance at — the same exception .brand and
-           .session-back take, with the same coarse-pointer bump to the 44px floor. */
-        .header-cta { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-sm); }
-        body.in-session .header-cta { display: none; }
         /* Inside a round the header is a back button and a preferences menu; a section
            nav there points at a page you are not on. */
         body.in-session .header-nav { display: none; }
+
+        /* ============================================================
+           FOOTER — the page's last band, and the small print's home
+           ============================================================ */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            background: var(--band);
+            padding: var(--space-2xl) var(--space-lg)
+                     calc(var(--space-2xl) + env(safe-area-inset-bottom));
+        }
+        /* A session screen is pinned to the viewport and nothing after <main> may add
+           to the page's height, or scrollHeight stops equalling innerHeight. */
+        body.in-session .site-footer { display: none; }
+        .footer-inner {
+            max-width: var(--maxw); margin: 0 auto;
+            display: flex; flex-wrap: wrap; align-items: flex-start;
+            justify-content: space-between; gap: var(--space-xl);
+        }
+        .footer-brand { display: flex; align-items: center; gap: var(--space-sm); }
+        .footer-lockup { display: flex; flex-direction: column; line-height: var(--lh-tight); }
+        .footer-name {
+            font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base);
+            letter-spacing: var(--ls-display); color: var(--text);
+        }
+        .footer-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
+        /* The small print reads as a column of quiet lines, right-aligned against the
+           mark opposite. --sub-text, not --muted: the disclaimer and the licence are
+           things a reader may actually need. */
+        .footer-meta {
+            display: flex; flex-direction: column; gap: var(--space-2xs);
+            max-width: 52ch; text-align: right;
+            font-size: var(--fs-2xs); line-height: var(--lh-prose); color: var(--sub-text);
+        }
+        .footer-credit { color: var(--muted); }
+        .footer-credit a { color: inherit; text-decoration: underline; }
+        .footer-credit a:hover { color: var(--accent-text); }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1612,16 +1640,18 @@
         .speak-btn { min-width: 34px; padding: 0 var(--space-xs); }
         /* On a touch screen every one of these is a finger target, not a cursor target. */
         @media (pointer: coarse) {
-            .speak-btn, .bilingual-toggle, .session-back, .brand, .header-cta { min-height: var(--ctl-md); }
+            .speak-btn, .bilingual-toggle, .session-back, .brand { min-height: var(--ctl-md); }
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
-            /* --ctl-md, and NOT the --ctl-sm this was: since 2026-09-21 the only
-               .seg in .header-controls is the pair inside #prefsMenu's panel, and a
-               menu you deliberately open is not the glance-only strip the 28px
-               exception was written for. Four options in a 176px panel are things
-               you aim at, so they take the app's ordinary 44px floor. */
-            .header-controls .seg-btn { min-height: var(--ctl-md); }
+            /* The two segs sit in two places now and want two sizes. In the PANEL a
+               menu option is something you aim at, so it takes the ordinary 44px
+               floor. In the ROW the theme toggle is back to being glance-only chrome
+               in a strip with two other things, which is the exception --ctl-sm is
+               for. The `>` is load-bearing: it keeps this off the panel's seg, which
+               is nested inside .hmenu. */
+            .hmenu-panel .seg-btn { min-height: var(--ctl-md); }
+            .header-controls > .seg .seg-btn { min-height: var(--ctl-sm); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
         }
@@ -2110,8 +2140,25 @@
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
             .hero-note, .stats-item--note, .cta-note, .cta-art { display: none; }
+            /* A LANDSCAPE crop on a phone. A 1:1 photo is as tall as the screen is
+               wide (343px of a 375px viewport), which put the headline below the fold
+               on the one tier whose job is to pitch. 16/10 takes it to ~214px.
+               object-fit: cover crops the top and bottom, which is exactly the right
+               pair to lose here: it keeps the pediment, the inscription and both
+               flags, and drops sky and pavement.
+               ONLY below 620px, and that is not arbitrary — .hero-note is already
+               hidden at this width. Above it the note sits over the one patch of
+               clean sky in the frame and its ink is measured against that sky in
+               LITERAL_PAIRS, so re-cropping where the note SHOWS would invalidate the
+               measurement. Extending this rule upward means re-measuring first. */
+            .hero-photo { aspect-ratio: 16 / 10; }
 
             .why-item { flex-basis: 100%; }
+            /* Stacked, the small print has nothing to sit opposite, so it stops
+               being right-aligned and reads from the same edge as the mark. */
+            .site-footer { padding-inline: var(--space-md); }
+            .footer-inner { gap: var(--space-lg); }
+            .footer-meta { text-align: left; }
             .cta-band { padding: var(--space-lg); gap: var(--space-ms); }
             .cta-btn { width: 100%; }
 
@@ -2176,12 +2223,10 @@
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
             .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); }
             .brand-name { font-size: var(--fs-sm); }
-            /* The strip is a glance down here. The tagline restates what the page
-               already says, and the CTA sits ten pixels above the hero's own Start
-               now — with both segmented controls there is no room for either. */
-            /* Brand + nav + menu + button comes to ~390px inside a 343px content
-               width, and the hero's own Start is ten pixels below the header anyway. */
-            .brand-tagline, .header-cta, .header-nav { display: none; }
+            /* The strip is a glance down here: the tagline restates what the page
+               already says, and brand + nav + menu + toggle does not fit a 343px
+               content width. */
+            .brand-tagline, .header-nav { display: none; }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
@@ -2316,17 +2361,19 @@
                             <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
                             <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
                         </div>
-                        <span class="eyebrow" data-i18n="nav.scheme"></span>
-                        <div class="seg" role="group" data-i18n-aria="nav.scheme">
-                            <button class="seg-btn active" id="darkBtn" data-i18n="nav.dark" aria-pressed="true">Dark</button>
-                            <button class="seg-btn" id="lightBtn" data-i18n="nav.light" aria-pressed="false">Light</button>
-                        </div>
                     </div>
                 </details>
-                <!-- Home screen only, and only where there is room for it. Inside a
-                     session the header already carries the back button, and a second
-                     action beside the one that abandons your round is a trap. -->
-                <button class="btn-primary header-cta" onclick="scrollToId('homeMain')" data-i18n="nav.startPractice"></button>
+                <!-- The theme toggle sits in the ROW, not in the menu: it is a
+                     two-state switch you flip on sight, and burying it behind a
+                     disclosure cost a click to do something instant. The globe menu
+                     keeps the language, which is the thing that needs a current-value
+                     readout. (The .header-cta "Start practising" that used to close
+                     this row is gone: the hero's own Start is ten pixels below it on
+                     the landing tier, and the dashboard tier has the mode band.) -->
+                <div class="seg" role="group" data-i18n-aria="nav.scheme">
+                    <button class="seg-btn active" id="darkBtn" data-i18n="nav.dark" aria-pressed="true">Dark</button>
+                    <button class="seg-btn" id="lightBtn" data-i18n="nav.light" aria-pressed="false">Light</button>
+                </div>
             </div>
         </div>
     </header>
@@ -2384,7 +2431,6 @@
                             <p data-i18n="hero.quote"></p>
                         </blockquote>
                     </figure>
-                    <p class="hero-credit" data-i18n-html="hero.credit"></p>
                 </div>
             </div>
 
@@ -2604,6 +2650,31 @@
 
     </main>
 
+    <!-- The footer is the page's last band and the home of the small print: where the
+         questions come from, that this is not an official service, and the hero
+         photograph's CC BY-SA credit, which used to sit under the photo itself. It is
+         hidden by body.in-session — a session screen is height-locked to the viewport
+         and anything after <main> would break that with a page scrollbar. -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <!-- The header's mark, repeated. Its three bands are the flag's own
+                     values and live in the SVG rather than in a rule, so there is no
+                     token to share; one duplicated line beats a JS filler for it. -->
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
+                <span class="footer-lockup">
+                    <span class="footer-name">EIB Quiz</span>
+                    <span class="footer-tagline" data-i18n="nav.tagline"></span>
+                </span>
+            </div>
+            <div class="footer-meta">
+                <p data-i18n="footer.source"></p>
+                <p data-i18n="footer.disclaimer"></p>
+                <p class="footer-credit" data-i18n-html="footer.credit"></p>
+            </div>
+        </div>
+    </footer>
+
     <!-- Image lightbox. One instance for the whole app; the prompt image and every
          option image open it. Hidden from the tree until it is open. -->
     <div class="img-zoom" id="imgZoom" hidden>
@@ -2747,7 +2818,6 @@
             // are on screen at once and one of them abandons the round.
             'nav.backAria':        { en: 'Back to the start page',  de: 'Zurück zur Startseite' },
             'nav.tagline':         { en: 'Learn · Practise · Pass',  de: 'Lernen · Üben · Bestehen' },
-            'nav.startPractice':   { en: 'Start practising',       de: 'Jetzt üben' },
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
@@ -2781,7 +2851,12 @@
             'hero.annotation':     { en: 'Same questions. A brighter future.', de: 'Dieselben Fragen. Eine bessere Zukunft.' },
             'hero.quote':          { en: 'Knowledge opens doors — for you and your family.', de: 'Wissen öffnet Türen — für dich und deine Familie.' },
             'hero.photoAlt':       { en: 'The west façade of the Reichstag in Berlin, inscribed DEM DEUTSCHEN VOLKE, with the German and European flags flying in front of it.', de: 'Die Westfassade des Reichstags in Berlin mit der Inschrift DEM DEUTSCHEN VOLKE, davor die deutsche und die europäische Flagge.' },
-            'hero.credit':         { en: 'Photo: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>', de: 'Foto: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>' },
+            // footer. The credit was `hero.credit` under the photo until 2026-09-21;
+            // BY-SA asks for it where the work is used, and the footer of the page the
+            // photo is on satisfies that while keeping the hero clean.
+            'footer.source':       { en: 'All 300 general questions come from the official BAMF catalogue “Leben in Deutschland”, plus ten for each of the 16 federal states.', de: 'Alle 300 allgemeinen Fragen stammen aus dem amtlichen BAMF-Katalog „Leben in Deutschland“, dazu zehn je Bundesland.' },
+            'footer.disclaimer':   { en: 'A free practice tool. Not an official service of the BAMF and not affiliated with it.', de: 'Ein kostenloses Übungsangebot. Kein offizielles Angebot des BAMF und nicht mit ihm verbunden.' },
+            'footer.credit':       { en: 'Hero photo: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>', de: 'Titelfoto: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>' },
 
             'why.eyebrow':         { en: 'Why EIB Quiz?',            de: 'Warum EIB Quiz?' },
             'why.title':           { en: 'Simple. Effective. Reliable.', de: 'Einfach. Wirksam. Verlässlich.' },
