@@ -8,11 +8,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer, 
 GitHub Pages from `main` (`index.html` + `questions.json` + `img/`). No build step, no
 framework. Installable PWA with offline support.
 
+**The app is two pages plus the session screens** (2026-09-21): **Home** is the marketing
+landing page (hero, why, four numbers, CTA) and **Practise** (`#practiseScreen`) is the app
+itself — Where you stand, the five mode cards, the topic reveal, Past rounds & glossary.
+The header nav switches between them and both landing CTAs lead to Practise; `PAGE_SCREENS`
+in `showScreen()` is what separates a page from a locked session view. The older two-tier
+home screen (`hasProgress()` + `data-tier`) is retired.
+
 **Shipped and live:**
 - Real-asset image questions (all 43 present) with a "Bild fehlt" fallback.
 - Question data externalized to `questions.json` (source of truth).
 - Persistent progress with spaced repetition (`eib_progress_v1`), resumable sessions
-  (`eib_session_v1`), Smart Review mode, and a home readiness panel.
+  (`eib_session_v1`), Smart Review mode, and the "Where you stand" panel on Practise.
 - Practice by topic (every question has a `category`).
 - Results history with an exam pass-rate trend (`eib_history_v1`).
 - Audio read-aloud (Web Speech API / TTS) and a bilingual glossary.
@@ -1203,3 +1210,38 @@ run that loop — so after resizing the pane to 375 the header really was 68px w
 `--header-h` still said 61, and `main`'s `calc(100svh - var(--header-h))` overshot by
 exactly the difference. Calling `syncHeaderHeight()` by hand fixed it on the spot, and real
 Chrome never showed it. Added to CLAUDE.md's gotchas beside the `rAF` and screenshot ones.
+
+
+## Session close (2026-09-21, evening)
+
+Four PRs merged to `main` in this session, each squash-merged and live on Pages. Live
+commit at close: **`3ea3ce1`** (`Split the app onto its own Practise screen (#91)`).
+
+| PR | What it did |
+|---|---|
+| [#88](https://github.com/thelivinsine/eib-quiz/pull/88) | Dropped the hero's four fact chips; the two hero columns centre against each other with no new CSS |
+| [#89](https://github.com/thelivinsine/eib-quiz/pull/89) | Tightened the mode band, put the estimate on the count's line behind a clock glyph, hardened the service-worker update path |
+| [#90](https://github.com/thelivinsine/eib-quiz/pull/90) | Kept the worker alive when CacheStorage fails — found while verifying #89 in a real browser |
+| [#91](https://github.com/thelivinsine/eib-quiz/pull/91) | Split the app onto `#practiseScreen`; removed About/FAQs; made the nav's Practise link a primary pill |
+
+A dark-mode pass over the Practise page closed the session: rendered in real Chrome with a
+finished round and a half-played one seeded, every text element measured against the
+background it is actually painted on. All clear their floor — worst is the new nav pill at
+**5.17** (white on `#2563EB`, floor 4.5); section and band headings 15.6 / 16.5; mode
+description 8.36; dash label, mode meta and the reset glyph 6.12; footer link 10.14. At
+375px dark: zero horizontal overflow, zero overflowing elements. **No code changed** as a
+result, so there is no PR for it.
+
+### Not verified at close
+- **Nothing on the live site was re-checked after any of the five merges.** Every
+  measurement in this session was taken against `python -m http.server` on localhost.
+- **No automated test covers the screen split, the nav, or the service-worker update
+  path.** `contrast.test.mjs` and `scale.test.mjs` guard the token scales only; everything
+  layout- or routing-shaped here was measured by hand.
+- **The service worker's auto-reload was verified on `http://localhost`, not over HTTPS
+  behind the Pages CDN.** The logic is identical; the timing is not, and the CDN's own
+  `max-age=600` on HTML is outside the client's control.
+- **The browser Back button still does nothing** for either page — the app has never had
+  routing and this session did not add any. A reload always lands on Home.
+- `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` is untracked in the working
+  tree and is **not mine**. Left alone, as in the previous session.
