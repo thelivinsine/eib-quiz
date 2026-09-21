@@ -37,9 +37,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   against `claude-context-kit/docs/reference/theme-{light,dark}.md`). One cohesive `<style>` block
   in `index.html` (no layered overrides — the whole block IS the system). POV: white/charcoal tiles
   on a flat canvas, **rounded-[16px]** (`--radius`), full-**pill** buttons/chips, and a
-  **DISCIPLINED accent duo**: one **blue** primary + one warm **amber** pop. Two themes share the
-  palette — DEFAULT = **light "slate-grey"** (canvas `#F1F3F8`, ink `#0F1929`), `.light` is the
-  default look; dark = **slate charcoal** (canvas `#10151D`).
+  **DISCIPLINED accent duo**: one **blue** primary + one warm **amber** pop. Two themes
+  share the palette — DEFAULT = **light**, canvas **`#FFFFFF`** (ink `#0F1929`);
+  `.light` is the default look; dark = **slate charcoal** (canvas `#10151D`).
+  - **Light's canvas is WHITE and light nests DOWN from it** (2026-09-21, on request,
+    against the mockup, whose page measures `#FEFEFE`). This reverses the direction of
+    the old paper-grey system, and the whole light ramp was re-derived NUMERICALLY before
+    any CSS was written: `--surface` `#FFFFFF`, `--surface2` `#E9F0F8` (1.15 below),
+    `--surface3` `#DAE3F0`, `--hover` `#EEF3FA`, `--band` `#F5F8FC` (1.065 below the page,
+    with a white card 1.065 back up out of it), `--border` `#E0E7F1` (1.245 on a tile AND
+    on the page). The four tints deepened a rung with it — a `#EFF4FE` wash is 1.04 on
+    white, i.e. invisible as a plate. **If the canvas moves again, re-derive the ramp with
+    a script and check every value against the test's floors BEFORE writing a rule**: that
+    is how these were picked, and it caught four failures on the first pass.
+  - **At the top of the ramp a tile CANNOT step up, so the HAIRLINE carries it.**
+    `--surface` IS `--canvas` in light, and `["surface", "canvas", NEST]` is the one FILL
+    pair `contrast.test.mjs` deliberately no longer asserts — the reason is written into
+    the list. This is the argument `theme-dark.md` §5 makes for dark being out of fill
+    room at the BOTTOM, applied to light being out of room at the TOP. `border / canvas`
+    is what holds it, at 1.245 against a 1.10 floor.
   - **The palette is the landing-page mockup's, re-derived for dark** (2026-09-21). It was a
     teal/apricot pair until then. Dark had to be DERIVED, because the mockup is light-only,
     and the method is the thing to preserve: **every neutral holds its measured relative
@@ -52,8 +68,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the whole ramp above `--canvas` moved up by one delta so the shape is unchanged and
     `--surface` now sits at 1.15. `--muted`/`--faint` were spread apart at the same time — §2
     warns that four greys at 9/8/7/6 read as one mushy grey, and the tiers now read
-    13.6 / 8.4 / 6.1 / 4.9 on a tile. **Light already cleared its own reference** (a light card
-    is 1.11 on the page against a measured 1.07) and was not touched.
+    13.6 / 8.4 / 6.1 / 4.9 on a tile. Light was measured against its own reference too,
+    and since its canvas went white (2026-09-21) a light card no longer clears it by FILL
+    at all — see the hairline note above. Light's tiers read 17.6 / 10.1 / 6.2 / 5.2
+    on white.
   - **A mode card's body copy is `--sub-text`, its meta and time are `--muted`.** They were
     `--muted` and `--faint`: `theme-dark.md` §2 puts a description in the SECONDARY band
     (7.3-10.2) and reserves ~4.7 for placeholder/disabled text, so the cards were painted almost
@@ -99,17 +117,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
     `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
     under something that genuinely floats, and nothing in this app does.
-  - **Elevation and hover point in opposite directions in light mode.** Raised surfaces go **up**
-    towards white (`--surface` above `--canvas`, `--surface2` inset inside it); hover goes **down**
-    into grey (`--hover`). In dark, both go up. Hover is a fill change, never a lift.
-  - **An answer option is a tile ON THE CANVAS** (2026-09-20), because the card around it is
-    gone. In light it takes `--surface` (#FFF, the measured 1.11 page step) — it was
-    `--surface2`, which is #F4F7FA on a #F1F3F8 page, a 1.03 step and the whole of the
-    "washed out" look. **Dark carries it one rung higher** (`--surface2`, 1.30 above the
-    canvas, chip `--surface3`): `--surface` at 1.15 is the right step for a big tile and too
-    quiet for a 42px row you are meant to reach for, and the dark ramp has the room light does
-    not. Hover is `--hover`, the token that already knows each theme's direction. The
-    dimmed-after-answering state is a **text tier only**.
+  - **In light EVERYTHING steps down; in dark everything steps up.** Light's page is
+    white, so there is no "up": a tile is the page colour plus a hairline, `--surface2` is
+    a well inset below it, and hover steps further down (`--hover`). In dark all of it
+    goes up. Hover is a fill change, never a lift. (Until 2026-09-21 light raised
+    surfaces UP towards white off a paper-grey page; the white canvas replaced that rule.)
+  - **An answer option is a WELL on the canvas — `--surface2` in BOTH themes**
+    (2026-09-21), with its letter chip and its hover and `:active` fills one rung up at
+    `--surface3`. Light used to override this to `--surface`, on the argument that
+    `--surface2` was #F4F7FA on a #F1F3F8 page — a 1.03 step, and the whole "washed out"
+    look. **On a white canvas that argument inverts**: `--surface` IS the page and
+    `--surface2` is a clear 1.15 step below it. Hover is NOT `--hover` here — that token
+    steps DOWN from `--surface` in light, which from `--surface2` is both the wrong
+    direction and a 1.03 step. The dimmed-after-answering state is a **text tier only**.
   - **Every text tier is a solid hex value, never opacity** — `--text` / `--sub-text` / `--muted` /
     `--faint`, all clearing 4.5:1 on both `--surface` and `--canvas` in both themes.
     `node --test tools/contrast.test.mjs` reads the tokens out of `index.html` and asserts it.
@@ -135,6 +155,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--accent-line`, which is a border value, and as a fill was a 1.27x jump in light and a
     saturated mid-blue in dark that put the tinted card's own description and meta under AA
     the moment you pointed at it.
+    **A PRIMARY BUTTON IS `--btn-fill`, NOT `--accent-fill`** (2026-09-21): the mockup
+    paints every CTA near-black navy (`#132338`, measured on Start Now, Start Practice and
+    the CTA band alike) and reserves blue for tints, links and small discs. Light
+    `--btn-fill` is that navy with `--on-btn` white; **dark holds the accent blue**,
+    because a near-black button on charcoal is not a button. `--accent-fill` still exists
+    and is still asserted — it is a picked option's letter chip and the mastery tile.
     **`--ink-tile` and `--on-dark` are GONE** (2026-09-21): they existed only for the header's
     charcoal `E` tile, the brand mark is the German flag now, and nothing else read them. The
     two token pairs and the `#fff` literal that asserted the old mark went from
@@ -263,10 +289,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
   you glance at, so `.header-controls .seg-btn` is `--ctl-xs`, `.session-back` `--ctl-sm` and the
   brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
-  The header carries a **`.header-cta`** ("Start practising") on the home screen only: it is
-  hidden by `body.in-session` — a second action beside the one that abandons your round is a
-  trap — and hidden below 620px, where brand plus two switches plus a button comes to ~390px
-  inside a 343px content width and the hero's own Start now is ten pixels underneath it.
+  The header carries a **`.header-cta`** ("Start practising") on the home screen only: it
+  is hidden by `body.in-session` — a second action beside the one that abandons your
+  round is a trap — and hidden below 620px, where brand plus nav plus menu plus a button
+  comes to ~390px inside a 343px content width and the hero's own Start now is ten pixels
+  underneath it.
+  - **The header has a CENTRE NAV and ONE globe menu** (2026-09-21, per the mockup).
+    `.header-nav` is Home / About / FAQs, centred by `margin-inline: auto` and NOT by
+    being the middle of a `space-between` row: `.session-back` is `display: none` most of
+    the time, so the number of flex children changes and `space-between` would move the
+    nav with it. It is hidden by `body.in-session` and below 620px.
+  - **About and FAQs are `disabled` buttons wearing a `.nav-soon` "Soon" chip**, not links
+    to nowhere. Neither page exists, and the chip is on screen, so the promise is visible
+    without hovering anything. **If either is built, the chip and the `disabled` come off
+    together** — a live link still wearing Soon is worse than either alone.
+  - **The EN/DE and Dark/Light segments live INSIDE `#prefsMenu`**, a native `<details>`
+    whose summary is a globe, the current language code and a caret. A `<details>` so
+    open/close, Enter, Space and focus order are the platform's; the only JS is two
+    listeners closing it on an outside click or Escape. `setLang()` AND `initLang()` both
+    write `#langBadge` — it is a language CODE, the same in both languages, so it is not
+    a `data-i18n` string.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the German flag** in a rounded `--ctl-sm` square, beside a
@@ -335,8 +377,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     positioned against the photo *plus its credit line* and the quote landed on the credit.
   - **`.script-note` is the ONLY rule that reads `--font-hand`**, and it carries all three
     margin notes (hero, numbers, CTA).
-  - **The why, numbers and CTA bands take the tile rule** — `--surface` plus a `--border`
-    hairline — not the mockup's pale panel. See the `--surface2` note above.
+  - **The why, numbers and CTA bands ARE the mockup's pale panel** — `--band` plus a
+    `--border` hairline (2026-09-21). They were `--surface`, which on a white canvas is
+    the page itself; `--band` is the same panel the mode band sits on, and is what the
+    mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
+    above rejects: `--surface2` is a well inside a tile, and still never a panel on the
+    page.
   - **`.result-stats, .why-grid, .stats-grid` share one rule** for the hairline-separated
     band, and that shared `gap: 1px` is the only such literal in the sheet. Writing a second
     one takes `literalSpacing` to 3 and `gapRungs` to 8, both over budget.
@@ -350,9 +396,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     inside the SVG, not in a rule, and a graphic carrying no text has no pair to assert.
   - **There are FIVE equal mode cards and no featured one** (2026-09-21). Exam, All
     questions, Your state, Smart review, By topic. The exam's full-width accent-tinted
-    treatment is gone, and with it `.mode-card--featured`, `.mode-start-btn`, `.msb-arrow`
-    and the `mode.start` string — the only place any card said "Start" in words. The card is
-    the button; `.mode-go`'s arrow says it.
+    treatment is gone, and with it `.mode-card--featured`, `.mode-start-btn` and
+    `.msb-arrow`. **Five, not the mockup's four**: the mockup sells Practice / Exam /
+    Topic / State, and dropping Smart Review so a grid matches a picture is a product
+    decision — it was put to the user and answered no. Each card names its own action in
+    `.mode-start`, so `mode.start` (one shared "Start") is still gone.
   - **The grid's column counts are spelled out, not `auto-fit`.** With five cards, four
     columns strand the fifth on a row of its own and two columns strand it on a third. Only
     5, 3 and 1 divide the set cleanly: five above **1160px**, three to 620px, one below.
@@ -369,9 +417,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     worked at three cards a row; at five, a nowrap "approx. 60-90 min" claimed 115px of a
     165px row and `.mode-title`'s `min-width: 0` squeezed "All questions" to **13px wide over
     three lines**. Before that it was `position: absolute` and printed on top of the title.
-  - **`.mode-go` is the arrow at the bottom right**: the cards are buttons but read as
-    readouts on a touch screen, where there is no hover to reveal it. Descriptions do not
-    restate a number the card already shows.
+  - **`.mode-start` is the action row at the foot of the card** (it replaced `.mode-go`,
+    the bare bottom-right arrow, on 2026-09-21): a solid hue disc holding a white arrow,
+    with the action in words beside it. The cards are buttons but read as readouts on a
+    touch screen, where there is no hover to reveal an arrow and no label to explain it.
+    Descriptions still do not restate a number the card already shows.
   - **"By topic" is a CARD, not a home section.** `renderTopics()` is untouched; only its
     mount moved, to `#topicSection` **below** the grid, so opening it cannot reflow the
     cards. The card is a `<button>` with `aria-expanded`/`aria-controls`, not the
@@ -416,11 +466,27 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **The panel's side padding comes straight off the five cards' width**, which is why
       it is `--space-lg` and not `--space-xl` (`--space-2xl` top and bottom — height is
       free here, width is not).
-  - **The mode cards carry no per-card accent.** They had one hue each (teal/gold/green/blue)
-    with a matching tinted badge and a matching coloured "Start" link, which is the rainbow
-    `theme-dark.md` §2 warns about: chroma belongs to content and at most one accent. Icons and
-    metadata are grey; the card is the button, so the peers repeat no "Start"; the only colour
-    among them is `.mode-flag`, the apricot chip shown when Smart Review actually has work due.
+  - **The mode cards carry a per-card HUE and a NAMED action** (2026-09-21, on request,
+    against the mockup — this reverses the rule of the same morning that they carry
+    neither). Exam **blue**, All questions **green**, Your state **amber**, Smart review
+    **rose** (the one card where a warm alert hue says something true about "questions
+    you keep getting wrong"), By topic **violet**. Each hue paints a tinted `--radius-sm`
+    plate above the title and a SOLID disc inside `.mode-start`, which is a white arrow
+    plus the action IN WORDS (`mode.exam.start` ... `mode.topic.start` — kept short
+    because German decides that row's width at five columns). **The action LABEL is
+    `--text`, not the hue**: the mockup's own label measures `#000417`. `.mode-go`, the
+    bare corner arrow, is gone — it was the compromise made when the cards had no colour
+    to carry an action, and on a touch screen it read as a decoration. Metadata stays
+    grey. `.mode-flag` is still the apricot chip shown when Smart Review has work due.
+  - **HUE DISCS: five hues, and they mint no token but `--violet`.** `[data-hue]` maps
+    blue/green/amber/rose/violet onto `--accent-soft`+`--accent-text`,
+    `--green-dim`+`--green`, `--gold-dim`+`--gold`, `--red-dim`+`--red-text` and
+    `--violet-dim`+`--violet`, exposing each as `--tint` and `--ink`. Every plate in the
+    app is therefore ALREADY asserted by `contrast.test.mjs`, which is the whole point of
+    doing it this way — **do not write a per-component tint literal.** `--on-hue` is the
+    glyph on a SOLID disc and is one value per theme (`#FFFFFF` light, `#10151D` dark):
+    every light hue is a dark colour and every dark hue a light one, so one token serves
+    all five. White on dark's `#A78BFA` is 2.72 and would have failed the 3.0 floor.
   - **The state picker's pill hugs the selected state.** A native `<select>` is as wide as its
     longest option, so binding the pill to it sized every state to "Mecklenburg-Vorpommern" and
     left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`
@@ -720,15 +786,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.question-category` is `--muted` after a `·`, not a bordered pill. The row lives inside
     `.question-body`, so it is part of the centred block rather than pinned at the top with the
     slack under it.
-  - **An icon has no plate behind it** (2026-09-20, supersedes the hairline-and-fill rule).
-    Speak, translate, the lightbox close, the home card's reset, the navigator's chevron, a
-    peer card's arrow and a topic chip's glyph all dropped their pill/chip: a solid glyph is
-    heavy enough to read as a control on its own, and a box round an icon is a container
-    inside a container. **A topic chip's glyph is grey at rest and accent on hover**, the same
-    as a mode card's icon — sixteen tinted plates were the loudest thing on the home screen,
-    and the colour is worth more as an answer to the pointer than as a default. The hit target stays (34/44px, and the coarse-pointer floor is
-    untouched) — only the fill and the hairline are gone, so hover is a COLOUR change, never
-    a fill that draws the box back on.
+  - **A glyph ON THE CANVAS has no plate; a glyph that MARKS something does**
+    (2026-09-21, and this is the THIRD version of this rule — read it before reaching for
+    either extreme). Speak, translate, the lightbox close, the home card's reset, the
+    navigator's chevron and a topic chip's glyph carry no pill or chip: a solid glyph is
+    heavy enough to read as a control on its own, and a box round a control is a
+    container inside a container. But the **hero facts, the why marks and a mode card's
+    icon** each take a tinted disc, because the mockup draws them that way and that
+    colour is most of why it reads as a lively page and the all-grey build read as a dead
+    one — see HUE DISCS above. **A topic chip's glyph is grey at rest and accent on
+    hover.** The hit target stays (34/44px, and the coarse-pointer floor is untouched),
+    and where there is no plate hover is a COLOUR change, never a fill that draws the
+    box back on.
   - **The question block is CENTRED in the room it has.** `.question-body` is a flex column
     with `justify-content: safe center`, and above 940px the content-sized card adds
     `margin-block: auto`. `safe` is load-bearing: plain `center` in a scroller clips content
@@ -1190,8 +1259,9 @@ Before publishing any app change:
 4b. Run `node --test tools/scale.test.mjs` — the size-system ratchet. If a budget FALLS,
    lower it in the same commit; the test says so explicitly. If one RISES, that is a
    regression.
-5. Switch the header to DE and back: no chrome string may stay in the other language, and the
-   question text must stay German in both.
+5. Open the header's globe menu, switch to DE and back: no chrome string may stay in
+   the other language, the question text must stay German in both, and `#langBadge`
+   on the summary must follow the switch.
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43
    image questions render, progress persists across reload, and Smart Review surfaces
    due/weak questions. Check the page at 375px wide: `document.documentElement.scrollWidth`

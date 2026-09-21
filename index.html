@@ -138,6 +138,17 @@
             --red:       #F87171;
             --red-text:  #F87171;
             --red-dim:   #34191C;
+            --violet:     #A78BFA;
+            --violet-dim: #241A3D;
+
+            /* The primary button's own fill, separate from --accent-fill. The mockup
+               paints every CTA near-black navy, which reads only on a light page; dark
+               keeps the accent blue. --on-hue is the glyph colour on ANY solid hue disc
+               — all five dark hues are light colours, so one token serves all five
+               (white on dark's #A78BFA is 2.72, under the 3.0 non-text floor). */
+            --btn-fill:  #2563EB;
+            --on-btn:    #FFFFFF;
+            --on-hue:    #10151D;
 
             --text:     #ECEDF0;   /* 13.6 on tile */
             --sub-text: #B6BCC8;   /*  8.4 */
@@ -263,57 +274,79 @@
                into grey. Shadows exist but only under things that float. */
             color-scheme: light;
 
-            --canvas:    #F1F3F8;
-            --bg:        #F1F3F8;
-            --surface:   #FFFFFF;    /* tile — 1.11 above page */
-            --surface2:  #F4F7FA;    /* inset well inside a tile */
-            --surface3:  #E2E7F0;    /* track / rail */
-            --hover:     #F0F2F7;    /* hover steps DOWN in light */
-            /* 1.08 below the canvas, with a white tile 1.20 above it. A smaller step down
-               than the mockup's 1.09, because its page is pure white and this one is
-               already grey — the same step from here would read as a slab. */
-            --band:      #E7EBF3;
+            /* The mockup's page is WHITE (#FEFEFE measured), not the paper-grey this
+               theme was built on, so the whole light ramp was re-derived to nest DOWN
+               from white instead of up towards it. Every value below is checked by
+               tools/contrast.test.mjs; none of it was picked by eye.
 
-            --border:       #E2E7F0;   /* 1.24 on tile, 1.11 on page */
-            --border-soft:  #ECF0F6;
-            --border-hover: #CED5E2;
-            --ink:          #E2E7F0;
-            --hairline:     #E2E7F0;
+               The consequence worth stating: at the top of the ramp a tile CANNOT step
+               up, so --surface is the canvas colour and **the hairline carries a tile
+               on the page** — the same argument theme-dark.md §5 makes for dark, which
+               is out of fill room at the bottom, applied to light being out of room at
+               the top. --border is 1.245 on white, comfortably over the 1.10 floor, and
+               `surface/canvas` is the one FILL pair the test no longer asserts. */
+            --canvas:    #FFFFFF;
+            --bg:        #FFFFFF;
+            --surface:   #FFFFFF;    /* a tile IS the page; its edge separates it */
+            --surface2:  #E9F0F8;    /* inset well inside a tile — 1.15 */
+            --surface3:  #DAE3F0;    /* track / rail — 1.29 */
+            --hover:     #EEF3FA;    /* hover still steps DOWN in light — 1.12 */
+            /* The mockup's pale panel: 1.065 below white, with a white card 1.065 back
+               up out of it. Both clear the 1.05 nesting floor, and the panel carries a
+               hairline (1.169 on it) because neither step reaches 1.20. */
+            --band:      #F5F8FC;
+
+            --border:       #E0E7F1;   /* 1.245 on a tile AND on the page */
+            --border-soft:  #EDF1F8;
+            --border-hover: #C8D2E2;
+            --ink:          #E0E7F1;
+            --hairline:     #E0E7F1;
 
             --teal:       #3B82F6;
-            --teal-deep:  #2563EB;   /* text-safe: 5.01 on white */
-            --teal-tint:  #EFF4FE;
+            --teal-deep:  #2563EB;   /* text-safe: 5.17 on white */
+            --teal-tint:  #E7F0FE;
             --accent:       #2563EB;
             --accent-text:  #2563EB;
-            --accent-fill:  #2563EB;   /* white on it = 5.01 */
-            --accent-soft:  #EFF4FE;
+            --accent-fill:  #2563EB;   /* white on it = 5.17 */
+            --accent-soft:  #E7F0FE;
             --accent-line:  #BFD4FA;
             --accent-grad:  linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
             --on-accent:    #FFFFFF;
+
+            /* Near-black navy, straight off the mockup (#132338 measured on Start Now,
+               Start Practice and the CTA band alike). Blue is what the mockup tints
+               icons and small discs with; it never fills a button. */
+            --btn-fill:  #132338;
+            --on-btn:    #FFFFFF;
+            --on-hue:    #FFFFFF;
 
             --apricot:      #D97706;
             --apricot-deep: #B45309;
             --on-apricot:   #0F1929;
 
             --lime:      #2563EB;
-            --lime-dim:  #EFF4FE;
+            --lime-dim:  #E7F0FE;
             --lime-glow: rgba(37,99,235,0.22);
             --gold:      #B45309;                  /* text-safe apricot: 5.02 on white */
-            --gold-dim:  #FDF4EA;
+            --gold-dim:  #FDF2E6;
             --on-gold:   #0F1929;
 
             --blue:      #1D4ED8;
-            --blue-dim:  #EAF0FD;
+            --blue-dim:  #E7EEFD;
             --green:     #047857;
-            --green-dim: #EBF7F1;
+            --green-dim: #E2F5EC;
             --red:       #CC2020;
             --red-text:  #CC2020;
-            --red-dim:   #FEF2F2;
+            --red-dim:   #FDEAEB;
+            --violet:     #6D28D9;
+            --violet-dim: #EFE8FD;
 
-            --text:     #0F1929;   /* 17.7 on white */
+            /* The tints all deepened a rung with the canvas: a #EFF4FE wash was 1.04 on
+               paper-grey and would have been 1.04 on white too — invisible as a plate. */
+            --text:     #0F1929;   /* 17.6 on white */
             --sub-text: #33425E;   /* 10.1 */
-            --muted:    #526481;   /*  6.0 */
-            --faint:    #5E708E;   /*  5.0 on white, 4.5 on page */
+            --muted:    #4F6280;   /*  6.2 */
+            --faint:    #5C6E8C;   /*  5.2 */
         }
 
         /* ============================================================
@@ -348,6 +381,32 @@
         select { font-family: inherit; }
         ::selection { background: var(--accent-soft); color: var(--text); }
         :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: var(--radius-xs); }
+
+        /* ============================================================
+           HUE DISCS — the mockup's tinted plates.
+           ------------------------------------------------------------
+           The mockup puts a tinted disc behind every hero fact, every
+           why-band mark and every mode card's icon, and a SOLID disc of
+           the same hue under each card's start arrow. That colour is most
+           of why it reads as a lively page and the grey build read as a
+           dead one, so "an icon has no plate" is lifted for those three
+           places — and only those. A glyph sitting on the canvas (speak,
+           translate, the navigator's chevron, the lightbox close) still
+           has no plate.
+
+           Five hues and NOT ONE NEW TOKEN: each maps to a --*-dim / --*
+           pair the palette already carries, so every plate in the app is
+           already asserted by tools/contrast.test.mjs. --on-hue is the
+           glyph on a SOLID disc and is one value per theme, because all
+           five light hues are dark colours and all five dark hues are
+           light ones.
+           ============================================================ */
+        [data-hue]          { --tint: var(--surface2);   --ink: var(--muted); }
+        [data-hue="blue"]   { --tint: var(--accent-soft); --ink: var(--accent-text); }
+        [data-hue="green"]  { --tint: var(--green-dim);   --ink: var(--green); }
+        [data-hue="amber"]  { --tint: var(--gold-dim);    --ink: var(--gold); }
+        [data-hue="rose"]   { --tint: var(--red-dim);     --ink: var(--red-text); }
+        [data-hue="violet"] { --tint: var(--violet-dim);  --ink: var(--violet); }
 
         /* Shared eyebrow micro-label */
         .eyebrow, .stat-label, .ds-label, .breakdown-label, .review-q-num,
@@ -436,7 +495,69 @@
         body.in-session .brand { display: none; }
         body.in-session .session-back { display: inline-flex; }
 
+        /* Centred by auto margins rather than by being the middle of a
+           space-between row: .session-back is display:none most of the time, so the
+           number of flex children changes and space-between would move the nav with it. */
+        .header-nav { display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto; }
+        .nav-link {
+            display: inline-flex; align-items: center; gap: var(--space-sm);
+            min-height: var(--ctl-sm); padding: 0 var(--space-sm);
+            background: none; border: none; border-radius: var(--radius-sm);
+            font-size: var(--fs-sm); font-weight: 600; color: var(--muted);
+            transition: color 0.18s var(--ease);
+        }
+        .nav-link:hover:not(:disabled) { color: var(--text); }
+        /* The mockup underlines the current section. A box-shadow rather than a
+           border, so the rule does not add to the control's height. */
+        .nav-link--active { color: var(--text); box-shadow: inset 0 -2px 0 var(--text); border-radius: 0; }
+        /* Inert, and it says so. Not a link, not a tooltip alone — the chip is on
+           screen, so the promise is visible without hovering anything. */
+        .nav-link:disabled { cursor: default; color: var(--faint); }
+        .nav-soon {
+            font-size: var(--fs-2xs); font-weight: 600; letter-spacing: var(--ls-caps);
+            text-transform: uppercase;
+            padding: var(--space-3xs) var(--space-xs);
+            border-radius: var(--radius-pill);
+            background: var(--surface2); color: var(--muted);
+        }
+
         .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
+
+        /* The globe menu. A <details>, so the disclosure behaviour is the platform's. */
+        .hmenu { position: relative; }
+        .hmenu-summary {
+            display: inline-flex; align-items: center; gap: var(--space-sm);
+            min-height: var(--ctl-sm); padding: 0 var(--space-ms);
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border); background: var(--surface);
+            font-size: var(--fs-sm); font-weight: 600; color: var(--sub-text);
+            cursor: pointer; list-style: none;
+            transition: border-color 0.18s var(--ease), color 0.18s var(--ease);
+        }
+        .hmenu-summary::-webkit-details-marker { display: none; }
+        .hmenu-summary::marker { content: ''; }
+        .hmenu-summary:hover { color: var(--text); border-color: var(--border-hover); }
+        .hmenu-icon { display: grid; place-items: center; color: var(--muted); }
+        .hmenu-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
+        .hmenu-caret { display: grid; place-items: center; color: var(--muted); transition: transform 0.18s var(--ease); }
+        .hmenu-caret svg { width: var(--icon-xs); height: var(--icon-xs); }
+        .hmenu[open] .hmenu-caret { transform: rotate(180deg); }
+        .hmenu-panel {
+            position: absolute; top: calc(100% + var(--space-sm)); right: 0;
+            z-index: 10; min-width: 176px;
+            display: flex; flex-direction: column; gap: var(--space-sm);
+            padding: var(--space-ms);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        /* A tile floats here in a way nothing else in this app does, and on a white
+           canvas the hairline alone cannot hold a panel off the page underneath it. */
+        html.light .hmenu-panel { box-shadow: 0 12px 28px rgba(15, 25, 41, 0.12); }
+        .hmenu-panel .eyebrow { display: block; }
+        .hmenu-panel .eyebrow + .seg { margin-bottom: var(--space-xs); }
+        .hmenu-panel .seg { width: 100%; }
+        .hmenu-panel .seg-btn { flex: 1; }
         .seg {
             display: inline-flex;
             padding: var(--space-3xs); gap: var(--space-2xs);
@@ -738,8 +859,9 @@
         .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
         .hero-cta-row .btn-primary svg { width: var(--icon-md); height: var(--icon-md); }
 
-        /* Four facts. A glyph over a label and nothing else — the mockup's tinted
-           circles are the plate CLAUDE.md forbids, and the hit area does not need one. */
+        /* Four facts, each a tinted disc over a label — the mockup's own treatment.
+           --ctl-lg is 52px, which is the disc the mockup draws, so the size is a token
+           rather than a literal. */
         .hero-chips {
             list-style: none;
             display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -748,7 +870,12 @@
             width: 100%; max-width: 480px;
         }
         .hero-chip { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); text-align: center; min-width: 0; }
-        .hero-chip-icon { display: grid; place-items: center; color: var(--sub-text); }
+        .hero-chip-icon {
+            display: grid; place-items: center;
+            width: var(--ctl-lg); height: var(--ctl-lg);
+            border-radius: var(--radius-pill);
+            background: var(--tint); color: var(--ink);
+        }
         .hero-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .hero-chip-label { font-size: var(--fs-xs); line-height: var(--lh-ui); color: var(--sub-text); }
 
@@ -808,9 +935,17 @@
             flex: 1 1 210px; min-width: 0;
             display: flex; align-items: flex-start; gap: var(--space-ms);
             padding: var(--space-md);
-            background: var(--surface);
+            /* --band, not --surface: on a white canvas a white cell is the page, and the
+               mockup draws these three bands as the same pale panel the mode band sits
+               on. The 1px gap between cells still shows --border through as a hairline. */
+            background: var(--band);
         }
-        .why-icon { flex: none; display: grid; place-items: center; color: var(--sub-text); }
+        .why-icon {
+            flex: none; display: grid; place-items: center;
+            width: var(--ctl-md); height: var(--ctl-md);
+            border-radius: var(--radius-pill);
+            background: var(--tint); color: var(--ink);
+        }
         .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
         .why-item p { margin-top: var(--space-2xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
@@ -820,7 +955,7 @@
             display: flex; flex-direction: column; align-items: center; gap: var(--space-2xs);
             padding: var(--space-md);
             text-align: center;
-            background: var(--surface);
+            background: var(--band);
         }
         /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
            counters take, and it does not outrank an --fs-xl section heading. */
@@ -838,7 +973,7 @@
             display: flex; align-items: center; flex-wrap: wrap;
             gap: var(--space-lg);
             padding: var(--space-xl);
-            background: var(--surface);
+            background: var(--band);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
@@ -1095,8 +1230,11 @@
             html.light .modes-band .mode-card:hover,
             html.light .modes-band .topic-chip:hover { background: var(--surface2); }
         }
+        /* --surface3, not --hover: on the white canvas --hover lands 1.047 from the
+           panel, under the 1.05 nesting floor, so a pressed card all but merged into
+           it. --surface2 is 1.078 off the band and --surface3 1.215. */
         html.light .modes-band .mode-card:active,
-        html.light .modes-band .topic-chip:active { background: var(--hover); }
+        html.light .modes-band .topic-chip:active { background: var(--surface3); }
 
         /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
            solid Start pill. The landing page sells five modes as peers, so the treatment
@@ -1115,36 +1253,43 @@
             font-variant-numeric: tabular-nums;
         }
         .mode-time::before { content: '·'; margin-right: var(--space-sm); color: var(--faint); }
-        /* The peers repeat no "Start" (the card is the button), but they still
-           have to LOOK like buttons where there is no hover to reveal it. */
-        .mode-go {
-            position: absolute; bottom: var(--space-md); right: var(--space-md);
-            width: var(--icon-xl); height: var(--icon-xl);
-            display: grid; place-items: center;
-            color: var(--muted);
-            transition: color 0.18s var(--ease), transform 0.25s var(--ease-spring);
+        /* A SOLID disc of the card's hue with a white arrow in it, and the action
+           named beside it — the mockup's "Start Simulation" / "Choose Topics" row. The
+           bare corner arrow it replaces was the compromise made when the cards had no
+           colour to carry an action, and on a touch screen it read as a decoration. The
+           label is --text, not the hue: the mockup's own label measures #000417. */
+        .mode-start {
+            display: flex; align-items: center; gap: var(--space-sm);
+            margin-top: var(--space-ms);
+            font-size: var(--fs-xs); font-weight: 600; color: var(--text);
         }
-        .mode-go svg { width: var(--icon-sm); height: var(--icon-sm); }
+        .mode-start-dot {
+            flex: none; display: grid; place-items: center;
+            width: var(--ctl-xs); height: var(--ctl-xs);
+            border-radius: var(--radius-pill);
+            background: var(--ink); color: var(--on-hue);
+            transition: transform 0.25s var(--ease-spring);
+        }
+        .mode-start-dot svg { width: var(--icon-xs); height: var(--icon-xs); }
         @media (hover: hover) {
-            .mode-card:hover .mode-go { color: var(--accent-text); transform: translateX(3px); }
+            .mode-card:hover .mode-start-dot { transform: translateX(3px); }
         }
 
-        /* No chip behind it. A 36px rounded well holding a 19px glyph is a container
-           inside a container, and it bought nothing the glyph did not already say. The
-           icon sits ON the title's line instead, so the card opens with one row that
-           names it rather than two. */
+        /* A tinted plate, per the mockup — see the HUE DISCS block. --ctl-md is 44px
+           against the mockup's 48, and concentric rounding puts a --radius-sm (10px)
+           inner corner inside a --radius (16px) card with --space-md of padding. */
         .mode-icon {
-            display: inline-grid; place-items: center;
-            width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
-            color: var(--muted); background: none; border-radius: 0; margin: 0;
-            transition: color 0.18s var(--ease);
+            display: grid; place-items: center;
+            width: var(--ctl-md); height: var(--ctl-md); flex-shrink: 0;
+            border-radius: var(--radius-sm);
+            background: var(--tint); color: var(--ink);
+            margin: 0;
         }
         .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        @media (hover: hover) {
-            .mode-card:hover .mode-icon { color: var(--accent-text); }
-        }
-        /* The icon and the title are one row. */
-        .mode-head { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-2xs); }
+        /* The plate sits ABOVE the title, which is the mockup's card: plate, title,
+           description, then the action row. It goes back to one row on a phone, where
+           the card is a list item rather than a tile. */
+        .mode-head { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-ms); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
         /* German compounds are one long word, and five cards a row is a 167px title
            box: "Prüfungssimulation" overflows it whatever the width, because `main`
@@ -1165,8 +1310,6 @@
             font-size: var(--fs-xs); color: var(--muted);
             font-variant-numeric: tabular-nums;
         }
-        /* Clearance for .mode-go, which sits in the same corner. */
-        .mode-meta { padding-right: calc(var(--space-xl) + var(--space-sm)); }
         .mode-flag {
             font-size: var(--fs-2xs); font-weight: 600;
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
@@ -1279,7 +1422,10 @@
             display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease);
         }
-        .btn-primary { color: var(--on-accent); background: var(--accent-fill); }
+        /* --btn-fill, not --accent-fill: on the mockup a CTA is near-black navy and
+           the accent blue is reserved for tints, links and small discs. In dark the two
+           tokens hold the same value. */
+        .btn-primary { color: var(--on-btn); background: var(--btn-fill); }
         .btn-primary:hover { filter: brightness(1.08); }
         .btn-primary:active { filter: brightness(0.94); }
         .btn-secondary { color: var(--sub-text); background: var(--surface); border-color: var(--border); }
@@ -1293,6 +1439,9 @@
            .session-back take, with the same coarse-pointer bump to the 44px floor. */
         .header-cta { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-sm); }
         body.in-session .header-cta { display: none; }
+        /* Inside a round the header is a back button and a preferences menu; a section
+           nav there points at a page you are not on. */
+        body.in-session .header-nav { display: none; }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1467,30 +1616,23 @@
             padding: var(--space-sm) var(--space-ms);
             /* concentric: a 16px card with 14px of padding holds a 10px option. */
             border: 1px solid var(--border); border-radius: var(--radius-sm);
-            /* --surface, not --surface2: there is no card around these any more, so
-               an option is a tile on the CANVAS, and the canvas is what it has to
-               separate from. --surface2 in light is #F5F6F8 on a #F2F3F5 page — 1.02,
-               which is the washed-out look; --surface is the measured 1.11 tile step.
-               Dark gets the same rung for the same reason. */
-            background: var(--surface); color: var(--text);
+            /* --surface2 in BOTH themes now. This was --surface in light, on the
+               argument that --surface2 was a 1.02 step on the old paper-grey page and
+               therefore the washed-out look. On a WHITE canvas that argument inverts:
+               --surface IS the page, and --surface2 is a clear 1.15 step above it. */
+            background: var(--surface2); color: var(--text);
             font-size: var(--fs-md); line-height: 1.4;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
-        /* Dark carries the option one rung higher than light does. --surface is 1.16
-           above the canvas, which is the right step for a big tile and too quiet for a
-           42px row you are meant to reach for; --surface2 is 1.36 and reads as a card
-           on the page. Light has no such room (white is the top of its ramp), and does
-           not need it — #FFF on #F2F3F5 is already the measured tile step. */
-        html:not(.light) .option-btn { background: var(--surface2); }
-        html:not(.light) .opt-letter { background: var(--surface3); }
-        html:not(.light) .option-btn:hover:not(:disabled) { background: var(--surface3); }
 
         @media (hover: hover) {
-            /* --hover is the token that already knows which way each theme steps:
-               DOWN into grey in light, UP in dark. */
-            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--hover); }
+            /* --surface3, not --hover, in BOTH themes now that the option is --surface2.
+               --hover is the token that knows which way each theme steps, and in light
+               it steps DOWN from --surface — from --surface2 that is the wrong way and a
+               1.03 step besides. One rung up the ramp is the same move in both. */
+            .option-btn:hover:not(:disabled) { border-color: var(--border-hover); background: var(--surface3); }
         }
-        .option-btn:active:not(:disabled) { background: var(--hover); }
+        .option-btn:active:not(:disabled) { background: var(--surface3); }
         .option-btn:disabled { cursor: default; }
         .opt-letter {
             flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--radius-sm);
@@ -1502,7 +1644,7 @@
                PLACEHOLDER tier (theme-dark.md §2 measures 4.67 there), on a label that
                is content. --sub-text lands it in the secondary band, 6.4 dark / 9.2
                light, and the chip reads at a glance instead of disappearing. */
-            color: var(--sub-text); background: var(--surface2); border: 1px solid var(--border);
+            color: var(--sub-text); background: var(--surface3); border: 1px solid var(--border);
             transition: border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
         @media (hover: hover) {
@@ -1973,12 +2115,15 @@
             .mode-card {
                 display: grid;
                 grid-template-columns: 1fr;
-                grid-template-areas: "title" "desc" "meta";
+                grid-template-areas: "title" "desc" "meta" "start";
                 row-gap: var(--space-2xs);
             }
-            .mode-card .mode-head { grid-area: title; margin-bottom: 0; }
+            /* Back to one row down here: the card is a list item, not a tile, so the
+               plate sits beside the name rather than stacked above it. */
+            .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; gap: var(--space-sm); }
             .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
             .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
+            .mode-card .mode-start { grid-area: start; margin-top: var(--space-2xs); }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
                names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
@@ -1998,7 +2143,9 @@
             /* The strip is a glance down here. The tagline restates what the page
                already says, and the CTA sits ten pixels above the hero's own Start
                now — with both segmented controls there is no room for either. */
-            .brand-tagline, .header-cta { display: none; }
+            /* Brand + nav + menu + button comes to ~390px inside a 343px content
+               width, and the hero's own Start is ten pixels below the header anyway. */
+            .brand-tagline, .header-cta, .header-nav { display: none; }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
@@ -2107,19 +2254,43 @@
                 <span class="session-back-icon" aria-hidden="true"></span>
                 <span data-i18n="nav.back"></span>
             </button>
+            <!-- The mockup's centre nav. Home is the only destination that exists;
+                 About and FAQs are `disabled` buttons carrying a Soon chip rather than
+                 links to nowhere, so nothing on screen promises a page we do not have. -->
+            <nav class="header-nav" data-i18n-aria="nav.sections">
+                <button class="nav-link nav-link--active" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
+                <button class="nav-link" disabled data-i18n-title="nav.soonTitle"><span data-i18n="nav.navAbout"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
+                <button class="nav-link" disabled data-i18n-title="nav.soonTitle"><span data-i18n="nav.navFaqs"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
+            </nav>
             <div class="header-controls">
+                <!-- One globe menu instead of two segmented controls, per the mockup.
+                     A native <details> so open/close, Enter, Space and focus order come
+                     free; the only JS is closing it on an outside click or Escape. The
+                     theme switch moved INSIDE it — the mockup shows one control here,
+                     and appearance is a preference you set once. -->
+                <details class="hmenu" id="prefsMenu">
+                    <summary class="hmenu-summary" data-i18n-aria="nav.preferences">
+                        <span class="hmenu-icon" data-icon="globe" aria-hidden="true"></span>
+                        <span id="langBadge">EN</span>
+                        <span class="hmenu-caret" data-icon="chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="hmenu-panel">
+                        <span class="eyebrow" data-i18n="nav.language"></span>
+                        <div class="seg" role="group" data-i18n-aria="nav.language">
+                            <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
+                            <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
+                        </div>
+                        <span class="eyebrow" data-i18n="nav.scheme"></span>
+                        <div class="seg" role="group" data-i18n-aria="nav.scheme">
+                            <button class="seg-btn active" id="darkBtn" data-i18n="nav.dark" aria-pressed="true">Dark</button>
+                            <button class="seg-btn" id="lightBtn" data-i18n="nav.light" aria-pressed="false">Light</button>
+                        </div>
+                    </div>
+                </details>
                 <!-- Home screen only, and only where there is room for it. Inside a
                      session the header already carries the back button, and a second
                      action beside the one that abandons your round is a trap. -->
                 <button class="btn-primary header-cta" onclick="scrollToId('homeMain')" data-i18n="nav.startPractice"></button>
-                <div class="seg" role="group" data-i18n-aria="nav.language">
-                    <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
-                    <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
-                </div>
-                <div class="seg" role="group" data-i18n-aria="nav.scheme">
-                    <button class="seg-btn active" id="darkBtn" data-i18n="nav.dark" aria-pressed="true">Dark</button>
-                    <button class="seg-btn" id="lightBtn" data-i18n="nav.light" aria-pressed="false">Light</button>
-                </div>
             </div>
         </div>
     </header>
@@ -2150,10 +2321,10 @@
                     <!-- Four facts, four glyphs, no plates. The hit area stays; the tinted
                          circle the mockup draws does not (CLAUDE.md: an icon has no plate). -->
                     <ul class="hero-chips">
-                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="allQuestions" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip1"></span></li>
-                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="bundesland" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip2"></span></li>
-                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="translate" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip3"></span></li>
-                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="clock" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip4"></span></li>
+                        <li class="hero-chip" data-hue="rose"><span class="hero-chip-icon" data-icon="allQuestions" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip1"></span></li>
+                        <li class="hero-chip" data-hue="blue"><span class="hero-chip-icon" data-icon="bundesland" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip2"></span></li>
+                        <li class="hero-chip" data-hue="green"><span class="hero-chip-icon" data-icon="translate" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip3"></span></li>
+                        <li class="hero-chip" data-hue="amber"><span class="hero-chip-icon" data-icon="clock" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip4"></span></li>
                     </ul>
                 </div>
 
@@ -2217,10 +2388,10 @@
                     <h2 data-i18n="why.title"></h2>
                 </div>
                 <ul class="why-grid">
-                    <li class="why-item"><span class="why-icon" data-icon="book" aria-hidden="true"></span><div><h3 data-i18n="why.1.title"></h3><p data-i18n="why.1.body"></p></div></li>
-                    <li class="why-item"><span class="why-icon" data-icon="shield" aria-hidden="true"></span><div><h3 data-i18n="why.2.title"></h3><p data-i18n="why.2.body"></p></div></li>
-                    <li class="why-item"><span class="why-icon" data-icon="community" aria-hidden="true"></span><div><h3 data-i18n="why.3.title"></h3><p data-i18n="why.3.body"></p></div></li>
-                    <li class="why-item"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
+                    <li class="why-item" data-hue="blue"><span class="why-icon" data-icon="book" aria-hidden="true"></span><div><h3 data-i18n="why.1.title"></h3><p data-i18n="why.1.body"></p></div></li>
+                    <li class="why-item" data-hue="green"><span class="why-icon" data-icon="shield" aria-hidden="true"></span><div><h3 data-i18n="why.2.title"></h3><p data-i18n="why.2.body"></p></div></li>
+                    <li class="why-item" data-hue="violet"><span class="why-icon" data-icon="community" aria-hidden="true"></span><div><h3 data-i18n="why.3.title"></h3><p data-i18n="why.3.body"></p></div></li>
+                    <li class="why-item" data-hue="amber"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
                 </ul>
             </section>
 
@@ -2456,6 +2627,10 @@
             shield: _svg('<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>'),
             star: _svg('<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>'),
             topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
+            /* The header's preferences menu. Same drawing as ICONS.symbols, which is
+               already a ringed globe with a meridian — this is that, without the
+               flag-pole crossbar, so the two read as one family. */
+            globe: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>'),
         };
         // A clock IS the history glyph and a group IS the society glyph; the
         // landing page needs both under names that say what they mean there.
@@ -2539,6 +2714,21 @@
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
             'nav.language':        { en: 'Interface language',      de: 'Sprache der Oberfläche' },
+            'nav.preferences':     { en: 'Language and appearance', de: 'Sprache und Darstellung' },
+            // The mockup names the action on every card ("Start Simulation", "Choose
+            // Topics"). Kept SHORT on purpose: at five columns inside a 1060px cap the
+            // row is ~145px wide, and German is the language that decides that.
+            'mode.exam.start':     { en: 'Start test',              de: 'Test starten' },
+            'mode.all.start':      { en: 'Start practising',        de: 'Üben starten' },
+            'mode.state.start':    { en: 'Select state',            de: 'Land wählen' },
+            'mode.review.start':   { en: 'Start review',            de: 'Wiederholen' },
+            'mode.topic.start':    { en: 'Choose topic',            de: 'Thema wählen' },
+            'nav.sections':        { en: 'Sections',                de: 'Bereiche' },
+            'nav.navHome':         { en: 'Home',                    de: 'Start' },
+            'nav.navAbout':        { en: 'About',                   de: 'Über' },
+            'nav.navFaqs':         { en: 'FAQs',                    de: 'FAQ' },
+            'nav.soon':            { en: 'Soon',                    de: 'Bald' },
+            'nav.soonTitle':       { en: 'Coming soon',             de: 'Kommt bald' },
 
             // hero
             'hero.eyebrow':        { en: 'Your step towards a brighter tomorrow', de: 'Dein Schritt in eine bessere Zukunft' },
@@ -2751,6 +2941,11 @@
             document.documentElement.lang = lang;
             setSegment(document.getElementById('langDe'), lang === 'de');
             setSegment(document.getElementById('langEn'), lang === 'en');
+            // The globe summary shows the current language, so it has to follow the
+            // switch inside its own panel. Not a data-i18n string: it is a language
+            // CODE, the same in both languages.
+            const badge = document.getElementById('langBadge');
+            if (badge) badge.textContent = lang.toUpperCase();
             applyStaticStrings();
         }
 
@@ -2760,6 +2955,11 @@
             document.documentElement.lang = lang;
             setSegment(document.getElementById('langDe'), lang === 'de');
             setSegment(document.getElementById('langEn'), lang === 'en');
+            // The globe summary shows the current language, so it has to follow the
+            // switch inside its own panel. Not a data-i18n string: it is a language
+            // CODE, the same in both languages.
+            const badge = document.getElementById('langBadge');
+            if (badge) badge.textContent = lang.toUpperCase();
             applyStaticStrings();
             // Repaint whichever screen is on. Every renderer reads from `state`, so
             // this changes the chrome without touching the round in progress.
@@ -2938,7 +3138,7 @@
                 setSegment(document.getElementById('darkBtn'), false);
                 setSegment(document.getElementById('lightBtn'), true);
                 localStorage.setItem('theme', 'light');
-                if (meta) meta.setAttribute('content', '#F1F3F8');
+                if (meta) meta.setAttribute('content', '#FFFFFF');
             } else {
                 document.documentElement.classList.remove('light');
                 state.themeDark = true;
@@ -3329,14 +3529,18 @@
             // them repeats "Start" — the arrow says it. The time estimate rides in the
             // meta row beside the count: as a corner stamp opposite the title it took
             // 115px of a 165px head row and crushed "All questions" to 13px wide.
-            const card = (handler, icon, title, desc, meta, time, attrs = '') => `
-                <button class="mode-card" ${handler}${attrs}>
+            // Each card carries a data-hue, which is what paints its icon plate and its
+            // start disc — see the HUE DISCS block. The hues are the mockup's four plus
+            // one: rose goes to Smart Review, where "questions you keep getting wrong"
+            // is the one place a warm alert hue says something true.
+            const card = (hue, handler, icon, title, desc, meta, time, action, attrs = '') => `
+                <button class="mode-card" data-hue="${hue}" ${handler}${attrs}>
                     <span class="mode-head">
                         <span class="mode-icon">${icon}</span><span class="mode-title">${title}</span>
                     </span>
                     <span class="mode-description">${desc}</span>
                     <span class="mode-meta">${meta}<span class="mode-time">${time}</span></span>
-                    <span class="mode-go" aria-hidden="true">${ICONS.arrowRight}</span>
+                    <span class="mode-start"><span class="mode-start-dot" aria-hidden="true">${ICONS.arrowRight}</span>${action}</span>
                 </button>`;
             const mode = m => `onclick="startMode('${m}')"`;
             // The reveal's open state lives on the panel, not in a variable: renderModes()
@@ -3345,17 +3549,17 @@
             const topicsOpen = !document.getElementById('topicSection').hidden;
 
             grid.innerHTML =
-                card(mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
-                     t('mode.exam.badge'), t('mode.exam.time')) +
-                card(mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
-                     t('mode.all.badge'), t('mode.all.time')) +
-                card(mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
-                     t('mode.state.badge'), t('mode.state.time')) +
-                card(mode('review'), ICONS.review, t('mode.review.title'), t('mode.review.desc'),
+                card('blue', mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
+                     t('mode.exam.badge'), t('mode.exam.time'), t('mode.exam.start')) +
+                card('green', mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
+                     t('mode.all.badge'), t('mode.all.time'), t('mode.all.start')) +
+                card('amber', mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
+                     t('mode.state.badge'), t('mode.state.time'), t('mode.state.start')) +
+                card('rose', mode('review'), ICONS.review, t('mode.review.title'), t('mode.review.desc'),
                      due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>`
-                         : t('mode.review.badge'), t('mode.review.time')) +
-                card('onclick="toggleTopics(this)"', ICONS.topic, t('mode.topic.title'), t('mode.topic.desc'),
-                     t('mode.topic.badge'), t('mode.topic.time'),
+                         : t('mode.review.badge'), t('mode.review.time'), t('mode.review.start')) +
+                card('violet', 'onclick="toggleTopics(this)"', ICONS.topic, t('mode.topic.title'), t('mode.topic.desc'),
+                     t('mode.topic.badge'), t('mode.topic.time'), t('mode.topic.start'),
                      ` aria-expanded="${topicsOpen}" aria-controls="topicSection"`);
         }
 
@@ -4380,6 +4584,19 @@
         loadHistory();
         initTheme();
         initLang();
+
+        // A <details> gives us the disclosure for free but stays open on an outside
+        // click, which for a header menu reads as broken. Two listeners, no state.
+        const _prefsMenu = document.getElementById('prefsMenu');
+        document.addEventListener('click', (e) => {
+            if (_prefsMenu.open && !_prefsMenu.contains(e.target)) _prefsMenu.open = false;
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && _prefsMenu.open) {
+                _prefsMenu.open = false;
+                _prefsMenu.querySelector('summary').focus();
+            }
+        });
 
         async function loadQuestions() {
             try {
