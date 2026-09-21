@@ -120,8 +120,8 @@ const PAIRS = [
   ["faint", "surface", AA, "the /310 denominator and the mode time estimate"],
   // The practise band's panel is a step DOWN from the canvas, so it is a ground the
   // surface pairs above do not cover. The cards ON it are ordinary --surface tiles.
-  ["text", "band", AA, "the practise band's heading, centred on the panel"],
-  ["muted", "band", AA, "its eyebrow and one-line description"],
+  ["text", "band", AA, "the CTA band's heading and the four headline numbers"],
+  ["muted", "band", AA, "the numbers band's labels and the CTA band's note"],
   // The footer is a --band panel too, and its small print is --sub-text rather than
   // --muted: the source note, the disclaimer and the licence are things a reader may
   // actually need. This ground was unasserted for that tier since the footer shipped.
@@ -220,23 +220,13 @@ const FILLS = [
   ["surface2", "canvas", NEST, "an answer option, which is a well on the white page"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  // The practise band's panel and the tiles on it. The DIRECTION is the theme's: a
-  // recess in light (the mockup's, 1.065 below its white page), a raised panel in dark
-  // (1.15 above the page, per theme-dark.md §3 — nothing goes below the page there).
-  // Either way the FILL separates them, which is why the hairline is not asserted
-  // against this ground — in light it is 1.04 on the panel by design.
-  ["surface", "band", NEST, "a mode card or topic chip, raised out of the practise band"],
-  ["canvas", "band", NEST, "the page either side of the panel"],
-  // The two fills a card takes as a STATE on that recess. In light a white card can only
-  // step down and the panel is 1.20 beneath it, so --surface3 lands 1.039 from --band and
-  // --hover 1.067; the band scopes hover to --surface2 and press to --hover, and both have
-  // to clear the nesting floor on this ground. Dark keeps --hover/--surface3 (1.43 / 1.57)
-  // because its states step UP — which is why --surface3 is not asserted here.
-  ["surface2", "band", NEST, "a mode card or topic chip hovered on the practise band"],
-  // --surface3, not --hover. On the white canvas --hover lands 1.047 off the panel,
-  // under the nesting floor, so the press fill moved a rung — a pressed card had all
-  // but merged into the band with no hairline able to save it (--border is 1.17 there).
-  ["surface3", "band", NEST, "the same pressed"],
+  // --band is the numbers band, the CTA band and the footer. The DIRECTION is the
+  // theme's: a recess in light (the mockup's, 1.065 below its white page), a raised
+  // panel in dark (1.15 above the page, per theme-dark.md §3 — nothing goes below the
+  // page there). The practise band's panel was the fourth and is GONE (2026-09-21, on
+  // request), and the three pairs that asserted a mode card ON it went with it: no
+  // --surface tile sits on --band any more, resting or hovered or pressed.
+  ["canvas", "band", NEST, "the page either side of a panel"],
   ["border", "canvas", HAIRLINE, "the panel's own edge, drawn on the page"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.

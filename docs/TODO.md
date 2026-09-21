@@ -1487,3 +1487,50 @@ the shipped values.
 PR #93 squash-merged to `main` as **`8f0dd38`** — the dark re-derivation, the de-buttoned
 Practise link and these four fixes are on GitHub Pages. `index.html` is network-first in
 `sw.js`, so no `CACHE` bump was needed; nothing in `PRECACHE`'s cache-first set changed.
+
+---
+
+## Session close (2026-09-21, the practice band's panel removed)
+
+On request: **"Choose your practise mode" need not have an outer box.** `.modes-band`'s
+`--band` fill, `--border` hairline, `--radius` and `--space-xl`/`--space-md` padding are
+deleted, along with the 620px padding override and the two `html.light .modes-band` state
+rules that only existed because of that ground. The five cards sit on the canvas now, like
+the why band's four items. The class survives as the hook for `.modes-band .section-head`'s
+`--space-lg`.
+
+Three things follow, none of them cosmetic:
+
+- **The cards separate better.** In dark a `#323232` tile is **1.36** off the `#1A1A1A`
+  page against 1.18 off the panel. The plate was the shallowest rung on the ladder.
+- **The meta row gained 7.3px.** The panel's side padding came straight off the five card
+  widths; the card content box is **172px against 165**, and "All questions" — the row's
+  worst case in English, the one CLAUDE.md records at *zero* slack — is 164.7 in it.
+  Measured with `scrollWidth === clientWidth` on all five cards, in English and German.
+- **`contrast.test.mjs` lost three FILL pairs** — `surface`/`band`, `surface2`/`band` and
+  `surface3`/`band`. No `--surface` tile sits on `--band` any more, resting, hovered or
+  pressed, and a pair whose consumer is gone is the stale-ground fault the review of #93
+  had just fixed in the LITERAL_PAIRS list. `canvas`/`band` stays: the numbers band, the
+  CTA band and the footer are still panels.
+
+### Verified
+
+- `node --test tools/contrast.test.mjs` 10/10, `node --test tools/scale.test.mjs` 12/12
+  with **no budget moved**, `node --check` clean, `node tools/validate.js` 460.
+- Rendered over `python -m http.server` at 1280x900: panel confirmed gone
+  (`background-color: rgba(0,0,0,0)`, `border-width: 0px`, `padding: 0px`), card 206px
+  wide, page `#FFFFFF` in light and `#1A1A1A` with `#323232` cards in dark. Screenshot
+  taken in light.
+- German + dark at 1280: no `.mode-meta` clipped on any of the five, and
+  `Prüfungssimulation` sets on one line at that width.
+- 375x812: `scrollWidth === clientWidth === 375`, no element overflowing, card 343px.
+
+### Not verified
+
+- **Nothing was checked on the live site after this change** — all of it localhost.
+- **No hover or press was exercised on a card**; the state fills are asserted by ratio
+  only, and the two light-scoped rules were deleted on the arithmetic above rather than
+  by pressing a card in a light browser.
+- The 1160px three-column breakpoint was not re-measured. It may now be conservative —
+  the German word it exists for fits on one line at five columns with the extra width —
+  but nothing was changed there and it was not tested at 1160-1280.

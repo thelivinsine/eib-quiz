@@ -1248,31 +1248,20 @@
            third. Only 5, 3 and 1 divide the set without stranding a
            card, so those are the three layouts.
            ============================================================ */
-        /* The mockup's pale panel behind the five cards, read as a RECESS in both
-           themes: a step DOWN from the canvas, with the cards left as ordinary
-           --surface tiles 1.2 above it (see --band). --space-2xl top and bottom,
-           --space-lg at the sides — the reason for --lg rather than --xl is with the
-           padding declaration below, and this line must not contradict it.
-           The panel's job is to give the band air the canvas cannot. */
-        .modes-band {
-            background: var(--band);
-            /* The recess is 1.06 off the canvas in dark and 1.08 in light, both under the
-               1.20 where theme-dark.md §5 says to stop pushing fills apart and draw the
-               edge — and the why, numbers and CTA bands below all carry this hairline
-               already, so it is the page's own idiom rather than a new one. */
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            /* --space-lg at the sides, not --space-xl: the panel's inset comes straight
-               off the five cards' width, and it is width that decides this grid. Bleeding
-               the panel out through main's gutter was tried and reverted — main is only
-               capped above ~1140px, so below that the band ran flush to the window with
-               its 16px corners cut off, and the width it bought was not what fixed the
-               card anyway (the card's own side padding was). */
-            padding: var(--space-xl) var(--space-md);
-        }
-        /* --space-sm, not --space-md: at five columns every pixel of gap and of the
-           panel's inset comes off the card, and the meta row has to hold the count and
-           the estimate on ONE line. The two together buy 8px of card width. */
+        /* THERE IS NO PANEL BEHIND THE FIVE CARDS (2026-09-21, on request). It was the
+           mockup's pale --band plate with a hairline and --space-xl/--space-md of
+           padding; the cards sit straight on the canvas now, like the why band's four
+           items. Five bordered tiles are already five boxes — a sixth box round them is
+           the containers-inside-containers look this sheet keeps removing, and the
+           panel's inset came off the card widths, which is what the meta row is short of.
+           The cards SEPARATE BETTER without it: in dark a tile is 1.36 off the page
+           against 1.18 off the panel, and in light the hairline carries it either way.
+           What went with it: the 620px padding override, and the two html.light
+           .modes-band state rules that only existed because a white card could not step
+           down far enough on a panel 1.20 beneath it. .modes-band survives as the hook
+           for the section head's margin. */
+        /* --space-sm, not --space-md: at five columns every pixel of gap comes off the
+           card, and the meta row has to hold the count and the estimate on ONE line. */
         .modes-grid {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1302,23 +1291,11 @@
         }
         .mode-card:active { background: var(--surface3); }
 
-        /* ON THE RECESS, light has to move both state fills up a rung. A white card can
-           only step DOWN, and the panel is only 1.20 beneath it: --hover lands 1.067
-           from --band and --surface3 just 1.039, under the 1.05 nesting floor, so a
-           pressed card merged into the panel — and the hairline cannot rescue it there
-           (--border is 1.039 on --band too). Hover takes --surface2 (1.111) and press
-           takes --hover (1.067). Dark is untouched: its states step UP and already clear
-           the panel by 1.43 and 1.57. Same two rules for the topic chips, which sit on
-           the same ground. */
-        @media (hover: hover) {
-            html.light .modes-band .mode-card:hover,
-            html.light .modes-band .topic-chip:hover { background: var(--surface2); }
-        }
-        /* --surface3, not --hover: on the white canvas --hover lands 1.047 from the
-           panel, under the 1.05 nesting floor, so a pressed card all but merged into
-           it. --surface2 is 1.078 off the band and --surface3 1.215. */
-        html.light .modes-band .mode-card:active,
-        html.light .modes-band .topic-chip:active { background: var(--surface3); }
+        /* The two html.light .modes-band state rules are GONE with the panel: they raised
+           hover to --surface2 and press to --surface3 because on a --band ground the base
+           fills landed 1.067 and 1.039 from it, under the 1.05 nesting floor. On the
+           canvas the base rules clear it on their own — --hover is 1.12 below white and
+           --surface3 1.29 — so light and dark share one pair again. */
 
         /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
            solid Start pill. The landing page sells five modes as peers, so the treatment
@@ -2263,11 +2240,6 @@
             .cta-btn { width: 100%; }
 
             .home-section { margin-bottom: var(--space-lg); }
-            /* The panel's desktop air is a desktop rhythm; down here it is a band of
-               nothing either side of a full-width card. It also stops bleeding: one
-               column does not need the width, and a 16px radius against the screen edge
-               is not a corner. */
-            .modes-band { padding: var(--space-lg) var(--space-md); }
             /* A section's one-line description is a desktop affordance. Down here each
                wraps to two lines and the four of them cost ~150px — 7% of the page —
                while the headings above them already name the section. The heading stays;
