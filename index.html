@@ -7,7 +7,7 @@
     <meta name="description" content="Kostenlos für den Einbürgerungstest üben: alle 300 amtlichen Fragen plus die 10 Landesfragen jedes Bundeslandes (460 gesamt), Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice, all 16 federal states.">
     <meta name="keywords" content="Einbürgerungstest, Leben in Deutschland, Bundesland, Berlin, Bayern, Test, Quiz, deutsche Staatsbürgerschaft, German citizenship test, Prüfung">
     <meta name="author" content="EIB Quiz">
-    <meta name="theme-color" content="#F2F3F5" id="themeColorMeta">
+    <meta name="theme-color" content="#F1F3F8" id="themeColorMeta">
     <link rel="canonical" href="https://thelivinsine.github.io/eib-quiz/">
     <!-- Pre-paint theme guard: default = light "paper" (the signature bento look);
          only go dark (charcoal) when the user explicitly saved 'dark'. Prevents FOUC. -->
@@ -52,7 +52,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="questions.json" as="fetch">
     <style>
         /* ============================================================
@@ -78,13 +78,13 @@
                plus a hairline. Text tiers are solid values, never opacity. */
             color-scheme: dark;
 
-            --canvas:    #131418;
-            --bg:        #131418;
-            --surface:   #202229;   /* tile — 1.16 above canvas, the measured card band */
-            --surface2:  #282B33;   /* inset well inside a tile — 1.12 on it */
-            --surface3:  #31353F;   /* track / rail */
-            --ink-tile:  #2B2F38;   /* the charcoal-fill tile — top of the dark ladder */
-            --hover:     #2B2E36;   /* hover steps UP in dark */
+            --canvas:    #10151D;
+            --bg:        #10151D;
+            --surface:   #1C222E;   /* tile — 1.16 above canvas, the measured card band */
+            --surface2:  #252C37;   /* inset well inside a tile — 1.12 on it */
+            --surface3:  #2F3542;   /* track / rail */
+            --ink-tile:  #292F3B;   /* the charcoal-fill tile — top of the dark ladder */
+            --hover:     #282F3A;   /* hover steps UP in dark */
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
@@ -96,50 +96,50 @@
                why dark read flat while light did not. Raising the EDGE costs the text
                tiers nothing; raising the fills would have cost --faint its AA on
                --surface2 (measured 4.15). */
-            --border:       #3E434E;   /* 1.60 on tile, 1.86 on canvas */
-            --border-soft:  #313540;   /* 1.30 — the gentler internal rule */
-            --border-hover: #4B515F;   /* 2.00 — still a clear step above --border */
-            --ink:          #3E434E;   /* legacy alias (borders) */
-            --hairline:     #3E434E;
+            --border:       #3C4451;   /* 1.60 on tile, 1.86 on canvas */
+            --border-soft:  #2F3640;   /* 1.30 — the gentler internal rule */
+            --border-hover: #495161;   /* 2.00 — still a clear step above --border */
+            --ink:          #3C4451;   /* legacy alias (borders) */
+            --hairline:     #3C4451;
 
             /* Primary TEAL */
-            --teal:       #17B5A4;
-            --teal-deep:  #17B5A4;   /* text-safe variant = the bright one in dark */
-            --teal-tint:  #14312F;
-            --accent:       #17B5A4;
-            --accent-text:  #17B5A4;
-            --accent-fill:  #0E9C8D;
-            --accent-soft:  #16302E;
-            --accent-hover: #183634;   /* the tinted card under the pointer — one step UP */
-            --accent-line:  #1E5B54;
-            --accent-grad:  linear-gradient(135deg, #0E9C8D 0%, #17B5A4 100%);
-            --on-accent:    #06201D;
+            --teal:       #60A5FA;
+            --teal-deep:  #60A5FA;   /* text-safe variant = the bright one in dark */
+            --teal-tint:  #16243A;
+            --accent:       #60A5FA;
+            --accent-text:  #60A5FA;
+            --accent-fill:  #2563EB;
+            --accent-soft:  #16233A;
+            --accent-hover: #1B2B45;   /* the tinted card under the pointer — one step UP */
+            --accent-line:  #2B4E80;
+            --accent-grad:  linear-gradient(135deg, #2563EB 0%, #60A5FA 100%);
+            --on-accent:    #FFFFFF;
 
             /* Contrast APRICOT */
-            --apricot:      #FB923C;
-            --apricot-deep: #FB923C;
-            --on-apricot:   #1E1205;
+            --apricot:      #F59E0B;
+            --apricot-deep: #F59E0B;
+            --on-apricot:   #1A1206;
 
             /* legacy names read by JS inline styles */
-            --lime:      #17B5A4;
-            --lime-dim:  #16302E;
-            --lime-glow: rgba(23,181,164,0.30);
-            --gold:      #FB923C;
-            --gold-dim:  #3A2A18;
-            --on-gold:   #1E1205;
+            --lime:      #60A5FA;
+            --lime-dim:  #16233A;
+            --lime-glow: rgba(96,165,250,0.30);
+            --gold:      #F59E0B;
+            --gold-dim:  #3A2A12;
+            --on-gold:   #1A1206;
 
-            --blue:      #7FB4FF;
-            --blue-dim:  #1B2738;
-            --green:     #34D399;
-            --green-dim: #122D25;
-            --red:       #FB7185;
-            --red-text:  #FB7185;
-            --red-dim:   #341A20;
+            --blue:      #93C5FD;
+            --blue-dim:  #1A2740;
+            --green:     #10B981;
+            --green-dim: #0D2D25;
+            --red:       #F87171;
+            --red-text:  #F87171;
+            --red-dim:   #34191C;
 
-            --text:     #ECEDEF;   /* 13.6 on tile */
-            --sub-text: #B9BCC4;   /*  8.4 */
-            --muted:    #9BA0AA;   /*  6.1 on tile */
-            --faint:    #8B8F9A;   /*  4.9 on tile */
+            --text:     #ECEDF0;   /* 13.6 on tile */
+            --sub-text: #B6BCC8;   /*  8.4 */
+            --muted:    #98A1B0;   /*  6.1 on tile */
+            --faint:    #8590A1;   /*  4.9 on tile */
             --on-dark:  #FFFFFF;
 
             /* One three-step scale. Nested corners follow
@@ -233,6 +233,9 @@
             --font-head: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
             --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             --font-mono: 'Inter', system-ui, sans-serif;   /* alias: JS reads var(--font-mono) */
+            /* The mockup's margin-note script. Scoped to .script-note ONLY —
+               it must never be inherited by body copy. */
+            --font-hand: 'Caveat', 'Bricolage Grotesque', cursive;
 
             --ease:        cubic-bezier(0.4, 0, 0.2, 1);
             --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -248,55 +251,55 @@
                into grey. Shadows exist but only under things that float. */
             color-scheme: light;
 
-            --canvas:    #F2F3F5;
-            --bg:        #F2F3F5;
+            --canvas:    #F1F3F8;
+            --bg:        #F1F3F8;
             --surface:   #FFFFFF;    /* tile — 1.11 above page */
-            --surface2:  #F5F6F8;    /* inset well inside a tile */
-            --surface3:  #E6E7EB;    /* track / rail */
-            --ink-tile:  #17181C;    /* charcoal-fill tiles */
-            --hover:     #F1F2F5;    /* hover steps DOWN in light */
+            --surface2:  #F4F7FA;    /* inset well inside a tile */
+            --surface3:  #E2E7F0;    /* track / rail */
+            --ink-tile:  #0F1929;    /* charcoal-fill tiles */
+            --hover:     #F0F2F7;    /* hover steps DOWN in light */
 
-            --border:       #E6E7EB;   /* 1.24 on tile, 1.11 on page */
-            --border-soft:  #EEEFF2;
-            --border-hover: #D3D5DB;
-            --ink:          #E6E7EB;
-            --hairline:     #E6E7EB;
+            --border:       #E2E7F0;   /* 1.24 on tile, 1.11 on page */
+            --border-soft:  #ECF0F6;
+            --border-hover: #CED5E2;
+            --ink:          #E2E7F0;
+            --hairline:     #E2E7F0;
 
-            --teal:       #0F9D8F;
-            --teal-deep:  #0B7D72;   /* text-safe: 5.01 on white */
-            --teal-tint:  #EDF7F4;
-            --accent:       #0B7D72;
-            --accent-text:  #0B7D72;
-            --accent-fill:  #0B7D72;   /* white on it = 5.01 */
-            --accent-soft:  #EDF7F4;
-            --accent-hover: #DCEEE9;   /* the tinted card under the pointer — one step DOWN */
-            --accent-line:  #BEE0DA;
-            --accent-grad:  linear-gradient(135deg, #0B7D72 0%, #0F9D8F 100%);
+            --teal:       #3B82F6;
+            --teal-deep:  #2563EB;   /* text-safe: 5.01 on white */
+            --teal-tint:  #EFF4FE;
+            --accent:       #2563EB;
+            --accent-text:  #2563EB;
+            --accent-fill:  #2563EB;   /* white on it = 5.01 */
+            --accent-soft:  #EFF4FE;
+            --accent-hover: #DFE9FD;   /* the tinted card under the pointer — one step DOWN */
+            --accent-line:  #BFD4FA;
+            --accent-grad:  linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
             --on-accent:    #FFFFFF;
 
-            --apricot:      #E07A1F;
+            --apricot:      #D97706;
             --apricot-deep: #B45309;
-            --on-apricot:   #17181C;
+            --on-apricot:   #0F1929;
 
-            --lime:      #0B7D72;
-            --lime-dim:  #EDF7F4;
-            --lime-glow: rgba(11,125,114,0.22);
+            --lime:      #2563EB;
+            --lime-dim:  #EFF4FE;
+            --lime-glow: rgba(37,99,235,0.22);
             --gold:      #B45309;                  /* text-safe apricot: 5.02 on white */
             --gold-dim:  #FDF4EA;
-            --on-gold:   #17181C;
+            --on-gold:   #0F1929;
 
             --blue:      #1D4ED8;
-            --blue-dim:  #EDF1FD;
+            --blue-dim:  #EAF0FD;
             --green:     #047857;
             --green-dim: #EBF7F1;
-            --red:       #C81E33;
-            --red-text:  #C81E33;
-            --red-dim:   #FDEFF1;
+            --red:       #CC2020;
+            --red-text:  #CC2020;
+            --red-dim:   #FEF2F2;
 
-            --text:     #17181C;   /* 17.7 on white */
-            --sub-text: #3F424A;   /* 10.1 */
-            --muted:    #5F636E;   /*  6.0 */
-            --faint:    #6B6F7B;   /*  5.0 on white, 4.5 on page */
+            --text:     #0F1929;   /* 17.7 on white */
+            --sub-text: #33425E;   /* 10.1 */
+            --muted:    #526481;   /*  6.0 */
+            --faint:    #5E708E;   /*  5.0 on white, 4.5 on page */
             --on-dark:  #FFFFFF;
         }
 
@@ -1363,10 +1366,10 @@
         .option-btn.picked .opt-letter { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
         .option-btn.correct { border-color: var(--green); background: var(--green-dim); color: var(--text); }
         .option-btn.correct .opt-letter { background: var(--green); border-color: var(--green); color: #fff; }
-        html:not(.light) .option-btn.correct .opt-letter { color: #06231a; }
+        html:not(.light) .option-btn.correct .opt-letter { color: #04231A; }
         .option-btn.incorrect { border-color: var(--red); background: var(--red-dim); color: var(--text); }
         .option-btn.incorrect .opt-letter { background: var(--red); border-color: var(--red); color: #fff; }
-        html:not(.light) .option-btn.incorrect .opt-letter { color: #2a0710; }
+        html:not(.light) .option-btn.incorrect .opt-letter { color: #3A0A0A; }
         .option-btn.just-picked { animation: pickPop 0.28s var(--ease); }
         @keyframes pickPop { 0% { transform: scale(1); } 45% { transform: scale(1.015); } 100% { transform: scale(1); } }
 
@@ -2213,7 +2216,19 @@
             close: _svg('<path d="M6.9 5.2 12 10.3l5.1-5.1 1.7 1.7L13.7 12l5.1 5.1-1.7 1.7L12 13.7l-5.1 5.1-1.7-1.7L10.3 12 5.2 6.9Z"/>'),
             reset: _svg('<path d="M15.21 3.17A9.4 9.4 0 1 1 3.86 7.3L6.11 8.6A6.8 6.8 0 1 0 14.33 5.61ZM2.91 6.75L7.06 9.15L8.45 4.72Z"/>'),
             trendUp: _svg('<rect x="3.6" y="13.4" width="3.8" height="7" rx="1.2"/><rect x="10.1" y="10" width="3.8" height="10.4" rx="1.2"/><rect x="16.6" y="6.2" width="3.8" height="14.2" rx="1.2"/><path d="M13.6 3.2h7.2v7.2l-2.5-2.5-4.6 4.6-3.6-3.6-6.3 6.3-1.8-1.8 8.1-8.1 3.6 3.6 3-3Z"/>'),
+            book: _svg('<path d="M11 6.6C9.2 5.2 6.9 4.4 4.5 4.4c-.7 0-1.4.1-2.1.2a1.1 1.1 0 0 0-.9 1.1v11.6a1.1 1.1 0 0 0 1.4 1.1c.5-.1 1.1-.2 1.6-.2 2.2 0 4.3.8 6 2.2.1.1.3.1.5 0Z"/><path d="M13 6.6c1.8-1.4 4.1-2.2 6.5-2.2.7 0 1.4.1 2.1.2a1.1 1.1 0 0 1 .9 1.1v11.6a1.1 1.1 0 0 1-1.4 1.1c-.5-.1-1.1-.2-1.6-.2-2.2 0-4.3.8-6 2.2-.1.1-.3.1-.5 0Z"/>'),
+            shield: _svg('<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>'),
+            star: _svg('<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>'),
+            topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
         };
+        // A clock IS the history glyph and a group IS the society glyph; the
+        // landing page needs both under names that say what they mean there.
+        ICONS.clock = ICONS.history;
+        ICONS.community = ICONS.society;
+
+        // Ornament for the CTA band. Solid shapes, never strokes, and purely
+        // decorative: the band must lay out correctly without it.
+        const GATE_ART = '<svg viewBox="0 0 240 146" fill="currentColor" stroke="none" aria-hidden="true"><path d="M74 30c2-6 7-9 13-9h58c6 0 11 3 13 9l1 4H73Z"/><path d="M96 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3H96Z"/><path d="M112 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3h-16Z"/><path d="M128 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3h-16Z"/><path d="M144 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3h-16Z"/><path d="M84 12c0-5 4-9 9-9s9 4 9 9v9h-6v-7a3 3 0 0 0-6 0v7h-6Z"/><circle cx="79" cy="27" r="5"/><rect x="62" y="36" width="116" height="16" rx="1.5"/><rect x="18" y="54" width="204" height="9" rx="1.5"/><rect x="14" y="63" width="212" height="6" rx="1.5"/><rect x="26" y="71" width="13" height="56" rx="2"/><rect x="59" y="71" width="13" height="56" rx="2"/><rect x="92" y="71" width="13" height="56" rx="2"/><rect x="135" y="71" width="13" height="56" rx="2"/><rect x="168" y="71" width="13" height="56" rx="2"/><rect x="201" y="71" width="13" height="56" rx="2"/><rect x="10" y="127" width="220" height="8" rx="2"/><rect x="4" y="135" width="232" height="7" rx="2"/></svg>';
 
         // German federal states (code -> name), display order. Each has 10 state-specific questions.
         const STATES = {
@@ -2649,14 +2664,14 @@
                 setSegment(document.getElementById('darkBtn'), false);
                 setSegment(document.getElementById('lightBtn'), true);
                 localStorage.setItem('theme', 'light');
-                if (meta) meta.setAttribute('content', '#F2F3F5');
+                if (meta) meta.setAttribute('content', '#F1F3F8');
             } else {
                 document.documentElement.classList.remove('light');
                 state.themeDark = true;
                 setSegment(document.getElementById('darkBtn'), true);
                 setSegment(document.getElementById('lightBtn'), false);
                 localStorage.setItem('theme', 'dark');
-                if (meta) meta.setAttribute('content', '#131418');
+                if (meta) meta.setAttribute('content', '#10151D');
             }
         }
 

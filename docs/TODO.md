@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-20_
+_Last updated: 2026-09-21_
 
 ## Project status
 
@@ -447,14 +447,93 @@ screens against a target of 2.2. Both are recorded in `docs/plans/sizing-system.
 **Process note:** phases 2-5 were pushed straight to `main` without a PR, against this
 project's own workflow rule. They were reviewed after the fact instead.
 
+## Session developments (2026-09-21, palette + landing-page phase 0)
+
+**The UI refactor begins.** `docs/plans/landing-page-refactor.md` is the live plan: rebuild
+the home screen against `docs/Mockups/ui/landing-page.png`, in 8 phases. **Phase 0 shipped;
+phases 1-7 are open.** Nothing about the home screen's structure has changed yet — this
+session changed the palette underneath it and gathered the assets the hero needs.
+
+**Two decisions were taken by the user and are recorded in the plan's Part 1:**
+- The home screen becomes **two-tier**: the landing page on a first visit, the existing
+  dashboard once `hasProgress()` is true. The mockup is a page for someone who has never
+  taken the test; the current home screen is a returning-learner dashboard. Neither
+  replaces the other.
+- **Five mode cards, not the mockup's four**: All questions, Exam, State, Smart Review and
+  Topic. Shipping the mockup's set verbatim would delete Smart Review's only entry point,
+  and spaced repetition is a real feature with real stored data. `#topicSection` retires;
+  Topic becomes a card that reveals the existing chips in place.
+
+**The palette is now the mockup's blue, in both themes.** This is the whole of Phase 0's
+risk, so the method is written down in `CLAUDE.md` rather than only here: **every neutral
+holds its measured relative luminance and changes only hue** (slate, H 218). The dark
+ladder had been tuned against `theme-dark.md` over two previous sessions, and re-tinting at
+constant luminance preserves it by construction. Max drift across 32 neutrals: 0.006.
+Measured after: light tile step 1.11, dark tile step 1.15, dark hairline 1.62 on a tile.
+
+The accents are the mockup's literal values wherever they clear AA. `#2563EB` is 5.17 on
+white, so the accent ships exactly as drawn. Green, amber and red do not: the mockup only
+ever puts those on **fills**, and this app uses them as **text tiers** — `#10B981` is 2.54
+on white, `#F59E0B` 2.15, `#EF4444` 3.76. Light therefore runs darker (`#047857` /
+`#B45309` / `#CC2020`) while dark takes the mockup's own values. Red landed at `#CC2020`
+rather than `#DC2626` because the latter measured 4.29 on the red tint and the fix that
+kept `#DC2626` would have shipped a 4.51 squeaker.
+
+**Also in Phase 0:**
+- **Four icons drawn, two aliased.** `book`, `shield`, `star`, `topic` are new in both
+  `ICONS` and `tools/icon-packs.mjs`. `clock` and `community` turned out to be the existing
+  `history` and `society` glyphs, so they are one-line aliases rather than second drawings.
+- **Caveat** added as `--font-hand`, in the same single Google Fonts request.
+- **`GATE_ART`** — a Brandenburg Gate ornament for the CTA band, filled shapes only.
+- **A hero photograph that crops to portrait.** `photos/reichstag.jpg` is a 2.6:1 panorama
+  and the mockup's panel is square. `photos/hero-reichstag-flag.jpg` (Dietmar Rabich,
+  CC BY-SA 4.0) holds the inscription and both flags at 4:5 **and** 1:1 — but only centred;
+  crop right and `DEM` is lost.
+- **`favicon.svg` still carried `#BFFF00`**, a lime from a palette two generations back.
+  Recoloured. `og-image.svg` carries it too and was deliberately **left alone** — see the
+  deferred note below: the SVG and the PNG move together or not at all.
+
+**`docs/Mockups/` is new**, holding the design boards, the generated illustrations, and
+licensed Wikimedia photography with full attribution. **Both illustration character sets
+are complete** — female (`study-woman-dog` or `-cat` + `success-woman`) and male
+(`study-man-dog` + `success-man`). Phase 2 ships ONE set and deletes the other, so the
+same person appears in the hero and on the results screen. Two findings there are worth carrying:
+- **The generated Germany maps must not ship.** Berlin, Hamburg and Bremen are absent — all
+  three are states and all three are exam answers — the internal borders match no real
+  boundary, and the Brandenburg Gate is drawn on the Baltic coast.
+  `photos/germany-states-accurate.svg` (David Liuzzo, CC BY-SA 2.0 DE) replaces them.
+- **The generated icon sheet must not ship either.** It is stroked, and this app's set is
+  solid; using it would break the no-stroked-icons rule or leave two icon languages.
+
+**Verified this session:** `contrast.test.mjs` 10/10 and `scale.test.mjs` 12/12 after the
+swap, `tools/validate.js` OK, `node --check sw.js`, the extracted `<script>` block parses,
+`grep 'stroke="currentColor"' index.html` empty, and both themes rendered at 1280x900 and
+375x720 with `scrollWidth === innerWidth`.
+
+**Deferred on purpose:** the social card. `og-image.png` still shows the old palette, and
+the card reads **"Berlin Quiz"** and **"310 FRAGEN"** from when the app was Berlin-only.
+Redoing it now would mean redoing it twice — **the landing-page refactor decides the
+branding the card carries**, so it waits for Phase 7 (task 7.7).
+`tools/make-og-image.py` is written and ready: it emits the SVG and the PNG from **one**
+set of constants, because hand-syncing them is exactly how the PNG kept a `#BFFF00` lime
+two palettes after it was replaced. It has not been run for production.
+**`og-image.svg` was recoloured by hand mid-session and then reverted**, because that is
+the very drift the script exists to end: `index.html` references only the **PNG**, so
+repainting the SVG changed nothing anyone can see while splitting the pair into two
+different cards. Both files stay on the old card until Phase 7 regenerates them together. Nothing was checked on the live site; all measurement was against
+`python -m http.server`.
+
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
 - **Branch/merge:** because PRs are squash-merged, reset the working branch to `origin/main`
   (or cherry-pick) before the next change to avoid squash conflicts.
-- **Egress:** verifying the live site / fetching Wikimedia & GitHub raw is blocked by the
-  environment egress allowlist. Pages deploy status is checkable via the GitHub Actions API
-  ("pages build and deployment" runs).
+- **Egress:** **Wikimedia is reachable** — the 2026-09-21 session fetched the Commons API
+  and `upload.wikimedia.org` directly (7 photos + an SVG). The older claim that it was
+  blocked by the egress allowlist was true of some earlier environment and is not a standing
+  limit. Pages deploy status is checkable via the GitHub Actions API ("pages build and
+  deployment" runs).
 - **Code gotchas** (biased shuffle, shadowed globals, mode-key renames, `lang="en"`) live in
   the Gotchas section of `CLAUDE.md`, which loads into every session. The reasoning behind
   each one is in the 2026-09-19 session block above.

@@ -37,13 +37,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   against `claude-context-kit/docs/reference/theme-{light,dark}.md`). One cohesive `<style>` block
   in `index.html` (no layered overrides — the whole block IS the system). POV: white/charcoal tiles
   on a flat canvas, **rounded-[16px]** (`--radius`), full-**pill** buttons/chips, and a
-  **DISCIPLINED accent duo**: one **teal** primary + one warm **apricot** pop. Two themes share the
-  palette — DEFAULT = **light "paper-grey"** (canvas `#F2F3F5`, ink `#17181C`), `.light` is the
-  default look; dark = **charcoal** (canvas `#131418`).
+  **DISCIPLINED accent duo**: one **blue** primary + one warm **amber** pop. Two themes share the
+  palette — DEFAULT = **light "slate-grey"** (canvas `#F1F3F8`, ink `#0F1929`), `.light` is the
+  default look; dark = **slate charcoal** (canvas `#10151D`).
+  - **The palette is the landing-page mockup's, re-derived for dark** (2026-09-21). It was a
+    teal/apricot pair until then. Dark had to be DERIVED, because the mockup is light-only,
+    and the method is the thing to preserve: **every neutral holds its measured relative
+    luminance and changes only hue** (slate, H 218). The ladder below was tuned against
+    `theme-dark.md`; re-tinting at constant luminance keeps all of it by construction rather
+    than by luck. Max drift across 32 neutrals was 0.006. **If the palette moves again, move
+    it this way** — picking fresh greys by eye is how the measured ladder gets lost.
   - **The dark ladder is calibrated against `theme-dark.md` §1/§3, not eyeballed.** A tile sat
     1.09 off the canvas where the measured band for a card is 1.15 (PowerToys) to 1.30 (ChatGPT);
     the whole ramp above `--canvas` moved up by one delta so the shape is unchanged and
-    `--surface` now sits at 1.16. `--muted`/`--faint` were spread apart at the same time — §2
+    `--surface` now sits at 1.15. `--muted`/`--faint` were spread apart at the same time — §2
     warns that four greys at 9/8/7/6 read as one mushy grey, and the tiers now read
     13.6 / 8.4 / 6.1 / 4.9 on a tile. **Light already cleared its own reference** (a light card
     is 1.11 on the page against a measured 1.07) and was not touched.
@@ -68,14 +75,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     image at 4px. A radius written as a literal is a bug, not a special case.
   - **In dark mode the HAIRLINE carries the app, because the fills cannot** (2026-09-20).
     `theme-dark.md` §5: "below ~1.20 between two touching surfaces, stop pushing the fills
-    apart and draw the edge instead" — a tile sits **1.159** off this canvas, under that
+    apart and draw the edge instead" — a tile sits **1.15** off this canvas, under that
     line — and the same section measures real dividers at **1.59-1.60 ON the panel they sit
     on**, "deliberately more contrasty than the panel-to-page step: it has to survive being
     one pixel tall". `--border` was **1.375** on a tile, well under that band, and that is
-    the whole of why dark read flat while light did not. It is `#3E434E` now (1.60 on a
-    tile, 1.86 on the canvas), with `--border-soft` 1.30 and `--border-hover` 2.00.
+    the whole of why dark read flat while light did not. It is `#3C4451` now (1.62 on a
+    tile, 1.86 on the canvas), with `--border-soft` 1.31 and `--border-hover` 2.00.
     **Raising the EDGE costs the text tiers nothing; raising the FILLS would have cost
-    `--faint` its AA on `--surface2`** (measured 4.15). Light was left alone: its own
+    `--faint` its AA on `--surface2`** (measured 4.35). Light was left alone: its own
     reference says light "simply cannot make a 1.6 divider without it reading as a heavy
     rule", and a rendered audit found light clean.
   - **A home screen's type ladder is hero > section heading > card title > readout > body,
@@ -96,9 +103,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     into grey (`--hover`). In dark, both go up. Hover is a fill change, never a lift.
   - **An answer option is a tile ON THE CANVAS** (2026-09-20), because the card around it is
     gone. In light it takes `--surface` (#FFF, the measured 1.11 page step) — it was
-    `--surface2`, which is #F5F6F8 on a #F2F3F5 page, a 1.02 step and the whole of the
-    "washed out" look. **Dark carries it one rung higher** (`--surface2`, 1.36 above the
-    canvas, chip `--surface3`): `--surface` at 1.16 is the right step for a big tile and too
+    `--surface2`, which is #F4F7FA on a #F1F3F8 page, a 1.03 step and the whole of the
+    "washed out" look. **Dark carries it one rung higher** (`--surface2`, 1.30 above the
+    canvas, chip `--surface3`): `--surface` at 1.15 is the right step for a big tile and too
     quiet for a 42px row you are meant to reach for, and the dark ramp has the room light does
     not. Hover is `--hover`, the token that already knows each theme's direction. The
     dimmed-after-answering state is a **text tier only**.
@@ -108,18 +115,27 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - The theme wiring: the JS toggles the `.light` class and DEFAULTS to light (`initTheme` only
     goes dark if `localStorage.theme==='dark'`); an inline pre-paint `<script>` in `<head>` adds
     `.light` before first paint to avoid FOUC, and `setTheme` also updates `#themeColorMeta`.
-  - Palette → legacy token names (JS writes these into inline styles, DON'T rename): **teal** =
-    `--accent`/`--lime` (`#0B7D72` light / `#17B5A4` dark; plus `--accent-text`, `--teal-deep`,
-    `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **apricot** = `--gold`
-    (`#B45309` light so it reads as text / `#FB923C` dark; `--apricot`, `--apricot-deep`,
-    `--apricot-deep`); `--blue` = info/time; semantic `--green` (correct) / `--red`+`--red-text`
-    (wrong). `--accent-hover` is the tinted card's hover fill — **not** `--accent-line`, which is
-    a border value: as a fill it is a 1.27x jump in light and a saturated mid-teal in dark, which
+  - Palette → legacy token names (JS writes these into inline styles, DON'T rename — the
+    `--teal-*` and `--lime-*` names carry BLUE values now, and renaming them breaks the JS):
+    **blue** = `--accent`/`--lime` (`#2563EB` light / `#60A5FA` dark; plus `--accent-text`,
+    `--teal-deep`, `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **amber** =
+    `--gold` (`#B45309` light so it reads as text / `#F59E0B` dark; `--apricot`,
+    `--apricot-deep`); `--blue` = info/time; semantic `--green` (correct, `#047857` / `#10B981`)
+    / `--red`+`--red-text` (wrong, `#CC2020` / `#F87171`).
+    **Light needs darker greens, ambers and reds than the mockup draws**, because the mockup
+    only ever puts those colours on FILLS and this app uses them as TEXT tiers: `#10B981` is
+    2.54 on white, `#F59E0B` is 2.15, `#EF4444` is 3.76. The accent itself needs no such
+    correction — `#2563EB` is 5.17 on white, so it ships exactly as drawn.
+    `--accent-hover` is the tinted card's hover fill — **not** `--accent-line`, which is
+    a border value: as a fill it is a 1.27x jump in light and a saturated mid-blue in dark, which
     put the featured card's own description and meta under AA the moment you pointed at it. `--ink-tile` = the charcoal-fill tile — now only the header brand mark; in dark it
-    is a step **up** the ladder (`#2B2F38`), because a charcoal tile on a charcoal canvas reads
+    is a step **up** the ladder (`#292F3B`), because a charcoal tile on a charcoal canvas reads
     as a hole.
   - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
-    (`--font-body`); `--font-mono` is aliased to Inter (kept only so JS refs resolve). Display
+    (`--font-body`) + **Caveat** (`--font-hand`, added 2026-09-21 for the landing page's two
+    script margin-notes — scoped to those and NEVER inherited by body copy); `--font-mono` is
+    aliased to Inter (kept only so JS refs resolve). All three arrive in **one** Google Fonts
+    `<link>`; keep it one request when adding a face. Display
     weights top out at 700. Uppercase micro-labels take `--ls-caps` (0.06em) and are tile eyebrows (`.eyebrow`
     + shared list).
   - **There is a SIZE system now, and it is measured** (2026-09-20), against
@@ -242,7 +258,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     literals are listed today (the brand-mark letter, and the letter on the correct/wrong answer
     chips in each theme); prefer a token, and if a literal is unavoidable it goes in the list the
     same day.
-  - **The exam is the only featured card.** `.mode-card--featured` is full-width and **teal-
+  - **The exam is the only featured card.** `.mode-card--featured` is full-width and **blue-
     tinted** (`--accent-soft` fill, a neutral `--border` edge, an `--accent-text` icon and a
     solid Start pill); the other three modes are equal-weight peers.
     - **Its edge is the same neutral `--border` every other card wears** (2026-09-20).
@@ -256,7 +272,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       page had the weakest type. It now carries the **same `--text`/`--sub-text`/`--muted` tiers
       as every other tile** — emphasis comes from hue, width and the solid accents, never from
       dimming words. Its separation from the page is the hairline, not a step in lightness; in
-      light mode the tint and the paper-grey canvas sit at nearly the same luminance, which is
+      light mode the tint and the slate-grey canvas sit at nearly the same luminance, which is
       exactly the case light mode hands to edges.
   - **The featured card's Start sits bottom-right on a phone**, on the meta's line, where
     the peers put their arrow. Full-width it read as a different kind of thing from the
@@ -577,8 +593,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Speak, translate, the lightbox close, the home card's reset, the navigator's chevron, a
     peer card's arrow and a topic chip's glyph all dropped their pill/chip: a solid glyph is
     heavy enough to read as a control on its own, and a box round an icon is a container
-    inside a container. **A topic chip's glyph is grey at rest and teal on hover**, the same
-    as a mode card's icon — sixteen teal plates were the loudest thing on the home screen,
+    inside a container. **A topic chip's glyph is grey at rest and accent on hover**, the same
+    as a mode card's icon — sixteen tinted plates were the loudest thing on the home screen,
     and the colour is worth more as an answer to the pointer than as a default. The hit target stays (34/44px, and the coarse-pointer floor is
     untouched) — only the fill and the hairline are gone, so hover is a COLOUR change, never
     a fill that draws the box back on.
@@ -803,7 +819,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 24 glyphs — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -813,6 +829,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
   production.
+  **Two of the 24 are ALIASES, not drawings**: `ICONS.clock = ICONS.history` and
+  `ICONS.community = ICONS.society` (2026-09-21) — a clock IS the history glyph and a group
+  IS the society glyph, so there is one definition to maintain, not two. `GATE_ART` sits
+  beside `ICONS`: a Brandenburg Gate ornament for the landing page's CTA band, filled shapes
+  only, purely decorative.
 - **Animated results:** the results screen shows an SVG score ring with a percentage count-up
   animation (green=pass, red=fail). The quiz has a slim animated progress bar and per-question
   entrance transitions. All motion respects `prefers-reduced-motion`.
@@ -897,7 +918,8 @@ Root holds exactly what GitHub Pages serves; everything else is foldered.
   CLAUDE.md       this file
 img/              image-question assets + ATTRIBUTIONS.md, icons/, states/
 tools/            data-generation + validation scripts (not served)
-docs/             project notes (TODO.md, BUG_AUDIT_MEMORY.md)
+docs/             project notes (TODO.md, BUG_AUDIT_MEMORY.md), plans/, research/
+  Mockups/        design boards, generated illustrations, licensed photography
 legacy/           May 28 build; not production, do NOT publish from it
 ```
 
@@ -914,6 +936,12 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   questions, all present). `img/ATTRIBUTIONS.md` has sources and credits.
 - `docs/TODO.md` - current project status + open TODOs. Check/update this when picking
   up or finishing work.
+- `docs/plans/landing-page-refactor.md` - the live plan for rebuilding the home screen
+  against `docs/Mockups/ui/landing-page.png`. Phase 0 shipped 2026-09-21; phases 1-7 open.
+- `docs/Mockups/` - design boards (`ui/`), generated illustrations (`illustrations/`),
+  Wikimedia photography + the 16-state map (`photos/`, with `ATTRIBUTIONS.md` carrying the
+  exact credit wording two photographers mandate), and superseded material (`archive/`).
+  Each folder has a README. **Not served** — nothing in the app links it.
 - `docs/BUG_AUDIT_MEMORY.md` - concise audit/rollback memory.
 - `tools/extract-questions.js` - regenerates `questions.json` from index.html's data + wires
   image questions to real asset paths and descriptive labels.
@@ -952,6 +980,10 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
+- `tools/make-og-image.py` - emits `og-image.svg` AND `og-image.png` from one set of
+  constants. **Not yet run for production**: the card is deferred until the landing-page
+  refactor settles the branding, so the committed pair still carries the old "Berlin Quiz"
+  copy. Never hand-edit one of the two files — that drift is why this script exists.
 - `legacy/` - May 28 build (standalone HTML, corrupted JSON, old regen tool). See
   `legacy/README.md`. Do NOT publish from it.
 

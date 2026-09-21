@@ -8,3 +8,8 @@ work/
 
 # Per-machine Claude Code settings; the launch config is shared.
 .claude/settings.local.json
+
+# Superseded mockup material: the README explains why these are dead, so it is
+# tracked; the 11MB of crops behind it is local-only and not worth git history.
+docs/Mockups/archive/*
+!docs/Mockups/archive/README.md
