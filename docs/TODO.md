@@ -1586,3 +1586,9 @@ really 1.215 off the band. Both now say so, with "do not restore it".
   is nothing new to look at. The 1.115 and 1.149 figures are computed from the tokens.
 - The claim that every other hoverable tile in light is 1.115 was checked by reading the
   `--hover` rules in the sheet, not by hovering each one in a browser.
+
+### Live
+
+Squash-merged straight to `main` as **`b307e28`** — no PR, on request: the change is
+comments only and was reviewed in the session that wrote it. No `sw.js` `CACHE` bump
+(`index.html` is network-first and nothing cache-first changed).
