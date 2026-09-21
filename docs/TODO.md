@@ -1087,12 +1087,38 @@ at 1280 and at 375; no horizontal overflow at 375. Network-first proved locally 
 persistent Chrome profile: registered the worker, edited `index.html`, reloaded, and the
 second load through the worker carried the edit.
 
-### Not verified
-- **The `controllerchange` swap could not be exercised here.** The in-app preview pane
-  refuses to register a worker ("unknown error when fetching the script"), and headless
-  Chrome's `register()` resolves while `getRegistrations()` returns 0 — so no worker ever
-  controlled a page in either. The reload path is reasoned and guarded, not observed.
-  Check it in a real browser's Application panel after this deploys.
+### The swap, verified in a real browser (same day)
+Headed Chrome, driven over CDP, against `python -m http.server`:
+
+| check | result |
+|---|---|
+| worker registers, controls the tab on the next load | yes (`regs: 1`, `controller: true`) |
+| ordinary reload of a controlled tab serves freshly edited HTML | yes — marker added to `index.html`, no new `sw.js`, no hard refresh |
+| new `sw.js` while the tab sits open | tab reloaded ITSELF once (loads 1 -> 2), new cache in, old evicted |
+| a SECOND deploy right after | no reload (loads stayed 2) — the once-per-tab stamp holds, no loop |
+| deploy while `body.in-session` | no reload, and no stamp written — the guard returns first |
+| `localStorage` across the swap | intact |
+| network emulated offline | all five mode cards render from cache |
+
+**The profile must not live under `%TEMP%`.** A throwaway profile there had CacheStorage
+fail outright — `caches.open()` threw "Unexpected internal error" with 10GB of quota free
+and IndexedDB healthy — which is why the first three attempts (two headless, one headed)
+reported `getRegistrations(): 0` and looked like the app's fault. The same Chrome with a
+profile under the repo worked on the first try. The in-app preview pane will not register
+a worker either.
+
+### The bug that broken profile exposed
+`caches.open()` rejecting inside `install` rejected `event.waitUntil`, the worker went
+redundant, and **the whole registration was discarded** — no worker, so no network-first
+either. The old `.catch(() => {})` only covered `addAll`, not `open`. `sw.js` now routes
+every cache call through `safeOpen`/`safeMatch`/`safePut`, wraps `activate`'s sweep, and
+writes the network-first response through `safePut` so a broken cache cannot turn a good
+network response into a failed navigation. No cache means no offline; it must not mean no
+app. Re-verified after the change: clean baseline (loads 1, no stamp), one deploy, loads
+2, stamp set, new cache, five cards rendering.
+
+### Still not verified
 - Whether the user's original staleness was the registration or the GitHub Pages CDN's
-  own `max-age=600` on HTML. The CDN window is not something the client can fix; if a
-  deploy still looks stale for ten minutes, that is what it is.
+  own `max-age=600` on HTML. The CDN window is not something the client can fix.
+- Everything above was measured on `http://localhost`. The live site is HTTPS behind a
+  CDN; the worker logic is the same, the timing is not.
