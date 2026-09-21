@@ -1027,3 +1027,72 @@ script. `node tools/validate.js` OK (460 questions).
 - The DE switch WAS re-run: `#langBadge` follows, the headline becomes
   `Der deutsche Einbürgerungstest`, no `[data-i18n]` element renders empty, and the two
   hero columns stay centred at 264/264 in German too.
+
+
+## Session developments (2026-09-21, mode cards + the update path)
+
+### The mode band's air
+`padding-block` `--space-2xl` -> `--space-xl` and `padding-inline` `--space-lg` ->
+`--space-md`; the band is 522 -> 473px. The cards' own padding was not touched — the
+roominess was the panel's, above the heading and below the last row.
+
+### The estimate joined the count's line, behind a clock
+`.mode-time` wrapped to a second row in every card. Four changes together bought the one
+line, and the card content box is 165px so none of them alone is enough:
+
+1. the count came down to `--fs-2xs`, the estimate's own size ("300 questions" 95 -> 81px);
+2. the strings dropped "approx."/"ca." and "limit" — the clock glyph is what says
+   *duration*, so `60–90 min` carries what `approx. 60–90 min` did;
+3. `.modes-grid`'s gap `--space-md` -> `--space-sm` and the band's side padding
+   `--space-lg` -> `--space-md`, worth +8px of card;
+4. both gaps in the row are `--space-2xs`. `--space-xs` (6px) is deliberately NOT a gap
+   rung here — `gapRungs` is budgeted at 7 and 6px was merged away — so using it fails
+   the ratchet. Tried, caught, reverted.
+
+Worst case is **English** "All questions": 81.2 + 4 + 14 + 4 + 59.9 = **163.1 in 165**.
+German clears by ~15. `white-space: nowrap` is the guarantee: a longer translation
+overflows visibly rather than quietly becoming two rows again. `ICONS.clock` came back
+(an alias for `ICONS.history`, which is literally a clock face) hours after being deleted
+with the hero's fact chips.
+
+### The action row flipped and centred
+`.mode-start` is now label-then-disc, centred in the tile. The hover animation is
+untouched — `translateX(3px)` on the disc, which now slides away from the label instead
+of into it. On a phone the row stays hard left: the card is a list row there, with title,
+description and meta all flush left.
+
+### The update path: a network-first worker was only half of it
+The reported symptom was a tab that keeps showing an old build through a hard refresh.
+`sw.js` was already network-first with `cache: 'reload'` on both fetch paths; the
+registration was the gap. Three additions in `index.html`:
+
+- `updateViaCache: 'none'` — the worker script itself must not come from the HTTP cache,
+  or the browser compares a stale `sw.js` against itself and installs nothing. The
+  `cache: 'reload'` trap, one level up.
+- `reg.update()` on load and on `visibilitychange` — a left-open tab may go days without
+  the navigation that would otherwise be the only check.
+- `controllerchange` -> `location.reload()`, with three guards: only if the tab already
+  had a controller, never while `body.in-session`, and at most once per tab (stamped in
+  `sessionStorage`, so the bound survives the reload). A reload loop would be worse than
+  a stale tab. `localStorage` is untouched by a reload, so progress, the resumable
+  session and the history all survive.
+
+`CACHE` bumped to `eib-cache-2026-09-21-mode-card-meta`.
+
+### Verified
+`contrast.test.mjs` 10/10, `scale.test.mjs` 12/12 with every budget unmoved,
+`node --check` on the extracted script and on `sw.js`, `manifest.json` parses,
+`validate.js` OK. Meta rows measured one line (16px, zero overflow) in **both** languages
+at 1280 and at 375; no horizontal overflow at 375. Network-first proved locally with a
+persistent Chrome profile: registered the worker, edited `index.html`, reloaded, and the
+second load through the worker carried the edit.
+
+### Not verified
+- **The `controllerchange` swap could not be exercised here.** The in-app preview pane
+  refuses to register a worker ("unknown error when fetching the script"), and headless
+  Chrome's `register()` resolves while `getRegistrations()` returns 0 — so no worker ever
+  controlled a page in either. The reload path is reasoned and guarded, not observed.
+  Check it in a real browser's Application panel after this deploys.
+- Whether the user's original staleness was the registration or the GitHub Pages CDN's
+  own `max-age=600` on HTML. The CDN window is not something the client can fix; if a
+  deploy still looks stale for ten minutes, that is what it is.
