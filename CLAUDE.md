@@ -1027,6 +1027,15 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   inserted with the same classes computed correctly, which is how it was caught. Call
   `document.getAnimations().forEach(a => a.finish())` before any measurement, and be
   suspicious of a ratio that a screenshot plainly contradicts.
+- **To verify a `:hover` / `:active` rule, read the PARSED stylesheet, not a screenshot.**
+  The preview pane will not synthesise a hover or paint a screenshot while the app window is
+  hidden or minimised — a sibling of the animation gotcha above. Headless Chrome answers
+  instead: `--headless=new --dump-dom` on a copy of the page with a probe script appended,
+  reading `document.styleSheets`. **The walk has one trap**: since nested CSS,
+  `CSSStyleRule.cssRules` EXISTS and is empty, so `if (r.cssRules) { recurse; continue; }`
+  skips every style rule in the sheet and finds nothing. Handle `r.selectorText` FIRST, then
+  recurse only when `r.cssRules.length`. A walk that reports 0 matches over 556 rules is
+  this bug, not an absent rule.
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,
