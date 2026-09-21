@@ -947,15 +947,22 @@
 
         /* The why-band and the numbers band are hairline-separated bands; the shared
            rule lives with .result-stats, which is where that idiom is written down. */
-        .why-grid, .stats-grid { list-style: none; }
+        .stats-grid { list-style: none; }
+        /* The why band is NOT a panel, and it is the one of the three that is not.
+           Four claims about the product read as four claims; boxing them in a tinted
+           panel with hairline dividers turned them into a table, and the tinted discs
+           beside them already group each icon with its own line. So no fill, no
+           hairline, no 1px separator gap — the items sit straight on the page and a
+           real gap does the separating. The numbers band and the CTA band keep the
+           panel: a row of four FIGURES is a readout and does want a frame. */
+        .why-grid {
+            list-style: none;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: var(--space-xl);
+        }
         .why-item {
             flex: 1 1 210px; min-width: 0;
             display: flex; align-items: flex-start; gap: var(--space-ms);
-            padding: var(--space-md);
-            /* --band, not --surface: on a white canvas a white cell is the page, and the
-               mockup draws these three bands as the same pale panel the mode band sits
-               on. The 1px gap between cells still shows --border through as a hairline. */
-            background: var(--band);
         }
         .why-icon {
             flex: none; display: grid; place-items: center;
@@ -1934,7 +1941,9 @@
         /* Three bands are built this way now: the results breakdown, the landing tier's
            why-band and its four headline numbers. One rule, so the hairline gap below is
            the only 1px literal in the sheet. */
-        .result-stats, .why-grid, .stats-grid {
+        /* .why-grid was the third selector here until 2026-09-21 and is not any more:
+           it is no longer a panel at all. See its own rule above. */
+        .result-stats, .stats-grid {
             display: flex; flex-wrap: wrap; justify-content: center;
             border: 1px solid var(--border); border-radius: var(--radius);
             /* The separators are a 1px GAP over the band's own colour, not a border on

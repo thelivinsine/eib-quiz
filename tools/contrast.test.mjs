@@ -123,6 +123,11 @@ const PAIRS = [
   ["text", "band", AA, "the practise band's heading, centred on the panel"],
   ["muted", "band", AA, "its eyebrow and one-line description"],
   ["faint", "canvas", AA, "the same two, where a tile is not behind them"],
+  // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
+  // page. In light --surface IS --canvas so the surface pairs already covered it; in
+  // dark they do not, because --surface is a rung above the canvas there.
+  ["muted", "canvas", AA, "a why-band item's body copy, straight on the page"],
+  ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
   ["accent-text", "surface", AA, "Starten links, FRAGE n, the active EN toggle"],
   ["accent-text", "accent-soft", AA, "the current question in the navigator grid"],
