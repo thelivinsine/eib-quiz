@@ -678,21 +678,25 @@
         /* ============================================================
            LANDING HERO (top of home; CTA scrolls to the bento content)
            ============================================================ */
-        /* The hero introduces the app; it does not own the screen. It is
-           sized by its own content so the working surface below it is one
-           swipe away on a phone. */
+        /* ============================================================
+           LANDING TIER — hero, why, numbers, one last call.
+           Shown only when hasProgress() is false; the dashboard tier
+           replaces all of it once there is something to come back to.
+           ============================================================ */
+
+        /* The pitch on the left, the building on the right. The photo column is
+           slightly narrower than the text so the headline gets the room. */
         .hero-landing {
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+            /* --space-xl, not --space-2xl: 40 is not a gap rung anywhere else in the
+               sheet, and a ninth rung is the flat histogram the scale test watches for. */
+            gap: var(--space-xl);
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: var(--space-md) 0 var(--space-lg);
-            margin-bottom: var(--space-md);
-            border-bottom: 1px solid var(--border);
+            padding: var(--space-lg) 0 var(--space-2xl);
         }
-        .hero-inner { max-width: 780px; display: flex; flex-direction: column; align-items: center; }
+        .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+        .hero-text > .eyebrow { margin-bottom: var(--space-ms); }
 
         .hero-headline {
             font-family: var(--font-head);
@@ -703,26 +707,140 @@
             color: var(--text);
             text-wrap: balance;
         }
-        .hero-mark {
-            background: linear-gradient(var(--apricot), var(--apricot)) no-repeat left 94%;
-            background-size: 100% 0.09em;
-            padding-bottom: 0.04em;
-        }
         .hero-lead {
-            max-width: 620px;
-            margin: var(--space-sm) auto 0;
+            max-width: 46ch;
+            margin-top: var(--space-ms);
             color: var(--sub-text);
             font-size: var(--fs-md);
             line-height: var(--lh-prose);
             text-wrap: pretty;
         }
         .hero-cta-row {
-            display: flex; flex-wrap: wrap; gap: var(--space-md);
-            justify-content: center;
-            margin-top: var(--space-md);
+            display: flex; flex-wrap: wrap; gap: var(--space-ms);
+            margin-top: var(--space-lg);
         }
-        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
+        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
         .hero-cta-row .btn-primary svg { width: var(--icon-md); height: var(--icon-md); }
+
+        /* Four facts. A glyph over a label and nothing else — the mockup's tinted
+           circles are the plate CLAUDE.md forbids, and the hit area does not need one. */
+        .hero-chips {
+            list-style: none;
+            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+            width: 100%; max-width: 480px;
+        }
+        .hero-chip { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); text-align: center; min-width: 0; }
+        .hero-chip-icon { display: grid; place-items: center; color: var(--sub-text); }
+        .hero-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        .hero-chip-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+
+        .hero-visual { position: relative; min-width: 0; }
+        .hero-photo {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface2);
+        }
+        .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* The handwritten margin notes — the mockup's signature, and the only place
+           --font-hand is allowed. Never inherited by body copy. */
+        .script-note {
+            font-family: var(--font-hand);
+            font-size: var(--fs-xl);
+            line-height: var(--lh-ui);
+            color: var(--muted);
+        }
+        /* Top RIGHT, not the mockup's top left: that corner of this photograph is the
+           EU flag, and this one is the only clean patch of sky (min luminance 211/255).
+           The ink is a literal because its ground is a photograph rather than a token
+           — registered in LITERAL_PAIRS, exactly as the zoom veil's label is. */
+        .hero-note {
+            position: absolute; top: var(--space-lg); right: var(--space-lg);
+            width: 46%; text-align: right;
+            color: #16233A;
+        }
+        /* A card in the photo's lower corner. A fill and a hairline, no shadow — the one
+           place the mockup uses one and this app does not. Inside the frame rather than
+           overlapping its edge, so it cannot land on the credit line below. */
+        .hero-quote {
+            position: absolute; right: var(--space-md); bottom: var(--space-md);
+            max-width: 68%;
+            display: flex; gap: var(--space-sm);
+            padding: var(--space-ms) var(--space-md);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .hero-quote p { font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text); }
+        .hero-quote-mark { flex: none; width: var(--icon-sm); height: var(--icon-sm); color: var(--muted); }
+        /* CC BY-SA 4.0 asks for the credit where the work is used, not only in a file. */
+        .hero-credit { margin-top: var(--space-sm); font-size: var(--fs-2xs); color: var(--faint); }
+        .hero-credit a { color: inherit; text-decoration: underline; }
+        .hero-credit a:hover { color: var(--accent-text); }
+
+        .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
+        .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
+
+        /* The why-band and the numbers band are hairline-separated bands; the shared
+           rule lives with .result-stats, which is where that idiom is written down. */
+        .why-grid, .stats-grid { list-style: none; }
+        .why-item {
+            flex: 1 1 210px; min-width: 0;
+            display: flex; align-items: flex-start; gap: var(--space-ms);
+            padding: var(--space-md);
+            background: var(--surface);
+        }
+        .why-icon { flex: none; display: grid; place-items: center; color: var(--sub-text); }
+        .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
+        .why-item p { margin-top: var(--space-2xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
+
+        .stats-item {
+            flex: 1 1 130px; min-width: 0;
+            display: flex; flex-direction: column; align-items: center; gap: var(--space-2xs);
+            padding: var(--space-md);
+            text-align: center;
+            background: var(--surface);
+        }
+        /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
+           counters take, and it does not outrank an --fs-xl section heading. */
+        .stats-num {
+            font-family: var(--font-head); font-weight: 700;
+            font-size: var(--fs-2xl); line-height: var(--lh-tight);
+            letter-spacing: var(--ls-display);
+            color: var(--text);
+        }
+        .stats-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+        .stats-item--note { flex: 1 1 170px; justify-content: center; }
+
+        .cta-band {
+            position: relative;
+            display: flex; align-items: center; flex-wrap: wrap;
+            gap: var(--space-lg);
+            padding: var(--space-xl);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .cta-copy { flex: 1 1 280px; min-width: 0; }
+        .cta-copy .eyebrow { display: block; margin-bottom: var(--space-2xs); }
+        .cta-copy h2 {
+            font-family: var(--font-head); font-weight: 600;
+            font-size: var(--fs-xl); letter-spacing: var(--ls-display);
+            color: var(--text);
+        }
+        .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
+        .cta-btn { flex: none; min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
+        .cta-btn svg { width: var(--icon-md); height: var(--icon-md); }
+        /* An ornament. Take it out and the band is still heading, lead and button. */
+        .cta-art { flex: none; display: block; color: var(--border-hover); }
+        .cta-art svg { width: 120px; height: auto; display: block; }
+        .cta-note { flex: none; max-width: 170px; }
 
 
         /* ============================================================
@@ -1612,9 +1730,11 @@
         /* ONE band, figures separated by hairlines — the same move the home overview card
            makes. It replaces two wells and three more cards: five boxes for five numbers,
            each a container holding nothing but a label and a figure. */
-        .result-stats {
+        /* Three bands are built this way now: the results breakdown, the landing tier's
+           why-band and its four headline numbers. One rule, so the hairline gap below is
+           the only 1px literal in the sheet. */
+        .result-stats, .why-grid, .stats-grid {
             display: flex; flex-wrap: wrap; justify-content: center;
-            margin-top: var(--space-xl);
             border: 1px solid var(--border); border-radius: var(--radius);
             /* The separators are a 1px GAP over the band's own colour, not a border on
                each cell: a border-left lands on the first cell of a wrapped row too, and
@@ -1622,6 +1742,7 @@
                in both directions and cannot do that. */
             gap: 1px; background: var(--border); overflow: hidden;
         }
+        .result-stats { margin-top: var(--space-xl); }
         .result-stat {
             flex: 1 1 0; min-width: 104px;
             padding: var(--space-ms) var(--space-md);
@@ -1671,6 +1792,14 @@
            RESPONSIVE
            ============================================================ */
         @media (max-width: 940px) {
+            /* The hero stacks, photo FIRST: the picture is what says what this is, and
+               below the fold a headline over a 1:1 photograph pushes the buttons off. */
+            .hero-landing { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+            .hero-visual { order: -1; max-width: 460px; width: 100%; margin-inline: auto; }
+            .hero-text { align-items: center; text-align: center; }
+            .hero-lead { margin-inline: auto; }
+            .hero-chips { margin-inline: auto; }
+
             /* Three secondary cards stay three across: two columns orphans one of
                them beside an empty cell. */
             .mode-card--featured { grid-column: 1 / -1; }
@@ -1764,10 +1893,20 @@
             }
 
             /* Hero: introduce, then get out of the way. */
-            .hero-landing { padding: var(--space-ms) 0 var(--space-md); margin-bottom: var(--space-ms); }
-            .hero-lead { font-size: var(--fs-md); }
+            .hero-landing { padding: var(--space-ms) 0 var(--space-lg); gap: var(--space-lg); }
             .hero-cta-row { width: 100%; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-ms); }
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; padding: var(--space-ms) var(--space-lg); }
+            /* Four labels across a 375px row is 75px a column, and "Bundesländer"
+               alone is wider than that. */
+            .hero-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-ms); margin-top: var(--space-lg); }
+            .hero-chip { flex-direction: row; text-align: left; gap: var(--space-sm); }
+            /* The margin notes are decorative, and down here they have nowhere to sit
+               that is not on top of the building. */
+            .hero-note, .stats-item--note, .cta-note, .cta-art { display: none; }
+
+            .why-item { flex-basis: 100%; }
+            .cta-band { padding: var(--space-lg); gap: var(--space-ms); }
+            .cta-btn { width: 100%; }
 
             .home-section { margin-bottom: var(--space-lg); }
             /* A section's one-line description is a desktop affordance. Down here each
@@ -1982,17 +2121,48 @@
                  element; a section with no data-tier shows in both. The DOM order below
                  reads correctly for either tier, so nothing is ever moved or duplicated. -->
 
-            <!-- Landing hero: the pitch, one primary action, then out of the way. -->
+            <!-- Landing hero: the pitch on the left, the building on the right. -->
             <div class="hero-landing" data-tier="landing">
-                <div class="hero-inner">
-                    <h1 class="hero-headline" data-i18n-html="hero.headline"></h1>
+                <div class="hero-text">
+                    <p class="eyebrow" data-i18n="hero.eyebrow"></p>
+                    <h1 class="hero-headline" data-i18n="hero.headline"></h1>
                     <p class="hero-lead" data-i18n="hero.lead"></p>
                     <div class="hero-cta-row">
-                        <button class="btn-primary btn-lg" onclick="scrollToMain()">
+                        <button class="btn-primary btn-lg" onclick="scrollToId('homeMain')">
                             <span data-i18n="hero.cta"></span>
-                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path transform="rotate(90 12 12)" d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                         </button>
+                        <button class="btn-secondary btn-lg" onclick="scrollToId('whyBand')" data-i18n="hero.cta2"></button>
                     </div>
+                    <!-- Four facts, four glyphs, no plates. The hit area stays; the tinted
+                         circle the mockup draws does not (CLAUDE.md: an icon has no plate). -->
+                    <ul class="hero-chips">
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="allQuestions" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip1"></span></li>
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="bundesland" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip2"></span></li>
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="translate" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip3"></span></li>
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="clock" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip4"></span></li>
+                    </ul>
+                </div>
+
+                <div class="hero-visual">
+                    <figure class="hero-photo">
+                        <img src="img/hero-reichstag.webp" width="1100" height="1100" data-i18n-alt="hero.photoAlt" alt="">
+                        <!-- Both overlays are children of the figure so they are placed
+                             against the PHOTO, not against the photo plus its credit line
+                             - which is what put the quote card on top of the credit. -->
+                        <!-- The note sits on the one patch of this photograph that is clean
+                             sky (top right: darkest pixel under it measures 210 of 255. The
+                             mockup's top-left corner is our EU flag). Its ink is a literal
+                             because its ground is a photograph rather than a token; see
+                             LITERAL_PAIRS. The mockup's curved arrow is dropped - every
+                             region it could point from has a flagpole running through it. -->
+                        <p class="script-note hero-note" data-i18n="hero.annotation"></p>
+                        <blockquote class="hero-quote">
+                            <svg class="hero-quote-mark" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M3.4 17.6c0-4.9 2.4-9.2 7.1-13.2l2 2.2C9.4 9.4 7.6 12 7.2 14.4h.9c2 0 3.6 1.6 3.6 3.6s-1.6 3.6-3.6 3.6-4.7-1.5-4.7-4Zm9.5 0c0-4.9 2.4-9.2 7.1-13.2l2 2.2c-3.1 2.8-4.9 5.4-5.3 7.8h.9c2 0 3.6 1.6 3.6 3.6s-1.6 3.6-3.6 3.6-4.7-1.5-4.7-4Z"/></svg>
+                            <p data-i18n="hero.quote"></p>
+                        </blockquote>
+                    </figure>
+                    <p class="hero-credit" data-i18n-html="hero.credit"></p>
                 </div>
             </div>
 
@@ -2026,6 +2196,50 @@
                     <p data-i18n="home.topics.lead"></p>
                 </div>
                 <div id="topicSection"></div>
+            </section>
+
+            <!-- 3b · Why — the landing tier's argument. Four claims, hairline-separated
+                 by a 1px GAP over the band's ground: a border-left draws a stray rule on
+                 the first cell of a wrapped row, which is the results band's lesson. -->
+            <section class="home-section" id="whyBand" data-tier="landing">
+                <div class="section-head section-head--centred">
+                    <p class="eyebrow" data-i18n="why.eyebrow"></p>
+                    <h2 data-i18n="why.title"></h2>
+                </div>
+                <ul class="why-grid">
+                    <li class="why-item"><span class="why-icon" data-icon="book" aria-hidden="true"></span><div><h3 data-i18n="why.1.title"></h3><p data-i18n="why.1.body"></p></div></li>
+                    <li class="why-item"><span class="why-icon" data-icon="shield" aria-hidden="true"></span><div><h3 data-i18n="why.2.title"></h3><p data-i18n="why.2.body"></p></div></li>
+                    <li class="why-item"><span class="why-icon" data-icon="community" aria-hidden="true"></span><div><h3 data-i18n="why.3.title"></h3><p data-i18n="why.3.body"></p></div></li>
+                    <li class="why-item"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
+                </ul>
+            </section>
+
+            <!-- 3c · The four headline numbers. They are READOUTS: capped at --fs-2xl so
+                 they cannot outrank a heading. -->
+            <section class="home-section" data-tier="landing">
+                <ul class="stats-grid">
+                    <li class="stats-item"><span class="stats-num">300</span><span class="stats-label" data-i18n="stats.1"></span></li>
+                    <li class="stats-item"><span class="stats-num">16</span><span class="stats-label" data-i18n="stats.2"></span></li>
+                    <li class="stats-item"><span class="stats-num">2</span><span class="stats-label" data-i18n="stats.3"></span></li>
+                    <li class="stats-item"><span class="stats-num">60</span><span class="stats-label" data-i18n="stats.4"></span></li>
+                    <li class="stats-item stats-item--note"><p class="script-note" data-i18n="stats.annotation"></p></li>
+                </ul>
+            </section>
+
+            <!-- 3d · One last call. The gate is an ornament: remove it and the band is
+                 still heading, lead and button. -->
+            <section class="home-section cta-band" data-tier="landing">
+                <div class="cta-copy">
+                    <p class="eyebrow" data-i18n="cta.eyebrow"></p>
+                    <h2 data-i18n="cta.title"></h2>
+                    <p class="cta-lead" data-i18n="cta.lead"></p>
+                </div>
+                <button class="btn-primary btn-lg cta-btn" onclick="scrollToId('homeMain')">
+                    <span data-i18n="cta.button"></span>
+                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
+                </button>
+                <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
+                <p class="script-note cta-note" data-i18n="cta.annotation"></p>
             </section>
 
             <!-- 4 · Quieter tail: what you did, and what the words mean. Nothing to look
@@ -2315,9 +2529,42 @@
             'nav.language':        { en: 'Interface language',      de: 'Sprache der Oberfläche' },
 
             // hero
-            'hero.headline':       { en: 'Pass your <span class="hero-mark">citizenship test</span> first time.', de: 'Bestehe deinen <span class="hero-mark">Einbürgerungstest</span> beim ersten Versuch.' },
-            'hero.lead':           { en: 'Practise all 300 official questions plus the 10 for your state. Spaced repetition, a real exam simulation, and explanations in German and English. Free, no account, straight in the browser.', de: 'Übe alle 300 amtlichen Fragen plus deine 10 Landesfragen. Mit smarter Wiederholung, echter Prüfungssimulation und Erklärungen auf Deutsch und Englisch. Kostenlos, ohne Konto, direkt im Browser.' },
-            'hero.cta':            { en: 'Start practising',        de: 'Jetzt üben' },
+            'hero.eyebrow':        { en: 'Your step towards a brighter tomorrow', de: 'Dein Schritt in eine bessere Zukunft' },
+            'hero.headline':       { en: 'German Naturalization Test', de: 'Der deutsche Einbürgerungstest' },
+            'hero.lead':           { en: 'Practise with all 300 official questions — for all 16 federal states. In German or English. Anytime, anywhere.', de: 'Übe mit allen 300 amtlichen Fragen — für alle 16 Bundesländer. Auf Deutsch oder Englisch. Jederzeit, überall.' },
+            'hero.cta':            { en: 'Start now',                de: 'Jetzt starten' },
+            'hero.cta2':           { en: 'Learn more',               de: 'Mehr erfahren' },
+            'hero.chip1':          { en: '300 official questions',   de: '300 amtliche Fragen' },
+            'hero.chip2':          { en: 'All 16 federal states',    de: 'Alle 16 Bundesländer' },
+            'hero.chip3':          { en: 'German & English',         de: 'Deutsch & Englisch' },
+            'hero.chip4':          { en: '60-minute test',           de: '60-Minuten-Test' },
+            'hero.annotation':     { en: 'Same questions. A brighter future.', de: 'Dieselben Fragen. Eine bessere Zukunft.' },
+            'hero.quote':          { en: 'Knowledge opens doors — for you and your family.', de: 'Wissen öffnet Türen — für dich und deine Familie.' },
+            'hero.photoAlt':       { en: 'The west façade of the Reichstag in Berlin, inscribed DEM DEUTSCHEN VOLKE, with the German and European flags flying in front of it.', de: 'Die Westfassade des Reichstags in Berlin mit der Inschrift DEM DEUTSCHEN VOLKE, davor die deutsche und die europäische Flagge.' },
+            'hero.credit':         { en: 'Photo: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>', de: 'Foto: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>' },
+
+            'why.eyebrow':         { en: 'Why EIB Quiz?',            de: 'Warum EIB Quiz?' },
+            'why.title':           { en: 'Simple. Effective. Reliable.', de: 'Einfach. Wirksam. Verlässlich.' },
+            'why.1.title':         { en: 'Official content',         de: 'Amtliche Inhalte' },
+            'why.1.body':          { en: 'All 300 questions from the official catalogue.', de: 'Alle 300 Fragen aus dem amtlichen Fragenkatalog.' },
+            'why.2.title':         { en: 'Always complete',          de: 'Immer vollständig' },
+            'why.2.body':          { en: 'Every one of the 16 federal states, with its own ten questions.', de: 'Alle 16 Bundesländer, jedes mit seinen eigenen zehn Fragen.' },
+            'why.3.title':         { en: 'Flexible learning',        de: 'Flexibles Lernen' },
+            'why.3.body':          { en: 'In German or English. On any device.', de: 'Auf Deutsch oder Englisch. Auf jedem Gerät.' },
+            'why.4.title':         { en: 'Build your future',        de: 'Bau deine Zukunft' },
+            'why.4.body':          { en: 'More confidence. New opportunities.', de: 'Mehr Sicherheit. Neue Möglichkeiten.' },
+
+            'stats.1':             { en: 'Official questions',       de: 'Amtliche Fragen' },
+            'stats.2':             { en: 'Federal states',           de: 'Bundesländer' },
+            'stats.3':             { en: 'Languages (German & English)', de: 'Sprachen (Deutsch & Englisch)' },
+            'stats.4':             { en: 'Minutes (real test)',      de: 'Minuten (echte Prüfung)' },
+            'stats.annotation':    { en: 'A small step. A bigger future.', de: 'Ein kleiner Schritt. Eine große Zukunft.' },
+
+            'cta.eyebrow':         { en: 'Ready to get started?',    de: 'Bereit loszulegen?' },
+            'cta.title':           { en: 'Take the next step today.', de: 'Geh heute den nächsten Schritt.' },
+            'cta.lead':            { en: 'Practise, build your confidence and reach your goal.', de: 'Übe, gewinne Sicherheit und erreiche dein Ziel.' },
+            'cta.button':          { en: 'Start practising',         de: 'Jetzt üben' },
+            'cta.annotation':      { en: 'Citizenship opens new paths.', de: 'Einbürgerung öffnet neue Wege.' },
 
             // home sections
             'home.progress.title': { en: 'Where you stand',         de: 'Dein Stand' },
@@ -2482,6 +2729,7 @@
             document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
             document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
             document.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', t(el.dataset.i18nTitle)); });
+            document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.setAttribute('alt', t(el.dataset.i18nAlt)); });
         }
 
         /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
@@ -2707,10 +2955,12 @@
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
-        // Landing hero CTA: smooth-scroll down to the main bento content
-        // (respects reduced-motion; scroll-margin-top offsets the sticky header).
-        function scrollToMain() {
-            const el = document.getElementById('homeMain');
+        // The landing tier's buttons are all on-page anchors: Start Now and the CTA band
+        // go to the mode grid, Learn More to the why-band. There is no About page and
+        // none of them links one. (Respects reduced-motion; the targets carry
+        // scroll-margin-top so the sticky header does not cover the heading.)
+        function scrollToId(id) {
+            const el = document.getElementById(id);
             if (!el) return;
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
@@ -4154,6 +4404,10 @@
         document.getElementById('sidebarToggle').addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNavPanel(); }
         });
+        // Static markup names its glyph with data-icon rather than carrying the path, so
+        // the icon set stays the single definition. One pass at boot fills them all.
+        document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = ICONS[el.dataset.icon] || ''; });
+        document.getElementById('ctaArt').innerHTML = GATE_ART;
         // One arrow in the icon set; the back button mirrors it in CSS.
         document.querySelector('.session-back-icon').innerHTML = ICONS.arrowRight;
         document.getElementById('sidebarChevron').innerHTML = ICONS.chevron;

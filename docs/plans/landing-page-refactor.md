@@ -1,6 +1,6 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
-Status: **Phases 0-1 complete, 2026-09-21.** Phases 2-7 not started.
+Status: **Phases 0-2, 4 and 5 complete, 2026-09-21.** Phases 3, 6 and 7 open.
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
@@ -320,9 +320,9 @@ would delete topic practice for the length of one phase. Until then
 
 ---
 
-## Phase 2 — Hero
+## Phase 2 — Hero  ·  **DONE**
 
-### 2.1 Two-column hero shell
+### 2.1 Two-column hero shell  ·  done
 `[index.html]`
 
 Text left, photo panel right. Single column below 940px, photo first.
@@ -331,7 +331,7 @@ Text left, photo panel right. Single column below 940px, photo first.
 - **Accept when:** the panel holds its aspect at 1600 / 1280 / 940 / 620 /
   375px with no letterboxing and no horizontal scroll.
 
-### 2.2 Eyebrow, headline, lead
+### 2.2 Eyebrow, headline, lead  ·  done
 `[index.html, I18N]`
 
 - Eyebrow takes `.eyebrow` and `--ls-caps` — reuse, do not restyle.
@@ -343,7 +343,7 @@ Text left, photo panel right. Single column below 940px, photo first.
 - **Accept when:** the headline sets on two lines at desktop width in both
   languages, and `scale.test.mjs` reports zero literal font-sizes.
 
-### 2.3 Two buttons
+### 2.3 Two buttons  ·  done
 `[index.html, I18N]`
 
 `Start Now` (primary) and `Learn More` (secondary), both `--ctl-lg`.
@@ -353,7 +353,7 @@ Text left, photo panel right. Single column below 940px, photo first.
   one.
 - **Accept when:** both clear 44px, and both work with the keyboard.
 
-### 2.4 Four feature chips — neutral icons, no plate
+### 2.4 Four feature chips — neutral icons, no plate  ·  done
 `[index.html, I18N]`
 
 `300 official questions` · `All 16 federal states` · `German & English` ·
@@ -365,7 +365,7 @@ Text left, photo panel right. Single column below 940px, photo first.
 - **Accept when:** all four labels fit one line each at 375px in German, and
   no chip has a `background` or `border`.
 
-### 2.5 Script annotation and quote card
+### 2.5 Script annotation and quote card  ·  done, with two deviations
 `[index.html, I18N]`
 
 - Annotation top-left over the photo, `--font-hand`, plus the curved arrow as
@@ -440,9 +440,9 @@ Centred. The mockup's pale panel behind the band is `--surface2`.
 
 ---
 
-## Phase 4 — Why-band and stats band
+## Phase 4 — Why-band and stats band  ·  **DONE**
 
-### 4.1 Why-band
+### 4.1 Why-band  ·  done
 `[index.html, I18N]`
 
 Eyebrow `WHY EIB QUIZ?`, `h2` `Simple. Effective. Reliable.`, then four items:
@@ -457,7 +457,7 @@ does.
 - **Accept when:** four across above 940px, two across at tablet, one at
   375px, with no stray separator on any wrapped row.
 
-### 4.2 Stats band
+### 4.2 Stats band  ·  done
 `[index.html, I18N]`
 
 `300` · `16` · `2` · `60` with labels, hairline-separated, plus the second
@@ -472,9 +472,9 @@ script annotation at the right.
 
 ---
 
-## Phase 5 — CTA band
+## Phase 5 — CTA band  ·  **DONE**
 
-### 5.1 The band
+### 5.1 The band  ·  done
 `[index.html, I18N]`
 
 Eyebrow, `h2`, one-line lead, one primary button, the Brandenburg line art and
@@ -486,6 +486,55 @@ the third annotation.
   `cta.annotation`.
 - **Accept when:** below 620px the art and the annotation are hidden and the
   band is heading, lead, button.
+
+
+### What phases 2, 4 and 5 decided that the plan did not
+
+**The photograph is 1:1 at every width, and the crop is load-bearing.**
+`img/hero-reichstag.webp` is a 1100×1100 square crop of the phase-0 download,
+centred at 54% of its width so the German flag survives. Holding one aspect at
+every width is what lets the overlays be placed in percentages that stay true.
+
+**The margin note is top RIGHT, and the mockup's curved arrow is gone.** The
+note sits on a photograph, so its ground is not a token and its ink is the
+literal `#16233A`, registered in `LITERAL_PAIRS` against `#D0D3D8` — the
+darkest pixel measured under it (210 of 255). That patch is the only clean sky
+in the frame: the mockup's top-left corner is our EU flag, and every region the
+arrow could have swept has a flagpole running through it, where a dark stroke
+would simply vanish. **If the crop is ever redone, that measurement has to be
+redone with it.**
+
+**The quote card sits INSIDE the frame, not overlapping its lower edge.** As a
+sibling of the photo it was positioned against the photo *plus its credit line*,
+and landed on top of the credit. Both overlays are children of `.hero-photo`
+now, so they are placed against the picture and nothing hangs into the flow.
+
+**The photo carries a visible credit.** It is CC BY-SA 4.0, which asks for
+attribution where the work is used, not only in `img/ATTRIBUTIONS.md`.
+`.hero-credit` / the `hero.credit` string is that line; it is not decoration and
+should not be tidied away.
+
+**`--surface2` is NOT the ground for these bands.** Task 3.5 sanctions it for
+the modes band because cards sit on it there. The why, numbers and CTA bands
+hold no cards, so a `--surface2` slab on the canvas is the 1.03 step in light
+that `CLAUDE.md` calls invisible. All three take the tile rule instead:
+`--surface` plus a `--border` hairline.
+
+**The hairline-separated band is now one rule, shared with the results
+screen.** `.result-stats, .why-grid, .stats-grid` declare `gap: 1px` together.
+Written separately it took `literalSpacing` to 3 and `gapRungs` to 8, both over
+budget — the ratchet caught it on the first run. For the same reason the hero's
+column gap is `--space-xl` and not `--space-2xl`: 40px is a gap rung nowhere
+else in the sheet, and a ninth rung is the flat histogram the test watches for.
+
+**Three margin notes, one class.** `.script-note` is the only rule that reads
+`--font-hand`; phase 0 planned for two classes and one is enough.
+
+**New plumbing, both one-liners:** `data-i18n-alt` in `applyStaticStrings()` for
+the photo's alt text, and a boot pass over `[data-icon]` that fills static
+markup from `ICONS`, so the icon set stays the single definition. `scrollToMain()`
+became `scrollToId(id)` — there are three on-page anchors now, not one.
+
 
 ---
 
