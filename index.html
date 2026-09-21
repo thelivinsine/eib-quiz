@@ -523,10 +523,16 @@
            anyone. aria-disabled announces the state and keeps the element reachable;
            there is no onclick, so activating it still does nothing. */
         .nav-link[aria-disabled="true"] { cursor: default; color: var(--faint); }
+        /* Small, and it cannot get there by shrinking the type: --fs-2xs IS the 12px
+           floor and scale.test.mjs holds fontSizesBelowFloor at 0. The size comes off
+           the CASE instead. "SOON" set uppercase with --ls-caps' 0.06em is far wider
+           than "Soon", and dropping both plus 2px of side padding takes the chip from
+           ~46px to ~34px with the type untouched. The letter-spacing line is DELETED
+           rather than set to --ls-normal: only two tracking values are in use and
+           distinctTracking is budgeted at 2, so naming a third would bust it. */
         .nav-soon {
-            font-size: var(--fs-2xs); font-weight: 600; letter-spacing: var(--ls-caps);
-            text-transform: uppercase;
-            padding: var(--space-3xs) var(--space-xs);
+            font-size: var(--fs-2xs); font-weight: 600;
+            padding: var(--space-3xs) var(--space-2xs);
             border-radius: var(--radius-pill);
             background: var(--surface2); color: var(--muted);
         }
@@ -876,8 +882,15 @@
             display: flex; flex-wrap: wrap; gap: var(--space-ms);
             margin-top: var(--space-lg);
         }
-        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
-        .hero-cta-row .btn-primary svg { width: var(--icon-md); height: var(--icon-md); }
+        /* One rung down each, on request: --ctl-md (44px) rather than --ctl-lg (52),
+           --space-lg of side padding rather than --space-xl, --fs-base rather than
+           --fs-md, and --icon-sm for the arrow. 44px is still the app's touch floor,
+           so nothing here drops below what everything else holds to. This lands the pair
+           on exactly .btn-lg's metrics, which is what the CTA band's button has always
+           rendered at (see .cta-btn) — so the page's three primary actions now agree
+           rather than the hero's being a rung larger. */
+        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
+        .hero-cta-row .btn-primary svg { width: var(--icon-sm); height: var(--icon-sm); }
 
         /* Four facts, each a tinted disc over a label — the mockup's own treatment.
            --ctl-lg is 52px, which is the disc the mockup draws, so the size is a token
@@ -926,20 +939,6 @@
             width: 46%; text-align: right;
             color: #16233A;
         }
-        /* A card in the photo's lower corner. A fill and a hairline, no shadow — the one
-           place the mockup uses one and this app does not. Inside the frame rather than
-           overlapping its edge, so it cannot land on the credit line below. */
-        .hero-quote {
-            position: absolute; right: var(--space-md); bottom: var(--space-md);
-            max-width: 68%;
-            display: flex; gap: var(--space-sm);
-            padding: var(--space-ms) var(--space-md);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
-        .hero-quote p { font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text); }
-        .hero-quote-mark { flex: none; width: var(--icon-sm); height: var(--icon-sm); color: var(--muted); }
 
         .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
         .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
@@ -959,9 +958,26 @@
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: var(--space-xl);
         }
+        /* Its own block of air: the section sits between two panels on a white page
+           with nothing but whitespace to separate it from either. */
+        #whyBand { padding-block: var(--space-2xl); }
+        /* 40px under the heading rather than the global 12px. A centred heading over a
+           four-column row needs to read as a heading, not as a first line. Scoped to
+           this section: .section-head's own margin is shared with every other one. */
+        #whyBand .section-head { margin-bottom: var(--space-2xl); }
+        /* Same reasoning in the practise band, which is now a single centred line
+           over the picker and the five cards. */
+        .modes-band .section-head { margin-bottom: var(--space-lg); }
         .why-item {
             flex: 1 1 210px; min-width: 0;
-            display: flex; align-items: flex-start; gap: var(--space-ms);
+            /* --space-md, up from --space-ms: a 44px disc needs more than 12px before
+               the text starts, and --space-md is already a gap rung so this costs the
+               histogram nothing. */
+            display: flex; align-items: flex-start; gap: var(--space-md);
+            /* Vertical air INSIDE the item, not horizontal: padding-inline here would
+               inset the first and last items from the page's content edge and break
+               their alignment with every other section. */
+            padding-block: var(--space-sm);
         }
         .why-icon {
             flex: none; display: grid; place-items: center;
@@ -971,7 +987,7 @@
         }
         .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
-        .why-item p { margin-top: var(--space-2xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
+        .why-item p { margin-top: var(--space-xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
 
         .stats-item {
             flex: 1 1 130px; min-width: 0;
@@ -1009,7 +1025,14 @@
             color: var(--text);
         }
         .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
-        .cta-btn { flex: none; min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
+        /* flex: none, and nothing else. This rule also set min-height: --ctl-lg,
+           --space-xl of padding and --fs-md, and ALL THREE were dead: the markup is
+           `btn-primary btn-lg cta-btn`, and .btn-lg sits ~440 lines later in the
+           sheet at the same single-class specificity, so it won every one of them.
+           The button has always rendered at .btn-lg's 44px/--space-lg/--fs-base;
+           measuring it is what found this. Size it through .btn-lg, or drop that
+           class from the markup — do not re-add declarations here. */
+        .cta-btn { flex: none; }
         .cta-btn svg { width: var(--icon-md); height: var(--icon-md); }
         /* An ornament. Take it out and the band is still heading, lead and button. */
         .cta-art { flex: none; display: block; color: var(--border-hover); }
@@ -1485,11 +1508,17 @@
         .footer-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
         /* The small print reads as a column of quiet lines, right-aligned against the
            mark opposite. --sub-text, not --muted: the disclaimer and the licence are
-           things a reader may actually need. */
+           things a reader may actually need.
+           It was 52ch of --fs-2xs with 4px between the lines, which is ~317px at 12px
+           — every sentence wrapped and the block read as a compressed strip. 76ch of
+           --fs-xs is ~500px, the type is a step up off the floor, and --space-sm
+           between the lines (the rung that already carries the page) lets them breathe.
+           The cap is in `ch` rather than px on purpose: it is a MEASURE, so it should
+           track the font rather than a layout width. */
         .footer-meta {
-            display: flex; flex-direction: column; gap: var(--space-2xs);
-            max-width: 52ch; text-align: right;
-            font-size: var(--fs-2xs); line-height: var(--lh-prose); color: var(--sub-text);
+            display: flex; flex-direction: column; gap: var(--space-sm);
+            max-width: 76ch; text-align: right;
+            font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text);
         }
         .footer-credit { color: var(--muted); }
         .footer-credit a { color: inherit; text-decoration: underline; }
@@ -2132,7 +2161,7 @@
             /* Hero: introduce, then get out of the way. */
             .hero-landing { padding: var(--space-ms) 0 var(--space-lg); gap: var(--space-lg); }
             .hero-cta-row { width: 100%; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-ms); }
-            .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; padding: var(--space-ms) var(--space-lg); }
+            .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; }
             /* Four labels across a 375px row is 75px a column, and "Bundesländer"
                alone is wider than that. */
             .hero-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-ms); margin-top: var(--space-lg); }
@@ -2426,10 +2455,6 @@
                              LITERAL_PAIRS. The mockup's curved arrow is dropped - every
                              region it could point from has a flagpole running through it. -->
                         <p class="script-note hero-note" data-i18n="hero.annotation"></p>
-                        <blockquote class="hero-quote">
-                            <svg class="hero-quote-mark" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M3.4 17.6c0-4.9 2.4-9.2 7.1-13.2l2 2.2C9.4 9.4 7.6 12 7.2 14.4h.9c2 0 3.6 1.6 3.6 3.6s-1.6 3.6-3.6 3.6-4.7-1.5-4.7-4Zm9.5 0c0-4.9 2.4-9.2 7.1-13.2l2 2.2c-3.1 2.8-4.9 5.4-5.3 7.8h.9c2 0 3.6 1.6 3.6 3.6s-1.6 3.6-3.6 3.6-4.7-1.5-4.7-4Z"/></svg>
-                            <p data-i18n="hero.quote"></p>
-                        </blockquote>
                     </figure>
                 </div>
             </div>
@@ -2447,10 +2472,12 @@
                  #homeMain because the hero's CTA scrolls here: "Where you stand" is hidden
                  on the tier that has a hero. -->
             <section class="home-section modes-band" id="homeMain">
+                <!-- The heading alone. "Practise your way" and "Five ways in - one
+                     goal: passing." both said what "Choose your practice mode" plus
+                     five visibly different cards already say, and three stacked lines
+                     of chrome pushed the cards down the panel for nothing. -->
                 <div class="section-head section-head--centred">
-                    <p class="eyebrow" data-i18n="home.practice.eyebrow"></p>
                     <h2 data-i18n="home.practice.title"></h2>
-                    <p data-i18n="home.practice.lead"></p>
                 </div>
                 <!-- The picker sits UNDER the centred heading rather than opposite it:
                      it still belongs to the section it changes, but a centred heading
@@ -2849,7 +2876,6 @@
             'hero.chip3':          { en: 'German & English',         de: 'Deutsch & Englisch' },
             'hero.chip4':          { en: '60-minute test',           de: '60-Minuten-Test' },
             'hero.annotation':     { en: 'Same questions. A brighter future.', de: 'Dieselben Fragen. Eine bessere Zukunft.' },
-            'hero.quote':          { en: 'Knowledge opens doors — for you and your family.', de: 'Wissen öffnet Türen — für dich und deine Familie.' },
             'hero.photoAlt':       { en: 'The west façade of the Reichstag in Berlin, inscribed DEM DEUTSCHEN VOLKE, with the German and European flags flying in front of it.', de: 'Die Westfassade des Reichstags in Berlin mit der Inschrift DEM DEUTSCHEN VOLKE, davor die deutsche und die europäische Flagge.' },
             // footer. The credit was `hero.credit` under the photo until 2026-09-21;
             // BY-SA asks for it where the work is used, and the footer of the page the
@@ -2884,9 +2910,7 @@
             // home sections
             'home.progress.title': { en: 'Where you stand',         de: 'Dein Stand' },
             'home.progress.lead':  { en: 'Your accuracy across every question you have answered so far.', de: 'Deine Trefferquote über alle bisher beantworteten Fragen.' },
-            'home.practice.eyebrow': { en: 'Practise your way',    de: 'Übe, wie es dir passt' },
             'home.practice.title': { en: 'Choose your practice mode', de: 'Wähle deinen Übungsmodus' },
-            'home.practice.lead':  { en: 'Five ways in — one goal: passing.', de: 'Fünf Wege hinein — ein Ziel: bestehen.' },
             'home.more.title':     { en: 'Past rounds & glossary',  de: 'Frühere Runden & Glossar' },
             'home.more.lead':      { en: 'Past rounds, and the terms the questions assume you know.', de: 'Frühere Runden und die Begriffe, die die Fragen voraussetzen.' },
 

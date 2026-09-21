@@ -122,6 +122,10 @@ const PAIRS = [
   // surface pairs above do not cover. The cards ON it are ordinary --surface tiles.
   ["text", "band", AA, "the practise band's heading, centred on the panel"],
   ["muted", "band", AA, "its eyebrow and one-line description"],
+  // The footer is a --band panel too, and its small print is --sub-text rather than
+  // --muted: the source note, the disclaimer and the licence are things a reader may
+  // actually need. This ground was unasserted for that tier since the footer shipped.
+  ["sub-text", "band", AA, "the footer's source note and disclaimer"],
   ["faint", "canvas", AA, "the same two, where a tile is not behind them"],
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
