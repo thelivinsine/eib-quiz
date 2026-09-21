@@ -117,8 +117,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `#10151D`, near-black, with `--band` recessed *beneath* it. **THE PAGE IS NOW THE
     DARKEST THING ON SCREEN AND NOTHING GOES BELOW IT** — see the ladder below. The rungs:
     `--canvas` `#1A1A1A` → `--band` `#262626` (1.15) → `--surface` `#323232` (1.18 on the
-    band, 1.36 on the bare page) → `--surface2` `#3B3B3B` (1.14) → `--surface3` `#434343`
-    (1.13), the step shrinking with depth exactly as §3.a describes. **`--hover` was the
+    band) → `--surface2` `#3B3B3B` (1.14) → `--surface3` `#434343` (1.13), the step
+    shrinking with depth exactly as §3.a describes. **The band → surface rung is how the
+    value was DERIVED and has had no instance on screen since the practise panel went**
+    (2026-09-21): a tile's only ground is the page, at **1.36**, and `--band` now carries
+    text alone. **`--hover` was the
     other failure and the more expensive one**: 1.182 on a tile, under §4's flat "**1.20 is
     the floor for a state change**", and `contrast.test.mjs` cannot catch it because
     `FILLS` asserts `STATE` at 1.08. It is 1.22. The tiers read 12.82 / 8.40 / 6.11 / 5.02
@@ -652,14 +655,29 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       had **zero** slack — so the box that was most short of width is the one the
       deletion paid. `white-space: nowrap` and `overflow: hidden` on `.mode-meta` stay:
       they are the guarantee, not the fit.
-    - **The two `html.light .modes-band` state rules went with it**, and had to. They
-      raised hover to `--surface2` and press to `--surface3` because on `--band` the base
-      fills landed 1.067 and 1.039, under the 1.05 nesting floor. On the canvas the base
-      rules clear it unaided — `--hover` is 1.12 below white, `--surface3` 1.29 — so both
-      themes share one pair again. `contrast.test.mjs` lost `surface`/`band`,
+    - **The two `html.light .modes-band` state rules went with it, and only ONE of them
+      was ever real.** The hover rule raised a light card to `--surface2` because
+      `--hover` landed 1.067 from `--band`, under the 1.05 nesting floor. **The `:active`
+      rule was a no-op**: it set `--surface3`, which is exactly what `.mode-card:active`
+      already sets, so it never painted a pixel — and the 1.039 this file quoted for the
+      light press fill was `--hover`'s number, a fill the press never used (it was 1.215
+      off the band). **Do not restore it.** On the canvas the base rules stand unaided:
+      press is `--surface3`, 1.294 below white. `contrast.test.mjs` lost `surface`/`band`,
       `surface2`/`band` and `surface3`/`band` in the same commit: **no `--surface` tile
       sits on `--band` any more**, resting, hovered or pressed, and a pair with no
       consumer is the stale-ground bug in the LITERAL_PAIRS note one level up.
+    - **Light's card hover is 1.115 and that is the LIGHT reference's number, not a
+      regression.** It was 1.149 on the band, so the deletion made it quieter, and §4's
+      flat "1.20 is the floor for a state change" — quoted in the dark-ladder bullet
+      above — looks like it condemns this. **That floor is `theme-dark.md`'s.**
+      `theme-light.md` §4 measures light's whole state band at "roughly 1.10 to 1.25",
+      puts real nav and menu hovers at **1.11**, and says the loudest state change it
+      found anywhere is 1.25; it also warns that a light hover is nearly invisible in
+      daylight whatever value you pick, which is why "**neither app relies on hover
+      alone**". Reading dark's floor onto light is the same category error as reading
+      the light-only mockup onto dark, which is what the 2026-09-21 re-derivation
+      existed to undo. Every other hoverable tile in light is 1.115 too; the band's
+      1.149 was compensation for a ground that no longer exists.
     - **`--band` itself stays** — the numbers band, the CTA band and the footer are still
       pale panels, and `canvas`/`band` is still asserted for them. The direction remains
       the theme's: a recess in light (the mockup's, 1.065 below its white page), a raised

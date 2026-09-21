@@ -106,12 +106,15 @@
 
             --canvas:    #1A1A1A;
             --bg:        #1A1A1A;
-            --surface:   #323232;   /* tile — 1.18 on the band, 1.36 on the page */
+            --surface:   #323232;   /* tile — 1.36 on the page, which is the only ground it has */
             --surface2:  #3B3B3B;   /* well or option inside a tile — 1.14 on it */
             --surface3:  #434343;   /* letter chip, track, press fill — 1.13 on that */
             --hover:     #3F3F3F;   /* hover steps UP — 1.22 on a tile, clearing §4's 1.20 */
-            /* The panel under the practise band, the numbers band, the CTA band and the
-               footer. In LIGHT it is a RECESS, because the mockup draws it darker than its
+            /* The panel under the numbers band, the CTA band and the footer — THREE
+               consumers, not four: the practise band's panel was removed on 2026-09-21
+               and no --surface tile sits on --band any more, which is why
+               contrast.test.mjs asserts only canvas/band on this ground.
+               In LIGHT it is a RECESS, because the mockup draws it darker than its
                white page and light has no "up" to go.
                IN DARK IT IS THE OPPOSITE, AND THAT IS THE WHOLE LADDER (2026-09-21, on
                request, after it shipped as a recess here too). theme-dark.md §3: "every
@@ -122,13 +125,17 @@
                panel holding five cards is not a hole. So the page is the darkest thing on
                screen and the ladder only climbs from here:
                  --canvas  #1A1A1A   the page
-                 --band    #262626   1.15   a panel ON the page
-                 --surface #323232   1.18   a card IN the panel (1.36 on the bare page)
+                 --band    #262626   1.15   a panel ON the page (text only, no tiles)
+                 --surface #323232   1.18   the rung the value was DERIVED at; in the app
+                                            a tile sits on the page, at 1.36
                  --surface2 #3B3B3B  1.14   a well or an option INSIDE a card
                  --surface3 #434343  1.13   a letter chip inside THAT, and the press fill
                §3.a: the step SHRINKS with depth (1.30, 1.22, 1.13 in the reference),
                because there is less headroom at each level. Do not add a sixth rung —
-               §3 says depth 3 is where fill stops working and the hairline takes over. */
+               §3 says depth 3 is where fill stops working and the hairline takes over.
+               The band -> surface rung is kept in this derivation because it is what
+               sized --surface; it has no instance on screen since the practise panel
+               went, and a tile clears the page by 1.36 rather than 1.18. */
             --band:      #262626;
 
             /* The hairline carries dark mode, because the FILLS cannot.
@@ -1291,11 +1298,23 @@
         }
         .mode-card:active { background: var(--surface3); }
 
-        /* The two html.light .modes-band state rules are GONE with the panel: they raised
-           hover to --surface2 and press to --surface3 because on a --band ground the base
-           fills landed 1.067 and 1.039 from it, under the 1.05 nesting floor. On the
-           canvas the base rules clear it on their own — --hover is 1.12 below white and
-           --surface3 1.29 — so light and dark share one pair again. */
+        /* The two html.light .modes-band state rules are GONE with the panel, and they
+           were not equal. The HOVER rule was real: it raised a light card to --surface2
+           because --hover landed 1.067 from --band, under the 1.05 nesting floor. The
+           :ACTIVE rule was a no-op — it set --surface3, which is exactly what
+           .mode-card:active above already sets, so it never painted a pixel; the 1.039
+           figure this file and CLAUDE.md both quoted for it described --hover, a fill
+           the light press never used. Do not "restore" it.
+           On the canvas the base rules stand on their own: press is --surface3, 1.294
+           below white, and hover is --hover, 1.115. That hover is QUIETER than the
+           band's 1.149 and it is still right — theme-light.md §4 is explicit that
+           light's whole state band is "roughly 1.10 to 1.25", measures real nav and menu
+           hovers at 1.11, and warns that a light hover is nearly invisible in daylight
+           whatever value you pick, which is why "neither app relies on hover alone".
+           §4's flat 1.20 floor is the DARK reference's, and reading it onto light is the
+           same category error as reading the light-only mockup onto dark. Every other
+           hoverable tile in light is 1.115 too; the band's 1.149 was compensation for a
+           ground that no longer exists, not a target to preserve. */
 
         /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
            solid Start pill. The landing page sells five modes as peers, so the treatment

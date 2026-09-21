@@ -1534,3 +1534,55 @@ Three things follow, none of them cosmetic:
 - The 1160px three-column breakpoint was not re-measured. It may now be conservative —
   the German word it exists for fits on one line at five columns with the extra width —
   but nothing was changed there and it was not tested at 1160-1280.
+
+---
+
+## Session close (2026-09-21, review of #94 and its three fixes)
+
+A review of the just-merged #94 (the practice band's panel removed). The removal itself
+held: `.mode-card` and `.topic-chip` both carry base `:hover`/`:active` rules, so deleting
+the band-scoped ones left no state unstyled, and every `background: var(--surface)` rule in
+the sheet was checked against the three remaining `--band` grounds — none can land on one,
+so dropping the three FILL pairs was right. **All three fixes are comments; no declaration
+changed.**
+
+### 1. Two token comments still described the deleted panel
+
+`--band` read "The panel under the practise band, the numbers band, the CTA band and the
+footer" — three consumers now, not four — and its ladder had `--surface` as "a card IN the
+panel", while `--surface` itself was annotated "1.18 on the band, 1.36 on the page". The
+same commit had deleted the FILL pairs asserting exactly that step, so the comment and the
+test contradicted each other. The band → surface rung is now labelled as **the derivation**
+it is: it sized `--surface`, and has had no instance on screen since the panel went.
+
+### 2. The light hover: the finding was right, the fix is NOT to raise it
+
+The hover did get quieter — 1.149 on the band, 1.115 on the canvas — and the comment did
+cite the wrong floor (the 1.05 nesting floor, for a state change). But **`theme-light.md`
+§4 settles it the other way**: light's whole state band is "roughly 1.10 to 1.25", real nav
+and menu hovers measure **1.11**, and the loudest state change in the reference is 1.25.
+The flat 1.20 floor is `theme-dark.md`'s. Reading it onto light is the same category error
+as reading the light-only mockup onto dark — the error the whole 2026-09-21 re-derivation
+existed to undo. Every other hoverable tile in light is 1.115; the band's 1.149 was
+compensation for a ground that no longer exists. **The value stays and the argument is
+rewritten**, in the sheet and in `CLAUDE.md`.
+
+### 3. One of the two deleted state rules was a no-op
+
+`html.light .modes-band .mode-card:active` set `--surface3` — exactly what
+`.mode-card:active` already sets. It never painted a pixel, and the 1.039 both the sheet
+and `CLAUDE.md` quoted for the light press fill was `--hover`'s number; the press was
+really 1.215 off the band. Both now say so, with "do not restore it".
+
+### Verified
+
+- `contrast.test.mjs` 10/10, `scale.test.mjs` 12/12, `node --check` clean.
+- The diff is comments only — checked by filtering the hunks for declarations, and the one
+  line that looks like a token change (`--surface`) is its trailing comment.
+
+### Not verified
+
+- **Nothing was rendered for this change**, deliberately: no declaration moved, so there
+  is nothing new to look at. The 1.115 and 1.149 figures are computed from the tokens.
+- The claim that every other hoverable tile in light is 1.115 was checked by reading the
+  `--hover` rules in the sheet, not by hovering each one in a browser.
