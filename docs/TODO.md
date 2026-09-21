@@ -798,3 +798,95 @@ specificity. Ring numerals measured at two widths.
 **Not verified there either:** the in-app browser pane would not paint or synthesise hover
 (window hidden), so the light hover and press states are confirmed from the CSSOM and the
 measured token values, **not from a rendered pixel**. Nothing was checked on the live site.
+
+
+## Session developments (2026-09-21, honest refactor against the mockup)
+
+The live site was compared against `docs/Mockups/ui/landing-page.png` side by side and read
+nothing like it. **On request, every project rule that stood in the way was overridden** —
+with one exception the request named: the ICON ARTWORK stays this app's own inline solid
+set, so the mockup's outlined style was not chased.
+
+The gap was not cosmetic. Sampled out of the mockup PNG rather than eyeballed:
+
+| | mockup | was live |
+|---|---|---|
+| canvas | **#FEFEFE** (white) | `#F1F3F8` paper-grey |
+| primary button | **#132338** near-black navy | `#2563EB` blue |
+| the lower bands | pale panels `#F4F8FB` | grey recess + white tiles |
+| hero facts | 4 **tinted 52px discs**, coloured glyphs | bare grey glyphs |
+| mode cards | 4, tinted plate + **solid coloured arrow disc with a named action** | 5, all grey, corner arrow |
+| why marks | 4 **tinted discs**, coloured glyphs | bare grey glyphs |
+| header | centre nav + globe/EN dropdown + navy CTA | no nav, two segments, blue CTA |
+
+### Three forks the user decided
+
+1. **Five mode cards, not the mockup's four** — in the mockup's card style. Dropping Smart
+   Review to make the grid match a picture is a product decision, and the answer was no.
+2. **The white canvas goes app-wide in light**, not just on the landing tier.
+3. **Full header match**, including the globe dropdown, with the theme switch moved inside it.
+
+### What shipped
+
+- **The whole light ramp was re-derived against a white canvas**, numerically, before any
+  CSS was written — every value checked against the FILLS and PAIRS floors in one script,
+  then re-asserted by the test. Light now nests **DOWN** from white, which reverses the
+  direction of the old "raised surfaces go up towards white" rule. `--canvas`/`--surface`
+  `#FFFFFF`, `--surface2` `#E9F0F8` (1.15), `--surface3` `#DAE3F0`, `--hover` `#EEF3FA`,
+  `--band` `#F5F8FC` (1.065 below the page), `--border` `#E0E7F1` (1.245 on both).
+  The four tints deepened a rung with it, because a `#EFF4FE` wash is 1.04 on white and
+  invisible as a plate.
+- **`surface / canvas` is the one FILL pair the contrast test no longer asserts**, and the
+  reason is written into the list: at the top of the ramp a tile cannot step up, so the
+  HAIRLINE carries a tile on the page — the argument `theme-dark.md` §5 makes for dark
+  being out of fill room at the bottom, applied to light being out of room at the top.
+- **Four new tokens**: `--btn-fill` / `--on-btn` (navy in light, the accent blue in dark —
+  the mockup never fills a button with blue), `--on-hue` (the glyph on any solid hue disc,
+  one value per theme because every light hue is a dark colour and every dark hue a light
+  one; white on dark's `#A78BFA` is 2.72 and would have failed), and `--violet`/`--violet-dim`.
+- **A hue-disc system that minted no other token.** `[data-hue]` maps five hues onto the
+  `--*-dim` / `--*` pairs the palette already carried, so every plate in the app was already
+  covered by `contrast.test.mjs`. The hero facts, the why marks and the mode-card icons read
+  it; a glyph on the canvas still has no plate.
+- **Mode cards**: a tinted `--radius-sm` plate above the title, and `.mode-go` replaced by
+  `.mode-start` — a solid hue disc with a white arrow and the action named beside it
+  (`mode.*.start`, five new strings, kept short because German decides that row's width).
+  Per-card hues: exam blue, all questions green, your state amber, Smart Review **rose**
+  (the one card where a warm alert hue says something true), by topic violet.
+- **Header**: a centre nav, and one globe `<details>` menu holding both switches. About and
+  FAQs are **`disabled` buttons carrying a Soon chip**, not links to nowhere — asked for
+  mid-session. The menu closes on an outside click or Escape (two listeners, no state).
+- **Answer options moved to `--surface2` in both themes.** The old light override existed
+  because `--surface2` was a 1.02 step on paper-grey; on white that argument inverts.
+
+### Two the ratchet caught, both real
+
+- **`.opt-letter` set `background` twice in one scope** — the new line came BEFORE the
+  chip's own rule, so `--surface2` won and the chip painted the same colour as the option
+  it sits in. Merged into the one rule and moved to `--surface3`; the option's hover and
+  `:active` went with it, because `--hover` steps DOWN from `--surface` in light and from
+  `--surface2` that is both the wrong direction and a 1.03 step.
+- **`gapRungs` rose to 8.** `--space-xs` (6px) was not a gap anywhere in this sheet and
+  four new header rules made it one. All four are `--space-sm`, the rung that already
+  carries the page.
+
+### Verified
+
+`contrast` 10/10 both themes with the new pairs, `scale` 12/12 with every budget unmoved,
+`validate.js` OK (460 questions), `node --check` on the extracted script and on `sw.js`.
+Rendered in headless Chrome and measured in the pane: **375px** `scrollWidth == clientWidth
+== 375` with zero overflowing elements, in English and German; **German at 1265px** five
+cards at 191px with every title and action row on ONE line, `Prüfungssimulation` included;
+the quiz screen's `scrollHeight == innerHeight` at 375, 940, 1280 and 1400; the results
+screen locked at 900 with `#endScreen` scrolling internally (8748/803) and all 33 review
+items present. The globe panel sits inside the viewport at both 375 and 1280, its theme
+switch works, and an outside click closes it.
+
+`sw.js`'s `CACHE` was **not** bumped and should not be: this touches neither `favicon.svg`,
+`manifest.json` nor the PNG icons, and `index.html` is network-first.
+
+**Not verified:** nothing was checked on the live site after deploy. Two things were
+confirmed as **pre-existing, not caused here**, by rendering `HEAD:index.html` the same
+way — the question navigator's grid renders empty in a headless run, and `#nextBtn` is
+`disabled` and near-invisible on dark before the first answer. Both reproduce identically
+on the previous build and are left alone.

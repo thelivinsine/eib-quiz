@@ -152,6 +152,22 @@ const PAIRS = [
   ["muted", "surface3", AA, "the letter chip on an option, and a dimmed option after answering"],
 
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
+  ["on-btn", "btn-fill", AA, "the label on a CTA — navy in light, accent blue in dark"],
+
+  // The five hue plates (see the HUE DISCS block in index.html). Each is a
+  // --*-dim / --* pair the palette already carried, which is why adding colour to
+  // the hero facts, the why marks and the mode cards minted no new token. The
+  // GLYPH on a plate is non-text UI, so AA_LARGE; the four already-listed pairs
+  // above cover the same values where they carry text instead.
+  ["violet", "violet-dim", AA, "the glyph on the violet plate (By topic, Flexible learning)"],
+  ["violet", "surface", AA, "the same glyph where no plate is behind it"],
+  // ...and the arrow on the SOLID disc under each mode card's action. One --on-hue
+  // per theme: every light hue is a dark colour and every dark hue a light one.
+  ["on-hue", "accent-text", AA_LARGE, "the arrow on the blue card's start disc"],
+  ["on-hue", "green", AA_LARGE, "the arrow on the green card's start disc"],
+  ["on-hue", "gold", AA_LARGE, "the arrow on the amber card's start disc"],
+  ["on-hue", "red-text", AA_LARGE, "the arrow on the rose card's start disc"],
+  ["on-hue", "violet", AA_LARGE, "the arrow on the violet card's start disc"],
 
   // --accent-soft is a tinted ground rather than a tile, and three tiers land on
   // it: the resume banner's text, a picked option in the exam, and a navigator
@@ -179,10 +195,17 @@ const STATE = 1.08;
 const HAIRLINE = 1.1;
 
 const FILLS = [
-  ["surface", "canvas", NEST, "a tile, held off the page by this step and its hairline"],
+  // `surface / canvas` is NOT asserted, and that is the one deliberate hole in this
+  // list. The mockup's page is white, so light's --surface and --canvas are the same
+  // value and a tile cannot step up out of the page at all — the argument
+  // theme-dark.md §5 makes for dark being out of fill room at the BOTTOM, applied to
+  // light being out of room at the top. What separates a tile here is its EDGE, which
+  // `border / canvas` below asserts at 1.245 against a 1.10 floor. Dark still has the
+  // step (1.15) and gets it from `surface / band` and the nesting pairs.
   ["surface2", "surface", NEST, "an answer option or a stat well, inset in a tile"],
   ["surface3", "surface2", NEST, "an option's letter chip, and the option under the pointer"],
   ["hover", "surface", STATE, "a tile or option under the pointer"],
+  ["surface2", "canvas", NEST, "an answer option, which is a well on the white page"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
   // The recess the practise band sits in, and the tiles raised out of it. The FILL is
@@ -196,7 +219,10 @@ const FILLS = [
   // to clear the nesting floor on this ground. Dark keeps --hover/--surface3 (1.43 / 1.57)
   // because its states step UP — which is why --surface3 is not asserted here.
   ["surface2", "band", NEST, "a mode card or topic chip hovered on the practise band"],
-  ["hover", "band", NEST, "the same pressed, in light; dark presses to --surface3"],
+  // --surface3, not --hover. On the white canvas --hover lands 1.047 off the panel,
+  // under the nesting floor, so the press fill moved a rung — a pressed card had all
+  // but merged into the band with no hairline able to save it (--border is 1.17 there).
+  ["surface3", "band", NEST, "the same pressed"],
   ["border", "canvas", HAIRLINE, "the panel's own edge, drawn on the page"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.

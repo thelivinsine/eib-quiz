@@ -145,6 +145,9 @@ const solid = {
     shield: '<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>',
     star: '<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>',
     topic: '<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>',
+    // The header's preferences menu. ICONS.symbols without the flag-pole crossbar,
+    // so the ringed globe and the meridian read as one family with it.
+    globe: '<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>',
     // index.html aliases these rather than redrawing them.
     clock: ev(donut(12, 12, 9.2, 7.1)) + CLOCK_HANDS,
     community: PERSON_B + PERSON_A,

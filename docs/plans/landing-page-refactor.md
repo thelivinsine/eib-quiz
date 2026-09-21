@@ -16,8 +16,25 @@ rendered side-by-side showed the page reading much flatter than the mockup:
    themes. See CLAUDE.md for the two failed readings and why the cards did not move.
 3. **The band's heading is centred**, with the state picker under it rather than opposite.
 
-§1.5's icon rule was **not** reversed and still stands: no plates, no per-card hue.
-About/FAQs and the globe dropdown (§1.4) remain out of scope.
+**Second follow-up, same day — the last three rejections went too**, after the live
+site was put beside the mockup and read nothing like it. The request was explicit: override
+any project rule that obstructs the refactor, *except* the icon artwork. So:
+
+4. **§1.5's icon rule is reversed.** Tinted plates are back behind the hero facts, the why
+   marks and the mode-card icons, and the cards carry a per-card hue — that colour is most
+   of why the mockup reads as a lively page. A glyph on the CANVAS still has no plate, and
+   the icon DRAWINGS are still this app's own solid set, which is the one thing the request
+   held back. Five hues, and not one new token beyond `--violet`: they map onto the
+   `--*-dim` / `--*` pairs the palette already carried.
+5. **§1.4 shipped.** The header has the centre nav and the globe dropdown, with the theme
+   switch moved inside it. About and FAQs are `disabled` buttons carrying a Soon chip
+   rather than links to nowhere.
+6. **The light canvas is WHITE**, app-wide, because the mockup's page measures `#FEFEFE`.
+   The whole light ramp was re-derived to nest DOWN from white; primary buttons take a new
+   `--btn-fill` navy, since the mockup never fills a button with the accent blue.
+
+See the 2026-09-21 "honest refactor against the mockup" section of `docs/TODO.md` for the
+measurements, and `CLAUDE.md` for the rules as they now stand.
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
