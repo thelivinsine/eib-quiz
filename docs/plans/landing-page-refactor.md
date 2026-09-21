@@ -1,5 +1,14 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
+> **SUPERSEDED IN PART (2026-09-21, later the same day).** This plan's two-tier home
+> screen — a landing tier and a dashboard tier chosen by `hasProgress()` — no longer
+> exists. Home is the marketing page for everyone, always, and the app (Where you stand,
+> the mode band, the topic reveal, Past rounds & glossary) moved to a second screen,
+> `#practiseScreen`, reached from the header nav and from both landing CTAs. `hasProgress()`
+> and every `data-tier` are gone. Everything else here — the components, the palette, the
+> per-phase decisions — still stands; read CLAUDE.md's "HOME AND PRACTISE ARE TWO SCREENS"
+> before touching either page.
+
 Status: **Complete, 2026-09-21** — all eight phases, including 7.7. The one thing not
 done is a check on the live site; every measurement here was against `python -m http.server`.
 

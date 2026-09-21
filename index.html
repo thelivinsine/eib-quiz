@@ -511,31 +511,37 @@
             font-size: var(--fs-sm); font-weight: 600; color: var(--muted);
             transition: color 0.18s var(--ease);
         }
-        .nav-link:hover:not([aria-disabled="true"]) { color: var(--text); }
+        .nav-link:hover { color: var(--text); }
         /* The mockup underlines the current section. A box-shadow rather than a
            border, so the rule does not add to the control's height. */
         .nav-link--active { color: var(--text); box-shadow: inset 0 -2px 0 var(--text); border-radius: 0; }
-        /* Inert, and it says so THREE ways: the Soon chip for anyone who can see it,
-           aria-disabled for anyone who cannot, and the title on hover. NOT the
-           `disabled` attribute it used to carry — that removes the button from the
-           tab order AND suppresses its mouse events, so keyboard and screen-reader
-           users skipped straight past these two and the tooltip never fired for
-           anyone. aria-disabled announces the state and keeps the element reachable;
-           there is no onclick, so activating it still does nothing. */
-        .nav-link[aria-disabled="true"] { cursor: default; color: var(--faint); }
-        /* Small, and it cannot get there by shrinking the type: --fs-2xs IS the 12px
-           floor and scale.test.mjs holds fontSizesBelowFloor at 0. The size comes off
-           the CASE instead. "SOON" set uppercase with --ls-caps' 0.06em is far wider
-           than "Soon", and dropping both plus 2px of side padding takes the chip from
-           ~46px to ~34px with the type untouched. The letter-spacing line is DELETED
-           rather than set to --ls-normal: only two tracking values are in use and
-           distinctTracking is budgeted at 2, so naming a third would bust it. */
-        .nav-soon {
-            font-size: var(--fs-2xs); font-weight: 600;
-            padding: var(--space-3xs) var(--space-2xs);
+        /* PRACTISE is the way IN, so it wears the primary button rather than a link
+           (2026-09-21, on request). The fill is --btn-fill / --on-btn - the hero's own
+           Start now, and a pair contrast.test.mjs already asserts - so the header, the
+           hero and the CTA band all say "go to the app" in one voice, and the hover is
+           .btn-primary's brightness step rather than a second idiom.
+           It keeps the pill ON the Practise page: the active rule's underline squares
+           the corners off (border-radius: 0) and repaints the label --text, which on
+           that navy is unreadable in light. aria-current still says which page you are
+           on for anyone who cannot see the fill, so nothing is lost by dropping the
+           underline HERE and nowhere else. */
+        .nav-link--cta {
+            padding-inline: var(--space-ms);
             border-radius: var(--radius-pill);
-            background: var(--surface2); color: var(--muted);
+            background: var(--btn-fill); color: var(--on-btn);
         }
+        .nav-link--cta:hover { color: var(--on-btn); filter: brightness(1.08); }
+        .nav-link--cta:active { filter: brightness(0.94); }
+        .nav-link--cta.nav-link--active {
+            box-shadow: none; border-radius: var(--radius-pill); color: var(--on-btn);
+        }
+
+        /* About and FAQs were here as aria-disabled buttons wearing a "Soon" chip,
+           and both are GONE (2026-09-21, on request) along with .nav-soon, the
+           [aria-disabled] state rule and nav.navAbout / nav.navFaqs / nav.soon /
+           nav.soonTitle. Nothing else in the app promises a page that does not
+           exist; if either is ever built, it comes back as an ordinary .nav-link
+           with a data-screen and a real screen behind it. */
 
         .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
 
@@ -839,12 +845,11 @@
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
         /* ============================================================
-           LANDING HERO (top of home; CTA scrolls to the bento content)
-           ============================================================ */
-        /* ============================================================
-           LANDING TIER — hero, why, numbers, one last call.
-           Shown only when hasProgress() is false; the dashboard tier
-           replaces all of it once there is something to come back to.
+           THE LANDING PAGE — hero, why, numbers, one last call.
+           ALL of #homeScreen, for everyone: it was the "landing tier"
+           of a two-tier home screen until 2026-09-21, when the app
+           moved to #practiseScreen and the tier switch retired.
+           Both of its calls to action navigate there.
            ============================================================ */
 
         /* The pitch on the left, the building on the right. The photo column is
@@ -1060,11 +1065,11 @@
         /* The tail is reference material, not something to act on. */
         .home-section--quiet .section-head h2 { font-size: var(--fs-lg); }
 
-        /* Both scrollToId() targets, not just #homeMain: "Learn more" lands on #whyBand,
+        /* The one scrollToId() target left: "Learn more" lands on #whyBand,
            and without this the sticky header sits on top of the heading it scrolled to.
            --header-h is what syncHeaderHeight() measures, so it tracks the phone's
            shorter strip too — a fixed 76px was the desktop header's height alone. */
-        #homeMain, #whyBand { scroll-margin-top: var(--header-h); }
+        #whyBand { scroll-margin-top: var(--header-h); }
 
         /* ---- Overview card: ring headline + three counters ---- */
         .dash {
@@ -2273,6 +2278,17 @@
             /* The strip is a glance down here: the tagline restates what the page
                already says, and brand + nav + menu + toggle does not fit a 343px
                content width. */
+            /* The nav goes with it, and a ONE-ITEM nav ("the page you are not on")
+               was tried on the day Practise became a screen and does not fit either.
+               Measured at 375px: the content row is 343, the brand is 77 and the
+               controls are 211, which leaves 55px for a link that sets 56 ("Home")
+               to 71 ("Practise"). Dropping the nav's auto margins changes nothing -
+               the row is simply full, and dropping About and FAQs did not free any
+               of it (they sat in the nav, which was already hidden down here). So on
+               a phone the two pages are reached the conventional way: the hero's
+               Start button and the CTA band go to Practise, and the BRAND MARK goes
+               home from anywhere. Do not add a nav item down here without taking
+               something else out of the row. */
             .brand-tagline, .header-nav { display: none; }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
@@ -2386,9 +2402,8 @@
                  About and FAQs are `disabled` buttons carrying a Soon chip rather than
                  links to nowhere, so nothing on screen promises a page we do not have. -->
             <nav class="header-nav" data-i18n-aria="nav.sections">
-                <button class="nav-link nav-link--active" type="button" aria-current="page" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
-                <button class="nav-link" type="button" aria-disabled="true" data-i18n-title="nav.soonTitle"><span data-i18n="nav.navAbout"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
-                <button class="nav-link" type="button" aria-disabled="true" data-i18n-title="nav.soonTitle"><span data-i18n="nav.navFaqs"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
+                <button class="nav-link nav-link--active" type="button" data-screen="home" aria-current="page" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
+                <button class="nav-link nav-link--cta" type="button" data-screen="practise" onclick="showScreen('practise')" data-i18n="nav.navPractise"></button>
             </nav>
             <div class="header-controls">
                 <!-- One globe menu instead of two segmented controls, per the mockup.
@@ -2429,20 +2444,20 @@
         <!-- Home Screen -->
         <section id="homeScreen" class="screen active">
 
-            <!-- The home screen is TWO TIERS over one section list: a first visitor gets
-                 the marketing, a returning learner gets the dashboard, and the mode band
-                 is shared. `initHomeScreen()` toggles `hidden` on every [data-tier]
-                 element; a section with no data-tier shows in both. The DOM order below
-                 reads correctly for either tier, so nothing is ever moved or duplicated. -->
+            <!-- The home screen is the LANDING PAGE, for everyone, always. It was two
+                 tiers over one section list until 2026-09-21 - a first visitor got the
+                 marketing, a returner got the dashboard in its place - and the tier
+                 switch retired when the app moved to #practiseScreen: one page each,
+                 nothing to keep in sync. -->
 
             <!-- Landing hero: the pitch on the left, the building on the right. -->
-            <div class="hero-landing" data-tier="landing">
+            <div class="hero-landing">
                 <div class="hero-text">
                     <p class="eyebrow" data-i18n="hero.eyebrow"></p>
                     <h1 class="hero-headline" data-i18n="hero.headline"></h1>
                     <p class="hero-lead" data-i18n="hero.lead"></p>
                     <div class="hero-cta-row">
-                        <button class="btn-primary btn-lg" onclick="scrollToId('homeMain')">
+                        <button class="btn-primary btn-lg" onclick="showScreen('practise')">
                             <span data-i18n="hero.cta"></span>
                             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                         </button>
@@ -2466,8 +2481,60 @@
                 </div>
             </div>
 
+            <!-- 3b · Why — the landing tier's argument. Four claims, hairline-separated
+                 by a 1px GAP over the band's ground: a border-left draws a stray rule on
+                 the first cell of a wrapped row, which is the results band's lesson. -->
+            <section class="home-section" id="whyBand">
+                <div class="section-head section-head--centred">
+                    <p class="eyebrow" data-i18n="why.eyebrow"></p>
+                    <h2 data-i18n="why.title"></h2>
+                </div>
+                <ul class="why-grid">
+                    <li class="why-item" data-hue="blue"><span class="why-icon" data-icon="book" aria-hidden="true"></span><div><h3 data-i18n="why.1.title"></h3><p data-i18n="why.1.body"></p></div></li>
+                    <li class="why-item" data-hue="green"><span class="why-icon" data-icon="shield" aria-hidden="true"></span><div><h3 data-i18n="why.2.title"></h3><p data-i18n="why.2.body"></p></div></li>
+                    <li class="why-item" data-hue="violet"><span class="why-icon" data-icon="community" aria-hidden="true"></span><div><h3 data-i18n="why.3.title"></h3><p data-i18n="why.3.body"></p></div></li>
+                    <li class="why-item" data-hue="amber"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
+                </ul>
+            </section>
+
+            <!-- 3c · The four headline numbers. They are READOUTS: capped at --fs-2xl so
+                 they cannot outrank a heading. -->
+            <section class="home-section">
+                <ul class="stats-grid">
+                    <li class="stats-item"><span class="stats-num">300</span><span class="stats-label" data-i18n="stats.1"></span></li>
+                    <li class="stats-item"><span class="stats-num">16</span><span class="stats-label" data-i18n="stats.2"></span></li>
+                    <li class="stats-item"><span class="stats-num">2</span><span class="stats-label" data-i18n="stats.3"></span></li>
+                    <li class="stats-item"><span class="stats-num">60</span><span class="stats-label" data-i18n="stats.4"></span></li>
+                    <li class="stats-item stats-item--note"><p class="script-note" data-i18n="stats.annotation"></p></li>
+                </ul>
+            </section>
+
+            <!-- 3d · One last call. The gate is an ornament: remove it and the band is
+                 still heading, lead and button. -->
+            <section class="home-section cta-band">
+                <div class="cta-copy">
+                    <p class="eyebrow" data-i18n="cta.eyebrow"></p>
+                    <h2 data-i18n="cta.title"></h2>
+                    <p class="cta-lead" data-i18n="cta.lead"></p>
+                </div>
+                <button class="btn-primary btn-lg cta-btn" onclick="showScreen('practise')">
+                    <span data-i18n="cta.button"></span>
+                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
+                </button>
+                <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
+                <p class="script-note cta-note" data-i18n="cta.annotation"></p>
+            </section>
+
+        </section>
+
+        <!-- PRACTISE — the app itself: where you stand, the five modes, the topic
+             reveal, and the quiet tail. Reached from the header nav and from both of
+             the landing page's calls to action. It is a PAGE, not a session: it
+             scrolls, it keeps the footer and it keeps the nav, which is why
+             showScreen() reads PAGE_SCREENS rather than testing for 'home'. -->
+        <section id="practiseScreen" class="screen">
             <!-- 1 · Where you stand — one wide card, the returning learner's opening statement. -->
-            <section class="home-section" data-tier="dashboard">
+            <section class="home-section" data-needs-data>
                 <div class="section-head">
                     <h2 data-i18n="home.progress.title"></h2>
                     <p data-i18n="home.progress.lead"></p>
@@ -2475,10 +2542,9 @@
                 <div id="homeStatus"></div>
             </section>
 
-            <!-- 2 · Practise — the main event, and the one band BOTH tiers show. It carries
-                 #homeMain because the hero's CTA scrolls here: "Where you stand" is hidden
-                 on the tier that has a hero. -->
-            <section class="home-section modes-band" id="homeMain">
+            <!-- 2 · Practise — the main event. It carried #homeMain while the hero's
+                 CTA scrolled to it; the CTA navigates here now, so the anchor is gone. -->
+            <section class="home-section modes-band">
                 <!-- The heading alone. "Practise your way" and "Five ways in - one
                      goal: passing." both said what "Choose your practice mode" plus
                      five visibly different cards already say, and three stacked lines
@@ -2497,53 +2563,8 @@
                 <div id="topicSection" hidden></div>
             </section>
 
-            <!-- 3b · Why — the landing tier's argument. Four claims, hairline-separated
-                 by a 1px GAP over the band's ground: a border-left draws a stray rule on
-                 the first cell of a wrapped row, which is the results band's lesson. -->
-            <section class="home-section" id="whyBand" data-tier="landing">
-                <div class="section-head section-head--centred">
-                    <p class="eyebrow" data-i18n="why.eyebrow"></p>
-                    <h2 data-i18n="why.title"></h2>
-                </div>
-                <ul class="why-grid">
-                    <li class="why-item" data-hue="blue"><span class="why-icon" data-icon="book" aria-hidden="true"></span><div><h3 data-i18n="why.1.title"></h3><p data-i18n="why.1.body"></p></div></li>
-                    <li class="why-item" data-hue="green"><span class="why-icon" data-icon="shield" aria-hidden="true"></span><div><h3 data-i18n="why.2.title"></h3><p data-i18n="why.2.body"></p></div></li>
-                    <li class="why-item" data-hue="violet"><span class="why-icon" data-icon="community" aria-hidden="true"></span><div><h3 data-i18n="why.3.title"></h3><p data-i18n="why.3.body"></p></div></li>
-                    <li class="why-item" data-hue="amber"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
-                </ul>
-            </section>
-
-            <!-- 3c · The four headline numbers. They are READOUTS: capped at --fs-2xl so
-                 they cannot outrank a heading. -->
-            <section class="home-section" data-tier="landing">
-                <ul class="stats-grid">
-                    <li class="stats-item"><span class="stats-num">300</span><span class="stats-label" data-i18n="stats.1"></span></li>
-                    <li class="stats-item"><span class="stats-num">16</span><span class="stats-label" data-i18n="stats.2"></span></li>
-                    <li class="stats-item"><span class="stats-num">2</span><span class="stats-label" data-i18n="stats.3"></span></li>
-                    <li class="stats-item"><span class="stats-num">60</span><span class="stats-label" data-i18n="stats.4"></span></li>
-                    <li class="stats-item stats-item--note"><p class="script-note" data-i18n="stats.annotation"></p></li>
-                </ul>
-            </section>
-
-            <!-- 3d · One last call. The gate is an ornament: remove it and the band is
-                 still heading, lead and button. -->
-            <section class="home-section cta-band" data-tier="landing">
-                <div class="cta-copy">
-                    <p class="eyebrow" data-i18n="cta.eyebrow"></p>
-                    <h2 data-i18n="cta.title"></h2>
-                    <p class="cta-lead" data-i18n="cta.lead"></p>
-                </div>
-                <button class="btn-primary btn-lg cta-btn" onclick="scrollToId('homeMain')">
-                    <span data-i18n="cta.button"></span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
-                </button>
-                <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
-                <p class="script-note cta-note" data-i18n="cta.annotation"></p>
-            </section>
-
-            <!-- 4 · Quieter tail: what you did, and what the words mean. Nothing to look
-                 back on before the first round, so it is the dashboard's alone. -->
-            <section class="home-section home-section--quiet" data-tier="dashboard">
+            <!-- 4 · Quieter tail: what you did, and what the words mean. -->
+            <section class="home-section home-section--quiet" data-needs-data>
                 <div class="section-head">
                     <h2 data-i18n="home.more.title"></h2>
                     <p data-i18n="home.more.lead"></p>
@@ -2896,11 +2917,8 @@
             'mode.review.start':   { en: 'Start review',            de: 'Wiederholen' },
             'mode.topic.start':    { en: 'Choose topic',            de: 'Thema wählen' },
             'nav.sections':        { en: 'Sections',                de: 'Bereiche' },
+            'nav.navPractise':     { en: 'Practise',                de: 'Üben' },
             'nav.navHome':         { en: 'Home',                    de: 'Start' },
-            'nav.navAbout':        { en: 'About',                   de: 'Über' },
-            'nav.navFaqs':         { en: 'FAQs',                    de: 'FAQ' },
-            'nav.soon':            { en: 'Soon',                    de: 'Bald' },
-            'nav.soonTitle':       { en: 'Coming soon',             de: 'Kommt bald' },
 
             // hero
             'hero.eyebrow':        { en: 'Your step towards a brighter tomorrow', de: 'Dein Schritt in eine bessere Zukunft' },
@@ -3328,27 +3346,51 @@
         // ============================================================
         // SCREEN MANAGEMENT
         // ============================================================
+        // The two PAGES. They scroll, they keep the footer and the header nav, and
+        // neither is a session. Everything else - quiz, end - is an app view that is
+        // locked to the viewport. This set is what `body.in-session` is computed from;
+        // it read `screenName !== 'home'` until Practise became a screen of its own,
+        // and that test would have locked the app page to the viewport and hidden the
+        // very nav you arrived by.
+        const PAGE_SCREENS = new Set(['home', 'practise']);
+
         function showScreen(screenName) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenName + 'Screen').classList.add('active');
             state.currentScreen = screenName;
-            // Everything past the home screen is an app view: locked to the viewport,
-            // a back button where the logo was. One class carries both.
-            document.body.classList.toggle('in-session', screenName !== 'home');
+            const inSession = !PAGE_SCREENS.has(screenName);
+            // A session is locked to the viewport with a back button where the logo
+            // was. One class carries both.
+            document.body.classList.toggle('in-session', inSession);
             // The exam's clock costs the question column a row, which is the whole of
             // the slack the shift under the progress bar spends. Set here rather than
             // in startMode() so the topic, mistakes and resume paths are covered too.
-            document.body.classList.toggle('in-exam', screenName !== 'home' && state.currentMode === 'exam');
+            document.body.classList.toggle('in-exam', inSession && state.currentMode === 'exam');
+            syncNav(screenName);
             // The scroll cue belongs to the results screen only, and the layout it
             // measures is not laid out until after this paints.
             requestAnimationFrame(syncEndScrollCue);
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
-        // The landing tier's buttons are all on-page anchors: Start Now and the CTA band
-        // go to the mode grid, Learn More to the why-band. There is no About page and
-        // none of them links one. (Respects reduced-motion; the targets carry
-        // scroll-margin-top so the sticky header does not cover the heading.)
+        /**
+         * The nav's active mark. The underline is the only other thing that says which
+         * page you are on and a screen reader cannot see it, so aria-current moves with
+         * it. In a session neither page is current, and the nav is hidden anyway.
+         */
+        function syncNav(screenName) {
+            document.querySelectorAll('.header-nav [data-screen]').forEach(el => {
+                const on = el.dataset.screen === screenName;
+                el.classList.toggle('nav-link--active', on);
+                if (on) el.setAttribute('aria-current', 'page');
+                else el.removeAttribute('aria-current');
+            });
+        }
+
+        // Learn More is the one on-page anchor left: Start Now and the CTA band now
+        // navigate to the Practise page rather than scrolling to a band inside this
+        // one. (Respects reduced-motion; #whyBand carries scroll-margin-top so the
+        // sticky header does not cover its heading.)
         function scrollToId(id) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -3365,23 +3407,20 @@
         let loadFailed = false;
 
         /**
-         * Which home tier to show. Marketing until there is something to come back to:
-         * a spaced-repetition record, a finished round, or a round left half-played.
-         * Reads the loaded state, not localStorage — `clearProgress()` empties both in
-         * memory, so a reset flips this back with no reload.
+         * The one door that repaints the Practise page. Callers do not call the
+         * individual renderers.
+         *
+         * `hasProgress()` and the two-tier switch it drove are GONE (2026-09-21): the
+         * marketing and the app are separate screens now, so there is nothing to choose
+         * between. What survives is the load failure, which is not a tier either — the
+         * sections marked [data-needs-data] all read the question pool, so with no
+         * catalogue they would render empty headings over an error message. They go dark
+         * and the error stands alone in the mode grid, which is the one thing the
+         * landing page's buttons lead to.
          */
-        function hasProgress() {
-            return Object.keys(progress).length > 0 || resultsHistory.length > 0 || !!getSavedSession();
-        }
-
         function initHomeScreen() {
-            // A load failure is NOT a tier: `null` matches no data-tier, so both tiers go
-            // dark and the error stands alone. Set before the early return, or the hero,
-            // the why-band, the numbers and the CTA render on top of the dashboard's own
-            // empty headings — every section the markup ships visible, all at once.
-            const tier = loadFailed ? null : (hasProgress() ? 'dashboard' : 'landing');
-            document.querySelectorAll('#homeScreen [data-tier]')
-                .forEach(el => { el.hidden = el.dataset.tier !== tier; });
+            document.querySelectorAll('#practiseScreen [data-needs-data]')
+                .forEach(el => { el.hidden = loadFailed; });
             if (loadFailed) {
                 document.getElementById('modesGrid').innerHTML =
                     '<div class="load-error">' + t('err.load') + '</div>';
@@ -3391,7 +3430,6 @@
             renderModes();
             renderTopics();
             renderStatePicker();
-            if (tier !== 'dashboard') return;
             renderHistory();
             renderGlossary();
             renderHomeStatus();
@@ -3573,8 +3611,8 @@
         // ============================================================
         function renderHomeStatus() {
             const el = document.getElementById('homeStatus');
-            // Its whole section belongs to the dashboard tier; on the landing tier there
-            // is nothing to paint into. Guarded here rather than at each caller.
+            // Its whole section is [data-needs-data], so a load failure hides it and
+            // there is nothing to paint into. Guarded here rather than at each caller.
             if (!el || el.closest('[hidden]')) return;
             const pool = activePool();
             const totalPool = pool.length;
@@ -4676,7 +4714,7 @@
             if (ttsSupported) window.speechSynthesis.cancel();
             if (state.currentScreen !== 'quiz') {
                 initHomeScreen();
-                showScreen('home');
+                showScreen('practise');
                 return;
             }
             const resumable = state.currentMode !== 'exam' && state.currentMode !== 'mistakes';
@@ -4687,7 +4725,7 @@
                 if (!resumable) clearSession();
                 document.getElementById('timer').style.display = 'none';
                 initHomeScreen();
-                showScreen('home');
+                showScreen('practise');
             }
         });
 

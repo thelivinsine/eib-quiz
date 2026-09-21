@@ -1122,3 +1122,84 @@ app. Re-verified after the change: clean baseline (loads 1, no stamp), one deplo
   own `max-age=600` on HTML. The CDN window is not something the client can fix.
 - Everything above was measured on `http://localhost`. The live site is HTTPS behind a
   CDN; the worker logic is the same, the timing is not.
+
+
+## Session developments (2026-09-21, Home and Practise split into two screens)
+
+### What moved
+`#practiseScreen` is a new `.screen` holding **Where you stand · the mode band · the topic
+reveal · Past rounds & glossary**. `#homeScreen` keeps the hero, the why band, the four
+numbers and the CTA band, and is the landing page for **everyone, always**. Nothing was
+duplicated: the three sections were lifted out of the home screen's DOM and dropped into
+the new one.
+
+Three choices were put to the user before any code moved:
+
+1. **Name** — "Practise" (DE "Üben"), not "Dashboard" or "App".
+2. **The two-tier home screen is retired.** `hasProgress()` and every `data-tier` are gone;
+   there is nothing left to choose between when each half has its own page.
+3. **Past rounds moved too**, with the glossary it shares a section with.
+
+### What that forced
+- **`PAGE_SCREENS`**, because `body.in-session` was computed from `screenName !== 'home'`.
+  Left alone it would have locked the Practise page to the viewport, hidden its footer and
+  hidden the very nav the user arrived by. A page scrolls; a session is locked.
+- **`syncNav(screenName)`** moves `.nav-link--active` and `aria-current="page"` between the
+  two links, from `showScreen()`, so the underline and the screen-reader state cannot drift
+  apart.
+- **Both landing CTAs navigate** (`showScreen('practise')`) instead of `scrollToId('homeMain')`.
+  `#homeMain` is gone and the scroll-margin rule is `#whyBand` alone — "Learn more" is the
+  one on-page anchor left.
+- **Leaving a round returns to Practise**, both `#sessionBack` branches. You came from the
+  app; the sales pitch is not where a finished round belongs.
+- **A load failure is not a tier either.** The two data-dependent sections carry
+  `data-needs-data` and `initHomeScreen()` hides them when `loadFailed`, leaving the error
+  alone in the mode grid.
+
+### Also on request, same session
+- **About and FAQs left the header**, with `.nav-soon`, the `[aria-disabled]` state rule and
+  `nav.navAbout` / `nav.navFaqs` / `nav.soon` / `nav.soonTitle`. They were chips promising
+  pages that do not exist.
+- **Practise wears the primary button** (`.nav-link--cta`: `--btn-fill` / `--on-btn`, pill,
+  `.btn-primary`'s brightness hover). It keeps the pill on its own page, because
+  `.nav-link--active` would square the corners off and repaint the label `--text`, which on
+  that navy is unreadable in light; `aria-current` still carries the state.
+
+### A mobile route that was measured and rejected
+Below 620px the nav is hidden, so Practise would have been reachable only by the hero's
+button and Home only by the logo. A **one-item nav** ("the page you are not on") was tried:
+at 375px the content row is 343, the brand is 77 and the controls are 211, leaving **55px**
+for a link that sets 56 ("Home") to 71 ("Practise"). Dropping the nav's auto margins changed
+nothing — the row is simply full, and removing About and FAQs freed none of it because the
+whole nav was already hidden down there. So the phone keeps the conventional pair: the hero
+and CTA buttons in, the brand mark out. The measurement is recorded in the 620px block so
+the next person does not re-try it.
+
+### Verified
+`contrast.test.mjs` 10/10, `scale.test.mjs` 12/12 with every budget unmoved, `node --check`
+on the extracted script and `sw.js`, `manifest.json` parses, `validate.js` OK (460).
+In the browser: both pages render and the nav mark follows; a round started from Practise
+locks the page — measured in real Chrome over CDP at **375x812, 620, 940 and 1400**, on a
+four-image question with the navigator expanded, `scrollHeight == innerHeight` on the quiz
+AND the results screen at every one, zero horizontal overflow;
+`#sessionBack` lands on Practise with the history repainted; the phone round-trip
+(hero button in, brand mark out) works with **zero overflowing elements at 375px**; the DE
+switch leaves no `[data-i18n]` element empty. Practise measures 1217px / 1.35 screens at
+1280x900 with no progress recorded.
+
+### Not verified
+- **No automated test covers the split.** `showScreen('practise')`, `PAGE_SCREENS` and
+  `syncNav()` are exercised by hand only, like every other layout fact in this file.
+- The browser BACK button still does nothing for either page — the app has never had
+  routing, and this change did not add any. Reloading always lands on Home.
+- A returning learner now needs one extra tap to reach the app (Home → Practise). That is
+  the cost of retiring the tiers, and it was the user's call.
+
+### One phantom failure worth knowing about
+The first pass of that lock check, run in the in-app pane, read **819 against an 812
+viewport** on the phone. It is not the app: `syncHeaderHeight()` runs off a
+`ResizeObserver`, whose callbacks the rendering loop delivers, and a HIDDEN pane does not
+run that loop — so after resizing the pane to 375 the header really was 68px while
+`--header-h` still said 61, and `main`'s `calc(100svh - var(--header-h))` overshot by
+exactly the difference. Calling `syncHeaderHeight()` by hand fixed it on the spot, and real
+Chrome never showed it. Added to CLAUDE.md's gotchas beside the `rAF` and screenshot ones.
