@@ -311,7 +311,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       it.** The accuracy ring's caption was 9.6px because "Trefferquote" sets 106px at 12px
       inside an 88px dial. The percentage stays; the NAME moved to the wrapper's
       `aria-label`/`title`, where the longest German compound costs nothing. `.ready-ring-sub`
-      is gone.
+      is gone. **It came back on 2026-09-21** when the overview card was rebuilt against
+      its mockup — and this measurement is exactly what it cost: a 104px dial, no
+      letter-spacing, and a separate `dash.accuracyShort` whose German is "Quote". The
+      rule stands; the caption obeys it rather than breaking it.
     - **On a phone the answered readout shows its figure and hides its word**
       (`.stats-bar .stat:last-child .stat-label`). Once the labels cleared the 12px floor the
       four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
@@ -352,7 +355,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `hero.trust1`-`4` are gone from `I18N`. The hero is 350 -> 227px.
     - **`.dash`'s height IS the accuracy ring plus padding** — nothing else in the band is
       taller — so the ring is the only thing that can shorten it (112 -> 88px; on a phone it
-      was 128px, *larger* than the desktop's, and is now 96).
+      was 128px, *larger* than the desktop's, and is now 96). **Superseded 2026-09-21**: the
+      card is four tiles with its own heading now, the ring is 104px at every width, and
+      the verdict beside it is as tall as the ring.
     - **A topic chip is a chip, not a row.** `.topic-grid` is
       `repeat(auto-fit, minmax(230px, 1fr))`: five topics took three rows of 526px-wide
       "chips" in two columns, and now take two rows of four.
@@ -740,7 +745,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **The mode cards carry a NAMED action, and their plates are NEUTRAL** (the action
     2026-09-21 against the mockup; the colour came the same day and **went again the
     same day, on request — no icon in this app is painted in an accent or a semantic
-    hue**). Exam blue, All questions green, Your state amber, Smart review rose and By
+    hue, bar the overview card's three readout plates**). Exam blue, All questions green, Your state amber, Smart review rose and By
     topic violet each painted a tinted `--radius-sm` plate and a solid start disc;
     all five are `--surface2` + `--sub-text` now, and the five cards differ by their
     GLYPH and their words alone. The plate and the disc stay — a mode card's icon is

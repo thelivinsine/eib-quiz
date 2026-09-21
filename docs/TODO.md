@@ -31,8 +31,9 @@ home screen (`hasProgress()` + `data-tier`) is retired.
   HTML/data, PNG app icons in `img/icons/`).
 
 **Quiz pool:** 300 general + 16 Bundesländer × 10 = **460** questions, all **bilingual (DE/EN)**.
-The user picks a state on the home screen; the active pool is 300 general + the selected state's
-10. (All 300 official general questions are covered — verified against the BAMF catalogue, 0 missing.
+The user picks a state on the **Practise** page — under the mode band's heading, beside the
+exam and state modes it governs, not on the marketing home page; the active pool is 300
+general + the selected state's 10. (All 300 official general questions are covered — verified against the BAMF catalogue, 0 missing.
 The 10 former `appExtra` questions Q301–310 were removed in PR #28 — not in the official PDF.)
 
 ---
@@ -1594,3 +1595,123 @@ really 1.215 off the band. Both now say so, with "do not restore it".
 Squash-merged straight to `main` as **`b307e28`** — no PR, on request: the change is
 comments only and was reviewed in the session that wrote it. No `sw.js` `CACHE` bump
 (`index.html` is network-first and nothing cache-first changed).
+
+---
+
+## Session close (2026-09-21, the overview card rebuilt against its mockup)
+
+Three requests in sequence, each partly reversing the one before it — the record matters
+here, because two of the reversals look like regressions without it.
+
+### 1. Practise tiles, one header size, centred mode cards
+
+`.mode-card`, `.dash`, `.topic-chip` and the history/glossary wraps went from `--surface`
+to **`--band`** + the `--border` hairline the numbers band, the CTA band and the footer
+carry. Session screens (`.quiz-sidebar`, `.review-item`) kept `--surface`: there is no band
+near them to match, so the shared tile rule is two rules now.
+
+**Light needed its hover override back.** `--hover` is **1.047** off `--band` — under even
+the nesting floor — so `html.light .mode-card:hover, html.light .topic-chip:hover` raise to
+`--surface2` (1.078). This is the rule #94 deleted a few hours earlier, restored because
+its ground came back. Dark keeps `--hover` (1.437); press is `--surface3` in both.
+
+The header strip is **one size**: `.nav-link`, `.nav-link--cta` and `.hmenu-summary` join
+`.seg-btn` at `--fs-2xs`, and the hero's two buttons came down from `--fs-base`. The CTA
+band's button kept `--fs-base` — it is the page's last call, not header chrome. Practise is
+drawn louder by colour alone now. **Home came down too, unasked**: Practise alone at 12px
+beside Home at 14 reads as a mistake, and it was flagged rather than assumed.
+
+A mode card's contents are centred with `text-align` + `justify-content`, **not**
+`align-items` on the card — that sizes every child to fit-content, and `.mode-meta`'s nowrap
+width is measured at zero slack.
+
+### 2. Icons: already the solid pack, now neutral
+
+Nothing needed replacing. `ICONS` is already `tools/icon-packs.mjs`'s solid set
+(`grep 'stroke="currentColor"'` → 0), and the three inline arrows are byte-identical to its
+`ARROW` path. What changed is **colour**: `[data-hue]` is one neutral rule
+(`--surface2` + `--sub-text`), the five hue mappings are gone, a topic chip hovers to
+`--text`, and **`--violet` / `--violet-dim` left the palette** — those plates were their
+only consumer. `contrast.test.mjs` lost seven hue pairs and gained `on-hue / sub-text`.
+
+### 3. The overview card, rebuilt against `docs/Mockups/ui/where-you-stand.png`
+
+Its own heading and an encouragement chip **inside** the card; a wide ring tile carrying a
+four-tier **verdict** (the 52% step is the exam's own 17-of-33 pass mark); three readout
+tiles (plate, figure, name, and a line saying what the figure counts); the resume banner
+with the mockup's book plate and mountain ornament. `.dash-body` and `.dash-stats` are gone.
+
+On **"stay true to the mockup"** two departures from §2 were reversed:
+
+- **Light takes the mockup's shading exactly** — white card, `--band` summary tile, white
+  readouts separated by hairlines alone. Dark cannot copy it (nothing goes below the page
+  there) and keeps the `--band` card with readouts stepping up. `surface / band` is a live
+  FILLS pair again.
+- **This card is the ONE place icons carry a hue**, scoped as
+  `.dash-stat--blue/green/amber` so `[data-hue]` stays neutral for the mode cards and the
+  why marks.
+
+Three things that took a second pass:
+
+- **`MOUNTAIN_ART` is sized FROM the banner.** At a fixed 250px it stood 83px tall in a
+  68px banner and `overflow: hidden` cropped the peaks and the flag off. `top: 0; bottom: 0`
+  with `height: 100%` on the SVG; `aspect-ratio: 3 / 1` pins the width, because an inline
+  SVG's `auto` width is the engine's call and only Chromium was tested.
+- **The flag has to clear the apex.** Drawn inside the silhouette it is the same colour as
+  it — the first version shipped three peaks and no flag at all.
+- **`.ready-ring-sub` is back**, at a 104px dial with no letter-spacing and a separate
+  `dash.accuracyShort` key (German **"Quote"**). See the correction in
+  `docs/plans/sizing-system.md` §"Two regressions from the 12px floor".
+
+**On a phone the three readouts became one column of rows**, reversing "the three overview
+stats stay three columns": as bordered tiles at 375px the label gets an 85px box while
+`BEANTWORTET` sets 109 — one German word, nothing to wrap, so it spilled over the tile's
+own border.
+
+`file`, `checkCircle` and `leaf` were drawn into the pack's `solid` object first, then
+copied into `ICONS` — 28 glyphs now, 26 drawings plus two aliases.
+
+### The review of #95, and its six fixes
+
+Four were comment faults and two were real:
+
+1. The card's comment cited `docs/Mockups/"…07_04_29 PM.png"`, which the **same commit**
+   renamed to `docs/Mockups/ui/where-you-stand.png`.
+2. That comment kept the superseded "this one inverts that pair" paragraph directly above
+   the one reversing it, so it asserted both shading rules as current.
+3. `.resume-art` carried two stacked comments, the first naming `--border-hover` as the
+   colour — which the rule below it argues against.
+4. **Real:** `.resume-art svg` relied on the engine deriving an inline SVG's width from its
+   viewBox. `aspect-ratio: 3 / 1` — measured 204x68 in a 68px banner.
+5. **Real:** `.mode-card .mode-meta` was two rules in one `@media` scope, the shape
+   `scale.test.mjs`'s duplicate-property check cannot see. Merged.
+6. Two `docs/TODO.md` notes called the logo-kit mockup untracked; #95 tracks it.
+
+### Verified
+
+- `contrast.test.mjs` 10/10, `scale.test.mjs` 12/12 with **no budget moved**, `node --check`
+  clean on the extracted script, `node tools/validate.js` 460.
+- Rendered at **1280, 980 and 375**, both themes, both languages, with and without a saved
+  session — in the in-app pane for measurement and headless Chrome for the screenshots.
+- No SVG on any of the four screens computes to an accent or semantic hue, scanned in both
+  themes (the check that proved §2 landed).
+- No horizontal overflow at 375px on either page, and no element overflowing its tile in
+  the overview card in German.
+
+### Not verified
+
+- **The live site.** Everything was measured against `python -m http.server`.
+- **Only Chromium.** Both the in-app pane and headless Chrome are Chromium; the
+  `aspect-ratio` fix exists precisely because another engine was not available to test.
+- **The verdict's four tiers were read, not exercised.** Only `start` and `strong` were
+  ever on screen; `onTrack` and `building` come from the same two-comparison expression.
+- **No `sw.js` `CACHE` bump** — nothing cache-first changed (`index.html` is network-first).
+- The mountain ornament's opacity steps (0.55 / 0.75 / 1) were judged on screen in light and
+  dark, not measured.
+
+### Live
+
+PR [#95](https://github.com/thelivinsine/eib-quiz/pull/95), squash-merged to `main` as
+**`5dd5bf2`** after the review above. `docs/Mockups/ui/where-you-stand.png` and
+`logo-kit.png` are tracked with it; the logo kit is **not** shipped — it draws a different
+brand mark, a stroked icon library and pages that were deliberately removed.

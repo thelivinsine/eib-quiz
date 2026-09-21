@@ -458,6 +458,13 @@ under 16px makes iOS Safari zoom on focus.
   break the type scale to fit its container does not belong inside it: the
   percentage stays, and the name moved to the wrapper's `aria-label`/`title`,
   where the longest German compound costs nothing.
+  **Back as of 2026-09-21 (`5dd5bf2`), on request, because the overview card's
+  mockup draws it** — and the measurement above is exactly why it needed three
+  things to fit: a 104px dial, NO letter-spacing (tracked out, even ACCURACY sets
+  78px and grazes the stroke), and a separate `dash.accuracyShort` key whose
+  German is **"Quote"**. The full "Trefferquote" still lives on the
+  `aria-label`/`title`. The first attempt shipped `dash.accuracy` into the dial
+  and printed TREFFERQUOTE straight across the ring.
 - **The four quiz readouts wrapped at 360px in German.** CLAUDE.md requires them
   on one line. The LABEL is what is wide, not the figure — "Beantwortet" alone
   sets ~100px at 12px. The answered readout drops its word on a phone

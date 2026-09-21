@@ -29,7 +29,15 @@ rendered side-by-side showed the page reading much flatter than the mockup:
 site was put beside the mockup and read nothing like it. The request was explicit: override
 any project rule that obstructs the refactor, *except* the icon artwork. So:
 
-4. **§1.5's icon rule is reversed.** Tinted plates are back behind the hero facts, the why
+4. **§1.5's icon rule is reversed** — *and then mostly reinstated on 2026-09-21
+   (`5dd5bf2`), on request: "use neutral colour shades for icons and not the accent
+   colours". The plates stay, the HUES are gone. `[data-hue]` is one neutral rule
+   (`--surface2` + `--sub-text`) and `--violet`/`--violet-dim` left the palette with the
+   five mappings. The single exception is the overview card's three readout plates, which
+   took the mockup's blue/green/amber back the same day under "stay true to the mockup" and
+   are scoped as `.dash-stat--blue/green/amber`. Read CLAUDE.md's ICON PLATES block before
+   reaching for colour.* What the reversal originally said: tinted plates are back behind
+   the hero facts, the why
    marks and the mode-card icons, and the cards carry a per-card hue — that colour is most
    of why the mockup reads as a lively page. A glyph on the CANVAS still has no plate, and
    the icon DRAWINGS are still this app's own solid set, which is the one thing the request
@@ -48,8 +56,11 @@ screenshots rather than against the mockup:
 
 7. **The header's Practise link is a LINK again, not the primary button.** Item 5's
    header shipped it as a `--btn-fill` pill; two items in a two-item nav should read as
-   the same kind of thing, so it is `.nav-link`'s own shape one step up the type scale
-   (`--fs-md`) and in `--accent-text`. The hero and the CTA band still carry the button.
+   the same kind of thing, so it is `.nav-link`'s own shape and in `--accent-text`. The
+   hero and the CTA band still carry the button. *(The SIZE step went on 2026-09-21,
+   `5dd5bf2`: the whole header strip is one size, `--fs-2xs`, so Practise is drawn louder
+   by colour alone. The hero's two buttons came down to match; the CTA band's kept
+   `--fs-base`.)*
 8. **Item 2's RECESS is light-only.** The mockup is light-only, and applying its downward
    panel to dark inverted the nesting ladder: the band was darker than the page with the
    cards raised back out of it. `theme-dark.md` §3 — "every level of containment steps
@@ -788,7 +799,8 @@ the phase-0 repaint and were not touched.
 2. A returning learner sees their accuracy first and never sees the marketing.
 3. All five modes are reachable from the home screen, including Smart Review.
 4. No icon anywhere on the page sits in a tinted plate or carries a hue of its
-   own, except `.mode-flag`.
+   own, except `.mode-flag`. *(Reversed by follow-up 4 above, then largely
+   restored on 2026-09-21: plates yes, hues no — bar the overview card's three.)*
 5. Both test suites pass; no budget has risen.
 6. Both themes and both languages are correct at every breakpoint.
 
