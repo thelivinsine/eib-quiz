@@ -885,7 +885,16 @@ switch works, and an outside click closes it.
 `sw.js`'s `CACHE` was **not** bumped and should not be: this touches neither `favicon.svg`,
 `manifest.json` nor the PNG icons, and `index.html` is network-first.
 
-Shipped as PR #81, squash-merged to `main` as `1273f10`.
+Shipped as PR #81, squash-merged to `main` as `1273f10`. A diff review of it found ten
+things, all applied in PR #82 (`7debe81`) — the two that mattered were colour
+regressions OUTSIDE the style block, where `contrast.test.mjs` cannot see them:
+`manifest.json`’s theme/background colours and the `<meta name="theme-color">`
+default were both still `#F1F3F8`, so an installed PWA painted a grey splash in
+front of a white app. **`CACHE` was bumped there**, because `manifest.json` is a
+cache-first `PRECACHE` entry. A third was a real regression this change introduced:
+moving the two segments into the globe menu left the 620px rule that pins
+`.header-controls .seg-btn` to 28px, which won on source order and handed a phone
+four 28px targets inside an opened menu (44px now).
 
 **Not verified at commit time:** nothing was checked on the live site. Two things were
 confirmed as **pre-existing, not caused here**, by rendering `HEAD:index.html` the same
