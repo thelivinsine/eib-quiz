@@ -510,6 +510,13 @@ What changed:
   (spaced repetition, exam simulation, explanations), and it is the page's SEO copy.
   `hero.badge` and `hero.trust1`-`4` are gone from `I18N`.
 - Headline clamp `2.9rem` → `2.4rem`; hero padding, lead and CTA margins tightened.
+  - **Partly superseded 2026-09-21.** The display tier above 22px was raised back up
+    against the landing-page mockup, on request: `--fs-hero` is
+    `clamp(2rem, 5.2vw, 3.5rem)`, home section headings take `--fs-2xl` and the landing
+    page's four headline numbers take `--fs-3xl` (so the score ring is no longer its only
+    consumer). **Everything else in this plan stands** — the line boxes, the space, control
+    and icon scales and every `tools/scale.test.mjs` budget are unmoved. See the
+    2026-09-21 "closing the mockup gap" block in `docs/TODO.md`.
 - **`.dash`'s height IS the ring plus padding** — nothing else in the band is taller —
   so the ring is the only thing that can shorten it: 112px → 88px desktop. On a phone
   it was **128px, larger than the desktop's**, stacked *above* the counters where it is

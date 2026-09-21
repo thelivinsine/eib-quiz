@@ -84,6 +84,11 @@
             --surface2:  #252C37;   /* inset well inside a tile — 1.12 on it */
             --surface3:  #2F3542;   /* track / rail */
             --hover:     #282F3A;   /* hover steps UP in dark */
+            /* The practise band's panel. In the mockup the panel is DARKER than the page
+               and the cards go back to the page's own white — so the band is a RECESS and
+               the cards are ordinary tiles, which is the one reading that works in both
+               themes. 1.06 below the canvas here, and --surface sits 1.21 above it. */
+            --band:      #0A0E15;
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
@@ -177,11 +182,19 @@
             --fs-base: 0.9375rem;  /* 15px — card descriptions, body copy */
             --fs-md:   1rem;       /* 16px — answer options, prominent body */
             --fs-lg:   1.125rem;   /* 18px — question text, card titles */
-            --fs-xl:   1.375rem;   /* 22px — section headings */
-            --fs-2xl:  1.75rem;    /* 28px — display numerals (rings, counters) */
-            --fs-3xl:  2.25rem;    /* 36px — the score ring only: on the results screen
-                                      the score IS the content, so it keeps the top step */
-            --fs-hero: clamp(1.6rem, 3.6vw, 2.4rem);   /* the one clamp left */
+            --fs-xl:   1.375rem;   /* 22px — in-session headings, the phone's home headings */
+            --fs-2xl:  1.75rem;    /* 28px — home section headings; display numerals */
+            --fs-3xl:  2.25rem;    /* 36px — the score ring, and the landing page's four
+                                      headline numbers: in both places the number IS the
+                                      content, so it takes the top step */
+            /* 2026-09-21: the landing tier was measured against the mockup at 1.14x
+               (its 928px column against this app's 1060px) and the display tier came
+               back 1.3-1.5x short across the board — the hero at 38px against 59, the
+               section headings at 22 against 30. The ladder above 22px moved up one
+               notch each. This DOES reopen sizing phase 5's headline cut, deliberately
+               and on request; the note in CLAUDE.md about never minting a token larger
+               than the value it replaces still holds for a token minted in silence. */
+            --fs-hero: clamp(2rem, 5.2vw, 3.5rem);   /* the one clamp left */
 
             /* ---- LEADING --------------------------------------------------------
                Compare the LINE BOX, not the ratio. All four reference systems land their
@@ -254,6 +267,10 @@
             --surface2:  #F4F7FA;    /* inset well inside a tile */
             --surface3:  #E2E7F0;    /* track / rail */
             --hover:     #F0F2F7;    /* hover steps DOWN in light */
+            /* 1.08 below the canvas, with a white tile 1.20 above it. A smaller step down
+               than the mockup's 1.09, because its page is pure white and this one is
+               already grey — the same step from here would read as a slab. */
+            --band:      #E7EBF3;
 
             --border:       #E2E7F0;   /* 1.24 on tile, 1.11 on page */
             --border-soft:  #ECF0F6;
@@ -731,7 +748,7 @@
         .hero-chip { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); text-align: center; min-width: 0; }
         .hero-chip-icon { display: grid; place-items: center; color: var(--sub-text); }
         .hero-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        .hero-chip-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+        .hero-chip-label { font-size: var(--fs-xs); line-height: var(--lh-ui); color: var(--sub-text); }
 
         .hero-visual { position: relative; min-width: 0; }
         .hero-photo {
@@ -807,7 +824,7 @@
            counters take, and it does not outrank an --fs-xl section heading. */
         .stats-num {
             font-family: var(--font-head); font-weight: 700;
-            font-size: var(--fs-2xl); line-height: var(--lh-tight);
+            font-size: var(--fs-3xl); line-height: var(--lh-tight);
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
@@ -828,7 +845,7 @@
         .cta-copy .eyebrow { display: block; margin-bottom: var(--space-2xs); }
         .cta-copy h2 {
             font-family: var(--font-head); font-weight: 600;
-            font-size: var(--fs-xl); letter-spacing: var(--ls-display);
+            font-size: var(--fs-2xl); letter-spacing: var(--ls-display);
             color: var(--text);
         }
         .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
@@ -849,19 +866,19 @@
         .home-section:last-child { margin-bottom: 0; }
 
         .section-head { margin-bottom: var(--space-ms); max-width: 62ch; }
-        /* A section head that carries a control for its own section. */
-        .section-head--row {
-            max-width: none;
-            display: flex; align-items: flex-end; justify-content: space-between;
-            gap: var(--space-md); flex-wrap: wrap;
+        /* The picker centres under the practise band's heading. It was a column beside
+           a left-aligned heading; the heading is centred over the panel now, so there is
+           nothing to sit opposite and the label rides on the same line as the pill. */
+        #statePickerSlot {
+            display: flex; flex-direction: row; align-items: center; justify-content: center;
+            gap: var(--space-sm); min-width: 0;
+            margin-bottom: var(--space-lg);
         }
-        .section-head--row > div { max-width: 62ch; }
-        #statePickerSlot { display: flex; flex-direction: column; gap: var(--space-2xs); align-items: flex-start; min-width: 0; }
         .state-picker-label { display: block; }
         .section-head h2 {
             font-family: var(--font-head);
             font-weight: 600;
-            font-size: var(--fs-xl);
+            font-size: var(--fs-2xl);
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
@@ -1013,6 +1030,27 @@
            third. Only 5, 3 and 1 divide the set without stranding a
            card, so those are the three layouts.
            ============================================================ */
+        /* The mockup's pale panel behind the five cards. In light it is the inset tone
+           on it. It is a RECESS in both themes — a step DOWN from the canvas, with the
+           cards as ordinary --surface tiles 1.2 above it (see --band). --space-2xl top
+           and bottom, --space-xl at the sides:
+           the panel's job is to give the band air the canvas cannot. */
+        .modes-band {
+            background: var(--band);
+            /* The recess is 1.06 off the canvas in dark and 1.08 in light, both under the
+               1.20 where theme-dark.md §5 says to stop pushing fills apart and draw the
+               edge — and the why, numbers and CTA bands below all carry this hairline
+               already, so it is the page's own idiom rather than a new one. */
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            /* --space-lg at the sides, not --space-xl: the panel's inset comes straight
+               off the five cards' width, and it is width that decides this grid. Bleeding
+               the panel out through main's gutter was tried and reverted — main is only
+               capped above ~1140px, so below that the band ran flush to the window with
+               its 16px corners cut off, and the width it bought was not what fixed the
+               card anyway (the card's own side padding was). */
+            padding: var(--space-2xl) var(--space-lg);
+        }
         .modes-grid {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1026,7 +1064,8 @@
         }
         .mode-card {
             position: relative;
-            padding: var(--space-md);
+            /* Taller than it is wide-padded, for the same reason the band is. */
+            padding: var(--space-lg) var(--space-md);
             border-radius: var(--radius);
             background: var(--surface);
             border: 1px solid var(--border);
@@ -1886,12 +1925,17 @@
             .cta-btn { width: 100%; }
 
             .home-section { margin-bottom: var(--space-lg); }
+            /* The panel's desktop air is a desktop rhythm; down here it is a band of
+               nothing either side of a full-width card. It also stops bleeding: one
+               column does not need the width, and a 16px radius against the screen edge
+               is not a corner. */
+            .modes-band { padding: var(--space-lg) var(--space-md); }
             /* A section's one-line description is a desktop affordance. Down here each
                wraps to two lines and the four of them cost ~150px — 7% of the page —
                while the headings above them already name the section. The heading stays;
                the gloss goes. */
             .section-head p { display: none; }
-            .section-head h2 { font-size: var(--fs-lg); }
+            .section-head h2, .cta-copy h2 { font-size: var(--fs-lg); }
             .section-head p { font-size: var(--fs-sm); }
             .dash { padding: var(--space-ms); }
             /* The ring stops being a column of its own and sits above the counters. */
@@ -1901,13 +1945,9 @@
             .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--space-ms); padding-right: 0; }
             .ready-ring-wrap { width: 96px; height: 96px; }
             .ready-ring-pct { font-size: var(--fs-xl); }
-            /* The picker goes full width under its section heading rather than
-               squeezing onto the same line as it. */
-            .section-head--row { align-items: stretch; }
-            /* Label and control on ONE row: stacked, a two-word eyebrow above a pill
-               spent a whole band of the section head on four characters. */
-            #statePickerSlot { width: 100%; flex-direction: row; align-items: center;
-                gap: var(--space-sm); justify-content: space-between; }
+            /* Full width down here, label hard left and pill hard right, rather than
+               a centred pair with the band's padding wasted either side of it. */
+            #statePickerSlot { width: 100%; justify-content: space-between; }
             .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
 
             /* One card a row on a phone. They stay GRIDS rather than flex columns so
@@ -2132,15 +2172,16 @@
             <!-- 2 · Practise — the main event, and the one band BOTH tiers show. It carries
                  #homeMain because the hero's CTA scrolls here: "Where you stand" is hidden
                  on the tier that has a hero. -->
-            <section class="home-section" id="homeMain">
-                <div class="section-head section-head--row">
-                    <div>
-                        <p class="eyebrow" data-i18n="home.practice.eyebrow"></p>
-                        <h2 data-i18n="home.practice.title"></h2>
-                        <p data-i18n="home.practice.lead"></p>
-                    </div>
-                    <div id="statePickerSlot"></div>
+            <section class="home-section modes-band" id="homeMain">
+                <div class="section-head section-head--centred">
+                    <p class="eyebrow" data-i18n="home.practice.eyebrow"></p>
+                    <h2 data-i18n="home.practice.title"></h2>
+                    <p data-i18n="home.practice.lead"></p>
                 </div>
+                <!-- The picker sits UNDER the centred heading rather than opposite it:
+                     it still belongs to the section it changes, but a centred heading
+                     has nothing for it to sit across from. -->
+                <div id="statePickerSlot"></div>
                 <div class="modes-grid" id="modesGrid"></div>
                 <!-- The Topic card's reveal. It is BELOW the grid, not in it, so opening
                      it cannot reflow the five cards. renderTopics() fills it unchanged;

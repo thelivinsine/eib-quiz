@@ -675,3 +675,79 @@ Re-ran after the fixes: contrast 10/10, scale 12/12 with every budget unmoved,
 was spot-checked rather than exhausted — those screens were out of this refactor's scope.
 The three fixes above were written by the same session that reviewed the diff, so nobody
 else has read them.
+## Session developments (2026-09-21, closing the mockup gap)
+
+**Trigger:** a rendered side-by-side of the live landing tier against
+`docs/Mockups/ui/landing-page.png` — the page matched the mockup structurally and read
+much flatter than it. Measured at **1.14x** (the mockup's 928px content column against
+this app's 1060px) it came back **1.3-1.5x short everywhere above the body tier**: hero
+38px against 59, the three section headings 22 against 30, the four headline numbers 28
+against 39.
+
+**The gap list was almost entirely prior decisions, not drift**, which is the finding
+worth carrying. Of ten differences, seven were recorded rejections — the icon rule, the
+band panel, the centred heading, About/FAQs, the globe dropdown, five cards instead of
+four, no "Start" link text — and two more were the sizing system's own caps. Only the hero
+fact labels were unexamined. The user was shown the split and chose three of the four
+clusters; **the icon rule was NOT reversed and still stands** (no plates, no per-card hue).
+
+**1. The display tier above 22px went back up.** `--fs-hero` is
+`clamp(2rem, 5.2vw, 3.5rem)` (56px desktop, 32 on a phone, two lines in both languages),
+`.section-head h2` and `.cta-copy h2` take `--fs-2xl`, `.stats-num` takes `--fs-3xl`, and
+`.mode-card` padding is `var(--space-lg) var(--space-md)`. **The body tier did not move** —
+phases 1-5 of the size system were about line boxes and padding, and none of that was
+reopened. `--fs-3xl` now has a second consumer beside the score ring.
+
+**2. The hero fact labels left the quietest tier.** `.hero-chip-label` was `--fs-2xs` in
+`--muted` — the smallest type on the page in one of its two quietest tiers, carrying four
+claims the hero is making. Now `--fs-xs` in `--sub-text`.
+
+**3. The mode band is a RECESS, and that is the durable part.** Task 3.5 had rejected the
+mockup's panel as `--surface2`, correctly: in light that is a 1.03 step off the canvas and
+invisible, and in dark the ramp only goes up, so `--surface` cards on a `--surface2` band
+read as wells sunk into it. But the mockup's panel is **darker than its page** and its
+cards are the page's **own white** — so the band steps DOWN (`--band`: `#E7EBF3` light,
+1.08 below the canvas; `#0A0E15` dark, 1.06 below) and the cards stay ordinary `--surface`
+tiles, 1.20 above it in both themes. **Nothing on the band needed repainting**, which is
+the tell that this is the right reading. It carries a `--border` hairline, because 1.06 and
+1.08 are both under the 1.20 where `theme-dark.md` §5 says to draw the edge instead.
+Its heading is centred and `#statePickerSlot` moved under it; `.section-head--row` is gone.
+
+**Two attempts recorded in the CSS so they are not retried:**
+- **A `--band-card` token**, moving the cards to `--surface2` in dark and `--surface` in
+  light. The contrast test caught it immediately: `--faint` landed at **4.35** on a dark
+  card (under AA) and `--hover` sat **1.04** from rest. The recess reading needs neither.
+- **Bleeding the band out through `main`'s gutter** with a negative `margin-inline`, to buy
+  the five cards back the width the panel's padding costs them. `main` is only capped above
+  ~1140px, so below that the band ran flush to the window with its 16px corners cut off —
+  confirmed in a render at 1000px. The card's own side padding was what the meta row
+  actually needed.
+
+**Checked against `HEAD` and NOT a regression:** `Prüfungssimulation` still breaks over two
+lines at five columns. `.mode-title`'s box measures **135px before and after** (the flex
+`min-width: 0` makes it independent of the card's width), against 152px of text.
+`CLAUDE.md` claims the 1160px breakpoint makes that word fit on one line; **it does not,
+and cannot** — `main` caps the content at 1060px, so five columns can never give it the
+~182px it needs. Left as found; worth its own fix.
+
+**Verified this session:** `scale.test.mjs` 12/12 with every budget unmoved,
+`contrast.test.mjs` 10/10 with **five new pairs** (`text` and `muted` on `--band`;
+`surface` and `canvas` against `--band`; `border` on `--canvas`, for the panel's own edge).
+`border` against `--band` is deliberately **not** asserted — in light it measures 1.04 on
+the panel, and there the fill's 1.20 step is what separates a card from its ground, `tools/validate.js` OK,
+`node --check` on the extracted `<script>` block and on `sw.js`. Rendered and read at
+1280x900 and 1000x2100 in light/EN, 1280x900 in dark/DE, and 375x812 in light/DE and
+dark/DE. `scrollWidth === innerWidth` at 375px in German with an empty overflowing-element
+list. Both tiers exercised — the dashboard tier by seeding `eib_history_v1` and
+`eib_progress_v1`. Page height 1564 -> **1753px** desktop (+12%), **3.31 screens** at 375px
+on the landing tier.
+
+**Not verified:** nothing was checked on the live site — all measurement was against
+`python -m http.server`, and the landing screenshots were taken with headless Chrome, whose
+375px canvas mis-sized the page (the pane's own measurement was used instead). The quiz and
+results screens were not re-measured: `.section-head h2` and `.cta-copy h2` do not exist
+there, `--fs-3xl`'s score-ring use is unchanged, and `.mode-card` / `.topic-chip` /
+`.state-picker` all ended the session on the same `--surface` they started on — but that is
+an argument from the diff, not a measurement. `sw.js`'s `CACHE` was **not** bumped, and
+should not be: this change touches neither `favicon.svg`, `manifest.json` nor the PNG
+icons, and `index.html` is network-first.

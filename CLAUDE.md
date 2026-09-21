@@ -208,10 +208,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
       not the number ("Beantwortet" alone is ~100px). `n / total` is the one readout that
       names itself beside Richtig / Falsch / Score, so it is the one that can give the word up.
-    - **A token must never be minted LARGER than the value it replaces.** `--fs-hero` was
-      first written as `clamp(1.75rem, 3.2vw, 2.5rem)` and silently undid the phase-5 headline
-      cut it was supposed to carry — the hero measured 283px on a phone while the plan and the
-      commit both claimed 249. It is `clamp(1.6rem, 3.6vw, 2.4rem)`, the value phase 5 decided.
+    - **A token must never be minted larger than the value it replaces IN SILENCE.**
+      `--fs-hero` was first written as `clamp(1.75rem, 3.2vw, 2.5rem)` and undid the phase-5
+      headline cut it was supposed to carry — the hero measured 283px on a phone while the
+      plan and the commit both claimed 249. Phase 5's own value was
+      `clamp(1.6rem, 3.6vw, 2.4rem)`.
+    - **The display tier above 22px was raised back up on 2026-09-21, on request, against
+      the mockup.** Measured at 1.14x (the mockup's 928px column against this app's 1060px)
+      the landing page came back 1.3-1.5x short of it everywhere above the body tier: the
+      hero at 38px against 59, the three section headings at 22 against 30, the four
+      headline numbers at 28 against 39. So `--fs-hero` is `clamp(2rem, 5.2vw, 3.5rem)`
+      (56px desktop, 32 on a phone), `.section-head h2` and `.cta-copy h2` take `--fs-2xl`,
+      and `.stats-num` takes `--fs-3xl`. The BODY tier did not move — phases 1-5 were about
+      line boxes and padding, and none of that was reopened. The page grew 1564 -> 1753px
+      desktop (+12%) and 3.31 screens at 375px.
     - **A coarse-pointer override must be a RUNG ABOVE its base, or it does nothing.** Mapping
       `.option-btn`'s 48px coarse height onto `--ctl-md` gave it the 44px its base already had,
       so the rule set the value it already carried and the documented thumb bump vanished in
@@ -305,6 +315,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **The hero is two columns**: eyebrow / headline / lead / two buttons / four bare-glyph
     facts on the left, the Reichstag on the right. Below 940px it stacks with the **photo
     first**; below 620px the notes drop out and the facts go two-up.
+  - **A hero fact's LABEL is secondary-band copy, not a caption** (2026-09-21).
+    `.hero-chip-label` was `--fs-2xs` in `--muted` — the smallest type on the page in one
+    of its two quietest tiers, for four claims the hero is making. It is `--fs-xs` in
+    `--sub-text`. The GLYPH is untouched: the mockup's tinted 52px disc is still the plate
+    the icon rule forbids.
   - **The photograph is `img/hero-reichstag.webp`, 1:1 at every width, and its crop is
     load-bearing.** Holding one aspect is what lets the overlays be placed in percentages
     that stay true. It is CC BY-SA 4.0, so `.hero-credit` renders a visible credit under it
@@ -360,12 +375,30 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `renderModes()` reads the panel's `hidden` to redraw `aria-expanded`, because it runs
     again on every language switch and would otherwise reset the button while the topics
     were still showing.
-  - **The band keeps the canvas; the mockup's `--surface2` panel was rejected.** In light it
-    is a 1.03 step, which is invisible. In dark the ramp only goes UP — `--surface2` is 1.30
-    above the canvas and `--surface` is 1.15 — so `--surface` cards on a `--surface2` band
-    read as wells sunk into it rather than tiles raised off it, and there is no rung above
-    that leaves hover anywhere to go. Its heading stays left-aligned because the state picker
-    sits opposite it.
+  - **The band is a RECESS, and that is the only reading of the mockup's panel that works
+    in both themes** (2026-09-21, `.modes-band` + `--band`). Reading it as `--surface2` was
+    tried twice and is wrong both ways round: in light `--surface2` on the canvas is a 1.03
+    step, which is invisible, and in dark the ramp only goes UP, so `--surface` cards on a
+    `--surface2` band read as wells sunk into it. But look at the mockup again — its panel
+    is DARKER than its page and its cards are the page's own white. So the band steps DOWN
+    from the canvas (`--band`: `#E7EBF3` light, 1.08 below; `#0A0E15` dark, 1.06 below) and
+    the cards stay ordinary `--surface` tiles, 1.20 above it in both themes. Nothing on the
+    band needed repainting, which is the tell that this is the right reading: an earlier
+    attempt that moved the cards to a `--band-card` token put `--faint` at 4.35 on them in
+    dark and left hover 1.04 from rest.
+    - **It carries a `--border` hairline**, because 1.06 and 1.08 are both under the 1.20
+      where `theme-dark.md` §5 says to stop pushing fills apart and draw the edge — and the
+      why, numbers and CTA bands below it already have one.
+    - **It does not bleed out through `main`'s gutter.** Tried, to buy the five cards back
+      the width the panel's padding costs them: `main` is only capped above ~1140px, so
+      below that the band ran flush to the window with its corners cut off. The card's own
+      side padding is what the meta row actually needed.
+    - **Its heading is centred and the state picker sits UNDER it**, not opposite. The
+      picker still belongs to the section it changes; a centred heading simply leaves
+      nothing for it to sit across from.
+    - **The panel's side padding comes straight off the five cards' width**, which is why
+      it is `--space-lg` and not `--space-xl` (`--space-2xl` top and bottom — height is
+      free here, width is not).
   - **The mode cards carry no per-card accent.** They had one hue each (teal/gold/green/blue)
     with a matching tinted badge and a matching coloured "Start" link, which is the rainbow
     `theme-dark.md` §2 warns about: chroma belongs to content and at most one accent. Icons and
@@ -392,12 +425,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - Gone with the bento: `.bento-top`, `.cta-tile`, `#bundeslandTile`, `#statTile`, `MAP_SVG`,
     `renderBundeslandTile()`, `renderStatTile()` and `stateLocalTime()`. Mastery is one of the
     overview card's three counters.
-  - **On a phone the state picker's label and control share a row** (2026-09-20).
-    `#statePickerSlot` turns `flex-direction: row` under 620px: stacked, a two-word eyebrow
-    above a full-width pill spent a whole band of the section head on four characters.
+  - **The state picker's label and control share a row at EVERY width.** It was a column
+    beside a left-aligned heading; since the band's heading was centred (2026-09-21) the
+    base rule is the row, and the 620px rule only takes it full width and pushes the label
+    and the pill to opposite ends. Stacked, a two-word eyebrow over a full-width pill spent
+    a whole band of the section head on four characters.
   - **A control belongs to the section it changes.** The state picker (`#statePickerSlot` /
-    `renderStatePicker()`) sits in the Practise section's `.section-head--row`, beside the exam
-    and state modes it governs — not in the overview card, which only reports.
+    `renderStatePicker()`) sits in the Practise section, under its centred heading, beside
+    the exam and state modes it governs — not in the overview card, which only reports.
+    `.section-head--row` is **gone**: it existed only to put this picker opposite a
+    left-aligned heading, and nothing else ever used it.
   - **On a phone a section shows its HEADING and not its description** (2026-09-20).
     `.section-head p { display: none }` under 620px. Each one wraps to two lines down
     there and the four together cost ~150px — 7% of the page — while "Where you stand",
@@ -1014,8 +1051,11 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   photograph. `img/ATTRIBUTIONS.md` has sources, credits and the hero's recrop command.
 - `docs/TODO.md` - current project status + open TODOs. Check/update this when picking
   up or finishing work.
-- `docs/plans/landing-page-refactor.md` - the live plan for rebuilding the home screen
-  against `docs/Mockups/ui/landing-page.png`. Phase 0 shipped 2026-09-21; phases 1-7 open.
+- `docs/plans/landing-page-refactor.md` - the plan for rebuilding the home screen against
+  `docs/Mockups/ui/landing-page.png`. **All eight phases shipped 2026-09-21** (`aa52d34`
+  phase 0, `19c6da8` phases 1-7), and its header records the three of its own rejections
+  that were reversed later the same day. Read the per-phase "what phase N decided that the
+  plan did not" blocks before touching the home screen.
 - `docs/Mockups/` - design boards (`ui/`), generated illustrations (`illustrations/`),
   Wikimedia photography + the 16-state map (`photos/`, with `ATTRIBUTIONS.md` carrying the
   exact credit wording two photographers mandate), and superseded material (`archive/`).
