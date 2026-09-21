@@ -7,7 +7,7 @@
     <meta name="description" content="Kostenlos für den Einbürgerungstest üben: alle 300 amtlichen Fragen plus die 10 Landesfragen jedes Bundeslandes (460 gesamt), Prüfungssimulation, Themen-Training, Smart Review (Spaced Repetition) und Erklärungen auf Deutsch und Englisch. Free German citizenship test practice, all 16 federal states.">
     <meta name="keywords" content="Einbürgerungstest, Leben in Deutschland, Bundesland, Berlin, Bayern, Test, Quiz, deutsche Staatsbürgerschaft, German citizenship test, Prüfung">
     <meta name="author" content="EIB Quiz">
-    <meta name="theme-color" content="#F1F3F8" id="themeColorMeta">
+    <meta name="theme-color" content="#FFFFFF" id="themeColorMeta">
     <link rel="canonical" href="https://thelivinsine.github.io/eib-quiz/">
     <!-- Pre-paint theme guard: default = light "paper" (the signature bento look);
          only go dark (charcoal) when the user explicitly saved 'dark'. Prevents FOUC. -->
@@ -401,12 +401,17 @@
            five light hues are dark colours and all five dark hues are
            light ones.
            ============================================================ */
-        [data-hue]          { --tint: var(--surface2);   --ink: var(--muted); }
-        [data-hue="blue"]   { --tint: var(--accent-soft); --ink: var(--accent-text); }
-        [data-hue="green"]  { --tint: var(--green-dim);   --ink: var(--green); }
-        [data-hue="amber"]  { --tint: var(--gold-dim);    --ink: var(--gold); }
-        [data-hue="rose"]   { --tint: var(--red-dim);     --ink: var(--red-text); }
-        [data-hue="violet"] { --tint: var(--violet-dim);  --ink: var(--violet); }
+        /* --hue-ink, NOT --ink: the palette already defines --ink as its legacy
+           border alias (#3C4451 dark / #E0E7F1 light), so the short name silently
+           redefined a hairline token as a saturated accent for every descendant of a
+           hue element. Nothing read it for a border yet; the next rule that did would
+           have got a solid red edge inside a card and a correct-looking palette. */
+        [data-hue]          { --hue-tint: var(--surface2);   --hue-ink: var(--muted); }
+        [data-hue="blue"]   { --hue-tint: var(--accent-soft); --hue-ink: var(--accent-text); }
+        [data-hue="green"]  { --hue-tint: var(--green-dim);   --hue-ink: var(--green); }
+        [data-hue="amber"]  { --hue-tint: var(--gold-dim);    --hue-ink: var(--gold); }
+        [data-hue="rose"]   { --hue-tint: var(--red-dim);     --hue-ink: var(--red-text); }
+        [data-hue="violet"] { --hue-tint: var(--violet-dim);  --hue-ink: var(--violet); }
 
         /* Shared eyebrow micro-label */
         .eyebrow, .stat-label, .ds-label, .breakdown-label, .review-q-num,
@@ -506,13 +511,18 @@
             font-size: var(--fs-sm); font-weight: 600; color: var(--muted);
             transition: color 0.18s var(--ease);
         }
-        .nav-link:hover:not(:disabled) { color: var(--text); }
+        .nav-link:hover:not([aria-disabled="true"]) { color: var(--text); }
         /* The mockup underlines the current section. A box-shadow rather than a
            border, so the rule does not add to the control's height. */
         .nav-link--active { color: var(--text); box-shadow: inset 0 -2px 0 var(--text); border-radius: 0; }
-        /* Inert, and it says so. Not a link, not a tooltip alone — the chip is on
-           screen, so the promise is visible without hovering anything. */
-        .nav-link:disabled { cursor: default; color: var(--faint); }
+        /* Inert, and it says so THREE ways: the Soon chip for anyone who can see it,
+           aria-disabled for anyone who cannot, and the title on hover. NOT the
+           `disabled` attribute it used to carry — that removes the button from the
+           tab order AND suppresses its mouse events, so keyboard and screen-reader
+           users skipped straight past these two and the tooltip never fired for
+           anyone. aria-disabled announces the state and keeps the element reachable;
+           there is no onclick, so activating it still does nothing. */
+        .nav-link[aria-disabled="true"] { cursor: default; color: var(--faint); }
         .nav-soon {
             font-size: var(--fs-2xs); font-weight: 600; letter-spacing: var(--ls-caps);
             text-transform: uppercase;
@@ -551,8 +561,15 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
         }
-        /* A tile floats here in a way nothing else in this app does, and on a white
-           canvas the hairline alone cannot hold a panel off the page underneath it. */
+        /* THE one shadow in the app, and the one thing in it that genuinely floats:
+           an overlay panel above unrelated content, on a white canvas where the
+           hairline alone cannot hold it off the page beneath. CLAUDE.md's no-shadow
+           rule always carried this condition ("light would only earn a shadow under
+           something that genuinely floats, and nothing in this app does") — the
+           second clause is what changed, and the rule now records it. Dark needs none:
+           its --surface is 1.15 ABOVE the canvas, so the fill already separates.
+           The literal is not in LITERAL_PAIRS because a shadow carries no text and
+           so has no pair to assert — the same reason .brand-mark's flag is exempt. */
         html.light .hmenu-panel { box-shadow: 0 12px 28px rgba(15, 25, 41, 0.12); }
         .hmenu-panel .eyebrow { display: block; }
         .hmenu-panel .eyebrow + .seg { margin-bottom: var(--space-xs); }
@@ -874,7 +891,7 @@
             display: grid; place-items: center;
             width: var(--ctl-lg); height: var(--ctl-lg);
             border-radius: var(--radius-pill);
-            background: var(--tint); color: var(--ink);
+            background: var(--hue-tint); color: var(--hue-ink);
         }
         .hero-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .hero-chip-label { font-size: var(--fs-xs); line-height: var(--lh-ui); color: var(--sub-text); }
@@ -944,7 +961,7 @@
             flex: none; display: grid; place-items: center;
             width: var(--ctl-md); height: var(--ctl-md);
             border-radius: var(--radius-pill);
-            background: var(--tint); color: var(--ink);
+            background: var(--hue-tint); color: var(--hue-ink);
         }
         .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
@@ -1267,7 +1284,7 @@
             flex: none; display: grid; place-items: center;
             width: var(--ctl-xs); height: var(--ctl-xs);
             border-radius: var(--radius-pill);
-            background: var(--ink); color: var(--on-hue);
+            background: var(--hue-ink); color: var(--on-hue);
             transition: transform 0.25s var(--ease-spring);
         }
         .mode-start-dot svg { width: var(--icon-xs); height: var(--icon-xs); }
@@ -1282,7 +1299,7 @@
             display: grid; place-items: center;
             width: var(--ctl-md); height: var(--ctl-md); flex-shrink: 0;
             border-radius: var(--radius-sm);
-            background: var(--tint); color: var(--ink);
+            background: var(--hue-tint); color: var(--hue-ink);
             margin: 0;
         }
         .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
@@ -1592,7 +1609,12 @@
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
-            .header-controls .seg-btn { min-height: var(--ctl-sm); }
+            /* --ctl-md, and NOT the --ctl-sm this was: since 2026-09-21 the only
+               .seg in .header-controls is the pair inside #prefsMenu's panel, and a
+               menu you deliberately open is not the glance-only strip the 28px
+               exception was written for. Four options in a 176px panel are things
+               you aim at, so they take the app's ordinary 44px floor. */
+            .header-controls .seg-btn { min-height: var(--ctl-md); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
         }
@@ -2134,7 +2156,12 @@
             .header-content { padding: var(--space-xs) var(--space-md); }
             .header-controls { gap: var(--space-2xs); }
             .seg { padding: 1px; }
-            .header-controls .seg-btn { min-height: var(--ctl-xs); padding: 0 var(--space-sm); font-size: var(--fs-2xs); }
+            /* The .header-controls .seg-btn shrink to --ctl-xs that used to sit here
+               is GONE. It was written for two segmented controls standing in the
+               header strip; they moved into #prefsMenu's panel on 2026-09-21, so all
+               the rule did down here was undo the coarse-pointer 44px floor above it
+               (it is stated later in the sheet, so source order gave it the win) and
+               hand a phone four 28px targets inside an opened menu. */
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
@@ -2258,9 +2285,9 @@
                  About and FAQs are `disabled` buttons carrying a Soon chip rather than
                  links to nowhere, so nothing on screen promises a page we do not have. -->
             <nav class="header-nav" data-i18n-aria="nav.sections">
-                <button class="nav-link nav-link--active" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
-                <button class="nav-link" disabled data-i18n-title="nav.soonTitle"><span data-i18n="nav.navAbout"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
-                <button class="nav-link" disabled data-i18n-title="nav.soonTitle"><span data-i18n="nav.navFaqs"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
+                <button class="nav-link nav-link--active" type="button" aria-current="page" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
+                <button class="nav-link" type="button" aria-disabled="true" data-i18n-title="nav.soonTitle"><span data-i18n="nav.navAbout"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
+                <button class="nav-link" type="button" aria-disabled="true" data-i18n-title="nav.soonTitle"><span data-i18n="nav.navFaqs"></span><span class="nav-soon" data-i18n="nav.soon"></span></button>
             </nav>
             <div class="header-controls">
                 <!-- One globe menu instead of two segmented controls, per the mockup.
@@ -2318,8 +2345,10 @@
                         </button>
                         <button class="btn-secondary btn-lg" onclick="scrollToId('whyBand')" data-i18n="hero.cta2"></button>
                     </div>
-                    <!-- Four facts, four glyphs, no plates. The hit area stays; the tinted
-                         circle the mockup draws does not (CLAUDE.md: an icon has no plate). -->
+                    <!-- Four facts, each a tinted disc over a label, per the mockup. The
+                         data-hue is load-bearing, not decoration: it is the ONLY thing that
+                         defines --hue-tint and --hue-ink, so stripping it paints the disc
+                         transparent. See the HUE DISCS block. -->
                     <ul class="hero-chips">
                         <li class="hero-chip" data-hue="rose"><span class="hero-chip-icon" data-icon="allQuestions" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip1"></span></li>
                         <li class="hero-chip" data-hue="blue"><span class="hero-chip-icon" data-icon="bundesland" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip2"></span></li>
@@ -2936,30 +2965,31 @@
             document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.setAttribute('alt', t(el.dataset.i18nAlt)); });
         }
 
-        /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
-        function initLang() {
+        /**
+         * The two segments and the globe summary's badge, which all three say the same
+         * thing. ONE site, because initLang() and setLang() both need it and the pasted
+         * copy would have drifted the moment the badge showed anything but a code.
+         * The badge is not a data-i18n string: it is a language CODE, identical in
+         * both languages, so applyStaticStrings() must not own it.
+         */
+        function paintLangControls() {
             document.documentElement.lang = lang;
             setSegment(document.getElementById('langDe'), lang === 'de');
             setSegment(document.getElementById('langEn'), lang === 'en');
-            // The globe summary shows the current language, so it has to follow the
-            // switch inside its own panel. Not a data-i18n string: it is a language
-            // CODE, the same in both languages.
             const badge = document.getElementById('langBadge');
             if (badge) badge.textContent = lang.toUpperCase();
+        }
+
+        /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
+        function initLang() {
+            paintLangControls();
             applyStaticStrings();
         }
 
         function setLang(next) {
             lang = next === 'de' ? 'de' : 'en';
             try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
-            document.documentElement.lang = lang;
-            setSegment(document.getElementById('langDe'), lang === 'de');
-            setSegment(document.getElementById('langEn'), lang === 'en');
-            // The globe summary shows the current language, so it has to follow the
-            // switch inside its own panel. Not a data-i18n string: it is a language
-            // CODE, the same in both languages.
-            const badge = document.getElementById('langBadge');
-            if (badge) badge.textContent = lang.toUpperCase();
+            paintLangControls();
             applyStaticStrings();
             // Repaint whichever screen is on. Every renderer reads from `state`, so
             // this changes the chrome without touching the round in progress.
@@ -3525,10 +3555,12 @@
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
             const st = STATES[selectedState];
-            // Five equal peers, no featured card. The card IS the button, so none of
-            // them repeats "Start" — the arrow says it. The time estimate rides in the
-            // meta row beside the count: as a corner stamp opposite the title it took
-            // 115px of a 165px head row and crushed "All questions" to 13px wide.
+            // Five equal peers, no featured card. Each NAMES its own action in
+            // .mode-start ("Start test", "Choose topic") beside a solid disc of its own
+            // hue — the mockup's row, and what replaced the bare corner arrow that read
+            // as decoration on a touch screen. The time estimate rides in the meta row
+            // beside the count: as a corner stamp opposite the title it took 115px of a
+            // 165px head row and crushed "All questions" to 13px wide.
             // Each card carries a data-hue, which is what paints its icon plate and its
             // start disc — see the HUE DISCS block. The hues are the mockup's four plus
             // one: rose goes to Smart Review, where "questions you keep getting wrong"
