@@ -1137,20 +1137,18 @@
         #whyBand { scroll-margin-top: var(--header-h); }
 
         /* ---- Overview card: its own heading, four tiles, the resume banner ----
-           Rebuilt 2026-09-21 against docs/Mockups/"…07_04_29 PM.png". The card holds
-           the section's heading and an encouragement chip, then a wide ring+verdict
-           tile beside three readout tiles, then the resume banner. The mockup's card
-           is near-white with a --band ring tile and white readouts; this one inverts
-           that pair — the card is --band, because the practise page's tiles all are
-           (see the tile-shade note in CLAUDE.md) — and keeps the mockup's contrast by
-           putting the three readouts on --surface and leaving the ring tile on the
-           card's own ground with a hairline.
-           LIGHT follows the mockup exactly instead (on request, "stay true to the
+           Rebuilt 2026-09-21 against docs/Mockups/ui/where-you-stand.png. The card
+           holds the section's heading and an encouragement chip, then a wide
+           ring+verdict tile beside three readout tiles, then the resume banner.
+           LIGHT TAKES THE MOCKUP'S SHADES EXACTLY (on request, "stay true to the
            mockup"): a white card, a --band summary tile recessed inside it and white
            readouts separated by their hairlines alone — which is light's own system,
            where a tile IS the page colour and the edge does the separating. DARK
            cannot copy it (nothing goes below the page there, per theme-dark.md §3), so
-           it keeps the --band card with --surface readouts stepping UP out of it.
+           it keeps a --band card with --surface readouts stepping UP out of it, and
+           the summary tile stays on the card's own ground with a hairline. The
+           contrast that matters — three bright readouts beside one quiet summary — is
+           the same in both.
            This card is also the ONE place icons carry the mockup's hues — see
            .dash-stat--blue/green/amber below. */
         .dash {
@@ -1340,11 +1338,11 @@
         }
         .resume-icon svg { width: var(--icon-md); height: var(--icon-md); }
         /* The ornament sits BEHIND the row and is cropped by the banner's bottom
-           edge, so the peaks rise out of it rather than floating in it. --border-hover
-           is what .cta-art uses; an ornament carries no text, so it asserts nothing. */
-        /* The art is sized FROM the banner, not in pixels: at a fixed 250px wide it
-           stood 83px tall in a 68px banner, so overflow: hidden cropped the peaks and
-           the flag with them — the ornament's whole point, invisible. */
+           edge, so the peaks rise out of it rather than floating in it. It carries no
+           text, so it asserts nothing in contrast.test.mjs.
+           It is sized FROM the banner, not in pixels: at a fixed 250px wide it stood
+           83px tall in a 68px banner, so overflow: hidden cropped the peaks and the
+           flag with them — the ornament's whole point, invisible. */
         .resume-art {
             position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-10%);
             z-index: 0; pointer-events: none;
@@ -1354,7 +1352,11 @@
                as dirt. Dark gets #2D5185 on #273E67, which is the same quiet step. */
             color: var(--accent-line);
         }
-        .resume-art svg { height: 100%; width: auto; display: block; }
+        /* aspect-ratio, not just width: auto. An inline SVG's auto width is the
+           engine's call — Chromium derives it from the viewBox against the definite
+           height, but an engine that resolves it to 100% of the containing block
+           would stretch the peaks across the whole banner. 3/1 is the viewBox. */
+        .resume-art svg { height: 100%; width: auto; aspect-ratio: 3 / 1; display: block; }
         .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
         .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); min-width: 0; }
         .resume-text strong { color: var(--text); font-size: var(--fs-base); }
@@ -2436,9 +2438,8 @@
             /* Back to one row down here: the card is a list item, not a tile, so the
                plate sits beside the name rather than stacked above it. */
             .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
-            .mode-card .mode-meta { justify-content: flex-start; }
             .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
-            .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
+            .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; justify-content: flex-start; }
             /* Centred in a TILE, hard left in a list row: down here the title, the
                description and the meta are all flush left in a 343px row, and a centred
                action would be the one thing floating in the middle of it. */

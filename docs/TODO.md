@@ -996,8 +996,9 @@ byte-compared against local after #81.
 - Screenshots were read for every change, but the in-app pane refuses to repaint after a
   scroll, so mid-page views were captured by emulating a tall viewport instead. Layout that
   depends on the real viewport height (`svh` floors) was therefore measured, not seen.
-- `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` is untracked in the working
-  tree and is **not mine**. Left alone.
+- `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` was untracked in the working
+  tree and is **not mine**. Left alone at the time; a later session committed it as
+  `docs/Mockups/ui/logo-kit.png`.
 
 
 ## Session developments (2026-09-21, the hero's fact chips came out)
@@ -1243,8 +1244,9 @@ result, so there is no PR for it.
   `max-age=600` on HTML is outside the client's control.
 - **The browser Back button still does nothing** for either page — the app has never had
   routing and this session did not add any. A reload always lands on Home.
-- `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` is untracked in the working
-  tree and is **not mine**. Left alone, as in the previous session.
+- `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` was untracked in the working
+  tree and is **not mine**. Left alone, as in the previous session; a later session
+  committed it as `docs/Mockups/ui/logo-kit.png`.
 
 ---
 
