@@ -533,7 +533,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     photo is on the page. `img/ATTRIBUTIONS.md` has the recrop command for the FILE.
   - **The NUMBERS and CTA bands are the mockup's pale panel** — `--band` plus a
     `--border` hairline (2026-09-21). They were `--surface`, which on a white canvas is
-    the page itself; `--band` is the same panel the mode band sits on, and is what the
+    the page itself; `--band` is the token the footer shares, and is what the
     mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
     above rejects: `--surface2` is a well inside a tile, and still never a panel on the
     page.
@@ -636,42 +636,39 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `renderModes()` reads the panel's `hidden` to redraw `aria-expanded`, because it runs
     again on every language switch and would otherwise reset the button while the topics
     were still showing.
-  - **The band is a RECESS IN LIGHT AND A RAISED PANEL IN DARK, and the direction is the
-    theme's, not the component's** (`.modes-band` + `--band`; the dark half was corrected
-    2026-09-21 after shipping as a recess in both). The mockup is light-only: its panel is
-    DARKER than its white page and its cards are the page's own white, so in light the band
-    steps DOWN (`#F5F8FC`, 1.065 below the canvas) and the cards are ordinary `--surface`
-    tiles raised back out of it. **Reading that as a rule about the COMPONENT and applying
-    it to dark was the mistake.** `theme-dark.md` §3: "every level of containment steps
-    LIGHTER than the thing containing it, monotonically, every time", and the single
-    exception in the reference's whole sample is a large multi-line text well — "a chip or
-    a button is a raised object you press; a big text well is a hole you type into". A
-    panel holding five cards is not a hole. In dark the band is therefore `#262626`,
-    **1.15 ABOVE** the `#1A1A1A` page, with the cards 1.18 above it again: page darkest,
-    then panel, then card, then the well inside the card. Same for the why, numbers, CTA
-    and footer panels, which share the token.
-    - Reading it as `--surface2` is still wrong, and was tried twice: in light
-      `--surface2` on the canvas is a 1.03 step, which is invisible, and in dark it would
-      put the panel ABOVE the cards standing on it.
-    - **It carries a `--border` hairline**, because every rung of this ladder is under the
-      1.20 where `theme-dark.md` §5 says to stop pushing fills apart and draw the edge —
-      and the why, numbers and CTA bands below it already have one.
-    - **In LIGHT both state fills move up a rung ON the band, and only in light.** "Nothing
-      on the band needed repainting" held for the RESTING card and not for its states: a
-      white card can only step DOWN, and the panel is just 1.20 beneath it, so `--hover`
-      landed 1.067 from `--band` and `--surface3` only **1.039** — under the 1.05 nesting
-      floor — and a pressed card merged into the panel with no edge to save it
-      (`--border` is 1.039 on `--band` too). So `html.light .modes-band` scopes hover to
-      `--surface2` (1.111) and `:active` to `--hover` (1.067), for `.mode-card` and
-      `.topic-chip` alike. **Dark is deliberately untouched** — its states step UP and
-      already clear the panel by 1.43 and 1.57, and forcing the same tokens on it would
-      make its hover quieter than it is. `contrast.test.mjs` asserts `surface2`/`band` and
-      `hover`/`band`; `surface3`/`band` is NOT asserted, because it is dark's press fill
-      only and would fail on the light ground it no longer touches.
-    - **It does not bleed out through `main`'s gutter.** Tried, to buy the five cards back
-      the width the panel's padding costs them: `main` is only capped above ~1140px, so
-      below that the band ran flush to the window with its corners cut off. The card's own
-      side padding is what the meta row actually needed.
+  - **THERE IS NO PANEL BEHIND THE FIVE CARDS** (2026-09-21, on request). `.modes-band`
+    was the mockup's pale `--band` plate — a hairline, a 16px radius and
+    `--space-xl`/`--space-md` of padding — and it is gone; the cards sit straight on the
+    canvas, as the why band's four items do. Five bordered tiles are already five boxes,
+    and a sixth around them is the containers-inside-containers look this sheet keeps
+    taking out. The class survives ONLY as the hook for `.modes-band .section-head`.
+    - **The cards separate BETTER without it.** In dark a `#323232` tile is **1.36** off
+      the `#1A1A1A` page against 1.18 off the panel; in light the hairline carries a
+      white tile on white either way (1.245). Removing the plate cost the ladder nothing
+      because the plate was the shallowest rung on it.
+    - **It bought the meta row 7.3px**, measured in English at 1280x900 (worst case
+      "All questions": 164.7 in a 172px box, against 164.7 in 164.7 with the panel).
+      The panel's 16px of side padding came straight off the five cards, and that row
+      had **zero** slack — so the box that was most short of width is the one the
+      deletion paid. `white-space: nowrap` and `overflow: hidden` on `.mode-meta` stay:
+      they are the guarantee, not the fit.
+    - **The two `html.light .modes-band` state rules went with it**, and had to. They
+      raised hover to `--surface2` and press to `--surface3` because on `--band` the base
+      fills landed 1.067 and 1.039, under the 1.05 nesting floor. On the canvas the base
+      rules clear it unaided — `--hover` is 1.12 below white, `--surface3` 1.29 — so both
+      themes share one pair again. `contrast.test.mjs` lost `surface`/`band`,
+      `surface2`/`band` and `surface3`/`band` in the same commit: **no `--surface` tile
+      sits on `--band` any more**, resting, hovered or pressed, and a pair with no
+      consumer is the stale-ground bug in the LITERAL_PAIRS note one level up.
+    - **`--band` itself stays** — the numbers band, the CTA band and the footer are still
+      pale panels, and `canvas`/`band` is still asserted for them. The direction remains
+      the theme's: a recess in light (the mockup's, 1.065 below its white page), a raised
+      panel in dark (`#262626`, 1.15 ABOVE the page, per `theme-dark.md` §3 — nothing goes
+      below the page there). **If a panel is ever put back round these cards, that §3
+      argument is the one to re-read**, along with the two it cost: reading `--surface2`
+      as a panel is wrong in both themes, and bleeding the panel out through `main`'s
+      gutter was tried and reverted (`main` is only capped above ~1140px, so below that it
+      ran flush to the window with its corners cut off).
     - **Its heading is centred and the state picker sits UNDER it**, not opposite. The
       picker still belongs to the section it changes; a centred heading simply leaves
       nothing for it to sit across from.
@@ -679,15 +676,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `home.practice.eyebrow` ("Practise your way") and `home.practice.lead` ("Five
       ways in — one goal: passing.") strings are gone: both restated what "Choose
       your practice mode" plus five visibly different cards already say, and three
-      stacked lines of chrome pushed the cards down the panel for nothing. The head
-      takes `--space-lg` beneath it (`.modes-band .section-head`) rather than the
-      global `--space-ms`, because one line needs to read as a heading.
-    - **The panel's side padding comes straight off the five cards' width**, which is why
-      it is `--space-md` — it was `--space-lg` until the meta row had to hold the count and
-      the estimate on one line, and `--space-xl` before that. **Height is not free here
-      either any more**: the block padding came `--space-2xl` -> `--space-xl` on request
-      (2026-09-21), the band 522 -> 473px. The cards' own air was left alone; it was the
-      panel's.
+      stacked lines of chrome pushed the cards down for nothing. The head takes
+      `--space-lg` beneath it (`.modes-band .section-head`) rather than the global
+      `--space-ms`, because one line needs to read as a heading. That rule is now the
+      only reason the class exists.
   - **The mode cards carry a per-card HUE and a NAMED action** (2026-09-21, on request,
     against the mockup — this reverses the rule of the same morning that they carry
     neither). Exam **blue**, All questions **green**, Your state **amber**, Smart review
