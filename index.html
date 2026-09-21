@@ -892,26 +892,6 @@
         .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
         .hero-cta-row .btn-primary svg { width: var(--icon-sm); height: var(--icon-sm); }
 
-        /* Four facts, each a tinted disc over a label — the mockup's own treatment.
-           --ctl-lg is 52px, which is the disc the mockup draws, so the size is a token
-           rather than a literal. */
-        .hero-chips {
-            list-style: none;
-            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: var(--space-md);
-            margin-top: var(--space-xl);
-            width: 100%; max-width: 480px;
-        }
-        .hero-chip { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); text-align: center; min-width: 0; }
-        .hero-chip-icon {
-            display: grid; place-items: center;
-            width: var(--ctl-lg); height: var(--ctl-lg);
-            border-radius: var(--radius-pill);
-            background: var(--hue-tint); color: var(--hue-ink);
-        }
-        .hero-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        .hero-chip-label { font-size: var(--fs-xs); line-height: var(--lh-ui); color: var(--sub-text); }
-
         .hero-visual { position: relative; min-width: 0; }
         .hero-photo {
             position: relative;
@@ -2108,7 +2088,6 @@
             .hero-visual { order: -1; max-width: 460px; width: 100%; margin-inline: auto; }
             .hero-text { align-items: center; text-align: center; }
             .hero-lead { margin-inline: auto; }
-            .hero-chips { margin-inline: auto; }
 
             /* body.in-session-prefixed, or the desktop two-column rule outranks this one
                and the areas fight: "main stats" against a single column collapsed the
@@ -2203,10 +2182,6 @@
             .hero-landing { padding: var(--space-ms) 0 var(--space-lg); gap: var(--space-lg); }
             .hero-cta-row { width: 100%; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-ms); }
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; }
-            /* Four labels across a 375px row is 75px a column, and "Bundesländer"
-               alone is wider than that. */
-            .hero-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-ms); margin-top: var(--space-lg); }
-            .hero-chip { flex-direction: row; text-align: left; gap: var(--space-sm); }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
             .stats-item--note, .cta-note, .cta-art { display: none; }
@@ -2460,16 +2435,6 @@
                         </button>
                         <button class="btn-secondary btn-lg" onclick="scrollToId('whyBand')" data-i18n="hero.cta2"></button>
                     </div>
-                    <!-- Four facts, each a tinted disc over a label, per the mockup. The
-                         data-hue is load-bearing, not decoration: it is the ONLY thing that
-                         defines --hue-tint and --hue-ink, so stripping it paints the disc
-                         transparent. See the HUE DISCS block. -->
-                    <ul class="hero-chips">
-                        <li class="hero-chip" data-hue="rose"><span class="hero-chip-icon" data-icon="allQuestions" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip1"></span></li>
-                        <li class="hero-chip" data-hue="blue"><span class="hero-chip-icon" data-icon="bundesland" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip2"></span></li>
-                        <li class="hero-chip" data-hue="green"><span class="hero-chip-icon" data-icon="translate" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip3"></span></li>
-                        <li class="hero-chip" data-hue="amber"><span class="hero-chip-icon" data-icon="clock" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip4"></span></li>
-                    </ul>
                 </div>
 
                 <div class="hero-visual">
@@ -2827,7 +2792,6 @@
         };
         // A clock IS the history glyph and a group IS the society glyph; the
         // landing page needs both under names that say what they mean there.
-        ICONS.clock = ICONS.history;
         ICONS.community = ICONS.society;
 
         // Ornament for the CTA band. Solid shapes, never strokes, and purely
@@ -2928,10 +2892,6 @@
             'hero.lead':           { en: 'Practise with all 300 official questions — for all 16 federal states. In German or English. Anytime, anywhere.', de: 'Übe mit allen 300 amtlichen Fragen — für alle 16 Bundesländer. Auf Deutsch oder Englisch. Jederzeit, überall.' },
             'hero.cta':            { en: 'Start now',                de: 'Jetzt starten' },
             'hero.cta2':           { en: 'Learn more',               de: 'Mehr erfahren' },
-            'hero.chip1':          { en: '300 official questions',   de: '300 amtliche Fragen' },
-            'hero.chip2':          { en: 'All 16 federal states',    de: 'Alle 16 Bundesländer' },
-            'hero.chip3':          { en: 'German & English',         de: 'Deutsch & Englisch' },
-            'hero.chip4':          { en: '60-minute test',           de: '60-Minuten-Test' },
             'hero.photoAlt':       { en: 'The west façade of the Reichstag in Berlin, inscribed DEM DEUTSCHEN VOLKE, with the German and European flags flying in front of it.', de: 'Die Westfassade des Reichstags in Berlin mit der Inschrift DEM DEUTSCHEN VOLKE, davor die deutsche und die europäische Flagge.' },
             // footer. The photo credit was `hero.credit` under the photo until
             // 2026-09-21; BY-SA asks for it where the work is used, and the footer of
