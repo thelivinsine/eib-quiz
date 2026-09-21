@@ -573,3 +573,75 @@ resizing the viewport mid-session, which leaves `--header-h` stale; a **fresh** 
 - **Code gotchas** (biased shuffle, shadowed globals, mode-key renames, `lang="en"`) live in
   the Gotchas section of `CLAUDE.md`, which loads into every session. The reasoning behind
   each one is in the 2026-09-19 session block above.
+
+## Session developments (2026-09-21, landing-page phases 1-7)
+
+**Phases 1-6 shipped and Phase 7's verification ran; the refactor is done bar a live
+check.** `docs/plans/landing-page-refactor.md` carries the full task-by-task record,
+including a "what phase N decided that the plan did not" block per phase — read those
+before touching any of this, because several of the plan's own instructions turned out to
+be wrong and the reasons are the durable part.
+
+**The home screen is two tiers over ONE section list.** `hasProgress()` picks the tier and
+`initHomeScreen()` toggles `hidden` on every `#homeScreen [data-tier]`. The plan drew two
+wrapper elements with the mode band moved between them; that is not needed, because there
+is a single DOM order that reads correctly for both tiers (the shared band sits in the same
+place in each). Nothing is moved and nothing is duplicated, which is what the plan's "the
+mode band is one element" rule was protecting. `[hidden] { display: none !important }` went
+into the reset — several of these sections set their own `display` and beat the UA rule.
+
+**The landing tier is a hero, five modes, a why-band, four numbers and a CTA band.** The
+hero photograph is `img/hero-reichstag.webp`: a 1100x1100 square crop of the phase-0
+download, 161 KB, CC BY-SA 4.0 and therefore carrying a **visible** credit under it. Its
+handwritten margin note sits top RIGHT — the mockup's top-left corner is our EU flag — over
+the only clean patch of sky in the frame, and its ink is a literal registered in
+`LITERAL_PAIRS` against the measured worst case, the same shape the zoom veil's entry uses.
+The mockup's curved arrow was dropped: every region it could have swept has a flagpole
+through it, where a dark stroke vanishes.
+
+**Five equal mode cards; the exam's featured treatment is gone**, and with it
+`.mode-card--featured`, `.mode-start-btn`, `.msb-arrow` and `mode.start` — the only place
+any card said "Start" in words. "By topic" stopped being a home section and became the
+fifth card, revealing the existing chips below the grid. Two things the plan got wrong
+here: `auto-fit` strands the fifth card on a row of its own at most real widths (only 5, 3
+and 1 divide five cleanly), and keeping the time estimate in the head row squeezed "All
+questions" to **13px wide over three lines** once there were five columns. A new 1160px
+breakpoint and `hyphens: auto` on `.mode-title` exist because of one German word,
+`Prüfungssimulation`.
+
+**The header has the flag, the lockup and a call to action.** `--ink-tile` and `--on-dark`
+died with the charcoal `E`; nothing else read them, and three `contrast.test.mjs` entries
+went with them.
+
+**The `--surface2` panel the mockup draws behind its bands was rejected twice.** In light it
+is a 1.03 step — invisible. In dark the ramp only goes up, so `--surface` cards on a
+`--surface2` band read as wells sunk into it rather than tiles raised off it, with no rung
+above that leaves hover anywhere to go. Every new band takes the tile rule instead.
+
+**The scale ratchet earned its keep.** Writing a second `gap: 1px` took `literalSpacing` to
+3 and `gapRungs` to 8 on the first run; the three new bands share one rule with
+`.result-stats` now, and the hero's column gap is `--space-xl` because 40px is a gap rung
+nowhere else in the sheet.
+
+**Task 7.7 is done: the social card was regenerated.** `tools/make-og-image.py` ran for
+production for the first time. The card now carries the German flag mark — the header's,
+replacing a drawn tick that said nothing about the subject and was the last stroked glyph
+in the project — over "Einbürgerungstest / Alle 16 Bundesländer / 300 FRAGEN · DE / EN ·
+KOSTENLOS". No "Berlin", no "310". 300 is the number the app's own hero and stats band give;
+the 460 in the repo counts all sixteen states' sets, of which a reader ever sees ten. Both
+outputs came from the one run, as the script exists to guarantee.
+
+**Verification.** contrast 10/10, scale 12/12 with every budget held, `validate.js` OK,
+`node --check` on the extracted script and on `sw.js`, `manifest.json` parses, `CACHE`
+bumped, `grep 'stroke="currentColor"'` empty, and **no NUL bytes** — one got into the
+stylesheet from a Python octal escape (`'\00b7'`) and neither suite looks for that, so
+check it by hand after any scripted edit. Swept at 1600 / 1280 / 1024 / 940 / 768 / 620 /
+375px in both languages and both themes: no horizontal scroll, no heading over two lines,
+and the only sub-44px controls are the documented header exceptions. The two-tier switch
+was exercised end to end (cleared profile → landing, one real answer → dashboard, reset →
+landing, all without a reload), and the in-session viewport lock still measures
+`scrollHeight === innerHeight` on both the quiz and the results screen.
+
+**Not done:** nothing was checked on the live site; all measurement was against
+`python -m http.server`. Task 7.1's full breakpoint sweep of the QUIZ and RESULTS screens
+was spot-checked rather than exhausted — those screens were out of this refactor's scope.

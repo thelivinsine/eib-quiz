@@ -1,6 +1,7 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
-Status: **Phases 0-6 complete, 2026-09-21.** Phase 7 open (7.7, the social card, is the last piece).
+Status: **Complete, 2026-09-21** — all eight phases, including 7.7. The one thing not
+done is a check on the live site; every measurement here was against `python -m http.server`.
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
@@ -642,7 +643,7 @@ same reason the old `eib` was markup. The tagline is, as `nav.tagline`.
 
 ---
 
-## Phase 7 — Responsive and verification
+## Phase 7 — Responsive and verification  ·  **DONE**
 
 ### 7.1 Breakpoint sweep
 At **1600 / 1280 / 1024 / 940 / 768 / 620 / 375px**, both tiers, both
@@ -683,7 +684,7 @@ painting leaves transitions at `currentTime: 0` **forever**, and
 `getComputedStyle()` then returns the transition's start value. This produced
 four phantom contrast failures in one previous session.
 
-### 7.7 Redo the social card
+### 7.7 Redo the social card  ·  done
 `[tools/make-og-image.py, og-image.svg, og-image.png]`
 
 Deferred here from Phase 0 on purpose: the card's branding follows whatever
@@ -691,9 +692,16 @@ this refactor settles on, so doing it earlier means doing it twice.
 
 `tools/make-og-image.py` emits **both** files from one set of constants — they
 used to be hand-synced and drifted, which is how the PNG kept a `#BFFF00` lime
-two palettes after it was replaced. It has **not been run for production**; its
-copy constants are a provisional pass matching the current `<title>`, not the
-mockup's `EIB Quiz / Learn · Practice · Pass` lockup.
+two palettes after it was replaced. **Run for production 2026-09-21.**
+
+What it decided: the mark is the German flag, the header's, replacing a drawn
+tick that said nothing about the subject and was the last stroked glyph in the
+project. The copy stays **descriptive** rather than the `EIB Quiz / Learn ·
+Practise · Pass` lockup — a link preview is read beside its own URL, so the
+space is better spent saying what the thing IS. `300` is the number the app's
+own hero and stats band give; the 460 in the repo counts all sixteen states'
+sets, of which a reader ever sees ten. The palette constants already matched
+the phase-0 repaint and were not touched.
 
 - Decide the wording against the shipped header's brand lockup (task 6.2).
 - Run the script, commit **both** outputs together.

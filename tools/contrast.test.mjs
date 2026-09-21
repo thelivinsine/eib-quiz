@@ -203,7 +203,7 @@ const LITERAL_PAIRS = {
     ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
     // Same case as the veil: the hero's handwritten note sits on a PHOTOGRAPH, so its
     // ground is not a token. The note is placed over the one clean patch of sky in
-    // img/hero-reichstag.webp, whose darkest pixel measures 211 of 255 — #D0D3D8 is
+    // img/hero-reichstag.webp, whose darkest pixel measures 210 of 255 — #D0D3D8 is
     // that worst case. The note reads the same in both themes because the photo does.
     ['#16233A', '#D0D3D8', AA, 'the hero margin note (.hero-note) on the photo sky'],
   ],
