@@ -1317,3 +1317,167 @@ findings raised, all five applied as the smallest edit that fixes them. No featu
   meta row's slack, the load-failure route and the worker's write path are all hand-checked.
 - The two `docs/Mockups/ChatGPT Image Sep 21, 2026, *.png` files are untracked and **not
   mine**. Left alone.
+
+---
+
+## Session close (2026-09-21, the dark theme re-derived and the nav link de-buttoned)
+
+Live at close: branch **`ui/dark-ladder-and-nav-link`**, commit **`b775b9e`**, pushed and
+opened as [#93](https://github.com/thelivinsine/eib-quiz/pull/93) — **waiting, not merged.** A
+substantial ending: it re-derives a whole theme, and the *not verified* list below is what a
+reviewer is being asked to weigh before it reaches production.
+
+Two requests, one of them in two passes. Everything here is DARK-only plus one header
+rule; **light is untouched and is still the mockup's own palette.**
+
+### 1. The header's Practise link is a link again
+
+`.nav-link--cta` was `--btn-fill` / `--on-btn` in a pill — shipped earlier the same day.
+It is `.nav-link`'s own shape now, one step up the type scale (`--fs-md`) and in
+`--accent-text`: two items in a two-item nav should read as the same KIND of thing, and a
+solid button beside a bare word reads as a control that acts rather than a page you go to.
+The hero's Start and the CTA band still carry the primary button, so nothing lost that
+voice. Its `:hover`, `:active` and `.nav-link--active` overrides all stay —
+`.nav-link:hover` is (0,2,0) and the active rule repaints the label `--text`, so without
+them the accent is lost in both states. `accent-text / canvas` was added to `PAIRS`: the
+header sits on the canvas, and in dark that is a rung below `--surface`, so the existing
+`accent-text / surface` pair did not cover it.
+
+### 2. The dark palette, re-derived against the reference (two passes)
+
+**First pass — the two things a script could see.** `theme-dark.md` §2 is flat: "greys are
+perfectly neutral, R = G = B *exactly* ... no fashionable dark navy. A tinted dark grey
+photographs well in a mockup and goes muddy on a real monitor." Every dark surface was
+H 218 slate, 11–21 apart per channel, **derived from a light-only mockup** — the exact move
+that sentence warns against. And `--hover` sat at **1.182** on a tile, under §4's "1.20 is
+the floor for a state change"; `contrast.test.mjs` cannot catch that, because `FILLS`
+asserts `STATE` at 1.08.
+
+**Second pass — the one that mattered, and the first pass missed it.** The user pointed at
+the reference screenshots: the page is the darkest thing on screen and every level of
+containment steps lighter. `--band` — the panel under the practise band, the why, numbers
+and CTA bands and the footer — was **darker than the page**, with cards raised back out of
+it. That came from the light mockup (white page, panel recessed below it) and was applied
+to dark as if it were a fact about the COMPONENT. §3 reverses for exactly one element in
+the reference's whole sample, a large multi-line text well — "a chip or a button is a
+raised object you press; a big text well is a hole you type into" — and a panel holding
+five cards is not one.
+
+The ladder now, each rung measured on the one below:
+
+| token | dark | step | what it is |
+|---|---|---|---|
+| `--canvas` | `#1A1A1A` | — | the page, the darkest thing on screen |
+| `--band` | `#262626` | 1.15 | a panel ON the page |
+| `--surface` | `#323232` | 1.18 | a card IN the panel (1.36 on the bare page) |
+| `--surface2` | `#3B3B3B` | 1.14 | a well or an answer option INSIDE a card |
+| `--surface3` | `#434343` | 1.13 | a letter chip inside THAT, and the press fill |
+
+The step shrinks with depth exactly as §3.a describes. `--hover` is 1.22 on a tile,
+`--border` `#505050` is 1.59 on a tile and 2.16 on the page (§5's divider band), and the
+text tiers read 12.82 / 8.40 / 6.11 / 5.02 on a tile — `--muted`'s real floor is its
+LIGHTEST ground, `--surface3`, where it reads 4.72.
+
+**Two knock-ons, both forced by the ladder rising:**
+
+- The seven tinted `--*-dim` plates (`--accent-soft`, `--teal-tint`, `--gold-dim`,
+  `--green-dim`, `--red-dim`, `--violet-dim`, `--blue-dim`) sat **1.01–1.15** on a tile —
+  invisible as fills, with the hue doing all the work. Each was lifted to **1.20**, hue and
+  saturation held, luminance moved.
+- `--accent`, `--green`, `--red`/`--red-text` and `--violet` each gained a little lightness
+  (`#60A5FA`→`#70ADFA`, `#10B981`→`#10C185`, `#F87171`→`#F98989`, `#A78BFA`→`#B39CFA`) so
+  their own text still clears AA on those risen plates — §6's "lighten it until it clears".
+
+`--accent-line` moved with the hairline, `--lime-glow` follows the new accent, `--on-hue`
+and the JS `theme-color` meta follow the new canvas.
+
+### Verified
+
+- `node --test tools/contrast.test.mjs` — 10/10, including the new `accent-text / canvas`
+  pair. `node --test tools/scale.test.mjs` — 12/12, no budget moved (no token, radius or
+  size was minted).
+- `node --check` clean on the extracted `<script>` block. `node tools/validate.js` — 460
+  questions, structure valid.
+- **No dark token sits below the page**, checked by parsing the `:root` block and comparing
+  luminances: the only two that do are `--on-apricot` / `--on-gold`, which are dark INK on
+  a gold fill, not surfaces.
+- Rendered in a real browser at 1280x900 over `python -m http.server`, dark: the Practise
+  page (page → band → cards reading as three planes) and the quiz screen (page → option →
+  letter chip), plus the header showing Practise in the accent with its underline.
+
+### Not verified
+
+- **Nothing was checked on the live site**, and no PWA cache was cleared — all of it was
+  localhost over `http.server`.
+- **Light was never re-rendered.** No light token changed and the light half of
+  `contrast.test.mjs` passes, but no screenshot of the light theme was taken this session.
+- **No mobile check at all.** The 375px sweep in `CLAUDE.md`'s validation checklist
+  (`scrollWidth == viewport` on both pages, `scrollHeight == innerHeight` on the session
+  screens) was NOT run, and the header's nav is hidden below 620px so the changed link
+  was never seen at phone width.
+- **No exam simulation was run**, so the exam's neutral `.picked` state and its results
+  list were not seen against the new palette.
+- **The hover and press fills were not looked at by eye**, in either theme — they are
+  asserted by ratio only, and the pane would not synthesise a hover.
+- **The colour work is judged by ratio and by three screenshots**, not by an audit of every
+  screen: the results screen, the glossary, the history list, the lightbox and the resume
+  banner were never opened in dark after the change.
+
+---
+
+## Session close (2026-09-21, review of #93 and its four fixes)
+
+A review of the open PR #93 (`ui/dark-ladder-and-nav-link`) — the dark re-derivation and the
+de-buttoned nav link. The ladder itself held up: every ratio in the new `:root` block was
+re-measured independently (band 1.15 on the page, surface 1.18 on the band, surface2 1.145,
+surface3 1.132, hairline 1.59 on a tile, hover 1.22, `--muted` 4.72 on `--surface3`, the
+seven `--*-dim` plates at 1.197–1.207) and matches what the comments claim. Four things did
+not.
+
+### 1. The one real bug: a brightness filter took the hover under AA
+
+`.nav-link--cta:hover` was `filter: brightness(1.12)`. In light that renders `#2563EB` as
+**`#296FFF` — 4.36 on the white canvas**, under the 4.5 floor that the `accent-text /
+canvas` pair added in this very PR exists to hold. **A filter is invisible to
+`contrast.test.mjs`**, which parses tokens, so the ratchet passed while the hovered label
+failed. Scoped `html.light .nav-link--cta:hover { filter: brightness(0.88) }` — 6.31, and
+it is the direction the rest of the sheet already goes (down in light, up in dark). Dark is
+untouched at 9.14. The rule is written into `CLAUDE.md` beside the LITERAL_PAIRS one,
+because it is the same class of hole: **a colour the test cannot see.**
+
+### 2. The literal pairs were asserting colours the app no longer has
+
+`LITERAL_PAIRS.dark` still named `#10B981` and `#F87171` as the answer-chip grounds after
+this PR moved `--green` to `#10C185` and `--red` to `#F98989`. The chips really are
+`background: var(--green)` / `var(--red)`, so the test was checking two colours that exist
+nowhere — and passed on luck, both grounds having got lighter (7.13 and 7.30). Corrected to
+the shipped values.
+
+### 3 and 4. Two comments that recorded values that never shipped
+
+- The re-derivation comment said `#F87171 -> #F97F7F` and `#A78BFA -> #AD92FA`; the tokens
+  twenty lines below it are `#F98989` and `#B39CFA`. `CLAUDE.md` carried the same two wrong
+  values while its own palette line had `#F98989` right — the two contradicted each other
+  inside one commit. Both fixed.
+- `--text` was annotated `13.97 on tile, 16.5 on the page`. Measured it is **12.82 on a
+  tile and 17.40 on the page** (16.51 was the OLD text-on-band figure, carried over). The
+  three tiers below it were right, which is what made the wrong one easy to trust.
+
+### Verified
+
+- `node --test tools/contrast.test.mjs` — 10/10 with the corrected grounds.
+  `node --test tools/scale.test.mjs` — 12/12, no budget moved.
+- `node --check` clean on the extracted `<script>` block and on `sw.js`.
+  `node tools/validate.js` — 460 questions, structure valid.
+- Every ratio quoted above was computed from the shipped hex values in this session, not
+  read out of a comment.
+
+### Not verified
+
+- **Nothing was rendered.** No browser, no server, no screenshot — the hover fix is
+  asserted by arithmetic on `filter: brightness()`, which is how the bug got in. The
+  browser's own compositing of that filter (sRGB, before any colour-space conversion) is
+  assumed, not observed.
+- **The reviewer wrote the fixes**, so the four changes have had one pair of eyes.
+- Everything in #93's own *Not verified* list still stands: no live-site check, no mobile
+  sweep, no exam run, no light-theme render.

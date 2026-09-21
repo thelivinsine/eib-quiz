@@ -134,6 +134,9 @@ const PAIRS = [
   ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
   ["accent-text", "surface", AA, "Starten links, FRAGE n, the active EN toggle"],
+  // The header sits on --canvas, which in dark is a rung below --surface, so the
+  // pair above did not cover the Practise link once it stopped being a filled pill.
+  ["accent-text", "canvas", AA, "the header's Practise link, and any accent word on the page"],
   ["accent-text", "accent-soft", AA, "the current question in the navigator grid"],
   ["teal-deep", "teal-tint", AA, "the Bundesland tile label and the Bestanden pill"],
   ["gold", "gold-dim", AA, "the DUE chip on the Smart Review card"],
@@ -217,9 +220,11 @@ const FILLS = [
   ["surface2", "canvas", NEST, "an answer option, which is a well on the white page"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  // The recess the practise band sits in, and the tiles raised out of it. The FILL is
-  // what separates them here (1.20 both themes), which is why the hairline is not
-  // asserted against this ground — in light it is 1.04 on the panel by design.
+  // The practise band's panel and the tiles on it. The DIRECTION is the theme's: a
+  // recess in light (the mockup's, 1.065 below its white page), a raised panel in dark
+  // (1.15 above the page, per theme-dark.md §3 — nothing goes below the page there).
+  // Either way the FILL separates them, which is why the hairline is not asserted
+  // against this ground — in light it is 1.04 on the panel by design.
   ["surface", "band", NEST, "a mode card or topic chip, raised out of the practise band"],
   ["canvas", "band", NEST, "the page either side of the panel"],
   // The two fills a card takes as a STATE on that recess. In light a white card can only
@@ -257,8 +262,8 @@ const LITERAL_PAIRS = {
     // that worst case. The note reads the same in both themes because the photo does.
   ],
   dark: [
-    ['#04231A', '#10B981', AA, 'the letter on the correct answer chip, on --green'],
-    ['#3A0A0A', '#F87171', AA, 'the letter on the wrong answer chip, on --red'],
+    ['#04231A', '#10C185', AA, 'the letter on the correct answer chip, on --green'],
+    ['#3A0A0A', '#F98989', AA, 'the letter on the wrong answer chip, on --red'],
     // Same veil, same worst case: it sits on the image, not on the theme's canvas.
     ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
   ],
