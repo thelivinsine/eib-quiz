@@ -353,33 +353,36 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   you glance at, so `.header-controls .seg-btn` is `--ctl-xs`, `.session-back` `--ctl-sm` and the
   brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
   **There is no `.header-cta` any more** (2026-09-21, on request). The header used to end
-  in a "Start practising" pill; the hero's own Start sits ten pixels below it on the
-  landing tier and the dashboard tier leads with the mode band, so it only ever repeated
-  something already on screen. `nav.startPractice` went with it; `cta.button` is a
-  different string and stays.
-  - **The header has a CENTRE NAV and ONE globe menu** (2026-09-21, per the mockup).
-    `.header-nav` is Home / About / FAQs, centred by `margin-inline: auto` and NOT by
-    being the middle of a `space-between` row: `.session-back` is `display: none` most of
-    the time, so the number of flex children changes and `space-between` would move the
-    nav with it. It is hidden by `body.in-session` and below 620px.
-  - **About and FAQs are `aria-disabled` buttons wearing a `.nav-soon` "Soon" chip**, not
-    links to nowhere. Neither page exists, and the chip is on screen, so the promise is
-    visible without hovering anything. **`aria-disabled="true"`, NOT the `disabled`
-    attribute** they shipped with: `disabled` drops a button out of the tab order AND
-    suppresses its mouse events, so keyboard and screen-reader users skipped straight past
-    both and the `title` tooltip never fired for anyone. The CSS keys off
-    `[aria-disabled="true"]` to match, and neither button has an `onclick`, so activating
-    one still does nothing. **If either is built, the chip, the aria and the title come off
-    together** — a live link still wearing Soon is worse than either alone.
-  - **`.nav-soon` is sized by its CASE, not its type.** `--fs-2xs` IS the 12px floor and
-    `scale.test.mjs` holds `fontSizesBelowFloor` at 0, so a smaller chip cannot come from
-    the font. It dropped `text-transform: uppercase` and its `--ls-caps` tracking instead
-    ("SOON" at 0.06em is far wider than "Soon") plus 2px of side padding: ~46px to ~38px
-    with the type untouched. The `letter-spacing` line is **deleted** rather than set to
-    `--ls-normal`: only two tracking values are in use and `distinctTracking` is budgeted
-    at 2, so naming a third would bust it.
+  in a "Start practising" pill beside the controls; the hero's own Start sits ten pixels
+  below it, so it only ever repeated something already on screen. `nav.startPractice`
+  went with it; `cta.button` is a different string and stays. **`.nav-link--cta` is not
+  its return**: that is the nav's Practise link, which goes to another PAGE rather than
+  restating a button on this one.
+  - **The header nav is TWO REAL LINKS: Home and Practise** (2026-09-21). They are the
+    app's two pages, they carry `data-screen`, and `showScreen()` calls `syncNav()`, which
+    moves `.nav-link--active` and `aria-current="page"` between them. The nav is centred by
+    `margin-inline: auto` and NOT by being the middle of a `space-between` row:
+    `.session-back` is `display: none` most of the time, so the number of flex children
+    changes and `space-between` would move the nav with it. It is hidden by
+    `body.in-session` and below 620px.
+  - **About and FAQs are GONE** (2026-09-21, on request), and with them `.nav-soon`, the
+    `.nav-link[aria-disabled="true"]` state rule and `nav.navAbout` / `nav.navFaqs` /
+    `nav.soon` / `nav.soonTitle`. They were `aria-disabled` buttons wearing a "Soon" chip
+    for pages that do not exist. **If either is built it comes back as an ordinary
+    `.nav-link` with a `data-screen` and a screen behind it** — not as a promise.
+  - **PRACTISE wears the PRIMARY BUTTON, not a link** (2026-09-21, on request, to draw the
+    eye). `.nav-link--cta` is `--btn-fill` / `--on-btn` in a pill — the hero's own Start
+    now, and a pair `contrast.test.mjs` already asserts — so the header, the hero and the
+    CTA band say "go to the app" in one voice, and the hover is `.btn-primary`'s
+    brightness step rather than a second idiom. **It keeps the pill on the Practise page
+    itself**: `.nav-link--active` sets `border-radius: 0` and `color: var(--text)`, which
+    would square the pill off and paint its label unreadable on that navy, so
+    `.nav-link--cta.nav-link--active` cancels both. Nothing is lost — `aria-current`
+    still says which page you are on. This is NOT the old `.header-cta`, which was
+    retired for repeating the hero's button: that was a second CTA on the same page, and
+    this is navigation to another one.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
-    thing that says which section you are on, and it is not available to a screen reader.
+    thing that says which page you are on, and it is not available to a screen reader.
   - **The LANGUAGE lives inside `#prefsMenu`; the THEME toggle sits in the header row**
     (2026-09-21, on request). The split is not arbitrary: a language needs a
     current-value readout, which is what the globe summary gives it, while the theme is a
@@ -395,47 +398,48 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `.brand-lockup` of `EIB Quiz` over the `nav.tagline` line. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
-- **The home screen is TWO TIERS over one section list** (2026-09-21, per
-  `docs/plans/landing-page-refactor.md`). A first visitor gets a marketing landing page; once
-  there is anything to come back to, the marketing falls away and the dashboard leads.
-  `hasProgress()` is the whole switch — any spaced-repetition record, any finished round, or
-  a resumable session — and `initHomeScreen()` toggles `hidden` on every
-  `#homeScreen [data-tier]`. A section with **no** `data-tier` shows in both tiers.
-  - **It is one list, not two.** There is a single DOM order that reads correctly for either
-    tier, because the shared mode band sits in the same place in both:
-    hero · where you stand · **modes** · topic reveal · why · numbers · CTA · past rounds.
-    Nothing is moved between parents and nothing is duplicated. Do not "fix" this into two
-    wrapper elements — that needs DOM surgery on every repaint to keep one band shared.
-  - **`[hidden] { display: none !important }` is in the reset, and it is load-bearing.**
-    Several of these sections set their own `display`, which beats the UA's `[hidden]` rule;
-    without it the hero stayed visible on the dashboard tier.
-  - **Landing tier:** `.hero-landing`, the mode band, `#whyBand`, the four headline numbers,
-    `.cta-band`. **Dashboard tier:** Where you stand (`#homeStatus` — one wide `.dash` card
-    holding the accuracy ring, three counters, the resume banner and the reset link), the
-    mode band, and the quieter **Past rounds & glossary** (`#historySection` +
-    `#glossarySection`) — named that and not "History & reference", because **History is one
-    of the five topics** and the two sections sat three screens apart under the same word.
-  - **`#homeMain` is on the MODE BAND, not on Where you stand.** It is what `scrollToId()`
-    targets from the hero and the CTA band, and Where you stand is hidden on the tier that
-    has a hero — the CTA was scrolling to a `display: none` element.
-  - **EVERY `scrollToId()` target needs `scroll-margin-top`, not just `#homeMain`.** The
-    header is sticky, so a target without it lands its own heading behind the header:
-    "Learn more" did exactly that to `#whyBand`'s eyebrow and title. The rule is
-    `#homeMain, #whyBand { scroll-margin-top: var(--header-h) }` — the token, because
+- **HOME AND PRACTISE ARE TWO SCREENS** (2026-09-21, on request — this replaces the
+  two-tier home screen that `docs/plans/landing-page-refactor.md` describes).
+  `#homeScreen` is the marketing landing page, for everyone, always. `#practiseScreen` is
+  the app: **Where you stand · the mode band · the topic reveal · Past rounds & glossary**.
+  Both are `.screen` elements and `showScreen()` swaps them like any other.
+  - **`hasProgress()` and every `data-tier` are GONE.** The switch existed to choose which
+    half of one screen to show; with a page each there is nothing to choose, and the
+    marketing no longer disappears for a returning learner — they navigate past it. The
+    rule that "it is one list, not two" retires with it: there are two parents now, and
+    the mode band lives in exactly one of them.
+  - **`PAGE_SCREENS` is what `body.in-session` is computed from**, not
+    `screenName !== 'home'`. A page scrolls, keeps the footer and keeps the nav; a session
+    is locked to the viewport with a back button where the logo is. The old test would
+    have locked the Practise page to the viewport and hidden the very nav you arrived by.
+    **Add a third page, add it to that set.**
+  - **Leaving a round returns you to Practise, not Home.** Both `#sessionBack` branches
+    call `showScreen('practise')`: you came from the app, and the sales pitch is not where
+    a finished round belongs.
+  - **Both landing CTAs NAVIGATE now.** The hero's Start now and the CTA band's button
+    call `showScreen('practise')`; they used to `scrollToId('homeMain')`, and `#homeMain`
+    is gone with them. **"Learn more" is the one `scrollToId()` left**, so the rule is
+    `#whyBand { scroll-margin-top: var(--header-h) }` — the token, because
     `syncHeaderHeight()` measures the real strip and a phone's is 65px against the
-    desktop's 76. Add a third target, add it to that selector.
-  - **A load failure is NOT a tier.** `initHomeScreen()` computes
-    `loadFailed ? null : …` and applies it BEFORE the early return, so `null` matches no
-    `data-tier` and both tiers go dark behind the error card. Returning first left every
-    tiered section at its markup default — visible — so the hero, the why-band, the numbers
-    and the CTA rendered interleaved with the dashboard's own empty headings, with the
-    hero's buttons scrolling to the error.
-  - **A renderer must not be called for a band that is not showing**, and
-    `renderHomeStatus()` early-returns on `el.closest('[hidden]')` so the guard covers
-    `onStateChange()` too, not only the door. Dropping a resumable session goes through
-    `initHomeScreen()`, not `renderHomeStatus()`: it can empty the last thing `hasProgress()`
-    reads, and repainting one card would leave the tier lying.
-- **The landing tier is a hero, five modes, why, four numbers and one last call.**
+    desktop's 76. A new scroll target still has to join that selector or it lands behind
+    the header.
+  - **A load failure is not a tier either.** `initHomeScreen()` hides every
+    `#practiseScreen [data-needs-data]` section when `loadFailed` and puts the error in
+    the mode grid. Those sections all read the question pool, so with no catalogue they
+    are empty headings stacked over an error message.
+  - **`[hidden] { display: none !important }` is in the reset, and it is still
+    load-bearing** — the sections set their own `display`, which beats the UA's rule.
+  - **`renderHomeStatus()` still early-returns on `el.closest('[hidden]')`**, which now
+    covers the load-failure case, and covers `onStateChange()` as well as the door.
+  - **`initHomeScreen()` is still the one door that repaints Practise.** Callers do not
+    call the individual renderers. The NAME is unchanged deliberately: a dozen call sites,
+    one screen split.
+  - **On a phone the nav is hidden, so the two routes are the conventional ones**: the
+    hero's Start button and the CTA band go to Practise, and the BRAND MARK goes home from
+    anywhere. A one-item nav ("the page you are not on") was measured and does not fit —
+    the reasoning is in the 620px block.
+- **The LANDING PAGE is a hero, why, four numbers and one last call.** (The mode band left
+  it for `#practiseScreen`; the notes below still describe the same components.)
   - **The hero is two columns**: eyebrow / headline / lead / two buttons on the left,
     the Reichstag on the right. Below 940px it stacks with the **photo first**.
   - **THE FOUR FACT CHIPS ARE GONE** (2026-09-21, on request). `.hero-chips` /
@@ -691,10 +695,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     summary carries the count: `hist.title` is now `Past rounds ({n})` / `Frühere Runden ({n})`.
     That was also the "History" collision the section rename already worried about — History
     is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58
-    screens** at the time. The dashboard tier measures **1311px / 1.46 screens** at
-    1280x900 today.
-  - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
-    individual renderers.
+    screens** at the time. It lives on `#practiseScreen` now, which measures **1217px /
+    1.35 screens** at 1280x900 with no progress recorded.
+  - `initHomeScreen()` is the one door that repaints the Practise page. Callers do not call
+    the individual renderers. (The name predates the screen split and is kept: a dozen call
+    sites, one move.)
 - **The page has a FOOTER: three columns over a legal bar** (2026-09-21).
   `.site-footer` sits after `</main>` — a `--band` panel with a `--border` top hairline.
   `.footer-inner` holds the brand mark, lockup and a one-sentence blurb
@@ -702,8 +707,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   **Practise** and **Sources**. `.footer-bar` below it carries the copyright and the
   legal line.
   - **The Practise links are the REAL `startMode()` calls**, the same ones the mode
-    cards make — not decoration. The footer is hidden in-session, so they can only
-    ever fire from the home screen. They reuse the `mode.*.title` strings.
+    cards make — not decoration. The footer is hidden in-session, so they can only ever
+    fire from a PAGE (Home or Practise). They reuse the `mode.*.title` strings.
   - **Every Sources link resolves, and all three were checked with `curl` before
     shipping** (200 each): the catalogue PDF that actually ships in this repo
     (`img/gesamtfragenkatalog-lebenindeutschland.pdf` — a source link that resolves to
@@ -806,10 +811,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `calc(100svh - var(--header-h) - 24px)`, preceded by the same value in `vh` so a browser that
   does not know `svh` keeps a cap instead of dropping the declaration, and `.sidebar-body`
   scrolls inside it. Nothing sets the sidebar's height from JS.
-- **`showScreen()` is the one door, and it carries `body.in-session`.** Every screen past the
-  home screen is an app view; the class is what makes it one, and nothing else branches on the
-  screen name to do it.
-- **The page does not scroll outside the home screen** (2026-09-19). `body.in-session main` is
+- **`showScreen()` is the one door, and it carries `body.in-session`.** It is computed from
+  `PAGE_SCREENS` (`home`, `practise`) rather than from `screenName !== 'home'` (2026-09-21):
+  a PAGE scrolls and keeps its nav and footer, a SESSION is locked to the viewport. The
+  class is what makes a screen an app view, and nothing else branches on the screen name to
+  do it.
+- **The page does not scroll inside a SESSION** (2026-09-19; it read "outside the home
+  screen" until Practise became a page of its own). `body.in-session main` is
   pinned to `calc(100svh - var(--header-h))` (the `vh` fallback stated first, as with
   `.quiz-sidebar`), and exactly one region inside it scrolls: `.question-body` on the quiz
   screen, `#endScreen` itself on the results screen. `.question-meta` and `.quiz-nav` are
@@ -1333,6 +1341,17 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   skips every style rule in the sheet and finds nothing. Handle `r.selectorText` FIRST, then
   recurse only when `r.cssRules.length`. A walk that reports 0 matches over 556 rules is
   this bug, not an absent rule.
+- **A hidden pane does not run ResizeObserver either, so `--header-h` goes STALE and the
+  session screens measure ~7px too tall** (2026-09-21). `syncHeaderHeight()` is wired to a
+  `ResizeObserver` on the header, and observer callbacks are delivered by the rendering
+  loop — the same loop that does not run while the pane is hidden, which is why
+  `requestAnimationFrame` hangs there too. Resize the pane to 375 after loading at desktop
+  width and the header really is 68px while the variable still says 61, so
+  `main`'s `calc(100svh - var(--header-h))` overshoots and `scrollHeight` reads 819 against
+  an 812 viewport. It looks exactly like a broken height lock. Call `syncHeaderHeight()`
+  by hand before measuring, or measure in a real browser over CDP: there the same build
+  reads 812/812 at 375, and 900/900 at 620 / 940 / 1400, with `--header-h` correctly 65 on
+  a phone and 61 on the desktop.
 - **Headless Chrome's `--window-size` is NOT a layout viewport, so never check a mobile
   width with it.** `--window-size=375,1900` renders a **511px** page into a 375px image, so
   the result is a correct desktop-ish layout with its right-hand side cropped off — which
