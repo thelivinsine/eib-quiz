@@ -885,7 +885,9 @@ switch works, and an outside click closes it.
 `sw.js`'s `CACHE` was **not** bumped and should not be: this touches neither `favicon.svg`,
 `manifest.json` nor the PNG icons, and `index.html` is network-first.
 
-**Not verified:** nothing was checked on the live site after deploy. Two things were
+Shipped as PR #81, squash-merged to `main` as `1273f10`.
+
+**Not verified at commit time:** nothing was checked on the live site. Two things were
 confirmed as **pre-existing, not caused here**, by rendering `HEAD:index.html` the same
 way — the question navigator's grid renders empty in a headless run, and `#nextBtn` is
 `disabled` and near-invisible on dark before the first answer. Both reproduce identically
