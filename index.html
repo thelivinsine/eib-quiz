@@ -1683,6 +1683,15 @@
             .header-controls > .seg .seg-btn { min-height: var(--ctl-sm); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
+            /* Previous/Next and the results screen's three actions are sized DOWN on
+               purpose (--ctl-sm, --fs-xs) so they do not weigh as much as the question
+               or the score ring beside them. That is a visual-weight decision and it
+               holds for a mouse; on a thumb it left the app's most-pressed control at
+               36px, under the 44px floor everything else that is CONTENT keeps. Same
+               move .option-btn already makes here: the height comes back on touch and
+               the desktop look is untouched. */
+            .quiz-nav .btn-primary, .quiz-nav .btn-secondary { min-height: var(--ctl-md); }
+            .end-actions .btn-primary, .end-actions .btn-secondary { min-height: var(--ctl-md); }
         }
         .speak-btn svg, .bilingual-toggle svg { width: var(--icon-sm); height: var(--icon-sm); }
         .bilingual-toggle { gap: var(--space-sm); }

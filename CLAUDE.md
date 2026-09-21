@@ -977,8 +977,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     inside `.hmenu`. The 620px rule that used to pin every header seg to 28px is
     **deleted**: stated later in the sheet it won on source order and silently undid the
     thumb floor. `.brand` / `.session-back` are `--ctl-sm` (`--ctl-md` on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
-    everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px.
-    WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the rest of the app holds to.
+    everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px
+    **on a coarse pointer**. WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the
+    rest of the app holds to.
+    - **That sentence was FALSE until 2026-09-21, and a mobile pass caught it.**
+      `.quiz-nav`'s Previous/Next and `.end-actions`' three buttons are sized down to
+      `--ctl-sm` / `--fs-xs` on purpose, so they do not weigh as much as the question or
+      the score ring beside them — but that rule had no coarse-pointer bump, so the
+      app's **most-pressed control sat at 36px on a thumb**. Both now take `--ctl-md`
+      inside `@media (pointer: coarse)`, which is the move `.option-btn` already makes
+      there: the height comes back on touch and the desktop look is untouched (measured
+      36px with a mouse, 44px on a thumb, both screens still height-locked).
+    - **A deliberate size-down still needs the touch floor.** If a control is shrunk for
+      visual weight, add it to the coarse block in the same change, or the decision
+      silently becomes an accessibility regression on the device most people use.
   - **In a session the header drops its bottom hairline** (`body.in-session header`). The page
     does not scroll there, so there is nothing to separate the header from — the rule was just
     a line drawn across a locked screen.
