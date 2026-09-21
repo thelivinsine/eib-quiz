@@ -114,9 +114,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     card you are meant to press — the same move `.stat-value` made on the quiz screen.
     The featured card kept its emphasis in hue, width and a solid Start pill, never size —
     and is retired; the five mode cards are peers.
-  - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
-    `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
-    under something that genuinely floats, and nothing in this app does.
+  - **No drop shadows on a TILE, in either theme.** A tile is a fill plus a hairline, and
+    there are still no `--shadow-*` tokens; do not reintroduce one for a tile. This rule
+    always carried a condition — "light would only earn a shadow under something that
+    genuinely floats, and nothing in this app does" — and on 2026-09-21 the second
+    clause stopped being true: `#prefsMenu`'s panel is an overlay above unrelated content,
+    and on a white canvas the hairline alone cannot hold it off the page beneath.
+    `html.light .hmenu-panel` is therefore **the one shadow in the app**, scoped to light
+    because dark's `--surface` is already 1.15 above its canvas and the fill separates it.
+    Its literal is not in `LITERAL_PAIRS` for the same reason `.brand-mark`'s flag is not:
+    a shadow carries no text, so there is no pair to assert. **A second shadow needs a
+    second thing that genuinely floats** — not a tile that would like more presence.
   - **In light EVERYTHING steps down; in dark everything steps up.** Light's page is
     white, so there is no "up": a tile is the page colour plus a hairline, `--surface2` is
     a well inset below it, and hover steps further down (`--hover`). In dark all of it
@@ -299,10 +307,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     being the middle of a `space-between` row: `.session-back` is `display: none` most of
     the time, so the number of flex children changes and `space-between` would move the
     nav with it. It is hidden by `body.in-session` and below 620px.
-  - **About and FAQs are `disabled` buttons wearing a `.nav-soon` "Soon" chip**, not links
-    to nowhere. Neither page exists, and the chip is on screen, so the promise is visible
-    without hovering anything. **If either is built, the chip and the `disabled` come off
+  - **About and FAQs are `aria-disabled` buttons wearing a `.nav-soon` "Soon" chip**, not
+    links to nowhere. Neither page exists, and the chip is on screen, so the promise is
+    visible without hovering anything. **`aria-disabled="true"`, NOT the `disabled`
+    attribute** they shipped with: `disabled` drops a button out of the tab order AND
+    suppresses its mouse events, so keyboard and screen-reader users skipped straight past
+    both and the `title` tooltip never fired for anyone. The CSS keys off
+    `[aria-disabled="true"]` to match, and neither button has an `onclick`, so activating
+    one still does nothing. **If either is built, the chip, the aria and the title come off
     together** — a live link still wearing Soon is worse than either alone.
+  - **The active nav link carries `aria-current="page"`.** The underline is the only other
+    thing that says which section you are on, and it is not available to a screen reader.
   - **The EN/DE and Dark/Light segments live INSIDE `#prefsMenu`**, a native `<details>`
     whose summary is a globe, the current language code and a caret. A `<details>` so
     open/close, Enter, Space and focus order are the platform's; the only JS is two
@@ -481,7 +496,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **HUE DISCS: five hues, and they mint no token but `--violet`.** `[data-hue]` maps
     blue/green/amber/rose/violet onto `--accent-soft`+`--accent-text`,
     `--green-dim`+`--green`, `--gold-dim`+`--gold`, `--red-dim`+`--red-text` and
-    `--violet-dim`+`--violet`, exposing each as `--tint` and `--ink`. Every plate in the
+    `--violet-dim`+`--violet`, exposing each as **`--hue-tint`** and **`--hue-ink`** —
+    named long on purpose: as plain `--ink` it shadowed the palette's OWN legacy border
+    alias (`--ink`, #3C4451 dark / #E0E7F1 light) for every descendant of a hue element,
+    so a later `border: 1px solid var(--ink)` inside a mode card would have drawn a solid
+    red edge while the palette definition still looked right. Every plate in the
     app is therefore ALREADY asserted by `contrast.test.mjs`, which is the whole point of
     doing it this way — **do not write a per-component tint literal.** `--on-hue` is the
     glyph on a SOLID disc and is one value per theme (`#FFFFFF` light, `#10151D` dark):
@@ -857,9 +876,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
   and `.btn-lg` (both `--ctl-md` today) and the glossary rows.
-  - **The header's switches are the one deliberate exception to the 44px floor.** `.seg-btn`
-    is `--ctl-xs` (28px; `--ctl-sm` 36px under `@media (pointer: coarse)`), and `.brand` /
-    `.session-back` are `--ctl-sm` (`--ctl-md` on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
+  - **The header's switches STOPPED being the exception to the 44px floor** (2026-09-21),
+    because they stopped being in the header strip: both segments moved inside
+    `#prefsMenu`'s panel, and a menu you deliberately open is not a row you glance at.
+    `.seg-btn`'s base is still `--ctl-xs` (28px, a mouse target), but
+    `.header-controls .seg-btn` now takes **`--ctl-md`** under `@media (pointer: coarse)`,
+    and the 620px rule that used to shrink it back to 28px is **deleted** — stated
+    later in the sheet, it won on source order and silently undid the thumb floor for
+    four options stacked in a 176px panel. `.brand` / `.session-back` are `--ctl-sm`
+    (`--ctl-md` on coarse) and remain the real exception. They are chrome you touch rarely, in a row with nothing else to hit;
     everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px.
     WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the rest of the app holds to.
   - **In a session the header drops its bottom hairline** (`body.in-session header`). The page
