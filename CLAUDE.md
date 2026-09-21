@@ -339,7 +339,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     that button through `.btn-lg`.
   - The 620px rule for `.hero-cta-row` dropped its `padding` for the same reason: the
     base now carries that exact value, so the override was a dead declaration.
-- **In a session the page keeps wider side gutters** than the home screen: `--space-xl`
+- **In a session the page keeps wider side gutters** than Home or Practise: `--space-xl`
   (28px) rather than `--space-lg`, because the question is the only thing on screen and
   should not run to the edges. Below 620px it drops back to `--space-md`.
 - **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
@@ -1224,7 +1224,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The progress bar is ONE track** (2026-09-20). It carried quarter marks drawn in
   `--canvas`; nothing on the screen explained them, a bar cut into four reads as four
   somethings, and the readouts already state the count exactly.
-- **The home screen's mode icons are filled glyphs on the title's line** (2026-09-20).
+- **The mode icons are filled glyphs on the title's line** (2026-09-20; the cards live on
+  the Practise page).
   They are plain `ICONS` entries like every other glyph — the duotone `ICONS_FILL`/`_svgFill`
   pair is gone now that the whole set is solid. The 36px rounded chip behind them is gone
   too (a container inside a container), and `.mode-head` puts the icon beside the title so a
@@ -1283,7 +1284,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   under `localStorage` key `eib_progress_v1`, a resumable in-progress session under
   `eib_session_v1`, and a results history under `eib_history_v1`. A "Fortschritt
   zurücksetzen" control clears all three.
-- Each question has a `category`; the home screen offers topic practice, a results-history
+- Each question has a `category`; the Practise page offers topic practice, a results-history
   trend, and a bilingual glossary. Questions can be read aloud via the Web Speech API (TTS).
 - SEO/meta, Open Graph/Twitter cards (`og-image.png`), `favicon.svg` and JSON-LD
   (LearningResource) are in `<head>`. The app is an installable PWA with offline support
@@ -1291,7 +1292,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - The former 10 `appExtra` questions (Q301-310) were removed (2026-06-26) — they were not
   part of the official BAMF catalogue PDF (which has exactly 300 general questions).
 - All 16 Bundesländer are supported: 300 general + 16×10 state = 460 questions. The user picks
-  a state on the home screen (`localStorage` key `eib_state`, default `BE`); the active pool is
+  a state on the Practise page (`localStorage` key `eib_state`, default `BE`); the active pool is
   300 general + the selected state's 10. State questions carry `state` (code) + `stateName` and
   are bilingual (DE/EN). `tools/import-states.js` (re)generates the 15 non-BE state sets from
   `tools/data/official-catalogue-bamf-2026-02.json`; `tools/translate-states.js` adds the
@@ -1521,8 +1522,9 @@ Before publishing any app change:
    on the summary must follow the switch.
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43
    image questions render, progress persists across reload, and Smart Review surfaces
-   due/weak questions. Check the page at 375px wide: `document.documentElement.scrollWidth`
-   must equal the viewport width. **On the quiz and results screens `scrollHeight` must also
+   due/weak questions. Check **both pages** — Home and Practise — at 375px wide:
+   `document.documentElement.scrollWidth` must equal the viewport width on each, and the
+   nav's active mark must follow `showScreen()`. **On the quiz and results screens `scrollHeight` must also
    equal `innerHeight`** — check it at 375 / 620 / 940 / 1400px, on a four-image question with
    the explanation open, and with the mobile navigator both collapsed and expanded.
 7. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.

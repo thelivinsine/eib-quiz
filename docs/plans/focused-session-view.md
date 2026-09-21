@@ -6,6 +6,11 @@
 > literal quoted below was replaced by a token on 2026-09-20 — see
 > [`sizing-system.md`](sizing-system.md) and the size-system block in `CLAUDE.md`. Read
 > this for the reasoning about layout and scroll regions, not for values to copy.
+>
+> **And "the home screen" below is now TWO pages** (2026-09-21): Home is the landing
+> page, Practise is the app. Both scroll and both keep the footer and the nav; the
+> page-versus-session split this document argues for is unchanged, but it is computed
+> from `PAGE_SCREENS` rather than from `screenName !== 'home'`.
 
 The home screen stays a page you scroll. Everything downstream of pressing Start becomes an
 **app view**: one screenful, chrome that belongs to the session rather than to the site, and a
