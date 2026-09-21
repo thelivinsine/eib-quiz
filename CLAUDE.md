@@ -57,6 +57,12 @@
     network-first path writes through `safePut` so a broken cache cannot turn a GOOD
     network response into a failed navigation. **No cache means no offline; it must not
     mean no app.**
+    - **That write goes through `event.waitUntil()`, NOT `await`** (2026-09-21). Awaiting
+      it held every navigation and every `questions.json` response until the cache write
+      landed — a disk write on the critical path, on exactly the slow and contended
+      profiles `safePut` exists for. `safePut` can no longer reject, so the `await` was
+      buying nothing the unawaited `cache.put` did not already give; `waitUntil` keeps the
+      write alive past the handler without the response waiting on it.
 - **Network-first only works with `cache: 'reload'`, and both fetch paths need it**
   (fixed 2026-09-19). A plain `fetch(req)` consults the **browser's HTTP cache** first;
   GitHub Pages serves `index.html` with `max-age=600`, so the worker's "network" fetch was
@@ -427,6 +433,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `#practiseScreen [data-needs-data]` section when `loadFailed` and puts the error in
     the mode grid. Those sections all read the question pool, so with no catalogue they
     are empty headings stacked over an error message.
+    - **And the error has to be on the screen the reader is LOOKING at** (2026-09-21).
+      The mode grid is on `#practiseScreen`, and a failed load happens while they are on
+      Home — so the landing page rendered hero, why, numbers and CTA as if nothing were
+      wrong, with a working Start button and the error on a page they had no reason to
+      visit. Before the split the grid WAS the screen they were on, which is why this
+      was invisible. `initHomeScreen()` now calls `showScreen('practise')` when
+      `loadFailed` and the reader is on Home.
+    - **`startMode()` carries the guard, because the FOOTER calls it directly.** Its four
+      Practise links sit under the landing page and bypass the mode grid entirely; with
+      an empty pool they started a quiz screen with no question, no explanation and no
+      error — verified, and it throws nothing, which is what made it quiet. One
+      `if (loadFailed) { showScreen('practise'); return; }` at the top of `startMode()`
+      covers the footer, the cards and every other caller.
   - **`[hidden] { display: none !important }` is in the reset, and it is still
     load-bearing** — the sections set their own `display`, which beats the UA's rule.
   - **`renderHomeStatus()` still early-returns on `el.closest('[hidden]')`**, which now
@@ -553,11 +572,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       of card. (4) Both gaps in the row are `--space-2xs` — `--space-xs` (6px) is NOT a
       gap rung in this sheet (`gapRungs` is budgeted at 7 and 6px was deliberately merged
       away), so reaching for it busts the ratchet.
-    - **The worst case is "All questions" in ENGLISH and it clears by ~2px**: 81.2 + 4 +
-      14 + 4 + 59.9 = 163.1 in 165. German is 15px slacker. `white-space: nowrap` is the
-      guarantee rather than the hope — a longer string overflows visibly instead of
-      quietly becoming two rows again. **Measure this row before changing any of the
-      four**, and measure it in English.
+    - **The worst case is "All questions" in ENGLISH and it clears by NOTHING**: 81.8 + 4
+      + 78.9 = 164.7 in 164.7, re-measured in Chrome with the fonts loaded. An earlier
+      note here claimed ~2px of slack off a hand-summed 163.1; there is none. German's
+      worst ("Nach Thema") is at zero too. `white-space: nowrap` is the guarantee rather
+      than the hope — a longer string overflows visibly instead of quietly becoming two
+      rows again — and **`.mode-meta` carries `overflow: hidden` so that overflow stays
+      INSIDE the tile**: at zero slack an ordinary classic scrollbar takes ~7px off the
+      card, and without the clip the estimate drew across the card's own border into the
+      grid gap. **Measure this row before changing any of the four**, in English, and do
+      not spend the last pixel — there is none to spend.
   - **`.mode-start` is the action row at the foot of the card** (it replaced `.mode-go`,
     the bare bottom-right arrow, on 2026-09-21): the action in words, then a solid hue
     disc holding a white arrow, the pair CENTRED in the tile (`justify-content: center`).

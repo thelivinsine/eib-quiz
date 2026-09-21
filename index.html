@@ -1349,10 +1349,17 @@
         /* ONE line, and the count and the estimate at ONE size: --fs-xs for the count
            over --fs-2xs for the estimate put 155px of text in a 157px card and wrapped.
            nowrap is the guarantee rather than the hope - if a translation ever outgrows
-           the card it overflows visibly instead of silently becoming two rows. */
+           the card it overflows visibly instead of silently becoming two rows.
+           overflow: hidden is what keeps that overflow INSIDE the tile. Measured, the
+           worst case ("All questions" in English) needs exactly the 165px it has - 0px
+           of slack, not the 2 the note claimed - so anything that narrows the card by a
+           pixel spills it, and a classic vertical scrollbar on this page narrows it by
+           about 7. Without this the estimate drew across the card's own border into the
+           grid gap; clipped at the content edge it is still a visible tell, and it is
+           one the card contains. */
         .mode-meta {
             display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: nowrap;
-            white-space: nowrap;
+            white-space: nowrap; overflow: hidden;
             margin-top: auto;
             font-size: var(--fs-2xs); color: var(--muted);
             font-variant-numeric: tabular-nums;
@@ -2398,9 +2405,11 @@
                 <span class="session-back-icon" aria-hidden="true"></span>
                 <span data-i18n="nav.back"></span>
             </button>
-            <!-- The mockup's centre nav. Home is the only destination that exists;
-                 About and FAQs are `disabled` buttons carrying a Soon chip rather than
-                 links to nowhere, so nothing on screen promises a page we do not have. -->
+            <!-- The mockup's centre nav, and both links go somewhere: Home is the
+                 landing page, Practise is the app. Practise wears the primary button
+                 because it is the way in. Nothing here promises a page we do not have —
+                 About and FAQs were aria-disabled buttons wearing a "Soon" chip until
+                 2026-09-21 and are gone. -->
             <nav class="header-nav" data-i18n-aria="nav.sections">
                 <button class="nav-link nav-link--active" type="button" data-screen="home" aria-current="page" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
                 <button class="nav-link nav-link--cta" type="button" data-screen="practise" onclick="showScreen('practise')" data-i18n="nav.navPractise"></button>
@@ -2824,10 +2833,9 @@
                flag-pole crossbar, so the two read as one family. */
             globe: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>'),
         };
-        // A clock IS the history glyph and a group IS the society glyph; the
-        // landing page needs both under names that say what they mean there.
-        // A clock IS the history glyph (a donut with two hands), so the estimate in a
-        // mode card's meta row reads it under the name that says what it means there.
+        // A clock IS the history glyph (a donut with two hands) and a group IS the
+        // society glyph, so each reader gets the name that says what it means there:
+        // a mode card's estimate takes `clock`, the why band's third mark `community`.
         ICONS.clock = ICONS.history;
         ICONS.community = ICONS.society;
 
@@ -3424,6 +3432,11 @@
             if (loadFailed) {
                 document.getElementById('modesGrid').innerHTML =
                     '<div class="load-error">' + t('err.load') + '</div>';
+                // And the reader has to be able to SEE it. The error lives in the mode
+                // grid, which is on this screen; before the split that WAS the screen
+                // they were looking at, and after it a failed load left them on a
+                // landing page that looked perfectly well with a working Start button.
+                if (state.currentScreen === 'home') showScreen('practise');
                 return;
             }
 
@@ -3972,6 +3985,11 @@
         }
 
         function startMode(mode) {
+            // No catalogue, no round. The footer's four Practise links call this
+            // straight from the landing page, where nothing else says the load failed,
+            // and an empty pool starts a quiz screen with no question and no message.
+            // One guard here covers the footer, the mode cards and every other caller.
+            if (loadFailed) { showScreen('practise'); return; }
             // Bail before touching state — a half-reset state with the previous round's
             // questions still in it is worse than not starting.
             const reviewQueue = mode === 'review' ? buildReviewQueue(25) : null;

@@ -1245,3 +1245,70 @@ result, so there is no PR for it.
   routing and this session did not add any. A reload always lands on Home.
 - `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` is untracked in the working
   tree and is **not mine**. Left alone, as in the previous session.
+
+---
+
+## Session developments (2026-09-21, review of #88–#91 and its five fixes)
+
+A review session, not a building one: `git diff 4c74b40..3ea3ce1` read hunk by hunk, five
+findings raised, all five applied as the smallest edit that fixes them. No feature changed.
+
+### The two that were real bugs
+
+- **`.mode-meta` had ZERO slack, not the ~2px `CLAUDE.md` recorded.** Re-measured in Chrome
+  at 1280x900 with `document.fonts.ready` awaited: the English "All questions" card's meta
+  content box is **164.7px** and its content needs **164.7px** (count 81.8 + 4px gap + clock
+  row 78.9). German's worst ("Nach Thema") is at zero too. `.mode-card` has no
+  `overflow: hidden`, so any pixel lost — an ordinary classic scrollbar on the Practise page
+  takes about 7 — drew the estimate across the card's own border into the grid gap.
+  `.mode-meta` now carries `overflow: hidden`, which keeps that overflow inside the tile
+  while leaving `nowrap`'s deliberate "overflow visibly rather than wrap" intact. Verified
+  both ways: untouched at the resting 165px (`scrollWidth == clientWidth`), and contained
+  when the band is forced to 1000px (`scrollWidth 165 > clientWidth 153`).
+- **A catalogue load failure was invisible.** The error goes into `#modesGrid`, which moved
+  to `#practiseScreen` in #91 — so a 404 on `questions.json` left the reader on a landing
+  page that rendered perfectly, with a working Start button and the error on a screen they
+  had no reason to open. Worse, the footer's four Practise links call `startMode()` directly
+  and, with an empty pool, started a quiz screen with no question and no message — it throws
+  nothing, which is what made it quiet. Fixed in two places: `initHomeScreen()` navigates to
+  Practise when `loadFailed` and the reader is on Home, and `startMode()` opens with
+  `if (loadFailed) { showScreen('practise'); return; }`, which is the one choke point every
+  caller routes through.
+
+### The three smaller ones
+
+- **`sw.js` awaited its own cache write.** `if (res.ok) await safePut(...)` held every
+  navigation and every `questions.json` response until CacheStorage finished writing — on
+  exactly the slow, contended profiles `safePut` was written for. It is
+  `event.waitUntil(safePut(...))` now: the write outlives the handler, the response does not
+  wait on it, and since `safePut` cannot reject the `await` was buying nothing.
+- **The nav's comment still described About and FAQs**, two lines above markup that has held
+  only Home and Practise since #91.
+- **Two comments above `ICONS.clock = ICONS.history`**, the older one naming the hero chip
+  #88 deleted. Merged into one that names both live readers.
+
+### Verified
+
+- `node --check` clean on `sw.js` and on the extracted `<script>` block.
+- `node --test tools/contrast.test.mjs` — 10/10. `node --test tools/scale.test.mjs` — 12/12,
+  every budget still at target (no budget moved; none of these edits adds a token, a radius
+  or a size).
+- Real Chrome at 1280x900 over `python -m http.server`: the clip measurement above; a load
+  failure landing on Practise with the error visible; the footer's "All questions" link
+  routing to that error instead of a blank quiz; and the normal path unchanged — nav
+  `aria-current` moving, hero CTA reaching Practise with five cards, a 10-question state
+  round starting with real question text, DE/EN switching the mode titles and `#langBadge`.
+
+### Not verified
+
+- **Nothing was checked on the live site.** All of it was localhost over `http.server`.
+- **The `overflow: hidden` fix was proven by measurement, not by eye at the failing width** —
+  the squeeze was forced with an inline `width` on the band rather than by producing a real
+  classic scrollbar, and no screenshot of the clipped state was taken.
+- **The service-worker change was not exercised at all.** `waitUntil` here is read, syntax-
+  checked and reasoned about; no worker was installed or updated to watch it behave, and the
+  latency it is meant to remove was never measured before or after.
+- **No automated test covers any of these five.** The two ratchets guard tokens only; the
+  meta row's slack, the load-failure route and the worker's write path are all hand-checked.
+- The two `docs/Mockups/ChatGPT Image Sep 21, 2026, *.png` files are untracked and **not
+  mine**. Left alone.

@@ -93,8 +93,12 @@ self.addEventListener('fetch', event => {
         const res = await fetch(req, { cache: 'reload' });
         // Only cache real successes — otherwise a 404/500 becomes the offline fallback.
         // Through safePut, so a broken CacheStorage cannot turn a GOOD network
-        // response into a failed navigation.
-        if (res.ok) await safePut(req, res.clone());
+        // response into a failed navigation. Through waitUntil rather than await, so
+        // the write is kept alive past this handler WITHOUT the navigation waiting on
+        // it: safePut can no longer reject, so awaiting bought nothing but the cost of
+        // a disk write on every navigation - on exactly the slow, contended profiles
+        // safePut exists for.
+        if (res.ok) event.waitUntil(safePut(req, res.clone()));
         return res;
       } catch (e) {
         const cached = await safeMatch(req);

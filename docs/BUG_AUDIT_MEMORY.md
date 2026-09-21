@@ -92,7 +92,7 @@ For any future repair, run:
 
 ```powershell
 node --check <extracted-script.js>
-node -e "/* validate 320 questions, IDs 1-320, no duplicates, image question IDs */"
+node tools/validate.js   # 460 questions, contiguous IDs 1-460, no duplicates, image assets
 ```
 
 Repair order if reviving the May 28 architecture:
