@@ -99,6 +99,8 @@
                invisible as fills, and are 1.20 now. --red and --violet lightened a hair
                (#F87171 -> #F98989, #A78BFA -> #B39CFA) so their own text still clears
                AA on those risen grounds, which is §6's "lighten it until it clears".
+               (--violet and --violet-dim were deleted on 2026-09-21 when the icon
+               plates went neutral and took their only consumer with them.)
                LIGHT IS UNTOUCHED: its palette is the mockup's own and measures clean.
                Still true and still the reference's: every level of containment steps
                LIGHTER, no drop shadows, text tiers solid values and never opacity. */
@@ -187,8 +189,6 @@
             --red:       #F98989;
             --red-text:  #F98989;
             --red-dim:   #612F34;
-            --violet:     #B39CFA;
-            --violet-dim: #453276;
 
             /* The primary button's own fill, separate from --accent-fill. The mockup
                paints every CTA near-black navy, which reads only on a light page; dark
@@ -387,8 +387,6 @@
             --red:       #CC2020;
             --red-text:  #CC2020;
             --red-dim:   #FDEAEB;
-            --violet:     #6D28D9;
-            --violet-dim: #EFE8FD;
 
             /* The tints all deepened a rung with the canvas: a #EFF4FE wash was 1.04 on
                paper-grey and would have been 1.04 on white too — invisible as a plate. */
@@ -432,35 +430,36 @@
         :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: var(--radius-xs); }
 
         /* ============================================================
-           HUE DISCS — the mockup's tinted plates.
+           ICON PLATES — neutral, not hued (2026-09-21, on request).
            ------------------------------------------------------------
-           The mockup puts a tinted disc behind every hero fact, every
-           why-band mark and every mode card's icon, and a SOLID disc of
-           the same hue under each card's start arrow. That colour is most
-           of why it reads as a lively page and the grey build read as a
-           dead one, so "an icon has no plate" is lifted for those three
-           places — and only those. A glyph sitting on the canvas (speak,
-           translate, the navigator's chevron, the lightbox close) still
-           has no plate.
+           Every glyph in the app is the solid pack's, and every glyph is
+           painted in a TEXT TIER: no icon carries an accent or a semantic
+           hue any more. The five per-card hues the mockup draws (blue,
+           green, amber, rose, violet) are gone from the plates, and with
+           them --violet / --violet-dim, whose only consumers they were.
+           What is left is one pair, shared by the why marks, the mode
+           cards' icons and their start discs:
+             --hue-tint  a --surface2 plate  (1.08 on a --band tile, 1.15
+                         on the canvas — the nesting step it always was)
+             --hue-ink   --sub-text, the secondary tier, on the plate and
+                         as the SOLID disc's fill
+           --on-hue is still the glyph on a solid disc, one value per
+           theme, and reads 10.09 light / 11.40 dark on --sub-text.
+           The names keep the --hue-* prefix: they are read by rules, by
+           contrast.test.mjs and by the [data-hue] attribute the markup
+           and renderModes() still carry, and renaming three tokens to say
+           "neutral" is churn. A plate that wants colour again restores
+           the five rules that stood here — see git history for #95.
 
-           Five hues and NOT ONE NEW TOKEN: each maps to a --*-dim / --*
-           pair the palette already carries, so every plate in the app is
-           already asserted by tools/contrast.test.mjs. --on-hue is the
-           glyph on a SOLID disc and is one value per theme, because all
-           five light hues are dark colours and all five dark hues are
-           light ones.
+           A glyph sitting on the canvas (speak, translate, the
+           navigator's chevron, the lightbox close) still has no plate at
+           all; only the why marks, the mode icons and the start discs do.
+
+           --hue-ink, NOT --ink: the palette already defines --ink as its
+           legacy border alias, so the short name silently redefined a
+           hairline token for every descendant of a plate element.
            ============================================================ */
-        /* --hue-ink, NOT --ink: the palette already defines --ink as its legacy
-           border alias (#3C4451 dark / #E0E7F1 light), so the short name silently
-           redefined a hairline token as a saturated accent for every descendant of a
-           hue element. Nothing read it for a border yet; the next rule that did would
-           have got a solid red edge inside a card and a correct-looking palette. */
-        [data-hue]          { --hue-tint: var(--surface2);   --hue-ink: var(--muted); }
-        [data-hue="blue"]   { --hue-tint: var(--accent-soft); --hue-ink: var(--accent-text); }
-        [data-hue="green"]  { --hue-tint: var(--green-dim);   --hue-ink: var(--green); }
-        [data-hue="amber"]  { --hue-tint: var(--gold-dim);    --hue-ink: var(--gold); }
-        [data-hue="rose"]   { --hue-tint: var(--red-dim);     --hue-ink: var(--red-text); }
-        [data-hue="violet"] { --hue-tint: var(--violet-dim);  --hue-ink: var(--violet); }
+        [data-hue] { --hue-tint: var(--surface2); --hue-ink: var(--sub-text); }
 
         /* Shared eyebrow micro-label */
         .eyebrow, .stat-label, .ds-label, .breakdown-label, .review-q-num,
@@ -480,8 +479,20 @@
            hover is not a lift: light steps the fill DOWN into grey, dark
            steps it UP. Both stay inside the 1.10-1.25 band.
            ============================================================ */
-        .hist-list, .hist-exam, .glossary-wrap, .quiz-sidebar, .review-item {
+        .quiz-sidebar, .review-item {
             background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        /* A PRACTISE-PAGE tile is the landing page's pale panel (2026-09-21, on
+           request): --band plus the same --border hairline the numbers band, the CTA
+           band and the footer carry, so the two pages read as one surface system. Only
+           the page tiles move — a session screen keeps --surface, because there is no
+           band anywhere near it to match. Both states still step the right way from
+           --band: in light --hover (#EEF3FA) and --surface3 are BELOW it, in dark they
+           are above. */
+        .hist-list, .hist-exam, .glossary-wrap {
+            background: var(--band);
             border: 1px solid var(--border);
             border-radius: var(--radius);
         }
@@ -557,7 +568,7 @@
             display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-sm);
             background: none; border: none; border-radius: var(--radius-sm);
-            font-size: var(--fs-sm); font-weight: 600; color: var(--muted);
+            font-size: var(--fs-2xs); font-weight: 600; color: var(--muted);
             transition: color 0.18s var(--ease);
         }
         .nav-link:hover { color: var(--text); }
@@ -567,14 +578,17 @@
         /* PRACTISE is the way in, so it is DRAWN LOUDER than Home - but it is still a
            LINK, not a button (2026-09-21, on request; it wore --btn-fill in a pill for
            a few hours before that). Same shape as .nav-link, one size up and in the
-           accent: two items in a two-item nav should read as the same kind of thing,
+           accent (the SIZE step went on 2026-09-21, on request: the header strip is
+           one size now — nav, globe summary and theme toggle all at --fs-2xs — so
+           Practise is drawn louder by colour alone):
+           two items in a two-item nav should read as the same kind of thing,
            and a solid pill beside a bare word reads as a control that does something
            rather than a page you go to. The hero's Start and the CTA band still carry
            the button, so nothing lost the primary voice.
            Its :hover and :active rules stay because .nav-link:hover is (0,2,0) and
            would otherwise repaint it --text; same reason the active rule re-states the
            accent, or the underline and the label come back in --text. */
-        .nav-link--cta { font-size: var(--fs-md); color: var(--accent-text); }
+        .nav-link--cta { color: var(--accent-text); }
         .nav-link--cta:hover { color: var(--accent-text); filter: brightness(1.12); }
         /* The hover STEPS DOWN in light and up in dark, like every other state in this
            sheet — and here it is not only house style. Brightening #2563EB by 1.12 puts
@@ -603,7 +617,7 @@
             min-height: var(--ctl-sm); padding: 0 var(--space-ms);
             border-radius: var(--radius-pill);
             border: 1px solid var(--border); background: var(--surface);
-            font-size: var(--fs-sm); font-weight: 600; color: var(--sub-text);
+            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
             cursor: pointer; list-style: none;
             transition: border-color 0.18s var(--ease), color 0.18s var(--ease);
         }
@@ -945,7 +959,7 @@
            on exactly .btn-lg's metrics, which is what the CTA band's button has always
            rendered at (see .cta-btn) — so the page's three primary actions now agree
            rather than the hero's being a rung larger. */
-        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
+        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-2xs); }
         .hero-cta-row .btn-primary svg { width: var(--icon-sm); height: var(--icon-sm); }
 
         .hero-visual { position: relative; min-width: 0; }
@@ -1122,14 +1136,81 @@
            shorter strip too — a fixed 76px was the desktop header's height alone. */
         #whyBand { scroll-margin-top: var(--header-h); }
 
-        /* ---- Overview card: ring headline + three counters ---- */
+        /* ---- Overview card: its own heading, four tiles, the resume banner ----
+           Rebuilt 2026-09-21 against docs/Mockups/"…07_04_29 PM.png". The card holds
+           the section's heading and an encouragement chip, then a wide ring+verdict
+           tile beside three readout tiles, then the resume banner. The mockup's card
+           is near-white with a --band ring tile and white readouts; this one inverts
+           that pair — the card is --band, because the practise page's tiles all are
+           (see the tile-shade note in CLAUDE.md) — and keeps the mockup's contrast by
+           putting the three readouts on --surface and leaving the ring tile on the
+           card's own ground with a hairline.
+           LIGHT follows the mockup exactly instead (on request, "stay true to the
+           mockup"): a white card, a --band summary tile recessed inside it and white
+           readouts separated by their hairlines alone — which is light's own system,
+           where a tile IS the page colour and the edge does the separating. DARK
+           cannot copy it (nothing goes below the page there, per theme-dark.md §3), so
+           it keeps the --band card with --surface readouts stepping UP out of it.
+           This card is also the ONE place icons carry the mockup's hues — see
+           .dash-stat--blue/green/amber below. */
         .dash {
             position: relative;
-            background: var(--surface);
+            background: var(--band);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: var(--space-md);
         }
+        html.light .dash { background: var(--surface); }
+        /* --ctl-md of reserved right-hand room, because .progress-reset is absolutely
+           positioned into that corner whenever there is progress to reset. */
+        .dash-head {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            gap: var(--space-md); padding-right: var(--ctl-md);
+            margin-bottom: var(--space-md);
+        }
+        .dash-head .section-head { margin-bottom: 0; }
+        .dash-pill {
+            flex: none;
+            display: inline-flex; align-items: center; gap: var(--space-2xs);
+            min-height: var(--ctl-xs); padding: 0 var(--space-ms);
+            border-radius: var(--radius-pill);
+            background: var(--green-dim); color: var(--green);
+            font-size: var(--fs-2xs); font-weight: 600;
+        }
+        /* currentColor: the mockup's leaf is the same green as the words beside it. */
+        .dash-pill-icon { display: grid; place-items: center; }
+        .dash-pill-icon svg { width: var(--icon-xs); height: var(--icon-xs); }
+
+        /* The ring tile is the widest column because it carries a sentence; the three
+           readouts are equal. Spelled out rather than auto-fit: the verdict must not
+           be squeezed to a readout's width. */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 1.7fr 1fr 1fr 1fr;
+            gap: var(--space-sm);
+        }
+        /* --radius-sm inside a --radius card: inner = outer − padding, snapped. */
+        .dash-tile {
+            min-width: 0;
+            padding: var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+        }
+        /* The summary tile stays on the card's own ground — its hairline is what
+           separates it, exactly as a white card on a white page is separated. */
+        .dash-tile--ring {
+            background: var(--band);
+            display: grid; grid-template-columns: auto 1fr;
+            align-items: center; gap: var(--space-md);
+        }
+        .dash-verdict {
+            min-width: 0;
+            padding-left: var(--space-md);
+            border-left: 1px solid var(--border);
+        }
+        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
+        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
 
         .state-picker {
             position: relative;
@@ -1177,16 +1258,7 @@
             transform: rotate(45deg); pointer-events: none;
         }
 
-        /* The ring and the three counters are ONE band, not four boxes. The
-           card is the only container here; inside it the figures are separated
-           by hairlines, which is the same move the rest of the app makes. */
-        .dash-body {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            align-items: stretch;
-            gap: var(--space-lg);
-        }
-        .ready-ring-wrap { position: relative; width: 88px; height: 88px; flex-shrink: 0; }
+        .ready-ring-wrap { position: relative; width: 104px; height: 104px; flex-shrink: 0; }
         .ready-ring { width: 100%; height: 100%; display: block; }
         .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 8; }
         .ready-ring-bar {
@@ -1196,20 +1268,47 @@
         }
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        /* The caption the mockup puts under the percentage. It was removed in
+           September because "Trefferquote" sets ~106px at the 12px floor inside an
+           88px dial; the ring is 104px here, .ready-ring-center is absolutely
+           positioned so the word can use the tile's own gap either side, and nowrap
+           keeps it one line rather than breaking a German compound in half. */
+        .ready-ring-sub {
+            margin-top: var(--space-3xs);
+            color: var(--muted); font-size: var(--fs-2xs); font-weight: 600;
+            /* NO letter-spacing, unlike every other uppercase micro-label: tracked
+               out with --ls-caps, ACCURACY sets 78px and grazes the dial's stroke on
+               both sides. Inherited normal is the same as --ls-normal and does not
+               spend a third tracking value against the ratchet's budget of two. */
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
 
-        .dash-stats {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            padding-right: var(--space-2xl);
-            align-items: center;
-            min-width: 0;
-            border-left: 1px solid var(--border);
+        /* A readout: a plate, then the figure over its name, then one line saying
+           what the figure counts. The plate is the app's one neutral pair. */
+        .dash-stat { display: flex; flex-direction: column; gap: var(--space-sm); min-width: 0; }
+        /* The mockup's three plate colours, and the app's ONLY hued icons. They are
+           scoped to this card rather than restored to [data-hue], which stays neutral
+           for the mode cards and the why marks. Each is a --*-dim / --* pair the
+           palette already carries, so contrast.test.mjs already asserts all three. */
+        .dash-stat--blue  { --hue-tint: var(--accent-soft); --hue-ink: var(--accent-text); }
+        .dash-stat--green { --hue-tint: var(--green-dim);   --hue-ink: var(--green); }
+        .dash-stat--amber { --hue-tint: var(--gold-dim);    --hue-ink: var(--gold); }
+        .dash-stat-top { display: flex; align-items: center; gap: var(--space-sm); min-width: 0; }
+        .dash-stat-icon {
+            flex: none; display: grid; place-items: center;
+            width: var(--ctl-md); height: var(--ctl-md);
+            border-radius: var(--radius-sm);
+            background: var(--hue-tint); color: var(--hue-ink);
         }
-        .dash-stat {
-            padding: 0 var(--space-md);
-            display: flex; flex-direction: column; gap: var(--space-sm);
-            min-width: 0;
-        }
-        .dash-stat + .dash-stat { border-left: 1px solid var(--border); }
+        .dash-stat-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        /* --space-2xs, not --space-3xs: 2px is not a gap rung in this sheet and
+           minting one busts the ratchet's gapRungs budget. */
+        .dash-stat-fig { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
+        .ds-sub { color: var(--muted); font-size: var(--fs-2xs); line-height: var(--lh-ui); }
+        /* German sets these names as one long word; the backstop keeps a label that
+           outgrows its tile inside it rather than across its border. */
+        .dash-stat .ds-label { overflow-wrap: anywhere; }
         /* Something to do today is the one counter allowed to raise its hand,
            and a coloured numeral is the whole of it — a tinted slab behind it
            reads as brown mud on charcoal and buys no more attention. */
@@ -1220,7 +1319,9 @@
         .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         .ds-of { color: var(--faint); font-size: var(--fs-xs); font-weight: 500; }
 
+        /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
         .resume-banner {
+            position: relative; overflow: hidden;
             margin-top: var(--space-md);
             padding: var(--space-ms) var(--space-md);
             background: var(--accent-soft);
@@ -1229,9 +1330,35 @@
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--space-md); flex-wrap: wrap;
         }
-        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); }
+        /* The mockup puts a plate on this banner too, and a plate is the one place
+           a glyph gets a ground. Neutral, like every other one. */
+        .resume-icon {
+            flex: none; display: grid; place-items: center;
+            width: var(--ctl-md); height: var(--ctl-md);
+            border-radius: var(--radius-sm);
+            background: var(--surface); color: var(--accent-text);
+        }
+        .resume-icon svg { width: var(--icon-md); height: var(--icon-md); }
+        /* The ornament sits BEHIND the row and is cropped by the banner's bottom
+           edge, so the peaks rise out of it rather than floating in it. --border-hover
+           is what .cta-art uses; an ornament carries no text, so it asserts nothing. */
+        /* The art is sized FROM the banner, not in pixels: at a fixed 250px wide it
+           stood 83px tall in a 68px banner, so overflow: hidden cropped the peaks and
+           the flag with them — the ornament's whole point, invisible. */
+        .resume-art {
+            position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-10%);
+            z-index: 0; pointer-events: none;
+            /* --accent-line, not .cta-art's --border-hover: the mockup's peaks are a
+               desaturated BLUE on the banner's blue wash (#C9D7F5 measured, and light's
+               --accent-line is #BFD4FA), and a grey ornament on a tinted ground reads
+               as dirt. Dark gets #2D5185 on #273E67, which is the same quiet step. */
+            color: var(--accent-line);
+        }
+        .resume-art svg { height: 100%; width: auto; display: block; }
+        .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
+        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); min-width: 0; }
         .resume-text strong { color: var(--text); font-size: var(--fs-base); }
-        .resume-actions { display: flex; gap: var(--space-sm); }
+        .resume-actions { position: relative; z-index: 1; display: flex; gap: var(--space-sm); }
 
         /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
            44px band for something you press once a year cost more height than the
@@ -1285,16 +1412,26 @@
             /* Taller than it is wide-padded, for the same reason the band is. */
             padding: var(--space-lg) var(--space-md);
             border-radius: var(--radius);
-            background: var(--surface);
+            background: var(--band);
             border: 1px solid var(--border);
             cursor: pointer;
+            /* Centred, on request: the plate, the title, the description, the meta row
+               and the action all sit on the card's centre line. The 620px block puts
+               them back left, where the card is a list row rather than a tile. */
             display: flex; flex-direction: column;
-            text-align: left;
+            text-align: center;
             font: inherit; color: inherit;
             transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
         }
         @media (hover: hover) {
             .mode-card:hover { background: var(--hover); border-color: var(--border-hover); }
+            /* A --band tile is already a step below white, and --hover is only 1.047
+               from it — invisible. Light raises the hover to --surface2 instead
+               (1.078), which is the move the retired .modes-band panel made for the
+               same reason. Dark needs none: --hover is 1.437 on its band. The press
+               fill is --surface3 in both themes (1.215 light, 1.530 dark). */
+            html.light .mode-card:hover,
+            html.light .topic-chip:hover { background: var(--surface2); }
         }
         .mode-card:active { background: var(--surface3); }
 
@@ -1371,7 +1508,7 @@
         /* The plate sits ABOVE the title, which is the mockup's card: plate, title,
            description, then the action row. It goes back to one row on a phone, where
            the card is a list item rather than a tile. */
-        .mode-head { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-ms); margin-bottom: var(--space-2xs); }
+        .mode-head { display: flex; flex-direction: column; align-items: center; gap: var(--space-ms); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
         /* German compounds are one long word, and five cards a row is a 167px title
            box: "Prüfungssimulation" overflows it whatever the width, because `main`
@@ -1398,7 +1535,7 @@
            grid gap; clipped at the content edge it is still a visible tell, and it is
            one the card contains. */
         .mode-meta {
-            display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: nowrap;
+            display: flex; align-items: center; justify-content: center; gap: var(--space-2xs); flex-wrap: nowrap;
             white-space: nowrap; overflow: hidden;
             margin-top: auto;
             font-size: var(--fs-2xs); color: var(--muted);
@@ -1420,7 +1557,7 @@
             min-height: var(--ctl-lg);
             text-align: left;
             border-radius: var(--radius);
-            background: var(--surface);
+            background: var(--band);
             border: 1px solid var(--border);
         }
         .topic-chip-icon {
@@ -1438,8 +1575,9 @@
         .topic-chip-go { flex-shrink: 0; color: var(--faint); display: grid; place-items: center; }
         .topic-chip-go svg { width: var(--icon-md); height: var(--icon-md); }
         @media (hover: hover) {
+            /* --text, not --accent-text: no icon in the app is painted in an accent. */
             .topic-chip:hover .topic-chip-icon,
-            .topic-chip:hover .topic-chip-go { color: var(--accent-text); }
+            .topic-chip:hover .topic-chip-go { color: var(--text); }
         }
 
         /* ============================================================
@@ -2246,7 +2384,7 @@
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
-            .stats-item--note, .cta-note, .cta-art { display: none; }
+            .stats-item--note, .cta-note, .cta-art, .resume-art { display: none; }
 
             .why-item { flex-basis: 100%; }
             /* Stacked, the small print has nothing to sit opposite, so it stops
@@ -2267,12 +2405,19 @@
             .section-head h2, .cta-copy h2 { font-size: var(--fs-lg); }
             .section-head p { font-size: var(--fs-sm); }
             .dash { padding: var(--space-ms); }
-            /* The ring stops being a column of its own and sits above the counters. */
-            /* Stacked, the hairline that separated ring from stats becomes the
-               rule under the ring. */
-            .dash-body { grid-template-columns: 1fr; justify-items: center; gap: var(--space-ms); }
-            .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--space-ms); padding-right: 0; }
-            .ready-ring-wrap { width: 96px; height: 96px; }
+            /* ONE column on a phone, and this reverses the old rule that "the three
+               overview stats stay three columns". They cannot any more: a readout is
+               a bordered tile now, and at 375px three of them give the label an 85px
+               box while "BEANTWORTET" sets 109 and "ZUR WIEDERHOLUNG" more — one
+               German word, so there is nothing to wrap and it simply spilled over the
+               tile's own edge. As rows the label has the width it needs, the plate
+               keeps its place beside the figure, and the sub-line goes. */
+            .dash-grid { grid-template-columns: 1fr; gap: var(--space-2xs); }
+            .dash-tile { padding: var(--space-sm); }
+            .dash-stat-icon { width: var(--ctl-sm); height: var(--ctl-sm); }
+            .ds-sub { display: none; }
+            .dash-head { flex-direction: column; gap: var(--space-sm); }
+            .ready-ring-wrap { width: 104px; height: 104px; }
             /* Full width down here, label hard left and pill hard right, rather than
                a centred pair with the band's padding wasted either side of it. */
             #statePickerSlot { width: 100%; justify-content: space-between; }
@@ -2286,10 +2431,12 @@
                 grid-template-columns: 1fr;
                 grid-template-areas: "title" "desc" "meta" "start";
                 row-gap: var(--space-2xs);
+                text-align: left;
             }
             /* Back to one row down here: the card is a list item, not a tile, so the
                plate sits beside the name rather than stacked above it. */
-            .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; gap: var(--space-sm); }
+            .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
+            .mode-card .mode-meta { justify-content: flex-start; }
             .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
             .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
             /* Centred in a TILE, hard left in a list row: down here the title, the
@@ -2579,11 +2726,24 @@
         <section id="practiseScreen" class="screen">
             <!-- 1 · Where you stand — one wide card, the returning learner's opening statement. -->
             <section class="home-section" data-needs-data>
-                <div class="section-head">
-                    <h2 data-i18n="home.progress.title"></h2>
-                    <p data-i18n="home.progress.lead"></p>
+                <!-- The heading lives INSIDE the card here, unlike every other section
+                     on the page: the mockup draws one panel that opens with its own
+                     title and an encouragement chip, and the four readouts below are
+                     tiles within it. #homeStatus holds only what renderHomeStatus()
+                     paints. -->
+                <div class="dash">
+                    <div class="dash-head">
+                        <div class="section-head">
+                            <h2 data-i18n="home.progress.title"></h2>
+                            <p data-i18n="home.progress.lead"></p>
+                        </div>
+                        <span class="dash-pill">
+                            <span class="dash-pill-icon" data-icon="leaf" aria-hidden="true"></span>
+                            <span data-i18n="dash.pill"></span>
+                        </span>
+                    </div>
+                    <div id="homeStatus"></div>
                 </div>
-                <div id="homeStatus"></div>
             </section>
 
             <!-- 2 · Practise — the main event. It carried #homeMain while the hero's
@@ -2867,6 +3027,11 @@
                already a ringed globe with a meridian — this is that, without the
                flag-pole crossbar, so the two read as one family. */
             globe: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>'),
+            // The overview card's readouts. Same three as tools/icon-packs.mjs's solid
+            // pack, which is where they were drawn — keep the two in step.
+            file: _svg('<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>'),
+            checkCircle: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.6a7.4 7.4 0 1 0 0 14.8a7.4 7.4 0 1 0 0 -14.8Z"/><path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>'),
+            leaf: _svg('<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>'),
         };
         // A clock IS the history glyph (a donut with two hands) and a group IS the
         // society glyph, so each reader gets the name that says what it means there:
@@ -2877,6 +3042,12 @@
         // Ornament for the CTA band. Solid shapes, never strokes, and purely
         // decorative: the band must lay out correctly without it.
         const GATE_ART = '<svg viewBox="0 0 240 146" fill="currentColor" stroke="none" aria-hidden="true"><path d="M74 30c2-6 7-9 13-9h58c6 0 11 3 13 9l1 4H73Z"/><path d="M96 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3H96Z"/><path d="M112 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3h-16Z"/><path d="M128 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3h-16Z"/><path d="M144 21c0-4 3-7 7-7h4c3 0 5 2 5 5v3h-16Z"/><path d="M84 12c0-5 4-9 9-9s9 4 9 9v9h-6v-7a3 3 0 0 0-6 0v7h-6Z"/><circle cx="79" cy="27" r="5"/><rect x="62" y="36" width="116" height="16" rx="1.5"/><rect x="18" y="54" width="204" height="9" rx="1.5"/><rect x="14" y="63" width="212" height="6" rx="1.5"/><rect x="26" y="71" width="13" height="56" rx="2"/><rect x="59" y="71" width="13" height="56" rx="2"/><rect x="92" y="71" width="13" height="56" rx="2"/><rect x="135" y="71" width="13" height="56" rx="2"/><rect x="168" y="71" width="13" height="56" rx="2"/><rect x="201" y="71" width="13" height="56" rx="2"/><rect x="10" y="127" width="220" height="8" rx="2"/><rect x="4" y="135" width="232" height="7" rx="2"/></svg>';
+
+        // The resume banner's ornament, per the mockup: three peaks with a flag on
+        // the tallest, cropped by the banner's own bottom edge. Decorative like
+        // GATE_ART — the banner must lay out correctly without it, which is why it is
+        // absolutely positioned and pointer-events: none.
+        const MOUNTAIN_ART = '<svg viewBox="0 0 240 80" fill="currentColor" stroke="none" aria-hidden="true"><path d="M0 80 62 32 124 80Z" opacity="0.55"/><path d="M58 80 116 24 174 80Z" opacity="0.75"/><path d="M112 80 174 20 236 80Z"/><path d="M172 0h3.4v22H172Z"/><path d="M175.4 1 194 7.6 175.4 14.2Z"/></svg>';
 
         // German federal states (code -> name), display order. Each has 10 state-specific questions.
         const STATES = {
@@ -3015,6 +3186,11 @@
 
             // overview card
             'dash.accuracy':       { en: 'Accuracy',                de: 'Trefferquote' },
+            // The caption INSIDE the dial. "Trefferquote" sets ~106px at the 12px
+            // floor and collides with a 104px ring's stroke — measured, and the whole
+            // reason the caption was dropped in September. The full word stays on the
+            // wrapper's title/aria-label, where its length costs nothing.
+            'dash.accuracyShort':  { en: 'Accuracy',                de: 'Quote' },
             'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
             'dash.due':            { en: 'Due for review',          de: 'Zur Wiederholung' },
@@ -3026,6 +3202,21 @@
             'dash.resumeMeta':     { en: '{n} of {total} answered', de: '{n} von {total} beantwortet' },
             'dash.resumeGo':       { en: 'Resume',                  de: 'Fortsetzen' },
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
+            'dash.pill':           { en: 'Small steps make big progress.', de: 'Kleine Schritte, großer Fortschritt.' },
+            'dash.answeredSub':    { en: 'Questions you have attempted', de: 'Fragen, die du versucht hast' },
+            'dash.masteredSub':    { en: 'Questions you have mastered',  de: 'Fragen, die du beherrschst' },
+            'dash.dueSub':         { en: 'Questions to review',      de: 'Fragen zur Wiederholung' },
+            // The verdict beside the ring. Four tiers, picked in renderHomeStatus():
+            // nothing answered, then below / above the exam's 17-of-33 pass mark
+            // (52%), then comfortably above it.
+            'dash.verdict.start':     { en: 'You are just getting started', de: 'Du fängst gerade erst an' },
+            'dash.verdict.startSub':  { en: 'Answer a few questions to see your progress here.', de: 'Beantworte ein paar Fragen, um deinen Fortschritt hier zu sehen.' },
+            'dash.verdict.building':  { en: 'Keep going',              de: 'Bleib dran' },
+            'dash.verdict.buildingSub': { en: 'You are still under the pass mark of 17 out of 33.', de: 'Du liegst noch unter der Bestehensgrenze von 17 von 33.' },
+            'dash.verdict.onTrack':   { en: 'You are on track',        de: 'Du bist auf Kurs' },
+            'dash.verdict.onTrackSub': { en: 'Above the pass mark. Keep it steady.', de: 'Über der Bestehensgrenze. Bleib dabei.' },
+            'dash.verdict.strong':    { en: 'You are close to ready',   de: 'Du bist fast bereit' },
+            'dash.verdict.strongSub': { en: 'Strong accuracy — try a full exam simulation.', de: 'Starke Trefferquote — probier eine Prüfungssimulation.' },
 
             // modes
             'mode.topic.title':    { en: 'By topic',               de: 'Nach Thema' },
@@ -3669,6 +3860,13 @@
             const ring = overallAccuracy();
             const answeredInPool = pool.filter(q => progress[q.id]).length;
 
+            // The verdict beside the ring. The 52% step is the exam's own pass mark
+            // (17 of 33), so "on track" means something the app can point at.
+            const vk = answeredInPool === 0 ? 'start'
+                : ring >= 80 ? 'strong'
+                : ring >= 52 ? 'onTrack'
+                : 'building';
+
             // Resume banner — only when a saved in-progress session exists.
             const sess = getSavedSession();
             let resumeHtml = '';
@@ -3681,9 +3879,13 @@
                 const answered = sess.answered ? Object.keys(sess.answered).length : 0;
                 resumeHtml = `
                     <div class="resume-banner">
-                        <div class="resume-text">
-                            <strong>${t('dash.resume')}</strong>
-                            <span>${sessLabel} · ${t('dash.resumeMeta', { n: answered, total: sess.ids.length })}</span>
+                        <span class="resume-art" aria-hidden="true">${MOUNTAIN_ART}</span>
+                        <div class="resume-main">
+                            <span class="resume-icon" aria-hidden="true">${ICONS.book}</span>
+                            <div class="resume-text">
+                                <strong>${t('dash.resume')}</strong>
+                                <span>${sessLabel} · ${t('dash.resumeMeta', { n: answered, total: sess.ids.length })}</span>
+                            </div>
                         </div>
                         <div class="resume-actions">
                             <button class="btn-primary btn-sm" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
@@ -3692,9 +3894,23 @@
                     </div>`;
             }
 
+            // One readout tile: plate, figure, name, and the line that says what the
+            // figure counts. The plate reads --hue-tint/--hue-ink like every other.
+            const stat = (icon, num, label, sub, extra = '') => `
+                <div class="dash-tile dash-stat${extra}">
+                    <div class="dash-stat-top">
+                        <span class="dash-stat-icon" aria-hidden="true">${icon}</span>
+                        <span class="dash-stat-fig">
+                            <span class="ds-num">${num}</span>
+                            <span class="ds-label">${label}</span>
+                        </span>
+                    </div>
+                    <span class="ds-sub">${sub}</span>
+                </div>`;
+
             el.innerHTML = `
-                <div class="dash">
-                    <div class="dash-body">
+                <div class="dash-grid">
+                    <div class="dash-tile dash-tile--ring">
                         <div class="ready-ring-wrap" role="img" title="${ring}% ${t('dash.accuracy')}" aria-label="${ring}% ${t('dash.accuracy')}">
                             <svg class="ready-ring" viewBox="0 0 120 120" aria-hidden="true">
                                 <circle class="ready-ring-track" cx="60" cy="60" r="50"></circle>
@@ -3702,26 +3918,20 @@
                             </svg>
                             <div class="ready-ring-center">
                                 <span class="ready-ring-pct" id="readyRingPct">0%</span>
+                                <span class="ready-ring-sub">${t('dash.accuracyShort')}</span>
                             </div>
                         </div>
-                        <div class="dash-stats">
-                            <div class="dash-stat">
-                                <span class="ds-num">${answeredInPool}<span class="ds-of"> / ${totalPool}</span></span>
-                                <span class="ds-label">${t('dash.answered')}</span>
-                            </div>
-                            <div class="dash-stat">
-                                <span class="ds-num">${mastered}</span>
-                                <span class="ds-label">${t('dash.mastered')}</span>
-                            </div>
-                            <div class="dash-stat${due ? ' dash-stat--due' : ''}">
-                                <span class="ds-num">${due}</span>
-                                <span class="ds-label">${t('dash.due')}</span>
-                            </div>
+                        <div class="dash-verdict">
+                            <strong>${t('dash.verdict.' + vk)}</strong>
+                            <p>${t('dash.verdict.' + vk + 'Sub')}</p>
                         </div>
                     </div>
-                    ${resumeHtml}
-                    ${answeredInPool > 0 ? `<button class="progress-reset" title="${t('dash.reset')}" aria-label="${t('dash.reset')}" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${ICONS.reset}</button>` : ''}
-                </div>`;
+                    ${stat(ICONS.file, `${answeredInPool}<span class="ds-of"> / ${totalPool}</span>`, t('dash.answered'), t('dash.answeredSub'), ' dash-stat--blue')}
+                    ${stat(ICONS.checkCircle, mastered, t('dash.mastered'), t('dash.masteredSub'), ' dash-stat--green')}
+                    ${stat(ICONS.clock, due, t('dash.due'), t('dash.dueSub'), ' dash-stat--amber' + (due ? ' dash-stat--due' : ''))}
+                </div>
+                ${resumeHtml}
+                ${answeredInPool > 0 ? `<button class="progress-reset" title="${t('dash.reset')}" aria-label="${t('dash.reset')}" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${ICONS.reset}</button>` : ''}`;
 
             animateReadyRing(ring);
         }

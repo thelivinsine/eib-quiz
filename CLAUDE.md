@@ -132,7 +132,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     read 17.6 / 10.1 / 6.2 / 5.2 on white.
   - **A tinted `--*-dim` plate is a FILL and has to behave like one.** The seven of them
     (`--accent-soft`, `--teal-tint`, `--gold-dim`, `--green-dim`, `--red-dim`,
-    `--violet-dim`, `--blue-dim`) sat **1.01-1.15** on a tile — invisible as fills, with
+    `--violet-dim`, `--blue-dim` — `--violet-dim` was deleted on 2026-09-21 when the
+    icon plates went neutral and took its only consumer) sat **1.01-1.15** on a tile — invisible as fills, with
     the hue doing all the work — and came up with the page to **1.20** each, hue and
     saturation held, luminance moved. `--red`/`--red-text` and `--violet` lightened a hair
     with them (`#F87171` -> `#F98989`, `#A78BFA` -> `#B39CFA`) so their own text still
@@ -147,7 +148,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--border-soft` while sitting on the page: in light that is 1.03 fill and 1.04 hairline
     against the canvas, under `theme-light.md`'s 1.05 nesting and 1.10 hairline floors, and
     invisible beside the 1.11 every other tile manages. Dark hid it (1.30) because the dark ramp
-    has the room. A tile on the page takes `--surface` + `--border`, full stop.
+    has the room. A tile on the page takes a
+    top-of-ramp fill + `--border`: `--surface` everywhere, `--band` on the practise
+    page since 2026-09-21. Never `--surface2`.
   - **Rounding is one three-step scale plus a pill, and there is no fourth value.**
     `--radius-xs: 4px` (bars, tracks, swatches, the image inside an image option),
     `--radius-sm: 10px` (wells, nav cells, letter chips, thumbnails, `kbd`), `--radius: 16px`
@@ -357,9 +360,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
-- **The hero's two buttons and the CTA band's are ONE size** (2026-09-21, on request):
-  `--ctl-md`, `--space-lg` of side padding, `--fs-base`, `--icon-sm` for the arrow. The
-  hero's were a rung larger (`--ctl-lg` / `--space-xl` / `--fs-md`) and came down.
+- **The hero's two buttons read at the HEADER's size, not the CTA band's** (2026-09-21,
+  on request, later the same day). All three share `--ctl-md` and `--icon-sm`, and the
+  hero's pair (`--space-lg` of side padding) dropped from `--fs-base` to **`--fs-2xs`**
+  so Start now and Learn more match the theme toggle, the globe summary and the two nav
+  links — the whole chrome tier is one size now. The CTA band's button keeps `--fs-base`
+  through `.btn-lg`: it is the page's last call, not header chrome, and nothing about it
+  was asked to move. Before that pass the hero's were a rung LARGER than the band's
+  (`--ctl-lg` / `--space-xl` / `--fs-md`).
   - **`.cta-btn`'s own size declarations were DEAD and are deleted.** The markup is
     `btn-primary btn-lg cta-btn`, and `.btn-lg` sits ~440 lines later at the same
     single-class specificity, so it won `min-height`, `padding` and `font-size` alike:
@@ -376,7 +384,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`.btn-*`, the header `.seg-btn` switches, `#stateSelect`); `#stateSelect` is `font-size: 16px` so iOS Safari
   does not zoom on focus; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
   header respect `env(safe-area-inset-*)`. Under 620px the mode cards become a single-column list
-  (icon beside the title), the three overview stats stay three columns, and the exam timer goes
+  (icon beside the title), the three overview readouts become ONE column of rows
+  (**reversed 2026-09-21**: they stayed three columns until they became bordered tiles,
+  and at 375px three tiles give the label an 85px box while `BEANTWORTET` sets 109 and
+  `ZUR WIEDERHOLUNG` more — one German word, nothing to wrap, so it spilled over the
+  tile's own edge; as rows the label has its width and the `.ds-sub` line goes), and the exam timer goes
   to one line. The quiz readouts drop their hairlines and tighten to a `--space-sm` gap so all four stay
   on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
   the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
@@ -401,8 +413,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     for pages that do not exist. **If either is built it comes back as an ordinary
     `.nav-link` with a `data-screen` and a screen behind it** — not as a promise.
   - **PRACTISE is drawn LOUDER than Home, and is still a LINK** (2026-09-21, on request).
-    `.nav-link--cta` is the same shape as `.nav-link` — no fill, no pill — one step up the
-    type scale (`--fs-md`) and in `--accent-text`. **It wore `--btn-fill` in a pill for a
+    `.nav-link--cta` is the same shape as `.nav-link` — no fill, no pill — and in
+    `--accent-text`. **It is drawn louder by COLOUR ALONE**: the size step (`--fs-md`)
+    went hours later the same day, on request, when the whole header strip was pinned to
+    one size — `.nav-link`, `.hmenu-summary` and `.seg-btn` are all `--fs-2xs`, so the
+    two nav items and the two toggles beside them read as one row of chrome. **It wore `--btn-fill` in a pill for a
     few hours the same day and that was wrong**: two items in a two-item nav should read
     as the same KIND of thing, and a solid button beside a bare word reads as a control
     that acts rather than a page you go to. The hero's Start and the CTA band still carry
@@ -539,7 +554,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the page itself; `--band` is the token the footer shares, and is what the
     mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
     above rejects: `--surface2` is a well inside a tile, and still never a panel on the
-    page.
+    page. (The practise page's own tiles took `--band` later the same day — see the
+    practise-tile note below — which is a tile ON the page, not a panel around a set
+    of them.)
   - **The why band's air is in MARGINS and PADDING, never in the grid's `gap`**
     (2026-09-21). `#whyBand` takes `padding-block: var(--space-2xl)`, its section head
     `margin-bottom: var(--space-2xl)` (scoped — the global one is 12px and shared),
@@ -639,6 +656,28 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `renderModes()` reads the panel's `hidden` to redraw `aria-expanded`, because it runs
     again on every language switch and would otherwise reset the button while the topics
     were still showing.
+  - **A PRACTISE-PAGE TILE IS `--band`, THE LANDING PAGE'S PALE PANEL** (2026-09-21, on
+    request). The mode cards, the overview card, the topic chips and the history and
+    glossary wraps left `--surface` for `--band` + the same `--border` hairline the
+    numbers band, the CTA band and the footer carry, so the two pages read as one
+    surface system. **A session screen did NOT move** — `.quiz-sidebar` and
+    `.review-item` keep `--surface`, because there is no band anywhere near them to
+    match, which is why that shared tile rule is now two rules.
+    **Light needs its hover override back**: `--hover` is **1.047** off `--band`, under
+    even the nesting floor, so `html.light .mode-card:hover, html.light
+    .topic-chip:hover` raise to `--surface2` (1.078) — the move the retired
+    `.modes-band` panel made for the same reason. Dark keeps the base `--hover` (1.437),
+    and `--surface3` is the press fill in both (1.215 / 1.530).
+    `contrast.test.mjs` gained `border/band`, `surface2/band` and `surface3/band` with
+    it — three of the pairs the panel's removal had deleted, back because the ground is
+    back.
+  - **A mode card's contents are CENTRED** (2026-09-21, on request): the hue plate, the
+    title, the description, the meta row and the action all sit on the card's centre
+    line. It is `text-align: center` plus `justify-content` on the two flex rows, and
+    **deliberately NOT `align-items: center` on the card** — that would size every child
+    to fit-content, and `.mode-meta`'s nowrap width is measured at zero slack. The 620px
+    block puts `text-align`, `.mode-head` and `.mode-meta` back to the left, where the
+    card is a list row rather than a tile.
   - **THERE IS NO PANEL BEHIND THE FIVE CARDS** (2026-09-21, on request). `.modes-band`
     was the mockup's pale `--band` plate — a hairline, a 16px radius and
     `--space-xl`/`--space-md` of padding — and it is gone; the cards sit straight on the
@@ -698,45 +737,110 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--space-lg` beneath it (`.modes-band .section-head`) rather than the global
       `--space-ms`, because one line needs to read as a heading. That rule is now the
       only reason the class exists.
-  - **The mode cards carry a per-card HUE and a NAMED action** (2026-09-21, on request,
-    against the mockup — this reverses the rule of the same morning that they carry
-    neither). Exam **blue**, All questions **green**, Your state **amber**, Smart review
-    **rose** (the one card where a warm alert hue says something true about "questions
-    you keep getting wrong"), By topic **violet**. Each hue paints a tinted `--radius-sm`
-    plate above the title and a SOLID disc inside `.mode-start`, which is a white arrow
-    plus the action IN WORDS (`mode.exam.start` ... `mode.topic.start` — kept short
+  - **The mode cards carry a NAMED action, and their plates are NEUTRAL** (the action
+    2026-09-21 against the mockup; the colour came the same day and **went again the
+    same day, on request — no icon in this app is painted in an accent or a semantic
+    hue**). Exam blue, All questions green, Your state amber, Smart review rose and By
+    topic violet each painted a tinted `--radius-sm` plate and a solid start disc;
+    all five are `--surface2` + `--sub-text` now, and the five cards differ by their
+    GLYPH and their words alone. The plate and the disc stay — a mode card's icon is
+    one of the three places in the app that gets a plate at all — they are simply
+    grey. Each card still shows the action IN WORDS (`mode.exam.start` ... `mode.topic.start` — kept short
     because German decides that row's width at five columns). **The action LABEL is
     `--text`, not the hue**: the mockup's own label measures `#000417`. `.mode-go`, the
     bare corner arrow, is gone — it was the compromise made when the cards had no colour
     to carry an action, and on a touch screen it read as a decoration. Metadata stays
     grey. `.mode-flag` is still the apricot chip shown when Smart Review has work due.
-  - **HUE DISCS: five hues, and they mint no token but `--violet`.** `[data-hue]` maps
-    blue/green/amber/rose/violet onto `--accent-soft`+`--accent-text`,
-    `--green-dim`+`--green`, `--gold-dim`+`--gold`, `--red-dim`+`--red-text` and
-    `--violet-dim`+`--violet`, exposing each as **`--hue-tint`** and **`--hue-ink`** —
-    named long on purpose: as plain `--ink` it shadowed the palette's OWN legacy border
-    alias (`--ink`, #505050 dark / #E0E7F1 light) for every descendant of a hue element,
-    so a later `border: 1px solid var(--ink)` inside a mode card would have drawn a solid
-    red edge while the palette definition still looked right. Every plate in the
-    app is therefore ALREADY asserted by `contrast.test.mjs`, which is the whole point of
-    doing it this way — **do not write a per-component tint literal.** `--on-hue` is the
-    glyph on a SOLID disc and is one value per theme (`#FFFFFF` light, `#1A1A1A` dark):
-    every light hue is a dark colour and every dark hue a light one, so one token serves
-    all five. White on dark's violet is 2.32 and would have failed the 3.0 floor.
+  - **ICON PLATES: one neutral pair, and no hues at all** (2026-09-21, on request).
+    `[data-hue]` is a single rule now — `--hue-tint: var(--surface2)`,
+    `--hue-ink: var(--sub-text)` — read by the why marks, the mode icons and the solid
+    start discs alike. **The ONE exception is the overview card**, which took the
+    mockup's blue / green / amber plates back hours later on request ("stay true to
+    the mockup"); it overrides the same two variables locally with
+    `.dash-stat--blue` / `--green` / `--amber`, so the rule below still governs
+    everything else. `--on-hue` stays as the glyph ON a solid disc, one value per
+    theme (`#FFFFFF` light, `#1A1A1A` dark), and reads 10.09 / 11.40 on `--sub-text`.
+    The five `[data-hue="..."]` rules that mapped blue/green/amber/rose/violet onto
+    `--accent-soft`, `--green-dim`, `--gold-dim`, `--red-dim` and `--violet-dim` are
+    deleted, and **`--violet` / `--violet-dim` went out of the palette with them** —
+    those plates were the pair's only consumer, and a token with no consumer is the
+    stale-ground fault `contrast.test.mjs` keeps catching. The test lost seven pairs
+    and gained one (`on-hue / sub-text`).
+    The attribute and the token NAMES stay: `renderModes()` and the why list still
+    write `data-hue`, and renaming three tokens to say "neutral" is churn. **It is
+    `--hue-ink`, NOT `--ink`** — as a short name it shadowed the palette's own legacy
+    border alias (`--ink`, #505050 dark / #E0E7F1 light) for every descendant of a
+    plate element, so a later `border: 1px solid var(--ink)` inside a mode card would
+    have drawn a solid accent edge while the palette definition still looked right.
+    **Do not write a per-component tint literal**; a plate that wants colour again
+    restores the five deleted rules.
   - **The state picker's pill hugs the selected state.** A native `<select>` is as wide as its
     longest option, so binding the pill to it sized every state to "Mecklenburg-Vorpommern" and
     left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`
     span and the `<select>` is a transparent overlay across the pill; `onStateChange` updates the
     span rather than re-rendering the control, which would drop focus mid-interaction.
-  - **The overview card is one band, not four boxes.** The ring and the three counters sit in a
-    single row separated by **hairlines** (`.dash-stats` border-left, `.dash-stat + .dash-stat`);
-    they were four nested rounded wells inside a rounded card, which is the containers-inside-
-    containers look. There is no `OVERVIEW` eyebrow — the section heading above already says it,
-    and the `dash.eyebrow` key is gone. `Reset progress` is a **corner glyph**
-    (`.progress-reset`, `ICONS.reset`, absolutely positioned top-right of `.dash`, `--ctl-md` square
-    so it keeps its touch target, `title` + `aria-label` for its name). It had a footer rule and
-    a 44px band of its own — a whole row for something you press once a year. `.dash-foot` and
-    `dash-stats`' right padding is what keeps the band clear of it.
+  - **The overview card is FOUR TILES and its own heading** (2026-09-21, on request,
+    against `docs/Mockups/ui/where-you-stand.png` — **this
+    reverses "one band, not four boxes"**, which held from 2026-09-20 until the mockup
+    arrived). `.dash-grid` is `1.7fr 1fr 1fr 1fr`: a wide `.dash-tile--ring` holding the
+    ring, a hairline and a VERDICT (a headline and a line of advice), then three
+    `.dash-stat` readouts, each a neutral plate + figure + name + one line saying what
+    the figure counts. `.dash-body` and `.dash-stats` are gone with the old single row.
+    - **The section's HEADING lives inside the card here**, unlike every other section
+      on the page: the mockup draws one panel that opens with its own title, a lead and
+      an encouragement chip (`.dash-pill`, `dash.pill`, the new `leaf` glyph).
+      `#homeStatus` holds only what `renderHomeStatus()` paints, and the head is static
+      markup inside `.dash` so it keeps its `data-i18n` and the 620px rule that hides a
+      section's lead.
+    - **LIGHT takes the mockup's shades exactly; DARK cannot** (on request, "stay true
+      to the mockup", reversing the inversion shipped an hour earlier). The mockup is a
+      near-white card (#FBFCFE) holding a `--band` summary tile (#F5F8FD) and white
+      readouts (#FEFEFE) — which is light's own system, where a tile IS the page colour
+      and the hairline separates. So `html.light .dash` is `--surface`. **Dark keeps the
+      `--band` card** with `--surface` readouts stepping UP out of it: nothing goes
+      below the page there (`theme-dark.md` §3), so a recessed summary tile is not
+      available. `surface / band` is a live FILLS pair again either way — the readouts
+      on the card in dark, the summary tile inside the white card in light.
+    - **THIS CARD IS THE ONE PLACE ICONS CARRY A HUE** (same request). Answered is blue,
+      mastered green, due amber, the encouragement chip green and the resume banner's
+      book `--accent-text`, all exactly as drawn. They are scoped as
+      `.dash-stat--blue` / `--green` / `--amber` rather than by restoring the five
+      `[data-hue]` rules: `[data-hue]` stays neutral, so the mode cards and the why
+      marks are unaffected. Each is a `--*-dim` / `--*` pair the palette already
+      carries, so `contrast.test.mjs` asserted all three before they were used.
+      **If the neutral rule is ever reasserted, it is three declarations here.**
+    - **The verdict has four tiers**, picked in `renderHomeStatus()` from the answered
+      count and the accuracy: nothing answered, then below / above **52%**, which is
+      the exam's own 17-of-33 pass mark, then 80%+. That is why "on track" can say
+      something the app can point at.
+    - **`.ready-ring-sub` IS BACK, and German gets a SHORTER WORD** (on request). The
+      mockup puts the name under the percentage; the caption was removed in September
+      because "Trefferquote" sets ~106px at the 12px floor. The ring is 104px now (up
+      from 88) and the caption carries **no letter-spacing** — tracked out with
+      `--ls-caps` even ACCURACY sets 78px and grazes the stroke, and a third tracking
+      value busts the ratchet anyway. That is still not enough for German, so
+      **`dash.accuracyShort`** is a separate key: `Accuracy` / **`Quote`**. The full
+      "Trefferquote" stays on the wrapper's `title`/`aria-label`, where its length
+      costs nothing. Verified in both languages — rendered, not reasoned about; the
+      first attempt printed TREFFERQUOTE straight across the dial.
+    - **The mountain ornament is built** (`MOUNTAIN_ART`, beside `GATE_ART`): three
+      peaks and a flag on the tallest, cropped by the banner's bottom edge.
+      - **It is sized FROM the banner** — `top: 0; bottom: 0` with `height: 100%` on
+        the SVG — because at a fixed 250px it stood 83px tall in a 68px banner and
+        `overflow: hidden` cropped the peaks and the flag with them.
+      - **The flag has to clear the apex.** Drawn inside the silhouette it is the same
+        colour as it, so the first version shipped three peaks and no flag at all.
+      - **`--accent-line`, not `.cta-art`'s `--border-hover`**: the mockup's peaks are
+        a desaturated blue (#C9D7F5 measured) on the banner's blue wash, and light's
+        `--accent-line` is #BFD4FA. A grey ornament on a tinted ground reads as dirt.
+      - Hidden below 620px with `.cta-art`, where the banner stacks and there is no
+        room behind the row.
+    - There is no `OVERVIEW` eyebrow — the card's own heading says it, and the
+      `dash.eyebrow` key is gone. `Reset progress` is still a **corner glyph**
+      (`.progress-reset`, `ICONS.reset`, absolutely positioned top-right of `.dash`,
+      `--ctl-md` square so it keeps its touch target, `title` + `aria-label` for its
+      name). `.dash-head` reserves `--ctl-md` of right-hand padding so the chip cannot
+      run under it.
   - The counter for questions due is the one stat allowed to draw attention
     (`.dash-stat--due`): **a coloured numeral only**. It was an apricot-tinted slab, which on
     charcoal reads as brown mud and buys no more attention than the colour alone. The others are
@@ -1081,10 +1185,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     navigator's chevron and a topic chip's glyph carry no pill or chip: a solid glyph is
     heavy enough to read as a control on its own, and a box round a control is a
     container inside a container. But the **why marks and a mode card's
-    icon** each take a tinted disc, because the mockup draws them that way and that
-    colour is most of why it reads as a lively page and the all-grey build read as a dead
-    one — see HUE DISCS above. **A topic chip's glyph is grey at rest and accent on
-    hover.** The hit target stays (34/44px, and the coarse-pointer floor is untouched),
+    icon** each take a disc, because the mockup draws them that way — and the
+    disc is **NEUTRAL** (`--surface2` + `--sub-text`) since 2026-09-21, on request: the
+    five per-card hues went. **The overview card's three readout plates are the
+    exception** and carry the mockup's blue / green / amber, restored the same day on
+    "stay true to the mockup" — see ICON PLATES above before reaching for colour
+    anywhere else.
+    **A topic chip's glyph is grey at rest and `--text` on hover** — it was the accent
+    until the same pass; a hover on a plateless glyph is still a COLOUR change, never a
+    fill that draws the box back on. The hit target stays (34/44px, and the coarse-pointer floor is untouched),
     and where there is no plate hover is a COLOUR change, never a fill that draws the
     box back on.
   - **The question block is CENTRED in the room it has.** `.question-body` is a flex column
@@ -1327,7 +1436,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 25 glyphs — 23 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 28 glyphs — 26 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -1336,7 +1445,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   scroll arrows are inline solid paths for the same reason
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
-  production.
+  production. **`file`, `checkCircle` and `leaf` were drawn that way on 2026-09-21** for
+  the rebuilt overview card — `checkCircle` reuses the pack's own `donut()` helper rather
+  than drawing a second ring by hand, and its tick is `shield`'s scaled to the smaller
+  hole. The `line` and `duotone` objects do NOT carry them, which is already true of
+  `book`, `shield`, `star`, `topic` and `globe`: only `solid` ships.
   **Two of them are ALIASES, not drawings**: `ICONS.community = ICONS.society` and
   `ICONS.clock = ICONS.history` (2026-09-21) — a group IS the society glyph, and the
   history glyph IS a clock face (a donut with two hands), so there is one definition to

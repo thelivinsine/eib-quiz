@@ -148,6 +148,13 @@ const solid = {
     // The header's preferences menu. ICONS.symbols without the flag-pole crossbar,
     // so the ringed globe and the meridian read as one family with it.
     globe: '<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>',
+    // The overview card's three readouts (2026-09-21): a document, a ticked ring and
+    // the clock it already had. checkCircle reuses donut() rather than drawing a
+    // second ring by hand, and its tick is the shield's, scaled to the smaller hole.
+    file: '<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>',
+    checkCircle: ev(donut(12, 12, 9.2, 7.4)) + '<path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>',
+    // The encouragement chip. Blade plus midrib, both solid.
+    leaf: '<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>',
     // index.html aliases these rather than redrawing them.
     clock: ev(donut(12, 12, 9.2, 7.1)) + CLOCK_HANDS,
     community: PERSON_B + PERSON_A,

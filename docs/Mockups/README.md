@@ -13,9 +13,10 @@ Mockups/
 
 ## `ui/` — design boards
 
-Four ChatGPT-generated boards from 21 September 2026, each packing many
-screens onto one canvas. Reference only: read them, do not cut assets out of
-them (see `archive/` for what happens when you do).
+Six ChatGPT-generated boards from 21 September 2026. The first four each pack
+many screens onto one canvas; the last two are single subjects, added later the
+same day. Reference only: read them, do not cut assets out of them (see
+`archive/` for what happens when you do).
 
 | File | What it shows |
 |---|---|
@@ -23,8 +24,19 @@ them (see `archive/` for what happens when you do).
 | `app-screens-desktop-a.png` | 9 desktop screens — dashboard through question review |
 | `app-screens-desktop-b.png` | 8 desktop screens, alternate treatment |
 | `app-screens-mobile.png` | 13 mobile screens — splash through profile |
+| `where-you-stand.png` | The practise page's overview card, on its own — **shipped** |
+| `logo-kit.png` | Logo lockups, palette and an icon library — **not shipped** |
 
-**These do not match the shipped app.** They show a white-and-blue design with
+`where-you-stand.png` is the exception to everything below: it was built, and
+the overview card on the practise page follows it closely (see the
+"four tiles and its own heading" block in `CLAUDE.md` for the three places it
+deliberately differs — dark mode's shading, the German ring caption and the
+Resume button's fill). `logo-kit.png` is NOT shipped: it draws a different
+brand mark from the German-flag tile the app uses, a stroked icon library where
+the app ships solid glyphs, and pages (`About`, `FAQs`) that were deliberately
+removed.
+
+**The other four do not match the shipped app.** They show a white-and-blue design with
 a top nav (`Home / About / FAQs`), pages that do not exist, and a different
 component language from the quiet-bento system described in `CLAUDE.md`
 (teal + apricot, pill controls, no drop shadows). Treat them as a proposed
