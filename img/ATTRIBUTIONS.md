@@ -76,8 +76,16 @@ The only photograph the app itself serves; everything above is question data.
 | **Here** | 1100 × 1100 WebP, 161 KB · square crop centred at 54% of `docs/Mockups/photos/hero-reichstag-flag.jpg` (3840 × 2560), itself from the 6496 × 4331 original |
 
 **BY-SA asks for the credit where the work is used**, not only in this file, so the app
-renders it under the photo (`.hero-credit`, the `hero.credit` string). Do not remove that
+renders it in the page **footer** (`.footer-credit`, the `footer.credit` string). It sat
+under the photo as `.hero-credit` until 2026-09-21; the footer of the page carrying the
+photo satisfies the licence just as well and keeps the hero clean. Do not remove that
 line while the photograph is on the page.
+
+**The file stays a square crop** even though the app shows it 16/10 below 620px: that is
+`object-fit: cover` on a wider box, not a different asset, and the centred band it keeps
+holds the full pediment, the whole inscription and both flags. Nothing below needs redoing
+for it — but see the note on the margin note's sky, which is why the landscape box is
+limited to widths where that note is hidden.
 
 Regenerate the crop with:
 
