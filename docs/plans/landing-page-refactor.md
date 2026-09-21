@@ -3,6 +3,22 @@
 Status: **Complete, 2026-09-21** — all eight phases, including 7.7. The one thing not
 done is a check on the live site; every measurement here was against `python -m http.server`.
 
+**Follow-up, same day — three of its rejections were reversed on request**, after a
+rendered side-by-side showed the page reading much flatter than the mockup:
+
+1. **The display tier above 22px went back up** (task 1.6's inherited sizing constraint).
+   Measured at 1.14x, the page was 1.3-1.5x short of the mockup everywhere above the body
+   tier. `--fs-hero` is `clamp(2rem, 5.2vw, 3.5rem)`, the section and CTA headings take
+   `--fs-2xl`, the four headline numbers take `--fs-3xl`. The body tier and phases 1-5's
+   line-box and padding work were NOT reopened.
+2. **Task 3.5's panel shipped after all**, but as a RECESS rather than a `--surface2` slab
+   — which is what the mockup actually draws, and the only reading that works in both
+   themes. See CLAUDE.md for the two failed readings and why the cards did not move.
+3. **The band's heading is centred**, with the state picker under it rather than opposite.
+
+§1.5's icon rule was **not** reversed and still stands: no plates, no per-card hue.
+About/FAQs and the globe dropdown (§1.4) remain out of scope.
+
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
 
@@ -339,6 +355,9 @@ Text left, photo panel right. Single column below 940px, photo first.
 - Headline keeps `--fs-hero`. **Do not mint a larger token**; `--fs-hero` was
   set deliberately and a bigger value silently undoes phase 5 of the size
   system.
+  - **Superseded 2026-09-21** (see the header): `--fs-hero` IS larger now —
+    `clamp(2rem, 5.2vw, 3.5rem)` — but raised deliberately, measured against
+    the mockup and written down, which is the thing this rule was protecting.
 - New keys: `hero.eyebrow`. Rewrite `hero.headline` and `hero.lead` to the
   mockup's copy.
 - **Accept when:** the headline sets on two lines at desktop width in both
@@ -486,6 +505,14 @@ A centred `h2` with a right-aligned control on the same line reads as a mistake,
 and `CLAUDE.md`'s rule that a control belongs to the section it changes outranks
 the mockup's alignment. `.section-head--row` keeps heading left, picker right,
 with the new eyebrow above.
+
+**Superseded 2026-09-21** (see the header): both halves of this section were
+reversed. The panel ships, but as a RECESS — the mockup's panel is *darker* than
+its page and its cards are the page's own white, which is the reading neither
+attempt here tried. The heading is centred and the picker sits UNDER it, so the
+mistake this paragraph feared never arises; the picker still belongs to the
+section it changes, which is what `CLAUDE.md`'s rule actually asks. See
+`CLAUDE.md` for the two failed readings and the measurements.
 
 
 ---
