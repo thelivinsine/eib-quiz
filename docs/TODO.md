@@ -1322,6 +1322,11 @@ findings raised, all five applied as the smallest edit that fixes them. No featu
 
 ## Session close (2026-09-21, the dark theme re-derived and the nav link de-buttoned)
 
+Live at close: branch **`ui/dark-ladder-and-nav-link`**, commit **`b775b9e`**, pushed and
+opened as [#93](https://github.com/thelivinsine/eib-quiz/pull/93) — **waiting, not merged.** A
+substantial ending: it re-derives a whole theme, and the *not verified* list below is what a
+reviewer is being asked to weigh before it reaches production.
+
 Two requests, one of them in two passes. Everything here is DARK-only plus one header
 rule; **light is untouched and is still the mockup's own palette.**
 
