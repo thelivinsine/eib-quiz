@@ -1219,12 +1219,15 @@
                capped above ~1140px, so below that the band ran flush to the window with
                its 16px corners cut off, and the width it bought was not what fixed the
                card anyway (the card's own side padding was). */
-            padding: var(--space-2xl) var(--space-lg);
+            padding: var(--space-xl) var(--space-md);
         }
+        /* --space-sm, not --space-md: at five columns every pixel of gap and of the
+           panel's inset comes off the card, and the meta row has to hold the count and
+           the estimate on ONE line. The two together buy 8px of card width. */
         .modes-grid {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: var(--space-md);
+            gap: var(--space-sm);
         }
         /* 1160, not the 940 the rest of the sheet breaks at: five columns of a 1009px
            content width is a 157px card, and "Prüfungssimulation" is one 18-character
@@ -1281,17 +1284,19 @@
            down to 13px. In the meta row it is beside the one other fact the card states,
            and it can wrap. */
         .mode-time {
-            font-size: var(--fs-2xs); color: var(--muted);
-            font-variant-numeric: tabular-nums;
+            display: inline-flex; align-items: center; gap: var(--space-2xs);
+            color: var(--muted);
         }
-        .mode-time::before { content: '·'; margin-right: var(--space-sm); color: var(--faint); }
+        /* A clock, not a middot: the glyph is what says "duration", which is why the
+           strings could drop "approx."/"ca." and "limit" and fit beside the count. */
+        .mode-time svg { width: var(--icon-xs); height: var(--icon-xs); flex: none; }
         /* A SOLID disc of the card's hue with a white arrow in it, and the action
            named beside it — the mockup's "Start Simulation" / "Choose Topics" row. The
            bare corner arrow it replaces was the compromise made when the cards had no
            colour to carry an action, and on a touch screen it read as a decoration. The
            label is --text, not the hue: the mockup's own label measures #000417. */
         .mode-start {
-            display: flex; align-items: center; gap: var(--space-sm);
+            display: flex; align-items: center; justify-content: center; gap: var(--space-sm);
             margin-top: var(--space-ms);
             font-size: var(--fs-xs); font-weight: 600; color: var(--text);
         }
@@ -1336,10 +1341,15 @@
         }
         /* A chip states a fact; the fact is small and grey. Only work that is
            actually waiting gets a colour. */
+        /* ONE line, and the count and the estimate at ONE size: --fs-xs for the count
+           over --fs-2xs for the estimate put 155px of text in a 157px card and wrapped.
+           nowrap is the guarantee rather than the hope - if a translation ever outgrows
+           the card it overflows visibly instead of silently becoming two rows. */
         .mode-meta {
-            display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap;
+            display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: nowrap;
+            white-space: nowrap;
             margin-top: auto;
-            font-size: var(--fs-xs); color: var(--muted);
+            font-size: var(--fs-2xs); color: var(--muted);
             font-variant-numeric: tabular-nums;
         }
         .mode-flag {
@@ -2235,7 +2245,10 @@
             .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; gap: var(--space-sm); }
             .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
             .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
-            .mode-card .mode-start { grid-area: start; margin-top: var(--space-2xs); }
+            /* Centred in a TILE, hard left in a list row: down here the title, the
+               description and the meta are all flush left in a 343px row, and a centred
+               action would be the one thing floating in the middle of it. */
+            .mode-card .mode-start { grid-area: start; margin-top: var(--space-2xs); justify-content: flex-start; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
                names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
@@ -2792,6 +2805,9 @@
         };
         // A clock IS the history glyph and a group IS the society glyph; the
         // landing page needs both under names that say what they mean there.
+        // A clock IS the history glyph (a donut with two hands), so the estimate in a
+        // mode card's meta row reads it under the name that says what it means there.
+        ICONS.clock = ICONS.history;
         ICONS.community = ICONS.society;
 
         // Ornament for the CTA band. Solid shapes, never strokes, and purely
@@ -2954,24 +2970,24 @@
             'mode.topic.title':    { en: 'By topic',               de: 'Nach Thema' },
             'mode.topic.desc':     { en: 'Rights, politics, history, society or symbols — one subject at a time.', de: 'Grundrechte, Politik, Geschichte, Gesellschaft oder Symbole — ein Thema nach dem anderen.' },
             'mode.topic.badge':    { en: 'Five topics',              de: 'Fünf Themen' },
-            'mode.topic.time':     { en: 'approx. 10–25 min',        de: 'ca. 10–25 Min' },
+            'mode.topic.time':     { en: '10–25 min',                de: '10–25 Min' },
             'mode.exam.title':     { en: 'Exam simulation',         de: 'Prüfungssimulation' },
             'mode.exam.desc':      { en: '30 general questions plus 3 for {state}, drawn at random.', de: '30 allgemeine Fragen plus 3 zu {state}, zufällig gezogen.' },
             'mode.exam.badge':     { en: '33 questions',            de: '33 Fragen' },
-            'mode.exam.time':      { en: '60 min limit',            de: '60 Min Limit' },
+            'mode.exam.time':      { en: '60 min',                  de: '60 Min' },
             'mode.all.title':      { en: 'All questions',           de: 'Alle Fragen' },
             'mode.all.desc':       { en: 'The whole general catalogue, in order.', de: 'Der gesamte allgemeine Katalog der Reihe nach.' },
             'mode.all.badge':      { en: '300 questions',           de: '300 Fragen' },
-            'mode.all.time':       { en: 'approx. 60–90 min',       de: 'ca. 60–90 Min' },
+            'mode.all.time':       { en: '60–90 min',                de: '60–90 Min' },
             'mode.state.title':    { en: 'Your state',              de: 'Bundesland' },
             'mode.state.desc':     { en: 'Only what {state} asks about.', de: 'Nur das, was {state} abfragt.' },
             'mode.state.badge':    { en: '10 questions',            de: '10 Fragen' },
-            'mode.state.time':     { en: 'approx. 5 min',           de: 'ca. 5 Min' },
+            'mode.state.time':     { en: '5 min',                   de: '5 Min' },
             'mode.review.title':   { en: 'Smart review',            de: 'Smart Review' },
             'mode.review.desc':    { en: 'Questions that are due, or that you keep getting wrong.', de: 'Fällige und schwache Fragen, automatisch ausgewählt.' },
             'mode.review.badgeDue':{ en: '{n} due',                 de: '{n} fällig' },
             'mode.review.badge':   { en: 'up to 25',                de: 'bis zu 25' },
-            'mode.review.time':    { en: 'approx. 10–15 min',       de: 'ca. 10–15 Min' },
+            'mode.review.time':    { en: '10–15 min',                de: '10–15 Min' },
 
             // topics
             'topic.meta':          { en: '{n} questions · {m} mastered', de: '{n} Fragen · {m} gemeistert' },
@@ -3701,8 +3717,8 @@
                         <span class="mode-icon">${icon}</span><span class="mode-title">${title}</span>
                     </span>
                     <span class="mode-description">${desc}</span>
-                    <span class="mode-meta">${meta}<span class="mode-time">${time}</span></span>
-                    <span class="mode-start"><span class="mode-start-dot" aria-hidden="true">${ICONS.arrowRight}</span>${action}</span>
+                    <span class="mode-meta">${meta}<span class="mode-time">${ICONS.clock}${time}</span></span>
+                    <span class="mode-start">${action}<span class="mode-start-dot" aria-hidden="true">${ICONS.arrowRight}</span></span>
                 </button>`;
             const mode = m => `onclick="startMode('${m}')"`;
             // The reveal's open state lives on the panel, not in a variable: renderModes()
@@ -4842,9 +4858,48 @@
         window.addEventListener('resize', syncEndScrollCue);
 
         // ---- Service worker (offline / installable PWA) ----
+        // Three things make an update actually ARRIVE, and the registration alone is
+        // none of them:
+        //   updateViaCache: 'none' - the worker script itself must never come out of the
+        //     HTTP cache, or the browser compares a stale sw.js against itself and finds
+        //     no update to install. This is the same trap as the fetch handler's
+        //     `cache: 'reload'`, one level up.
+        //   reg.update() on load AND on return to the tab - a left-open tab may go days
+        //     without a navigation, which is the only thing that checks on its own.
+        //   controllerchange -> reload - sw.js calls skipWaiting() + clients.claim(), so a
+        //     new worker takes over the open tab immediately; without this the tab keeps
+        //     rendering the OLD page it already parsed, and the user needs a second
+        //     reload. A reload does not touch localStorage, so progress, the resumable
+        //     session and the history all survive it.
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(() => {});
+                navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+                    .then(reg => {
+                        reg.update().catch(() => {});
+                        document.addEventListener('visibilitychange', () => {
+                            if (!document.hidden) reg.update().catch(() => {});
+                        });
+                    })
+                    .catch(() => {});
+
+                // Only when this tab already HAD a controller: on a first-ever install
+                // claim() fires this too, and there is nothing stale to replace.
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        // ONE automatic reload per tab, stamped in sessionStorage so the
+                        // bound survives the reload itself. An auto-reload loop would be a
+                        // far worse bug than a stale tab, and a second update in the same
+                        // sitting still arrives on the next manual refresh.
+                        let done = true;
+                        try { done = sessionStorage.getItem('eib_sw_reloaded') === '1'; } catch (e) {}
+                        // Mid-round the swap can wait. The session is in localStorage and
+                        // the next natural load picks the new build up; yanking the page
+                        // out from under a question to save one reload is a bad trade.
+                        if (done || document.body.classList.contains('in-session')) return;
+                        try { sessionStorage.setItem('eib_sw_reloaded', '1'); } catch (e) { return; }
+                        location.reload();
+                    });
+                }
             });
         }
     </script>

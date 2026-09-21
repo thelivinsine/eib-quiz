@@ -17,6 +17,33 @@
   network-first for HTML + `questions.json` (so updates always win online) and cleans up all
   old caches — including the May-28 `eib-quiz*` caches — on activate, which subsumes the old
   kill switch. Bump `CACHE` in `sw.js` to invalidate cached static assets.
+- **A network-first worker is only half of "the update arrives"; the REGISTRATION is the
+  other half** (2026-09-21). Three lines in `index.html`, each fixing a different way a
+  tab stays on an old build:
+  - **`register('sw.js', { updateViaCache: 'none' })`** — the worker SCRIPT must never be
+    served from the HTTP cache, or the browser byte-compares a stale `sw.js` against
+    itself, finds no difference and installs nothing. This is the `cache: 'reload'` trap
+    one level up, and it is why a fixed fetch handler can sit in the repo without ever
+    reaching anyone.
+  - **`reg.update()` on load AND on `visibilitychange`** — a left-open tab can go days
+    without a navigation, and a navigation is the only thing that checks on its own.
+  - **`controllerchange` -> `location.reload()`** — `sw.js` calls `skipWaiting()` +
+    `clients.claim()`, so a new worker takes over an open tab at once, but the tab keeps
+    rendering the page it already parsed. Without this the user needs a SECOND reload.
+    Three guards, all load-bearing: only when the tab already had a controller (a
+    first-ever install claims too, and there is nothing stale to replace), never while
+    `body.in-session` (the round is in `localStorage` and the next natural load picks the
+    build up — yanking the page out from under a question is a worse trade), and **at
+    most once per tab, stamped in `sessionStorage` under `eib_sw_reloaded`** so the bound
+    survives the reload itself. A reload loop is a far worse bug than a stale tab.
+  - **A reload does not touch `localStorage`**, so progress, the resumable session and the
+    history all survive the swap. That is what makes the auto-reload safe at all.
+  - **None of this could be verified in this environment**: the in-app preview pane refuses
+    to register a worker at all ("unknown error when fetching the script"), and headless
+    Chrome's `register()` resolves but `getRegistrations()` comes back empty. What WAS
+    verified locally, with a persistent profile, is the network-first path: a second load
+    through the worker served a freshly edited `index.html`. **Verify the swap in a real
+    browser's Application panel.**
 - **Network-first only works with `cache: 'reload'`, and both fetch paths need it**
   (fixed 2026-09-19). A plain `fetch(req)` consults the **browser's HTTP cache** first;
   GitHub Pages serves `index.html` with `max-age=600`, so the worker's "network" fetch was
@@ -492,14 +519,37 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the break buys is three columns below it; what saves the word above it is `hyphens: auto`
     and `overflow-wrap: anywhere` on `.mode-title` — the root already carries `lang="de"` when
     the UI is German, and the same pair is what `.opt-num` uses for `Christusmonogramm`.
-  - **`.mode-time` is in the META row, beside the count.** This is its third home and the
-    rule's comment records all three. In `.mode-head` pushed right by `margin-left: auto` it
-    worked at three cards a row; at five, a nowrap "approx. 60-90 min" claimed 115px of a
-    165px row and `.mode-title`'s `min-width: 0` squeezed "All questions" to **13px wide over
-    three lines**. Before that it was `position: absolute` and printed on top of the title.
+  - **`.mode-time` is in the META row, ON the count's line, behind a CLOCK glyph**
+    (2026-09-21, on request). This is its third home and the rule's comment records all
+    three: `position: absolute` printed it on top of the title, and `.mode-head` with
+    `margin-left: auto` worked at three cards a row but at five gave a nowrap
+    "approx. 60-90 min" 115px of a 165px row and squeezed "All questions" to 13px over
+    three lines. In the meta row it used to WRAP to its own line, which is what this
+    change removes.
+    - **Four things together bought the one line, and none of them alone is enough.**
+      The card content box is 165px and the pair has to fit inside it. (1) The count
+      came down from `--fs-xs` to `--fs-2xs`, the estimate's own size — one row, one
+      size, and "300 questions" goes 95px -> 81. (2) The strings dropped "approx."/"ca."
+      and "limit": the clock glyph is what says *duration*, so `60-90 min` says
+      everything `approx. 60-90 min` did. (3) `.modes-grid`'s gap went `--space-md` ->
+      `--space-sm` and the band's side padding `--space-lg` -> `--space-md`, which is +8px
+      of card. (4) Both gaps in the row are `--space-2xs` — `--space-xs` (6px) is NOT a
+      gap rung in this sheet (`gapRungs` is budgeted at 7 and 6px was deliberately merged
+      away), so reaching for it busts the ratchet.
+    - **The worst case is "All questions" in ENGLISH and it clears by ~2px**: 81.2 + 4 +
+      14 + 4 + 59.9 = 163.1 in 165. German is 15px slacker. `white-space: nowrap` is the
+      guarantee rather than the hope — a longer string overflows visibly instead of
+      quietly becoming two rows again. **Measure this row before changing any of the
+      four**, and measure it in English.
   - **`.mode-start` is the action row at the foot of the card** (it replaced `.mode-go`,
-    the bare bottom-right arrow, on 2026-09-21): a solid hue disc holding a white arrow,
-    with the action in words beside it. The cards are buttons but read as readouts on a
+    the bare bottom-right arrow, on 2026-09-21): the action in words, then a solid hue
+    disc holding a white arrow, the pair CENTRED in the tile (`justify-content: center`).
+    The label led the disc from 2026-09-21 on request — an arrow reads as *what happens
+    next*, so it goes after the words, and the hover animation is untouched
+    (`translateX(3px)` on the disc, which now slides away from the label rather than into
+    it). **On a phone the row is hard left** (`justify-content: flex-start` in the 620px
+    block): down there the card is a list row with its title, description and meta all
+    flush left, and a centred action would be the one thing floating in the middle. The cards are buttons but read as readouts on a
     touch screen, where there is no hover to reveal an arrow and no label to explain it.
     Descriptions still do not restate a number the card already shows.
   - **"By topic" is a CARD, not a home section.** `renderTopics()` is untouched; only its
@@ -551,8 +601,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       takes `--space-lg` beneath it (`.modes-band .section-head`) rather than the
       global `--space-ms`, because one line needs to read as a heading.
     - **The panel's side padding comes straight off the five cards' width**, which is why
-      it is `--space-lg` and not `--space-xl` (`--space-2xl` top and bottom — height is
-      free here, width is not).
+      it is `--space-md` — it was `--space-lg` until the meta row had to hold the count and
+      the estimate on one line, and `--space-xl` before that. **Height is not free here
+      either any more**: the block padding came `--space-2xl` -> `--space-xl` on request
+      (2026-09-21), the band 522 -> 473px. The cards' own air was left alone; it was the
+      panel's.
   - **The mode cards carry a per-card HUE and a NAMED action** (2026-09-21, on request,
     against the mockup — this reverses the rule of the same morning that they carry
     neither). Exam **blue**, All questions **green**, Your state **amber**, Smart review
@@ -1177,7 +1230,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 24 glyphs — 23 drawings plus one alias — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 25 glyphs — 23 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -1187,11 +1240,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
   production.
-  **One of them is an ALIAS, not a drawing**: `ICONS.community = ICONS.society`
-  (2026-09-21) — a group IS the society glyph, so there is one definition to maintain,
-  not two. `ICONS.clock = ICONS.history` was a second until the hero's fact chips, its
-  only reader, were removed the same day. **An alias with no reader is dead code**:
-  delete it with its last consumer. `GATE_ART` sits
+  **Two of them are ALIASES, not drawings**: `ICONS.community = ICONS.society` and
+  `ICONS.clock = ICONS.history` (2026-09-21) — a group IS the society glyph, and the
+  history glyph IS a clock face (a donut with two hands), so there is one definition to
+  maintain rather than two. `clock` was deleted the same day, when the hero's fact chips
+  took its only reader with them, and came back hours later for the mode cards' estimate.
+  **An alias with no reader is dead code** — delete it with its last consumer, and mint
+  it again the moment something needs the name. `GATE_ART` sits
   beside `ICONS`: a Brandenburg Gate ornament for the landing page's CTA band, filled shapes
   only, purely decorative.
 - **Animated results:** the results screen shows an SVG score ring with a percentage count-up
