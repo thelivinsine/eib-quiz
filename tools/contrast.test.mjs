@@ -166,20 +166,13 @@ const PAIRS = [
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
   ["on-btn", "btn-fill", AA, "the label on a CTA — navy in light, accent blue in dark"],
 
-  // The five hue plates (see the HUE DISCS block in index.html). Each is a
-  // --*-dim / --* pair the palette already carried, which is why adding colour to
-  // the hero facts, the why marks and the mode cards minted no new token. The
-  // GLYPH on a plate is non-text UI, so AA_LARGE; the four already-listed pairs
-  // above cover the same values where they carry text instead.
-  ["violet", "violet-dim", AA, "the glyph on the violet plate (By topic, Flexible learning)"],
-  ["violet", "surface", AA, "the same glyph where no plate is behind it"],
-  // ...and the arrow on the SOLID disc under each mode card's action. One --on-hue
-  // per theme: every light hue is a dark colour and every dark hue a light one.
-  ["on-hue", "accent-text", AA_LARGE, "the arrow on the blue card's start disc"],
-  ["on-hue", "green", AA_LARGE, "the arrow on the green card's start disc"],
-  ["on-hue", "gold", AA_LARGE, "the arrow on the amber card's start disc"],
-  ["on-hue", "red-text", AA_LARGE, "the arrow on the rose card's start disc"],
-  ["on-hue", "violet", AA_LARGE, "the arrow on the violet card's start disc"],
+  // The icon plates, NEUTRAL since 2026-09-21 (on request). The five --*-dim / --*
+  // hue pairs that stood here are gone with the colour, and --violet / --violet-dim
+  // went out of the palette with them — the plates were their only consumer, and a
+  // pair with no consumer is the stale-ground fault this list keeps catching. The
+  // plate's glyph is --sub-text on --surface2, which line 119 already asserts; what
+  // is left is the arrow on the SOLID disc, non-text UI and so AA_LARGE.
+  ["on-hue", "sub-text", AA_LARGE, "the arrow on a mode card's neutral start disc"],
 
   // --accent-soft is a tinted ground rather than a tile, and three tiers land on
   // it: the resume banner's text, a picked option in the exam, and a navigator
@@ -228,6 +221,19 @@ const FILLS = [
   // --surface tile sits on --band any more, resting or hovered or pressed.
   ["canvas", "band", NEST, "the page either side of a panel"],
   ["border", "canvas", HAIRLINE, "the panel's own edge, drawn on the page"],
+  // --band is a TILE ground again (2026-09-21, on request): the practise page's cards,
+  // chips and lists take the landing page's pale panel, so its edge and its two state
+  // fills are back. Light scopes hover to --surface2 because --hover is 1.047 here.
+  ["border", "band", HAIRLINE, "a practise tile's hairline on its own fill"],
+  // The overview card rebuilt against the mockup (2026-09-21) puts three WHITE
+  // readout tiles inside the --band card, so surface/band is a live nesting pair
+  // again — it was deleted when the practise band's panel went. The mockup's own
+  // card/tile pair is the other way up (near-white card, --band summary tile); the
+  // relationship, and this ratio, are the same either way.
+  ["surface", "band", NEST, "a readout tile inside the overview card"],
+  ["surface", "accent-soft", NEST, "the book plate on the resume banner"],
+  ["surface2", "band", NEST, "a practise tile under the pointer in light"],
+  ["surface3", "band", STATE, "a practise tile pressed"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.
   ["accent", "canvas", HAIRLINE, "a picked option's accent edge against the page"],
