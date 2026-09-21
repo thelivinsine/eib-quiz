@@ -132,7 +132,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--violet-dim`, `--blue-dim`) sat **1.01-1.15** on a tile — invisible as fills, with
     the hue doing all the work — and came up with the page to **1.20** each, hue and
     saturation held, luminance moved. `--red`/`--red-text` and `--violet` lightened a hair
-    with them (`#F87171` -> `#F97F7F`, `#A78BFA` -> `#AD92FA`) so their own text still
+    with them (`#F87171` -> `#F98989`, `#A78BFA` -> `#B39CFA`) so their own text still
     clears AA on the risen ground, which is §6's "lighten it until it clears".
   - **A mode card's body copy is `--sub-text`, its meta and time are `--muted`.** They were
     `--muted` and `--faint`: `theme-dark.md` §2 puts a description in the SECONDARY band
@@ -408,7 +408,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     rule repaints the label `--text`, so without them the accent is lost in both states;
     the active rule also re-states the underline in the accent. `accent-text / canvas` is
     asserted in `contrast.test.mjs` for it, because the header sits on the canvas and in
-    dark that is a rung below `--surface`. This is NOT the old `.header-cta`, which was
+    dark that is a rung below `--surface`. **Its hover STEPS DOWN in light and up in dark,
+    and that is not house style but AA**: `filter: brightness(1.12)` on `#2563EB` renders
+    `#296FFF`, **4.36 on the white canvas** — under the floor the `accent-text / canvas`
+    pair exists to hold, and a FILTER is invisible to `contrast.test.mjs`, so the ratchet
+    passes while the hovered label fails. `html.light .nav-link--cta:hover` is
+    `brightness(0.88)` (6.31). **A brightness filter on TEXT is a contrast change no test
+    here can see** — measure both themes by hand, or change a token instead.
+    This is NOT the old `.header-cta`, which was
     retired for repeating the hero's button: that was a second CTA on the same page, and
     this is navigation to another one.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
@@ -559,6 +566,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     removed the sky it was measured against.) The veil's shares a shape worth
     copying — their ground is an IMAGE rather than a token, so the entry names the measured
     worst case. Prefer a token; if a literal is unavoidable it goes in the list the same day.
+    **A literal GROUND has to move when its token moves**: both dark entries named
+    `#10B981` / `#F87171` for two commits after `--green` / `--red` were re-derived to
+    `#10C185` / `#F98989`, so the test asserted a colour the app no longer had and
+    passed on luck — both grounds happened to get lighter.
     The German flag in `.brand-mark` is the deliberate exception: its three bands are written
     inside the SVG, not in a rule, and a graphic carrying no text has no pair to assert.
   - **There are FIVE equal mode cards and no featured one** (2026-09-21). Exam, All

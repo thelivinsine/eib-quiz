@@ -262,8 +262,8 @@ const LITERAL_PAIRS = {
     // that worst case. The note reads the same in both themes because the photo does.
   ],
   dark: [
-    ['#04231A', '#10B981', AA, 'the letter on the correct answer chip, on --green'],
-    ['#3A0A0A', '#F87171', AA, 'the letter on the wrong answer chip, on --red'],
+    ['#04231A', '#10C185', AA, 'the letter on the correct answer chip, on --green'],
+    ['#3A0A0A', '#F98989', AA, 'the letter on the wrong answer chip, on --red'],
     // Same veil, same worst case: it sits on the image, not on the theme's canvas.
     ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
   ],

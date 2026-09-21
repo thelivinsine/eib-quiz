@@ -1422,3 +1422,62 @@ and the JS `theme-color` meta follow the new canvas.
 - **The colour work is judged by ratio and by three screenshots**, not by an audit of every
   screen: the results screen, the glossary, the history list, the lightbox and the resume
   banner were never opened in dark after the change.
+
+---
+
+## Session close (2026-09-21, review of #93 and its four fixes)
+
+A review of the open PR #93 (`ui/dark-ladder-and-nav-link`) — the dark re-derivation and the
+de-buttoned nav link. The ladder itself held up: every ratio in the new `:root` block was
+re-measured independently (band 1.15 on the page, surface 1.18 on the band, surface2 1.145,
+surface3 1.132, hairline 1.59 on a tile, hover 1.22, `--muted` 4.72 on `--surface3`, the
+seven `--*-dim` plates at 1.197–1.207) and matches what the comments claim. Four things did
+not.
+
+### 1. The one real bug: a brightness filter took the hover under AA
+
+`.nav-link--cta:hover` was `filter: brightness(1.12)`. In light that renders `#2563EB` as
+**`#296FFF` — 4.36 on the white canvas**, under the 4.5 floor that the `accent-text /
+canvas` pair added in this very PR exists to hold. **A filter is invisible to
+`contrast.test.mjs`**, which parses tokens, so the ratchet passed while the hovered label
+failed. Scoped `html.light .nav-link--cta:hover { filter: brightness(0.88) }` — 6.31, and
+it is the direction the rest of the sheet already goes (down in light, up in dark). Dark is
+untouched at 9.14. The rule is written into `CLAUDE.md` beside the LITERAL_PAIRS one,
+because it is the same class of hole: **a colour the test cannot see.**
+
+### 2. The literal pairs were asserting colours the app no longer has
+
+`LITERAL_PAIRS.dark` still named `#10B981` and `#F87171` as the answer-chip grounds after
+this PR moved `--green` to `#10C185` and `--red` to `#F98989`. The chips really are
+`background: var(--green)` / `var(--red)`, so the test was checking two colours that exist
+nowhere — and passed on luck, both grounds having got lighter (7.13 and 7.30). Corrected to
+the shipped values.
+
+### 3 and 4. Two comments that recorded values that never shipped
+
+- The re-derivation comment said `#F87171 -> #F97F7F` and `#A78BFA -> #AD92FA`; the tokens
+  twenty lines below it are `#F98989` and `#B39CFA`. `CLAUDE.md` carried the same two wrong
+  values while its own palette line had `#F98989` right — the two contradicted each other
+  inside one commit. Both fixed.
+- `--text` was annotated `13.97 on tile, 16.5 on the page`. Measured it is **12.82 on a
+  tile and 17.40 on the page** (16.51 was the OLD text-on-band figure, carried over). The
+  three tiers below it were right, which is what made the wrong one easy to trust.
+
+### Verified
+
+- `node --test tools/contrast.test.mjs` — 10/10 with the corrected grounds.
+  `node --test tools/scale.test.mjs` — 12/12, no budget moved.
+- `node --check` clean on the extracted `<script>` block and on `sw.js`.
+  `node tools/validate.js` — 460 questions, structure valid.
+- Every ratio quoted above was computed from the shipped hex values in this session, not
+  read out of a comment.
+
+### Not verified
+
+- **Nothing was rendered.** No browser, no server, no screenshot — the hover fix is
+  asserted by arithmetic on `filter: brightness()`, which is how the bug got in. The
+  browser's own compositing of that filter (sRGB, before any colour-space conversion) is
+  assumed, not observed.
+- **The reviewer wrote the fixes**, so the four changes have had one pair of eyes.
+- Everything in #93's own *Not verified* list still stands: no live-site check, no mobile
+  sweep, no exam run, no light-theme render.
