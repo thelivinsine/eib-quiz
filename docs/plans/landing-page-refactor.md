@@ -721,3 +721,27 @@ the phase-0 repaint and were not touched.
    own, except `.mode-flag`.
 5. Both test suites pass; no budget has risen.
 6. Both themes and both languages are correct at every breakpoint.
+
+---
+
+## Post-review corrections (PR #79)
+
+A diff review of the whole branch found three things the phases missed. All are
+fixed on `landing-page-phase-1`; the reasoning is in `CLAUDE.md` and the
+2026-09-21 block of `docs/TODO.md`.
+
+1. **Task 2.3's retarget was half done.** `#homeMain` got the new id but
+   `#whyBand` — the second `scrollToId()` target, added by task 3.2 — never got
+   a `scroll-margin-top`, so "Learn more" scrolled it behind the sticky header.
+   The rule is `#homeMain, #whyBand { scroll-margin-top: var(--header-h) }`.
+   **Any future `scrollToId()` target joins that selector.**
+2. **Task 1.2's tier switch did not cover the load-failure path.**
+   `initHomeScreen()` returned on `loadFailed` before applying the tier, so an
+   unreachable `questions.json` rendered both tiers at once. The tier is
+   `loadFailed ? null : …` and is applied first.
+3. **Task 3.1 left `--accent-hover` behind.** It was the featured card's hover
+   fill alone; the token and its three `contrast.test.mjs` assertions are gone,
+   and the two pairs still named after that card now name their real consumers.
+
+Acceptance item 5 still holds after all three: contrast 10/10, scale 12/12, no
+budget moved.

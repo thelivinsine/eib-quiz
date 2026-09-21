@@ -109,7 +109,6 @@
             --accent-text:  #60A5FA;
             --accent-fill:  #2563EB;
             --accent-soft:  #16233A;
-            --accent-hover: #1B2B45;   /* the tinted card under the pointer — one step UP */
             --accent-line:  #2B4E80;
             --accent-grad:  linear-gradient(135deg, #2563EB 0%, #60A5FA 100%);
             --on-accent:    #FFFFFF;
@@ -269,7 +268,6 @@
             --accent-text:  #2563EB;
             --accent-fill:  #2563EB;   /* white on it = 5.01 */
             --accent-soft:  #EFF4FE;
-            --accent-hover: #DFE9FD;   /* the tinted card under the pointer — one step DOWN */
             --accent-line:  #BFD4FA;
             --accent-grad:  linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
             --on-accent:    #FFFFFF;
@@ -876,7 +874,11 @@
         /* The tail is reference material, not something to act on. */
         .home-section--quiet .section-head h2 { font-size: var(--fs-lg); }
 
-        #homeMain { scroll-margin-top: 76px; }
+        /* Both scrollToId() targets, not just #homeMain: "Learn more" lands on #whyBand,
+           and without this the sticky header sits on top of the heading it scrolled to.
+           --header-h is what syncHeaderHeight() measures, so it tracks the phone's
+           shorter strip too — a fixed 76px was the desktop header's height alone. */
+        #homeMain, #whyBand { scroll-margin-top: var(--header-h); }
 
         /* ---- Overview card: ring headline + three counters ---- */
         .dash {
@@ -2937,14 +2939,18 @@
         }
 
         function initHomeScreen() {
+            // A load failure is NOT a tier: `null` matches no data-tier, so both tiers go
+            // dark and the error stands alone. Set before the early return, or the hero,
+            // the why-band, the numbers and the CTA render on top of the dashboard's own
+            // empty headings — every section the markup ships visible, all at once.
+            const tier = loadFailed ? null : (hasProgress() ? 'dashboard' : 'landing');
+            document.querySelectorAll('#homeScreen [data-tier]')
+                .forEach(el => { el.hidden = el.dataset.tier !== tier; });
             if (loadFailed) {
                 document.getElementById('modesGrid').innerHTML =
                     '<div class="load-error">' + t('err.load') + '</div>';
                 return;
             }
-            const tier = hasProgress() ? 'dashboard' : 'landing';
-            document.querySelectorAll('#homeScreen [data-tier]')
-                .forEach(el => { el.hidden = el.dataset.tier !== tier; });
 
             renderModes();
             renderTopics();

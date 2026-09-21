@@ -149,16 +149,15 @@ const PAIRS = [
 
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
 
-  // The featured exam card is a teal-tinted tile, so its three text tiers land
-  // on accent-soft rather than on a tile — the same tiers, a different ground.
-  ["text", "accent-soft", AA, "the featured exam card title"],
-  ["sub-text", "accent-soft", AA, "the featured exam card description"],
+  // --accent-soft is a tinted ground rather than a tile, and three tiers land on
+  // it: the resume banner's text, a picked option in the exam, and a navigator
+  // cell. The featured exam card was the fourth until 2026-09-21; --accent-hover
+  // was ITS hover fill alone and went with it, along with the two pairs that
+  // asserted the hovered tiers.
+  ["text", "accent-soft", AA, "a picked option in the exam, and the resume banner's heading"],
+  ["sub-text", "accent-soft", AA, "the resume banner's body copy"],
   ["muted", "accent-soft", AA, "the resume banner's mode-and-count line"],
-  // A whole card switches ground on hover, so every tier that lands on it is
-  // listed. Asserting the headline alone is what let the meta line ship at
-  // 2.65 in dark.
-  ["text", "accent-hover", AA, "the featured exam card title, hovered"],
-  ["sub-text", "accent-hover", AA, "its description and meta line, hovered"],
+  ["accent-text", "accent-soft", AA, "the current/answered cell in the navigator"],
 ];
 
 // Two fills that sit against each other. Three edge treatments, three floors — see
@@ -182,10 +181,9 @@ const FILLS = [
   ["hover", "surface", STATE, "a tile or option under the pointer"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  // The featured card's tint is not a step in lightness against paper-grey, so
-  // the hairline is the whole separation and has to clear the edge floor alone.
-  ["accent", "canvas", HAIRLINE, "the featured exam card's teal edge against the page"],
-  ["accent-hover", "accent-soft", STATE, "that card under the pointer"],
+  // A tinted ground is not a step in lightness against paper-grey, so the edge is
+  // the whole separation and has to clear the floor alone.
+  ["accent", "canvas", HAIRLINE, "a picked option's accent edge against the page"],
 ];
 
 // Colours written as literals rather than tokens. The block parser above only sees the two

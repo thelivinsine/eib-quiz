@@ -642,6 +642,33 @@ was exercised end to end (cleared profile → landing, one real answer → dashb
 landing, all without a reload), and the in-session viewport lock still measures
 `scrollHeight === innerHeight` on both the quiz and the results screen.
 
+**Diff review of PR #79, and three fixes.** A careful pass over the whole
+`main...landing-page-phase-1` diff found three things, all fixed on the same branch:
+
+1. **Only `#homeMain` carried `scroll-margin-top`**, so the hero's new "Learn more" button
+   scrolled `#whyBand` behind the sticky header — the eyebrow and the heading it was meant
+   to reveal both hidden. The rule is `#homeMain, #whyBand { scroll-margin-top:
+   var(--header-h) }` now: the TOKEN, because `syncHeaderHeight()` measures the real strip
+   and a phone's header is 65px against the desktop's 76. Measured in the pane before
+   (top 0, behind a 65px header) and after (top 65, flush under it).
+2. **`initHomeScreen()`'s `loadFailed` guard returned before the tier was applied**, so a
+   questions.json failure left every `[data-tier]` section at its markup default — visible
+   — and rendered BOTH tiers at once: hero, why-band, numbers and CTA interleaved with the
+   dashboard's empty headings, with the hero's buttons scrolling to the error card. The
+   tier is computed as `loadFailed ? null : …` and applied first now. Reproduced against a
+   copy served without `questions.json`, and re-checked after: all six tiered sections
+   hidden, error card alone.
+3. **`--accent-hover` was left behind by the featured card's removal** — no consumer in
+   `index.html`, three live `contrast.test.mjs` assertions, and two more pairs still
+   labelled "the featured exam card". The token is deleted and the assertions retargeted at
+   the real `--accent-soft` consumers (the resume banner, an exam-mode picked option, a
+   navigator cell), which also added the missing `accent-text`/`accent-soft` pair.
+
+Re-ran after the fixes: contrast 10/10, scale 12/12 with every budget unmoved,
+`validate.js` OK, `node --check` on the extracted script OK.
+
 **Not done:** nothing was checked on the live site; all measurement was against
 `python -m http.server`. Task 7.1's full breakpoint sweep of the QUIZ and RESULTS screens
 was spot-checked rather than exhausted — those screens were out of this refactor's scope.
+The three fixes above were written by the same session that reviewed the diff, so nobody
+else has read them.

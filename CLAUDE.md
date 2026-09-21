@@ -127,9 +127,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     only ever puts those colours on FILLS and this app uses them as TEXT tiers: `#10B981` is
     2.54 on white, `#F59E0B` is 2.15, `#EF4444` is 3.76. The accent itself needs no such
     correction — `#2563EB` is 5.17 on white, so it ships exactly as drawn.
-    `--accent-hover` is the tinted card's hover fill — **not** `--accent-line`, which is
-    a border value: as a fill it is a 1.27x jump in light and a saturated mid-blue in dark, which
-    put the tinted card's own description and meta under AA the moment you pointed at it.
+    **`--accent-hover` is GONE too** (2026-09-21): it was the FEATURED exam card's hover
+    fill and nothing else read it, so it went out with that card, along with the three
+    `contrast.test.mjs` pairs that asserted the hovered tiers. `--accent-soft` stays — the
+    resume banner, an exam-mode picked option and a navigator cell all sit on it. If a
+    tinted fill ever needs a hover step again, mint it fresh; do NOT reach for
+    `--accent-line`, which is a border value, and as a fill was a 1.27x jump in light and a
+    saturated mid-blue in dark that put the tinted card's own description and meta under AA
+    the moment you pointed at it.
     **`--ink-tile` and `--on-dark` are GONE** (2026-09-21): they existed only for the header's
     charcoal `E` tile, the brand mark is the German flag now, and nothing else read them. The
     two token pairs and the `#fff` literal that asserted the old mark went from
@@ -279,6 +284,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **`#homeMain` is on the MODE BAND, not on Where you stand.** It is what `scrollToId()`
     targets from the hero and the CTA band, and Where you stand is hidden on the tier that
     has a hero — the CTA was scrolling to a `display: none` element.
+  - **EVERY `scrollToId()` target needs `scroll-margin-top`, not just `#homeMain`.** The
+    header is sticky, so a target without it lands its own heading behind the header:
+    "Learn more" did exactly that to `#whyBand`'s eyebrow and title. The rule is
+    `#homeMain, #whyBand { scroll-margin-top: var(--header-h) }` — the token, because
+    `syncHeaderHeight()` measures the real strip and a phone's is 65px against the
+    desktop's 76. Add a third target, add it to that selector.
+  - **A load failure is NOT a tier.** `initHomeScreen()` computes
+    `loadFailed ? null : …` and applies it BEFORE the early return, so `null` matches no
+    `data-tier` and both tiers go dark behind the error card. Returning first left every
+    tiered section at its markup default — visible — so the hero, the why-band, the numbers
+    and the CTA rendered interleaved with the dashboard's own empty headings, with the
+    hero's buttons scrolling to the error.
   - **A renderer must not be called for a band that is not showing**, and
     `renderHomeStatus()` early-returns on `el.closest('[hidden]')` so the guard covers
     `onStateChange()` too, not only the door. Dropping a resumable session goes through
@@ -1011,8 +1028,9 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
   `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
   LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens, which the block
-  parser cannot see — five today (the brand-mark letter, and the letter on the correct/wrong
-  answer chips in each theme), matching the rule stated under the home-screen section.
+  parser cannot see — eight today, four per theme (the letter on the correct and the wrong
+  answer chip, the zoom veil's label, and the hero's margin note), matching the rule stated
+  under the home-screen section.
 - `tools/scale.test.mjs` - the size system as a test: the type/space/control/tracking scales,
   asserted against `index.html` (`node --test tools/scale.test.mjs`). It is a RATCHET — each
   metric has a budget in `BUDGETS`, and the test fails both when a number rises and when it
