@@ -284,6 +284,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
+- **The hero's two buttons and the CTA band's are ONE size** (2026-09-21, on request):
+  `--ctl-md`, `--space-lg` of side padding, `--fs-base`, `--icon-sm` for the arrow. The
+  hero's were a rung larger (`--ctl-lg` / `--space-xl` / `--fs-md`) and came down.
+  - **`.cta-btn`'s own size declarations were DEAD and are deleted.** The markup is
+    `btn-primary btn-lg cta-btn`, and `.btn-lg` sits ~440 lines later at the same
+    single-class specificity, so it won `min-height`, `padding` and `font-size` alike:
+    that button had always rendered at `--ctl-md`, never the `--ctl-lg` its rule asked
+    for. **Measuring it is what found this**, not reading it — and `scale.test.mjs`
+    cannot: its duplicate-property check is per-scope and these were two scopes. Size
+    that button through `.btn-lg`.
+  - The 620px rule for `.hero-cta-row` dropped its `padding` for the same reason: the
+    base now carries that exact value, so the override was a dead declaration.
 - **In a session the page keeps wider side gutters** than the home screen: `--space-xl`
   (28px) rather than `--space-lg`, because the question is the only thing on screen and
   should not run to the edges. Below 620px it drops back to `--space-md`.
@@ -316,6 +328,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `[aria-disabled="true"]` to match, and neither button has an `onclick`, so activating
     one still does nothing. **If either is built, the chip, the aria and the title come off
     together** — a live link still wearing Soon is worse than either alone.
+  - **`.nav-soon` is sized by its CASE, not its type.** `--fs-2xs` IS the 12px floor and
+    `scale.test.mjs` holds `fontSizesBelowFloor` at 0, so a smaller chip cannot come from
+    the font. It dropped `text-transform: uppercase` and its `--ls-caps` tracking instead
+    ("SOON" at 0.06em is far wider than "Soon") plus 2px of side padding: ~46px to ~38px
+    with the type untouched. The `letter-spacing` line is **deleted** rather than set to
+    `--ls-normal`: only two tracking values are in use and `distinctTracking` is budgeted
+    at 2, so naming a third would bust it.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
     thing that says which section you are on, and it is not available to a screen reader.
   - **The LANGUAGE lives inside `#prefsMenu`; the THEME toggle sits in the header row**
@@ -394,9 +413,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the single patch of clean sky in the frame and **its ink is measured against that
     sky in `LITERAL_PAIRS`** (`#16233A` on a worst case of `#D0D3D8`). Cropping where
     the note SHOWS moves the note onto masonry and invalidates the measurement, so
-    extending this rule upward means re-measuring first. `.hero-quote` is unaffected:
-    it is anchored to the bottom-right corner, not to a percentage of the height, and
-    on a phone it covers 31% of the shorter photo, which was checked rather than assumed.
+    extending this rule upward means re-measuring first. The margin note is now the
+    ONLY overlay on the photo, so it is the only thing that constraint protects.
   - It is CC BY-SA 4.0, and **the credit now lives in the page FOOTER**
     (`.footer-credit` / `footer.credit`), not under the photo. BY-SA asks for the credit
     where the work is used, and the footer of the page carrying the photo satisfies that
@@ -408,8 +426,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `LITERAL_PAIRS`. That corner is the only clean sky in the frame (the mockup's top-left is
     our EU flag), and the mockup's curved arrow is dropped because every region it could have
     swept has a flagpole through it. **Recrop the photo and this measurement must be redone.**
-  - **The note and the quote card are children of `.hero-photo`.** As siblings they were
-    positioned against the photo *plus its credit line* and the quote landed on the credit.
+  - **The margin note is a child of `.hero-photo`.** As a sibling it was positioned
+    against the photo *plus its credit line*, so an overlay anchored to the bottom
+    landed on the credit. (The credit has since moved to the footer, and the quote card
+    that hit it is gone — but the containment is still what keeps percentages honest.)
+  - **There is NO quote card on the photo** (2026-09-21, on request). `.hero-quote`,
+    `.hero-quote-mark` and the `hero.quote` string are gone. It covered 31% of the
+    photo's height on a phone and the photograph now carries only the margin note.
   - **`.script-note` is the ONLY rule that reads `--font-hand`**, and it carries all three
     margin notes (hero, numbers, CTA).
   - **The NUMBERS and CTA bands are the mockup's pale panel** — `--band` plus a
@@ -418,6 +441,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
     above rejects: `--surface2` is a well inside a tile, and still never a panel on the
     page.
+  - **The why band's air is in MARGINS and PADDING, never in the grid's `gap`**
+    (2026-09-21). `#whyBand` takes `padding-block: var(--space-2xl)`, its section head
+    `margin-bottom: var(--space-2xl)` (scoped — the global one is 12px and shared),
+    `.why-item` a `padding-block: var(--space-sm)` and a `--space-md` icon-to-text gap,
+    and `.why-item p` a `--space-xs` top margin. **The four columns stay 28px apart on
+    purpose**: the next rung up is `--space-2xl`, which is not a gap anywhere in this
+    sheet, so using it would take `gapRungs` from 7 to 8 and bust the budget the ratchet
+    holds. The cramping was vertical anyway. `padding-inline` on the item is also out:
+    it would inset the first and last items from the page's content edge and break their
+    alignment with every other section.
   - **The WHY band is not a panel at all** (2026-09-21, on request), and it is the one of
     the three that is not. No fill, no hairline, no 1px separator gap: the four items sit
     straight on the page with a `--space-xl` gap doing the separating, and `.why-grid`
@@ -507,6 +540,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **Its heading is centred and the state picker sits UNDER it**, not opposite. The
       picker still belongs to the section it changes; a centred heading simply leaves
       nothing for it to sit across from.
+    - **The heading is the ONLY line in that head** (2026-09-21, on request). The
+      `home.practice.eyebrow` ("Practise your way") and `home.practice.lead` ("Five
+      ways in — one goal: passing.") strings are gone: both restated what "Choose
+      your practice mode" plus five visibly different cards already say, and three
+      stacked lines of chrome pushed the cards down the panel for nothing. The head
+      takes `--space-lg` beneath it (`.modes-band .section-head`) rather than the
+      global `--space-ms`, because one line needs to read as a heading.
     - **The panel's side padding comes straight off the five cards' width**, which is why
       it is `--space-lg` and not `--space-xl` (`--space-2xl` top and bottom — height is
       free here, width is not).
@@ -600,6 +640,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - The mark is the header's flag SVG **repeated**, not shared: its three bands are the
     flag's own values written inside the SVG rather than in a rule, so there is no token
     to share and one duplicated line beats a JS filler for it.
+  - **`.footer-meta` is 76ch of `--fs-xs` with `--space-sm` between the lines.** It
+    shipped as 52ch of `--fs-2xs` with 4px gaps — ~317px at 12px, which wrapped every
+    sentence and read as a compressed strip. The cap is in `ch` rather than px because
+    it is a MEASURE and should track the font. `sub-text / band` is asserted in
+    `contrast.test.mjs` for it; that ground was unasserted for this tier until then.
   - On a phone the two halves stack and `.footer-meta` drops its `text-align: right`:
     stacked, it has nothing to sit opposite and should read from the same edge as the mark.
 - **The navigator offers three views, and the reader picks one** (2026-09-19). `#navActions`
