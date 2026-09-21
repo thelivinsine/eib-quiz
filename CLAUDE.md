@@ -257,7 +257,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       (56px desktop, 32 on a phone), `.section-head h2` and `.cta-copy h2` take `--fs-2xl`,
       and `.stats-num` takes `--fs-3xl`. The BODY tier did not move — phases 1-5 were about
       line boxes and padding, and none of that was reopened. The page grew 1564 -> 1753px
-      desktop (+12%) and 3.31 screens at 375px.
+      desktop (+12%) and 3.31 screens at 375px **as measured that day**. It has moved
+      several times since (the why band's air, the footer, the hero crop); the landing
+      tier measures **2021px / 2.25 screens at 1280x900 and 3464px / 4.27 screens at
+      375x812** today. Re-measure rather than quoting either number.
     - **A coarse-pointer override must be a RUNG ABOVE its base, or it does nothing.** Mapping
       `.option-btn`'s 48px coarse height onto `--ctl-md` gave it the 44px its base already had,
       so the rule set the value it already carried and the documented thumb bump vanished in
@@ -615,7 +618,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `summary.glossary-summary`) rather than inventing a second collapsing idiom, and the
     summary carries the count: `hist.title` is now `Past rounds ({n})` / `Frühere Runden ({n})`.
     That was also the "History" collision the section rename already worried about — History
-    is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58 screens**.
+    is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58
+    screens** at the time. The dashboard tier measures **1311px / 1.46 screens** at
+    1280x900 today.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
 - **The page has a FOOTER: three columns over a legal bar** (2026-09-21).

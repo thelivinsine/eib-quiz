@@ -901,3 +901,93 @@ confirmed as **pre-existing, not caused here**, by rendering `HEAD:index.html` t
 way — the question navigator's grid renders empty in a headless run, and `#nextBtn` is
 `disabled` and near-invisible on dark before the first answer. Both reproduce identically
 on the previous build and are left alone.
+
+
+## Session developments (2026-09-21, landing polish: PRs #83-#87)
+
+Five follow-up PRs after the mockup refactor and its review, each squash-merged to `main`
+and deployed. Landing-tier height at the end: **2021px / 2.25 screens** at 1280x900,
+**3464px / 4.27 screens** at 375x812; dashboard tier **1311px / 1.46 screens** at
+1280x900. Measured against `python -m http.server`, not the CDN.
+
+### `bc041f3` (#83) — the why band left its panel
+Four claims in a tinted panel with hairline dividers read as a table. `.why-grid` left the
+shared `.result-stats`/`.stats-grid` band rule for one of its own: no fill, no border, no
+1px separator gap. The numbers and CTA bands keep the panel deliberately — a row of four
+FIGURES is a readout and wants a frame. `contrast.test.mjs` gained `muted / canvas` and
+`sub-text / canvas`: in light `--surface` IS `--canvas`, so the surface pairs covered it,
+but in dark `--surface` is a rung above and they did not reach.
+
+### `f3864f0` (#84) — footer, credit, and the phone's hero crop
+`.site-footer` after `</main>`, hidden by `body.in-session` — a session screen is pinned to
+the viewport and anything after `<main>` breaks `scrollHeight == innerHeight`. `main`'s
+bottom padding came down from a literal 96px to `--space-2xl`. The photo credit moved out
+of the hero. `.hero-photo` took 16/10 below 620px only, because `.hero-note` was already
+hidden there and its ink is measured against the frame's sky above it.
+
+Also in this PR, on request: the header's `.header-cta` went (the hero's own Start sits ten
+pixels below it), and the theme toggle came out of the globe dropdown into the header row.
+The two segs then wanted two sizes, and the `>` in `.header-controls > .seg .seg-btn` is
+what keeps the row's 36px off the panel's 44px.
+
+### `9737dea` (#85) — spacing and trims
+Why-band air, all of it in margins and padding: the four columns stay 28px apart because
+`--space-2xl` is not a gap anywhere in this sheet and using it would take `gapRungs` 7 -> 8.
+Footer small print 52ch/`--fs-2xs` -> 76ch/`--fs-xs`. "Practise your way" and "Five ways in"
+removed from the modes band. The Soon chip shrank by dropping uppercase and `--ls-caps`
+rather than the type, because `--fs-2xs` IS the 12px floor. Hero buttons down a rung.
+
+**That last one found a pre-existing bug by measurement.** `.cta-btn` set `min-height:
+--ctl-lg`, `--space-xl` padding and `--fs-md`, and ALL THREE were dead: the markup is
+`btn-primary btn-lg cta-btn` and `.btn-lg` sits ~440 lines later at the same single-class
+specificity. That button had always rendered at `--ctl-md`. `scale.test.mjs` cannot catch
+this — its duplicate-property check is per-scope and these are two scopes. I only caught it
+because I measured the button to check a comment I had just written about it, and the
+comment was false.
+
+### `e22e508` (#86) — the mobile touch floor
+A mobile pass found `CLAUDE.md` asserting something the CSS did not keep: "everything that
+is CONTENT ... keeps 44px". `.quiz-nav`'s Previous/Next and `.end-actions`' three buttons
+are sized down on purpose for visual weight, but neither rule had a coarse-pointer bump, so
+the app's most-pressed control sat at **36px on a thumb**. Both take `--ctl-md` under
+`@media (pointer: coarse)` now; 36px with a mouse, 44px on touch. The doc records that the
+sentence was false and adds the general rule: a control shrunk for visual weight gets added
+to the coarse block in the same change.
+
+### `3d96f42` (#87) — hero 16/10 everywhere, footer built out
+The hero is 16/10 at every width (495x309 desktop, 343x214 phone); the FILE is untouched and
+still square. **The handwritten margin note went, and the crop is why**: its ink was a
+literal measured against the one patch of clean sky, and a 16/10 centre crop drops the top
+206 source rows, which is where all the sky is. Scanned at note size across the whole
+visible band, the brightest darkest-pixel anywhere was luminance **15**. No position reads,
+so the note went rather than the crop, and `LITERAL_PAIRS` went 8 -> 6 entries.
+
+The footer became three columns over a legal bar. The Practise links are the real
+`startMode()` calls; every Sources link was `curl`-checked (200 each), including the
+catalogue PDF that ships in this repo. The copyright and the legal line are deliberately
+TWO lines: a blanket "all rights reserved" spanning official BAMF catalogue text and a
+CC BY-SA photograph would be false, so the copyright claims the app and the line beside it
+names what the app does not own.
+
+### Verified across all five
+`node --test tools/contrast.test.mjs` 10/10 and `tools/scale.test.mjs` 12/12 with every
+budget unmoved, after each one. `node tools/validate.js` OK (460 questions). `node --check`
+on the extracted script and on `sw.js`. No horizontal overflow at 375 or 1280 in either
+theme or language; quiz and results screens `scrollHeight == innerHeight`. Live HTML
+byte-compared against local after #81.
+
+### Not verified
+- **No automated test covers any of the layout facts above.** Every height, ratio and
+  touch-target figure here was measured by hand in the browser pane this session; nothing
+  re-checks them on a later change. `scale.test.mjs` guards the token scales, not layout.
+- The three external Sources URLs were checked once, today. Nothing re-checks them, and a
+  dead source link is the kind of rot that shows up months later.
+- The catalogue PDF is ~9MB and the footer links it directly. Confirmed served on the live
+  site (HEAD 200, range fetch returns `%PDF`), but a full download timed out once out of
+  three tries — that is a transient TLS failure, not a missing file, and it was not
+  investigated further.
+- Screenshots were read for every change, but the in-app pane refuses to repaint after a
+  scroll, so mid-page views were captured by emulating a tall viewport instead. Layout that
+  depends on the real viewport height (`svh` floors) was therefore measured, not seen.
+- `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` is untracked in the working
+  tree and is **not mine**. Left alone.
