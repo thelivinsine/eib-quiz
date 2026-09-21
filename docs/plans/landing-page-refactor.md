@@ -164,15 +164,20 @@ Each task states its acceptance criterion. `[file]` marks what it touches.
 ## Phase 0 — Palette, assets and foundations  ·  **DONE**
 
 ### 0.0 Palette — the mockup's blue, both themes  ·  done
-`[index.html, tools/contrast.test.mjs, manifest.json, favicon.svg, og-image.svg]`
+`[index.html, tools/contrast.test.mjs, manifest.json, favicon.svg, sw.js]`
 
 - 88 tokens rewritten across the two `:root` blocks by holding each neutral's
   relative luminance and shifting hue to slate (H 218).
 - `LITERAL_PAIRS` updated for the four rule-level literals whose grounds moved:
   the brand mark, and the correct/wrong chip letters in both themes.
 - `theme-color` meta, its two JS setters and `manifest.json` follow the canvas.
-- `favicon.svg` and `og-image.svg` still carried `#BFFF00` from a palette two
-  generations back; recoloured to the accent.
+- **`CACHE` bumped in `sw.js`.** `favicon.svg` and `manifest.json` are both in
+  `PRECACHE` and both served **cache-first**, and `activate` only evicts caches
+  whose key differs from `CACHE` — so without the bump a returning visitor keeps
+  serving the lime favicon and the old `theme_color` out of the existing cache.
+- `favicon.svg` still carried `#BFFF00` from a palette two generations back;
+  recoloured to the accent. `og-image.svg` carries it too and was left alone —
+  see the deferred note below.
 - **Accepted:** `contrast.test.mjs` 10/10, `scale.test.mjs` 12/12, verified
   rendered in both themes.
 - **Deliberately deferred to Phase 7 — the social card.** `og-image.png` is
@@ -181,6 +186,10 @@ Each task states its acceptance criterion. `[file]` marks what it touches.
   Berlin-only. It is deferred rather than fixed because **this refactor decides
   the branding the card should carry** — redoing it now would mean redoing it
   twice. `tools/make-og-image.py` is written and ready; see task 7.7.
+  **The SVG was repainted by hand mid-phase and then reverted.** `index.html`
+  references only the PNG, so the repaint changed nothing a user sees and left
+  the pair as two different cards — the exact drift the generator exists to
+  end. Both stay on the old card until 7.7 regenerates them together.
 
 
 ### 0.1 Source a portrait-friendly hero photograph  ·  done

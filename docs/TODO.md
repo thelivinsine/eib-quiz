@@ -489,8 +489,9 @@ kept `#DC2626` would have shipped a 4.51 squeaker.
   and the mockup's panel is square. `photos/hero-reichstag-flag.jpg` (Dietmar Rabich,
   CC BY-SA 4.0) holds the inscription and both flags at 4:5 **and** 1:1 — but only centred;
   crop right and `DEM` is lost.
-- **`favicon.svg` and `og-image.svg` still carried `#BFFF00`**, a lime from a palette two
-  generations back. Recoloured.
+- **`favicon.svg` still carried `#BFFF00`**, a lime from a palette two generations back.
+  Recoloured. `og-image.svg` carries it too and was deliberately **left alone** — see the
+  deferred note below: the SVG and the PNG move together or not at all.
 
 **`docs/Mockups/` is new**, holding the design boards, the generated illustrations, and
 licensed Wikimedia photography with full attribution. **Both illustration character sets
@@ -515,7 +516,11 @@ Redoing it now would mean redoing it twice — **the landing-page refactor decid
 branding the card carries**, so it waits for Phase 7 (task 7.7).
 `tools/make-og-image.py` is written and ready: it emits the SVG and the PNG from **one**
 set of constants, because hand-syncing them is exactly how the PNG kept a `#BFFF00` lime
-two palettes after it was replaced. It has not been run for production. Nothing was checked on the live site; all measurement was against
+two palettes after it was replaced. It has not been run for production.
+**`og-image.svg` was recoloured by hand mid-session and then reverted**, because that is
+the very drift the script exists to end: `index.html` references only the **PNG**, so
+repainting the SVG changed nothing anyone can see while splitting the pair into two
+different cards. Both files stay on the old card until Phase 7 regenerates them together. Nothing was checked on the live site; all measurement was against
 `python -m http.server`.
 
 

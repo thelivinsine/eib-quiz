@@ -23,6 +23,7 @@ Pass" lockup. A social card is only ever seen small, so check the result at
 thumbnail size rather than full width.
 """
 import os
+from xml.sax.saxutils import escape
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -48,8 +49,24 @@ X_TEXT, X_STRAP = 90, 92
 FS_BIG, FS_STRAP, TRACK = 92, 34, 6
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-F_BIG = r"C:\Windows\Fonts\seguibl.ttf"      # Segoe UI Black ~ weight 800
-F_MONO = r"C:\Windows\Fonts\consola.ttf"
+# Font files, in preference order. PIL needs a real path and every OS keeps
+# them somewhere different, so name candidates and take the first that exists
+# rather than hardcoding one machine's layout.
+F_BIG = ["C:/Windows/Fonts/seguibl.ttf",      # Segoe UI Black ~ weight 800
+         "/System/Library/Fonts/Supplemental/Arial Black.ttf",
+         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
+F_MONO = ["C:/Windows/Fonts/consola.ttf",
+          "/System/Library/Fonts/Menlo.ttc",
+          "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"]
+
+
+def font(candidates, size):
+    """First candidate that exists. A clear message beats PIL's bare OSError."""
+    for path in candidates:
+        if os.path.exists(path):
+            return ImageFont.truetype(path, size)
+    raise SystemExit("No usable font found. Tried:\n  " + "\n  ".join(candidates)
+                     + "\nAdd this machine's font path to the list in " + __file__)
 
 
 def svg():
@@ -68,9 +85,9 @@ def svg():
     <rect x="0" y="0" width="{ms}" height="{ms}" rx="20" fill="{BG}" stroke="{ACCENT}" stroke-width="3" opacity="0.6"/>
     <path d="{tick}" fill="none" stroke="{ACCENT}" stroke-width="{TICK_W}" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="{X_TEXT}" y="{Y1}" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="{FS_BIG}" font-weight="800" fill="{INK}" letter-spacing="-2">{LINE1}</text>
-  <text x="{X_TEXT}" y="{Y2}" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="{FS_BIG}" font-weight="800" fill="{ACCENT}" letter-spacing="-2">{LINE2}</text>
-  <text x="{X_STRAP}" y="{Y3}" font-family="'Courier New',monospace" font-size="{FS_STRAP}" fill="{MUTED}" letter-spacing="{TRACK}">{STRAP}</text>
+  <text x="{X_TEXT}" y="{Y1}" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="{FS_BIG}" font-weight="800" fill="{INK}" letter-spacing="-2">{escape(LINE1)}</text>
+  <text x="{X_TEXT}" y="{Y2}" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="{FS_BIG}" font-weight="800" fill="{ACCENT}" letter-spacing="-2">{escape(LINE2)}</text>
+  <text x="{X_STRAP}" y="{Y3}" font-family="'Courier New',monospace" font-size="{FS_STRAP}" fill="{MUTED}" letter-spacing="{TRACK}">{escape(STRAP)}</text>
 </svg>
 """
 
@@ -112,8 +129,8 @@ def png():
         d.ellipse([x - TICK_W // 2, y - TICK_W // 2,
                    x + TICK_W // 2, y + TICK_W // 2], fill=hex2rgb(ACCENT))
 
-    big = ImageFont.truetype(F_BIG, FS_BIG)
-    mono = ImageFont.truetype(F_MONO, FS_STRAP)
+    big = font(F_BIG, FS_BIG)
+    mono = font(F_MONO, FS_STRAP)
     # SVG y is a BASELINE; PIL's anchor "ls" is left-baseline, so they agree.
     d.text((X_TEXT, Y1), LINE1, font=big, fill=hex2rgb(INK), anchor="ls")
     d.text((X_TEXT, Y2), LINE2, font=big, fill=hex2rgb(ACCENT), anchor="ls")
