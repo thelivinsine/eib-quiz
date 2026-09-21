@@ -677,7 +677,8 @@ The three fixes above were written by the same session that reviewed the diff, s
 else has read them.
 ## Session developments (2026-09-21, closing the mockup gap)
 
-**Open as PR #80** (branch `close-mockup-gap`, commit `57593bd`) — **not merged**. It is a
+**Open as PR #80** (branch `close-mockup-gap`, head `c0bdb28`: `57593bd` the work,
+`555ff30` this note, `c0bdb28` the review fixes below) — **not merged**. It is a
 visual judgement call that nobody but the session that wrote it has looked at, and merging
 `main` publishes to Pages.
 
