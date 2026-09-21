@@ -401,40 +401,33 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     of its two quietest tiers, for four claims the hero is making. It is `--fs-xs` in
     `--sub-text`. The GLYPH is untouched: the mockup's tinted 52px disc is still the plate
     the icon rule forbids.
-  - **The photograph is `img/hero-reichstag.webp`, a 1:1 FILE, shown 1:1 above 620px and
-    16/10 below it.** The file itself is square and is not recropped by any of this;
-    `object-fit: cover` on a wider box simply drops the top and bottom, and the centred
-    band it keeps is the good one — full pediment, the whole `DEM DEUTSCHEN VOLKE`
-    inscription and both flags, losing only sky and pavement. On a phone the square was
-    343px tall on a 375px viewport, which pushed the headline below the fold on the one
-    tier whose job is to pitch; 16/10 makes it 214.
-  - **The landscape crop is below 620px ONLY, and that limit is load-bearing.**
-    `.hero-note` is already `display: none` at this width. Above it the note sits over
-    the single patch of clean sky in the frame and **its ink is measured against that
-    sky in `LITERAL_PAIRS`** (`#16233A` on a worst case of `#D0D3D8`). Cropping where
-    the note SHOWS moves the note onto masonry and invalidates the measurement, so
-    extending this rule upward means re-measuring first. The margin note is now the
-    ONLY overlay on the photo, so it is the only thing that constraint protects.
-  - It is CC BY-SA 4.0, and **the credit now lives in the page FOOTER**
-    (`.footer-credit` / `footer.credit`), not under the photo. BY-SA asks for the credit
-    where the work is used, and the footer of the page carrying the photo satisfies that
-    while keeping the hero clean. `.hero-credit` and the `hero.credit` string are gone.
-    That line is the licence, not decoration — do not drop it while the photo is on the
-    page. `img/ATTRIBUTIONS.md` has the recrop command for the FILE.
-  - **The handwritten note is top RIGHT and its ink is a literal.** Its ground is a
-    photograph, not a token: `#16233A` on a measured worst case of `#D0D3D8`, registered in
-    `LITERAL_PAIRS`. That corner is the only clean sky in the frame (the mockup's top-left is
-    our EU flag), and the mockup's curved arrow is dropped because every region it could have
-    swept has a flagpole through it. **Recrop the photo and this measurement must be redone.**
-  - **The margin note is a child of `.hero-photo`.** As a sibling it was positioned
-    against the photo *plus its credit line*, so an overlay anchored to the bottom
-    landed on the credit. (The credit has since moved to the footer, and the quote card
-    that hit it is gone — but the containment is still what keeps percentages honest.)
-  - **There is NO quote card on the photo** (2026-09-21, on request). `.hero-quote`,
-    `.hero-quote-mark` and the `hero.quote` string are gone. It covered 31% of the
-    photo's height on a phone and the photograph now carries only the margin note.
-  - **`.script-note` is the ONLY rule that reads `--font-hand`**, and it carries all three
-    margin notes (hero, numbers, CTA).
+  - **The photograph is `img/hero-reichstag.webp`: a 1:1 FILE shown 16/10 at EVERY
+    width** (2026-09-21, on request). The file is still square and no asset was
+    recropped; `object-fit: cover` on a wider box drops the top and bottom, and the
+    centred band it keeps is the good one — full pediment, the whole
+    `DEM DEUTSCHEN VOLKE` inscription and both flags, losing only sky and pavement.
+    One aspect is one rule: the 620px override is gone. 495x309 on desktop, 343x214 on
+    a phone.
+  - **THE PHOTO CARRIES NO OVERLAYS AT ALL, and the crop is why.** Both are gone:
+    - `.hero-quote`, the corner card, was removed on request — it covered 31% of the
+      photo's height on a phone.
+    - `.hero-note`, the handwritten margin note, was removed **because a cropped frame
+      has nowhere to put it.** Its ink was a literal measured against the one patch of
+      clean sky in the image (`#16233A` on a worst case of `#D0D3D8`, once in
+      `LITERAL_PAIRS`), and a 16/10 crop drops the top 206 source rows — which is
+      where all of the sky is. Scanned at note size across the entire cropped band,
+      the BRIGHTEST darkest-pixel available was luminance **15**: the flag's black band
+      moves into that corner. There is no position that reads, so the note went rather
+      than the crop. **If the photo is ever shown 1:1 again and the note comes back, it
+      needs re-measuring, not restoring from git.**
+  - `--font-hand` survives both: **`.script-note` is still the only rule that reads it**
+    and it still carries the numbers band's note and the CTA band's. The hero's was the
+    third of three.
+  - It is CC BY-SA 4.0, and **the credit lives in the footer's legal bar**
+    (`footer.legal`, with the Commons page linked from `footer.photo`). BY-SA asks for
+    the credit where the work is used, and the footer of the page carrying the photo
+    satisfies that. That line is the licence, not decoration — do not drop it while the
+    photo is on the page. `img/ATTRIBUTIONS.md` has the recrop command for the FILE.
   - **The NUMBERS and CTA bands are the mockup's pale panel** — `--band` plus a
     `--border` hairline (2026-09-21). They were `--surface`, which on a white canvas is
     the page itself; `--band` is the same panel the mode band sits on, and is what the
@@ -465,8 +458,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     cost the budgets nothing — narrowing a selector adds no declaration.)
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
     The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Eight
-    entries are listed today, four per theme: the letter on the correct and the wrong answer
-    chip, the zoom veil's label, and the hero's margin note. The last two share a shape worth
+    entries are listed today, three per theme: the letter on the correct and the wrong answer
+    chip, and the zoom veil's label. (The hero's margin note was a fourth until its crop
+    removed the sky it was measured against.) The veil's shares a shape worth
     copying — their ground is an IMAGE rather than a token, so the entry names the measured
     worst case. Prefer a token; if a literal is unavoidable it goes in the list the same day.
     The German flag in `.brand-mark` is the deliberate exception: its three bands are written
@@ -624,11 +618,29 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58 screens**.
   - `initHomeScreen()` is the one door that repaints the home screen. Callers do not call the
     individual renderers.
-- **The page has a FOOTER, and it is the small print's only home** (2026-09-21).
-  `.site-footer` sits after `</main>`: a `--band` panel with a `--border` top hairline,
-  holding the brand mark and lockup on the left and three quiet lines on the right —
-  where the questions come from, that this is **not** an official BAMF service, and the
-  hero photograph's CC BY-SA credit.
+- **The page has a FOOTER: three columns over a legal bar** (2026-09-21).
+  `.site-footer` sits after `</main>` — a `--band` panel with a `--border` top hairline.
+  `.footer-inner` holds the brand mark, lockup and a one-sentence blurb
+  (`.footer-col--brand`, capped at 34ch because it is the only column with prose), then
+  **Practise** and **Sources**. `.footer-bar` below it carries the copyright and the
+  legal line.
+  - **The Practise links are the REAL `startMode()` calls**, the same ones the mode
+    cards make — not decoration. The footer is hidden in-session, so they can only
+    ever fire from the home screen. They reuse the `mode.*.title` strings.
+  - **Every Sources link resolves, and all three were checked with `curl` before
+    shipping** (200 each): the catalogue PDF that actually ships in this repo
+    (`img/gesamtfragenkatalog-lebenindeutschland.pdf` — a source link that resolves to
+    the source beats one that resolves to a landing page), the BAMF naturalisation page,
+    and the photo's Commons page. **A source link nobody verified is worse than none.**
+  - **The copyright covers the APP; the legal line names what it does not own.**
+    `footer.copyright` is "(c) 2026 EIB Quiz. All rights reserved." and `footer.legal`
+    says the questions are the official BAMF catalogue, credits the photograph under
+    CC BY-SA, and states this is not an official BAMF service. **Do not merge the two:**
+    a blanket "all rights reserved" spanning official catalogue text and a CC BY-SA
+    photograph would simply be false.
+  - `.footer-link` is one rule for the `<button>`s and the `<a>`s alike, so a mode
+    action and an external source read identically. Underline on **hover only**: four
+    stacked permanently-underlined lines read as a wall.
   - **It is hidden by `body.in-session`, and that is not cosmetic.** A session screen is
     pinned to `calc(100svh - var(--header-h))` and the page must not scroll there;
     anything after `<main>` adds to the document height and breaks
@@ -640,13 +652,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - The mark is the header's flag SVG **repeated**, not shared: its three bands are the
     flag's own values written inside the SVG rather than in a rule, so there is no token
     to share and one duplicated line beats a JS filler for it.
-  - **`.footer-meta` is 76ch of `--fs-xs` with `--space-sm` between the lines.** It
-    shipped as 52ch of `--fs-2xs` with 4px gaps — ~317px at 12px, which wrapped every
-    sentence and read as a compressed strip. The cap is in `ch` rather than px because
-    it is a MEASURE and should track the font. `sub-text / band` is asserted in
-    `contrast.test.mjs` for it; that ground was unasserted for this tier until then.
-  - On a phone the two halves stack and `.footer-meta` drops its `text-align: right`:
-    stacked, it has nothing to sit opposite and should read from the same edge as the mark.
+  - **`sub-text / band` is asserted in `contrast.test.mjs`** for the footer's copy; that
+    ground was unasserted for this tier until the footer shipped. (`.footer-meta`, the
+    single right-aligned column of small print this replaced, is gone — it was 76ch of
+    `--fs-xs`, and before that 52ch of `--fs-2xs`, which wrapped every sentence.)
+  - **On a phone the brand column goes full width and the two link columns sit side by
+    side**, which they do on their own: flex columns size to their longest link, and
+    118 + 28 + 147 fits 343px even in German, where `Prüfungssimulation` and
+    `BAMF zur Einbürgerung` are the two widest labels. Measured, not assumed.
+  - **`.footer-link` takes `--ctl-sm` under `@media (pointer: coarse)`.** It is 17px of
+    text with 8px between lines, a 25px pitch that scrapes past WCAG 2.5.8 on spacing
+    alone — and four of these START A ROUND. `--ctl-sm` rather than `--ctl-md` because
+    they are a list of links, not the card's own buttons, and 44px x 4 would make the
+    footer taller than the content above it.
 - **The navigator offers three views, and the reader picks one** (2026-09-19). `#navActions`
   holds a `.seg.qnav-seg` — the same segmented control as the header switches — with **Linear /
   Shuffle / Topics**. `state.navView` (`'linear' | 'shuffle' | 'categories'`) is what the
@@ -1302,8 +1320,8 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
   `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
   LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens, which the block
-  parser cannot see — eight today, four per theme (the letter on the correct and the wrong
-  answer chip, the zoom veil's label, and the hero's margin note), matching the rule stated
+  parser cannot see — six today, three per theme (the letter on the correct and the wrong
+  answer chip, and the zoom veil's label), matching the rule stated
   under the home-screen section.
 - `tools/scale.test.mjs` - the size system as a test: the type/space/control/tracking scales,
   asserted against `index.html` (`node --test tools/scale.test.mjs`). It is a RATCHET — each

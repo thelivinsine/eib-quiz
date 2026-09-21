@@ -915,7 +915,14 @@
         .hero-visual { position: relative; min-width: 0; }
         .hero-photo {
             position: relative;
-            aspect-ratio: 1 / 1;
+            /* 16/10 at EVERY width now. It was 1:1 on desktop and 16/10 only below
+               620px, and the reason for the split was the handwritten margin note:
+               its ink was a literal measured against the one patch of clean sky in
+               the frame, and cropping moved it onto masonry. That note is gone (see
+               below), so there is nothing left to hold the square in place and one
+               aspect is one rule. object-fit: cover keeps the centred band: full
+               pediment, the whole DEM DEUTSCHEN VOLKE inscription, both flags. */
+            aspect-ratio: 16 / 10;
             border-radius: var(--radius);
             overflow: hidden;
             background: var(--surface2);
@@ -930,15 +937,14 @@
             line-height: var(--lh-ui);
             color: var(--muted);
         }
-        /* Top RIGHT, not the mockup's top left: that corner of this photograph is the
-           EU flag, and this one is the only clean patch of sky (min luminance 211/255).
-           The ink is a literal because its ground is a photograph rather than a token
-           — registered in LITERAL_PAIRS, exactly as the zoom veil's label is. */
-        .hero-note {
-            position: absolute; top: var(--space-lg); right: var(--space-lg);
-            width: 46%; text-align: right;
-            color: #16233A;
-        }
+        /* .hero-note is GONE, and it was the crop that killed it. It needed a patch of
+           clean sky to sit on and its ink was a literal measured against that sky; a
+           16/10 crop removes the top 206 source rows, which is where all of the sky
+           is. Scanned at note size across the whole cropped band, the BRIGHTEST
+           darkest-pixel anywhere was luminance 15 — the flag's black band moves into
+           that corner. There is no position on a cropped frame where it reads, so the
+           note went rather than the crop. --font-hand still has two consumers (the
+           numbers band's note and the CTA band's), so .script-note stays. */
 
         .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
         .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
@@ -1499,30 +1505,48 @@
             display: flex; flex-wrap: wrap; align-items: flex-start;
             justify-content: space-between; gap: var(--space-xl);
         }
+        .footer-col { min-width: 0; }
+        /* The brand column carries the blurb, so it earns more room than the two link
+           columns beside it. */
+        .footer-col--brand { flex: 1 1 260px; max-width: 34ch; }
         .footer-brand { display: flex; align-items: center; gap: var(--space-sm); }
+        .footer-blurb {
+            margin-top: var(--space-md);
+            font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text);
+        }
+        .footer-col-title {
+            font-size: var(--fs-2xs); font-weight: 600; letter-spacing: var(--ls-caps);
+            text-transform: uppercase; color: var(--muted);
+            margin-bottom: var(--space-md);
+        }
+        .footer-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-sm); }
+        /* One rule for the <button>s and the <a>s alike, so a mode action and an
+           external source read identically. Underline on hover only: four stacked
+           permanently-underlined lines read as a wall. */
+        .footer-link {
+            display: inline-block; text-align: left;
+            padding: 0; border: 0; background: none;
+            font-family: inherit; font-size: var(--fs-xs); line-height: var(--lh-ui);
+            color: var(--sub-text); text-decoration: none; cursor: pointer;
+            transition: color 0.16s var(--ease);
+        }
+        .footer-link:hover { color: var(--accent-text); text-decoration: underline; }
+        .footer-bar {
+            max-width: var(--maxw); margin: 0 auto;
+            margin-top: var(--space-2xl); padding-top: var(--space-md);
+            border-top: 1px solid var(--border);
+            display: flex; flex-wrap: wrap; align-items: baseline;
+            justify-content: space-between; gap: var(--space-sm);
+            font-size: var(--fs-2xs); line-height: var(--lh-prose); color: var(--muted);
+        }
+        .footer-legal a { color: inherit; text-decoration: underline; }
+        .footer-legal a:hover { color: var(--accent-text); }
         .footer-lockup { display: flex; flex-direction: column; line-height: var(--lh-tight); }
         .footer-name {
             font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base);
             letter-spacing: var(--ls-display); color: var(--text);
         }
         .footer-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
-        /* The small print reads as a column of quiet lines, right-aligned against the
-           mark opposite. --sub-text, not --muted: the disclaimer and the licence are
-           things a reader may actually need.
-           It was 52ch of --fs-2xs with 4px between the lines, which is ~317px at 12px
-           — every sentence wrapped and the block read as a compressed strip. 76ch of
-           --fs-xs is ~500px, the type is a step up off the floor, and --space-sm
-           between the lines (the rung that already carries the page) lets them breathe.
-           The cap is in `ch` rather than px on purpose: it is a MEASURE, so it should
-           track the font rather than a layout width. */
-        .footer-meta {
-            display: flex; flex-direction: column; gap: var(--space-sm);
-            max-width: 76ch; text-align: right;
-            font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text);
-        }
-        .footer-credit { color: var(--muted); }
-        .footer-credit a { color: inherit; text-decoration: underline; }
-        .footer-credit a:hover { color: var(--accent-text); }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1692,6 +1716,14 @@
                the desktop look is untouched. */
             .quiz-nav .btn-primary, .quiz-nav .btn-secondary { min-height: var(--ctl-md); }
             .end-actions .btn-primary, .end-actions .btn-secondary { min-height: var(--ctl-md); }
+            /* The footer's links are 17px of text with 8px between them, i.e. a 25px
+               pitch. That scrapes past WCAG 2.5.8 on spacing alone, and four of these
+               START A ROUND, so they get a real target rather than a technicality.
+               --ctl-sm, not --ctl-md: they are a list of links, not the card's own
+               buttons, and 44px x 4 would make the footer taller than the content it
+               sits under. Applying the rule the last mobile pass wrote down: a control
+               shrunk for visual weight gets added to this block in the same change. */
+            .footer-link { min-height: var(--ctl-sm); display: inline-flex; align-items: center; }
         }
         .speak-btn svg, .bilingual-toggle svg { width: var(--icon-sm); height: var(--icon-sm); }
         .bilingual-toggle { gap: var(--space-sm); }
@@ -2177,26 +2209,15 @@
             .hero-chip { flex-direction: row; text-align: left; gap: var(--space-sm); }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
-            .hero-note, .stats-item--note, .cta-note, .cta-art { display: none; }
-            /* A LANDSCAPE crop on a phone. A 1:1 photo is as tall as the screen is
-               wide (343px of a 375px viewport), which put the headline below the fold
-               on the one tier whose job is to pitch. 16/10 takes it to ~214px.
-               object-fit: cover crops the top and bottom, which is exactly the right
-               pair to lose here: it keeps the pediment, the inscription and both
-               flags, and drops sky and pavement.
-               ONLY below 620px, and that is not arbitrary — .hero-note is already
-               hidden at this width. Above it the note sits over the one patch of
-               clean sky in the frame and its ink is measured against that sky in
-               LITERAL_PAIRS, so re-cropping where the note SHOWS would invalidate the
-               measurement. Extending this rule upward means re-measuring first. */
-            .hero-photo { aspect-ratio: 16 / 10; }
+            .stats-item--note, .cta-note, .cta-art { display: none; }
 
             .why-item { flex-basis: 100%; }
             /* Stacked, the small print has nothing to sit opposite, so it stops
                being right-aligned and reads from the same edge as the mark. */
             .site-footer { padding-inline: var(--space-md); }
-            .footer-inner { gap: var(--space-lg); }
-            .footer-meta { text-align: left; }
+            /* Stacked, the brand column stops reserving width it no longer needs. */
+            .footer-inner { gap: var(--space-xl); }
+            .footer-col--brand { flex-basis: 100%; max-width: none; }
             .cta-band { padding: var(--space-lg); gap: var(--space-ms); }
             .cta-btn { width: 100%; }
 
@@ -2463,7 +2484,6 @@
                              because its ground is a photograph rather than a token; see
                              LITERAL_PAIRS. The mockup's curved arrow is dropped - every
                              region it could point from has a flagpole running through it. -->
-                        <p class="script-note hero-note" data-i18n="hero.annotation"></p>
                     </figure>
                 </div>
             </div>
@@ -2693,21 +2713,49 @@
          and anything after <main> would break that with a page scrollbar. -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <div class="footer-brand">
-                <!-- The header's mark, repeated. Its three bands are the flag's own
-                     values and live in the SVG rather than in a rule, so there is no
-                     token to share; one duplicated line beats a JS filler for it. -->
-                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
-                <span class="footer-lockup">
-                    <span class="footer-name">EIB Quiz</span>
-                    <span class="footer-tagline" data-i18n="nav.tagline"></span>
-                </span>
+            <div class="footer-col footer-col--brand">
+                <div class="footer-brand">
+                    <!-- The header's mark, repeated. Its three bands are the flag's own
+                         values and live in the SVG rather than in a rule, so there is no
+                         token to share; one duplicated line beats a JS filler for it. -->
+                    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
+                    <span class="footer-lockup">
+                        <span class="footer-name">EIB Quiz</span>
+                        <span class="footer-tagline" data-i18n="nav.tagline"></span>
+                    </span>
+                </div>
+                <p class="footer-blurb" data-i18n="footer.blurb"></p>
             </div>
-            <div class="footer-meta">
-                <p data-i18n="footer.source"></p>
-                <p data-i18n="footer.disclaimer"></p>
-                <p class="footer-credit" data-i18n-html="footer.credit"></p>
-            </div>
+            <!-- Real actions, not decoration: these are the same startMode() calls the
+                 mode cards make. The footer is hidden in-session, so they can only ever
+                 fire from the home screen. -->
+            <nav class="footer-col" aria-labelledby="footNavPractise">
+                <h2 class="footer-col-title" id="footNavPractise" data-i18n="footer.practise"></h2>
+                <ul class="footer-list">
+                    <li><button type="button" class="footer-link" onclick="startMode('exam')" data-i18n="mode.exam.title"></button></li>
+                    <li><button type="button" class="footer-link" onclick="startMode('allQuestions')" data-i18n="mode.all.title"></button></li>
+                    <li><button type="button" class="footer-link" onclick="startMode('bundesland')" data-i18n="mode.state.title"></button></li>
+                    <li><button type="button" class="footer-link" onclick="startMode('review')" data-i18n="mode.review.title"></button></li>
+                </ul>
+            </nav>
+            <nav class="footer-col" aria-labelledby="footNavSource">
+                <h2 class="footer-col-title" id="footNavSource" data-i18n="footer.sources"></h2>
+                <ul class="footer-list">
+                    <!-- The catalogue itself, which ships in this repo: the exact PDF
+                         every question here was taken from. A source link that resolves
+                         to the source beats one that resolves to a landing page. -->
+                    <li><a class="footer-link" href="img/gesamtfragenkatalog-lebenindeutschland.pdf" target="_blank" rel="noopener" data-i18n="footer.catalogue"></a></li>
+                    <li><a class="footer-link" href="https://www.bamf.de/DE/Themen/Integration/ZugewanderteTeilnehmende/Einbuergerung/einbuergerung-node.html" target="_blank" rel="noopener" data-i18n="footer.bamf"></a></li>
+                    <li><a class="footer-link" href="https://commons.wikimedia.org/wiki/File:Berlin,_Reichstagsgeb%C3%A4ude_--_2019_--_6310.jpg" target="_blank" rel="noopener" data-i18n="footer.photo"></a></li>
+                </ul>
+            </nav>
+        </div>
+        <!-- The legal strip. The copyright covers THIS APP; the line beside it names
+             what the app does not own, because a blanket "all rights reserved" over the
+             official catalogue text and a CC BY-SA photograph would simply be false. -->
+        <div class="footer-bar">
+            <p data-i18n="footer.copyright"></p>
+            <p class="footer-legal" data-i18n-html="footer.legal"></p>
         </div>
     </footer>
 
@@ -2884,14 +2932,19 @@
             'hero.chip2':          { en: 'All 16 federal states',    de: 'Alle 16 Bundesländer' },
             'hero.chip3':          { en: 'German & English',         de: 'Deutsch & Englisch' },
             'hero.chip4':          { en: '60-minute test',           de: '60-Minuten-Test' },
-            'hero.annotation':     { en: 'Same questions. A brighter future.', de: 'Dieselben Fragen. Eine bessere Zukunft.' },
             'hero.photoAlt':       { en: 'The west façade of the Reichstag in Berlin, inscribed DEM DEUTSCHEN VOLKE, with the German and European flags flying in front of it.', de: 'Die Westfassade des Reichstags in Berlin mit der Inschrift DEM DEUTSCHEN VOLKE, davor die deutsche und die europäische Flagge.' },
-            // footer. The credit was `hero.credit` under the photo until 2026-09-21;
-            // BY-SA asks for it where the work is used, and the footer of the page the
-            // photo is on satisfies that while keeping the hero clean.
-            'footer.source':       { en: 'All 300 general questions come from the official BAMF catalogue “Leben in Deutschland”, plus ten for each of the 16 federal states.', de: 'Alle 300 allgemeinen Fragen stammen aus dem amtlichen BAMF-Katalog „Leben in Deutschland“, dazu zehn je Bundesland.' },
-            'footer.disclaimer':   { en: 'A free practice tool. Not an official service of the BAMF and not affiliated with it.', de: 'Ein kostenloses Übungsangebot. Kein offizielles Angebot des BAMF und nicht mit ihm verbunden.' },
-            'footer.credit':       { en: 'Hero photo: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>', de: 'Titelfoto: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>' },
+            // footer. The photo credit was `hero.credit` under the photo until
+            // 2026-09-21; BY-SA asks for it where the work is used, and the footer of
+            // the page carrying the photo satisfies that. It now rides in footer.legal
+            // beside the copyright, with the Commons page linked from footer.photo.
+            'footer.blurb':        { en: 'Free practice for the German naturalisation test — every official question, all 16 federal states, in German or English. Works offline once loaded.', de: 'Kostenlos für den Einbürgerungstest üben — alle amtlichen Fragen, alle 16 Bundesländer, auf Deutsch oder Englisch. Funktioniert nach dem Laden auch offline.' },
+            'footer.practise':     { en: 'Practise',                de: 'Üben' },
+            'footer.sources':      { en: 'Sources',                 de: 'Quellen' },
+            'footer.catalogue':    { en: 'Question catalogue (PDF)', de: 'Fragenkatalog (PDF)' },
+            'footer.bamf':         { en: 'BAMF on naturalisation',   de: 'BAMF zur Einbürgerung' },
+            'footer.photo':        { en: 'Hero photograph',          de: 'Titelfoto' },
+            'footer.copyright':    { en: '© 2026 EIB Quiz. All rights reserved.', de: '© 2026 EIB Quiz. Alle Rechte vorbehalten.' },
+            'footer.legal':        { en: 'Questions are the official BAMF catalogue. Photo by Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>. Not an official BAMF service.', de: 'Die Fragen stammen aus dem amtlichen BAMF-Katalog. Foto von Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>. Kein offizielles Angebot des BAMF.' },
 
             'why.eyebrow':         { en: 'Why EIB Quiz?',            de: 'Warum EIB Quiz?' },
             'why.title':           { en: 'Simple. Effective. Reliable.', de: 'Einfach. Wirksam. Verlässlich.' },
