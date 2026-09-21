@@ -576,6 +576,9 @@ resizing the viewport mid-session, which leaves `--header-h` stale; a **fresh** 
 
 ## Session developments (2026-09-21, landing-page phases 1-7)
 
+**Live on `main` as `19c6da8`** (PR #79, squash-merged 2026-09-21) — the landing-page
+refactor plus the three post-review fixes below.
+
 **Phases 1-6 shipped and Phase 7's verification ran; the refactor is done bar a live
 check.** `docs/plans/landing-page-refactor.md` carries the full task-by-task record,
 including a "what phase N decided that the plan did not" block per phase — read those
