@@ -392,15 +392,24 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     positioned against the photo *plus its credit line* and the quote landed on the credit.
   - **`.script-note` is the ONLY rule that reads `--font-hand`**, and it carries all three
     margin notes (hero, numbers, CTA).
-  - **The why, numbers and CTA bands ARE the mockup's pale panel** — `--band` plus a
+  - **The NUMBERS and CTA bands are the mockup's pale panel** — `--band` plus a
     `--border` hairline (2026-09-21). They were `--surface`, which on a white canvas is
     the page itself; `--band` is the same panel the mode band sits on, and is what the
     mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
     above rejects: `--surface2` is a well inside a tile, and still never a panel on the
     page.
-  - **`.result-stats, .why-grid, .stats-grid` share one rule** for the hairline-separated
-    band, and that shared `gap: 1px` is the only such literal in the sheet. Writing a second
-    one takes `literalSpacing` to 3 and `gapRungs` to 8, both over budget.
+  - **The WHY band is not a panel at all** (2026-09-21, on request), and it is the one of
+    the three that is not. No fill, no hairline, no 1px separator gap: the four items sit
+    straight on the page with a `--space-xl` gap doing the separating, and `.why-grid`
+    carries its own rule rather than the shared band one. Four CLAIMS about the product
+    read as four claims; boxed in a tinted panel with dividers they read as a table, and
+    each item's tinted disc already groups its own two lines. **A row of four FIGURES is
+    different** — that is a readout, it wants a frame, and the numbers band keeps one.
+  - **`.result-stats, .stats-grid` share one rule** for the hairline-separated band, and
+    that shared `gap: 1px` is the only such literal in the sheet. Writing a second one
+    takes `literalSpacing` to 3 and `gapRungs` to 8, both over budget. (`.why-grid` was
+    the third selector until 2026-09-21; it left when it stopped being a panel, which
+    cost the budgets nothing — narrowing a selector adds no declaration.)
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
     The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Eight
     entries are listed today, four per theme: the letter on the correct and the wrong answer
