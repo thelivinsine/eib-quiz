@@ -1004,15 +1004,26 @@
         .progress-reset:hover { color: var(--red-text); }
 
         /* ============================================================
-           MODE CARDS — one featured, three peers
+           MODE CARDS — five equal peers
+           ------------------------------------------------------------
+           The column counts are explicit rather than auto-fit, and that
+           is deliberate: with FIVE cards, four columns leaves a single
+           orphan on the second row and two columns leaves one on the
+           third. Only 5, 3 and 1 divide the set without stranding a
+           card, so those are the three layouts.
            ============================================================ */
         .modes-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: var(--space-md);
         }
+        /* 1160, not the 940 the rest of the sheet breaks at: five columns of a 1009px
+           content width is a 157px card, and "Prüfungssimulation" is one 18-character
+           word that does not fit in one. Measured in German, which is what decides it. */
+        @media (max-width: 1160px) {
+            .modes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
         .mode-card {
-            grid-column: span 1;
             position: relative;
             padding: var(--space-md);
             border-radius: var(--radius);
@@ -1029,67 +1040,23 @@
         }
         .mode-card:active { background: var(--surface3); }
 
-        /* The exam is what the app is for, so it is the only card that spans the
-           row and the only one wearing the accent. It used to be a charcoal
-           slab, which meant its text ran at #B4B7C0 on near-black while the
-           peers beside it ran at full ink — the loudest card on the page had
-           the weakest type. Now it is a teal-tinted tile carrying the SAME ink
-           tiers as its peers, so the emphasis comes from hue, width and the
-           solid accents, never from dimming the words.
-           Its separation from the page is the hairline, not a step in
-           lightness: in light mode the tint and the paper-grey canvas sit at
-           almost the same luminance, and light mode hands that job to edges. */
-        .mode-card--featured {
-            grid-column: 1 / -1;
-            background: var(--accent-soft);
-            /* The SAME neutral hairline every other card wears. --accent-line was still a
-               green ring, and any coloured ring round a tinted fill is the treatment
-               `.option-btn.correct` uses for the right answer — the card kept reading as
-               selected. Its tint and its width are what mark it out; the edge just ends
-               it, exactly as on the peers beside it. */
-            border-color: var(--border);
-            color: var(--text);
-            padding: var(--space-lg);
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-areas: "title action" "desc action" "meta action";
-            column-gap: var(--space-md);
-            align-items: center;
-        }
-        @media (hover: hover) {
-            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--border-hover); }
-        }
-        .mode-card--featured:active { background: var(--accent-hover); }
-        .mode-card--featured .mode-head { grid-area: title; margin-bottom: 0; gap: var(--space-sm); }
-        .mode-card--featured .mode-icon { width: var(--icon-xl); height: var(--icon-xl); background: none; color: var(--accent-text); }
-        .mode-card--featured .mode-icon svg { width: var(--icon-xl); height: var(--icon-xl); }
-        .mode-card--featured .mode-title { font-size: var(--fs-lg); color: var(--text); }
-        .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
-        /* --sub-text, not --muted: the quietest tier clears AA on the resting
-           tint by 4.74 in dark, so a hover step of any size would break it. */
-        .mode-card--featured .mode-meta { grid-area: meta; margin: var(--space-sm) 0 0; color: var(--sub-text); }
-        .mode-card--featured .mode-start-btn {
-            grid-area: action;
-            justify-self: end;
-            background: var(--accent-fill); color: var(--on-accent);
-            border-radius: var(--radius-pill);
-            min-height: var(--ctl-md); padding: 0 var(--space-lg);
-            font-size: var(--fs-base);
-        }
+        /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
+           solid Start pill. The landing page sells five modes as peers, so the treatment
+           went with it — along with .mode-start-btn, .msb-arrow and the `mode.start`
+           string, which was the only place any card said "Start" in words. */
 
-        /* The time estimate is a corner stamp, not part of the sentence — it
-           leaves the meta row to the one fact that varies (what is due). */
-        /* IN the head row, not floating over it. It was absolutely positioned top-right,
-           which worked while the icon was a chip stacked ABOVE the title — the title
-           began on the second line and nothing met it. With the icon and the title now
-           sharing the first line, the estimate landed straight on top of the title:
-           "All questions" printed over "approx. 60-90 min". `margin-left: auto` puts it
-           at the same corner without leaving the flow. */
+        /* The estimate sits in the META row, beside the count. It has been three things:
+           absolutely positioned top-right (it printed on top of the title once the icon
+           joined the title's line), then in the head row pushed right by margin-left:auto
+           — which worked at three cards a row and broke at five, where a nowrap
+           "approx. 60-90 min" claimed 115px of a 165px row and squeezed "All questions"
+           down to 13px. In the meta row it is beside the one other fact the card states,
+           and it can wrap. */
         .mode-time {
-            margin-left: auto; padding-left: var(--space-sm);
-            font-size: var(--fs-2xs); color: var(--muted); white-space: nowrap;
-            font-variant-numeric: tabular-nums; align-self: flex-start;
+            font-size: var(--fs-2xs); color: var(--muted);
+            font-variant-numeric: tabular-nums;
         }
+        .mode-time::before { content: ' b7'; margin-right: var(--space-sm); color: var(--faint); }
         /* The peers repeat no "Start" (the card is the button), but they still
            have to LOOK like buttons where there is no hover to reveal it. */
         .mode-go {
@@ -1097,9 +1064,9 @@
             width: var(--icon-xl); height: var(--icon-xl);
             display: grid; place-items: center;
             color: var(--muted);
-            font-size: var(--fs-sm); line-height: 1;
             transition: color 0.18s var(--ease), transform 0.25s var(--ease-spring);
         }
+        .mode-go svg { width: var(--icon-sm); height: var(--icon-sm); }
         @media (hover: hover) {
             .mode-card:hover .mode-go { color: var(--accent-text); transform: translateX(3px); }
         }
@@ -1121,7 +1088,13 @@
         /* The icon and the title are one row. */
         .mode-head { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
-        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; }
+        /* German compounds are one long word, and five cards a row is a 167px title
+           box: "Prüfungssimulation" overflows it whatever the width, because `main`
+           caps the content long before the viewport does. `hyphens: auto` breaks it
+           properly (the root carries lang="de" when the UI is German) and
+           `overflow-wrap: anywhere` is the backstop, exactly as `.opt-num` handles
+           "Christusmonogramm". */
+        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
         .mode-description {
             color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose);
             margin-bottom: var(--space-sm);
@@ -1134,16 +1107,13 @@
             font-size: var(--fs-xs); color: var(--muted);
             font-variant-numeric: tabular-nums;
         }
-        /* Clearance for .mode-go, which only the peers render. */
-        .mode-card:not(.mode-card--featured) .mode-meta { padding-right: calc(var(--space-xl) + var(--space-sm)); }
+        /* Clearance for .mode-go, which sits in the same corner. */
+        .mode-meta { padding-right: calc(var(--space-xl) + var(--space-sm)); }
         .mode-flag {
             font-size: var(--fs-2xs); font-weight: 600;
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
-        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm); font-size: var(--fs-xs); font-weight: 600; }
-        .msb-arrow { transition: transform 0.25s var(--ease-spring); }
-        .mode-card:hover .msb-arrow { transform: translateX(3px); }
 
         /* ============================================================
            TOPICS — chips on the page; the section heading names them
@@ -1189,6 +1159,8 @@
         }
         .sub-card > .eyebrow { display: block; margin-bottom: var(--space-md); }
         #historySection:empty, #topicSection:empty, #glossarySection:empty { display: none; }
+        /* The Topic card's reveal. Below the grid, so opening it never reflows the cards. */
+        #topicSection { margin-top: var(--space-md); }
 
         .load-error {
             grid-column: 1 / -1;
@@ -1800,9 +1772,6 @@
             .hero-lead { margin-inline: auto; }
             .hero-chips { margin-inline: auto; }
 
-            /* Three secondary cards stay three across: two columns orphans one of
-               them beside an empty cell. */
-            .mode-card--featured { grid-column: 1 / -1; }
             /* body.in-session-prefixed, or the desktop two-column rule outranks this one
                and the areas fight: "main stats" against a single column collapsed the
                question to 12px. */
@@ -1933,52 +1902,18 @@
                 gap: var(--space-sm); justify-content: space-between; }
             .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
 
-            /* The featured card gives up its side-by-side layout before the text gets
-               squeezed into a column two words wide — but it stays a GRID, so the meta
-               and Start can share the last row the way the peers' time and arrow do. */
-            .mode-card--featured {
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) auto;
-                grid-template-areas: "title title" "desc desc" "meta action";
-                align-items: center;
-                row-gap: var(--space-2xs);
-                padding: var(--space-md);
-            }
-            .mode-card--featured .mode-head { grid-area: title; }
-            .mode-card--featured .mode-description { grid-area: desc; }
-            .mode-card--featured .mode-meta { grid-area: meta; margin: var(--space-xs) 0 0; }
-            /* Left over from when the icon was a 38px chip: the box stayed 38px wide with
-               a 20px glyph floating in it, so the glyph sat left of centre with a gap
-               before the title and a 14px margin lifting it off the baseline. The icon
-               is the glyph now, sized to the title beside it. */
-            .mode-card--featured .mode-icon { width: var(--icon-lg); height: var(--icon-lg); margin-bottom: 0; }
-            .mode-card--featured .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-            .mode-card--featured .mode-title { font-size: var(--fs-lg); }
-            /* Bottom-right, on the meta's line — the peers put their arrow exactly there,
-               and a full-width bar made the one card you are meant to compare with them
-               read as a different kind of thing. */
-            .mode-card--featured .mode-start-btn { grid-area: action; justify-self: end; align-self: end; width: auto; margin-top: var(--space-xs); }
-            /* Three numbers stay three columns — stacking them turned the
-               overview into a screenful of its own. */
-            .dash-stat { padding: 0 var(--space-xs); align-items: center; text-align: center; gap: var(--space-2xs); }
-            .ds-num { font-size: var(--fs-md); }
-            .ds-of { font-size: var(--fs-2xs); }
-            .dash-stat .ds-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
-            .resume-actions { width: 100%; }
-            .resume-actions .btn-primary, .resume-actions .btn-secondary { flex: 1; }
-
-            /* The three secondary modes read as a list on a phone: icon beside
-               the title, one tap target each, all three in view. */
+            /* One card a row on a phone. They stay GRIDS rather than flex columns so
+               the meta and the arrow can share the last row. */
             .modes-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
-            .mode-card:not(.mode-card--featured) {
+            .mode-card {
                 display: grid;
                 grid-template-columns: 1fr;
                 grid-template-areas: "title" "desc" "meta";
                 row-gap: var(--space-2xs);
             }
-            .mode-card:not(.mode-card--featured) .mode-head { grid-area: title; margin-bottom: 0; }
-            .mode-card:not(.mode-card--featured) .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
-            .mode-card:not(.mode-card--featured) .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
+            .mode-card .mode-head { grid-area: title; margin-bottom: 0; }
+            .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
+            .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
                names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
@@ -2181,21 +2116,17 @@
             <section class="home-section" id="homeMain">
                 <div class="section-head section-head--row">
                     <div>
+                        <p class="eyebrow" data-i18n="home.practice.eyebrow"></p>
                         <h2 data-i18n="home.practice.title"></h2>
                         <p data-i18n="home.practice.lead"></p>
                     </div>
                     <div id="statePickerSlot"></div>
                 </div>
                 <div class="modes-grid" id="modesGrid"></div>
-            </section>
-
-            <!-- 3 · By topic -->
-            <section class="home-section">
-                <div class="section-head">
-                    <h2 data-i18n="home.topics.title"></h2>
-                    <p data-i18n="home.topics.lead"></p>
-                </div>
-                <div id="topicSection"></div>
+                <!-- The Topic card's reveal. It is BELOW the grid, not in it, so opening
+                     it cannot reflow the five cards. renderTopics() fills it unchanged;
+                     only its mount moved here from the retired "By topic" section. -->
+                <div id="topicSection" hidden></div>
             </section>
 
             <!-- 3b · Why — the landing tier's argument. Four claims, hairline-separated
@@ -2569,10 +2500,9 @@
             // home sections
             'home.progress.title': { en: 'Where you stand',         de: 'Dein Stand' },
             'home.progress.lead':  { en: 'Your accuracy across every question you have answered so far.', de: 'Deine Trefferquote über alle bisher beantworteten Fragen.' },
-            'home.practice.title': { en: 'Practise',                de: 'Üben' },
-            'home.practice.lead':  { en: 'Start with the full exam simulation, or take a smaller set.', de: 'Beginne mit der vollen Prüfungssimulation oder nimm dir ein kleineres Set vor.' },
-            'home.topics.title':   { en: 'By topic',                de: 'Nach Thema' },
-            'home.topics.lead':    { en: 'The 300 general questions, grouped by subject.', de: 'Die 300 allgemeinen Fragen, nach Themen gruppiert.' },
+            'home.practice.eyebrow': { en: 'Practise your way',    de: 'Übe, wie es dir passt' },
+            'home.practice.title': { en: 'Choose your practice mode', de: 'Wähle deinen Übungsmodus' },
+            'home.practice.lead':  { en: 'Five ways in — one goal: passing.', de: 'Fünf Wege hinein — ein Ziel: bestehen.' },
             'home.more.title':     { en: 'Past rounds & glossary',  de: 'Frühere Runden & Glossar' },
             'home.more.lead':      { en: 'Past rounds, and the terms the questions assume you know.', de: 'Frühere Runden und die Begriffe, die die Fragen voraussetzen.' },
 
@@ -2591,7 +2521,10 @@
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
 
             // modes
-            'mode.start':          { en: 'Start',                   de: 'Starten' },
+            'mode.topic.title':    { en: 'By topic',               de: 'Nach Thema' },
+            'mode.topic.desc':     { en: 'Rights, politics, history, society or symbols — one subject at a time.', de: 'Grundrechte, Politik, Geschichte, Gesellschaft oder Symbole — ein Thema nach dem anderen.' },
+            'mode.topic.badge':    { en: 'Five topics',              de: 'Fünf Themen' },
+            'mode.topic.time':     { en: 'approx. 10–25 min',        de: 'ca. 10–25 Min' },
             'mode.exam.title':     { en: 'Exam simulation',         de: 'Prüfungssimulation' },
             'mode.exam.desc':      { en: '30 general questions plus 3 for {state}, drawn at random.', de: '30 allgemeine Fragen plus 3 zu {state}, zufällig gezogen.' },
             'mode.exam.badge':     { en: '33 questions',            de: '33 Fragen' },
@@ -3307,33 +3240,51 @@
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
             const st = STATES[selectedState];
-            // The featured card states its action in words; a peer says it with
-            // the arrow, and parks its time estimate in the corner.
-            const card = (mode, icon, title, desc, meta, time, featured = '') => `
-                <button class="mode-card ${featured}" onclick="startMode('${mode}')">
+            // Five equal peers, no featured card. The card IS the button, so none of
+            // them repeats "Start" — the arrow says it. The time estimate rides in the
+            // meta row beside the count: as a corner stamp opposite the title it took
+            // 115px of a 165px head row and crushed "All questions" to 13px wide.
+            const card = (handler, icon, title, desc, meta, time, attrs = '') => `
+                <button class="mode-card" ${handler}${attrs}>
                     <span class="mode-head">
                         <span class="mode-icon">${icon}</span><span class="mode-title">${title}</span>
-                        ${featured ? '' : `<span class="mode-time">${time}</span>`}
                     </span>
                     <span class="mode-description">${desc}</span>
-                    <span class="mode-meta">${featured ? meta + ' · ' + time : meta}</span>
-                    ${featured
-                        ? `<span class="mode-start-btn">${t('mode.start')} <span class="msb-arrow">→</span></span>`
-                        : `<span class="mode-go" aria-hidden="true">→</span>`}
+                    <span class="mode-meta">${meta}<span class="mode-time">${time}</span></span>
+                    <span class="mode-go" aria-hidden="true">${ICONS.arrowRight}</span>
                 </button>`;
-            // The exam is the thing this app is for, so it is the only card that
-            // gets the full-width charcoal treatment. The rest are peers, and the
-            // only colour among them flags questions that are actually due.
+            const mode = m => `onclick="startMode('${m}')"`;
+            // The reveal's open state lives on the panel, not in a variable: renderModes()
+            // runs again on every language switch and would otherwise reset the button
+            // while the topics below it are still on show.
+            const topicsOpen = !document.getElementById('topicSection').hidden;
+
             grid.innerHTML =
-                card('exam', ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
-                     t('mode.exam.badge'), t('mode.exam.time'), 'mode-card--featured') +
-                card('allQuestions', ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
+                card(mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
+                     t('mode.exam.badge'), t('mode.exam.time')) +
+                card(mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
                      t('mode.all.badge'), t('mode.all.time')) +
-                card('bundesland', ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
+                card(mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
                      t('mode.state.badge'), t('mode.state.time')) +
-                card('review', ICONS.review, t('mode.review.title'), t('mode.review.desc'),
+                card(mode('review'), ICONS.review, t('mode.review.title'), t('mode.review.desc'),
                      due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>`
-                         : t('mode.review.badge'), t('mode.review.time'));
+                         : t('mode.review.badge'), t('mode.review.time')) +
+                card('onclick="toggleTopics(this)"', ICONS.topic, t('mode.topic.title'), t('mode.topic.desc'),
+                     t('mode.topic.badge'), t('mode.topic.time'),
+                     ` aria-expanded="${topicsOpen}" aria-controls="topicSection"`);
+        }
+
+        /**
+         * The Topic card reveals the topic chips in place rather than opening a screen.
+         * A button with aria-expanded/aria-controls rather than the <details> the history
+         * and glossary sections use: a <details> needs its summary and its body in one
+         * element, and here the summary is a card inside a five-column grid while the body
+         * has to span the whole row beneath it.
+         */
+        function toggleTopics(btn) {
+            const el = document.getElementById('topicSection');
+            el.hidden = !el.hidden;
+            btn.setAttribute('aria-expanded', String(!el.hidden));
         }
 
         // ============================================================

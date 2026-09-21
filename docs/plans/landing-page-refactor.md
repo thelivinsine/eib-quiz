@@ -1,6 +1,6 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
-Status: **Phases 0-2, 4 and 5 complete, 2026-09-21.** Phases 3, 6 and 7 open.
+Status: **Phases 0-5 complete, 2026-09-21.** Phases 6 and 7 open.
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
@@ -251,7 +251,7 @@ One decorative inline SVG for the CTA band, `--faint`, `aria-hidden="true"`.
 
 ---
 
-## Phase 1 — The two-tier switch  ·  **DONE (1.4 deferred to 3.4)**
+## Phase 1 — The two-tier switch  ·  **DONE** (1.4 landed with 3.4)
 
 ### 1.1 Add `hasProgress()`  ·  done
 `[index.html <script>]`
@@ -306,7 +306,7 @@ lives in would have left the dashboard tier up over nothing.
   with no reload, and `Reset progress` switches back. **Met** — measured both
   directions live: `recordAnswer()` → dashboard, `clearProgress()` → landing.
 
-### 1.4 Retire `#topicSection` as a home section  ·  **deferred to 3.4**
+### 1.4 Retire `#topicSection` as a home section  ·  done, with task 3.4
 
 `renderTopics()` survives untouched; only its mount point moves, into the
 Topic card's reveal.
@@ -380,9 +380,9 @@ Text left, photo panel right. Single column below 940px, photo first.
 
 ---
 
-## Phase 3 — Mode cards, five up
+## Phase 3 — Mode cards, five up  ·  **DONE**
 
-### 3.1 Retire the featured card
+### 3.1 Retire the featured card  ·  done
 `[index.html, index.html <script>]`
 
 `.mode-card--featured`, `.mode-start-btn`, `.msb-arrow` and the `featured`
@@ -391,7 +391,7 @@ branch of `renderModes()` all go. Five equal peers.
 - **Accept when:** `mode.start` is gone from `I18N` and no rule references
   `--accent-soft` as a card fill.
 
-### 3.2 Five-card grid
+### 3.2 Five-card grid  ·  done, with the grid spelled out
 `[index.html]`
 
 `repeat(auto-fit, minmax(210px, 1fr))` — five up above ~1160px, then four,
@@ -400,7 +400,7 @@ three, two, one. No hardcoded 3+2.
 - **Accept when:** no row is left with a single orphan card at 1600 / 1280 /
   1024 / 768 / 375px.
 
-### 3.3 Card interior
+### 3.3 Card interior  ·  done; the estimate moved rows
 `[index.html, index.html <script>]`
 
 Icon beside the title, description, then the action row. Per §1.5 the icon
@@ -414,7 +414,7 @@ still carry no `Start` label — the arrow says it.
 - **Accept when:** no card's estimate collides with its title in either
   language at any width.
 
-### 3.4 The Topic card and its reveal
+### 3.4 The Topic card and its reveal  ·  done
 `[index.html, index.html <script>, I18N]`
 
 Fifth card. Clicking it expands the existing topic chips directly beneath the
@@ -426,7 +426,7 @@ grid, using the `details.glossary-wrap` + `summary` idiom already used twice.
 - **Accept when:** picking a topic still calls `startMode('topic', key)`, the
   reveal is keyboard-operable, and the grid does not reflow when it opens.
 
-### 3.5 Band heading and panel
+### 3.5 Band heading and panel  ·  heading done, panel rejected
 `[index.html, I18N]`
 
 Eyebrow `PRACTICE YOUR WAY`, `h2` `Choose Your Practice Mode`, one-line sub.
@@ -437,6 +437,55 @@ Centred. The mockup's pale panel behind the band is `--surface2`.
   correct nesting — the cards take `--surface`.
 - **Accept when:** in light, the cards read clearly against the band and the
   band against the canvas; `contrast.test.mjs` passes both themes.
+
+
+### What phase 3 decided that the plan did not
+
+**The grid's column counts are spelled out, not `auto-fit`.** `repeat(auto-fit,
+minmax(210px, 1fr))` gives four columns at most real widths, and four columns of
+FIVE cards strands the fifth on a row of its own — which is the very thing task
+3.2's acceptance forbids. Only 5, 3 and 1 divide five cards without an orphan, so
+those are the three layouts: five above 1160px, three to 620px, one below it.
+
+**1160px is a new breakpoint, and German is what set it.** At five columns the
+title box is about 167px whatever the viewport, because `main` caps the content
+long before the screen does. `Prüfungssimulation` is one 18-character word and
+does not fit. Two things followed: the 1160px break, and `hyphens: auto` plus
+`overflow-wrap: anywhere` on `.mode-title` — the root already carries `lang="de"`
+when the UI is German, so the browser hyphenates it properly, and the same pair
+is what `.opt-num` uses for `Christusmonogramm`.
+
+**The time estimate left the head row for the meta row.** Task 3.3 said to keep
+it in `.mode-head` pushed right by `margin-left: auto`, and that was right for
+three cards a row. At five it is fatal: a nowrap "approx. 60-90 min" claimed 115px
+of a 165px row and `.mode-title`'s `min-width: 0` let it squeeze "All questions"
+down to **13px wide, wrapped over three lines**. In the meta row it sits beside
+the count, separated by the same `·` the featured card used, and it can wrap.
+This is the estimate's third home; the rule's comment records all three.
+
+**The reveal is a button with `aria-expanded`, not a `<details>`.** A `<details>`
+needs its summary and its body inside one element, and here the summary is a card
+in a five-column grid while the body has to span the whole row beneath it. The
+disclosure pattern gets the same keyboard behaviour with no DOM gymnastics.
+`#topicSection` sits BELOW the grid, so opening it cannot reflow the cards, and
+`renderModes()` reads the panel's `hidden` to redraw `aria-expanded` — it runs
+again on every language switch and would otherwise reset the button while the
+topics were still showing.
+
+**The `--surface2` panel behind the band was rejected.** Task 3.5 argued the
+cards nest on it correctly. They do in light; in dark they cannot. The dark ramp
+only goes UP — `--surface2` is 1.30 above the canvas and `--surface` is 1.15 — so
+cards on a `--surface2` band read as wells sunk into it rather than tiles raised
+off it, and there is no rung above to promote them to that leaves hover anywhere
+to go. In light the same panel is a 1.03 step, which `CLAUDE.md` already calls
+invisible. The band keeps the canvas; its eyebrow and heading are what mark it.
+
+**The heading is not centred either**, because the band carries the state picker.
+A centred `h2` with a right-aligned control on the same line reads as a mistake,
+and `CLAUDE.md`'s rule that a control belongs to the section it changes outranks
+the mockup's alignment. `.section-head--row` keeps heading left, picker right,
+with the new eyebrow above.
+
 
 ---
 
