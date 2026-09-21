@@ -493,7 +493,10 @@ kept `#DC2626` would have shipped a 4.51 squeaker.
   generations back. Recoloured.
 
 **`docs/Mockups/` is new**, holding the design boards, the generated illustrations, and
-licensed Wikimedia photography with full attribution. Two findings there are worth carrying:
+licensed Wikimedia photography with full attribution. **Both illustration character sets
+are complete** — female (`study-woman-dog` or `-cat` + `success-woman`) and male
+(`study-man-dog` + `success-man`). Phase 2 ships ONE set and deletes the other, so the
+same person appears in the hero and on the results screen. Two findings there are worth carrying:
 - **The generated Germany maps must not ship.** Berlin, Hamburg and Bremen are absent — all
   three are states and all three are exam answers — the internal borders match no real
   boundary, and the Brandenburg Gate is drawn on the Baltic coast.

@@ -12,15 +12,23 @@ Photographs and their licences are one folder over, in
 |---|---|
 | `languages.png` | Bilingual block. Both `Hallo!` and `Hello!` spelled correctly. The strongest of the eight. |
 | `study-man-dog.png` | Hero panel, onboarding, empty states. |
-| `success-man.png` | Results screen, pass state. Same character as `study-man-dog` — these two are the only consistent pair. |
+| `success-man.png` | Results screen, pass state. Same character as `study-man-dog`. |
+| `success-woman.png` | Same slot, female character. Matches `study-woman-*`. |
 
-## Pick one, delete the rest
+## Pick one character set
 
-`study-woman-dog.png` and `study-woman-cat.png` are the same scene twice
-(the pet and a picture frame differ), and neither has a matching female
-success illustration. If you prefer the female character, regenerate the
-success scene to match before shipping either. Otherwise use the male pair
-above and delete all three.
+**Both sets are complete** (`success-woman.png` added 2026-09-21), so this is
+now a free choice rather than a forced one:
+
+| Set | Study | Success |
+|---|---|---|
+| Female | `study-woman-dog.png` *or* `study-woman-cat.png` | `success-woman.png` |
+| Male | `study-man-dog.png` | `success-man.png` |
+
+Ship **one** set and delete the other, so the same person appears in the hero
+and on the results screen. `study-woman-dog` and `study-woman-cat` are the
+same scene twice — only the pet and a picture frame differ — so at most one
+of those two ships whichever set you pick.
 
 ## Do not ship — `map-decorative-a.png`, `map-decorative-b.png`
 

@@ -26,10 +26,9 @@ assets per canvas, not more pixels: one image per generation.
 `EIB_Regeneration_Prompts.pptx` still holds working prompts. Two are worth
 re-running if you want to finish the set:
 
-- **Prompt 4 (Success / Achievement)** — regenerate with a female character if
-  you prefer `study-woman-dog.png` over the male pair. Today there is no
-  female success illustration, which is why the male pair is the only
-  consistent set.
+- ~~**Prompt 4 (Success / Achievement)** — regenerate with a female
+  character.~~ **Done 2026-09-21**: `../illustrations/success-woman.png`. Both
+  character sets are complete now.
 - **Prompt 3 (Germany map)** — only if you want a decorative map. Do not try
   to generate an *accurate* one; use `../photos/germany-states-accurate.svg`,
   which is correct, free, and vector.
