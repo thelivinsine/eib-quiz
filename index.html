@@ -308,6 +308,9 @@
            ============================================================ */
         *, *::before, *::after { box-sizing: border-box; }
         * { margin: 0; padding: 0; }
+        /* The home tiers are toggled with `hidden`, and several of the sections they
+           toggle set their own `display` — which beats the UA's `[hidden]` rule. */
+        [hidden] { display: none !important; }
 
         html { overflow-x: clip; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
@@ -1973,8 +1976,14 @@
         <!-- Home Screen -->
         <section id="homeScreen" class="screen active">
 
+            <!-- The home screen is TWO TIERS over one section list: a first visitor gets
+                 the marketing, a returning learner gets the dashboard, and the mode band
+                 is shared. `initHomeScreen()` toggles `hidden` on every [data-tier]
+                 element; a section with no data-tier shows in both. The DOM order below
+                 reads correctly for either tier, so nothing is ever moved or duplicated. -->
+
             <!-- Landing hero: the pitch, one primary action, then out of the way. -->
-            <div class="hero-landing">
+            <div class="hero-landing" data-tier="landing">
                 <div class="hero-inner">
                     <h1 class="hero-headline" data-i18n-html="hero.headline"></h1>
                     <p class="hero-lead" data-i18n="hero.lead"></p>
@@ -1987,8 +1996,8 @@
                 </div>
             </div>
 
-            <!-- 1 · Where you stand — one wide card, the page's opening statement. -->
-            <section class="home-section" id="homeMain">
+            <!-- 1 · Where you stand — one wide card, the returning learner's opening statement. -->
+            <section class="home-section" data-tier="dashboard">
                 <div class="section-head">
                     <h2 data-i18n="home.progress.title"></h2>
                     <p data-i18n="home.progress.lead"></p>
@@ -1996,8 +2005,10 @@
                 <div id="homeStatus"></div>
             </section>
 
-            <!-- 2 · Practise — the main event: one featured mode, three secondary. -->
-            <section class="home-section">
+            <!-- 2 · Practise — the main event, and the one band BOTH tiers show. It carries
+                 #homeMain because the hero's CTA scrolls here: "Where you stand" is hidden
+                 on the tier that has a hero. -->
+            <section class="home-section" id="homeMain">
                 <div class="section-head section-head--row">
                     <div>
                         <h2 data-i18n="home.practice.title"></h2>
@@ -2017,8 +2028,9 @@
                 <div id="topicSection"></div>
             </section>
 
-            <!-- 4 · Quieter tail: what you did, and what the words mean. -->
-            <section class="home-section home-section--quiet">
+            <!-- 4 · Quieter tail: what you did, and what the words mean. Nothing to look
+                 back on before the first round, so it is the dashboard's alone. -->
+            <section class="home-section home-section--quiet" data-tier="dashboard">
                 <div class="section-head">
                     <h2 data-i18n="home.more.title"></h2>
                     <p data-i18n="home.more.lead"></p>
@@ -2712,18 +2724,33 @@
         // buttons that throw on click.
         let loadFailed = false;
 
+        /**
+         * Which home tier to show. Marketing until there is something to come back to:
+         * a spaced-repetition record, a finished round, or a round left half-played.
+         * Reads the loaded state, not localStorage — `clearProgress()` empties both in
+         * memory, so a reset flips this back with no reload.
+         */
+        function hasProgress() {
+            return Object.keys(progress).length > 0 || resultsHistory.length > 0 || !!getSavedSession();
+        }
+
         function initHomeScreen() {
             if (loadFailed) {
                 document.getElementById('modesGrid').innerHTML =
                     '<div class="load-error">' + t('err.load') + '</div>';
                 return;
             }
+            const tier = hasProgress() ? 'dashboard' : 'landing';
+            document.querySelectorAll('#homeScreen [data-tier]')
+                .forEach(el => { el.hidden = el.dataset.tier !== tier; });
+
             renderModes();
             renderTopics();
+            renderStatePicker();
+            if (tier !== 'dashboard') return;
             renderHistory();
             renderGlossary();
             renderHomeStatus();
-            renderStatePicker();
         }
 
         /** The state picker sits with the modes it changes, not with the progress it does not. */
@@ -2902,7 +2929,9 @@
         // ============================================================
         function renderHomeStatus() {
             const el = document.getElementById('homeStatus');
-            if (!el) return;
+            // Its whole section belongs to the dashboard tier; on the landing tier there
+            // is nothing to paint into. Guarded here rather than at each caller.
+            if (!el || el.closest('[hidden]')) return;
             const pool = activePool();
             const totalPool = pool.length;
             const mastered = masteredCount();
@@ -2928,7 +2957,7 @@
                         </div>
                         <div class="resume-actions">
                             <button class="btn-primary btn-sm" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
-                            <button class="btn-secondary btn-sm" onclick="clearSession(); renderHomeStatus();">${t('dash.resumeDrop')}</button>
+                            <button class="btn-secondary btn-sm" onclick="clearSession(); initHomeScreen();">${t('dash.resumeDrop')}</button>
                         </div>
                     </div>`;
             }
@@ -2996,7 +3025,7 @@
             const qs = sess.ids.map(id => byId.get(id)).filter(Boolean);
             // `answered` is keyed by position in sess.ids, so dropping any id shifts every
             // later answer onto the wrong question. Nothing sane to resume — discard it.
-            if (!qs.length || qs.length !== sess.ids.length) { clearSession(); renderHomeStatus(); return; }
+            if (!qs.length || qs.length !== sess.ids.length) { clearSession(); initHomeScreen(); return; }
             state.currentMode = sess.mode;
             state.currentTopic = sess.topic || null;
             state.stateCode = sess.stateCode || selectedState;

@@ -1,6 +1,6 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
-Status: **Phase 0 complete, 2026-09-21.** Phases 1-7 not started.
+Status: **Phases 0-1 complete, 2026-09-21.** Phases 2-7 not started.
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
@@ -251,9 +251,9 @@ One decorative inline SVG for the CTA band, `--faint`, `aria-hidden="true"`.
 
 ---
 
-## Phase 1 — The two-tier switch
+## Phase 1 — The two-tier switch  ·  **DONE (1.4 deferred to 3.4)**
 
-### 1.1 Add `hasProgress()`
+### 1.1 Add `hasProgress()`  ·  done
 `[index.html <script>]`
 
 ```
@@ -266,32 +266,54 @@ hasProgress() = any spaced-repetition record in eib_progress_v1
 - **Accept when:** it returns `false` on a cleared profile and `true` after
   one answered question, and `Reset progress` flips it back to `false`.
 
-### 1.2 Restructure the home markup into two section lists
+### 1.2 Restructure the home markup into two section lists  ·  done
 `[index.html]`
 
-Both lists live in `#homeScreen`. `initHomeScreen()` shows one.
+**Shipped as ONE section list with a `data-tier` attribute, not two lists.**
+The planned shape — two wrapper elements with the mode band moved between them
+— needs DOM surgery on every repaint to keep one band shared. It is not
+needed: there is a single DOM order that reads correctly for both tiers,
 
-- `.home-landing` — hero, modes, why, stats, CTA.
-- `.home-dashboard` — where you stand, modes, past rounds & glossary.
-- The mode band is **one element**, moved between the two by DOM order, not
-  duplicated. Two copies of five cards is two things to keep in sync.
-- **Accept when:** exactly one of the two lists is in the DOM at a time, and
-  no renderer is called for a band that is not showing.
+> hero · where you stand · modes · topics · why · stats · CTA · past rounds
 
-### 1.3 Make `initHomeScreen()` the single door
+because the shared band sits in the same place in both. `initHomeScreen()`
+toggles `hidden` on every `#homeScreen [data-tier]`; a section with no
+`data-tier` shows in both tiers. Nothing is moved and nothing is duplicated,
+which is what the "one element" rule was protecting.
+
+- `[hidden] { display: none !important }` was added to the reset. Several of
+  these sections set their own `display`, which beats the UA's `[hidden]`
+  rule — without it the hero stayed visible on the dashboard tier.
+- **Accept when:** exactly one tier's sections are rendered at a time, and no
+  renderer is called for a band that is not showing. **Met** — verified in the
+  browser, and `renderHomeStatus()` early-returns on `el.closest('[hidden]')`
+  so the guard covers `onStateChange()` too, not just the door.
+
+### 1.3 Make `initHomeScreen()` the single door  ·  done
 `[index.html <script>]`
 
-It already is; keep it that way. It branches on `hasProgress()` and calls only
-the renderers the chosen tier needs.
+It branches on `hasProgress()` and calls only the renderers the chosen tier
+needs. The two `clearSession(); renderHomeStatus();` call sites became
+`clearSession(); initHomeScreen();` — dropping a resumable session can empty
+the last thing `hasProgress()` was reading, and repainting only the card it
+lives in would have left the dashboard tier up over nothing.
 
+- **`#homeMain` moved from "Where you stand" to the mode band.** That id is
+  what `scrollToMain()` targets, and "Where you stand" is hidden on the tier
+  that has a hero — so the hero's CTA scrolled to a `display: none` element.
+  This is task 2.3's retarget, done early because Phase 1 breaks it.
 - **Accept when:** finishing a first round and returning home switches tiers
-  with no reload, and `Reset progress` switches back.
+  with no reload, and `Reset progress` switches back. **Met** — measured both
+  directions live: `recordAnswer()` → dashboard, `clearProgress()` → landing.
 
-### 1.4 Retire `#topicSection` as a home section
-`[index.html]`
+### 1.4 Retire `#topicSection` as a home section  ·  **deferred to 3.4**
 
 `renderTopics()` survives untouched; only its mount point moves, into the
 Topic card's reveal.
+
+Deferred because the mount it moves INTO is built in task 3.4. Doing it here
+would delete topic practice for the length of one phase. Until then
+`#topicSection` carries no `data-tier` and shows on both tiers.
 
 - **Accept when:** `home.topics.title` / `home.topics.lead` are deleted from
   `I18N` and no `data-i18n` references them.
