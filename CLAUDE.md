@@ -980,6 +980,10 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
+- `tools/make-og-image.py` - emits `og-image.svg` AND `og-image.png` from one set of
+  constants. **Not yet run for production**: the card is deferred until the landing-page
+  refactor settles the branding, so the committed pair still carries the old "Berlin Quiz"
+  copy. Never hand-edit one of the two files — that drift is why this script exists.
 - `legacy/` - May 28 build (standalone HTML, corrupted JSON, old regen tool). See
   `legacy/README.md`. Do NOT publish from it.
 

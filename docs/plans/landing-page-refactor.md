@@ -175,12 +175,12 @@ Each task states its acceptance criterion. `[file]` marks what it touches.
   generations back; recoloured to the accent.
 - **Accepted:** `contrast.test.mjs` 10/10, `scale.test.mjs` 12/12, verified
   rendered in both themes.
-- **Left open — the social card needs a content fix, not just a re-render.**
-  `og-image.png` is the rasterised copy of `og-image.svg`, so it still shows
-  the old palette. But re-rendering it alone would be half a job: the card
-  reads **"Berlin Quiz"** and **"310 FRAGEN"**, written when the app was
-  Berlin-only. It covers all 16 states and 460 questions now. Fix the copy and
-  the raster together, once someone decides the wording.
+- **Deliberately deferred to Phase 7 — the social card.** `og-image.png` is
+  the rasterised copy of `og-image.svg` and still shows the old palette, and
+  the card reads **"Berlin Quiz"** and **"310 FRAGEN"** from when the app was
+  Berlin-only. It is deferred rather than fixed because **this refactor decides
+  the branding the card should carry** — redoing it now would mean redoing it
+  twice. `tools/make-og-image.py` is written and ready; see task 7.7.
 
 
 ### 0.1 Source a portrait-friendly hero photograph  ·  done
@@ -505,6 +505,24 @@ A rising one is a regression.
 ### 7.3 Syntax and PWA
 - Extract the final `<script>` block and `node --check` it.
 - `node --check sw.js`; bump `CACHE` if any cached static asset changed.
+
+### 7.7 Redo the social card
+`[tools/make-og-image.py, og-image.svg, og-image.png]`
+
+Deferred here from Phase 0 on purpose: the card's branding follows whatever
+this refactor settles on, so doing it earlier means doing it twice.
+
+`tools/make-og-image.py` emits **both** files from one set of constants — they
+used to be hand-synced and drifted, which is how the PNG kept a `#BFFF00` lime
+two palettes after it was replaced. It has **not been run for production**; its
+copy constants are a provisional pass matching the current `<title>`, not the
+mockup's `EIB Quiz / Learn · Practice · Pass` lockup.
+
+- Decide the wording against the shipped header's brand lockup (task 6.2).
+- Run the script, commit **both** outputs together.
+- **Accept when:** the card reads correctly at thumbnail size (it is never seen
+  full width), the SVG and PNG agree, and no string on it contradicts the app —
+  no "Berlin", and a question count that matches what the app actually offers.
 
 ### 7.4 Language sweep
 Switch EN ⇄ DE on both tiers. No chrome string may stay in the other

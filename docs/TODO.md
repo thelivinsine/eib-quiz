@@ -509,10 +509,13 @@ swap, `tools/validate.js` OK, `node --check sw.js`, the extracted `<script>` blo
 `grep 'stroke="currentColor"' index.html` empty, and both themes rendered at 1280x900 and
 375x720 with `scrollWidth === innerWidth`.
 
-**Not verified:** `og-image.png` is the rasterised copy of `og-image.svg` and still shows
-the old palette — and re-rendering it alone would be half a job, because the card reads
-**"Berlin Quiz"** and **"310 FRAGEN"**, written when the app was Berlin-only. Fix the copy
-and the raster together. Nothing was checked on the live site; all measurement was against
+**Deferred on purpose:** the social card. `og-image.png` still shows the old palette, and
+the card reads **"Berlin Quiz"** and **"310 FRAGEN"** from when the app was Berlin-only.
+Redoing it now would mean redoing it twice — **the landing-page refactor decides the
+branding the card carries**, so it waits for Phase 7 (task 7.7).
+`tools/make-og-image.py` is written and ready: it emits the SVG and the PNG from **one**
+set of constants, because hand-syncing them is exactly how the PNG kept a `#BFFF00` lime
+two palettes after it was replaced. It has not been run for production. Nothing was checked on the live site; all measurement was against
 `python -m http.server`.
 
 
