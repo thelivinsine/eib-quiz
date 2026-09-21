@@ -1,6 +1,7 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
-Status: **Phase 0 complete, 2026-09-21.** Phases 1-7 not started.
+Status: **Complete, 2026-09-21** — all eight phases, including 7.7. The one thing not
+done is a check on the live site; every measurement here was against `python -m http.server`.
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
@@ -251,9 +252,9 @@ One decorative inline SVG for the CTA band, `--faint`, `aria-hidden="true"`.
 
 ---
 
-## Phase 1 — The two-tier switch
+## Phase 1 — The two-tier switch  ·  **DONE** (1.4 landed with 3.4)
 
-### 1.1 Add `hasProgress()`
+### 1.1 Add `hasProgress()`  ·  done
 `[index.html <script>]`
 
 ```
@@ -266,41 +267,63 @@ hasProgress() = any spaced-repetition record in eib_progress_v1
 - **Accept when:** it returns `false` on a cleared profile and `true` after
   one answered question, and `Reset progress` flips it back to `false`.
 
-### 1.2 Restructure the home markup into two section lists
+### 1.2 Restructure the home markup into two section lists  ·  done
 `[index.html]`
 
-Both lists live in `#homeScreen`. `initHomeScreen()` shows one.
+**Shipped as ONE section list with a `data-tier` attribute, not two lists.**
+The planned shape — two wrapper elements with the mode band moved between them
+— needs DOM surgery on every repaint to keep one band shared. It is not
+needed: there is a single DOM order that reads correctly for both tiers,
 
-- `.home-landing` — hero, modes, why, stats, CTA.
-- `.home-dashboard` — where you stand, modes, past rounds & glossary.
-- The mode band is **one element**, moved between the two by DOM order, not
-  duplicated. Two copies of five cards is two things to keep in sync.
-- **Accept when:** exactly one of the two lists is in the DOM at a time, and
-  no renderer is called for a band that is not showing.
+> hero · where you stand · modes · topics · why · stats · CTA · past rounds
 
-### 1.3 Make `initHomeScreen()` the single door
+because the shared band sits in the same place in both. `initHomeScreen()`
+toggles `hidden` on every `#homeScreen [data-tier]`; a section with no
+`data-tier` shows in both tiers. Nothing is moved and nothing is duplicated,
+which is what the "one element" rule was protecting.
+
+- `[hidden] { display: none !important }` was added to the reset. Several of
+  these sections set their own `display`, which beats the UA's `[hidden]`
+  rule — without it the hero stayed visible on the dashboard tier.
+- **Accept when:** exactly one tier's sections are rendered at a time, and no
+  renderer is called for a band that is not showing. **Met** — verified in the
+  browser, and `renderHomeStatus()` early-returns on `el.closest('[hidden]')`
+  so the guard covers `onStateChange()` too, not just the door.
+
+### 1.3 Make `initHomeScreen()` the single door  ·  done
 `[index.html <script>]`
 
-It already is; keep it that way. It branches on `hasProgress()` and calls only
-the renderers the chosen tier needs.
+It branches on `hasProgress()` and calls only the renderers the chosen tier
+needs. The two `clearSession(); renderHomeStatus();` call sites became
+`clearSession(); initHomeScreen();` — dropping a resumable session can empty
+the last thing `hasProgress()` was reading, and repainting only the card it
+lives in would have left the dashboard tier up over nothing.
 
+- **`#homeMain` moved from "Where you stand" to the mode band.** That id is
+  what `scrollToMain()` targets, and "Where you stand" is hidden on the tier
+  that has a hero — so the hero's CTA scrolled to a `display: none` element.
+  This is task 2.3's retarget, done early because Phase 1 breaks it.
 - **Accept when:** finishing a first round and returning home switches tiers
-  with no reload, and `Reset progress` switches back.
+  with no reload, and `Reset progress` switches back. **Met** — measured both
+  directions live: `recordAnswer()` → dashboard, `clearProgress()` → landing.
 
-### 1.4 Retire `#topicSection` as a home section
-`[index.html]`
+### 1.4 Retire `#topicSection` as a home section  ·  done, with task 3.4
 
 `renderTopics()` survives untouched; only its mount point moves, into the
 Topic card's reveal.
+
+Deferred because the mount it moves INTO is built in task 3.4. Doing it here
+would delete topic practice for the length of one phase. Until then
+`#topicSection` carries no `data-tier` and shows on both tiers.
 
 - **Accept when:** `home.topics.title` / `home.topics.lead` are deleted from
   `I18N` and no `data-i18n` references them.
 
 ---
 
-## Phase 2 — Hero
+## Phase 2 — Hero  ·  **DONE**
 
-### 2.1 Two-column hero shell
+### 2.1 Two-column hero shell  ·  done
 `[index.html]`
 
 Text left, photo panel right. Single column below 940px, photo first.
@@ -309,7 +332,7 @@ Text left, photo panel right. Single column below 940px, photo first.
 - **Accept when:** the panel holds its aspect at 1600 / 1280 / 940 / 620 /
   375px with no letterboxing and no horizontal scroll.
 
-### 2.2 Eyebrow, headline, lead
+### 2.2 Eyebrow, headline, lead  ·  done
 `[index.html, I18N]`
 
 - Eyebrow takes `.eyebrow` and `--ls-caps` — reuse, do not restyle.
@@ -321,7 +344,7 @@ Text left, photo panel right. Single column below 940px, photo first.
 - **Accept when:** the headline sets on two lines at desktop width in both
   languages, and `scale.test.mjs` reports zero literal font-sizes.
 
-### 2.3 Two buttons
+### 2.3 Two buttons  ·  done
 `[index.html, I18N]`
 
 `Start Now` (primary) and `Learn More` (secondary), both `--ctl-lg`.
@@ -331,7 +354,7 @@ Text left, photo panel right. Single column below 940px, photo first.
   one.
 - **Accept when:** both clear 44px, and both work with the keyboard.
 
-### 2.4 Four feature chips — neutral icons, no plate
+### 2.4 Four feature chips — neutral icons, no plate  ·  done
 `[index.html, I18N]`
 
 `300 official questions` · `All 16 federal states` · `German & English` ·
@@ -343,7 +366,7 @@ Text left, photo panel right. Single column below 940px, photo first.
 - **Accept when:** all four labels fit one line each at 375px in German, and
   no chip has a `background` or `border`.
 
-### 2.5 Script annotation and quote card
+### 2.5 Script annotation and quote card  ·  done, with two deviations
 `[index.html, I18N]`
 
 - Annotation top-left over the photo, `--font-hand`, plus the curved arrow as
@@ -358,9 +381,9 @@ Text left, photo panel right. Single column below 940px, photo first.
 
 ---
 
-## Phase 3 — Mode cards, five up
+## Phase 3 — Mode cards, five up  ·  **DONE**
 
-### 3.1 Retire the featured card
+### 3.1 Retire the featured card  ·  done
 `[index.html, index.html <script>]`
 
 `.mode-card--featured`, `.mode-start-btn`, `.msb-arrow` and the `featured`
@@ -369,7 +392,7 @@ branch of `renderModes()` all go. Five equal peers.
 - **Accept when:** `mode.start` is gone from `I18N` and no rule references
   `--accent-soft` as a card fill.
 
-### 3.2 Five-card grid
+### 3.2 Five-card grid  ·  done, with the grid spelled out
 `[index.html]`
 
 `repeat(auto-fit, minmax(210px, 1fr))` — five up above ~1160px, then four,
@@ -378,7 +401,7 @@ three, two, one. No hardcoded 3+2.
 - **Accept when:** no row is left with a single orphan card at 1600 / 1280 /
   1024 / 768 / 375px.
 
-### 3.3 Card interior
+### 3.3 Card interior  ·  done; the estimate moved rows
 `[index.html, index.html <script>]`
 
 Icon beside the title, description, then the action row. Per §1.5 the icon
@@ -392,7 +415,7 @@ still carry no `Start` label — the arrow says it.
 - **Accept when:** no card's estimate collides with its title in either
   language at any width.
 
-### 3.4 The Topic card and its reveal
+### 3.4 The Topic card and its reveal  ·  done
 `[index.html, index.html <script>, I18N]`
 
 Fifth card. Clicking it expands the existing topic chips directly beneath the
@@ -404,7 +427,7 @@ grid, using the `details.glossary-wrap` + `summary` idiom already used twice.
 - **Accept when:** picking a topic still calls `startMode('topic', key)`, the
   reveal is keyboard-operable, and the grid does not reflow when it opens.
 
-### 3.5 Band heading and panel
+### 3.5 Band heading and panel  ·  heading done, panel rejected
 `[index.html, I18N]`
 
 Eyebrow `PRACTICE YOUR WAY`, `h2` `Choose Your Practice Mode`, one-line sub.
@@ -416,11 +439,60 @@ Centred. The mockup's pale panel behind the band is `--surface2`.
 - **Accept when:** in light, the cards read clearly against the band and the
   band against the canvas; `contrast.test.mjs` passes both themes.
 
+
+### What phase 3 decided that the plan did not
+
+**The grid's column counts are spelled out, not `auto-fit`.** `repeat(auto-fit,
+minmax(210px, 1fr))` gives four columns at most real widths, and four columns of
+FIVE cards strands the fifth on a row of its own — which is the very thing task
+3.2's acceptance forbids. Only 5, 3 and 1 divide five cards without an orphan, so
+those are the three layouts: five above 1160px, three to 620px, one below it.
+
+**1160px is a new breakpoint, and German is what set it.** At five columns the
+title box is about 167px whatever the viewport, because `main` caps the content
+long before the screen does. `Prüfungssimulation` is one 18-character word and
+does not fit. Two things followed: the 1160px break, and `hyphens: auto` plus
+`overflow-wrap: anywhere` on `.mode-title` — the root already carries `lang="de"`
+when the UI is German, so the browser hyphenates it properly, and the same pair
+is what `.opt-num` uses for `Christusmonogramm`.
+
+**The time estimate left the head row for the meta row.** Task 3.3 said to keep
+it in `.mode-head` pushed right by `margin-left: auto`, and that was right for
+three cards a row. At five it is fatal: a nowrap "approx. 60-90 min" claimed 115px
+of a 165px row and `.mode-title`'s `min-width: 0` let it squeeze "All questions"
+down to **13px wide, wrapped over three lines**. In the meta row it sits beside
+the count, separated by the same `·` the featured card used, and it can wrap.
+This is the estimate's third home; the rule's comment records all three.
+
+**The reveal is a button with `aria-expanded`, not a `<details>`.** A `<details>`
+needs its summary and its body inside one element, and here the summary is a card
+in a five-column grid while the body has to span the whole row beneath it. The
+disclosure pattern gets the same keyboard behaviour with no DOM gymnastics.
+`#topicSection` sits BELOW the grid, so opening it cannot reflow the cards, and
+`renderModes()` reads the panel's `hidden` to redraw `aria-expanded` — it runs
+again on every language switch and would otherwise reset the button while the
+topics were still showing.
+
+**The `--surface2` panel behind the band was rejected.** Task 3.5 argued the
+cards nest on it correctly. They do in light; in dark they cannot. The dark ramp
+only goes UP — `--surface2` is 1.30 above the canvas and `--surface` is 1.15 — so
+cards on a `--surface2` band read as wells sunk into it rather than tiles raised
+off it, and there is no rung above to promote them to that leaves hover anywhere
+to go. In light the same panel is a 1.03 step, which `CLAUDE.md` already calls
+invisible. The band keeps the canvas; its eyebrow and heading are what mark it.
+
+**The heading is not centred either**, because the band carries the state picker.
+A centred `h2` with a right-aligned control on the same line reads as a mistake,
+and `CLAUDE.md`'s rule that a control belongs to the section it changes outranks
+the mockup's alignment. `.section-head--row` keeps heading left, picker right,
+with the new eyebrow above.
+
+
 ---
 
-## Phase 4 — Why-band and stats band
+## Phase 4 — Why-band and stats band  ·  **DONE**
 
-### 4.1 Why-band
+### 4.1 Why-band  ·  done
 `[index.html, I18N]`
 
 Eyebrow `WHY EIB QUIZ?`, `h2` `Simple. Effective. Reliable.`, then four items:
@@ -435,7 +507,7 @@ does.
 - **Accept when:** four across above 940px, two across at tablet, one at
   375px, with no stray separator on any wrapped row.
 
-### 4.2 Stats band
+### 4.2 Stats band  ·  done
 `[index.html, I18N]`
 
 `300` · `16` · `2` · `60` with labels, hairline-separated, plus the second
@@ -450,9 +522,9 @@ script annotation at the right.
 
 ---
 
-## Phase 5 — CTA band
+## Phase 5 — CTA band  ·  **DONE**
 
-### 5.1 The band
+### 5.1 The band  ·  done
 `[index.html, I18N]`
 
 Eyebrow, `h2`, one-line lead, one primary button, the Brandenburg line art and
@@ -465,11 +537,60 @@ the third annotation.
 - **Accept when:** below 620px the art and the annotation are hidden and the
   band is heading, lead, button.
 
+
+### What phases 2, 4 and 5 decided that the plan did not
+
+**The photograph is 1:1 at every width, and the crop is load-bearing.**
+`img/hero-reichstag.webp` is a 1100×1100 square crop of the phase-0 download,
+centred at 54% of its width so the German flag survives. Holding one aspect at
+every width is what lets the overlays be placed in percentages that stay true.
+
+**The margin note is top RIGHT, and the mockup's curved arrow is gone.** The
+note sits on a photograph, so its ground is not a token and its ink is the
+literal `#16233A`, registered in `LITERAL_PAIRS` against `#D0D3D8` — the
+darkest pixel measured under it (210 of 255). That patch is the only clean sky
+in the frame: the mockup's top-left corner is our EU flag, and every region the
+arrow could have swept has a flagpole running through it, where a dark stroke
+would simply vanish. **If the crop is ever redone, that measurement has to be
+redone with it.**
+
+**The quote card sits INSIDE the frame, not overlapping its lower edge.** As a
+sibling of the photo it was positioned against the photo *plus its credit line*,
+and landed on top of the credit. Both overlays are children of `.hero-photo`
+now, so they are placed against the picture and nothing hangs into the flow.
+
+**The photo carries a visible credit.** It is CC BY-SA 4.0, which asks for
+attribution where the work is used, not only in `img/ATTRIBUTIONS.md`.
+`.hero-credit` / the `hero.credit` string is that line; it is not decoration and
+should not be tidied away.
+
+**`--surface2` is NOT the ground for these bands.** Task 3.5 sanctions it for
+the modes band because cards sit on it there. The why, numbers and CTA bands
+hold no cards, so a `--surface2` slab on the canvas is the 1.03 step in light
+that `CLAUDE.md` calls invisible. All three take the tile rule instead:
+`--surface` plus a `--border` hairline.
+
+**The hairline-separated band is now one rule, shared with the results
+screen.** `.result-stats, .why-grid, .stats-grid` declare `gap: 1px` together.
+Written separately it took `literalSpacing` to 3 and `gapRungs` to 8, both over
+budget — the ratchet caught it on the first run. For the same reason the hero's
+column gap is `--space-xl` and not `--space-2xl`: 40px is a gap rung nowhere
+else in the sheet, and a ninth rung is the flat histogram the test watches for.
+
+**Three margin notes, one class.** `.script-note` is the only rule that reads
+`--font-hand`; phase 0 planned for two classes and one is enough.
+
+**New plumbing, both one-liners:** `data-i18n-alt` in `applyStaticStrings()` for
+the photo's alt text, and a boot pass over `[data-icon]` that fills static
+markup from `ICONS`, so the icon set stays the single definition. `scrollToMain()`
+became `scrollToId(id)` — there are three on-page anchors now, not one.
+
+
 ---
 
-## Phase 6 — Header
+## Phase 6 — Header  ·  **DONE**
 
-### 6.1 Primary action in the header
+### 6.1 Primary action in the header  ·  done
 `[index.html, I18N]`
 
 `Start Practice` at the right of the header, **home screen only** — inside a
@@ -482,7 +603,7 @@ action.
 - **Accept when:** it is absent on every screen carrying `body.in-session`,
   and the header still fits one line at 375px with both segmented controls.
 
-### 6.2 Brand lockup
+### 6.2 Brand lockup  ·  done
 `[index.html, I18N]`
 
 The mockup shows the flag mark, `EIB Quiz`, and the tagline
@@ -493,9 +614,36 @@ The mockup shows the flag mark, `EIB Quiz`, and the tagline
 - **Accept when:** the flag mark's hex values are in `LITERAL_PAIRS` if any
   are written as literals.
 
+
+### What phase 6 decided that the plan did not
+
+**The header CTA is hidden below 620px, not merely small.** Task 6.1's
+acceptance asks it to fit one line at 375px beside both segmented controls, and
+it does not: brand, two switches and a button come to roughly 390px inside a
+343px content width. It is a marketing affordance, and ten pixels below it the
+hero's own **Start now** does the same job, so down there it goes.
+
+**It sits AFTER `.btn-primary` in the sheet.** Both are single classes, so as
+written above it the rule lost every declaration to the base below it, and the
+button first rendered at `.btn-primary`'s full 44px and padding. Moved below, it
+takes `--ctl-sm` with the usual coarse-pointer bump — the same exception
+`.brand` and `.session-back` already take.
+
+**The brand mark is the flag, and two tokens died with the letter tile.**
+`--ink-tile` and `--on-dark` existed only for the charcoal `E`; nothing else read
+them, so both are gone from both `:root` blocks, along with the three entries in
+`contrast.test.mjs` that asserted the old mark (two token pairs and the `#fff`
+literal). The flag's three bands are literals written **inside the SVG**, not in
+a rule: they are the German flag's own values, identical in both themes, and a
+graphic carrying no text has no pair for `LITERAL_PAIRS` to hold.
+
+**`EIB Quiz` is not in `I18N`,** because a product name is not translated — the
+same reason the old `eib` was markup. The tagline is, as `nav.tagline`.
+
+
 ---
 
-## Phase 7 — Responsive and verification
+## Phase 7 — Responsive and verification  ·  **DONE**
 
 ### 7.1 Breakpoint sweep
 At **1600 / 1280 / 1024 / 940 / 768 / 620 / 375px**, both tiers, both
@@ -536,7 +684,7 @@ painting leaves transitions at `currentTime: 0` **forever**, and
 `getComputedStyle()` then returns the transition's start value. This produced
 four phantom contrast failures in one previous session.
 
-### 7.7 Redo the social card
+### 7.7 Redo the social card  ·  done
 `[tools/make-og-image.py, og-image.svg, og-image.png]`
 
 Deferred here from Phase 0 on purpose: the card's branding follows whatever
@@ -544,9 +692,16 @@ this refactor settles on, so doing it earlier means doing it twice.
 
 `tools/make-og-image.py` emits **both** files from one set of constants — they
 used to be hand-synced and drifted, which is how the PNG kept a `#BFFF00` lime
-two palettes after it was replaced. It has **not been run for production**; its
-copy constants are a provisional pass matching the current `<title>`, not the
-mockup's `EIB Quiz / Learn · Practice · Pass` lockup.
+two palettes after it was replaced. **Run for production 2026-09-21.**
+
+What it decided: the mark is the German flag, the header's, replacing a drawn
+tick that said nothing about the subject and was the last stroked glyph in the
+project. The copy stays **descriptive** rather than the `EIB Quiz / Learn ·
+Practise · Pass` lockup — a link preview is read beside its own URL, so the
+space is better spent saying what the thing IS. `300` is the number the app's
+own hero and stats band give; the 460 in the repo counts all sixteen states'
+sets, of which a reader ever sees ten. The palette constants already matched
+the phase-0 repaint and were not touched.
 
 - Decide the wording against the shipped header's brand lockup (task 6.2).
 - Run the script, commit **both** outputs together.
@@ -566,3 +721,27 @@ mockup's `EIB Quiz / Learn · Practice · Pass` lockup.
    own, except `.mode-flag`.
 5. Both test suites pass; no budget has risen.
 6. Both themes and both languages are correct at every breakpoint.
+
+---
+
+## Post-review corrections (PR #79)
+
+A diff review of the whole branch found three things the phases missed. All are
+fixed on `landing-page-phase-1`; the reasoning is in `CLAUDE.md` and the
+2026-09-21 block of `docs/TODO.md`.
+
+1. **Task 2.3's retarget was half done.** `#homeMain` got the new id but
+   `#whyBand` — the second `scrollToId()` target, added by task 3.2 — never got
+   a `scroll-margin-top`, so "Learn more" scrolled it behind the sticky header.
+   The rule is `#homeMain, #whyBand { scroll-margin-top: var(--header-h) }`.
+   **Any future `scrollToId()` target joins that selector.**
+2. **Task 1.2's tier switch did not cover the load-failure path.**
+   `initHomeScreen()` returned on `loadFailed` before applying the tier, so an
+   unreachable `questions.json` rendered both tiers at once. The tier is
+   `loadFailed ? null : …` and is applied first.
+3. **Task 3.1 left `--accent-hover` behind.** It was the featured card's hover
+   fill alone; the token and its three `contrast.test.mjs` assertions are gone,
+   and the two pairs still named after that card now name their real consumers.
+
+Acceptance item 5 still holds after all three: contrast 10/10, scale 12/12, no
+budget moved.

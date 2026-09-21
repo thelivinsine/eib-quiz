@@ -148,18 +148,16 @@ const PAIRS = [
   ["muted", "surface3", AA, "the letter chip on an option, and a dimmed option after answering"],
 
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
-  ["on-dark", "ink-tile", AA, "the brand mark in the header"],
 
-  // The featured exam card is a teal-tinted tile, so its three text tiers land
-  // on accent-soft rather than on a tile — the same tiers, a different ground.
-  ["text", "accent-soft", AA, "the featured exam card title"],
-  ["sub-text", "accent-soft", AA, "the featured exam card description"],
+  // --accent-soft is a tinted ground rather than a tile, and three tiers land on
+  // it: the resume banner's text, a picked option in the exam, and a navigator
+  // cell. The featured exam card was the fourth until 2026-09-21; --accent-hover
+  // was ITS hover fill alone and went with it, along with the two pairs that
+  // asserted the hovered tiers.
+  ["text", "accent-soft", AA, "a picked option in the exam, and the resume banner's heading"],
+  ["sub-text", "accent-soft", AA, "the resume banner's body copy"],
   ["muted", "accent-soft", AA, "the resume banner's mode-and-count line"],
-  // A whole card switches ground on hover, so every tier that lands on it is
-  // listed. Asserting the headline alone is what let the meta line ship at
-  // 2.65 in dark.
-  ["text", "accent-hover", AA, "the featured exam card title, hovered"],
-  ["sub-text", "accent-hover", AA, "its description and meta line, hovered"],
+  ["accent-text", "accent-soft", AA, "the current/answered cell in the navigator"],
 ];
 
 // Two fills that sit against each other. Three edge treatments, three floors — see
@@ -183,11 +181,9 @@ const FILLS = [
   ["hover", "surface", STATE, "a tile or option under the pointer"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  ["ink-tile", "canvas", STATE, "the brand mark against the header"],
-  // The featured card's tint is not a step in lightness against paper-grey, so
-  // the hairline is the whole separation and has to clear the edge floor alone.
-  ["accent", "canvas", HAIRLINE, "the featured exam card's teal edge against the page"],
-  ["accent-hover", "accent-soft", STATE, "that card under the pointer"],
+  // A tinted ground is not a step in lightness against paper-grey, so the edge is
+  // the whole separation and has to clear the floor alone.
+  ["accent", "canvas", HAIRLINE, "a picked option's accent edge against the page"],
 ];
 
 // Colours written as literals rather than tokens. The block parser above only sees the two
@@ -197,19 +193,24 @@ const FILLS = [
 // [foreground, ground, floor, what it is].
 const LITERAL_PAIRS = {
   light: [
-    ['#fff', '#0F1929', AA, 'the brand mark letter (html.light .brand-mark) on --ink-tile'],
     ['#fff', '#047857', AA, 'the letter on the correct answer chip, on --green'],
     ['#fff', '#CC2020', AA, 'the letter on the wrong answer chip, on --red'],
     // The zoom veil is rgba(9,10,13,0.60) over a PICTURE, so its effective backdrop
     // depends on the image. #6B6C6E is that veil composited over white — the lightest
     // an image can be, and therefore the worst case for the label on top of it.
     ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
+    // Same case as the veil: the hero's handwritten note sits on a PHOTOGRAPH, so its
+    // ground is not a token. The note is placed over the one clean patch of sky in
+    // img/hero-reichstag.webp, whose darkest pixel measures 210 of 255 — #D0D3D8 is
+    // that worst case. The note reads the same in both themes because the photo does.
+    ['#16233A', '#D0D3D8', AA, 'the hero margin note (.hero-note) on the photo sky'],
   ],
   dark: [
     ['#04231A', '#10B981', AA, 'the letter on the correct answer chip, on --green'],
     ['#3A0A0A', '#F87171', AA, 'the letter on the wrong answer chip, on --red'],
     // Same veil, same worst case: it sits on the image, not on the theme's canvas.
     ['#fff', '#6B6C6E', AA, 'the zoom veil label (.opt-img-hover) over a white image'],
+    ['#16233A', '#D0D3D8', AA, 'the hero margin note (.hero-note) on the photo sky'],
   ],
 };
 

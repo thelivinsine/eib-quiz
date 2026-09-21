@@ -90,11 +90,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     all landed on `--fs-xl`: a section heading, the featured card's title, the overview
     counters and the ring's percentage — the scale colliding where it needs distinction,
     which is the exact fault the `--fs-*` ramp exists to remove, reproduced a level up.
-    `.ds-num` and `.mode-card--featured .mode-title` moved to `--fs-lg`. A counter is a
+    `.ds-num` and the featured card's title moved to `--fs-lg` (the card itself is gone as
+    of 2026-09-21; the counter's step is what survives). A counter is a
     READOUT: it reports on its section and does not outrank the heading above it or the
     card you are meant to press — the same move `.stat-value` made on the quiz screen.
-    The featured card keeps its emphasis where it always had it: hue, width and the solid
-    Start pill, never size.
+    The featured card kept its emphasis in hue, width and a solid Start pill, never size —
+    and is retired; the five mode cards are peers.
   - **No drop shadows anywhere, in either theme.** A tile is a fill plus a hairline. There are no
     `--shadow-*` tokens; do not reintroduce one for a tile. Light mode would only earn a shadow
     under something that genuinely floats, and nothing in this app does.
@@ -126,14 +127,21 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     only ever puts those colours on FILLS and this app uses them as TEXT tiers: `#10B981` is
     2.54 on white, `#F59E0B` is 2.15, `#EF4444` is 3.76. The accent itself needs no such
     correction — `#2563EB` is 5.17 on white, so it ships exactly as drawn.
-    `--accent-hover` is the tinted card's hover fill — **not** `--accent-line`, which is
-    a border value: as a fill it is a 1.27x jump in light and a saturated mid-blue in dark, which
-    put the featured card's own description and meta under AA the moment you pointed at it. `--ink-tile` = the charcoal-fill tile — now only the header brand mark; in dark it
-    is a step **up** the ladder (`#292F3B`), because a charcoal tile on a charcoal canvas reads
-    as a hole.
+    **`--accent-hover` is GONE too** (2026-09-21): it was the FEATURED exam card's hover
+    fill and nothing else read it, so it went out with that card, along with the three
+    `contrast.test.mjs` pairs that asserted the hovered tiers. `--accent-soft` stays — the
+    resume banner, an exam-mode picked option and a navigator cell all sit on it. If a
+    tinted fill ever needs a hover step again, mint it fresh; do NOT reach for
+    `--accent-line`, which is a border value, and as a fill was a 1.27x jump in light and a
+    saturated mid-blue in dark that put the tinted card's own description and meta under AA
+    the moment you pointed at it.
+    **`--ink-tile` and `--on-dark` are GONE** (2026-09-21): they existed only for the header's
+    charcoal `E` tile, the brand mark is the German flag now, and nothing else read them. The
+    two token pairs and the `#fff` literal that asserted the old mark went from
+    `contrast.test.mjs` with them.
   - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
-    (`--font-body`) + **Caveat** (`--font-hand`, added 2026-09-21 for the landing page's two
-    script margin-notes — scoped to those and NEVER inherited by body copy); `--font-mono` is
+    (`--font-body`) + **Caveat** (`--font-hand`, added 2026-09-21 for the landing page's three
+    script margin-notes — read by `.script-note` alone and NEVER inherited by body copy); `--font-mono` is
     aliased to Inter (kept only so JS refs resolve). All three arrive in **one** Google Fonts
     `<link>`; keep it one request when adding a face. Display
     weights top out at 700. Uppercase micro-labels take `--ls-caps` (0.06em) and are tile eyebrows (`.eyebrow`
@@ -162,8 +170,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       their touch target as one. Four heights: 28 / 36 / 44 / 52.
     - **An icon size is `--icon-*`, a hit target is `--ctl-*`, and neither is a literal**
       (2026-09-20). Nine glyph sizes (14/15/16/17/18/20/22/24/28) were doing five jobs;
-      the scale is `--icon-xs` 14 / `-sm` 16 / `-md` 18 / `-lg` 22 / `-xl` 28 (the featured
-      card only), mapped nearest-with-ties-down so nothing moved more than 2px. Four sizes
+      the scale is `--icon-xs` 14 / `-sm` 16 / `-md` 18 / `-lg` 22 / `-xl` 28, mapped
+      nearest-with-ties-down so nothing moved more than 2px. Four sizes
       render now. A glyph box with no plate is the same size as its glyph, so one token
       serves both. **Not icons, and deliberately still literals**: the two ring diameters
       (layout), the 6px scrollbar, the 7px caret, `.sr-only`'s 1px and `.opt-letter`'s 26px
@@ -242,53 +250,122 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
   the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
   you glance at, so `.header-controls .seg-btn` is `--ctl-xs`, `.session-back` `--ctl-sm` and the
-  brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
+  brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
+  The header carries a **`.header-cta`** ("Start practising") on the home screen only: it is
+  hidden by `body.in-session` — a second action beside the one that abandons your round is a
+  trap — and hidden below 620px, where brand plus two switches plus a button comes to ~390px
+  inside a 343px content width and the hero's own Start now is ten pixels underneath it.
+  **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
+  the rule lost every declaration to the base below and the button rendered at 44px.
+  The **brand mark is the German flag** in a rounded `--ctl-sm` square, beside a
+  `.brand-lockup` of `EIB Quiz` over the `nav.tagline` line. The name is markup, not `I18N`:
+  a product name is not translated. The tagline is hidden below 620px. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
-- **The home screen is four named sections, not a grid of tiles** (restructured 2026-09-19).
-  Each `<section class="home-section">` opens with a `.section-head` (`<h2>` + one line of
-  description) so the page reads heading > card title > body. In order: a short
-  **`.hero-landing`** (content-sized, one primary action); **Where you stand** (`#homeStatus` —
-  one wide `.dash` card holding the accuracy ring, three counters, the resume
-  banner and the reset link); **Practise** (`#modesGrid`); **By topic** (`#topicSection`); and a
-  quieter **Past rounds & glossary** (`#historySection` + `#glossarySection`) — named that
-  and not "History & reference", because **History is one of the five topics** and the two
-  sections sat three screens apart under the same word.
+- **The home screen is TWO TIERS over one section list** (2026-09-21, per
+  `docs/plans/landing-page-refactor.md`). A first visitor gets a marketing landing page; once
+  there is anything to come back to, the marketing falls away and the dashboard leads.
+  `hasProgress()` is the whole switch — any spaced-repetition record, any finished round, or
+  a resumable session — and `initHomeScreen()` toggles `hidden` on every
+  `#homeScreen [data-tier]`. A section with **no** `data-tier` shows in both tiers.
+  - **It is one list, not two.** There is a single DOM order that reads correctly for either
+    tier, because the shared mode band sits in the same place in both:
+    hero · where you stand · **modes** · topic reveal · why · numbers · CTA · past rounds.
+    Nothing is moved between parents and nothing is duplicated. Do not "fix" this into two
+    wrapper elements — that needs DOM surgery on every repaint to keep one band shared.
+  - **`[hidden] { display: none !important }` is in the reset, and it is load-bearing.**
+    Several of these sections set their own `display`, which beats the UA's `[hidden]` rule;
+    without it the hero stayed visible on the dashboard tier.
+  - **Landing tier:** `.hero-landing`, the mode band, `#whyBand`, the four headline numbers,
+    `.cta-band`. **Dashboard tier:** Where you stand (`#homeStatus` — one wide `.dash` card
+    holding the accuracy ring, three counters, the resume banner and the reset link), the
+    mode band, and the quieter **Past rounds & glossary** (`#historySection` +
+    `#glossarySection`) — named that and not "History & reference", because **History is one
+    of the five topics** and the two sections sat three screens apart under the same word.
+  - **`#homeMain` is on the MODE BAND, not on Where you stand.** It is what `scrollToId()`
+    targets from the hero and the CTA band, and Where you stand is hidden on the tier that
+    has a hero — the CTA was scrolling to a `display: none` element.
+  - **EVERY `scrollToId()` target needs `scroll-margin-top`, not just `#homeMain`.** The
+    header is sticky, so a target without it lands its own heading behind the header:
+    "Learn more" did exactly that to `#whyBand`'s eyebrow and title. The rule is
+    `#homeMain, #whyBand { scroll-margin-top: var(--header-h) }` — the token, because
+    `syncHeaderHeight()` measures the real strip and a phone's is 65px against the
+    desktop's 76. Add a third target, add it to that selector.
+  - **A load failure is NOT a tier.** `initHomeScreen()` computes
+    `loadFailed ? null : …` and applies it BEFORE the early return, so `null` matches no
+    `data-tier` and both tiers go dark behind the error card. Returning first left every
+    tiered section at its markup default — visible — so the hero, the why-band, the numbers
+    and the CTA rendered interleaved with the dashboard's own empty headings, with the
+    hero's buttons scrolling to the error.
+  - **A renderer must not be called for a band that is not showing**, and
+    `renderHomeStatus()` early-returns on `el.closest('[hidden]')` so the guard covers
+    `onStateChange()` too, not only the door. Dropping a resumable session goes through
+    `initHomeScreen()`, not `renderHomeStatus()`: it can empty the last thing `hasProgress()`
+    reads, and repainting one card would leave the tier lying.
+- **The landing tier is a hero, five modes, why, four numbers and one last call.**
+  - **The hero is two columns**: eyebrow / headline / lead / two buttons / four bare-glyph
+    facts on the left, the Reichstag on the right. Below 940px it stacks with the **photo
+    first**; below 620px the notes drop out and the facts go two-up.
+  - **The photograph is `img/hero-reichstag.webp`, 1:1 at every width, and its crop is
+    load-bearing.** Holding one aspect is what lets the overlays be placed in percentages
+    that stay true. It is CC BY-SA 4.0, so `.hero-credit` renders a visible credit under it
+    — that line is the licence, not decoration. `img/ATTRIBUTIONS.md` has the recrop command.
+  - **The handwritten note is top RIGHT and its ink is a literal.** Its ground is a
+    photograph, not a token: `#16233A` on a measured worst case of `#D0D3D8`, registered in
+    `LITERAL_PAIRS`. That corner is the only clean sky in the frame (the mockup's top-left is
+    our EU flag), and the mockup's curved arrow is dropped because every region it could have
+    swept has a flagpole through it. **Recrop the photo and this measurement must be redone.**
+  - **The note and the quote card are children of `.hero-photo`.** As siblings they were
+    positioned against the photo *plus its credit line* and the quote landed on the credit.
+  - **`.script-note` is the ONLY rule that reads `--font-hand`**, and it carries all three
+    margin notes (hero, numbers, CTA).
+  - **The why, numbers and CTA bands take the tile rule** — `--surface` plus a `--border`
+    hairline — not the mockup's pale panel. See the `--surface2` note above.
+  - **`.result-stats, .why-grid, .stats-grid` share one rule** for the hairline-separated
+    band, and that shared `gap: 1px` is the only such literal in the sheet. Writing a second
+    one takes `literalSpacing` to 3 and `gapRungs` to 8, both over budget.
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
-    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Five
-    literals are listed today (the brand-mark letter, and the letter on the correct/wrong answer
-    chips in each theme); prefer a token, and if a literal is unavoidable it goes in the list the
-    same day.
-  - **The exam is the only featured card.** `.mode-card--featured` is full-width and **blue-
-    tinted** (`--accent-soft` fill, a neutral `--border` edge, an `--accent-text` icon and a
-    solid Start pill); the other three modes are equal-weight peers.
-    - **Its edge is the same neutral `--border` every other card wears** (2026-09-20).
-      It was `--accent` and then `--accent-line`, and ANY coloured ring round a tinted fill
-      is the treatment `.option-btn.correct` uses for the right answer — it kept reading as
-      *selected* on a page where nothing is selectable. Its tint and its width are what mark
-      it out; the edge just ends it, exactly as on the peers beside it. There is exactly one
-    primary action per section — do not add a second call to start the exam.
-    - It used to be a charcoal slab painted in five hex literals, which put its body text at
-      `#B4B7C0` on near-black while the peers beside it ran at full ink: the loudest card on the
-      page had the weakest type. It now carries the **same `--text`/`--sub-text`/`--muted` tiers
-      as every other tile** — emphasis comes from hue, width and the solid accents, never from
-      dimming words. Its separation from the page is the hairline, not a step in lightness; in
-      light mode the tint and the slate-grey canvas sit at nearly the same luminance, which is
-      exactly the case light mode hands to edges.
-  - **The featured card's Start sits bottom-right on a phone**, on the meta's line, where
-    the peers put their arrow. Full-width it read as a different kind of thing from the
-    three cards you are meant to compare it with. The mobile card stays a GRID
-    (`"title title" / "desc desc" / "meta action"`) so no markup change was needed.
-  - **A peer card states its time in the corner and its clickability with an arrow.**
-    **`.mode-time` sits IN `.mode-head`, pushed right by `margin-left: auto`** — it used to
-    be `position: absolute` top-right, which worked while the icon was a chip stacked ABOVE
-    the title, so the title began on the second line and nothing met it. Once the icon and
-    the title shared the first line the estimate landed straight on top of the title:
-    "All questions" printed over "approx. 60-90 min". In the flow it cannot collide.
-    The estimate is stamped top-right, which leaves `.mode-meta` to the one fact
-    that varies (the count, or the apricot due flag). `.mode-go` is the circled arrow at the
-    bottom-right: the cards are buttons but read as readouts on a touch screen, where there is
-    no hover to reveal it. The peers still repeat no "Start" — that stays the featured card's
-    word alone. Descriptions do not restate a number the card already shows.
+    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Eight
+    entries are listed today, four per theme: the letter on the correct and the wrong answer
+    chip, the zoom veil's label, and the hero's margin note. The last two share a shape worth
+    copying — their ground is an IMAGE rather than a token, so the entry names the measured
+    worst case. Prefer a token; if a literal is unavoidable it goes in the list the same day.
+    The German flag in `.brand-mark` is the deliberate exception: its three bands are written
+    inside the SVG, not in a rule, and a graphic carrying no text has no pair to assert.
+  - **There are FIVE equal mode cards and no featured one** (2026-09-21). Exam, All
+    questions, Your state, Smart review, By topic. The exam's full-width accent-tinted
+    treatment is gone, and with it `.mode-card--featured`, `.mode-start-btn`, `.msb-arrow`
+    and the `mode.start` string — the only place any card said "Start" in words. The card is
+    the button; `.mode-go`'s arrow says it.
+  - **The grid's column counts are spelled out, not `auto-fit`.** With five cards, four
+    columns strand the fifth on a row of its own and two columns strand it on a third. Only
+    5, 3 and 1 divide the set cleanly: five above **1160px**, three to 620px, one below.
+  - **1160px is a breakpoint that German set.** At five columns the title box is ~167px
+    whatever the viewport, because `main` caps the content long before the screen does, and
+    `Prüfungssimulation` is one 18-character word. Hence the break, plus `hyphens: auto` and
+    `overflow-wrap: anywhere` on `.mode-title` — the root already carries `lang="de"` when
+    the UI is German, and the same pair is what `.opt-num` uses for `Christusmonogramm`.
+  - **`.mode-time` is in the META row, beside the count.** This is its third home and the
+    rule's comment records all three. In `.mode-head` pushed right by `margin-left: auto` it
+    worked at three cards a row; at five, a nowrap "approx. 60-90 min" claimed 115px of a
+    165px row and `.mode-title`'s `min-width: 0` squeezed "All questions" to **13px wide over
+    three lines**. Before that it was `position: absolute` and printed on top of the title.
+  - **`.mode-go` is the arrow at the bottom right**: the cards are buttons but read as
+    readouts on a touch screen, where there is no hover to reveal it. Descriptions do not
+    restate a number the card already shows.
+  - **"By topic" is a CARD, not a home section.** `renderTopics()` is untouched; only its
+    mount moved, to `#topicSection` **below** the grid, so opening it cannot reflow the
+    cards. The card is a `<button>` with `aria-expanded`/`aria-controls`, not the
+    `<details>` the history and glossary sections use — a `<details>` needs its summary and
+    body in one element, and here the summary is a card inside a five-column grid.
+    `renderModes()` reads the panel's `hidden` to redraw `aria-expanded`, because it runs
+    again on every language switch and would otherwise reset the button while the topics
+    were still showing.
+  - **The band keeps the canvas; the mockup's `--surface2` panel was rejected.** In light it
+    is a 1.03 step, which is invisible. In dark the ramp only goes UP — `--surface2` is 1.30
+    above the canvas and `--surface` is 1.15 — so `--surface` cards on a `--surface2` band
+    read as wells sunk into it rather than tiles raised off it, and there is no rung above
+    that leaves hover anywhere to go. Its heading stays left-aligned because the state picker
+    sits opposite it.
   - **The mode cards carry no per-card accent.** They had one hue each (teal/gold/green/blue)
     with a matching tinted badge and a matching coloured "Start" link, which is the rainbow
     `theme-dark.md` §2 warns about: chroma belongs to content and at most one accent. Icons and
@@ -324,7 +401,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **On a phone a section shows its HEADING and not its description** (2026-09-20).
     `.section-head p { display: none }` under 620px. Each one wraps to two lines down
     there and the four together cost ~150px — 7% of the page — while "Where you stand",
-    "Practise" and "By topic" already name the section. Desktop keeps them.
+    "Practise" and the rest already name the section. Desktop keeps them.
   - **The topic grid stays ONE column on a phone, and two-up was tried and reverted.**
     At 175px the long labels ("Fundamental Rights & Constitution") wrap to four lines, so
     a chip went 55px -> 114px and the section got TALLER (314 -> 340). **The label decides
@@ -916,7 +993,7 @@ Root holds exactly what GitHub Pages serves; everything else is foldered.
   .nojekyll       stops Pages running Jekyll
   .gitignore      ignores local/ scratch dir
   CLAUDE.md       this file
-img/              image-question assets + ATTRIBUTIONS.md, icons/, states/
+img/              image-question assets, the hero photo, ATTRIBUTIONS.md, icons/, states/
 tools/            data-generation + validation scripts (not served)
 docs/             project notes (TODO.md, BUG_AUDIT_MEMORY.md), plans/, research/
   Mockups/        design boards, generated illustrations, licensed photography
@@ -933,7 +1010,8 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   data via `tools/extract-questions.js` (NOT from `legacy/questions-final-extended.json`).
   Each question carries a `category` (see `tools/categorize.js`).
 - `img/` - image-question assets extracted from the official BAMF catalogue PDF (43 image
-  questions, all present). `img/ATTRIBUTIONS.md` has sources and credits.
+  questions, all present), plus `img/hero-reichstag.webp`, the landing page's only
+  photograph. `img/ATTRIBUTIONS.md` has sources, credits and the hero's recrop command.
 - `docs/TODO.md` - current project status + open TODOs. Check/update this when picking
   up or finishing work.
 - `docs/plans/landing-page-refactor.md` - the live plan for rebuilding the home screen
@@ -950,8 +1028,9 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   floors for both themes (`node --test tools/contrast.test.mjs`). Adapted from
   `claude-context-kit/scripts/contrast.test.mjs`; the PAIRS/FILLS lists are this project's.
   LITERAL_PAIRS covers colours written as hex in a rule rather than as tokens, which the block
-  parser cannot see — five today (the brand-mark letter, and the letter on the correct/wrong
-  answer chips in each theme), matching the rule stated under the home-screen section.
+  parser cannot see — eight today, four per theme (the letter on the correct and the wrong
+  answer chip, the zoom veil's label, and the hero's margin note), matching the rule stated
+  under the home-screen section.
 - `tools/scale.test.mjs` - the size system as a test: the type/space/control/tracking scales,
   asserted against `index.html` (`node --test tools/scale.test.mjs`). It is a RATCHET — each
   metric has a budget in `BUDGETS`, and the test fails both when a number rises and when it
@@ -981,9 +1060,11 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
 - `tools/make-og-image.py` - emits `og-image.svg` AND `og-image.png` from one set of
-  constants. **Not yet run for production**: the card is deferred until the landing-page
-  refactor settles the branding, so the committed pair still carries the old "Berlin Quiz"
-  copy. Never hand-edit one of the two files — that drift is why this script exists.
+  constants. **Run for production 2026-09-21**, at the end of the landing-page refactor: the
+  card carries the German flag mark (the header's, replacing a drawn tick) over
+  "Einbürgerungstest / Alle 16 Bundesländer / 300 FRAGEN · DE / EN · KOSTENLOS". Never
+  hand-edit one of the two files — that drift is why this script exists; change a constant,
+  re-run, commit both.
 - `legacy/` - May 28 build (standalone HTML, corrupted JSON, old regen tool). See
   `legacy/README.md`. Do NOT publish from it.
 

@@ -83,7 +83,6 @@
             --surface:   #1C222E;   /* tile — 1.16 above canvas, the measured card band */
             --surface2:  #252C37;   /* inset well inside a tile — 1.12 on it */
             --surface3:  #2F3542;   /* track / rail */
-            --ink-tile:  #292F3B;   /* the charcoal-fill tile — top of the dark ladder */
             --hover:     #282F3A;   /* hover steps UP in dark */
 
             /* The hairline carries dark mode, because the FILLS cannot.
@@ -110,7 +109,6 @@
             --accent-text:  #60A5FA;
             --accent-fill:  #2563EB;
             --accent-soft:  #16233A;
-            --accent-hover: #1B2B45;   /* the tinted card under the pointer — one step UP */
             --accent-line:  #2B4E80;
             --accent-grad:  linear-gradient(135deg, #2563EB 0%, #60A5FA 100%);
             --on-accent:    #FFFFFF;
@@ -140,7 +138,6 @@
             --sub-text: #B6BCC8;   /*  8.4 */
             --muted:    #98A1B0;   /*  6.1 on tile */
             --faint:    #8590A1;   /*  4.9 on tile */
-            --on-dark:  #FFFFFF;
 
             /* One three-step scale. Nested corners follow
                inner = outer - padding, snapped to the nearest step. */
@@ -256,7 +253,6 @@
             --surface:   #FFFFFF;    /* tile — 1.11 above page */
             --surface2:  #F4F7FA;    /* inset well inside a tile */
             --surface3:  #E2E7F0;    /* track / rail */
-            --ink-tile:  #0F1929;    /* charcoal-fill tiles */
             --hover:     #F0F2F7;    /* hover steps DOWN in light */
 
             --border:       #E2E7F0;   /* 1.24 on tile, 1.11 on page */
@@ -272,7 +268,6 @@
             --accent-text:  #2563EB;
             --accent-fill:  #2563EB;   /* white on it = 5.01 */
             --accent-soft:  #EFF4FE;
-            --accent-hover: #DFE9FD;   /* the tinted card under the pointer — one step DOWN */
             --accent-line:  #BFD4FA;
             --accent-grad:  linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
             --on-accent:    #FFFFFF;
@@ -300,7 +295,6 @@
             --sub-text: #33425E;   /* 10.1 */
             --muted:    #526481;   /*  6.0 */
             --faint:    #5E708E;   /*  5.0 on white, 4.5 on page */
-            --on-dark:  #FFFFFF;
         }
 
         /* ============================================================
@@ -308,6 +302,9 @@
            ============================================================ */
         *, *::before, *::after { box-sizing: border-box; }
         * { margin: 0; padding: 0; }
+        /* The home tiers are toggled with `hidden`, and several of the sections they
+           toggle set their own `display` — which beats the UA's `[hidden]` rule. */
+        [hidden] { display: none !important; }
 
         html { overflow-x: clip; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
@@ -385,18 +382,21 @@
             gap: var(--space-md);
         }
         .brand { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); }
+        /* The mark is the flag, not a charcoal tile with an E on it. Its three bands are
+           written as literals INSIDE the SVG rather than in a rule: they are the German
+           flag's own values, they are the same in both themes, and they are a graphic
+           with no text on them, so there is no pair for LITERAL_PAIRS to hold. The
+           --ink-tile and --on-dark tokens went with the old mark; nothing else read them. */
         .brand-mark {
             width: var(--ctl-sm); height: var(--ctl-sm);
             border-radius: var(--radius-sm);
+            overflow: hidden;
             display: grid; place-items: center;
-            font-family: var(--font-head);
-            font-weight: 700;
-            font-size: var(--fs-base);
-            color: var(--on-dark);
-            background: var(--ink-tile);
         }
-        html.light .brand-mark { color: #fff; }
-        .brand-name { font-weight: 600; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
+        .brand-mark svg { width: 100%; height: 100%; display: block; }
+        .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
+        .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
+        .brand-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
 
         /* Inside a session the logo is a link that loses your round, dressed as a
            logo. Body.in-session swaps the two; nothing branches in JS. */
@@ -675,21 +675,25 @@
         /* ============================================================
            LANDING HERO (top of home; CTA scrolls to the bento content)
            ============================================================ */
-        /* The hero introduces the app; it does not own the screen. It is
-           sized by its own content so the working surface below it is one
-           swipe away on a phone. */
+        /* ============================================================
+           LANDING TIER — hero, why, numbers, one last call.
+           Shown only when hasProgress() is false; the dashboard tier
+           replaces all of it once there is something to come back to.
+           ============================================================ */
+
+        /* The pitch on the left, the building on the right. The photo column is
+           slightly narrower than the text so the headline gets the room. */
         .hero-landing {
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+            /* --space-xl, not --space-2xl: 40 is not a gap rung anywhere else in the
+               sheet, and a ninth rung is the flat histogram the scale test watches for. */
+            gap: var(--space-xl);
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: var(--space-md) 0 var(--space-lg);
-            margin-bottom: var(--space-md);
-            border-bottom: 1px solid var(--border);
+            padding: var(--space-lg) 0 var(--space-2xl);
         }
-        .hero-inner { max-width: 780px; display: flex; flex-direction: column; align-items: center; }
+        .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+        .hero-text > .eyebrow { margin-bottom: var(--space-ms); }
 
         .hero-headline {
             font-family: var(--font-head);
@@ -700,26 +704,140 @@
             color: var(--text);
             text-wrap: balance;
         }
-        .hero-mark {
-            background: linear-gradient(var(--apricot), var(--apricot)) no-repeat left 94%;
-            background-size: 100% 0.09em;
-            padding-bottom: 0.04em;
-        }
         .hero-lead {
-            max-width: 620px;
-            margin: var(--space-sm) auto 0;
+            max-width: 46ch;
+            margin-top: var(--space-ms);
             color: var(--sub-text);
             font-size: var(--fs-md);
             line-height: var(--lh-prose);
             text-wrap: pretty;
         }
         .hero-cta-row {
-            display: flex; flex-wrap: wrap; gap: var(--space-md);
-            justify-content: center;
-            margin-top: var(--space-md);
+            display: flex; flex-wrap: wrap; gap: var(--space-ms);
+            margin-top: var(--space-lg);
         }
-        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
+        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
         .hero-cta-row .btn-primary svg { width: var(--icon-md); height: var(--icon-md); }
+
+        /* Four facts. A glyph over a label and nothing else — the mockup's tinted
+           circles are the plate CLAUDE.md forbids, and the hit area does not need one. */
+        .hero-chips {
+            list-style: none;
+            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+            width: 100%; max-width: 480px;
+        }
+        .hero-chip { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); text-align: center; min-width: 0; }
+        .hero-chip-icon { display: grid; place-items: center; color: var(--sub-text); }
+        .hero-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        .hero-chip-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+
+        .hero-visual { position: relative; min-width: 0; }
+        .hero-photo {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface2);
+        }
+        .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* The handwritten margin notes — the mockup's signature, and the only place
+           --font-hand is allowed. Never inherited by body copy. */
+        .script-note {
+            font-family: var(--font-hand);
+            font-size: var(--fs-xl);
+            line-height: var(--lh-ui);
+            color: var(--muted);
+        }
+        /* Top RIGHT, not the mockup's top left: that corner of this photograph is the
+           EU flag, and this one is the only clean patch of sky (min luminance 211/255).
+           The ink is a literal because its ground is a photograph rather than a token
+           — registered in LITERAL_PAIRS, exactly as the zoom veil's label is. */
+        .hero-note {
+            position: absolute; top: var(--space-lg); right: var(--space-lg);
+            width: 46%; text-align: right;
+            color: #16233A;
+        }
+        /* A card in the photo's lower corner. A fill and a hairline, no shadow — the one
+           place the mockup uses one and this app does not. Inside the frame rather than
+           overlapping its edge, so it cannot land on the credit line below. */
+        .hero-quote {
+            position: absolute; right: var(--space-md); bottom: var(--space-md);
+            max-width: 68%;
+            display: flex; gap: var(--space-sm);
+            padding: var(--space-ms) var(--space-md);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .hero-quote p { font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text); }
+        .hero-quote-mark { flex: none; width: var(--icon-sm); height: var(--icon-sm); color: var(--muted); }
+        /* CC BY-SA 4.0 asks for the credit where the work is used, not only in a file. */
+        .hero-credit { margin-top: var(--space-sm); font-size: var(--fs-2xs); color: var(--faint); }
+        .hero-credit a { color: inherit; text-decoration: underline; }
+        .hero-credit a:hover { color: var(--accent-text); }
+
+        .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
+        .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
+
+        /* The why-band and the numbers band are hairline-separated bands; the shared
+           rule lives with .result-stats, which is where that idiom is written down. */
+        .why-grid, .stats-grid { list-style: none; }
+        .why-item {
+            flex: 1 1 210px; min-width: 0;
+            display: flex; align-items: flex-start; gap: var(--space-ms);
+            padding: var(--space-md);
+            background: var(--surface);
+        }
+        .why-icon { flex: none; display: grid; place-items: center; color: var(--sub-text); }
+        .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
+        .why-item p { margin-top: var(--space-2xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
+
+        .stats-item {
+            flex: 1 1 130px; min-width: 0;
+            display: flex; flex-direction: column; align-items: center; gap: var(--space-2xs);
+            padding: var(--space-md);
+            text-align: center;
+            background: var(--surface);
+        }
+        /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
+           counters take, and it does not outrank an --fs-xl section heading. */
+        .stats-num {
+            font-family: var(--font-head); font-weight: 700;
+            font-size: var(--fs-2xl); line-height: var(--lh-tight);
+            letter-spacing: var(--ls-display);
+            color: var(--text);
+        }
+        .stats-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+        .stats-item--note { flex: 1 1 170px; justify-content: center; }
+
+        .cta-band {
+            position: relative;
+            display: flex; align-items: center; flex-wrap: wrap;
+            gap: var(--space-lg);
+            padding: var(--space-xl);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .cta-copy { flex: 1 1 280px; min-width: 0; }
+        .cta-copy .eyebrow { display: block; margin-bottom: var(--space-2xs); }
+        .cta-copy h2 {
+            font-family: var(--font-head); font-weight: 600;
+            font-size: var(--fs-xl); letter-spacing: var(--ls-display);
+            color: var(--text);
+        }
+        .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
+        .cta-btn { flex: none; min-height: var(--ctl-lg); padding: var(--space-ms) var(--space-xl); font-size: var(--fs-md); }
+        .cta-btn svg { width: var(--icon-md); height: var(--icon-md); }
+        /* An ornament. Take it out and the band is still heading, lead and button. */
+        .cta-art { flex: none; display: block; color: var(--border-hover); }
+        .cta-art svg { width: 120px; height: auto; display: block; }
+        .cta-note { flex: none; max-width: 170px; }
 
 
         /* ============================================================
@@ -756,7 +874,11 @@
         /* The tail is reference material, not something to act on. */
         .home-section--quiet .section-head h2 { font-size: var(--fs-lg); }
 
-        #homeMain { scroll-margin-top: 76px; }
+        /* Both scrollToId() targets, not just #homeMain: "Learn more" lands on #whyBand,
+           and without this the sticky header sits on top of the heading it scrolled to.
+           --header-h is what syncHeaderHeight() measures, so it tracks the phone's
+           shorter strip too — a fixed 76px was the desktop header's height alone. */
+        #homeMain, #whyBand { scroll-margin-top: var(--header-h); }
 
         /* ---- Overview card: ring headline + three counters ---- */
         .dash {
@@ -883,15 +1005,26 @@
         .progress-reset:hover { color: var(--red-text); }
 
         /* ============================================================
-           MODE CARDS — one featured, three peers
+           MODE CARDS — five equal peers
+           ------------------------------------------------------------
+           The column counts are explicit rather than auto-fit, and that
+           is deliberate: with FIVE cards, four columns leaves a single
+           orphan on the second row and two columns leaves one on the
+           third. Only 5, 3 and 1 divide the set without stranding a
+           card, so those are the three layouts.
            ============================================================ */
         .modes-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: var(--space-md);
         }
+        /* 1160, not the 940 the rest of the sheet breaks at: five columns of a 1009px
+           content width is a 157px card, and "Prüfungssimulation" is one 18-character
+           word that does not fit in one. Measured in German, which is what decides it. */
+        @media (max-width: 1160px) {
+            .modes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
         .mode-card {
-            grid-column: span 1;
             position: relative;
             padding: var(--space-md);
             border-radius: var(--radius);
@@ -908,67 +1041,23 @@
         }
         .mode-card:active { background: var(--surface3); }
 
-        /* The exam is what the app is for, so it is the only card that spans the
-           row and the only one wearing the accent. It used to be a charcoal
-           slab, which meant its text ran at #B4B7C0 on near-black while the
-           peers beside it ran at full ink — the loudest card on the page had
-           the weakest type. Now it is a teal-tinted tile carrying the SAME ink
-           tiers as its peers, so the emphasis comes from hue, width and the
-           solid accents, never from dimming the words.
-           Its separation from the page is the hairline, not a step in
-           lightness: in light mode the tint and the paper-grey canvas sit at
-           almost the same luminance, and light mode hands that job to edges. */
-        .mode-card--featured {
-            grid-column: 1 / -1;
-            background: var(--accent-soft);
-            /* The SAME neutral hairline every other card wears. --accent-line was still a
-               green ring, and any coloured ring round a tinted fill is the treatment
-               `.option-btn.correct` uses for the right answer — the card kept reading as
-               selected. Its tint and its width are what mark it out; the edge just ends
-               it, exactly as on the peers beside it. */
-            border-color: var(--border);
-            color: var(--text);
-            padding: var(--space-lg);
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-areas: "title action" "desc action" "meta action";
-            column-gap: var(--space-md);
-            align-items: center;
-        }
-        @media (hover: hover) {
-            .mode-card--featured:hover { background: var(--accent-hover); border-color: var(--border-hover); }
-        }
-        .mode-card--featured:active { background: var(--accent-hover); }
-        .mode-card--featured .mode-head { grid-area: title; margin-bottom: 0; gap: var(--space-sm); }
-        .mode-card--featured .mode-icon { width: var(--icon-xl); height: var(--icon-xl); background: none; color: var(--accent-text); }
-        .mode-card--featured .mode-icon svg { width: var(--icon-xl); height: var(--icon-xl); }
-        .mode-card--featured .mode-title { font-size: var(--fs-lg); color: var(--text); }
-        .mode-card--featured .mode-description { grid-area: desc; color: var(--sub-text); max-width: 52ch; margin-bottom: 0; }
-        /* --sub-text, not --muted: the quietest tier clears AA on the resting
-           tint by 4.74 in dark, so a hover step of any size would break it. */
-        .mode-card--featured .mode-meta { grid-area: meta; margin: var(--space-sm) 0 0; color: var(--sub-text); }
-        .mode-card--featured .mode-start-btn {
-            grid-area: action;
-            justify-self: end;
-            background: var(--accent-fill); color: var(--on-accent);
-            border-radius: var(--radius-pill);
-            min-height: var(--ctl-md); padding: 0 var(--space-lg);
-            font-size: var(--fs-base);
-        }
+        /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
+           solid Start pill. The landing page sells five modes as peers, so the treatment
+           went with it — along with .mode-start-btn, .msb-arrow and the `mode.start`
+           string, which was the only place any card said "Start" in words. */
 
-        /* The time estimate is a corner stamp, not part of the sentence — it
-           leaves the meta row to the one fact that varies (what is due). */
-        /* IN the head row, not floating over it. It was absolutely positioned top-right,
-           which worked while the icon was a chip stacked ABOVE the title — the title
-           began on the second line and nothing met it. With the icon and the title now
-           sharing the first line, the estimate landed straight on top of the title:
-           "All questions" printed over "approx. 60-90 min". `margin-left: auto` puts it
-           at the same corner without leaving the flow. */
+        /* The estimate sits in the META row, beside the count. It has been three things:
+           absolutely positioned top-right (it printed on top of the title once the icon
+           joined the title's line), then in the head row pushed right by margin-left:auto
+           — which worked at three cards a row and broke at five, where a nowrap
+           "approx. 60-90 min" claimed 115px of a 165px row and squeezed "All questions"
+           down to 13px. In the meta row it is beside the one other fact the card states,
+           and it can wrap. */
         .mode-time {
-            margin-left: auto; padding-left: var(--space-sm);
-            font-size: var(--fs-2xs); color: var(--muted); white-space: nowrap;
-            font-variant-numeric: tabular-nums; align-self: flex-start;
+            font-size: var(--fs-2xs); color: var(--muted);
+            font-variant-numeric: tabular-nums;
         }
+        .mode-time::before { content: '·'; margin-right: var(--space-sm); color: var(--faint); }
         /* The peers repeat no "Start" (the card is the button), but they still
            have to LOOK like buttons where there is no hover to reveal it. */
         .mode-go {
@@ -976,9 +1065,9 @@
             width: var(--icon-xl); height: var(--icon-xl);
             display: grid; place-items: center;
             color: var(--muted);
-            font-size: var(--fs-sm); line-height: 1;
             transition: color 0.18s var(--ease), transform 0.25s var(--ease-spring);
         }
+        .mode-go svg { width: var(--icon-sm); height: var(--icon-sm); }
         @media (hover: hover) {
             .mode-card:hover .mode-go { color: var(--accent-text); transform: translateX(3px); }
         }
@@ -1000,7 +1089,13 @@
         /* The icon and the title are one row. */
         .mode-head { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
-        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; }
+        /* German compounds are one long word, and five cards a row is a 167px title
+           box: "Prüfungssimulation" overflows it whatever the width, because `main`
+           caps the content long before the viewport does. `hyphens: auto` breaks it
+           properly (the root carries lang="de" when the UI is German) and
+           `overflow-wrap: anywhere` is the backstop, exactly as `.opt-num` handles
+           "Christusmonogramm". */
+        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
         .mode-description {
             color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose);
             margin-bottom: var(--space-sm);
@@ -1013,16 +1108,13 @@
             font-size: var(--fs-xs); color: var(--muted);
             font-variant-numeric: tabular-nums;
         }
-        /* Clearance for .mode-go, which only the peers render. */
-        .mode-card:not(.mode-card--featured) .mode-meta { padding-right: calc(var(--space-xl) + var(--space-sm)); }
+        /* Clearance for .mode-go, which sits in the same corner. */
+        .mode-meta { padding-right: calc(var(--space-xl) + var(--space-sm)); }
         .mode-flag {
             font-size: var(--fs-2xs); font-weight: 600;
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
-        .mode-start-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm); font-size: var(--fs-xs); font-weight: 600; }
-        .msb-arrow { transition: transform 0.25s var(--ease-spring); }
-        .mode-card:hover .msb-arrow { transform: translateX(3px); }
 
         /* ============================================================
            TOPICS — chips on the page; the section heading names them
@@ -1068,6 +1160,8 @@
         }
         .sub-card > .eyebrow { display: block; margin-bottom: var(--space-md); }
         #historySection:empty, #topicSection:empty, #glossarySection:empty { display: none; }
+        /* The Topic card's reveal. Below the grid, so opening it never reflows the cards. */
+        #topicSection { margin-top: var(--space-md); }
 
         .load-error {
             grid-column: 1 / -1;
@@ -1135,6 +1229,13 @@
         .btn-secondary:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
         .btn-lg { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
         .btn-sm { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); }
+        /* The header's own call to action. It sits AFTER .btn-primary on purpose: as a
+           single class it loses every declaration to the one below it otherwise, which
+           is how it first rendered at .btn-primary's full 44px and padding. --ctl-sm
+           because the header is chrome you glance at — the same exception .brand and
+           .session-back take, with the same coarse-pointer bump to the 44px floor. */
+        .header-cta { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-sm); }
+        body.in-session .header-cta { display: none; }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1281,7 +1382,7 @@
         .speak-btn { min-width: 34px; padding: 0 var(--space-xs); }
         /* On a touch screen every one of these is a finger target, not a cursor target. */
         @media (pointer: coarse) {
-            .speak-btn, .bilingual-toggle, .session-back, .brand { min-height: var(--ctl-md); }
+            .speak-btn, .bilingual-toggle, .session-back, .brand, .header-cta { min-height: var(--ctl-md); }
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
@@ -1609,9 +1710,11 @@
         /* ONE band, figures separated by hairlines — the same move the home overview card
            makes. It replaces two wells and three more cards: five boxes for five numbers,
            each a container holding nothing but a label and a figure. */
-        .result-stats {
+        /* Three bands are built this way now: the results breakdown, the landing tier's
+           why-band and its four headline numbers. One rule, so the hairline gap below is
+           the only 1px literal in the sheet. */
+        .result-stats, .why-grid, .stats-grid {
             display: flex; flex-wrap: wrap; justify-content: center;
-            margin-top: var(--space-xl);
             border: 1px solid var(--border); border-radius: var(--radius);
             /* The separators are a 1px GAP over the band's own colour, not a border on
                each cell: a border-left lands on the first cell of a wrapped row too, and
@@ -1619,6 +1722,7 @@
                in both directions and cannot do that. */
             gap: 1px; background: var(--border); overflow: hidden;
         }
+        .result-stats { margin-top: var(--space-xl); }
         .result-stat {
             flex: 1 1 0; min-width: 104px;
             padding: var(--space-ms) var(--space-md);
@@ -1668,9 +1772,14 @@
            RESPONSIVE
            ============================================================ */
         @media (max-width: 940px) {
-            /* Three secondary cards stay three across: two columns orphans one of
-               them beside an empty cell. */
-            .mode-card--featured { grid-column: 1 / -1; }
+            /* The hero stacks, photo FIRST: the picture is what says what this is, and
+               below the fold a headline over a 1:1 photograph pushes the buttons off. */
+            .hero-landing { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+            .hero-visual { order: -1; max-width: 460px; width: 100%; margin-inline: auto; }
+            .hero-text { align-items: center; text-align: center; }
+            .hero-lead { margin-inline: auto; }
+            .hero-chips { margin-inline: auto; }
+
             /* body.in-session-prefixed, or the desktop two-column rule outranks this one
                and the areas fight: "main stats" against a single column collapsed the
                question to 12px. */
@@ -1761,10 +1870,20 @@
             }
 
             /* Hero: introduce, then get out of the way. */
-            .hero-landing { padding: var(--space-ms) 0 var(--space-md); margin-bottom: var(--space-ms); }
-            .hero-lead { font-size: var(--fs-md); }
+            .hero-landing { padding: var(--space-ms) 0 var(--space-lg); gap: var(--space-lg); }
             .hero-cta-row { width: 100%; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-ms); }
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; padding: var(--space-ms) var(--space-lg); }
+            /* Four labels across a 375px row is 75px a column, and "Bundesländer"
+               alone is wider than that. */
+            .hero-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-ms); margin-top: var(--space-lg); }
+            .hero-chip { flex-direction: row; text-align: left; gap: var(--space-sm); }
+            /* The margin notes are decorative, and down here they have nowhere to sit
+               that is not on top of the building. */
+            .hero-note, .stats-item--note, .cta-note, .cta-art { display: none; }
+
+            .why-item { flex-basis: 100%; }
+            .cta-band { padding: var(--space-lg); gap: var(--space-ms); }
+            .cta-btn { width: 100%; }
 
             .home-section { margin-bottom: var(--space-lg); }
             /* A section's one-line description is a desktop affordance. Down here each
@@ -1791,52 +1910,18 @@
                 gap: var(--space-sm); justify-content: space-between; }
             .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
 
-            /* The featured card gives up its side-by-side layout before the text gets
-               squeezed into a column two words wide — but it stays a GRID, so the meta
-               and Start can share the last row the way the peers' time and arrow do. */
-            .mode-card--featured {
-                display: grid;
-                grid-template-columns: minmax(0, 1fr) auto;
-                grid-template-areas: "title title" "desc desc" "meta action";
-                align-items: center;
-                row-gap: var(--space-2xs);
-                padding: var(--space-md);
-            }
-            .mode-card--featured .mode-head { grid-area: title; }
-            .mode-card--featured .mode-description { grid-area: desc; }
-            .mode-card--featured .mode-meta { grid-area: meta; margin: var(--space-xs) 0 0; }
-            /* Left over from when the icon was a 38px chip: the box stayed 38px wide with
-               a 20px glyph floating in it, so the glyph sat left of centre with a gap
-               before the title and a 14px margin lifting it off the baseline. The icon
-               is the glyph now, sized to the title beside it. */
-            .mode-card--featured .mode-icon { width: var(--icon-lg); height: var(--icon-lg); margin-bottom: 0; }
-            .mode-card--featured .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-            .mode-card--featured .mode-title { font-size: var(--fs-lg); }
-            /* Bottom-right, on the meta's line — the peers put their arrow exactly there,
-               and a full-width bar made the one card you are meant to compare with them
-               read as a different kind of thing. */
-            .mode-card--featured .mode-start-btn { grid-area: action; justify-self: end; align-self: end; width: auto; margin-top: var(--space-xs); }
-            /* Three numbers stay three columns — stacking them turned the
-               overview into a screenful of its own. */
-            .dash-stat { padding: 0 var(--space-xs); align-items: center; text-align: center; gap: var(--space-2xs); }
-            .ds-num { font-size: var(--fs-md); }
-            .ds-of { font-size: var(--fs-2xs); }
-            .dash-stat .ds-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
-            .resume-actions { width: 100%; }
-            .resume-actions .btn-primary, .resume-actions .btn-secondary { flex: 1; }
-
-            /* The three secondary modes read as a list on a phone: icon beside
-               the title, one tap target each, all three in view. */
+            /* One card a row on a phone. They stay GRIDS rather than flex columns so
+               the meta and the arrow can share the last row. */
             .modes-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
-            .mode-card:not(.mode-card--featured) {
+            .mode-card {
                 display: grid;
                 grid-template-columns: 1fr;
                 grid-template-areas: "title" "desc" "meta";
                 row-gap: var(--space-2xs);
             }
-            .mode-card:not(.mode-card--featured) .mode-head { grid-area: title; margin-bottom: 0; }
-            .mode-card:not(.mode-card--featured) .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
-            .mode-card:not(.mode-card--featured) .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
+            .mode-card .mode-head { grid-area: title; margin-bottom: 0; }
+            .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
+            .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
                names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
@@ -1851,8 +1936,12 @@
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
-            .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); font-size: var(--fs-xs); }
+            .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); }
             .brand-name { font-size: var(--fs-sm); }
+            /* The strip is a glance down here. The tagline restates what the page
+               already says, and the CTA sits ten pixels above the hero's own Start
+               now — with both segmented controls there is no room for either. */
+            .brand-tagline, .header-cta { display: none; }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
@@ -1949,14 +2038,21 @@
     <header>
         <div class="header-content">
             <button class="brand" onclick="showScreen('home')" data-i18n-aria="nav.home">
-                <span class="brand-mark" aria-hidden="true">E</span>
-                <span class="brand-name">eib</span>
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
+                <span class="brand-lockup">
+                    <span class="brand-name">EIB Quiz</span>
+                    <span class="brand-tagline" data-i18n="nav.tagline"></span>
+                </span>
             </button>
             <button class="session-back" id="sessionBack" data-i18n-aria="nav.backAria">
                 <span class="session-back-icon" aria-hidden="true"></span>
                 <span data-i18n="nav.back"></span>
             </button>
             <div class="header-controls">
+                <!-- Home screen only, and only where there is room for it. Inside a
+                     session the header already carries the back button, and a second
+                     action beside the one that abandons your round is a trap. -->
+                <button class="btn-primary header-cta" onclick="scrollToId('homeMain')" data-i18n="nav.startPractice"></button>
                 <div class="seg" role="group" data-i18n-aria="nav.language">
                     <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
                     <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
@@ -1973,22 +2069,59 @@
         <!-- Home Screen -->
         <section id="homeScreen" class="screen active">
 
-            <!-- Landing hero: the pitch, one primary action, then out of the way. -->
-            <div class="hero-landing">
-                <div class="hero-inner">
-                    <h1 class="hero-headline" data-i18n-html="hero.headline"></h1>
+            <!-- The home screen is TWO TIERS over one section list: a first visitor gets
+                 the marketing, a returning learner gets the dashboard, and the mode band
+                 is shared. `initHomeScreen()` toggles `hidden` on every [data-tier]
+                 element; a section with no data-tier shows in both. The DOM order below
+                 reads correctly for either tier, so nothing is ever moved or duplicated. -->
+
+            <!-- Landing hero: the pitch on the left, the building on the right. -->
+            <div class="hero-landing" data-tier="landing">
+                <div class="hero-text">
+                    <p class="eyebrow" data-i18n="hero.eyebrow"></p>
+                    <h1 class="hero-headline" data-i18n="hero.headline"></h1>
                     <p class="hero-lead" data-i18n="hero.lead"></p>
                     <div class="hero-cta-row">
-                        <button class="btn-primary btn-lg" onclick="scrollToMain()">
+                        <button class="btn-primary btn-lg" onclick="scrollToId('homeMain')">
                             <span data-i18n="hero.cta"></span>
-                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path transform="rotate(90 12 12)" d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                         </button>
+                        <button class="btn-secondary btn-lg" onclick="scrollToId('whyBand')" data-i18n="hero.cta2"></button>
                     </div>
+                    <!-- Four facts, four glyphs, no plates. The hit area stays; the tinted
+                         circle the mockup draws does not (CLAUDE.md: an icon has no plate). -->
+                    <ul class="hero-chips">
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="allQuestions" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip1"></span></li>
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="bundesland" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip2"></span></li>
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="translate" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip3"></span></li>
+                        <li class="hero-chip"><span class="hero-chip-icon" data-icon="clock" aria-hidden="true"></span><span class="hero-chip-label" data-i18n="hero.chip4"></span></li>
+                    </ul>
+                </div>
+
+                <div class="hero-visual">
+                    <figure class="hero-photo">
+                        <img src="img/hero-reichstag.webp" width="1100" height="1100" data-i18n-alt="hero.photoAlt" alt="">
+                        <!-- Both overlays are children of the figure so they are placed
+                             against the PHOTO, not against the photo plus its credit line
+                             - which is what put the quote card on top of the credit. -->
+                        <!-- The note sits on the one patch of this photograph that is clean
+                             sky (top right: darkest pixel under it measures 210 of 255. The
+                             mockup's top-left corner is our EU flag). Its ink is a literal
+                             because its ground is a photograph rather than a token; see
+                             LITERAL_PAIRS. The mockup's curved arrow is dropped - every
+                             region it could point from has a flagpole running through it. -->
+                        <p class="script-note hero-note" data-i18n="hero.annotation"></p>
+                        <blockquote class="hero-quote">
+                            <svg class="hero-quote-mark" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M3.4 17.6c0-4.9 2.4-9.2 7.1-13.2l2 2.2C9.4 9.4 7.6 12 7.2 14.4h.9c2 0 3.6 1.6 3.6 3.6s-1.6 3.6-3.6 3.6-4.7-1.5-4.7-4Zm9.5 0c0-4.9 2.4-9.2 7.1-13.2l2 2.2c-3.1 2.8-4.9 5.4-5.3 7.8h.9c2 0 3.6 1.6 3.6 3.6s-1.6 3.6-3.6 3.6-4.7-1.5-4.7-4Z"/></svg>
+                            <p data-i18n="hero.quote"></p>
+                        </blockquote>
+                    </figure>
+                    <p class="hero-credit" data-i18n-html="hero.credit"></p>
                 </div>
             </div>
 
-            <!-- 1 · Where you stand — one wide card, the page's opening statement. -->
-            <section class="home-section" id="homeMain">
+            <!-- 1 · Where you stand — one wide card, the returning learner's opening statement. -->
+            <section class="home-section" data-tier="dashboard">
                 <div class="section-head">
                     <h2 data-i18n="home.progress.title"></h2>
                     <p data-i18n="home.progress.lead"></p>
@@ -1996,29 +2129,72 @@
                 <div id="homeStatus"></div>
             </section>
 
-            <!-- 2 · Practise — the main event: one featured mode, three secondary. -->
-            <section class="home-section">
+            <!-- 2 · Practise — the main event, and the one band BOTH tiers show. It carries
+                 #homeMain because the hero's CTA scrolls here: "Where you stand" is hidden
+                 on the tier that has a hero. -->
+            <section class="home-section" id="homeMain">
                 <div class="section-head section-head--row">
                     <div>
+                        <p class="eyebrow" data-i18n="home.practice.eyebrow"></p>
                         <h2 data-i18n="home.practice.title"></h2>
                         <p data-i18n="home.practice.lead"></p>
                     </div>
                     <div id="statePickerSlot"></div>
                 </div>
                 <div class="modes-grid" id="modesGrid"></div>
+                <!-- The Topic card's reveal. It is BELOW the grid, not in it, so opening
+                     it cannot reflow the five cards. renderTopics() fills it unchanged;
+                     only its mount moved here from the retired "By topic" section. -->
+                <div id="topicSection" hidden></div>
             </section>
 
-            <!-- 3 · By topic -->
-            <section class="home-section">
-                <div class="section-head">
-                    <h2 data-i18n="home.topics.title"></h2>
-                    <p data-i18n="home.topics.lead"></p>
+            <!-- 3b · Why — the landing tier's argument. Four claims, hairline-separated
+                 by a 1px GAP over the band's ground: a border-left draws a stray rule on
+                 the first cell of a wrapped row, which is the results band's lesson. -->
+            <section class="home-section" id="whyBand" data-tier="landing">
+                <div class="section-head section-head--centred">
+                    <p class="eyebrow" data-i18n="why.eyebrow"></p>
+                    <h2 data-i18n="why.title"></h2>
                 </div>
-                <div id="topicSection"></div>
+                <ul class="why-grid">
+                    <li class="why-item"><span class="why-icon" data-icon="book" aria-hidden="true"></span><div><h3 data-i18n="why.1.title"></h3><p data-i18n="why.1.body"></p></div></li>
+                    <li class="why-item"><span class="why-icon" data-icon="shield" aria-hidden="true"></span><div><h3 data-i18n="why.2.title"></h3><p data-i18n="why.2.body"></p></div></li>
+                    <li class="why-item"><span class="why-icon" data-icon="community" aria-hidden="true"></span><div><h3 data-i18n="why.3.title"></h3><p data-i18n="why.3.body"></p></div></li>
+                    <li class="why-item"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
+                </ul>
             </section>
 
-            <!-- 4 · Quieter tail: what you did, and what the words mean. -->
-            <section class="home-section home-section--quiet">
+            <!-- 3c · The four headline numbers. They are READOUTS: capped at --fs-2xl so
+                 they cannot outrank a heading. -->
+            <section class="home-section" data-tier="landing">
+                <ul class="stats-grid">
+                    <li class="stats-item"><span class="stats-num">300</span><span class="stats-label" data-i18n="stats.1"></span></li>
+                    <li class="stats-item"><span class="stats-num">16</span><span class="stats-label" data-i18n="stats.2"></span></li>
+                    <li class="stats-item"><span class="stats-num">2</span><span class="stats-label" data-i18n="stats.3"></span></li>
+                    <li class="stats-item"><span class="stats-num">60</span><span class="stats-label" data-i18n="stats.4"></span></li>
+                    <li class="stats-item stats-item--note"><p class="script-note" data-i18n="stats.annotation"></p></li>
+                </ul>
+            </section>
+
+            <!-- 3d · One last call. The gate is an ornament: remove it and the band is
+                 still heading, lead and button. -->
+            <section class="home-section cta-band" data-tier="landing">
+                <div class="cta-copy">
+                    <p class="eyebrow" data-i18n="cta.eyebrow"></p>
+                    <h2 data-i18n="cta.title"></h2>
+                    <p class="cta-lead" data-i18n="cta.lead"></p>
+                </div>
+                <button class="btn-primary btn-lg cta-btn" onclick="scrollToId('homeMain')">
+                    <span data-i18n="cta.button"></span>
+                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
+                </button>
+                <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
+                <p class="script-note cta-note" data-i18n="cta.annotation"></p>
+            </section>
+
+            <!-- 4 · Quieter tail: what you did, and what the words mean. Nothing to look
+                 back on before the first round, so it is the dashboard's alone. -->
+            <section class="home-section home-section--quiet" data-tier="dashboard">
                 <div class="section-head">
                     <h2 data-i18n="home.more.title"></h2>
                     <p data-i18n="home.more.lead"></p>
@@ -2297,23 +2473,57 @@
             // Distinct from quiz.back, which is the previous QUESTION. Both buttons
             // are on screen at once and one of them abandons the round.
             'nav.backAria':        { en: 'Back to the start page',  de: 'Zurück zur Startseite' },
+            'nav.tagline':         { en: 'Learn · Practise · Pass',  de: 'Lernen · Üben · Bestehen' },
+            'nav.startPractice':   { en: 'Start practising',       de: 'Jetzt üben' },
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
             'nav.language':        { en: 'Interface language',      de: 'Sprache der Oberfläche' },
 
             // hero
-            'hero.headline':       { en: 'Pass your <span class="hero-mark">citizenship test</span> first time.', de: 'Bestehe deinen <span class="hero-mark">Einbürgerungstest</span> beim ersten Versuch.' },
-            'hero.lead':           { en: 'Practise all 300 official questions plus the 10 for your state. Spaced repetition, a real exam simulation, and explanations in German and English. Free, no account, straight in the browser.', de: 'Übe alle 300 amtlichen Fragen plus deine 10 Landesfragen. Mit smarter Wiederholung, echter Prüfungssimulation und Erklärungen auf Deutsch und Englisch. Kostenlos, ohne Konto, direkt im Browser.' },
-            'hero.cta':            { en: 'Start practising',        de: 'Jetzt üben' },
+            'hero.eyebrow':        { en: 'Your step towards a brighter tomorrow', de: 'Dein Schritt in eine bessere Zukunft' },
+            'hero.headline':       { en: 'German Naturalization Test', de: 'Der deutsche Einbürgerungstest' },
+            'hero.lead':           { en: 'Practise with all 300 official questions — for all 16 federal states. In German or English. Anytime, anywhere.', de: 'Übe mit allen 300 amtlichen Fragen — für alle 16 Bundesländer. Auf Deutsch oder Englisch. Jederzeit, überall.' },
+            'hero.cta':            { en: 'Start now',                de: 'Jetzt starten' },
+            'hero.cta2':           { en: 'Learn more',               de: 'Mehr erfahren' },
+            'hero.chip1':          { en: '300 official questions',   de: '300 amtliche Fragen' },
+            'hero.chip2':          { en: 'All 16 federal states',    de: 'Alle 16 Bundesländer' },
+            'hero.chip3':          { en: 'German & English',         de: 'Deutsch & Englisch' },
+            'hero.chip4':          { en: '60-minute test',           de: '60-Minuten-Test' },
+            'hero.annotation':     { en: 'Same questions. A brighter future.', de: 'Dieselben Fragen. Eine bessere Zukunft.' },
+            'hero.quote':          { en: 'Knowledge opens doors — for you and your family.', de: 'Wissen öffnet Türen — für dich und deine Familie.' },
+            'hero.photoAlt':       { en: 'The west façade of the Reichstag in Berlin, inscribed DEM DEUTSCHEN VOLKE, with the German and European flags flying in front of it.', de: 'Die Westfassade des Reichstags in Berlin mit der Inschrift DEM DEUTSCHEN VOLKE, davor die deutsche und die europäische Flagge.' },
+            'hero.credit':         { en: 'Photo: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>', de: 'Foto: Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>' },
+
+            'why.eyebrow':         { en: 'Why EIB Quiz?',            de: 'Warum EIB Quiz?' },
+            'why.title':           { en: 'Simple. Effective. Reliable.', de: 'Einfach. Wirksam. Verlässlich.' },
+            'why.1.title':         { en: 'Official content',         de: 'Amtliche Inhalte' },
+            'why.1.body':          { en: 'All 300 questions from the official catalogue.', de: 'Alle 300 Fragen aus dem amtlichen Fragenkatalog.' },
+            'why.2.title':         { en: 'Always complete',          de: 'Immer vollständig' },
+            'why.2.body':          { en: 'Every one of the 16 federal states, with its own ten questions.', de: 'Alle 16 Bundesländer, jedes mit seinen eigenen zehn Fragen.' },
+            'why.3.title':         { en: 'Flexible learning',        de: 'Flexibles Lernen' },
+            'why.3.body':          { en: 'In German or English. On any device.', de: 'Auf Deutsch oder Englisch. Auf jedem Gerät.' },
+            'why.4.title':         { en: 'Build your future',        de: 'Bau deine Zukunft' },
+            'why.4.body':          { en: 'More confidence. New opportunities.', de: 'Mehr Sicherheit. Neue Möglichkeiten.' },
+
+            'stats.1':             { en: 'Official questions',       de: 'Amtliche Fragen' },
+            'stats.2':             { en: 'Federal states',           de: 'Bundesländer' },
+            'stats.3':             { en: 'Languages (German & English)', de: 'Sprachen (Deutsch & Englisch)' },
+            'stats.4':             { en: 'Minutes (real test)',      de: 'Minuten (echte Prüfung)' },
+            'stats.annotation':    { en: 'A small step. A bigger future.', de: 'Ein kleiner Schritt. Eine große Zukunft.' },
+
+            'cta.eyebrow':         { en: 'Ready to get started?',    de: 'Bereit loszulegen?' },
+            'cta.title':           { en: 'Take the next step today.', de: 'Geh heute den nächsten Schritt.' },
+            'cta.lead':            { en: 'Practise, build your confidence and reach your goal.', de: 'Übe, gewinne Sicherheit und erreiche dein Ziel.' },
+            'cta.button':          { en: 'Start practising',         de: 'Jetzt üben' },
+            'cta.annotation':      { en: 'Citizenship opens new paths.', de: 'Einbürgerung öffnet neue Wege.' },
 
             // home sections
             'home.progress.title': { en: 'Where you stand',         de: 'Dein Stand' },
             'home.progress.lead':  { en: 'Your accuracy across every question you have answered so far.', de: 'Deine Trefferquote über alle bisher beantworteten Fragen.' },
-            'home.practice.title': { en: 'Practise',                de: 'Üben' },
-            'home.practice.lead':  { en: 'Start with the full exam simulation, or take a smaller set.', de: 'Beginne mit der vollen Prüfungssimulation oder nimm dir ein kleineres Set vor.' },
-            'home.topics.title':   { en: 'By topic',                de: 'Nach Thema' },
-            'home.topics.lead':    { en: 'The 300 general questions, grouped by subject.', de: 'Die 300 allgemeinen Fragen, nach Themen gruppiert.' },
+            'home.practice.eyebrow': { en: 'Practise your way',    de: 'Übe, wie es dir passt' },
+            'home.practice.title': { en: 'Choose your practice mode', de: 'Wähle deinen Übungsmodus' },
+            'home.practice.lead':  { en: 'Five ways in — one goal: passing.', de: 'Fünf Wege hinein — ein Ziel: bestehen.' },
             'home.more.title':     { en: 'Past rounds & glossary',  de: 'Frühere Runden & Glossar' },
             'home.more.lead':      { en: 'Past rounds, and the terms the questions assume you know.', de: 'Frühere Runden und die Begriffe, die die Fragen voraussetzen.' },
 
@@ -2332,7 +2542,10 @@
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
 
             // modes
-            'mode.start':          { en: 'Start',                   de: 'Starten' },
+            'mode.topic.title':    { en: 'By topic',               de: 'Nach Thema' },
+            'mode.topic.desc':     { en: 'Rights, politics, history, society or symbols — one subject at a time.', de: 'Grundrechte, Politik, Geschichte, Gesellschaft oder Symbole — ein Thema nach dem anderen.' },
+            'mode.topic.badge':    { en: 'Five topics',              de: 'Fünf Themen' },
+            'mode.topic.time':     { en: 'approx. 10–25 min',        de: 'ca. 10–25 Min' },
             'mode.exam.title':     { en: 'Exam simulation',         de: 'Prüfungssimulation' },
             'mode.exam.desc':      { en: '30 general questions plus 3 for {state}, drawn at random.', de: '30 allgemeine Fragen plus 3 zu {state}, zufällig gezogen.' },
             'mode.exam.badge':     { en: '33 questions',            de: '33 Fragen' },
@@ -2470,6 +2683,7 @@
             document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
             document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
             document.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', t(el.dataset.i18nTitle)); });
+            document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.setAttribute('alt', t(el.dataset.i18nAlt)); });
         }
 
         /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
@@ -2695,10 +2909,12 @@
             window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
-        // Landing hero CTA: smooth-scroll down to the main bento content
-        // (respects reduced-motion; scroll-margin-top offsets the sticky header).
-        function scrollToMain() {
-            const el = document.getElementById('homeMain');
+        // The landing tier's buttons are all on-page anchors: Start Now and the CTA band
+        // go to the mode grid, Learn More to the why-band. There is no About page and
+        // none of them links one. (Respects reduced-motion; the targets carry
+        // scroll-margin-top so the sticky header does not cover the heading.)
+        function scrollToId(id) {
+            const el = document.getElementById(id);
             if (!el) return;
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
@@ -2712,18 +2928,37 @@
         // buttons that throw on click.
         let loadFailed = false;
 
+        /**
+         * Which home tier to show. Marketing until there is something to come back to:
+         * a spaced-repetition record, a finished round, or a round left half-played.
+         * Reads the loaded state, not localStorage — `clearProgress()` empties both in
+         * memory, so a reset flips this back with no reload.
+         */
+        function hasProgress() {
+            return Object.keys(progress).length > 0 || resultsHistory.length > 0 || !!getSavedSession();
+        }
+
         function initHomeScreen() {
+            // A load failure is NOT a tier: `null` matches no data-tier, so both tiers go
+            // dark and the error stands alone. Set before the early return, or the hero,
+            // the why-band, the numbers and the CTA render on top of the dashboard's own
+            // empty headings — every section the markup ships visible, all at once.
+            const tier = loadFailed ? null : (hasProgress() ? 'dashboard' : 'landing');
+            document.querySelectorAll('#homeScreen [data-tier]')
+                .forEach(el => { el.hidden = el.dataset.tier !== tier; });
             if (loadFailed) {
                 document.getElementById('modesGrid').innerHTML =
                     '<div class="load-error">' + t('err.load') + '</div>';
                 return;
             }
+
             renderModes();
             renderTopics();
+            renderStatePicker();
+            if (tier !== 'dashboard') return;
             renderHistory();
             renderGlossary();
             renderHomeStatus();
-            renderStatePicker();
         }
 
         /** The state picker sits with the modes it changes, not with the progress it does not. */
@@ -2902,7 +3137,9 @@
         // ============================================================
         function renderHomeStatus() {
             const el = document.getElementById('homeStatus');
-            if (!el) return;
+            // Its whole section belongs to the dashboard tier; on the landing tier there
+            // is nothing to paint into. Guarded here rather than at each caller.
+            if (!el || el.closest('[hidden]')) return;
             const pool = activePool();
             const totalPool = pool.length;
             const mastered = masteredCount();
@@ -2928,7 +3165,7 @@
                         </div>
                         <div class="resume-actions">
                             <button class="btn-primary btn-sm" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
-                            <button class="btn-secondary btn-sm" onclick="clearSession(); renderHomeStatus();">${t('dash.resumeDrop')}</button>
+                            <button class="btn-secondary btn-sm" onclick="clearSession(); initHomeScreen();">${t('dash.resumeDrop')}</button>
                         </div>
                     </div>`;
             }
@@ -2996,7 +3233,7 @@
             const qs = sess.ids.map(id => byId.get(id)).filter(Boolean);
             // `answered` is keyed by position in sess.ids, so dropping any id shifts every
             // later answer onto the wrong question. Nothing sane to resume — discard it.
-            if (!qs.length || qs.length !== sess.ids.length) { clearSession(); renderHomeStatus(); return; }
+            if (!qs.length || qs.length !== sess.ids.length) { clearSession(); initHomeScreen(); return; }
             state.currentMode = sess.mode;
             state.currentTopic = sess.topic || null;
             state.stateCode = sess.stateCode || selectedState;
@@ -3028,33 +3265,51 @@
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
             const st = STATES[selectedState];
-            // The featured card states its action in words; a peer says it with
-            // the arrow, and parks its time estimate in the corner.
-            const card = (mode, icon, title, desc, meta, time, featured = '') => `
-                <button class="mode-card ${featured}" onclick="startMode('${mode}')">
+            // Five equal peers, no featured card. The card IS the button, so none of
+            // them repeats "Start" — the arrow says it. The time estimate rides in the
+            // meta row beside the count: as a corner stamp opposite the title it took
+            // 115px of a 165px head row and crushed "All questions" to 13px wide.
+            const card = (handler, icon, title, desc, meta, time, attrs = '') => `
+                <button class="mode-card" ${handler}${attrs}>
                     <span class="mode-head">
                         <span class="mode-icon">${icon}</span><span class="mode-title">${title}</span>
-                        ${featured ? '' : `<span class="mode-time">${time}</span>`}
                     </span>
                     <span class="mode-description">${desc}</span>
-                    <span class="mode-meta">${featured ? meta + ' · ' + time : meta}</span>
-                    ${featured
-                        ? `<span class="mode-start-btn">${t('mode.start')} <span class="msb-arrow">→</span></span>`
-                        : `<span class="mode-go" aria-hidden="true">→</span>`}
+                    <span class="mode-meta">${meta}<span class="mode-time">${time}</span></span>
+                    <span class="mode-go" aria-hidden="true">${ICONS.arrowRight}</span>
                 </button>`;
-            // The exam is the thing this app is for, so it is the only card that
-            // gets the full-width charcoal treatment. The rest are peers, and the
-            // only colour among them flags questions that are actually due.
+            const mode = m => `onclick="startMode('${m}')"`;
+            // The reveal's open state lives on the panel, not in a variable: renderModes()
+            // runs again on every language switch and would otherwise reset the button
+            // while the topics below it are still on show.
+            const topicsOpen = !document.getElementById('topicSection').hidden;
+
             grid.innerHTML =
-                card('exam', ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
-                     t('mode.exam.badge'), t('mode.exam.time'), 'mode-card--featured') +
-                card('allQuestions', ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
+                card(mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
+                     t('mode.exam.badge'), t('mode.exam.time')) +
+                card(mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
                      t('mode.all.badge'), t('mode.all.time')) +
-                card('bundesland', ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
+                card(mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
                      t('mode.state.badge'), t('mode.state.time')) +
-                card('review', ICONS.review, t('mode.review.title'), t('mode.review.desc'),
+                card(mode('review'), ICONS.review, t('mode.review.title'), t('mode.review.desc'),
                      due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>`
-                         : t('mode.review.badge'), t('mode.review.time'));
+                         : t('mode.review.badge'), t('mode.review.time')) +
+                card('onclick="toggleTopics(this)"', ICONS.topic, t('mode.topic.title'), t('mode.topic.desc'),
+                     t('mode.topic.badge'), t('mode.topic.time'),
+                     ` aria-expanded="${topicsOpen}" aria-controls="topicSection"`);
+        }
+
+        /**
+         * The Topic card reveals the topic chips in place rather than opening a screen.
+         * A button with aria-expanded/aria-controls rather than the <details> the history
+         * and glossary sections use: a <details> needs its summary and its body in one
+         * element, and here the summary is a card inside a five-column grid while the body
+         * has to span the whole row beneath it.
+         */
+        function toggleTopics(btn) {
+            const el = document.getElementById('topicSection');
+            el.hidden = !el.hidden;
+            btn.setAttribute('aria-expanded', String(!el.hidden));
         }
 
         // ============================================================
@@ -4125,6 +4380,10 @@
         document.getElementById('sidebarToggle').addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNavPanel(); }
         });
+        // Static markup names its glyph with data-icon rather than carrying the path, so
+        // the icon set stays the single definition. One pass at boot fills them all.
+        document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = ICONS[el.dataset.icon] || ''; });
+        document.getElementById('ctaArt').innerHTML = GATE_ART;
         // One arrow in the icon set; the back button mirrors it in CSS.
         document.querySelector('.session-back-icon').innerHTML = ICONS.arrowRight;
         document.getElementById('sidebarChevron').innerHTML = ICONS.chevron;
