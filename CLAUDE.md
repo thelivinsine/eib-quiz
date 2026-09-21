@@ -85,7 +85,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   on a flat canvas, **rounded-[16px]** (`--radius`), full-**pill** buttons/chips, and a
   **DISCIPLINED accent duo**: one **blue** primary + one warm **amber** pop. Two themes
   share the palette — DEFAULT = **light**, canvas **`#FFFFFF`** (ink `#0F1929`);
-  `.light` is the default look; dark = **slate charcoal** (canvas `#10151D`).
+  `.light` is the default look; dark = **neutral charcoal** (canvas `#1A1A1A`).
   - **Light's canvas is WHITE and light nests DOWN from it** (2026-09-21, on request,
     against the mockup, whose page measures `#FEFEFE`). This reverses the direction of
     the old paper-grey system, and the whole light ramp was re-derived NUMERICALLY before
@@ -102,22 +102,38 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the list. This is the argument `theme-dark.md` §5 makes for dark being out of fill
     room at the BOTTOM, applied to light being out of room at the TOP. `border / canvas`
     is what holds it, at 1.245 against a 1.10 floor.
-  - **The palette is the landing-page mockup's, re-derived for dark** (2026-09-21). It was a
-    teal/apricot pair until then. Dark had to be DERIVED, because the mockup is light-only,
-    and the method is the thing to preserve: **every neutral holds its measured relative
-    luminance and changes only hue** (slate, H 218). The ladder below was tuned against
-    `theme-dark.md`; re-tinting at constant luminance keeps all of it by construction rather
-    than by luck. Max drift across 32 neutrals was 0.006. **If the palette moves again, move
-    it this way** — picking fresh greys by eye is how the measured ladder gets lost.
-  - **The dark ladder is calibrated against `theme-dark.md` §1/§3, not eyeballed.** A tile sat
-    1.09 off the canvas where the measured band for a card is 1.15 (PowerToys) to 1.30 (ChatGPT);
-    the whole ramp above `--canvas` moved up by one delta so the shape is unchanged and
-    `--surface` now sits at 1.15. `--muted`/`--faint` were spread apart at the same time — §2
-    warns that four greys at 9/8/7/6 read as one mushy grey, and the tiers now read
-    13.6 / 8.4 / 6.1 / 4.9 on a tile. Light was measured against its own reference too,
-    and since its canvas went white (2026-09-21) a light card no longer clears it by FILL
-    at all — see the hairline note above. Light's tiers read 17.6 / 10.1 / 6.2 / 5.2
-    on white.
+  - **The COLOURED palette is the landing-page mockup's; the dark GREYS are the
+    reference's** (2026-09-21). The hues — blue, amber, green, rose, violet — come from the
+    mockup and are shared by both themes. The dark neutrals do NOT: the mockup is
+    light-only, and an earlier pass derived them from it by holding each measured
+    luminance and changing only hue (slate, H 218). `theme-dark.md` §2 is explicit that
+    this is the wrong move — "**greys are perfectly neutral**, R = G = B *exactly* ... no
+    fashionable dark navy. A tinted dark grey photographs well in a mockup and goes muddy
+    on a real monitor" — so **every dark surface, border and text tier is a true grey now**
+    (spread 0 per channel, against 11-21 before). **If dark is ever re-tinted, that
+    sentence is the answer.**
+  - **The dark ladder is calibrated against `theme-dark.md` §1/§3/§4/§7, not eyeballed,
+    and the PAGE SHADE is part of the calibration** (re-derived 2026-09-21). The page was
+    `#10151D`, near-black, with `--band` recessed *beneath* it. **THE PAGE IS NOW THE
+    DARKEST THING ON SCREEN AND NOTHING GOES BELOW IT** — see the ladder below. The rungs:
+    `--canvas` `#1A1A1A` → `--band` `#262626` (1.15) → `--surface` `#323232` (1.18 on the
+    band, 1.36 on the bare page) → `--surface2` `#3B3B3B` (1.14) → `--surface3` `#434343`
+    (1.13), the step shrinking with depth exactly as §3.a describes. **`--hover` was the
+    other failure and the more expensive one**: 1.182 on a tile, under §4's flat "**1.20 is
+    the floor for a state change**", and `contrast.test.mjs` cannot catch it because
+    `FILLS` asserts `STATE` at 1.08. It is 1.22. The tiers read 12.82 / 8.40 / 6.11 / 5.02
+    on a tile (§2 warns that four greys at 9/8/7/6 read as one mushy grey), and
+    `--muted`'s real floor is its LIGHTEST ground, `--surface3`, where it reads 4.72. Light was measured
+    against its own reference too, and since its canvas went white (2026-09-21) a light
+    card no longer clears it by FILL at all — see the hairline note above. Light's tiers
+    read 17.6 / 10.1 / 6.2 / 5.2 on white.
+  - **A tinted `--*-dim` plate is a FILL and has to behave like one.** The seven of them
+    (`--accent-soft`, `--teal-tint`, `--gold-dim`, `--green-dim`, `--red-dim`,
+    `--violet-dim`, `--blue-dim`) sat **1.01-1.15** on a tile — invisible as fills, with
+    the hue doing all the work — and came up with the page to **1.20** each, hue and
+    saturation held, luminance moved. `--red`/`--red-text` and `--violet` lightened a hair
+    with them (`#F87171` -> `#F97F7F`, `#A78BFA` -> `#AD92FA`) so their own text still
+    clears AA on the risen ground, which is §6's "lighten it until it clears".
   - **A mode card's body copy is `--sub-text`, its meta and time are `--muted`.** They were
     `--muted` and `--faint`: `theme-dark.md` §2 puts a description in the SECONDARY band
     (7.3-10.2) and reserves ~4.7 for placeholder/disabled text, so the cards were painted almost
@@ -143,8 +159,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     line — and the same section measures real dividers at **1.59-1.60 ON the panel they sit
     on**, "deliberately more contrasty than the panel-to-page step: it has to survive being
     one pixel tall". `--border` was **1.375** on a tile, well under that band, and that is
-    the whole of why dark read flat while light did not. It is `#3C4451` now (1.62 on a
-    tile, 1.86 on the canvas), with `--border-soft` 1.31 and `--border-hover` 2.00.
+    the whole of why dark read flat while light did not. It is `#505050` now (1.59 on a
+    tile, 2.16 on the page), with `--border-soft` 1.30 and `--border-hover` 2.00. The
+    2026-09-21 neutralisation kept all three ratios and moved only the hue.
     **Raising the EDGE costs the text tiers nothing; raising the FILLS would have cost
     `--faint` its AA on `--surface2`** (measured 4.35). Light was left alone: its own
     reference says light "simply cannot make a 1.6 divider without it reading as a heavy
@@ -192,11 +209,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.light` before first paint to avoid FOUC, and `setTheme` also updates `#themeColorMeta`.
   - Palette → legacy token names (JS writes these into inline styles, DON'T rename — the
     `--teal-*` and `--lime-*` names carry BLUE values now, and renaming them breaks the JS):
-    **blue** = `--accent`/`--lime` (`#2563EB` light / `#60A5FA` dark; plus `--accent-text`,
+    **blue** = `--accent`/`--lime` (`#2563EB` light / `#70ADFA` dark; plus `--accent-text`,
     `--teal-deep`, `--teal-tint`, `--accent-fill`, `--accent-grad`, `--on-accent`); **amber** =
     `--gold` (`#B45309` light so it reads as text / `#F59E0B` dark; `--apricot`,
-    `--apricot-deep`); `--blue` = info/time; semantic `--green` (correct, `#047857` / `#10B981`)
-    / `--red`+`--red-text` (wrong, `#CC2020` / `#F87171`).
+    `--apricot-deep`); `--blue` = info/time; semantic `--green` (correct, `#047857` / `#10C185`)
+    / `--red`+`--red-text` (wrong, `#CC2020` / `#F98989`).
+    **The four DARK hues are a rung lighter than the mockup's** (2026-09-21): dark's
+    surfaces rose when the ladder was made monotonic, so `#60A5FA`, `#10B981`, `#F87171`
+    and `#A78BFA` each gained a little lightness to keep AA on their own risen
+    `--*-dim` plate — §6's "lighten it until it clears". Light is the mockup's exactly.
     **Light needs darker greens, ambers and reds than the mockup draws**, because the mockup
     only ever puts those colours on FILLS and this app uses them as TEXT tiers: `#10B981` is
     2.54 on white, `#F59E0B` is 2.15, `#EF4444` is 3.76. The accent itself needs no such
@@ -376,15 +397,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `nav.soon` / `nav.soonTitle`. They were `aria-disabled` buttons wearing a "Soon" chip
     for pages that do not exist. **If either is built it comes back as an ordinary
     `.nav-link` with a `data-screen` and a screen behind it** — not as a promise.
-  - **PRACTISE wears the PRIMARY BUTTON, not a link** (2026-09-21, on request, to draw the
-    eye). `.nav-link--cta` is `--btn-fill` / `--on-btn` in a pill — the hero's own Start
-    now, and a pair `contrast.test.mjs` already asserts — so the header, the hero and the
-    CTA band say "go to the app" in one voice, and the hover is `.btn-primary`'s
-    brightness step rather than a second idiom. **It keeps the pill on the Practise page
-    itself**: `.nav-link--active` sets `border-radius: 0` and `color: var(--text)`, which
-    would square the pill off and paint its label unreadable on that navy, so
-    `.nav-link--cta.nav-link--active` cancels both. Nothing is lost — `aria-current`
-    still says which page you are on. This is NOT the old `.header-cta`, which was
+  - **PRACTISE is drawn LOUDER than Home, and is still a LINK** (2026-09-21, on request).
+    `.nav-link--cta` is the same shape as `.nav-link` — no fill, no pill — one step up the
+    type scale (`--fs-md`) and in `--accent-text`. **It wore `--btn-fill` in a pill for a
+    few hours the same day and that was wrong**: two items in a two-item nav should read
+    as the same KIND of thing, and a solid button beside a bare word reads as a control
+    that acts rather than a page you go to. The hero's Start and the CTA band still carry
+    the primary button, so nothing lost that voice. The `:hover`, `:active` and
+    `.nav-link--active` overrides all stay — `.nav-link:hover` is (0,2,0) and the active
+    rule repaints the label `--text`, so without them the accent is lost in both states;
+    the active rule also re-states the underline in the accent. `accent-text / canvas` is
+    asserted in `contrast.test.mjs` for it, because the header sits on the canvas and in
+    dark that is a rung below `--surface`. This is NOT the old `.header-cta`, which was
     retired for repeating the hero's button: that was a second CTA on the same page, and
     this is navigation to another one.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
@@ -601,20 +625,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `renderModes()` reads the panel's `hidden` to redraw `aria-expanded`, because it runs
     again on every language switch and would otherwise reset the button while the topics
     were still showing.
-  - **The band is a RECESS, and that is the only reading of the mockup's panel that works
-    in both themes** (2026-09-21, `.modes-band` + `--band`). Reading it as `--surface2` was
-    tried twice and is wrong both ways round: in light `--surface2` on the canvas is a 1.03
-    step, which is invisible, and in dark the ramp only goes UP, so `--surface` cards on a
-    `--surface2` band read as wells sunk into it. But look at the mockup again — its panel
-    is DARKER than its page and its cards are the page's own white. So the band steps DOWN
-    from the canvas (`--band`: `#E7EBF3` light, 1.08 below; `#0A0E15` dark, 1.06 below) and
-    the cards stay ordinary `--surface` tiles, 1.20 above it in both themes. Nothing on the
-    band needed repainting, which is the tell that this is the right reading: an earlier
-    attempt that moved the cards to a `--band-card` token put `--faint` at 4.35 on them in
-    dark and left hover 1.04 from rest.
-    - **It carries a `--border` hairline**, because 1.06 and 1.08 are both under the 1.20
-      where `theme-dark.md` §5 says to stop pushing fills apart and draw the edge — and the
-      why, numbers and CTA bands below it already have one.
+  - **The band is a RECESS IN LIGHT AND A RAISED PANEL IN DARK, and the direction is the
+    theme's, not the component's** (`.modes-band` + `--band`; the dark half was corrected
+    2026-09-21 after shipping as a recess in both). The mockup is light-only: its panel is
+    DARKER than its white page and its cards are the page's own white, so in light the band
+    steps DOWN (`#F5F8FC`, 1.065 below the canvas) and the cards are ordinary `--surface`
+    tiles raised back out of it. **Reading that as a rule about the COMPONENT and applying
+    it to dark was the mistake.** `theme-dark.md` §3: "every level of containment steps
+    LIGHTER than the thing containing it, monotonically, every time", and the single
+    exception in the reference's whole sample is a large multi-line text well — "a chip or
+    a button is a raised object you press; a big text well is a hole you type into". A
+    panel holding five cards is not a hole. In dark the band is therefore `#262626`,
+    **1.15 ABOVE** the `#1A1A1A` page, with the cards 1.18 above it again: page darkest,
+    then panel, then card, then the well inside the card. Same for the why, numbers, CTA
+    and footer panels, which share the token.
+    - Reading it as `--surface2` is still wrong, and was tried twice: in light
+      `--surface2` on the canvas is a 1.03 step, which is invisible, and in dark it would
+      put the panel ABOVE the cards standing on it.
+    - **It carries a `--border` hairline**, because every rung of this ladder is under the
+      1.20 where `theme-dark.md` §5 says to stop pushing fills apart and draw the edge —
+      and the why, numbers and CTA bands below it already have one.
     - **In LIGHT both state fills move up a rung ON the band, and only in light.** "Nothing
       on the band needed repainting" held for the RESTING card and not for its states: a
       white card can only step DOWN, and the panel is just 1.20 beneath it, so `--hover`
@@ -664,14 +694,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--green-dim`+`--green`, `--gold-dim`+`--gold`, `--red-dim`+`--red-text` and
     `--violet-dim`+`--violet`, exposing each as **`--hue-tint`** and **`--hue-ink`** —
     named long on purpose: as plain `--ink` it shadowed the palette's OWN legacy border
-    alias (`--ink`, #3C4451 dark / #E0E7F1 light) for every descendant of a hue element,
+    alias (`--ink`, #505050 dark / #E0E7F1 light) for every descendant of a hue element,
     so a later `border: 1px solid var(--ink)` inside a mode card would have drawn a solid
     red edge while the palette definition still looked right. Every plate in the
     app is therefore ALREADY asserted by `contrast.test.mjs`, which is the whole point of
     doing it this way — **do not write a per-component tint literal.** `--on-hue` is the
-    glyph on a SOLID disc and is one value per theme (`#FFFFFF` light, `#10151D` dark):
+    glyph on a SOLID disc and is one value per theme (`#FFFFFF` light, `#1A1A1A` dark):
     every light hue is a dark colour and every dark hue a light one, so one token serves
-    all five. White on dark's `#A78BFA` is 2.72 and would have failed the 3.0 floor.
+    all five. White on dark's violet is 2.32 and would have failed the 3.0 floor.
   - **The state picker's pill hugs the selected state.** A native `<select>` is as wide as its
     longest option, so binding the pill to it sized every state to "Mecklenburg-Vorpommern" and
     left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`

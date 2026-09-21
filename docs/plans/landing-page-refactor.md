@@ -42,6 +42,23 @@ any project rule that obstructs the refactor, *except* the icon artwork. So:
    The whole light ramp was re-derived to nest DOWN from white; primary buttons take a new
    `--btn-fill` navy, since the mockup never fills a button with the accent blue.
 
+**Third follow-up, same day — two more of its decisions were reversed**, on request,
+after the dark theme was read against `claude-context-kit`'s dark-mode reference
+screenshots rather than against the mockup:
+
+7. **The header's Practise link is a LINK again, not the primary button.** Item 5's
+   header shipped it as a `--btn-fill` pill; two items in a two-item nav should read as
+   the same kind of thing, so it is `.nav-link`'s own shape one step up the type scale
+   (`--fs-md`) and in `--accent-text`. The hero and the CTA band still carry the button.
+8. **Item 2's RECESS is light-only.** The mockup is light-only, and applying its downward
+   panel to dark inverted the nesting ladder: the band was darker than the page with the
+   cards raised back out of it. `theme-dark.md` §3 — "every level of containment steps
+   LIGHTER ... monotonically, every time", reversing for a large text well and nothing
+   else — so in dark the band is now a RAISED panel and the page is the darkest thing on
+   screen. **The whole dark palette below (the "same shape, in slate" table and the
+   constant-luminance re-tint) is superseded**: dark's neutrals are true greys now, per
+   §2. Light is untouched and is still the mockup's.
+
 See the 2026-09-21 "honest refactor against the mockup" section of `docs/TODO.md` for the
 measurements, and `CLAUDE.md` for the rules as they now stand.
 

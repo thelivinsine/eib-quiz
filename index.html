@@ -72,50 +72,92 @@
              --red --red-text --ink --font-mono --space-* ...
            ============================================================ */
         :root {
-            /* ===== DARK canvas (charcoal) — :root is the no-class base =====
-               Per the dark reference: neutral greys, every level of containment
-               steps LIGHTER, no drop shadows anywhere — elevation is lightness
-               plus a hairline. Text tiers are solid values, never opacity. */
+            /* ===== DARK canvas — :root is the no-class base =====
+               RE-DERIVED 2026-09-21 against claude-context-kit theme-dark.md, on
+               request, and it reverses the slate tint. Three measured failures, each
+               of them the reference naming its own commonest fault:
+                 §2   "greys are perfectly neutral, R = G = B EXACTLY ... no
+                      fashionable dark navy. A tinted dark grey photographs well in a
+                      mockup and goes muddy on a real monitor." Every surface here was
+                      H 218 slate, 11-21 apart per channel, DERIVED FROM A LIGHT-ONLY
+                      MOCKUP — the exact move that sentence warns against.
+                 §3   "every level of containment steps LIGHTER than the thing containing
+                      it, monotonically, every time." --band was a RECESS: the panel under
+                      the practise, numbers and CTA bands was DARKER than the page, with
+                      cards raised back out of it. §3 reverses for exactly one element,
+                      a large multi-line text well, and a panel of cards is not one. The
+                      page is now the darkest thing on screen and nothing goes below it
+                      — see the --band block for the ladder it produced.
+                 §4   "1.20 is the floor for a state change ... anything under about
+                      1.15 is not a hover, it is a rounding error — and no contrast
+                      script will flag it, because both values pass on their own."
+                      --hover was 1.182 on a tile, and FILLS asserts STATE at 1.08, so
+                      the ratchet could not see it. It is 1.23 now.
+               The ladder is unchanged in SHAPE — 1.18 / 1.14 / 1.15 with the hairline
+               at 1.60 per §5 — only the hue and the floor moved. The seven tinted
+               --*-dim plates came up with the ladder: they sat 1.01-1.15 on a tile,
+               invisible as fills, and are 1.20 now. --red and --violet lightened a hair
+               (#F87171 -> #F97F7F, #A78BFA -> #AD92FA) so their own text still clears
+               AA on those risen grounds, which is §6's "lighten it until it clears".
+               LIGHT IS UNTOUCHED: its palette is the mockup's own and measures clean.
+               Still true and still the reference's: every level of containment steps
+               LIGHTER, no drop shadows, text tiers solid values and never opacity. */
             color-scheme: dark;
 
-            --canvas:    #10151D;
-            --bg:        #10151D;
-            --surface:   #1C222E;   /* tile — 1.16 above canvas, the measured card band */
-            --surface2:  #252C37;   /* inset well inside a tile — 1.12 on it */
-            --surface3:  #2F3542;   /* track / rail */
-            --hover:     #282F3A;   /* hover steps UP in dark */
-            /* The practise band's panel. In the mockup the panel is DARKER than the page
-               and the cards go back to the page's own white — so the band is a RECESS and
-               the cards are ordinary tiles, which is the one reading that works in both
-               themes. 1.06 below the canvas here, and --surface sits 1.21 above it. */
-            --band:      #0A0E15;
+            --canvas:    #1A1A1A;
+            --bg:        #1A1A1A;
+            --surface:   #323232;   /* tile — 1.18 on the band, 1.36 on the page */
+            --surface2:  #3B3B3B;   /* well or option inside a tile — 1.14 on it */
+            --surface3:  #434343;   /* letter chip, track, press fill — 1.13 on that */
+            --hover:     #3F3F3F;   /* hover steps UP — 1.22 on a tile, clearing §4's 1.20 */
+            /* The panel under the practise band, the numbers band, the CTA band and the
+               footer. In LIGHT it is a RECESS, because the mockup draws it darker than its
+               white page and light has no "up" to go.
+               IN DARK IT IS THE OPPOSITE, AND THAT IS THE WHOLE LADDER (2026-09-21, on
+               request, after it shipped as a recess here too). theme-dark.md §3: "every
+               level of containment steps LIGHTER than the thing containing it,
+               monotonically, every time", and the only element in the reference's entire
+               sample that reverses is a large multi-line text well — "a chip or a button
+               is a raised object you press; a big text well is a hole you type into". A
+               panel holding five cards is not a hole. So the page is the darkest thing on
+               screen and the ladder only climbs from here:
+                 --canvas  #1A1A1A   the page
+                 --band    #262626   1.15   a panel ON the page
+                 --surface #323232   1.18   a card IN the panel (1.36 on the bare page)
+                 --surface2 #3B3B3B  1.14   a well or an option INSIDE a card
+                 --surface3 #434343  1.13   a letter chip inside THAT, and the press fill
+               §3.a: the step SHRINKS with depth (1.30, 1.22, 1.13 in the reference),
+               because there is less headroom at each level. Do not add a sixth rung —
+               §3 says depth 3 is where fill stops working and the hairline takes over. */
+            --band:      #262626;
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
-               the fills apart and draw the edge instead", and a tile sits 1.159 off this
-               canvas — under that line. The same section measures real dividers at
+               the fills apart and draw the edge instead", and every rung of the ladder
+               above is under that line — 1.13 to 1.18. The same section measures real dividers at
                1.59-1.60 ON the panel they sit on, "deliberately more contrasty than the
                panel-to-page step: it has to survive being one pixel tall". This app's
                hairline was 1.375 on a tile, well under that band, which is the whole of
                why dark read flat while light did not. Raising the EDGE costs the text
                tiers nothing; raising the fills would have cost --faint its AA on
-               --surface2 (measured 4.15). */
-            --border:       #3C4451;   /* 1.60 on tile, 1.86 on canvas */
-            --border-soft:  #2F3640;   /* 1.30 — the gentler internal rule */
-            --border-hover: #495161;   /* 2.00 — still a clear step above --border */
-            --ink:          #3C4451;   /* legacy alias (borders) */
-            --hairline:     #3C4451;
+               --surface2 (measured 4.15). The 2026-09-21 re-derivation kept all three
+               ratios and only neutralised the hue. */
+            --border:       #505050;   /* 1.59 on a tile, 2.16 on the page */
+            --border-soft:  #434343;   /* 1.30 — the gentler internal rule */
+            --border-hover: #5F5F5F;   /* 2.00 — still a clear step above --border */
+            --ink:          #505050;   /* legacy alias (borders) */
+            --hairline:     #505050;
 
             /* Primary TEAL */
-            --teal:       #60A5FA;
-            --teal-deep:  #60A5FA;   /* text-safe variant = the bright one in dark */
-            --teal-tint:  #16243A;
-            --accent:       #60A5FA;
-            --accent-text:  #60A5FA;
+            --teal:       #70ADFA;
+            --teal-deep:  #70ADFA;   /* text-safe variant = the bright one in dark */
+            --teal-tint:  #263F64;
+            --accent:       #70ADFA;
+            --accent-text:  #70ADFA;
             --accent-fill:  #2563EB;
-            --accent-soft:  #16233A;
-            --accent-line:  #2B4E80;
-            --accent-grad:  linear-gradient(135deg, #2563EB 0%, #60A5FA 100%);
+            --accent-soft:  #273E67;
+            --accent-line:  #2D5185;
+            --accent-grad:  linear-gradient(135deg, #2563EB 0%, #70ADFA 100%);
             --on-accent:    #FFFFFF;
 
             /* Contrast APRICOT */
@@ -124,22 +166,22 @@
             --on-apricot:   #1A1206;
 
             /* legacy names read by JS inline styles */
-            --lime:      #60A5FA;
-            --lime-dim:  #16233A;
-            --lime-glow: rgba(96,165,250,0.30);
+            --lime:      #70ADFA;
+            --lime-dim:  #273E67;
+            --lime-glow: rgba(112,173,250,0.30);
             --gold:      #F59E0B;
-            --gold-dim:  #3A2A12;
+            --gold-dim:  #503A19;
             --on-gold:   #1A1206;
 
             --blue:      #93C5FD;
-            --blue-dim:  #1A2740;
-            --green:     #10B981;
-            --green-dim: #0D2D25;
-            --red:       #F87171;
-            --red-text:  #F87171;
-            --red-dim:   #34191C;
-            --violet:     #A78BFA;
-            --violet-dim: #241A3D;
+            --blue-dim:  #293E65;
+            --green:     #10C185;
+            --green-dim: #144639;
+            --red:       #F98989;
+            --red-text:  #F98989;
+            --red-dim:   #612F34;
+            --violet:     #B39CFA;
+            --violet-dim: #453276;
 
             /* The primary button's own fill, separate from --accent-fill. The mockup
                paints every CTA near-black navy, which reads only on a light page; dark
@@ -148,12 +190,12 @@
                (white on dark's #A78BFA is 2.72, under the 3.0 non-text floor). */
             --btn-fill:  #2563EB;
             --on-btn:    #FFFFFF;
-            --on-hue:    #10151D;
+            --on-hue:    #1A1A1A;
 
-            --text:     #ECEDF0;   /* 13.6 on tile */
-            --sub-text: #B6BCC8;   /*  8.4 */
-            --muted:    #98A1B0;   /*  6.1 on tile */
-            --faint:    #8590A1;   /*  4.9 on tile */
+            --text:     #FFFFFF;   /* 13.97 on tile, 16.5 on the page */
+            --sub-text: #D1D1D1;   /*  8.40 */
+            --muted:    #B3B3B3;   /*  6.11 on a tile, 4.72 on --surface3, its lightest ground */
+            --faint:    #A2A2A2;   /*  5.02 on a tile */
 
             /* One three-step scale. Nested corners follow
                inner = outer - padding, snapped to the nearest step. */
@@ -515,25 +557,21 @@
         /* The mockup underlines the current section. A box-shadow rather than a
            border, so the rule does not add to the control's height. */
         .nav-link--active { color: var(--text); box-shadow: inset 0 -2px 0 var(--text); border-radius: 0; }
-        /* PRACTISE is the way IN, so it wears the primary button rather than a link
-           (2026-09-21, on request). The fill is --btn-fill / --on-btn - the hero's own
-           Start now, and a pair contrast.test.mjs already asserts - so the header, the
-           hero and the CTA band all say "go to the app" in one voice, and the hover is
-           .btn-primary's brightness step rather than a second idiom.
-           It keeps the pill ON the Practise page: the active rule's underline squares
-           the corners off (border-radius: 0) and repaints the label --text, which on
-           that navy is unreadable in light. aria-current still says which page you are
-           on for anyone who cannot see the fill, so nothing is lost by dropping the
-           underline HERE and nowhere else. */
-        .nav-link--cta {
-            padding-inline: var(--space-ms);
-            border-radius: var(--radius-pill);
-            background: var(--btn-fill); color: var(--on-btn);
-        }
-        .nav-link--cta:hover { color: var(--on-btn); filter: brightness(1.08); }
-        .nav-link--cta:active { filter: brightness(0.94); }
+        /* PRACTISE is the way in, so it is DRAWN LOUDER than Home - but it is still a
+           LINK, not a button (2026-09-21, on request; it wore --btn-fill in a pill for
+           a few hours before that). Same shape as .nav-link, one size up and in the
+           accent: two items in a two-item nav should read as the same kind of thing,
+           and a solid pill beside a bare word reads as a control that does something
+           rather than a page you go to. The hero's Start and the CTA band still carry
+           the button, so nothing lost the primary voice.
+           Its :hover and :active rules stay because .nav-link:hover is (0,2,0) and
+           would otherwise repaint it --text; same reason the active rule re-states the
+           accent, or the underline and the label come back in --text. */
+        .nav-link--cta { font-size: var(--fs-md); color: var(--accent-text); }
+        .nav-link--cta:hover { color: var(--accent-text); filter: brightness(1.12); }
+        .nav-link--cta:active { filter: brightness(0.9); }
         .nav-link--cta.nav-link--active {
-            box-shadow: none; border-radius: var(--radius-pill); color: var(--on-btn);
+            color: var(--accent-text); box-shadow: inset 0 -2px 0 var(--accent-text);
         }
 
         /* About and FAQs were here as aria-disabled buttons wearing a "Soon" chip,
@@ -3347,7 +3385,7 @@
                 setSegment(document.getElementById('darkBtn'), true);
                 setSegment(document.getElementById('lightBtn'), false);
                 localStorage.setItem('theme', 'dark');
-                if (meta) meta.setAttribute('content', '#10151D');
+                if (meta) meta.setAttribute('content', '#1A1A1A');
             }
         }
 

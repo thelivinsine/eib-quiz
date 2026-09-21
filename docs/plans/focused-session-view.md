@@ -7,6 +7,11 @@
 > [`sizing-system.md`](sizing-system.md) and the size-system block in `CLAUDE.md`. Read
 > this for the reasoning about layout and scroll regions, not for values to copy.
 >
+> **Its CONTRAST numbers are stale too** (2026-09-21): the dark palette was re-derived
+> against `theme-dark.md` — true greys, and a ladder that only ever climbs from the
+> page — so every dark ratio quoted below has moved. The ladder ARGUMENT (card → option
+> → chip, with `--surface2` as the well inside a tile) is exactly what dark does today.
+>
 > **And "the home screen" below is now TWO pages** (2026-09-21): Home is the landing
 > page, Practise is the app. Both scroll and both keep the footer and the nav; the
 > page-versus-session split this document argues for is unchanged, but it is computed
