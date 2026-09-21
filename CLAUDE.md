@@ -1105,6 +1105,16 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   skips every style rule in the sheet and finds nothing. Handle `r.selectorText` FIRST, then
   recurse only when `r.cssRules.length`. A walk that reports 0 matches over 556 rules is
   this bug, not an absent rule.
+- **Headless Chrome's `--window-size` is NOT a layout viewport, so never check a mobile
+  width with it.** `--window-size=375,1900` renders a **511px** page into a 375px image, so
+  the result is a correct desktop-ish layout with its right-hand side cropped off — which
+  looks exactly like horizontal overflow and was diagnosed as exactly that. The real numbers
+  came from the in-app pane with `resize_window {preset: "mobile"}`: `scrollWidth ==
+  clientWidth == 375`, zero overflowing elements. Headless is still the right tool for a
+  full-page SCREENSHOT and for reading the parsed stylesheet; for anything where the
+  VIEWPORT WIDTH is the thing under test, use real device emulation. A corollary worth
+  keeping: the pane will not reliably paint a screenshot, but its JS measurement is always
+  sound, so measure there and screenshot in headless.
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,
