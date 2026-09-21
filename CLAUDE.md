@@ -259,7 +259,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       line boxes and padding, and none of that was reopened. The page grew 1564 -> 1753px
       desktop (+12%) and 3.31 screens at 375px **as measured that day**. It has moved
       several times since (the why band's air, the footer, the hero crop); the landing
-      tier measures **2021px / 2.25 screens at 1280x900 and 3464px / 4.27 screens at
+      tier measures **1926px / 2.14 screens at 1280x900 and 3328px / 4.10 screens at
       375x812** today. Re-measure rather than quoting either number.
     - **A coarse-pointer override must be a RUNG ABOVE its base, or it does nothing.** Mapping
       `.option-btn`'s 48px coarse height onto `--ctl-md` gave it the 44px its base already had,
@@ -396,14 +396,20 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `initHomeScreen()`, not `renderHomeStatus()`: it can empty the last thing `hasProgress()`
     reads, and repainting one card would leave the tier lying.
 - **The landing tier is a hero, five modes, why, four numbers and one last call.**
-  - **The hero is two columns**: eyebrow / headline / lead / two buttons / four bare-glyph
-    facts on the left, the Reichstag on the right. Below 940px it stacks with the **photo
-    first**; below 620px the notes drop out and the facts go two-up.
-  - **A hero fact's LABEL is secondary-band copy, not a caption** (2026-09-21).
-    `.hero-chip-label` was `--fs-2xs` in `--muted` — the smallest type on the page in one
-    of its two quietest tiers, for four claims the hero is making. It is `--fs-xs` in
-    `--sub-text`. The GLYPH is untouched: the mockup's tinted 52px disc is still the plate
-    the icon rule forbids.
+  - **The hero is two columns**: eyebrow / headline / lead / two buttons on the left,
+    the Reichstag on the right. Below 940px it stacks with the **photo first**.
+  - **THE FOUR FACT CHIPS ARE GONE** (2026-09-21, on request). `.hero-chips` /
+    `.hero-chip*` and `hero.chip1`-`4` — 300 official questions, All 16 federal states,
+    German & English, 60-minute test — were four tinted discs restating what
+    `hero.lead` says in a sentence one line above them and what the numbers band states
+    again further down. `ICONS.clock` went with them: it was an alias
+    (`= ICONS.history`) with exactly one reader.
+  - **The two columns are centred against each other, and nothing had to be added to do
+    it.** `.hero-landing` already carries `align-items: center`; with the chips gone the
+    text column is 283px against the photo's 309 and the two centres measure identically
+    (263.5px at 1280x900), so the pair reads as one horizontal band. **If the left
+    column grows past the photo again, that is the rule that keeps them level** — do
+    not reach for a margin.
   - **The photograph is `img/hero-reichstag.webp`: a 1:1 FILE shown 16/10 at EVERY
     width** (2026-09-21, on request). The file is still square and no asset was
     recropped; `object-fit: cover` on a wider box drops the top and bottom, and the
@@ -925,7 +931,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     either extreme). Speak, translate, the lightbox close, the home card's reset, the
     navigator's chevron and a topic chip's glyph carry no pill or chip: a solid glyph is
     heavy enough to read as a control on its own, and a box round a control is a
-    container inside a container. But the **hero facts, the why marks and a mode card's
+    container inside a container. But the **why marks and a mode card's
     icon** each take a tinted disc, because the mockup draws them that way and that
     colour is most of why it reads as a lively page and the all-grey build read as a dead
     one — see HUE DISCS above. **A topic chip's glyph is grey at rest and accent on
@@ -1171,7 +1177,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 24 glyphs — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 24 glyphs — 23 drawings plus one alias — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -1181,9 +1187,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
   production.
-  **Two of the 24 are ALIASES, not drawings**: `ICONS.clock = ICONS.history` and
-  `ICONS.community = ICONS.society` (2026-09-21) — a clock IS the history glyph and a group
-  IS the society glyph, so there is one definition to maintain, not two. `GATE_ART` sits
+  **One of them is an ALIAS, not a drawing**: `ICONS.community = ICONS.society`
+  (2026-09-21) — a group IS the society glyph, so there is one definition to maintain,
+  not two. `ICONS.clock = ICONS.history` was a second until the hero's fact chips, its
+  only reader, were removed the same day. **An alias with no reader is dead code**:
+  delete it with its last consumer. `GATE_ART` sits
   beside `ICONS`: a Brandenburg Gate ornament for the landing page's CTA band, filled shapes
   only, purely decorative.
 - **Animated results:** the results screen shows an SVG score ring with a percentage count-up

@@ -991,3 +991,39 @@ byte-compared against local after #81.
   depends on the real viewport height (`svh` floors) was therefore measured, not seen.
 - `docs/Mockups/ChatGPT Image Sep 21, 2026, 04_51_59 PM.png` is untracked in the working
   tree and is **not mine**. Left alone.
+
+
+## Session developments (2026-09-21, the hero's fact chips came out)
+
+**The four hero fact chips are gone**, on request: 300 official questions / All 16
+federal states / German & English / 60-minute test. `.hero-chips`, `.hero-chip`,
+`.hero-chip-icon`, `.hero-chip-label`, their two media-query overrides, the `<ul>` and
+`hero.chip1`-`4` all went. They restated `hero.lead`, which sits one line above them and
+says all four things in a sentence, and the numbers band restates them again further down
+the page.
+
+`ICONS.clock` went with them. It was an alias (`= ICONS.history`) minted for chip 4 and
+had exactly one reader; the icon set is 23 drawings plus one alias
+(`ICONS.community = ICONS.society`) now. No other `ICONS` entry lost its last consumer —
+`allQuestions`, `bundesland` and `translate` are all still read by the mode cards and the
+bilingual toggle.
+
+**The desktop alignment needed no new CSS.** `.hero-landing` has carried
+`align-items: center` since the refactor; with the chips gone `.hero-text` is 283px tall
+against the photo's 309 and both centres measure 263.5px at 1280x900, so the columns sit
+on one horizontal band with a symmetric 13px overhang. A margin or an `align-self` here
+would be a second mechanism doing the first one's job.
+
+### Measured after
+Landing tier **1926px / 2.14 screens** at 1280x900 (was 2021 / 2.25) and **3328px /
+4.10 screens** at 375x812 (was 3464 / 4.27). `scrollWidth == clientWidth == 375` with
+zero overflowing elements. `node --test tools/contrast.test.mjs` 10/10 and
+`tools/scale.test.mjs` 12/12, every budget unmoved. `node --check` on the extracted
+script. `node tools/validate.js` OK (460 questions).
+
+### Not verified
+- Only the landing tier was re-measured. The dashboard tier, the quiz and the results
+  screens were not touched and were not re-checked.
+- The DE switch WAS re-run: `#langBadge` follows, the headline becomes
+  `Der deutsche Einbürgerungstest`, no `[data-i18n]` element renders empty, and the two
+  hero columns stay centred at 264/264 in German too.
