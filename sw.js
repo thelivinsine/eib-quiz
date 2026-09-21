@@ -20,22 +20,47 @@ const PRECACHE = [
   './img/icons/icon-512.png',
 ];
 
+// CacheStorage is not guaranteed to work. It throws under blocked site data, in
+// some private windows, on a corrupted profile and when the origin is out of quota
+// - observed for real as "Failed to execute 'open' on 'CacheStorage': Unexpected
+// internal error." with 10GB of quota free and IndexedDB healthy. Every call below
+// goes through these, because an unhandled rejection in install kills the whole
+// REGISTRATION (no worker at all, so no network-first either) and one in a fetch
+// handler fails the request outright. No cache means no offline; it must not mean
+// no app.
+async function safeOpen() {
+  try { return await caches.open(CACHE); } catch (e) { return null; }
+}
+async function safeMatch(req) {
+  try { return await caches.match(req); } catch (e) { return undefined; }
+}
+async function safePut(req, res) {
+  const c = await safeOpen();
+  if (!c) return;
+  try { await c.put(req, res); } catch (e) {}
+}
+
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE)
+  event.waitUntil((async () => {
+    const cache = await safeOpen();
+    if (cache) {
       // `cache: 'reload'` on every precache entry: addAll() consults the HTTP
       // cache by default, so a fresh install could seed itself from the very
       // stale copies it exists to replace.
-      .then(c => c.addAll(PRECACHE.map(u => new Request(u, { cache: 'reload' })))
-        .catch(() => {})) // tolerate any missing asset
-      .then(() => self.skipWaiting())
-  );
+      try {
+        await cache.addAll(PRECACHE.map(u => new Request(u, { cache: 'reload' })));
+      } catch (e) {} // tolerate any missing asset
+    }
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
+    try {
+      const keys = await caches.keys();
+      await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
+    } catch (e) {} // a failed sweep must not stop the worker taking over
     await self.clients.claim();
   })());
 });
@@ -67,14 +92,13 @@ self.addEventListener('fetch', event => {
         // same HTTP cache.
         const res = await fetch(req, { cache: 'reload' });
         // Only cache real successes — otherwise a 404/500 becomes the offline fallback.
-        if (res.ok) {
-          const cache = await caches.open(CACHE);
-          cache.put(req, res.clone());
-        }
+        // Through safePut, so a broken CacheStorage cannot turn a GOOD network
+        // response into a failed navigation.
+        if (res.ok) await safePut(req, res.clone());
         return res;
       } catch (e) {
-        const cached = await caches.match(req);
-        return cached || caches.match('./index.html');
+        const cached = await safeMatch(req);
+        return cached || (await safeMatch('./index.html')) || Response.error();
       }
     })());
     return;
@@ -82,11 +106,11 @@ self.addEventListener('fetch', event => {
 
   // Cache-first with background refresh (stale-while-revalidate) for static assets.
   event.respondWith((async () => {
-    const cached = await caches.match(req);
+    const cached = await safeMatch(req);
     const fetchPromise = fetch(req).then(res => {
       if (res && res.status === 200 && (url.origin === self.location.origin ||
           url.origin.includes('gstatic') || url.origin.includes('googleapis'))) {
-        caches.open(CACHE).then(c => c.put(req, res.clone()));
+        safePut(req, res.clone());
       }
       return res;
     }).catch(() => cached);

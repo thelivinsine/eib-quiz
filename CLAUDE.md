@@ -38,12 +38,25 @@
     survives the reload itself. A reload loop is a far worse bug than a stale tab.
   - **A reload does not touch `localStorage`**, so progress, the resumable session and the
     history all survive the swap. That is what makes the auto-reload safe at all.
-  - **None of this could be verified in this environment**: the in-app preview pane refuses
-    to register a worker at all ("unknown error when fetching the script"), and headless
-    Chrome's `register()` resolves but `getRegistrations()` comes back empty. What WAS
-    verified locally, with a persistent profile, is the network-first path: a second load
-    through the worker served a freshly edited `index.html`. **Verify the swap in a real
-    browser's Application panel.**
+  - **All of it is VERIFIED in a real browser** (2026-09-21, headed Chrome driven over
+    CDP): a controlled tab reloads itself exactly once on a new `sw.js`, keeps
+    `localStorage`, evicts the old cache, does NOT reload on the next deploy (the
+    sessionStorage bound holds), and does not reload at all while `body.in-session`. An
+    ordinary reload of a controlled tab serves freshly edited HTML, and with the network
+    emulated offline the app still renders all five mode cards from cache.
+  - **To test this yourself, the profile must NOT live under `%TEMP%`.** A throwaway
+    profile there had CacheStorage fail outright — `caches.open()` threw
+    "Unexpected internal error" with 10GB of quota free and IndexedDB healthy — while the
+    same Chrome with a profile under the repo worked first time. The in-app preview pane
+    will not register a worker either. Both look like an app bug and are not one.
+  - **A CacheStorage failure must never cost the REGISTRATION** (2026-09-21). That broken
+    profile is what exposed it: `caches.open()` rejecting inside `install` rejected
+    `event.waitUntil`, the worker went redundant, and the registration was discarded — so
+    there was no worker at all, and with it no network-first. `safeOpen`/`safeMatch`/
+    `safePut` in `sw.js` swallow it everywhere, `activate`'s sweep is wrapped, and the
+    network-first path writes through `safePut` so a broken cache cannot turn a GOOD
+    network response into a failed navigation. **No cache means no offline; it must not
+    mean no app.**
 - **Network-first only works with `cache: 'reload'`, and both fetch paths need it**
   (fixed 2026-09-19). A plain `fetch(req)` consults the **browser's HTTP cache** first;
   GitHub Pages serves `index.html` with `max-age=600`, so the worker's "network" fetch was
