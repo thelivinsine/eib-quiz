@@ -148,7 +148,6 @@ const PAIRS = [
   ["muted", "surface3", AA, "the letter chip on an option, and a dimmed option after answering"],
 
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
-  ["on-dark", "ink-tile", AA, "the brand mark in the header"],
 
   // The featured exam card is a teal-tinted tile, so its three text tiers land
   // on accent-soft rather than on a tile — the same tiers, a different ground.
@@ -183,7 +182,6 @@ const FILLS = [
   ["hover", "surface", STATE, "a tile or option under the pointer"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  ["ink-tile", "canvas", STATE, "the brand mark against the header"],
   // The featured card's tint is not a step in lightness against paper-grey, so
   // the hairline is the whole separation and has to clear the edge floor alone.
   ["accent", "canvas", HAIRLINE, "the featured exam card's teal edge against the page"],
@@ -197,7 +195,6 @@ const FILLS = [
 // [foreground, ground, floor, what it is].
 const LITERAL_PAIRS = {
   light: [
-    ['#fff', '#0F1929', AA, 'the brand mark letter (html.light .brand-mark) on --ink-tile'],
     ['#fff', '#047857', AA, 'the letter on the correct answer chip, on --green'],
     ['#fff', '#CC2020', AA, 'the letter on the wrong answer chip, on --red'],
     // The zoom veil is rgba(9,10,13,0.60) over a PICTURE, so its effective backdrop

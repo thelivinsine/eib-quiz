@@ -1,6 +1,6 @@
 # Plan — rebuild the home screen against the landing-page mockup
 
-Status: **Phases 0-5 complete, 2026-09-21.** Phases 6 and 7 open.
+Status: **Phases 0-6 complete, 2026-09-21.** Phase 7 open (7.7, the social card, is the last piece).
 
 Source of truth for the design: [`docs/Mockups/ui/landing-page.png`](../Mockups/ui/landing-page.png).
 Photography and the states map: [`docs/Mockups/photos/`](../Mockups/photos/ATTRIBUTIONS.md).
@@ -587,9 +587,9 @@ became `scrollToId(id)` — there are three on-page anchors now, not one.
 
 ---
 
-## Phase 6 — Header
+## Phase 6 — Header  ·  **DONE**
 
-### 6.1 Primary action in the header
+### 6.1 Primary action in the header  ·  done
 `[index.html, I18N]`
 
 `Start Practice` at the right of the header, **home screen only** — inside a
@@ -602,7 +602,7 @@ action.
 - **Accept when:** it is absent on every screen carrying `body.in-session`,
   and the header still fits one line at 375px with both segmented controls.
 
-### 6.2 Brand lockup
+### 6.2 Brand lockup  ·  done
 `[index.html, I18N]`
 
 The mockup shows the flag mark, `EIB Quiz`, and the tagline
@@ -612,6 +612,33 @@ The mockup shows the flag mark, `EIB Quiz`, and the tagline
 - Hidden below 620px — the header is a strip you glance at.
 - **Accept when:** the flag mark's hex values are in `LITERAL_PAIRS` if any
   are written as literals.
+
+
+### What phase 6 decided that the plan did not
+
+**The header CTA is hidden below 620px, not merely small.** Task 6.1's
+acceptance asks it to fit one line at 375px beside both segmented controls, and
+it does not: brand, two switches and a button come to roughly 390px inside a
+343px content width. It is a marketing affordance, and ten pixels below it the
+hero's own **Start now** does the same job, so down there it goes.
+
+**It sits AFTER `.btn-primary` in the sheet.** Both are single classes, so as
+written above it the rule lost every declaration to the base below it, and the
+button first rendered at `.btn-primary`'s full 44px and padding. Moved below, it
+takes `--ctl-sm` with the usual coarse-pointer bump — the same exception
+`.brand` and `.session-back` already take.
+
+**The brand mark is the flag, and two tokens died with the letter tile.**
+`--ink-tile` and `--on-dark` existed only for the charcoal `E`; nothing else read
+them, so both are gone from both `:root` blocks, along with the three entries in
+`contrast.test.mjs` that asserted the old mark (two token pairs and the `#fff`
+literal). The flag's three bands are literals written **inside the SVG**, not in
+a rule: they are the German flag's own values, identical in both themes, and a
+graphic carrying no text has no pair for `LITERAL_PAIRS` to hold.
+
+**`EIB Quiz` is not in `I18N`,** because a product name is not translated — the
+same reason the old `eib` was markup. The tagline is, as `nav.tagline`.
+
 
 ---
 

@@ -83,7 +83,6 @@
             --surface:   #1C222E;   /* tile — 1.16 above canvas, the measured card band */
             --surface2:  #252C37;   /* inset well inside a tile — 1.12 on it */
             --surface3:  #2F3542;   /* track / rail */
-            --ink-tile:  #292F3B;   /* the charcoal-fill tile — top of the dark ladder */
             --hover:     #282F3A;   /* hover steps UP in dark */
 
             /* The hairline carries dark mode, because the FILLS cannot.
@@ -140,7 +139,6 @@
             --sub-text: #B6BCC8;   /*  8.4 */
             --muted:    #98A1B0;   /*  6.1 on tile */
             --faint:    #8590A1;   /*  4.9 on tile */
-            --on-dark:  #FFFFFF;
 
             /* One three-step scale. Nested corners follow
                inner = outer - padding, snapped to the nearest step. */
@@ -256,7 +254,6 @@
             --surface:   #FFFFFF;    /* tile — 1.11 above page */
             --surface2:  #F4F7FA;    /* inset well inside a tile */
             --surface3:  #E2E7F0;    /* track / rail */
-            --ink-tile:  #0F1929;    /* charcoal-fill tiles */
             --hover:     #F0F2F7;    /* hover steps DOWN in light */
 
             --border:       #E2E7F0;   /* 1.24 on tile, 1.11 on page */
@@ -300,7 +297,6 @@
             --sub-text: #33425E;   /* 10.1 */
             --muted:    #526481;   /*  6.0 */
             --faint:    #5E708E;   /*  5.0 on white, 4.5 on page */
-            --on-dark:  #FFFFFF;
         }
 
         /* ============================================================
@@ -388,18 +384,21 @@
             gap: var(--space-md);
         }
         .brand { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); }
+        /* The mark is the flag, not a charcoal tile with an E on it. Its three bands are
+           written as literals INSIDE the SVG rather than in a rule: they are the German
+           flag's own values, they are the same in both themes, and they are a graphic
+           with no text on them, so there is no pair for LITERAL_PAIRS to hold. The
+           --ink-tile and --on-dark tokens went with the old mark; nothing else read them. */
         .brand-mark {
             width: var(--ctl-sm); height: var(--ctl-sm);
             border-radius: var(--radius-sm);
+            overflow: hidden;
             display: grid; place-items: center;
-            font-family: var(--font-head);
-            font-weight: 700;
-            font-size: var(--fs-base);
-            color: var(--on-dark);
-            background: var(--ink-tile);
         }
-        html.light .brand-mark { color: #fff; }
-        .brand-name { font-weight: 600; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
+        .brand-mark svg { width: 100%; height: 100%; display: block; }
+        .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
+        .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
+        .brand-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
 
         /* Inside a session the logo is a link that loses your round, dressed as a
            logo. Body.in-session swaps the two; nothing branches in JS. */
@@ -1228,6 +1227,13 @@
         .btn-secondary:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
         .btn-lg { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
         .btn-sm { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); }
+        /* The header's own call to action. It sits AFTER .btn-primary on purpose: as a
+           single class it loses every declaration to the one below it otherwise, which
+           is how it first rendered at .btn-primary's full 44px and padding. --ctl-sm
+           because the header is chrome you glance at — the same exception .brand and
+           .session-back take, with the same coarse-pointer bump to the 44px floor. */
+        .header-cta { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-sm); }
+        body.in-session .header-cta { display: none; }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1374,7 +1380,7 @@
         .speak-btn { min-width: 34px; padding: 0 var(--space-xs); }
         /* On a touch screen every one of these is a finger target, not a cursor target. */
         @media (pointer: coarse) {
-            .speak-btn, .bilingual-toggle, .session-back, .brand { min-height: var(--ctl-md); }
+            .speak-btn, .bilingual-toggle, .session-back, .brand, .header-cta { min-height: var(--ctl-md); }
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
@@ -1928,8 +1934,12 @@
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
-            .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); font-size: var(--fs-xs); }
+            .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); }
             .brand-name { font-size: var(--fs-sm); }
+            /* The strip is a glance down here. The tagline restates what the page
+               already says, and the CTA sits ten pixels above the hero's own Start
+               now — with both segmented controls there is no room for either. */
+            .brand-tagline, .header-cta { display: none; }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
@@ -2026,14 +2036,21 @@
     <header>
         <div class="header-content">
             <button class="brand" onclick="showScreen('home')" data-i18n-aria="nav.home">
-                <span class="brand-mark" aria-hidden="true">E</span>
-                <span class="brand-name">eib</span>
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
+                <span class="brand-lockup">
+                    <span class="brand-name">EIB Quiz</span>
+                    <span class="brand-tagline" data-i18n="nav.tagline"></span>
+                </span>
             </button>
             <button class="session-back" id="sessionBack" data-i18n-aria="nav.backAria">
                 <span class="session-back-icon" aria-hidden="true"></span>
                 <span data-i18n="nav.back"></span>
             </button>
             <div class="header-controls">
+                <!-- Home screen only, and only where there is room for it. Inside a
+                     session the header already carries the back button, and a second
+                     action beside the one that abandons your round is a trap. -->
+                <button class="btn-primary header-cta" onclick="scrollToId('homeMain')" data-i18n="nav.startPractice"></button>
                 <div class="seg" role="group" data-i18n-aria="nav.language">
                     <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
                     <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
@@ -2454,6 +2471,8 @@
             // Distinct from quiz.back, which is the previous QUESTION. Both buttons
             // are on screen at once and one of them abandons the round.
             'nav.backAria':        { en: 'Back to the start page',  de: 'Zurück zur Startseite' },
+            'nav.tagline':         { en: 'Learn · Practise · Pass',  de: 'Lernen · Üben · Bestehen' },
+            'nav.startPractice':   { en: 'Start practising',       de: 'Jetzt üben' },
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
