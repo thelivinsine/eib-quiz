@@ -677,10 +677,11 @@ The three fixes above were written by the same session that reviewed the diff, s
 else has read them.
 ## Session developments (2026-09-21, closing the mockup gap)
 
-**Open as PR #80** (branch `close-mockup-gap`, head `c0bdb28`: `57593bd` the work,
-`555ff30` this note, `c0bdb28` the review fixes below) — **not merged**. It is a
-visual judgement call that nobody but the session that wrote it has looked at, and merging
-`main` publishes to Pages.
+**Live on `main` as `cd16686`** (PR #80, squash-merged 2026-09-21) — the branch's work
+(`57593bd`) plus the four review fixes recorded below (`c0bdb28`). It was parked as a
+visual judgement call nobody but its author had looked at; the user accepted it on that
+basis and merged, which publishes to Pages. **The design was still never reviewed by a
+second pair of eyes** — the review that unblocked it was correctness only.
 
 **Trigger:** a rendered side-by-side of the live landing tier against
 `docs/Mockups/ui/landing-page.png` — the page matched the mockup structurally and read
