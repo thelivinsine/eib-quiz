@@ -1,7 +1,9 @@
 # Generated illustrations — what's here and what not to ship
 
-Eight images from ChatGPT, 21 September 2026, one illustration per canvas at
-~1254 × 1254. Renamed from their `ChatGPT Image …` filenames.
+Nine images from ChatGPT, 21 September 2026, one illustration per canvas at
+~1254 × 1254 (`icons-line-16.png` is the exception — a 4 × 4 grid, and the
+"Reference only" section below says why that matters). Renamed from their
+`ChatGPT Image …` filenames.
 
 Photographs and their licences are one folder over, in
 [`../photos/`](../photos/ATTRIBUTIONS.md).
@@ -10,7 +12,7 @@ Photographs and their licences are one folder over, in
 
 | File | Use |
 |---|---|
-| `languages.png` | Bilingual block. Both `Hallo!` and `Hello!` spelled correctly. The strongest of the eight. |
+| `languages.png` | Bilingual block. Both `Hallo!` and `Hello!` spelled correctly. The strongest of the nine. |
 | `study-man-dog.png` | Hero panel, onboarding, empty states. |
 | `success-man.png` | Results screen, pass state. Same character as `study-man-dog`. |
 | `success-woman.png` | Same slot, female character. Matches `study-woman-*`. |

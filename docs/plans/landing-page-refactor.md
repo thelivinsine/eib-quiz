@@ -142,6 +142,9 @@ as separate commits in any order.
 
 ## 1.8 The four gaps you should know about now
 
+**All four were closed by Phase 0** (tasks 0.1-0.4) — kept here because each one
+explains why its asset looks the way it does. The icon set is 24 glyphs now, not 18.
+
 1. **No hero photo of the right shape.** The mockup's photo panel is roughly
    square. `photos/reichstag.jpg` is 3840 × 1452 — a 2.6:1 panorama. Cropping
    it to square throws away most of the building. A portrait-friendly
@@ -162,6 +165,7 @@ Each task states its acceptance criterion. `[file]` marks what it touches.
 ---
 
 ## Phase 0 — Palette, assets and foundations  ·  **DONE**
+_Shipped in `aa52d34` (PR #78, squash-merged 2026-09-21, live on Pages)._
 
 ### 0.0 Palette — the mockup's blue, both themes  ·  done
 `[index.html, tools/contrast.test.mjs, manifest.json, favicon.svg, sw.js]`
@@ -515,6 +519,23 @@ A rising one is a regression.
 - Extract the final `<script>` block and `node --check` it.
 - `node --check sw.js`; bump `CACHE` if any cached static asset changed.
 
+### 7.4 Language sweep
+Switch EN ⇄ DE on both tiers. No chrome string may stay in the other
+language. Confirm `<html lang>` follows, and the German annotations carry
+`lang="de"`.
+
+### 7.5 Two-tier sweep
+- Cleared profile → landing page.
+- Answer one question, return home → dashboard.
+- `Reset progress` → landing page again, with no reload.
+
+### 7.6 Measurement, not eyeballing
+Before reading any computed style in the preview pane, call
+`document.getAnimations().forEach(a => a.finish())`. A tab that is not
+painting leaves transitions at `currentTime: 0` **forever**, and
+`getComputedStyle()` then returns the transition's start value. This produced
+four phantom contrast failures in one previous session.
+
 ### 7.7 Redo the social card
 `[tools/make-og-image.py, og-image.svg, og-image.png]`
 
@@ -532,23 +553,6 @@ mockup's `EIB Quiz / Learn · Practice · Pass` lockup.
 - **Accept when:** the card reads correctly at thumbnail size (it is never seen
   full width), the SVG and PNG agree, and no string on it contradicts the app —
   no "Berlin", and a question count that matches what the app actually offers.
-
-### 7.4 Language sweep
-Switch EN ⇄ DE on both tiers. No chrome string may stay in the other
-language. Confirm `<html lang>` follows, and the German annotations carry
-`lang="de"`.
-
-### 7.5 Two-tier sweep
-- Cleared profile → landing page.
-- Answer one question, return home → dashboard.
-- `Reset progress` → landing page again, with no reload.
-
-### 7.6 Measurement, not eyeballing
-Before reading any computed style in the preview pane, call
-`document.getAnimations().forEach(a => a.finish())`. A tab that is not
-painting leaves transitions at `currentTime: 0` **forever**, and
-`getComputedStyle()` then returns the transition's start value. This produced
-four phantom contrast failures in one previous session.
 
 ---
 

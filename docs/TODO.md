@@ -450,9 +450,10 @@ project's own workflow rule. They were reviewed after the fact instead.
 ## Session developments (2026-09-21, palette + landing-page phase 0)
 
 **The UI refactor begins.** `docs/plans/landing-page-refactor.md` is the live plan: rebuild
-the home screen against `docs/Mockups/ui/landing-page.png`, in 8 phases. **Phase 0 shipped;
-phases 1-7 are open.** Nothing about the home screen's structure has changed yet — this
-session changed the palette underneath it and gathered the assets the hero needs.
+the home screen against `docs/Mockups/ui/landing-page.png`, in 8 phases. **Phase 0 shipped
+in `aa52d34` (PR #78, squash-merged 2026-09-21, live on Pages); phases 1-7 are open.**
+Nothing about the home screen's structure has changed yet — this session changed the
+palette underneath it and gathered the assets the hero needs.
 
 **Two decisions were taken by the user and are recorded in the plan's Part 1:**
 - The home screen becomes **two-tier**: the landing page on a first visit, the existing
@@ -510,6 +511,13 @@ swap, `tools/validate.js` OK, `node --check sw.js`, the extracted `<script>` blo
 `grep 'stroke="currentColor"' index.html` empty, and both themes rendered at 1280x900 and
 375x720 with `scrollWidth === innerWidth`.
 
+**Re-verified after the review fixes, and again on `main` after the merge:** all of the
+above, plus `manifest.json` parses, the DE/EN switch clean in both directions with
+`<html lang>` following, the answered-state chips measured in both themes
+(`#CC2020`/`#047857` on white in light, `#F87171`/`#10B981` with their dark inks in dark —
+the four `LITERAL_PAIRS` entries), and a **fresh** 375px load holding both
+`scrollWidth === innerWidth` and `scrollHeight === innerHeight` on the quiz screen.
+
 **Deferred on purpose:** the social card. `og-image.png` still shows the old palette, and
 the card reads **"Berlin Quiz"** and **"310 FRAGEN"** from when the app was Berlin-only.
 Redoing it now would mean redoing it twice — **the landing-page refactor decides the
@@ -520,8 +528,36 @@ two palettes after it was replaced. It has not been run for production.
 **`og-image.svg` was recoloured by hand mid-session and then reverted**, because that is
 the very drift the script exists to end: `index.html` references only the **PNG**, so
 repainting the SVG changed nothing anyone can see while splitting the pair into two
-different cards. Both files stay on the old card until Phase 7 regenerates them together. Nothing was checked on the live site; all measurement was against
-`python -m http.server`.
+different cards. Both files stay on the old card until Phase 7 regenerates them together.
+
+Nothing was checked on the live site; all measurement was against `python -m http.server`.
+
+**Phase 0 was then reviewed as a diff, and four findings were fixed before the merge:**
+- **`sw.js`'s `CACHE` had not been bumped.** `favicon.svg` and `manifest.json` both changed
+  in the branch, both sit in `PRECACHE`, and both are served **cache-first** — and
+  `activate()` only evicts caches whose key differs from `CACHE`. A returning visitor would
+  have kept serving the lime favicon and the pre-repaint `theme_color` out of the very cache
+  the deploy was meant to replace. Now `eib-cache-2026-09-21-blue-repaint`; verified live
+  against the local server that the old key is evicted once the worker updates. **This is
+  the standing note under "PWA updates" below, missed in practice the first time it applied.**
+- **`og-image.svg` had been hand-repainted** — reverted, as described above.
+- **`tools/make-og-image.py` did not XML-escape the copy** before it reached the SVG text
+  nodes, while the docstring tells the next person to revise `LINE1`/`LINE2`/`STRAP`. An
+  ampersand ("460 FRAGEN & 16 LÄNDER") produced a file that is not well-formed XML, which
+  the PNG branch rendered happily — drifting the two outputs apart again. Now
+  `xml.sax.saxutils.escape`, exercised against that exact case.
+- **The script hardcoded `C:\Windows\Fonts`.** Elsewhere `svg()` wrote its file and then
+  `ImageFont.truetype` raised a bare `OSError` naming a Windows path, leaving a fresh SVG
+  beside an untouched PNG. Now a per-platform candidate list, first hit wins, with a message
+  naming what to edit.
+
+Two things were checked and deliberately **not** filed. **Caveat is dead weight but not a
+download**: `--font-hand` has no `.script-note` to apply to yet, and the WOFF2 is never
+fetched (only the Bricolage and Inter faces load), so it costs a marginally larger CSS
+response rather than a font request. Same for the four unused icons and `GATE_ART` — all
+staged for phases 1-7. And a 3px overflow first measured at 375px was an artifact of
+resizing the viewport mid-session, which leaves `--header-h` stale; a **fresh** load at
+375px is exact on both axes.
 
 
 ## Notes for future work

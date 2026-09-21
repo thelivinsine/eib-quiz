@@ -1052,8 +1052,14 @@ Before publishing any app change:
    equal `innerHeight`** — check it at 375 / 620 / 940 / 1400px, on a four-image question with
    the explanation open, and with the mobile navigator both collapsed and expanded.
 7. PWA: `node --check sw.js`; confirm `manifest.json` is valid JSON and the icon paths exist.
-   When changing cached static assets, bump `CACHE` in `sw.js`. A stale service worker will
-   serve the old page during local testing — clear it before judging a change.
+   **If the change touches `favicon.svg`, `manifest.json` or either `img/icons/icon-*.png`,
+   bump `CACHE` in `sw.js`** — those are the cache-first entries in `PRECACHE`, and
+   `activate()` evicts only caches whose key differs from `CACHE`, so without the bump a
+   returning visitor keeps being served the old file. (`index.html` and `questions.json` are
+   in `PRECACHE` too but are network-first, so they need no bump.) Missed once, on the
+   2026-09-21 repaint: "cached static assets" read as images, not as the favicon and the
+   manifest. A stale service worker will also serve the old page during local testing —
+   clear it before judging a change.
 8. Exam simulation: 30 general + 3 state = 33 questions, 60-minute timer, pass at 17/33.
 
 ## Future Repair Order
