@@ -76,16 +76,16 @@ The only photograph the app itself serves; everything above is question data.
 | **Here** | 1100 × 1100 WebP, 161 KB · square crop centred at 54% of `docs/Mockups/photos/hero-reichstag-flag.jpg` (3840 × 2560), itself from the 6496 × 4331 original |
 
 **BY-SA asks for the credit where the work is used**, not only in this file, so the app
-renders it in the page **footer** (`.footer-credit`, the `footer.credit` string). It sat
-under the photo as `.hero-credit` until 2026-09-21; the footer of the page carrying the
-photo satisfies the licence just as well and keeps the hero clean. Do not remove that
-line while the photograph is on the page.
+renders it in the page **footer**: the credit itself in the legal bar (`footer.legal`) and
+a link to this Commons page beside it (`footer.photo`). It sat under the photo as
+`.hero-credit` until 2026-09-21; the footer of the page carrying the photo satisfies the
+licence just as well and keeps the hero clean. Do not remove either while the photograph
+is on the page.
 
-**The file stays a square crop** even though the app shows it 16/10 below 620px: that is
-`object-fit: cover` on a wider box, not a different asset, and the centred band it keeps
-holds the full pediment, the whole inscription and both flags. Nothing below needs redoing
-for it — but see the note on the margin note's sky, which is why the landscape box is
-limited to widths where that note is hidden.
+**The file stays a square crop** even though the app shows it 16/10 at every width: that
+is `object-fit: cover` on a wider box, not a different asset, and the centred band it keeps
+holds the full pediment, the whole inscription and both flags. The recrop command below
+still regenerates the square file and does not need changing.
 
 Regenerate the crop with:
 
@@ -93,7 +93,10 @@ Regenerate the crop with:
 python3 -c "from PIL import Image; im=Image.open('docs/Mockups/photos/hero-reichstag-flag.jpg'); W,H=im.size; l=int(W*0.54)-H//2; im.crop((l,0,l+H,H)).resize((1100,1100), Image.LANCZOS).save('img/hero-reichstag.webp','WEBP',quality=80,method=6)"
 ```
 
-The crop is not arbitrary: the app's handwritten margin note is placed over the top-right
-of this frame because that is the only patch of clean sky in it (darkest pixel 210 of 255),
-and `LITERAL_PAIRS` in `tools/contrast.test.mjs` asserts the note's ink against it. Recrop
-and that measurement has to be redone.
+The square crop was originally chosen for its sky: the app's handwritten margin note sat
+over the top-right, the only clean patch in the frame (darkest pixel 210 of 255), and
+`LITERAL_PAIRS` asserted the note's ink against it. **That note is gone as of 2026-09-21**,
+because the app now displays this file at 16/10 and a centre crop drops the top 206 rows —
+all of the sky with them. Scanned at note size across the whole visible band, the
+brightest darkest-pixel available was luminance 15. Nothing in the app reads the sky any
+more, and the `LITERAL_PAIRS` entry went with the note.
