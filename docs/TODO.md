@@ -1481,3 +1481,9 @@ the shipped values.
 - **The reviewer wrote the fixes**, so the four changes have had one pair of eyes.
 - Everything in #93's own *Not verified* list still stands: no live-site check, no mobile
   sweep, no exam run, no light-theme render.
+
+### Live
+
+PR #93 squash-merged to `main` as **`8f0dd38`** — the dark re-derivation, the de-buttoned
+Practise link and these four fixes are on GitHub Pages. `index.html` is network-first in
+`sw.js`, so no `CACHE` bump was needed; nothing in `PRECACHE`'s cache-first set changed.
