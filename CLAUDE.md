@@ -160,7 +160,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       Unitless on purpose: a length would be inherited verbatim by a 12px label.
     - **`--fs-2xs` (12px) is the FLOOR.** Of the four references three render nothing below
       12px and the fourth stops at 13; the 11px tokens that exist went unused on every page
-      measured. Eight steps, 12/13/14/15/16/18/22/28, plus one `--fs-hero` clamp.
+      measured. NINE steps, 12/13/14/15/16/18/22/28/36, plus one `--fs-hero` clamp —
+      `--fs-3xl` (36px) was minted for the score ring and the landing page's four
+      headline numbers are its second consumer.
       **A font-size written as a literal is a bug**, exactly as a literal radius is.
     - **`--space-*` gained its missing rungs** (2, 4, 12 — it jumped 6 -> 8 -> 16, which is
       *why* half the sheet reached for a literal). The old `--spacing-*` aliases are GONE —
@@ -354,10 +356,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **The grid's column counts are spelled out, not `auto-fit`.** With five cards, four
     columns strand the fifth on a row of its own and two columns strand it on a third. Only
     5, 3 and 1 divide the set cleanly: five above **1160px**, three to 620px, one below.
-  - **1160px is a breakpoint that German set.** At five columns the title box is ~167px
-    whatever the viewport, because `main` caps the content long before the screen does, and
-    `Prüfungssimulation` is one 18-character word. Hence the break, plus `hyphens: auto` and
-    `overflow-wrap: anywhere` on `.mode-title` — the root already carries `lang="de"` when
+  - **1160px is a breakpoint that German set.** At five columns the title box is ~135px
+    whatever the viewport (it was ~167 before the band's padding came off the grid), because
+    `main` caps the content long before the screen does, and `Prüfungssimulation` is one
+    18-character word setting ~152px. **The breakpoint does not make that word fit on one
+    line and cannot** — five columns inside a 1060px cap can never give it the room. What
+    the break buys is three columns below it; what saves the word above it is `hyphens: auto`
+    and `overflow-wrap: anywhere` on `.mode-title` — the root already carries `lang="de"` when
     the UI is German, and the same pair is what `.opt-num` uses for `Christusmonogramm`.
   - **`.mode-time` is in the META row, beside the count.** This is its third home and the
     rule's comment records all three. In `.mode-head` pushed right by `margin-left: auto` it
@@ -389,6 +394,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **It carries a `--border` hairline**, because 1.06 and 1.08 are both under the 1.20
       where `theme-dark.md` §5 says to stop pushing fills apart and draw the edge — and the
       why, numbers and CTA bands below it already have one.
+    - **In LIGHT both state fills move up a rung ON the band, and only in light.** "Nothing
+      on the band needed repainting" held for the RESTING card and not for its states: a
+      white card can only step DOWN, and the panel is just 1.20 beneath it, so `--hover`
+      landed 1.067 from `--band` and `--surface3` only **1.039** — under the 1.05 nesting
+      floor — and a pressed card merged into the panel with no edge to save it
+      (`--border` is 1.039 on `--band` too). So `html.light .modes-band` scopes hover to
+      `--surface2` (1.111) and `:active` to `--hover` (1.067), for `.mode-card` and
+      `.topic-chip` alike. **Dark is deliberately untouched** — its states step UP and
+      already clear the panel by 1.43 and 1.57, and forcing the same tokens on it would
+      make its hover quieter than it is. `contrast.test.mjs` asserts `surface2`/`band` and
+      `hover`/`band`; `surface3`/`band` is NOT asserted, because it is dark's press fill
+      only and would fail on the light ground it no longer touches.
     - **It does not bleed out through `main`'s gutter.** Tried, to buy the five cards back
       the width the panel's padding costs them: `main` is only capped above ~1140px, so
       below that the band ran flush to the window with its corners cut off. The card's own

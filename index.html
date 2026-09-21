@@ -182,7 +182,9 @@
             --fs-base: 0.9375rem;  /* 15px — card descriptions, body copy */
             --fs-md:   1rem;       /* 16px — answer options, prominent body */
             --fs-lg:   1.125rem;   /* 18px — question text, card titles */
-            --fs-xl:   1.375rem;   /* 22px — in-session headings, the phone's home headings */
+            --fs-xl:   1.375rem;   /* 22px — the hero's margin notes, the accuracy ring's
+                                      percentage, a results-band figure. NOT a heading at any
+                                      width: the phone's home headings take --fs-lg. */
             --fs-2xl:  1.75rem;    /* 28px — home section headings; display numerals */
             --fs-3xl:  2.25rem;    /* 36px — the score ring, and the landing page's four
                                       headline numbers: in both places the number IS the
@@ -1030,11 +1032,12 @@
            third. Only 5, 3 and 1 divide the set without stranding a
            card, so those are the three layouts.
            ============================================================ */
-        /* The mockup's pale panel behind the five cards. In light it is the inset tone
-           on it. It is a RECESS in both themes — a step DOWN from the canvas, with the
-           cards as ordinary --surface tiles 1.2 above it (see --band). --space-2xl top
-           and bottom, --space-xl at the sides:
-           the panel's job is to give the band air the canvas cannot. */
+        /* The mockup's pale panel behind the five cards, read as a RECESS in both
+           themes: a step DOWN from the canvas, with the cards left as ordinary
+           --surface tiles 1.2 above it (see --band). --space-2xl top and bottom,
+           --space-lg at the sides — the reason for --lg rather than --xl is with the
+           padding declaration below, and this line must not contradict it.
+           The panel's job is to give the band air the canvas cannot. */
         .modes-band {
             background: var(--band);
             /* The recess is 1.06 off the canvas in dark and 1.08 in light, both under the
@@ -1079,6 +1082,21 @@
             .mode-card:hover { background: var(--hover); border-color: var(--border-hover); }
         }
         .mode-card:active { background: var(--surface3); }
+
+        /* ON THE RECESS, light has to move both state fills up a rung. A white card can
+           only step DOWN, and the panel is only 1.20 beneath it: --hover lands 1.067
+           from --band and --surface3 just 1.039, under the 1.05 nesting floor, so a
+           pressed card merged into the panel — and the hairline cannot rescue it there
+           (--border is 1.039 on --band too). Hover takes --surface2 (1.111) and press
+           takes --hover (1.067). Dark is untouched: its states step UP and already clear
+           the panel by 1.43 and 1.57. Same two rules for the topic chips, which sit on
+           the same ground. */
+        @media (hover: hover) {
+            html.light .modes-band .mode-card:hover,
+            html.light .modes-band .topic-chip:hover { background: var(--surface2); }
+        }
+        html.light .modes-band .mode-card:active,
+        html.light .modes-band .topic-chip:active { background: var(--hover); }
 
         /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
            solid Start pill. The landing page sells five modes as peers, so the treatment
@@ -1944,7 +1962,6 @@
             .dash-body { grid-template-columns: 1fr; justify-items: center; gap: var(--space-ms); }
             .dash-stats { width: 100%; border-left: none; border-top: 1px solid var(--border); padding-top: var(--space-ms); padding-right: 0; }
             .ready-ring-wrap { width: 96px; height: 96px; }
-            .ready-ring-pct { font-size: var(--fs-xl); }
             /* Full width down here, label hard left and pill hard right, rather than
                a centred pair with the band's padding wasted either side of it. */
             #statePickerSlot { width: 100%; justify-content: space-between; }
@@ -2051,7 +2068,9 @@
             /* Wraps to two rows rather than squeezing five figures into 390px. */
             .result-stat { min-width: 30%; }
             .score-ring-wrap { width: 160px; height: 160px; }
-            .score-ring-pct { font-size: var(--fs-3xl); }
+            /* One step down with the dial (190 -> 160px). It re-stated --fs-3xl, the value
+               its base already carried, so the ring shrank and the numeral did not. */
+            .score-ring-pct { font-size: var(--fs-2xl); }
             .btn-group { flex-direction: column; }
             .btn-group .btn-primary, .btn-group .btn-secondary { width: 100%; justify-content: center; }
             .hist-row { font-size: var(--fs-xs); gap: var(--space-sm); }

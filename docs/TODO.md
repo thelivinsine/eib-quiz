@@ -755,3 +755,44 @@ there, `--fs-3xl`'s score-ring use is unchanged, and `.mode-card` / `.topic-chip
 an argument from the diff, not a measurement. `sw.js`'s `CACHE` was **not** bumped, and
 should not be: this change touches neither `favicon.svg`, `manifest.json` nor the PNG
 icons, and `index.html` is network-first.
+
+### Diff review of PR #80, and four fixes
+
+A separate session reviewed the branch above and found four things, all fixed on it. The
+"argument from the diff, not a measurement" in the paragraph above is where two of them
+were hiding.
+
+1. **The recess was asserted for the card at REST and not for its STATES.** "Nothing on the
+   band needed repainting" was true of the resting card and false of hover and press: in
+   light a white card can only step down, and the panel is 1.20 beneath it, so `--hover`
+   landed **1.067** from `--band` and `--surface3` **1.039** — under the 1.05 nesting floor
+   the new `["surface","band",NEST]` pair applies to rest — and the hairline could not
+   rescue a pressed card, because `--border` is 1.039 on that ground too (already known and
+   accepted for the resting edge; its consequence for `:active` was not). `html.light
+   .modes-band` now takes hover to `--surface2` and `:active` to `--hover`, for
+   `.mode-card` and `.topic-chip`. Dark is untouched at 1.43 / 1.57. Two more FILLS pairs
+   assert it; `surface3`/`band` is deliberately not one, being dark's press fill only.
+2. **Two phone overrides restated their base value.** `.score-ring-pct` re-set `--fs-3xl`
+   and `.ready-ring-pct` re-set `--fs-xl` inside the 620px block, so both were dead: the
+   score ring shrank 190 -> 160px while its percentage stayed 36px, i.e. proportionally
+   LARGER on the smaller dial. `.score-ring-pct` is `--fs-2xl` there now (measured 36px
+   desktop, 28px below 620); `.ready-ring-pct`'s line was deleted rather than retuned,
+   because that ring GROWS on a phone (88 -> 96px) and the numeral holding its size is
+   right. **Pre-existing since `214e7ac`** — `scale.test.mjs`'s duplicate-property check is
+   scoped per-scope and cannot see a media override that matches its base, so nothing but
+   reading catches this class.
+3. **The `.modes-band` header comment said `--space-xl` at the sides** where the rule sets
+   `--space-lg`, contradicting the comment eight lines below it that exists to explain the
+   choice; its opening sentence was also a fragment. Repaired.
+4. **`--fs-xl`'s comment named a use no rule has** ("the phone's home headings" — those are
+   `--fs-lg`). It now names its three real consumers.
+
+**Verified by that session:** contrast 10/10 with the two new pairs, scale 12/12 with every
+budget unmoved, `validate.js` OK, `node --check` on the extracted script, no NUL bytes. The
+cascade was read out of the PARSED stylesheet in headless Chrome rather than argued — both
+new rules are present, in the right media context, after the base rules and at higher
+specificity. Ring numerals measured at two widths.
+
+**Not verified there either:** the in-app browser pane would not paint or synthesise hover
+(window hidden), so the light hover and press states are confirmed from the CSSOM and the
+measured token values, **not from a rendered pixel**. Nothing was checked on the live site.

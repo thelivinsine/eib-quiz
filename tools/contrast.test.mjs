@@ -190,6 +190,13 @@ const FILLS = [
   // asserted against this ground — in light it is 1.04 on the panel by design.
   ["surface", "band", NEST, "a mode card or topic chip, raised out of the practise band"],
   ["canvas", "band", NEST, "the page either side of the panel"],
+  // The two fills a card takes as a STATE on that recess. In light a white card can only
+  // step down and the panel is 1.20 beneath it, so --surface3 lands 1.039 from --band and
+  // --hover 1.067; the band scopes hover to --surface2 and press to --hover, and both have
+  // to clear the nesting floor on this ground. Dark keeps --hover/--surface3 (1.43 / 1.57)
+  // because its states step UP — which is why --surface3 is not asserted here.
+  ["surface2", "band", NEST, "a mode card or topic chip hovered on the practise band"],
+  ["hover", "band", NEST, "the same pressed, in light; dark presses to --surface3"],
   ["border", "canvas", HAIRLINE, "the panel's own edge, drawn on the page"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.
