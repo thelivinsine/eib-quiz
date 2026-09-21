@@ -677,6 +677,10 @@ The three fixes above were written by the same session that reviewed the diff, s
 else has read them.
 ## Session developments (2026-09-21, closing the mockup gap)
 
+**Open as PR #80** (branch `close-mockup-gap`, commit `57593bd`) — **not merged**. It is a
+visual judgement call that nobody but the session that wrote it has looked at, and merging
+`main` publishes to Pages.
+
 **Trigger:** a rendered side-by-side of the live landing tier against
 `docs/Mockups/ui/landing-page.png` — the page matched the mockup structurally and read
 much flatter than it. Measured at **1.14x** (the mockup's 928px content column against
