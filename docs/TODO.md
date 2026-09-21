@@ -1248,7 +1248,12 @@ result, so there is no PR for it.
 
 ---
 
-## Session developments (2026-09-21, review of #88–#91 and its five fixes)
+## Session close (2026-09-21, review of #88–#91 and its five fixes)
+
+Live commit at close: **`fe8f3ca`** (`Apply the five findings from the review of #88-#91`),
+squash-merged straight to `main` and pushed. **No PR** — a minor ending, on request: five
+smallest-possible fixes to a range already reviewed in this session, with nothing in them
+for a second reviewer to weigh.
 
 A review session, not a building one: `git diff 4c74b40..3ea3ce1` read hunk by hunk, five
 findings raised, all five applied as the smallest edit that fixes them. No feature changed.
