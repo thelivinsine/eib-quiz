@@ -2449,3 +2449,20 @@ two-word seg.
   shown, `setTheme()` still flips the class and `aria-pressed`.
 - In a round: `.header-nav` is `display: none` (the `body.in-session` rule still wins).
 - `node --check` clean, `scale.test.mjs` 12/12.
+
+### Live
+
+Squash-merged to `main` and pushed as
+[`d7d53be`](https://github.com/thelivinsine/eib-quiz/commit/d7d53be) — **no PR**, on the
+user's instruction, which is how a tweak ships here. The eleven commits were reviewed on
+`ui/dash-phone-row` first (that review is what caught the stale comments and the two silent
+no-ops recorded above); the branch is deleted.
+
+**Not verified, carried forward:** the live Pages build was never opened — everything was
+measured against `python -m http.server` on :8777, in Chromium only. Nothing was clicked
+except the phone's Practise link; the reset glyph, Resume/Discard and the exam simulation
+(checklist item 8) were rendered and measured, not driven. The DE/EN switch was driven by
+`setLang()` from the console rather than through the globe menu (checklist item 5), and the
+session screens' `scrollHeight === innerHeight` was not re-run — the changes are confined to
+the practise page, the header and page-level spacing, which is reasoned rather than
+measured. No `sw.js` `CACHE` bump: nothing cache-first changed.
