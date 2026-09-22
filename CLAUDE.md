@@ -2001,10 +2001,11 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   falls without the budget being lowered in the same commit. Two checks are hard rather than
   budgeted: no property declared twice for one selector in one scope (the `.stat { gap }` bug
   class, which shipped three times), and no literal `border-radius`. The `vh`-then-`svh`
-  fallback is the one allowed duplicate. `TYPE_EXEMPT` is the type scale's one named
-  exemption (`.ds-label` + `.ready-ring-sub`, the overview card's four names at 11px) and
-  `ICON_EXEMPT` the icon scale's; both are selectors rather than budget numbers, so the
-  sheet cannot drift into a second one unnoticed.
+  fallback is the one allowed duplicate. **`ICON_EXEMPT` is the only named exemption**;
+  `TYPE_EXEMPT` existed twice on 2026-09-22 (the overview card's names at 9px, then at
+  11px) and both times FORMAT retired it — sentence case with no tracking is quieter and
+  narrower than tracked capitals, on a scale step. An exemption is a selector rather than a
+  budget number, so the sheet cannot drift into a second one unnoticed.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions

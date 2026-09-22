@@ -2466,3 +2466,36 @@ except the phone's Practise link; the reset glyph, Resume/Discard and the exam s
 session screens' `scrollHeight === innerHeight` was not re-run — the changes are confined to
 the practise page, the header and page-level spacing, which is reasoned rather than
 measured. No `sw.js` `CACHE` bump: nothing cache-first changed.
+
+### Live check (2026-09-22, after the merge)
+
+Checked on the deployed site, not inferred. `gh api .../pages/builds` reports **`588a031`
+built** at 14:01:06Z (the `d7d53be` build shows `errored` — it was superseded by the doc
+push 15 seconds later, and the build that shipped is the later one, which contains it).
+
+**All three caches agree, which is the check `CLAUDE.md` prescribes:** a cache-busted
+origin fetch and the bare edge URL returned **byte-identical** documents (357,970 bytes,
+`age: 0`, `last-modified` 14:01:00Z), and that is the local file exactly once CRLF is
+normalised to LF (5,559 lines → 5,559 bytes of difference; `local.replace(/\r\n/g,'\n')
+.length === 357970` is true). Five markers from this session present in both: `--space-3xl`,
+`syncThemeControlPlacement`, the redrawn reset path, the one-item nav rule, and the absence
+of the chip's `--green-dim` fill.
+
+**Driven on the live site at 375px**, which closes two items that were open all session:
+- **Checklist item 5, through the real globe menu** rather than `setLang()` from the
+  console: tapping DE gave `lang="de"`, badge `DE`, nav `Üben`, hero
+  "Der deutsche Einbürgerungstest", headings "Einfach. Wirksam. Verlässlich." and
+  "Wähle deinen Übungsmodus"; tapping EN restored every one of them.
+- **The phone's new nav**: the theme seg is in `.hmenu-panel`, the header offers
+  "Practise", tapping it lands on `#practiseScreen` and the header then offers "Home".
+  The three readouts sit on one row (all top 319.7), the encouragement line is centred on
+  the card's axis, `scrollWidth == 375`.
+
+**Note for the next live check: `curl` cannot reach the network from this sandbox**
+("Recv failure: Connection was reset"). The browser pane can, and a same-origin `fetch()`
+from the loaded page gives both the cache-busted and the bare document plus their headers.
+
+**Still not verified:** only Chromium, and only this pane's device emulation — no real
+handset. The exam simulation (checklist item 8) and the session screens'
+`scrollHeight === innerHeight` were not exercised on the live site either; nothing in this
+session touched the quiz or results screens.
