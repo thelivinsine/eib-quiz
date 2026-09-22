@@ -40,8 +40,11 @@ const STYLESHEET = "../index.html";
 /** The type ramp, as px. Mirrors the --fs-* tokens; see the plan §3.1. Floor is 12. */
 const TYPE_SCALE = [12, 13, 14, 15, 16, 18, 22, 28, 36];
 
-/** The space scale, as px. Mirrors --space-*; see the plan §3.3. */
-const SPACE_SCALE = [0, 1, 2, 4, 6, 8, 12, 16, 20, 28, 40];
+/** The space scale, as px. Mirrors --space-*; see the plan §3.3.
+ *  56 (--space-3xl) joined on 2026-09-22: PAGE rhythm, not component rhythm — the gap
+ *  between two titled sections' worth of content and the run-out before the footer. It is
+ *  deliberately above everything a card uses. */
+const SPACE_SCALE = [0, 1, 2, 4, 6, 8, 12, 16, 20, 28, 40, 56];
 
 /** The control ladder, as px. Mirrors --ctl-*; see the plan §3.4. 44 is the touch floor. */
 const CONTROL_SCALE = [28, 36, 44, 52];
@@ -52,7 +55,7 @@ const CONTROL_SCALE = [28, 36, 44, 52];
  */
 const BUDGETS = {
   literalFontSizes:     [0, "reached 2026-09-20 (phase 2). A literal font-size is now a bug."],
-  fontSizesBelowFloor:  [0, "reached 2026-09-20 (phase 4). 12px is the floor. One named exemption — see TYPE_EXEMPT."],
+  fontSizesBelowFloor:  [0, "reached 2026-09-20 (phase 4). 12px is the floor, and since 2026-09-22 nothing is exempt."],
   offScaleSpacing:      [0, "reached 2026-09-20 (phase 3). Off-scale spacing is now a bug."],
   // The two left are the results band's 1px separator gap, which is a hairline
   // rather than rhythm and has no rung to snap to.
@@ -170,31 +173,28 @@ const SPACING_PROPS = [
 // --- the metrics ---------------------------------------------------------------------------
 
 /**
- * The ONE type rule allowed off the scale, named rather than budgeted — the same shape as
- * ICON_EXEMPT below, and for the same reason: a budget says "one bug is tolerated" and
- * invites a second, where a named selector says which one and why.
+ * THERE IS NO TYPE EXEMPTION, and the way it was retired is the useful part.
  *
- * It is the overview card's four names — .ds-label (answered / mastered / due for review)
- * and .ready-ring-sub (the dial's caption) — at 11px, weight 400 (2026-09-22, on request).
- * They are ONE rule and one exemption: a name under a figure repeats what the figure says,
- * and the card asks the reader to look at the figures. Every other micro-label in the sheet
- * is still --fs-2xs at 600, which is why these two selectors left the shared eyebrow rule
- * rather than the rule moving.
- * (History: this same constant held .ready-ring-sub alone at 9px for a day in September.)
- * Nothing else may join without the same argument, in writing.
+ * This constant held the overview card's labels twice in one day — .ready-ring-sub at 9px,
+ * then it plus .ds-label at 11px — both times to make "not bold and reduced" fit inside a
+ * dial and a phone row. What finally did it was FORMAT, not size: dropping the uppercase
+ * and the --ls-caps and giving the four names the verdict paragraph's own rule (--fs-xs,
+ * 400, --muted, --lh-prose) is quieter AND narrower than 11px uppercase was, at a scale
+ * step. A tracked capital is wide.
+ * ICON_EXEMPT below keeps the shape if a type exemption is ever needed again: NAME the
+ * selector, do not raise a budget — a budget says "one bug is tolerated" and invites a
+ * second, where a named selector says which one and why.
  */
-const TYPE_EXEMPT = /\.ds-label|\.ready-ring-sub/;
 
 /**
  * font-size declarations still written as a literal rather than a --fs-* token. This is the
  * number phase 2 drives to zero; a var() reference is the goal, so it must not be counted.
  */
 const literalFontSizes = valuesOf("font-size").filter(
-  (d) => !/var\(/.test(d.value) && d.value !== "inherit" && !TYPE_EXEMPT.test(d.rule.selector),
+  (d) => !/var\(/.test(d.value) && d.value !== "inherit",
 ).length;
 
 const fontSizesBelowFloor = valuesOf("font-size")
-  .filter((d) => !TYPE_EXEMPT.test(d.rule.selector))
   .map((d) => px(d.value))
   .filter((n) => n !== null && n < Math.min(...TYPE_SCALE)).length;
 

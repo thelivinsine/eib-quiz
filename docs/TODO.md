@@ -2166,3 +2166,286 @@ user's explicit instruction after the diff review, which is how a tweak ships he
 (`CLAUDE.md`'s "ship via PR + merge" is applied by SIZE). The work was committed on
 `ui/where-you-stand-type` first, reviewed there — that review is what caught the four
 stale comments above — then squashed; the branch is deleted.
+
+---
+
+## Session developments (2026-09-22, the card's phone layout)
+
+Three more requests on the same card, after `fc9e8e7` shipped.
+
+### The three readouts stay in ONE ROW on a phone
+
+This re-reverses 2026-09-21's "they become one column of rows", and the reversal is
+earned rather than a change of mind: that rule was measured against **12px/600** labels,
+where `BEANTWORTET` set 109px in an 85px column. At **11px/400** the widest German label,
+`WIEDERHOLUNG`, measures **97.4** and all three fit the card's 311px with room over.
+
+**It is a flex row, because a grid cannot do it.** `.dash-summary` spans `1 / -1`, and a
+spanning item distributes its size across every track it spans EQUALLY — so all three
+columns came out **97.7px** with the German word at 97.4 inside, whatever the track sizing
+said. Measured three ways before the cause was found: `repeat(3, 1fr)`,
+`minmax(90px, auto)`, and `minmax(90px, max-content)` + `justify-content: space-between`
+all produced the identical 97.664 / 97.664 / 97.672. **0.3px is not clearance, it is luck.**
+Flex sizes each readout to its own content (DE 91.2 / 75.8 / 97.4, EN 67.3 / 65.2 / 101.8),
+`space-between` puts the leftover between them, and `flex-wrap` is the 320px escape.
+
+### The readouts are centred at every width
+
+The `text-align: left` phone override went with the one-column layout it was written for.
+
+### Resume / Discard are centred on a phone
+
+`.resume-banner` is a `space-between` row; once the text takes the full width the buttons
+are the only item on line two, and `space-between` parks a lone item hard left — under the
+book plate rather than under the sentence. `.resume-actions` takes `width: 100%` so
+`justify-content: center` has something to centre in.
+
+### Verified
+
+- **375px, both languages**: all three readouts on one row (tops all 325.4), spread 33 →
+  342 edge to edge, every label on ONE line — including `Due for review`, which the equal
+  columns had been wrapping to two. Buttons centred: pair centre 187.5, banner centre 187.5.
+- **320px, German**: two on the first row, the third wrapped to its own — no mid-word
+  break, `scrollWidth == 320`.
+- **390px**: all three on one row. **Dark at 375**: one row.
+- **1280px unchanged**: still a grid, 367 / 183.6 × 3, all four blocks on one centre
+  (261.6), readouts centred, banner buttons still right.
+- `scale.test.mjs` 12/12, `contrast.test.mjs` 10/10, `node --check` clean.
+
+### Not verified
+
+- **The live site** — measured against `python -m http.server` only.
+- **Nothing was clicked**; Resume and Discard were measured, not pressed.
+- **320px was checked in German only** (the binding case); English fits in one row at 375
+  and was not re-checked at 320.
+- The session screens and the exam were not re-run — the change is inside the 620px block
+  and touches `.dash-grid`, `.dash-stat` and `.resume-actions` only.
+
+### Then the labels became body text, and that retired the exemption
+
+"The labels answered, mastered, etc. should have paragraph text formatting same as
+'Above pass mark..'" — so `.ds-label` and `.ready-ring-sub` now carry `.dash-verdict p`'s
+rule exactly: `--fs-xs`, 400, `--muted`, `--lh-prose`. Verified by computed style, all
+three identical: `13px | 400 | none | normal | 20.15px | rgb(79, 98, 128)`.
+
+**The two absent declarations are the point.** No `text-transform: uppercase`, no
+`--ls-caps`. The strings were always sentence case ("Answered", "Due for review"); the
+shouting was CSS.
+
+This is the third answer to "not bold and reduced" and the only one that needed no
+exemption. The first two went UNDER the 12px floor — 9px for the ring's caption, then
+11px for all four — and `TYPE_EXEMPT` is **gone from `tools/scale.test.mjs` again**,
+with the reasoning written into its place: a tracked capital is WIDE, so dropping the
+case and the tracking is quieter *and* narrower than 11px uppercase was, at a scale step
+rather than under the floor.
+
+The width it bought, measured: `Wiederholung` 97.4 → **86.1**, `Beantwortet` 91.2 →
+74.9, `Accuracy` 74 → **58.2** in an 83.7px chord, `Quote` 37.1. Which means **all three
+readouts now fit one row at 320px in German too** (33–107.9, 120.7–188, 200.9–287) — the
+`flex-wrap` escape is still there, but nothing on a supported width needs it.
+
+### The chip came off the encouragement line, and the phone card centred
+
+"The green text doesn't need a chip around — remove it for all views." `.dash-pill` keeps
+its green, its leaf and its weight, and loses the `--green-dim` fill, the pill radius, the
+padding and the `--ctl-sm` min-height. The mockup draws the pill; the card is one ground
+with bare blocks on it since the tiles dissolved, so the capsule was the only enclosure
+left inside it.
+
+**The fill's removal moved a colour onto a new ground**, which is the rule this repo keeps
+tripping over: `--green` now sits on the card, so `green / band` joined
+`contrast.test.mjs` beside the existing `green / surface`.
+
+**The reset-glyph alignment survived a re-derivation.** The chip was lifted by
+`calc(var(--ctl-sm) / -2)` — half a 36px chip. A line of text is lifted by half its own
+line box, `calc(var(--fs-2xs) * var(--lh-ui) / -2)`. Measured: the line's centre and the
+reset glyph's are both **29.0** below the card's top edge.
+
+On a phone the summary now **stacks and centres** — side by side it measured
+104 + 16 + 189 = 309 in a 311px card, which is not centred, it is edge to edge — and the
+three readouts are **centred rather than `space-between`**, which leaves 31px either side
+in English and 20px in German, the inset the resume banner has.
+
+Measured at 375: ring 135.5–239.5 (centre 187.5 = the card's), verdict one line in both
+languages, readouts EN 63–312 / DE 53.3–321.7 inside a 33–342 content box. Desktop
+unchanged at 1280 — all four blocks still on 261.6, summary still `104px 247.2px`.
+
+### One tile shade on the practise page, and the phone action moves to the corner
+
+"In mobile view the CTA and the arrow should be on the bottom right corner. Also, the tile
+colour shade should be adapted referring to the Where you stand section."
+
+**The shade was a real inconsistency, not a preference.** Every practise tile took `--band`
+on 2026-09-21 so the practise and landing pages would read as one surface system; the
+overview card then took `--surface` back in light, alone. The page has carried two shades
+since, with no rule behind which is which. They are one rule now — `--band` in dark,
+`--surface` in light — listing `.dash`, `.mode-card`, `.topic-chip`, `.hist-list`,
+`.hist-exam` and `.glossary-wrap`. Measured after: all five read `rgb(255,255,255)` in light
+and `rgb(38,38,38)` in dark.
+
+**The light hover override went with the ground it was written for.** It raised a light tile
+to `--surface2` because `--hover` sat 1.047 off `--band` — invisible. On a white tile
+`--hover` is 1.115, light's own reference number, so the base rule is correct unaided.
+Confirmed by reading the parsed stylesheet: the only remaining rules are `.mode-card:hover`
+/ `.topic-chip:hover` → `var(--hover)` and `:active` → `var(--surface3)`.
+
+`contrast.test.mjs` keeps `border/band`, `surface2/band` and `surface3/band` — all three
+still have consumers in DARK, where the tile IS `--band`: its hairline, the `--surface2`
+icon plate on it, and the `--surface3` press fill. No pair went stale.
+
+**The phone action is `justify-content: flex-end`**, third position in two days (centred →
+left → bottom right). The card is a list row read top-left to bottom-right, so the action
+belongs at the end of that diagonal. Measured at 375px: the disc's right edge is 342, which
+is the card's content edge exactly.
+
+### Not verified
+
+- Live site; nothing clicked; hover was read from the parsed stylesheet rather than
+  synthesised, which is what this repo's own gotcha prescribes.
+
+### The heading came out of the card, the encouragement line went to its foot
+
+"Where you stand / Your accuracy across every question…" is a
+`.section-head.section-head--centred` **above** the card now, matching the practise
+heading below it; `.dash-head` is deleted. It lived inside the card from 2026-09-21
+because the mockup draws one panel that opens with its own title — but the mockup's panel
+also held four bordered tiles, those dissolved on 2026-09-22, and the title was then the
+last thing inside a single-ground card still behaving like chrome.
+
+The encouragement line is the card's LAST child, centred (`display: flex` +
+`justify-content: center` — an `inline-flex` pill has nothing to centre in). Its band is
+`--space-md` on both sides: `margin-top` on the line, `padding-bottom` on the card, which
+is why the card's inset is `--space-xl` on three sides and 16 at the foot. Unconditional,
+because `.dash-pill` is static markup and the card always ends with it. Measured 16 above
+/ 17 below (16 + the border).
+
+**The reset glyph needed no rescue.** It is still absolute in the card's top-right corner
+and nothing reserves room for it now: 308–352 against a ring ending at 239.5 at 375px, and
+25px clear of the third readout's ink at 1280.
+
+**Spacing, all three on request:** the readouts' centres came from 211.6px apart to **181**
+(`.dash-grid` 2fr → 3fr — the column width sets that distance, not the gap, and the verdict
+GAINED width doing it: 339px, headline still one line); on a phone their column gap went
+`--space-lg` → `--space-xl`, so 28 between with 22px (EN) / 12.3 (DE) either side. That
+phone gap costs the 320px case — 284.3 of content and gap in a 256px card, so the third
+wraps there, which is what `flex-wrap` is for.
+
+### Verified
+
+- 1280: head centred on the content axis (632.5 = the card's), outside `.dash`; columns
+  459/153/153/153; stat centres 695/876/1057; verdict 339px, one line.
+- 375, both languages: head centred at 187.5 = the card's centre, lead hidden by the
+  existing 620px rule, line centred at the foot, all three readouts on one row,
+  `scrollWidth == 375`.
+- `contrast.test.mjs` 10/10, `scale.test.mjs` 12/12 with `gapRungs` still 7 of 7.
+
+### The state picker stops stretching on a phone
+
+The 620px override is **deleted**, not adjusted: it took the pair full width with the
+label hard left and the pill hard right, and `flex: 1` on the pill is what stretched it —
+"Berlin" in a ~250px capsule with a gap before the caret. The base rule was what was
+wanted all along: the slot centres the pair, the pill is `inline-flex`.
+
+Measured at 375: pill **116px** for Berlin in both languages, pair centre **187.5** = the
+slot's centre = the page's. The longest name still truncates with an ellipsis
+(`Mecklenburg-Vorpommern`, 196.7 of ink in a 184px box in English) — that is
+`max-width: 100%` plus `min-width: 0` doing their job, and it is what the old full-width
+rule did too, so nothing regressed.
+
+### Page rhythm: --space-3xl, and the summary centres in the middle band
+
+Two requests. **Spacing**: `.home-section`'s bottom margin went `--space-xl` → `--space-2xl`
+(28 → 40, measured 40 between each pair of sections), and `main`'s `padding-bottom` went
+`--space-2xl` → a newly minted **`--space-3xl` (56)**, measured 56 from the last section to
+the footer. The new rung is PAGE rhythm and is documented as such — nothing inside a card
+may use it — and `SPACE_SCALE` in `tools/scale.test.mjs` gained 56 in the same commit, so
+`offScaleSpacing` stays 0 rather than a literal hiding under it. The end of the page is
+deliberately a bigger break than the gap between two sections: at 40/40 the last card sat
+as close to the footer as the sections sat to each other.
+
+**The summary now centres once it owns the row** (below 1160). A row-wide `auto 1fr` pinned
+the ring to the left edge with the sentence beside it — at 1000px, a pair in the corner of
+an empty row.
+
+**It failed silently the first time, and the reason is worth keeping.** The centring was
+written into the existing `@media (max-width: 1160px)` block, which sits ABOVE the base
+`.dash-summary` rule; both are single-class selectors, so the base won on source order and
+the pair still spanned 49–936 of an 887px row. `grid-column: 1 / -1` had always worked
+there only because the base never states it. The rule now lives in a second 1160 block
+placed after the base. Same trap as `.cta-btn`'s dead sizing under `.btn-lg` — **when a
+media rule appears to do nothing, look for what states the same property below it.**
+
+Measured at 1000px, both languages: pair centre 492.5 = the row's centre, verdict 227.6
+(EN) / 243.8 (DE), headline one line. Section gaps 40/40, footer run-out 56.
+
+### The picker scales down, the state label becomes body text, the reset glyph is redrawn
+
+Four requests in one sitting, all measured.
+
+**The state picker is a rung down the ladder.** `--ctl-sm` with an `--fs-sm` value, an
+`--icon-xs` pin and tighter padding on both sides: 91.2px wide against 116, **36px tall
+with a mouse and 44 on a thumb** — `@media (pointer: coarse)` puts `--ctl-md` back, because
+a deliberate size-down without the touch floor is the accessibility regression the quiz's
+Previous/Next pair once shipped with. The invisible `<select>` keeps `--fs-md`: under 16px
+iOS Safari zooms the page on focus, which is not a visual choice. The slot's
+`margin-bottom` came down `--space-lg` → `--space-md`.
+
+**"Your state" is now "Accuracy"'s rule.** `.state-picker-label` joined
+`.ds-label, .ready-ring-sub`, and the `eyebrow` class came off the markup rather than being
+overridden — it is not an eyebrow any more. Verified by computed style, byte-identical:
+`13px | 400 | none | normal | 20.15px | rgb(79, 98, 128)`.
+
+**The mobile section gap went `--space-lg` → `--space-xl`** (20 → 28, measured), keeping the
+same ratio to the phone's 40px footer run-out that the desktop's 40 has to its 56.
+
+**The reset glyph was redrawn.** Its arrowhead was `flare 3.2 / adv 52` — **8.8 units of
+base on a 2.4-unit band, 3.7x** — a spear that stood proud of the ring's own left edge, and
+the only reason the icon was sized `--icon-lg`. At `1.6 / 40` the base is 5.4 on a 2.2 band
+(2.45x) and it reads at **`--icon-md`**. Rendered old-vs-new at 16/18/22/88px before
+committing. `RESET_ARC` in `tools/icon-packs.mjs` changed with it and **the shipped string
+was diffed against the generator's output — identical**, which is the check that pack
+exists for.
+
+### The practise heading sits a touch lower on a phone
+
+`.modes-band { padding-top: var(--space-sm) }` inside the 620px block — 28 → **36** between
+the overview card and the heading, with the other section gaps left at 28 and the desktop
+untouched (`padding-top: 0`, gap still 40).
+
+**It was written as `margin-top` on the head first and painted nothing.** A first child's
+top margin collapses through its parent — no top padding or border to stop it — and then
+adjoins the previous section's `margin-bottom`, so the gap stayed `max(28, 8)` = 28.
+Measurement is the only reason that was caught rather than shipped; the trap is now in
+`CLAUDE.md`'s gotchas.
+
+### A one-item nav on a phone, paid for by collapsing the theme toggle
+
+"There is no way to go to the practise page in mobile view — add it on the header by
+collapsing the dark/light toggle." Both halves shipped.
+
+**The theme seg has two homes and one element.** `syncThemeControlPlacement()` appends
+`#schemeSeg` to `.header-controls` above 620px and to `.hmenu-panel` below it, and flips
+`#schemeLabel`'s `hidden` with it. **Moved, not duplicated** — `#darkBtn`/`#lightBtn` are
+ids `setTheme()` writes `aria-pressed` on, and two elements cannot share one. It appends
+only when the parent actually has to change, so a resize storm cannot rip the control out
+mid-press, and it listens to `resize` rather than a `matchMedia` change (the latter does
+not fire under viewport emulation — the same reason `syncNavHeaderRole` does).
+
+Inside the panel the seg inherits the panel's rules for free, including the `--ctl-md`
+buttons under `@media (pointer: coarse)` that the header row deliberately withholds:
+measured **all four panel buttons at 44px** on a 375px phone, panel right edge 359 of 375.
+
+**The nav is one item: the page you are NOT on.** `.header-nav .nav-link--active
+{ display: none }` in the 620px block, and `syncNav()` already moves that class on every
+`showScreen()` — no second markup path, no new JS. This reverses "a one-item nav was
+measured and does not fit": it did not fit while the row carried brand + globe + a
+two-word seg.
+
+### Verified
+
+- **Clicked at 375px**, not reasoned about: Home offers "Practise", the tap lands on
+  `#practiseScreen`, and the header then offers "Home". `scrollWidth == 375` throughout.
+- Desktop 1280: seg back in `.header-controls`, `#schemeLabel` hidden, BOTH nav links
+  shown, `setTheme()` still flips the class and `aria-pressed`.
+- In a round: `.header-nav` is `display: none` (the `body.in-session` rule still wins).
+- `node --check` clean, `scale.test.mjs` 12/12.

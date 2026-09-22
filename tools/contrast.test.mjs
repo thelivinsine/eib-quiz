@@ -147,7 +147,8 @@ const PAIRS = [
   ["green", "green-dim", AA, "the correct answer and its review row"],
   ["red-text", "red-dim", AA, "the wrong answer, its explanation and review row"],
   ["blue", "blue-dim", AA, "the elapsed-time subscore"],
-  ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar"],
+  ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar, and the overview card's encouragement line"],
+  ["green", "band", AA, "the overview card's encouragement line, which in dark sits on --band"],
   ["red-text", "surface", AA, "the FALSCH counter in the quiz stats bar"],
 
   // The answer states repaint a whole option, so every tier that can land on one

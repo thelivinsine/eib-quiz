@@ -33,6 +33,8 @@ the overview card on the practise page follows it closely — see the
 which names every place it deliberately differs. As of 2026-09-22 those are:
 the four bordered tiles are **dissolved** (the card is one ground and the four
 blocks sit bare on it), there is **no rule between the ring and the verdict**,
+the encouragement line has **no chip** (the mockup draws a green pill; the card is one
+ground with bare blocks on it, so a capsule was the only enclosure left inside it),
 the mountains are **stepped in size and sit lower in the banner** than the
 traced silhouette, **each readout is a figure over its name with no icon plate
 and no explanatory sub-line** (both drawn in the mockup, both removed on
@@ -45,8 +47,8 @@ the four blocks are one `--fs-md` figure over one 11px/400 label, where the
 mockup draws a ~23px figure over a 12px name (its readouts are tiles, and a tile
 balances a big figure; bare blocks do not), and the verdict is 15/13. The
 mockup's micro-copy runs 9-12px against this app's 12px floor, and the card's
-four names — `.ds-label` + `.ready-ring-sub` — are the single named exemption
-from it.
+four names sidestep that by being sentence-case body text rather than tracked
+capitals — they take the verdict paragraph's own rule.
 `logo-kit.png` is NOT shipped: it draws a different
 brand mark from the German-flag tile the app uses, a stroked icon library where
 the app ships solid glyphs, and pages (`About`, `FAQs`) that were deliberately

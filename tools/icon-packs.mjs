@@ -97,7 +97,11 @@ const line = {
 };
 
 const RING = ev(donut(12, 12, 9.2, 6.6));
-const RESET_ARC = band(12, 12, 8.8, 6.4, -55, 192) + head(12, 12, 8.8, 6.4, 192, 52, 3.2);
+// Redrawn 2026-09-22: the head was flare 3.2 / adv 52, i.e. 8.8 units of base on a
+// 2.4-unit band (3.7x) — a spear that stood proud of the ring's own left edge and forced
+// the shipped glyph up to --icon-lg. 1.6 / 40 puts the base at 5.4 on a 2.2 band, the
+// ordinary 2.45x, and it reads at 18px. Keep index.html's ICONS.reset in step.
+const RESET_ARC = band(12, 12, 8.8, 6.6, -58, 190) + head(12, 12, 8.8, 6.6, 190, 40, 1.6);
 const WAVES = `<path d="${band(12, 12, 8.6, 7.1, -44, 44)}"/><path d="${band(12, 12, 11.4, 9.9, -46, 46)}"/>`;
 const HANDLES = `<path d="${band(7.4, 7.8, 3.3, 1.9, 90, 270)}"/><path d="${band(16.6, 7.8, 3.3, 1.9, -90, 90)}"/>`;
 const STEM = r(11.1, 12.4, 1.8, 5.4, 0.9) + r(8.6, 17.6, 6.8, 1.9, 0.95) + r(6.8, 19.6, 10.4, 2, 1);

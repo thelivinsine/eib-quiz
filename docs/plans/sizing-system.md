@@ -179,10 +179,10 @@ is 25.6px — about 25% taller than any of them, paid once per line, everywhere.
 
 ```css
 --fs-2xs:  0.75rem;    /* 12px  — meta, captions, nav cells. THE FLOOR. */
-                       /* one exemption since 2026-09-22: the overview card's four
-                          names — .ds-label + .ready-ring-sub — at 11px/400, named in
-                          TYPE_EXEMPT in tools/scale.test.mjs. (It held
-                          .ready-ring-sub alone at 9px earlier the same day.) See
+                       /* no exemption. There was one twice on 2026-09-22 (the
+                          overview card's names at 9px, then at 11px) and FORMAT
+                          retired it: sentence case with no tracking is quieter and
+                          narrower than 11px uppercase, on a scale step. See
                           "Two regressions from the 12px floor" below. */
 --fs-xs:   0.8125rem;  /* 13px  — secondary labels, dense chrome */
 --fs-sm:   0.875rem;   /* 14px  — buttons, chips, compact UI */
@@ -470,10 +470,11 @@ under 16px makes iOS Safari zoom on focus.
   German is **"Quote"**. The full "Trefferquote" still lives on the
   `aria-label`/`title`. The first attempt shipped `dash.accuracy` into the dial
   and printed TREFFERQUOTE straight across the ring.
-  **Superseded twice on 2026-09-22. It ended the day at 11px/400, sharing one
-  rule — and the floor's one exemption — with `.ds-label`; the 9px account below
-  is the same day's earlier state, kept because it is the measurement that
-  argued the exemption into existence.** Measured against the mockup at equal scale, ACCURACY sets 54.2px
+  **Superseded three times on 2026-09-22. It ended the day ON the scale at
+  `--fs-xs`, sharing the verdict paragraph's rule with `.ds-label` — sentence
+  case, untracked, no exemption. The 9px and 11px accounts below are the same
+  day's earlier states, kept because those measurements are what argued an
+  exemption into existence and then back out of it.** Measured against the mockup at equal scale, ACCURACY sets 54.2px
   there inside an 89px dial where `--fs-2xs` untracked sets 68.3 — a quarter
   wider, reading as a second headline under the percentage rather than as its
   name. At 9px with `--ls-caps` it is 55.5, and the tracking the 12px version had
@@ -485,10 +486,12 @@ under 16px makes iOS Safari zoom on focus.
   figure it names is at 22px two pixels above it. So the rule in this section
   still stands for every label that has something to say; this one does not.
   **Final state (2026-09-22, on request):** the four blocks of "Where you stand"
-  were harmonised — one `--fs-md` figure over one 11px/400 label, four times —
-  so `.ready-ring-sub` and `.ds-label` are a single rule and a single exemption,
-  and the percentage beside it came down 22 → 18 → 16 with the three readouts.
-  At 11px the caption is narrower again, so the fit argument only got easier.
+  were harmonised — one `--fs-md` figure over one `--fs-xs` label, four times —
+  and the label IS `.dash-verdict p`'s rule, sentence case and untracked. The
+  percentage came down 22 → 18 → 16 with the three readouts, and the caption
+  ended with room to spare: "Accuracy" sets 58.2 in an 83.7px chord.
+  **The label that could not fit its container now fits three times over, and it
+  did it by changing CASE rather than size.**
 - **The four quiz readouts wrapped at 360px in German.** CLAUDE.md requires them
   on one line. The LABEL is what is wide, not the figure — "Beantwortet" alone
   sets ~100px at 12px. The answered readout drops its word on a phone

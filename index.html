@@ -228,6 +228,12 @@
             --space-lg:  20px;
             --space-xl:  28px;
             --space-2xl: 40px;
+            /* --space-3xl is PAGE rhythm, not component rhythm: the gap between one
+               titled section and the next, and the run-out under the last one before
+               the footer. Minted 2026-09-22 on request, when --space-2xl (40) was the
+               ceiling and the sections still read as crowded. Two consumers, both at
+               page level; anything inside a card uses the rungs below. */
+            --space-3xl: 56px;
 
 
             /* ---- TYPE -----------------------------------------------------------
@@ -677,11 +683,14 @@
         main {
             max-width: var(--maxw); margin: 0 auto;
             padding: var(--space-xl) var(--space-lg);
-            /* --space-2xl, down from a literal 96px: that padding was the home screen's
-               only bottom breathing room (body.in-session main overrides it outright), and
-               the footer's own --space-2xl plus its hairline now does that job. 96 + 40
-               read as a band of nothing above the footer. */
-            padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom));
+            /* --space-3xl (2026-09-22, on request), between 96px and 40 and for the
+               same reason both of those were chosen: this padding is the page's only
+               run-out before the footer (body.in-session main overrides it outright).
+               96 + the footer's own 40 read as a band of nothing; 40 put the last card
+               closer to the footer than the sections are to each other, which is the
+               wrong way round — the end of the content is a bigger break than the one
+               between two sections. 56 is one rung above the section gap. */
+            padding-bottom: calc(var(--space-3xl) + env(safe-area-inset-bottom));
         }
         .screen { display: none; animation: fadeUp 0.32s var(--ease) both; }
         .screen.active { display: block; }
@@ -1101,7 +1110,10 @@
            The rhythm is: section heading > card title > body. Every
            section owns one job and says so above itself.
            ============================================================ */
-        .home-section { margin-bottom: var(--space-xl); }
+        /* --space-2xl, up from --space-xl (2026-09-22, on request). Each of these is a
+           titled section with a card or a band under it, and 28px between one section's
+           last card and the next section's heading read as one continuous column. */
+        .home-section { margin-bottom: var(--space-2xl); }
         .home-section:last-child { margin-bottom: 0; }
 
         .section-head { margin-bottom: var(--space-ms); max-width: 62ch; }
@@ -1111,7 +1123,10 @@
         #statePickerSlot {
             display: flex; flex-direction: row; align-items: center; justify-content: center;
             gap: var(--space-sm); min-width: 0;
-            margin-bottom: var(--space-lg);
+            /* --space-md, down from --space-lg (2026-09-22, on request). This row is a
+               setting, not a section: it belongs to the heading above it and the cards
+               below, and 20px under it read as a gap of its own. */
+            margin-bottom: var(--space-md);
         }
         .state-picker-label { display: block; }
         .section-head h2 {
@@ -1168,32 +1183,52 @@
                their own padding; bare blocks sit right on this inset, so 20px put the
                ring's stroke that far from the card's border and read as a crop. */
             padding: var(--space-xl);
+            /* The closing line is a single centred sentence, not a block, so it does
+               not need the full inset under it — and the card's last row is that line
+               rather than a readout. .dash-pill's margin-top matches, so the line sits
+               in an even --space-md band (2026-09-22, on request: less air above and
+               below it). It is unconditional because .dash-pill is static markup: the
+               card always ends with it. */
+            padding-bottom: var(--space-md);
         }
-        html.light .dash { background: var(--surface); }
-        /* --ctl-md of reserved right-hand room, because .progress-reset is absolutely
-           positioned into that corner whenever there is progress to reset. */
-        .dash-head {
-            display: flex; align-items: flex-start; justify-content: space-between;
-            gap: var(--space-md); padding-right: var(--ctl-md);
-            margin-bottom: var(--space-xl);
-        }
-        .dash-head .section-head { margin-bottom: 0; }
-        /* THE PILL SITS ON THE RESET GLYPH'S LINE (2026-09-22, on request). The reset
-           is absolute at top: 6px in a --ctl-md box, so its glyph's centre is
-           6 + 22 = 28px below the card's top edge — which is exactly the card's own
-           --space-xl padding, i.e. where .dash-head starts. Lifting the pill by half
-           its own height puts its centre on that same line. Derived rather than a
-           -18px literal so it tracks --ctl-sm, and the 620px block puts it back to 0
-           where the head becomes a column. */
+        /* ONE TILE SHADE ON THIS PAGE, AND THE OVERVIEW CARD SETS IT (2026-09-22, on
+           request: "the tile colour shade should be adapted referring to the Where you
+           stand section"). The card took --surface in light on 2026-09-21 and the rest
+           of the page's tiles stayed on --band, so the practise page carried two shades
+           with no rule behind which was which. They are one rule now: --band in dark,
+           where nothing goes below the page (theme-dark.md §3), and --surface in light,
+           where the hairline carries a white tile on a white canvas.
+           Scoped to .light, exactly as the card's own override was. */
+        html.light .dash,
+        html.light .mode-card,
+        html.light .topic-chip,
+        html.light .hist-list,
+        html.light .hist-exam,
+        html.light .glossary-wrap { background: var(--surface); }
+        /* .dash-head is GONE (2026-09-22): it existed to hold a heading and the
+           encouragement line on one row inside the card, and neither is there now — the
+           heading moved out and above, the line moved to the foot. .progress-reset is
+           still absolutely positioned into the card's top-right corner, and with the
+           head gone nothing needs to reserve room for it: the first thing in the card
+           is the readout row, whose top sits below the glyph's 6 + 44 = 50px. */
+        /* NO CHIP, AND IT CLOSES THE CARD (2026-09-22, both on request). The mockup
+           draws a --green-dim pill beside the title; the fill went first — the card is
+           one ground with bare blocks on it since the readouts' tiles dissolved, so a
+           tinted capsule was the only enclosure left inside it — and then the line
+           itself moved to the foot, centred, because it is a remark ON the numbers
+           rather than a badge on the heading. The colour and the leaf carry it.
+           Losing the fill moved a colour onto a new ground: --green sits on the CARD
+           now, so green/surface (already asserted) and green/band (added) both hold it
+           in contrast.test.mjs.
+           display: flex, not inline-flex: as a block-level row it spans the card and
+           justify-content centres the pair, which is what "centred in the box" needs.
+           The old lift onto the reset glyph's line went with the move — there is
+           nothing beside it down here. */
         .dash-pill {
-            flex: none;
-            margin-top: calc(var(--ctl-sm) / -2);
-            display: inline-flex; align-items: center; gap: var(--space-2xs);
-            /* --ctl-sm: the mockup's chip is 36px tall, which is also what sits
-               level with a 28px heading's line box beside it. */
-            min-height: var(--ctl-sm); padding: 0 var(--space-ms);
-            border-radius: var(--radius-pill);
-            background: var(--green-dim); color: var(--green);
+            margin-top: var(--space-md);
+            display: flex; align-items: center; justify-content: center;
+            gap: var(--space-2xs);
+            color: var(--green);
             font-size: var(--fs-2xs); font-weight: 600;
         }
         /* currentColor: the mockup's leaf is the same green as the words beside it. */
@@ -1209,7 +1244,14 @@
            four share an axis. */
         .dash-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            /* 3fr, not 2: the readouts are centred in their own columns, so the
+               COLUMN WIDTH is what sets the distance between them and the gap barely
+               matters. Widening the summary narrows all three and pulls their centres
+               from 211.6px apart to 181 (2026-09-22, on request: "bring them a bit
+               closer"). The verdict gains the width rather than losing it, so its
+               headline stays on one line with more room than before, and the ring is
+               fixed at 104 and does not stretch. */
+            grid-template-columns: 3fr 1fr 1fr 1fr;
             align-items: center;
             gap: var(--space-xl);
         }
@@ -1225,6 +1267,12 @@
            1400 / 1200 / 1159 / 1024 / 900 / 760 / 640. */
         @media (max-width: 1160px) {
             .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            /* Only grid-column here — the CENTRING lives in a second 1160 block
+               BELOW the base .dash-summary rule, because that base sits after this one
+               in the sheet and both are single-class selectors, so anything stated here
+               that the base also states is lost to source order. grid-column survives
+               only because the base does not set it. Same trap as .cta-btn's dead
+               sizing under .btn-lg. */
             .dash-summary { grid-column: 1 / -1; }
         }
         /* .dash-tile is GONE with the borders (2026-09-22): with no fill, no edge, no
@@ -1234,6 +1282,21 @@
             min-width: 0;
             display: grid; grid-template-columns: auto 1fr;
             align-items: center; gap: var(--space-md);
+        }
+        /* THE PAIR CENTRES ONCE THE SUMMARY OWNS THE ROW (2026-09-22, on request: "the
+           ring graph and the text aren't centred at this screen width"). Below 1160 the
+           summary spans 1 / -1, and a row-wide `auto 1fr` pins the ring to the left edge
+           with the sentence beside it — at 1000px that is a pair in the corner of an
+           empty row, not a summary. Both tracks go content-sized so justify-content has
+           free space to centre them in.
+           **This block must stay BELOW the base rule above**: they are both single-class
+           selectors, so the later one wins, and stating grid-template-columns up in the
+           first 1160 block did nothing at all (measured: the pair still spanned 49-936
+           of a 887px row). The sentence keeps its left edge — it is prose, and the
+           phone's stacked-and-centred treatment is for a column too narrow to hold the
+           two side by side, which this is not. */
+        @media (max-width: 1160px) {
+            .dash-summary { grid-template-columns: auto auto; justify-content: center; }
         }
         /* NO RULE BETWEEN THE RING AND THE VERDICT (2026-09-22, on request). The
            mockup draws one; it was removed anyway, because the ring is already a shape
@@ -1263,12 +1326,22 @@
         .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
         .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
 
+        /* A RUNG DOWN THE CONTROL LADDER (2026-09-22, on request: "the size of Your
+           state and the dropdown should be scaled down"). --ctl-sm with a --fs-sm value,
+           an --icon-xs pin and tighter padding on both sides: this is a setting you
+           touch once a session, sitting between a --fs-2xl heading and five cards, and
+           at --ctl-md with a --fs-base value it read as a primary control.
+           THE THUMB FLOOR COMES BACK ON A COARSE POINTER — see the block below. A
+           deliberate size-down without that is an accessibility regression on the device
+           most people use, which is exactly the fault the quiz's Previous/Next pair
+           shipped with. The invisible <select> keeps --fs-md: anything under 16px makes
+           iOS Safari zoom the page on focus, and that is not a visual choice. */
         .state-picker {
             position: relative;
             min-width: 0; max-width: 100%;
-            display: inline-flex; align-items: center; gap: var(--space-sm);
-            min-height: var(--ctl-md);
-            padding: 0 calc(var(--space-xl) + var(--space-sm)) 0 var(--space-ms);
+            display: inline-flex; align-items: center; gap: var(--space-2xs);
+            min-height: var(--ctl-sm);
+            padding: 0 calc(var(--space-md) + var(--space-sm)) 0 var(--space-sm);
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
@@ -1282,12 +1355,15 @@
             outline-offset: 3px;
         }
         .state-picker select:focus-visible { outline: none; }
-        .state-picker svg { width: var(--icon-sm); height: var(--icon-sm); flex-shrink: 0; color: var(--muted); }
+        .state-picker svg { width: var(--icon-xs); height: var(--icon-xs); flex-shrink: 0; color: var(--muted); }
+        @media (pointer: coarse) {
+            .state-picker { min-height: var(--ctl-md); }
+        }
         /* The pill hugs this, so it fits "Berlin" as well as it fits
            "Mecklenburg-Vorpommern". */
         .state-picker-value {
             color: var(--text);
-            font-size: var(--fs-base); font-weight: 600;
+            font-size: var(--fs-sm); font-weight: 600;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             min-width: 0;
         }
@@ -1303,7 +1379,7 @@
         }
         /* the caret, drawn once so the native arrow can stay hidden */
         .state-picker::after {
-            content: ''; position: absolute; right: var(--space-ms); top: 50%;
+            content: ''; position: absolute; right: var(--space-sm); top: 50%;
             width: 7px; height: 7px; margin-top: calc(var(--space-2xs) * -1);
             border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
             transform: rotate(45deg); pointer-events: none;
@@ -1333,25 +1409,27 @@
            caption sits nearer the dial's centre where the chord is wider (83.2px
            measured), and the word itself is narrower at 11px: 66px in 83. Measured
            clearance, not restored optimism. */
-        /* THE OVERVIEW CARD'S FOUR NAMES ARE THEIR OWN TIER: 11px, REGULAR (2026-09-22,
-           on request). They left the shared eyebrow rule rather than dragging every
-           micro-label in the app down with them — a quiz readout's label, a tile
-           eyebrow and a review number are all still --fs-2xs at 600.
-           11px is BELOW THE 12px FLOOR and is named in TYPE_EXEMPT in
-           tools/scale.test.mjs, which is the only way this sheet is allowed to go under
-           it: a named selector, not a budget. The argument is the same one the ring's
-           caption made when it was 9px, now extended to its three siblings — a name
-           under a figure repeats what the figure already says, and the card asks the
-           reader to look at the figures. Weight 400 rather than 600 is the other half:
-           at 600 they were four shouted words under four quiet numbers.
-           400 AND 11px TOGETHER are what make the change visible — 500 at 12px is a
-           difference nobody sees, and the ask was "not bold and reduced". */
-        .ds-label, .ready-ring-sub {
+        /* THE FOUR NAMES ARE THE VERDICT'S PARAGRAPH, WORD FOR WORD (2026-09-22, on
+           request: "same paragraph text formatting as Above the pass mark"). Every
+           declaration below matches .dash-verdict p — --fs-xs, weight 400, --muted,
+           --lh-prose — and the two that are ABSENT are the point: no uppercase and no
+           --ls-caps. They are sentence case now ("Answered", "Due for review"), which
+           is how the strings were written all along; the shouting was CSS.
+           This is the third and quietest answer to "not bold and reduced". The first
+           two went UNDER the 12px floor (9px for the ring's caption, then 11px for all
+           four) and needed TYPE_EXEMPT in tools/scale.test.mjs to do it; dropping the
+           uppercase and the tracking buys the same quiet AT a scale step, so the
+           exemption is gone and nothing in the sheet is below the floor.
+           It also buys WIDTH, which is what the phone row lives on: uppercase + 0.06em
+           is wide, so the widest German name went 97.4 -> ~80 while gaining 2px of
+           size.
+           They stay out of the shared eyebrow rule: a quiz readout's label, a tile
+           eyebrow and a review number are all still --fs-2xs uppercase at 600. */
+        .ds-label, .ready-ring-sub, .state-picker-label {
             font-family: var(--font-body);
-            font-size: 0.6875rem;
+            font-size: var(--fs-xs);
             font-weight: 400;
-            letter-spacing: var(--ls-caps);
-            text-transform: uppercase;
+            line-height: var(--lh-prose);
             color: var(--muted);
         }
         .ready-ring-sub {
@@ -1369,9 +1447,11 @@
            minting one busts the ratchet's gapRungs budget. This block IS what
            .dash-stat-fig was — the plate's row wrapper went with the plate rather
            than being kept as a flex column wrapped round a flex column. */
-        /* CENTRED IN ITS COLUMN (2026-09-22, on request). A readout is ~100px of
-           content in a 195px column, so left-aligned it hung on the column's left
-           edge and dropped every pixel of slack on its right — three ragged blocks
+        /* CENTRED IN ITS COLUMN AT EVERY WIDTH (2026-09-22, on request — the phone
+           was left-aligned for an hour and that override is gone). A readout is
+           ~100px of content in a 195px column, so left-aligned it hung on the
+           column's left edge and dropped every pixel of slack on its right — three
+           ragged blocks
            trailing off into nothing. The mockup left-aligns these, but the mockup's
            readout is a TILE whose fill occupies the column; with the tiles gone
            (2026-09-22) there is nothing to occupy it, so the air has to be split
@@ -1475,10 +1555,13 @@
             background: none; border: none; color: var(--muted);
             transition: color 0.2s var(--ease);
         }
-        /* --icon-lg, not --icon-md: this is a circular arrow, and an 18px ring leaves
-           its arrowhead about two pixels of head. The hit target is --ctl-md either
-           way, so the extra four pixels cost nothing. */
-        .progress-reset svg { width: var(--icon-lg); height: var(--icon-lg); }
+        /* --icon-md, down from --icon-lg (2026-09-22, on request: the glyph "looks ugly
+           and big"). --icon-lg existed because the old arrowhead needed the room — it was
+           8.8 units of base on a 2.4-unit band, a spear rather than a head, and it stood
+           proud of the ring's own left edge. With the head redrawn to 5.4 on a 2.2 band
+           (2.45x, the ordinary ratio) the glyph reads at 18. The hit target is --ctl-md
+           either way, so nothing about the touch floor moved. */
+        .progress-reset svg { width: var(--icon-md); height: var(--icon-md); }
         .progress-reset:hover { color: var(--red-text); }
 
         /* ============================================================
@@ -1533,13 +1616,13 @@
         }
         @media (hover: hover) {
             .mode-card:hover { background: var(--hover); border-color: var(--border-hover); }
-            /* A --band tile is already a step below white, and --hover is only 1.047
-               from it — invisible. Light raises the hover to --surface2 instead
-               (1.078), which is the move the retired .modes-band panel made for the
-               same reason. Dark needs none: --hover is 1.437 on its band. The press
-               fill is --surface3 in both themes (1.215 light, 1.530 dark). */
-            html.light .mode-card:hover,
-            html.light .topic-chip:hover { background: var(--surface2); }
+            /* The html.light hover override is GONE with the --band ground it was
+               written for (2026-09-22). It raised a light tile to --surface2 because
+               --hover sat 1.047 from --band, which is invisible. On a WHITE tile
+               --hover is 1.115 — light's own reference number for a state change
+               (theme-light.md §4 measures real nav and menu hovers at 1.11), so the
+               base rule is correct unaided again. Dark is unchanged: --hover is 1.437
+               on its band. The press fill stays --surface3 in both. */
         }
         .mode-card:active { background: var(--surface3); }
 
@@ -2504,7 +2587,11 @@
             .cta-band { padding: var(--space-lg); gap: var(--space-ms); }
             .cta-btn { width: 100%; }
 
-            .home-section { margin-bottom: var(--space-lg); }
+            /* --space-xl, up from --space-lg (2026-09-22, on request). The desktop gap
+               went 28 -> 40 and this one stayed at 20, which on a phone — where every
+               section is a full-width stack — read as one continuous column. 28 keeps the
+               same ratio to the page's 40px run-out that the desktop's 40 has to its 56. */
+            .home-section { margin-bottom: var(--space-xl); }
             /* A section's one-line description is a desktop affordance. Down here each
                wraps to two lines and the four of them cost ~150px — 7% of the page —
                while the headings above them already name the section. The heading stays;
@@ -2521,27 +2608,92 @@
                needs. --space-lg of gap, not --space-2xs: down here the rows are the
                only thing separating them now that the tiles are gone, and the desktop
                --space-xl is a whole readout's height on a phone. */
-            .dash-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-            /* Left again down here. The centring exists to split a 195px column's
-               slack either side of a ~100px readout; in a single full-width column
-               there is no slack to split, and three centred stacks under a
-               left-aligned ring row give the card two edges to read from. */
-            .dash-stat { text-align: left; }
-            /* The head STACKS down here, so the pill's desktop lift has to come off
-               or it rides up over the heading it now sits under. */
+            /* THE THREE READOUTS STAY IN ONE ROW ON A PHONE (2026-09-22, on
+               request), which reverses the 2026-09-21 rule above. That rule was
+               right for its own labels: at 12px/600 "BEANTWORTET" set 109 in an
+               85px column and ran straight past it. The labels are 11px/400 now —
+               the widest German one, WIEDERHOLUNG, measures 97.4 — and three
+               content-sized columns fit inside the card's 311px with room over.
+               IT IS A FLEX ROW DOWN HERE, NOT A GRID, and that is not a style
+               preference — a grid cannot do it. .dash-summary spans 1 / -1, and a
+               SPANNING ITEM DISTRIBUTES ITS SIZE ACROSS EVERY TRACK IT SPANS,
+               equally: the ring and its sentence are far wider than any readout,
+               so all three columns came out the same 97.7px whatever the track
+               sizing said — measured with minmax(90px, auto), then again with
+               minmax(90px, max-content) and justify-content: space-between, both
+               identical to the pixel. The widest German label measured 97.4 in
+               that 97.7, and 0.3px is not clearance, it is luck.
+               Flex sizes each readout to its own content and space-between puts
+               the leftover width BETWEEN them. The labels then took the verdict
+               paragraph's formatting (sentence case, untracked), which cut the
+               widest German one to 86.1 — so all three now fit a 320px phone as
+               well. flex-wrap stays as the escape for anything narrower, where
+               the third takes its own line rather than a German word breaking
+               down the middle (.ds-label carries overflow-wrap: anywhere, so a
+               squeeze would be silent).
+               The summary keeps its own line with flex-basis 100%. */
+            .dash-grid {
+                display: flex; flex-wrap: wrap;
+                justify-content: center;
+                /* Row --space-lg under the summary, column --space-xl between the
+                   three readouts (2026-09-22, on request). Content-sized and centred,
+                   they sat 20px apart with ~20px either side; at 28 they are 28 apart
+                   with ~13 either side, which reads as three separated figures rather
+                   than one run of text. It costs the 320px case: 284.3 of content and
+                   gap in a 256px card, so down there the third wraps to its own line
+                   (flex-wrap, which is exactly what it is for). At 375 all three hold
+                   one row in both languages. */
+                gap: var(--space-lg) var(--space-xl);
+            }
+            /* CENTRED, AND THE RING STACKS OVER ITS SENTENCE (2026-09-22, on request).
+               Side by side the pair measured 104 + 16 + 189 = 309 in a 311px card, so
+               it was not centred in any meaningful sense — it simply filled the row
+               edge to edge. Stacked, both are centred on the card's axis and the
+               sentence gets the full width, which puts it on one line.
+               justify-content: center on the row above does the same for the three
+               readouts: space-between pinned the outer two to the card's edges, and
+               centring them leaves ~20-30px either side — the inset the resume banner
+               has, which is what the card now reads as. */
+            .dash-summary {
+                flex: 1 0 100%;
+                grid-template-columns: 1fr;
+                justify-items: center;
+                text-align: center;
+            }
+            /* CENTRED, because down here the banner has WRAPPED (2026-09-22, on
+               request). .resume-banner is a space-between row, so once the text
+               block takes the full width the buttons become the only item on the
+               second line and space-between parks them hard left, under a plate
+               rather than under the sentence they belong to. width: 100% is what
+               makes them their own line's whole width so justify-content has
+               something to centre them in. */
+            .resume-actions { width: 100%; justify-content: center; }
             /* A RUNG DOWN, BECAUSE THE PHONE'S VERDICT BOX IS 189px. The desktop
                --fs-base headline clears it by ONE pixel — "You're just getting started"
                sets 188.0 — and a pixel is not clearance: a font that loads a hair wider
                wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
                keeps --fs-base; measured in both languages at every verdict tier. */
             .dash-verdict strong { font-size: var(--fs-sm); }
-            .dash-head { flex-direction: column; gap: var(--space-sm); }
-            .dash-pill { margin-top: 0; }
+            /* A touch lower on a phone (2026-09-22, on request), and ONLY here: the
+               practise heading follows a card that ends in a centred green line, and the
+               section gap alone left it sitting close to that line. Scoped to this
+               section rather than raising every .home-section, so nothing else moves.
+               PADDING, NOT MARGIN, and that is the whole trick: margin-top on the head
+               collapses through its parent — the section has no top padding or border to
+               stop it — and merges with the previous section's margin-bottom, so the gap
+               stays max(28, 8) = 28 and the rule paints nothing. Measured: 28 before,
+               36 after. */
+            .modes-band { padding-top: var(--space-sm); }
             .ready-ring-wrap { width: 104px; height: 104px; }
-            /* Full width down here, label hard left and pill hard right, rather than
-               a centred pair with the band's padding wasted either side of it. */
-            #statePickerSlot { width: 100%; justify-content: space-between; }
-            .state-picker { flex: 1; min-width: 0; justify-content: space-between; }
+            /* NO PHONE OVERRIDE (2026-09-22, on request). It used to go full width
+               with the label hard left and the pill hard right — and `flex: 1` on the
+               pill is what stretched it, so "Berlin" sat in a 250px capsule with a
+               gap before the caret. The base rule is what was wanted all along: the
+               slot centres the pair and the pill is inline-flex, i.e. as wide as the
+               state it is showing. A long name still cannot overflow — the pill keeps
+               max-width: 100% and .state-picker-value keeps min-width: 0 with an
+               ellipsis, so it shrinks rather than pushing the label off the page
+               (checked with Mecklenburg-Vorpommern in German, the worst case). */
 
             /* One card a row on a phone. They stay GRIDS rather than flex columns so
                the meta and the arrow can share the last row. */
@@ -2558,10 +2710,13 @@
             .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
             .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
             .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; justify-content: flex-start; }
-            /* Centred in a TILE, hard left in a list row: down here the title, the
-               description and the meta are all flush left in a 343px row, and a centred
-               action would be the one thing floating in the middle of it. */
-            .mode-card .mode-start { grid-area: start; margin-top: var(--space-2xs); justify-content: flex-start; }
+            /* Centred in a TILE, bottom RIGHT in a list row (2026-09-22, on request).
+               Down here the title, the description and the meta are flush left and the
+               card is read top-left to bottom-right, so the action belongs at the end of
+               that diagonal — a centred action floated in the middle of a 343px row, and
+               left-aligned it sat under the description it is not part of. It is already
+               the last grid area, so this is the row's justification and nothing else. */
+            .mode-card .mode-start { grid-area: start; margin-top: var(--space-2xs); justify-content: flex-end; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
                names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
@@ -2597,7 +2752,18 @@
                Start button and the CTA band go to Practise, and the BRAND MARK goes
                home from anywhere. Do not add a nav item down here without taking
                something else out of the row. */
-            .brand-tagline, .header-nav { display: none; }
+            .brand-tagline { display: none; }
+            /* A ONE-ITEM NAV, and the item is the page you are NOT on (2026-09-22, on
+               request: "there is no way to go to the practise page in mobile view").
+               The nav was hidden outright down here because the row had no room — brand,
+               globe and a two-word theme seg filled it. The seg moves INTO the globe menu
+               on a phone now (syncThemeControlPlacement), and that is the room this
+               needed. Hiding the ACTIVE link is what makes it one item without a second
+               markup path: syncNav() already moves .nav-link--active on every
+               showScreen(), so the header always offers the other page, and the brand
+               mark still goes home from anywhere. */
+            .header-nav { display: flex; }
+            .header-nav .nav-link--active { display: none; }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
@@ -2733,6 +2899,13 @@
                             <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
                             <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
                         </div>
+                        <!-- The theme seg is MOVED in here below 620px (see
+                             syncThemeControlPlacement) rather than duplicated: #darkBtn
+                             and #lightBtn are ids that setTheme() writes aria-pressed on,
+                             and a copy would be a second element wearing the same id.
+                             This label waits for it and stays [hidden] while the seg is
+                             up in the row. -->
+                        <span class="eyebrow" id="schemeLabel" data-i18n="nav.scheme" hidden></span>
                     </div>
                 </details>
                 <!-- The theme toggle sits in the ROW, not in the menu: it is a
@@ -2742,7 +2915,7 @@
                      readout. (The .header-cta "Start practising" that used to close
                      this row is gone: the hero's own Start is ten pixels below it on
                      the landing tier, and the dashboard tier has the mode band.) -->
-                <div class="seg" role="group" data-i18n-aria="nav.scheme">
+                <div class="seg" id="schemeSeg" role="group" data-i18n-aria="nav.scheme">
                     <button class="seg-btn active" id="darkBtn" data-i18n="nav.dark" aria-pressed="true">Dark</button>
                     <button class="seg-btn" id="lightBtn" data-i18n="nav.light" aria-pressed="false">Light</button>
                 </div>
@@ -2845,23 +3018,27 @@
         <section id="practiseScreen" class="screen">
             <!-- 1 · Where you stand — one wide card, the returning learner's opening statement. -->
             <section class="home-section" data-needs-data>
-                <!-- The heading lives INSIDE the card here, unlike every other section
-                     on the page: the mockup draws one panel that opens with its own
-                     title and an encouragement chip, and the four readouts below are
-                     tiles within it. #homeStatus holds only what renderHomeStatus()
-                     paints. -->
+                <!-- The heading sits ABOVE the card and centred, like every other
+                     section on the page (2026-09-22, on request). It lived INSIDE the
+                     card from 2026-09-21 because the mockup draws one panel that opens
+                     with its own title - but the mockup's panel also held four bordered
+                     tiles, and those dissolved, so the card became a single ground with
+                     bare blocks on it and the title was the last thing inside it
+                     behaving like chrome. Out here it matches the practise heading
+                     below it, and the page reads as two titled sections.
+                     #homeStatus still holds only what renderHomeStatus() paints. -->
+                <div class="section-head section-head--centred">
+                    <h2 data-i18n="home.progress.title"></h2>
+                    <p data-i18n="home.progress.lead"></p>
+                </div>
                 <div class="dash">
-                    <div class="dash-head">
-                        <div class="section-head">
-                            <h2 data-i18n="home.progress.title"></h2>
-                            <p data-i18n="home.progress.lead"></p>
-                        </div>
-                        <span class="dash-pill">
-                            <span class="dash-pill-icon" data-icon="leaf" aria-hidden="true"></span>
-                            <span data-i18n="dash.pill"></span>
-                        </span>
-                    </div>
                     <div id="homeStatus"></div>
+                    <!-- Last thing in the card, centred: it is a closing remark on the
+                         numbers above it, not a badge on the title. -->
+                    <span class="dash-pill">
+                        <span class="dash-pill-icon" data-icon="leaf" aria-hidden="true"></span>
+                        <span data-i18n="dash.pill"></span>
+                    </span>
                 </div>
             </section>
 
@@ -3141,7 +3318,7 @@
             // "loading", not "start again". The band is thinner (2.4) and the head
             // flares to 8.4, 3.5x its width, so there is an arrow at 22px and not just
             // at 72. See RESET_ARC in tools/icon-packs.mjs for the generator.
-            reset: _svg('<path d="M17.05 4.79A8.8 8.8 0 1 1 3.39 10.17L5.74 10.67A6.4 6.4 0 1 0 15.67 6.76ZM0.26 9.51L8.87 11.33L8.67 5.17Z"/>'),
+            reset: _svg('<path d="M16.66 4.54A8.8 8.8 0 1 1 3.33 10.47L5.5 10.85A6.6 6.6 0 1 0 15.5 6.4ZM1.76 10.19L7.08 11.13L7.05 6.1Z"/>'),
             trendUp: _svg('<rect x="3.6" y="13.4" width="3.8" height="7" rx="1.2"/><rect x="10.1" y="10" width="3.8" height="10.4" rx="1.2"/><rect x="16.6" y="6.2" width="3.8" height="14.2" rx="1.2"/><path d="M13.6 3.2h7.2v7.2l-2.5-2.5-4.6 4.6-3.6-3.6-6.3 6.3-1.8-1.8 8.1-8.1 3.6 3.6 3-3Z"/>'),
             book: _svg('<path d="M11 6.6C9.2 5.2 6.9 4.4 4.5 4.4c-.7 0-1.4.1-2.1.2a1.1 1.1 0 0 0-.9 1.1v11.6a1.1 1.1 0 0 0 1.4 1.1c.5-.1 1.1-.2 1.6-.2 2.2 0 4.3.8 6 2.2.1.1.3.1.5 0Z"/><path d="M13 6.6c1.8-1.4 4.1-2.2 6.5-2.2.7 0 1.4.1 2.1.2a1.1 1.1 0 0 1 .9 1.1v11.6a1.1 1.1 0 0 1-1.4 1.1c-.5-.1-1.1-.2-1.6-.2-2.2 0-4.3.8-6 2.2-.1.1-.3.1-.5 0Z"/>'),
             shield: _svg('<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>'),
@@ -3832,7 +4009,7 @@
                 .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`)
                 .join('');
             el.innerHTML = `
-                <span class="eyebrow state-picker-label">${t('dash.state')}</span>
+                <span class="state-picker-label">${t('dash.state')}</span>
                 <label class="state-picker">
                     ${ICONS.pin}
                     <span class="state-picker-value">${STATES[selectedState]}</span>
@@ -5257,6 +5434,28 @@
          * reach for mid-round; on a phone the whole body folds, since a strip there has
          * no room to keep anything.
          */
+        // THE THEME SEG HAS TWO HOMES AND ONE ELEMENT (2026-09-22, on request). In the
+        // header row on a desktop, inside #prefsMenu's panel on a phone — which is what
+        // frees the row for the one-item nav down there. It is MOVED rather than
+        // duplicated because #darkBtn/#lightBtn are ids setTheme() writes aria-pressed on,
+        // and two elements cannot share one. The panel's own rules then apply to it for
+        // free: full width, and --ctl-md buttons under @media (pointer: coarse), which is
+        // the thumb floor the header row deliberately does not give it.
+        // Paired with the CSS in the 620px block; both read 620, and they must agree.
+        function syncThemeControlPlacement() {
+            const seg = document.getElementById('schemeSeg');
+            const label = document.getElementById('schemeLabel');
+            const panel = document.querySelector('.hmenu-panel');
+            const row = document.querySelector('.header-controls');
+            if (!seg || !label || !panel || !row) return;
+            const phone = window.matchMedia('(max-width: 620px)').matches;
+            const home = phone ? panel : row;
+            // Only when it actually has to move: appendChild on every resize event would
+            // rip the control out of the DOM mid-interaction and drop focus with it.
+            if (seg.parentElement !== home) home.appendChild(seg);
+            label.hidden = !phone;
+        }
+
         function syncNavHeaderRole() {
             const tgl = document.getElementById('sidebarToggle');
             const body = document.getElementById('sidebarBody');
@@ -5299,9 +5498,11 @@
         document.getElementById('imgZoomClose').addEventListener('click', closeZoom);
         document.getElementById('imgZoomBackdrop').addEventListener('click', closeZoom);
         syncNavHeaderRole();
+        syncThemeControlPlacement();
         // resize rather than a matchMedia change listener: the latter did not fire under
         // viewport emulation, and this has to be right at whatever width the reader lands on.
         window.addEventListener('resize', syncNavHeaderRole);
+        window.addEventListener('resize', syncThemeControlPlacement);
         document.getElementById('endScreen').addEventListener('scroll', syncEndScrollCue, { passive: true });
         // ...and the page, for the short-viewport case where #endScreen is not the
         // scroller and its own scroll event therefore never fires.
