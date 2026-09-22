@@ -822,6 +822,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     hued plate + figure + name + one line saying what the figure counts. `.dash-body`
     and `.dash-stats` went with the old single row; **`.dash-tile` went with the
     borders, and `.dash-tile--ring` lost the prefix with it**.
+    - **FOUR ACROSS IS A WIDE-SCREEN LAYOUT, and it breaks at 1160 — the mode grid's own
+      number** (2026-09-22). Below it a readout column is ~150px, which leaves the label
+      86px after the 44px plate and the 20px gap: `Due for review` sets 111.7 and
+      `WIEDERHOLUNG` 107, both wrapped to two lines, and `align-items: center` then put
+      one plate 8px below the other two — **the row stopped reading as a row, which is
+      the exact fault the centring and the shortened `dash.due` string exist to
+      prevent**. The tiles' 32px of padding had been hiding it by making the column even
+      narrower, so the dissolve improved the numbers without fixing the fault, and the
+      `.dash-stat-top` gap going `--space-ms` -> `--space-lg` cost 8 of the 32 back.
+      **Narrowing the columns to `1fr` each is NOT the fix** — it starves the verdict to
+      ~40px instead. `.dash-summary` takes `grid-column: 1 / -1` below 1160 and the three
+      readouts share the full width (244px each at 900px). Measured in BOTH languages at
+      1400 / 1200 / 1159 / 1024 / 900 / 760, and single-column at 375.
     - **WHAT REPLACES THE BORDERS IS AIR AND ALIGNMENT, and both had to GROW.** The
       card's inset went `--space-lg` -> `--space-xl` and the grid's gap `--space-md` ->
       `--space-xl`, so the card now runs on one rhythm: 28px inset, 28 between the head
