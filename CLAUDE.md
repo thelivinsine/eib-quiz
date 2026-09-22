@@ -538,6 +538,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     descenders, and — the reason the box-shadow was chosen in the first place — it still
     adds nothing to the control's height. It takes `currentColor`, so
     `.nav-link--cta.nav-link--active` is down to the colour it always was.
+  - **The nav sits LOW in the strip, not on its centre line** (2026-09-22, on request:
+    "a bit closer to the header border line downwards"). `align-self: flex-end` does the
+    first 4px structurally — the links land their box bottom on the BRAND's, which is the
+    tallest thing in the row and what sizes the flex line — and a `margin-bottom` of
+    `calc(-1 * var(--space-2xs))` takes it 4px further, into the strip's own bottom
+    padding. 8px in all: the nav box now ends 4px above the header's hairline (measured
+    at 1280) and the underline about 12. **It cannot change `--header-h`**: the margin box
+    is 36 − 4 = 32, still under the brand's 44, so the line is sized by the brand either
+    way — which is the only reason a negative margin is safe here.
   - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN pill and a sun/monitor/moon
     seg** (2026-09-22, on request, against a reference UI). The globe `<details>` that
     held the language — and, on a phone, the theme seg as well — is **gone**, and with it
@@ -689,10 +698,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the credit where the work is used, and the footer of the page carrying the photo
     satisfies that. That line is the licence, not decoration — do not drop it while the
     photo is on the page. `img/ATTRIBUTIONS.md` has the recrop command for the FILE.
-  - **The NUMBERS and CTA bands are the mockup's pale panel** — `--band` plus a
-    `--border` hairline (2026-09-21). They were `--surface`, which on a white canvas is
-    the page itself; `--band` is the token the footer shares, and is what the
-    mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
+  - **THE PANELS ON THIS PAGE ARE THE WHY BAND, THE CTA BAND AND THE FOOTER** — `--band`
+    plus a `--border` hairline. The numbers band was one of them until 2026-09-22 and the
+    why band was not; they SWAPPED, on request — see the swap note below. The fill was
+    `--surface` until 2026-09-21, which on a white canvas is the page itself; `--band` is
+    the token the footer shares, and is what the mockup draws (`#F4F8FB` measured). This is NOT the `--surface2` reading the note
     above rejects: `--surface2` is a well inside a tile, and still never a panel on the
     page. (The practise page's own tiles took `--band` later the same day — see the
     practise-tile note below — which is a tile ON the page, not a panel around a set
@@ -700,25 +710,45 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **The why band's air is in MARGINS and PADDING, never in the grid's `gap`**
     (2026-09-21). `#whyBand` takes `padding-block: var(--space-2xl)`, its section head
     `margin-bottom: var(--space-2xl)` (scoped — the global one is 12px and shared),
-    `.why-item` a `padding-block: var(--space-sm)` and a `--space-md` icon-to-text gap,
+    `.why-grid` a `--space-xl` panel inset, `.why-item` a `--space-md` icon-to-text gap,
     and `.why-item p` a `--space-xs` top margin. **The four columns stay 28px apart on
     purpose**: the next rung up is `--space-2xl`, which is not a gap anywhere in this
     sheet, so using it would take `gapRungs` from 7 to 8 and bust the budget the ratchet
-    holds. The cramping was vertical anyway. `padding-inline` on the item is also out:
-    it would inset the first and last items from the page's content edge and break their
-    alignment with every other section.
-  - **The WHY band is not a panel at all** (2026-09-21, on request), and it is the one of
-    the three that is not. No fill, no hairline, no 1px separator gap: the four items sit
-    straight on the page with a `--space-xl` gap doing the separating, and `.why-grid`
-    carries its own rule rather than the shared band one. Four CLAIMS about the product
-    read as four claims; boxed in a tinted panel with dividers they read as a table, and
-    each item's tinted disc already groups its own two lines. **A row of four FIGURES is
-    different** — that is a readout, it wants a frame, and the numbers band keeps one.
-  - **`.result-stats, .stats-grid` share one rule** for the hairline-separated band, and
-    that shared `gap: 1px` is the only such literal in the sheet. Writing a second one
-    takes `literalSpacing` to 3 and `gapRungs` to 8, both over budget. (`.why-grid` was
-    the third selector until 2026-09-21; it left when it stopped being a panel, which
-    cost the budgets nothing — narrowing a selector adds no declaration.)
+    holds. The cramping was vertical anyway. **`.why-item`'s own `padding-block` is GONE**
+    (2026-09-22): it was the item's only vertical air while these sat straight on the
+    page, and the panel's inset is that now, on all four sides, with the grid's `gap`
+    separating a wrapped row. `padding-inline` on the ITEM is still out — inside a panel
+    it would simply double the inset, and before the panel it broke the first and last
+    items' alignment with every other section.
+  - **THE WHY BAND AND THE NUMBERS BAND SWAPPED TREATMENTS** (2026-09-22, on request,
+    against a screenshot: "invert the ... formatting for the sections"). This reverses
+    what stood here for a day, so read both halves before touching either:
+    - **The WHY band is the PANEL**: `--band`, a `--border` hairline, the 16px radius and
+      a `--space-xl` inset — **and no vertical separators**, which is the half of the old
+      argument that survives. Hairlines between four CLAIMS turn them into a table; a
+      frame around the SET does not, it groups them.
+    - **The NUMBERS band is DISSOLVED to the page**: no fill, no hairline, no 1px
+      separator gap. `.stats-grid` left the shared `.result-stats` rule to do it and
+      carries its own `--space-xl` gap — an existing rung, so `gapRungs` stays at 7 —
+      and `.stats-item` traded `padding: var(--space-md)` plus a `--band` fill for
+      `padding-block: var(--space-sm)`, which is the shape `.why-item` carried while IT
+      was the one on the page.
+    - **The old argument ran the other way** and is worth keeping in view: "a row of four
+      FIGURES is a readout, it wants a frame". It was overruled, not disproved.
+    - **The page still alternates**, which is why neither band wanting a frame would be
+      right: hero (bare) → why (panel) → numbers (bare) → CTA (panel) → footer (panel).
+    - **No contrast pair had to be minted**, because every one already existed — but four
+      DESCRIPTIONS in `contrast.test.mjs` did, since `text/band` and `muted/band` now
+      name the why band's title and body, and `text/canvas` and `muted/canvas` the
+      numbers'. A pair whose description names the wrong consumer is the stale-ground bug
+      that file keeps catching.
+  - **`.result-stats` is the ONLY hairline-separated band left**, and its `gap: 1px` is
+    the only such literal in the sheet. Writing a second one takes `literalSpacing` to 3
+    and `gapRungs` to 8, both over budget — so a band that wants hairlines JOINS that
+    selector rather than restating it. It had three selectors once: `.why-grid` left on
+    2026-09-21 (it stopped being a panel) and `.stats-grid` on 2026-09-22 (it stopped
+    being one too). Neither departure cost the budgets anything — narrowing a selector
+    adds no declaration.
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
     The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Eight
     entries are listed today, three per theme: the letter on the correct and the wrong answer

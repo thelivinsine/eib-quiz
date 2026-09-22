@@ -611,6 +611,36 @@ false -> true and got nothing — which is the same gotcha that made `syncNavHea
 `resize`. The handler's body was proved by calling `setTheme('system')` against a dark
 `prefers-color-scheme`; the delivery needs a real OS toggle.
 
+## Session developments (2026-09-22, the landing bands inverted)
+
+Three asks, all on request, and two of them reverse something written down the day before.
+
+- **The why band and the numbers band SWAPPED treatments.** The why band is the panel now
+  — `--band`, a `--border` hairline, the 16px radius, a `--space-xl` inset — and
+  **deliberately has no vertical separators**, which is the half of the old argument that
+  survives: hairlines between four claims make a table, a frame around the set groups
+  them. The numbers band is bare on the page: `.stats-grid` left the shared
+  `.result-stats` rule, which now has one consumer, and took a `--space-xl` gap (an
+  existing rung, so `gapRungs` stays at 7). `.why-item` dropped its `padding-block` to
+  the panel's inset and `.stats-item` picked the same shape up.
+- **The nav sits low in the header strip.** `align-self: flex-end` for the first 4px —
+  the links' box bottom lands on the brand's, which is what sizes the flex line — and a
+  `calc(-1 * var(--space-2xs))` bottom margin for 4 more, into the strip's own padding.
+  It cannot move `--header-h`: the margin box is 36 - 4 = 32, still under the brand's 44.
+- **No contrast pair had to be minted** — every one already existed — but four
+  DESCRIPTIONS in `contrast.test.mjs` did, because `text/band` and `muted/band` now name
+  the why band's title and body, and `text/canvas` and `muted/canvas` the numbers'.
+
+Verified at 320 / 375 / 1280 in both themes: nothing overflows, `scrollHeight ==
+innerHeight` still holds on the quiz screen at 375 and 1280, and both ratchets pass with
+every metric still at budget.
+
+**A stale page nearly got this filed as "the edit did not apply":** after a plain
+`navigate` to the same URL the pane served the PREVIOUS build, so the measurement came
+back byte-for-byte as the old layout while the file on disk was plainly changed.
+Unregistering the worker, clearing CacheStorage and navigating with a `?cb=` query fixed
+it. Check the file on disk before believing a measurement that says nothing happened.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).
