@@ -1772,6 +1772,10 @@ leaves the mockup on purpose.**
 
 ### 3. The ring's caption, and the 12px floor's first exemption
 
+> **Superseded later on 2026-09-22** — see "the four blocks harmonised" below. The
+> exemption survived; its tenant changed. `.ready-ring-sub` is 11px/400 in one rule
+> with `.ds-label`, and the percentage it names came down to `--fs-md`.
+
 "Make the accuracy label much smaller" was measured before it was acted on, and the
 measurement redirected the change: `0%` is **already right** (32.5px against the mockup's
 32.7). It is the caption that was a quarter too wide — 68.3px at `--fs-2xs` untracked
@@ -2047,3 +2051,109 @@ rewritten. `donut()` and `ev()` keep five-plus other callers, so nothing else we
 Committed and pushed straight to `main` as
 [`bc261c6`](https://github.com/thelivinsine/eib-quiz/commit/bc261c6) — **no PR**, on the
 user's explicit instruction.
+
+---
+
+## Session close (2026-09-22, the four blocks of "Where you stand" harmonised)
+
+Five requests in one sitting, each one measured before it was acted on, each one landing
+on the same card: the overview panel on the practise page. The through-line is that the
+card's readouts stopped being the mockup's tiles on 2026-09-21 and nobody re-derived their
+TYPE afterwards — a figure sized to sit inside a bordered tile with a plate and a sub-line
+was still sitting bare on the card, and it read as heavy. Every change below is a
+consequence of that one fact.
+
+### 1. The figures: 22 → 18 → 16, and the ring came with them
+
+"The big numbers in the three stats block look cheap. Use smaller sleeker font similar to
+the ring graph text." The first finding was that there was nothing to match — `.ds-num` and
+`.ready-ring-pct` were **already identical** (`--fs-xl`, Bricolage 600, `--ls-display`,
+tabular). What differed was the surroundings: a percentage inside a 104px dial is
+contained, a bare numeral in a 195px column is not.
+
+| | before | after |
+|---|---|---|
+| `.ds-num` / `.ready-ring-pct` | `--fs-xl` (22) | **`--fs-md` (16)** |
+| `.ds-of` (`/310`) | `--fs-xs` (13) | **`--fs-2xs` (12)**, then held on request |
+| `.ds-label` / `.ready-ring-sub` | 12/600 and 9/600 | **11px / 400, one rule** |
+| `.dash-verdict strong` / `p` | 13 / 12 | **15 / 13** (14/13 below 620px) |
+
+The denominator is the one thing asked to stay put ("keep the size of 310 intact"), and it
+is the right instinct: `/310` is a SCALE, not part of the number, and at 12px under a 16px
+figure it reads one rung down rather than three.
+
+### 2. The spacing: centred readouts, and the verdict pulled in
+
+A readout is ~100px of content in a 195px column. Left-aligned it pooled every pixel of
+slack on its right — three ragged blocks trailing off into nothing. `.dash-stat` is
+`text-align: center` now, and **the 620px block puts it back to left**, where the column
+IS the page and there is no slack to split. The summary block stays left in both: a ring
+followed by a sentence, and a sentence is read from a left edge.
+
+"The text should be closer to the ring" removed `.dash-verdict`'s `padding-left`. It was
+standing in for the vertical rule deleted the day before, at 32px total, and with nothing
+drawn in it that read as a gap rather than as a pair. `.dash-summary`'s `--space-md` gap is
+the whole separation now — a true 16px only at the text's own vertical band, where the
+circle is at its widest.
+
+### 3. The exemption changed tenant, it did not go away
+
+`TYPE_EXEMPT` was **deleted** when the caption came back onto the scale at 12px, and
+**restored hours later** holding `.ds-label` + `.ready-ring-sub` at 11px/400. Both moves
+were real: at 22px the percentage pushed the caption into a 78px chord where a tracked
+ACCURACY grazed the stroke, and at 16px it does not (83.2px chord, 74px word, 4.6 clear
+each side — and 66px at 11px, which only made it easier).
+
+The four names **left the shared eyebrow rule** rather than dragging it down: a quiz
+readout's label, a tile eyebrow and a review number are all still `--fs-2xs` at 600. This
+is the mechanism the sheet has for going under its own floor — a named selector, never a
+budget of 1 — and it is now carrying two selectors instead of one.
+
+### 4. `.dash-grid` went `1.7fr` → `2fr`
+
+Not cosmetic: it is what pays for the verdict's type going back up. The verdict box is
+**247.2px** and the worst headline ("You're just getting started") sets **188.0** — 59px of
+clearance. At 375px the same box is **189px** and the same string sets **188**, one pixel,
+which is not clearance; hence `--fs-sm` in the 620px block (175.4 in 189).
+
+### Verified
+
+- **In a real browser** (in-app pane with real viewport emulation, plus headless Chrome at
+  2x for the screenshots), at **1280 / 1024 / 375**, both themes, both languages:
+  - all four figures `16px/600`, all four labels `11px/400`, `/310` at `12px/500`;
+  - all four blocks on **one centre line** (261.6 at 1280, and the summary-full-row break
+    below 1160 measured at 1024);
+  - **every verdict headline on ONE line** — all four tiers × both languages × both widths,
+    measured by range rather than eyeballed;
+  - ring caption fit: `ACCURACY` 74px / `QUOTE` 45.7px in an 83.2px chord;
+  - `scrollWidth == clientWidth == 375` on the phone.
+- **The resume banner renders**, checked by seeding `eib_session_v1` — it was reported
+  missing, and it is conditional, not broken (`saveSession()` also skips exam and mistakes
+  modes by design).
+- `scale.test.mjs` **12/12** and `contrast.test.mjs` **10/10**, **no budget moved** in
+  either direction. `node --check` clean on the extracted script block and on `sw.js`.
+  `node tools/validate.js` 460, contiguous, spot-checks intact.
+- **The diff was reviewed before committing**, and it caught four comments left describing
+  a mid-session state the later passes overwrote — the ring caption's ("same rule as the
+  eyebrow list", "the figure is --fs-lg", "scale.test.mjs lost its TYPE_EXEMPT"), the
+  verdict's (still arguing 12/12 above a 15/13 rule), `.ds-num`'s ("a rung BELOW the
+  ring's percentage", when it is the same size) and `.ds-of`'s. All four rewritten; this
+  is the same fault class the previous session's review caught, and five requests landing
+  on one card in one sitting is how it happens.
+
+### Not verified
+
+- **The live site.** Everything was measured against `python -m http.server` on :8777.
+- **Only Chromium.**
+
+- **Nothing was clicked.** The card was rendered and measured, not driven: the reset glyph,
+  the Resume/Discard buttons and the exam (checklist item 8) were not exercised, and the
+  DE/EN switch was driven by `setLang()` from the console rather than through the globe
+  menu (checklist item 5).
+- **The session screens were not re-checked** (`scrollHeight === innerHeight` on the quiz
+  and results screens). The change is confined to the practise page's overview card and the
+  shared eyebrow rule, which those screens read through `.stat-label` — unchanged — but
+  that was reasoned, not measured.
+- **No `sw.js` `CACHE` bump** — nothing cache-first changed.
+- The mockup departures inherited from earlier sessions (the 28px heading, the pill
+  buttons) were not revisited.

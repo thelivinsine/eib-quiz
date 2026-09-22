@@ -462,7 +462,7 @@
         [data-hue] { --hue-tint: var(--surface2); --hue-ink: var(--sub-text); }
 
         /* Shared eyebrow micro-label */
-        .eyebrow, .stat-label, .ds-label, .breakdown-label, .review-q-num,
+        .eyebrow, .stat-label, .breakdown-label, .review-q-num,
         .timer-label,
         .sidebar-title, .question-num {
             font-family: var(--font-body);
@@ -1209,7 +1209,7 @@
            four share an axis. */
         .dash-grid {
             display: grid;
-            grid-template-columns: 1.7fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             align-items: center;
             gap: var(--space-xl);
         }
@@ -1238,21 +1238,30 @@
         /* NO RULE BETWEEN THE RING AND THE VERDICT (2026-09-22, on request). The
            mockup draws one; it was removed anyway, because the ring is already a shape
            with its own edge and a hairline two tokens from it is a divider inside a
-           tile inside a card. The padding stays — with .dash-summary's gap it is the
-           32px that separates them now, and a circle beside a sentence wants more room
-           than two straight edges would. */
+           tile inside a card.
+           AND NO PADDING EITHER (2026-09-22, on request): the padding was standing in
+           for the deleted rule at 32px total, which with nothing drawn in it read as a
+           gap rather than as a pair. .dash-summary's --space-md gap is the whole
+           separation now, and 16px off a CIRCLE is 16px only at the text's own
+           vertical band — where the ring is at its widest — so it is the tightest
+           honest reading of the distance. */
         .dash-verdict {
             min-width: 0;
-            padding-left: var(--space-md);
         }
-        /* The mockup sets BOTH of these at ~12px and separates them by weight and
-           colour alone — the ring's percentage is what carries this tile, not the
-           sentence beside it. One rung of size is kept between them because a
-           headline at the 12px floor is the placeholder tier; the drop from 15px is
-           also what puts "You are just getting started" back on ONE line, which is
-           what made this tile taller than the mockup's in the first place. */
-        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-xs); font-weight: 600; }
-        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-2xs); line-height: var(--lh-prose); }
+        /* 15/13, AND 14/13 ON A PHONE (2026-09-22, on request). The mockup sets both
+           lines at ~12 and separates them by weight and colour alone; this card went
+           there for an hour and it was wrong in the room — at 12/12 the verdict was the
+           smallest thing in the card and read as a caption on the ring rather than as
+           the card's own sentence. The pair is --text 600 over --muted 400, so the
+           weight-and-colour separation the mockup uses is kept and the size comes back.
+           What makes --fs-base safe is .dash-grid's 2fr, not luck: the verdict box is
+           247px and the worst headline ("You're just getting started") sets 188.0.
+           Below 620px that box is 189 and the same string sets 188 — one pixel, which
+           is not clearance — so the 620px block takes it down a rung. Every headline
+           is ONE line, measured at four tiers x two languages x both widths, and that
+           is what keeps this block shorter than the 104px ring beside it. */
+        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
+        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
 
         .state-picker {
             position: relative;
@@ -1314,27 +1323,39 @@
             transition: stroke-dashoffset 0.95s var(--ease-spring);
         }
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        /* The caption the mockup puts under the percentage, and THE ONE PLACE IN THE
-           APP BELOW THE 12px FLOOR (2026-09-22, on request, measured). The mockup sets
-           ACCURACY 54.2px wide inside an 89px dial; at --fs-2xs untracked it was 68.3,
-           a quarter wider, and it read as a second headline under the percentage rather
-           than as the percentage's name. 9px tracked puts it at 55.5.
-           The floor is a real rule — tools/scale.test.mjs budgets it and every other
-           tier obeys it — so the exception is argued, not assumed: this caption carries
-           NO information of its own. The wrapper is role="img" with
-           aria-label="0% Accuracy", so a screen reader gets the full word (and the full
-           German "Trefferquote") whatever this says, and a reader who cannot make out
-           9px uppercase has the same figure at 22px two pixels above it. Nothing else
-           in the app may follow it down.
-           The tracking comes BACK with the smaller size: --ls-caps was dropped when this
-           was 12px because tracked-out ACCURACY set 78px and grazed the stroke on both
-           sides. At 9px it is 55.5 in an 87px hole. */
-        .ready-ring-sub {
-            margin-top: var(--space-2xs);
-            color: var(--muted); font-size: 0.5625rem; font-weight: 600;
+        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        /* The caption the mockup puts under the percentage, and it IS the three
+           readouts' label — the rule below carries both, so the card's four blocks
+           share one label treatment and one figure treatment.
+           It was 9px for a day, the app's only sub-floor type, because a 22px
+           percentage above it left a ~78px chord for a tracked ACCURACY and the word
+           grazed the stroke. The figure is --fs-md now, so the stack is shorter, the
+           caption sits nearer the dial's centre where the chord is wider (83.2px
+           measured), and the word itself is narrower at 11px: 66px in 83. Measured
+           clearance, not restored optimism. */
+        /* THE OVERVIEW CARD'S FOUR NAMES ARE THEIR OWN TIER: 11px, REGULAR (2026-09-22,
+           on request). They left the shared eyebrow rule rather than dragging every
+           micro-label in the app down with them — a quiz readout's label, a tile
+           eyebrow and a review number are all still --fs-2xs at 600.
+           11px is BELOW THE 12px FLOOR and is named in TYPE_EXEMPT in
+           tools/scale.test.mjs, which is the only way this sheet is allowed to go under
+           it: a named selector, not a budget. The argument is the same one the ring's
+           caption made when it was 9px, now extended to its three siblings — a name
+           under a figure repeats what the figure already says, and the card asks the
+           reader to look at the figures. Weight 400 rather than 600 is the other half:
+           at 600 they were four shouted words under four quiet numbers.
+           400 AND 11px TOGETHER are what make the change visible — 500 at 12px is a
+           difference nobody sees, and the ask was "not bold and reduced". */
+        .ds-label, .ready-ring-sub {
+            font-family: var(--font-body);
+            font-size: 0.6875rem;
+            font-weight: 400;
             letter-spacing: var(--ls-caps);
             text-transform: uppercase;
+            color: var(--muted);
+        }
+        .ready-ring-sub {
+            margin-top: var(--space-2xs);
             white-space: nowrap;
         }
 
@@ -1348,7 +1369,16 @@
            minting one busts the ratchet's gapRungs budget. This block IS what
            .dash-stat-fig was — the plate's row wrapper went with the plate rather
            than being kept as a flex column wrapped round a flex column. */
-        .dash-stat { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
+        /* CENTRED IN ITS COLUMN (2026-09-22, on request). A readout is ~100px of
+           content in a 195px column, so left-aligned it hung on the column's left
+           edge and dropped every pixel of slack on its right — three ragged blocks
+           trailing off into nothing. The mockup left-aligns these, but the mockup's
+           readout is a TILE whose fill occupies the column; with the tiles gone
+           (2026-09-22) there is nothing to occupy it, so the air has to be split
+           either side of the figure instead of pooled after it. The summary stays
+           left: it is a ring followed by a sentence, and a sentence is read from a
+           left edge. */
+        .dash-stat { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; text-align: center; }
         /* German sets these names as one long word; the backstop keeps a label that
            outgrows its tile inside it rather than across its border. */
         .dash-stat .ds-label { overflow-wrap: anywhere; }
@@ -1356,17 +1386,23 @@
            and a coloured numeral is the whole of it — a tinted slab behind it
            reads as brown mud on charcoal and buys no more attention. */
         .dash-stat--due .ds-num { color: var(--gold); }
-        /* THE FIGURE IS THE LOUDEST THING IN ITS TILE (2026-09-22, measured off the
-           mockup: a digit stands 15.3px there against 12.0 at --fs-lg, i.e. ~23px, so
-           --fs-xl). It was --fs-lg on the argument that a counter is a READOUT and must
-           not outrank the heading above it — but --fs-2xl is what the heading takes, so
-           22px still sits a clear rung below it, and the mockup's whole readout tile is
-           built the other way round: a big number over a 12px name over a 12px line of
-           explanation. The tile has ONE thing to say and this is it. */
-        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        /* --fs-md, AND THE RING'S PERCENTAGE IS THE SAME RULE bar the selector
+           (2026-09-22, on request: 22 -> 18 -> 16 in one day, reversing the --fs-xl
+           set that morning off the mockup's 23px digit). The mockup's figure is big
+           because it is one of three things inside a bordered tile with a plate and a
+           sub-line to balance it; bare on the card beside a 104px dial, 22px of
+           Bricolage 600 over a name read as heavy rather than as a readout. Family,
+           weight, tracking and tabular numerals match the ring's figure exactly, so
+           the card's four blocks are ONE treatment: an --fs-md figure over an 11px
+           name, four times. If either moves, move both. */
+        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         /* margin-left on top of the string's own leading space: the mockup sets the
-           total off the figure at ~9px and " /" alone buys 3. */
-        .ds-of { margin-left: var(--space-2xs); color: var(--faint); font-size: var(--fs-xs); font-weight: 500; }
+           total off the figure at ~9px and " /" alone buys 3. --fs-2xs came down from
+           --fs-xs with the figure and then STAYED while the figure fell twice more
+           (on request: "keep the size of 310 intact"). That is the point of it — the
+           denominator is a SCALE, not part of the number, and at 12px under a 16px
+           figure it reads one rung down rather than three. */
+        .ds-of { margin-left: var(--space-2xs); color: var(--faint); font-size: var(--fs-2xs); font-weight: 500; }
 
         /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
         /* NO HAIRLINE. The mockup draws this as a tint and nothing else — measured
@@ -2486,8 +2522,19 @@
                only thing separating them now that the tiles are gone, and the desktop
                --space-xl is a whole readout's height on a phone. */
             .dash-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+            /* Left again down here. The centring exists to split a 195px column's
+               slack either side of a ~100px readout; in a single full-width column
+               there is no slack to split, and three centred stacks under a
+               left-aligned ring row give the card two edges to read from. */
+            .dash-stat { text-align: left; }
             /* The head STACKS down here, so the pill's desktop lift has to come off
                or it rides up over the heading it now sits under. */
+            /* A RUNG DOWN, BECAUSE THE PHONE'S VERDICT BOX IS 189px. The desktop
+               --fs-base headline clears it by ONE pixel — "You're just getting started"
+               sets 188.0 — and a pixel is not clearance: a font that loads a hair wider
+               wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
+               keeps --fs-base; measured in both languages at every verdict tier. */
+            .dash-verdict strong { font-size: var(--fs-sm); }
             .dash-head { flex-direction: column; gap: var(--space-sm); }
             .dash-pill { margin-top: 0; }
             .ready-ring-wrap { width: 104px; height: 104px; }

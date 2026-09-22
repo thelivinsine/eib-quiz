@@ -171,16 +171,19 @@ const SPACING_PROPS = [
 
 /**
  * The ONE type rule allowed off the scale, named rather than budgeted — the same shape as
- * ICON_EXEMPT below, and for the same reason: a budget of 1 says "one bug is tolerated" and
+ * ICON_EXEMPT below, and for the same reason: a budget says "one bug is tolerated" and
  * invites a second, where a named selector says which one and why.
  *
- * .ready-ring-sub is the accuracy ring's caption at 9px (2026-09-22, on request, measured:
- * the mockup sets ACCURACY 54.2px wide inside an 89px dial and --fs-2xs untracked sets 68.3).
- * It is exempt because it carries NO information of its own — the wrapper is role="img" with
- * aria-label="0% Accuracy", and the figure it names is at 22px two pixels above it. Nothing
- * else in the sheet may join it: a new selector here needs the same argument, in writing.
+ * It is the overview card's four names — .ds-label (answered / mastered / due for review)
+ * and .ready-ring-sub (the dial's caption) — at 11px, weight 400 (2026-09-22, on request).
+ * They are ONE rule and one exemption: a name under a figure repeats what the figure says,
+ * and the card asks the reader to look at the figures. Every other micro-label in the sheet
+ * is still --fs-2xs at 600, which is why these two selectors left the shared eyebrow rule
+ * rather than the rule moving.
+ * (History: this same constant held .ready-ring-sub alone at 9px for a day in September.)
+ * Nothing else may join without the same argument, in writing.
  */
-const TYPE_EXEMPT = /\.ready-ring-sub/;
+const TYPE_EXEMPT = /\.ds-label|\.ready-ring-sub/;
 
 /**
  * font-size declarations still written as a literal rather than a --fs-* token. This is the

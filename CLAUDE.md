@@ -192,12 +192,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     of 2026-09-21). A counter is a
     READOUT: it reports on its section and does not outrank the heading above it or the
     card you are meant to press — the same move `.stat-value` made on the quiz screen.
-    **`.ds-num` went BACK UP to `--fs-xl` on 2026-09-22**, measured off
-    `ui/where-you-stand.png`: a digit stands 15.3px there against 12.0 at `--fs-lg`, i.e.
-    ~23px. That does not reopen the rule — the section heading is `--fs-2xl`, so 22 is
-    still a clear rung below it, and the readout tile the mockup draws has exactly one
-    thing to say. The collision the rule exists to prevent was FOUR things at `--fs-xl`
-    at once; the ring's percentage is the only other one left.
+    **`.ds-num` went BACK UP to `--fs-xl` on 2026-09-22 and came down twice the same
+    day, on request** — it is `--fs-md`, and so is the ring's percentage beside it. The
+    mockup measures a 23px digit, but the mockup's figure is one of three things inside
+    a bordered tile with a plate and a sub-line to balance it; bare on the card the same
+    22px read as heavy rather than as a readout ("cheap" was the word). Nothing on the
+    Practise page sits at `--fs-xl` now, which is the cleanest the rule has ever been.
     The featured card kept its emphasis in hue, width and a solid Start pill, never size —
     and is retired; the five mode cards are peers.
   - **No drop shadows on a TILE, in either theme.** A tile is a fill plus a hairline, and
@@ -289,11 +289,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       Unitless on purpose: a length would be inherited verbatim by a 12px label.
     - **`--fs-2xs` (12px) is the FLOOR, with ONE named exemption.** Of the four references
       three render nothing below 12px and the fourth stops at 13; the 11px tokens that exist
-      went unused on every page measured. The exemption is `.ready-ring-sub` at **9px**
-      (2026-09-22, on request) — see the accuracy-ring note below — and it is named in
-      `TYPE_EXEMPT` in `tools/scale.test.mjs` rather than bought with a budget of 1, because
-      a budget says "one is tolerated" and invites a second where a selector says which and
-      why. **A second entry there needs the same argument, in writing.** NINE steps, 12/13/14/15/16/18/22/28/36, plus one `--fs-hero` clamp —
+      went unused on every page measured. The exemption is the overview card's four NAMES —
+      `.ds-label` and `.ready-ring-sub`, one shared rule at **11px, weight 400**
+      (2026-09-22, on request: "not bold and reduced font size"). They left the shared
+      eyebrow rule to do it, so every other micro-label in the app is still `--fs-2xs` at
+      600. **An exemption is a NAMED SELECTOR in `TYPE_EXEMPT`, never a budget of 1** — a
+      budget says "one is tolerated" and invites a second where a selector says which and
+      why. (The same constant held `.ready-ring-sub` alone at 9px for a day; that one was
+      retired when the four blocks were harmonised, and this one replaced it hours later.)
+      NINE steps, 12/13/14/15/16/18/22/28/36, plus one `--fs-hero` clamp —
       `--fs-3xl` (36px) was minted for the score ring and the landing page's four
       headline numbers are its second consumer.
       **A font-size written as a literal is a bug**, exactly as a literal radius is.
@@ -340,12 +344,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       is gone. **It came back on 2026-09-21** when the overview card was rebuilt against
       its mockup — and this measurement is exactly what it cost: a 104px dial, a
       separate `dash.accuracyShort` whose
-      German is "Quote" — and, from 2026-09-22, **the app's one sub-floor size**. That
-      last one is the rule being BENT rather than obeyed, and the argument is written
-      into `TYPE_EXEMPT`: this caption carries no information of its own. The wrapper is
-      `role="img"` with `aria-label="0% Accuracy"`, so a screen reader gets the whole
-      word whatever the caption says, and the figure it names is at 22px two pixels
-      above it. A label with something to say still moves out; this one has nothing.
+      German is "Quote". It was 9px for a day, then 12px for an hour, and it is **11px at
+      weight 400** now — one rule with `.ds-label`, so the dial's caption and the three
+      readout names are the same tier. What bought the room was the FIGURE above it coming
+      down (22 -> 18 -> `--fs-md`): a shorter stack sits nearer the dial's centre, where the
+      chord is wider, and 11px narrows the word on top of that. The wrapper is still
+      `role="img"` with `aria-label="0% Accuracy"`, so a
+      screen reader gets the whole word whatever the caption says. A label with something
+      to say still moves out; this one has nothing.
     - **On a phone the answered readout shows its figure and hides its word**
       (`.stats-bar .stat:last-child .stat-label`). Once the labels cleared the 12px floor the
       four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
@@ -829,11 +835,25 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     does not. Five boxes to say one thing is the containers-inside-containers look this
     sheet keeps taking out, and each readout already has a coloured plate anchoring it,
     so the frame was saying nothing the plate did not.
-    `.dash-grid` is `1.7fr 1fr 1fr 1fr`: a wide `.dash-summary` holding the ring and a
+    `.dash-grid` is `2fr 1fr 1fr 1fr` (1.7 until 2026-09-22, when the verdict's type
+    went back up and the extra ~35px is what keeps its headline on ONE line): a wide
+    `.dash-summary` holding the ring and a
     VERDICT (a headline and a line of advice), then three `.dash-stat` readouts, each a
     figure over its name. `.dash-body`
     and `.dash-stats` went with the old single row; **`.dash-tile` went with the
     borders, and `.dash-tile--ring` lost the prefix with it**.
+    - **A READOUT IS CENTRED IN ITS COLUMN, and its `/310` is a label tier**
+      (2026-09-22, on request). ~100px of content in a 195px column, left-aligned,
+      pooled every pixel of slack on its right: three ragged blocks trailing off into
+      nothing, which is what "adjust the spacing so the four blocks look well
+      positioned" was pointing at. The mockup left-aligns these, and the mockup is
+      right for the mockup — its readout is a TILE whose fill occupies the column. With
+      the tiles gone there is nothing to occupy it, so the air is split either side of
+      the figure instead. `.ds-of` came down to `--fs-2xs` with the figure: at 13px
+      against an 18px numeral the denominator read as part of the number.
+      **The summary block stays LEFT** — a ring followed by a sentence, and a sentence
+      is read from a left edge — and so does everything below 620px, where the column
+      is the page and centring would give the card two edges to read from.
     - **A READOUT IS A FIGURE OVER ITS NAME, and nothing else** (2026-09-22, on
       request). The hued plate and the `.ds-sub` line under the name both went, one
       day after the mockup put them there. The sub-line said what the name already
@@ -924,16 +944,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       count and the accuracy: nothing answered, then below / above **52%**, which is
       the exam's own 17-of-33 pass mark, then 80%+. That is why "on track" can say
       something the app can point at.
-    - **`.ready-ring-sub` IS BACK, at 9px, TRACKED — the app's only sub-floor type**
-      (on request; 2026-09-21, re-measured 2026-09-22). The mockup puts the name under
-      the percentage and sets it **54.2px wide inside an 89px dial**; at `--fs-2xs`
-      untracked it was 68.3, a quarter wider, and it read as a second headline under the
-      figure rather than as the figure's name. 9px with `--ls-caps` is 55.5.
-      **`0%` itself needed nothing** — `--fs-xl` measures 32.5px against the mockup's
-      32.7, which is why "make the label smaller" means this caption and not the
-      percentage. The two were measured side by side at equal scale before either moved.
-      The tracking came back WITH the smaller size: it was dropped at 12px because
-      tracked-out ACCURACY set 78px and grazed the stroke on both sides.
+    - **THE FOUR BLOCKS ARE ONE TREATMENT: an `--fs-md` figure over an 11px label**
+      (2026-09-22, on request — "harmonize the typography and sizing", then "lower the
+      size of the numbers ... but keep the size of 310 intact", then "not bold and
+      reduced"). The figures went 22 -> 18 -> **16** across three passes that day and
+      `.ds-of` stayed at `--fs-2xs` through all of them, which is the point: the
+      denominator is a SCALE, not part of the number, and it now reads a rung under its
+      figure rather than three. The ring's
+      percentage and the three readouts' figures are the same rule bar the selector
+      (Bricolage 600, `--ls-display`, tabular numerals), and `.ready-ring-sub` simply
+      JOINED the shared eyebrow list beside `.ds-label`, so the dial's caption and the
+      three names are one declaration. That is what retired the 9px exemption: it was
+      only ever needed because a 22px percentage pushed the caption down the dial into a
+      78px chord, where a tracked ACCURACY grazed the stroke on both sides. At 18px the
+      stack is 4px shorter, the chord is 83.2 and the same word measures 74.
+      The mockup does it the other way — a ~23px figure over a ~9.5px caption in an 89px
+      dial — and this is a deliberate departure from it: bare blocks on a card have no
+      tile to balance a big figure, so the row is harmonised against ITSELF instead.
+      **The four labels are 11px at weight 400**, their own rule and the sheet's one
+      `TYPE_EXEMPT`. 400 AND 11 together are what make it visible: 500 at 12px is a
+      change nobody sees, and a name under a figure repeats what the figure says.
       German still needs a shorter word, so **`dash.accuracyShort`** is a separate key:
       `Accuracy` / **`Quote`**. The full "Trefferquote" stays on the wrapper's
       `title`/`aria-label`, where its length costs nothing. Verified in both languages —
@@ -943,8 +973,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       The mockup draws one and it was removed anyway: the ring is already a shape with
       its own edge, and a hairline two tokens away from it is a divider inside a tile
       inside a card — the containers-in-containers move this sheet keeps undoing.
-      `.dash-verdict` keeps its `padding-left`, which with the grid gap is the 32px that
-      separates them now.
+      **Nor any padding** (2026-09-22, on request: "closer to the ring"). The
+      `padding-left` was standing in for the deleted rule at 32px total, and with nothing
+      drawn in it that read as a gap rather than as a pair. `.dash-summary`'s `--space-md`
+      gap is the whole separation now — and 16px off a CIRCLE is a true 16px only at the
+      text's own vertical band, where the ring is at its widest.
     - **The mountain ornament is TRACED, not sketched** (`MOUNTAIN_ART`, beside
       `GATE_ART`; redrawn 2026-09-22 off the mockup's own pixels). Three peaks and a
       flag on the right-hand one, cropped by the banner's bottom edge.
@@ -1002,11 +1035,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       plate-to-figure gap this replaces was `--space-lg`, and the width argument that
       set it — "DUE FOR REVIEW" at 111.6px against a 104.4px box — is what the plate's
       removal settled: the label has the whole 131px column now.)
-    - **The VERDICT is 13/12px, not 15/13.** The mockup sets both lines at ~12 and
-      separates them by weight and colour alone; one rung is kept between them because a
-      headline at the floor is the placeholder tier. That drop is also what puts
-      "You are just getting started" back on ONE line, which is what made this tile
-      taller than the mockup's.
+    - **The VERDICT is 15/13px** (`--fs-base` / `--fs-xs`), and **14/13 below 620px**.
+      It went 15/13 -> 13/12 -> 12/12 -> back to 15/13 in one day (2026-09-22), the last
+      move on request: at 12/12 it was the smallest thing in the card and read as a
+      caption on the ring rather than as the card's own sentence. What makes 15 safe is
+      the grid, not luck — `.dash-summary` went to `2fr`, so the verdict box is 247px and
+      the worst headline ("You're just getting started", 188.0) clears it by 59.
+      **On a phone that box is 189px and the same string sets 188**, one pixel, which is
+      not clearance — hence the rung down to `--fs-sm` (175.4 in 189) in the 620px block.
+      All four tiers measured in both languages at both widths: every headline is ONE
+      line, which is what keeps this block shorter than the 104px ring beside it.
     - **The card's padding and every gap inside it are `--space-xl`** (2026-09-22). The
       mockup measures ~20 and ~14, but its content is tiles with their own padding; bare
       blocks sit right on the card's inset, so 20px put the ring's stroke that far from
@@ -1433,8 +1471,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
   and `.btn-lg` (both `--ctl-md` today) and the glossary rows. Two of those numbers are
-  history rather than current state: the ready ring is 104px and `.ds-num` is `--fs-xl`,
-  both re-derived from `ui/where-you-stand.png`.
+  history rather than current state: the ready ring is 104px, re-derived from
+  `ui/where-you-stand.png`, and `.ds-num` is `--fs-md`.
   - **The two segs sit in two places and take two sizes.** In `#prefsMenu`'s panel a menu
     option is something you aim at, so `.hmenu-panel .seg-btn` takes the ordinary
     **`--ctl-md`** (44px) under `@media (pointer: coarse)`. In the header ROW the theme
@@ -1820,10 +1858,10 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   falls without the budget being lowered in the same commit. Two checks are hard rather than
   budgeted: no property declared twice for one selector in one scope (the `.stat { gap }` bug
   class, which shipped three times), and no literal `border-radius`. The `vh`-then-`svh`
-  fallback is the one allowed duplicate. `TYPE_EXEMPT` is the type
-  scale's one named exemption (`.ready-ring-sub` at 9px) and `ICON_EXEMPT` the icon
-  scale's; both are selectors rather than budget numbers, so the sheet cannot drift into
-  a second one unnoticed.
+  fallback is the one allowed duplicate. `TYPE_EXEMPT` is the type scale's one named
+  exemption (`.ds-label` + `.ready-ring-sub`, the overview card's four names at 11px) and
+  `ICON_EXEMPT` the icon scale's; both are selectors rather than budget numbers, so the
+  sheet cannot drift into a second one unnoticed.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions

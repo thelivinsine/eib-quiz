@@ -40,8 +40,13 @@ and no explanatory sub-line** (both drawn in the mockup, both removed on
 mode-agnostic ("Resume"), the
 buttons are pills where the mockup draws rounded rects, and the heading is 28px
 where the mockup measures ~31 — there is no rung between `--fs-2xl` and
-`--fs-3xl`. The mockup's micro-copy also runs 9-12px against this app's 12px
-floor, which the ring's caption is now the single named exemption from.
+`--fs-3xl`. **The card's TYPE is its own system as of 2026-09-22, on request**:
+the four blocks are one `--fs-md` figure over one 11px/400 label, where the
+mockup draws a ~23px figure over a 12px name (its readouts are tiles, and a tile
+balances a big figure; bare blocks do not), and the verdict is 15/13. The
+mockup's micro-copy runs 9-12px against this app's 12px floor, and the card's
+four names — `.ds-label` + `.ready-ring-sub` — are the single named exemption
+from it.
 `logo-kit.png` is NOT shipped: it draws a different
 brand mark from the German-flag tile the app uses, a stroked icon library where
 the app ships solid glyphs, and pages (`About`, `FAQs`) that were deliberately
