@@ -33,9 +33,11 @@ any project rule that obstructs the refactor, *except* the icon artwork. So:
    (`5dd5bf2`), on request: "use neutral colour shades for icons and not the accent
    colours". The plates stay, the HUES are gone. `[data-hue]` is one neutral rule
    (`--surface2` + `--sub-text`) and `--violet`/`--violet-dim` left the palette with the
-   five mappings. The single exception is the overview card's three readout plates, which
-   took the mockup's blue/green/amber back the same day under "stay true to the mockup" and
-   are scoped as `.dash-stat--blue/green/amber`. Read CLAUDE.md's ICON PLATES block before
+   five mappings. The overview card's three readout plates were a one-day exception —
+   they took the mockup's blue/green/amber back under "stay true to the mockup" and were
+   **deleted on 2026-09-22 (`bc261c6`), when the readouts lost their plates entirely**,
+   so `[data-hue]` is
+   now neutral everywhere with no exception. Read CLAUDE.md's ICON PLATES block before
    reaching for colour.* What the reversal originally said: tinted plates are back behind
    the hero facts, the why
    marks and the mode-card icons, and the cards carry a per-card hue — that colour is most

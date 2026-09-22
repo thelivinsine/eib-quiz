@@ -34,7 +34,10 @@ which names every place it deliberately differs. As of 2026-09-22 those are:
 the four bordered tiles are **dissolved** (the card is one ground and the four
 blocks sit bare on it), there is **no rule between the ring and the verdict**,
 the mountains are **stepped in size and sit lower in the banner** than the
-traced silhouette, the Resume button's label stays mode-agnostic ("Resume"), the
+traced silhouette, **each readout is a figure over its name with no icon plate
+and no explanatory sub-line** (both drawn in the mockup, both removed on
+2026-09-22 — the sub-line restated the name), the Resume button's label stays
+mode-agnostic ("Resume"), the
 buttons are pills where the mockup draws rounded rects, and the heading is 28px
 where the mockup measures ~31 — there is no rung between `--fs-2xl` and
 `--fs-3xl`. The mockup's micro-copy also runs 9-12px against this app's 12px

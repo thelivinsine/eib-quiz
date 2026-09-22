@@ -1950,3 +1950,100 @@ was tried first and rejected**: it fixes the labels and starves the verdict to ~
 PR [#97](https://github.com/thelivinsine/eib-quiz/pull/97), squash-merged to `main` as
 **`e188240`**. The resume button's 4.54 hovered ratio was reported and left as a design
 decision, not fixed.
+
+---
+
+## Session close (2026-09-22, the readouts cut to a figure over a name)
+
+On request, and landed **directly on `main` without a PR** — the user judged it small and
+said so explicitly, overriding `CLAUDE.md`'s "ship via PR + merge" default. One commit,
+`bc261c6`, plus this sweep.
+
+### What was asked
+
+Remove the three sub-lines under the overview card's readouts ("Questions you've
+attempted" / "…mastered" / "Questions to review") **and the icons beside them**, then
+rearrange what is left cleanly. A second request mid-session: move the encouragement chip
+("Small steps make big progress.") up onto the reset button's line.
+
+### What shipped
+
+- **A readout is a figure over its name, and nothing else.** `.dash-stat` IS what
+  `.dash-stat-fig` was — a `--space-2xs` column of `.ds-num` over `.ds-label`.
+  `.dash-stat-top`, `.dash-stat-icon`, `.dash-stat-fig`, `.ds-sub`, both 620px
+  overrides and the three `dash.*Sub` strings are deleted. The sub-line said what the
+  name said, so the card stated each of its three numbers twice and drew a box beside
+  each one to do it.
+- **The three `.dash-stat--blue/green/amber` hue rules went with the plates**, so **no
+  icon in the app carries an accent or semantic hue any more** — the exception this card
+  won on 2026-09-21 under "stay true to the mockup" lasted one day. `--accent-soft`,
+  `--green-dim` and `--gold-dim` all keep other consumers, so the palette and
+  `contrast.test.mjs` are untouched (no pair lost its ground).
+- **`ICONS.file` and `ICONS.checkCircle` lost their only reader and are deleted** from
+  `index.html` *and* from `tools/icon-packs.mjs`, which documents production. 26 glyphs
+  now — 24 drawings plus two aliases, verified by counting the `ICONS` literal. `leaf`
+  stays; it is the encouragement chip's.
+- **The chip rides the reset glyph's line.** `.dash-pill` takes
+  `margin-top: calc(var(--ctl-sm) / -2)` — half its own height. `.progress-reset` is
+  absolute at `top: 6px` in a `--ctl-md` box, so its glyph centre is 6 + 22 = **28px**
+  below the card's top edge, which is exactly the card's `--space-xl` padding, i.e. where
+  `.dash-head` starts. **Derived, not a `-18px` literal**, so it tracks `--ctl-sm`; and
+  the 620px block sets it back to `0`, because the head becomes a COLUMN down there and
+  the lift would ride the chip up over the heading.
+
+### What the diff review caught (before the commit, on request)
+
+Two stale comments the deletion left sitting above their deleted siblings — `index.html`'s
+"The overview card's readouts. Same three as tools/icon-packs.mjs's solid pack", now above
+`leaf` alone, and the pack's three lines explaining `checkCircle`'s `donut()` reuse. Both
+rewritten. `donut()` and `ev()` keep five-plus other callers, so nothing else went dead.
+
+### Reported, not changed
+
+- **The 1160px breakpoint stays, but its reason changed.** It was introduced by #97
+  because the LABEL could not fit past the 44px plate and its 20px gap. With the plate
+  gone the label has the whole column, so what the break now buys is the **verdict's**
+  width — narrowing all four columns to `1fr` still starves the sentence beside the ring.
+  Left at 1160; the comment says why.
+- **`dash.due` = `Wiederholung` no longer has to be short.** The readout column measures
+  **195.3px** now; `Zur Wiederholung` sets **137.5** and would fit. The short form stays
+  because nobody asked for it back, not because it is forced.
+
+### Verified
+
+- **In a real browser, both themes, both languages**, via the in-app pane with real
+  viewport emulation: chip and reset glyph centres identical at **118.0** (1280px) and
+  **72.0** (1000px); the ring and all three readouts on one centre at **261.6**;
+  `Due for review` (111.6) and `Wiederholung` (107.1) each one line at four-across;
+  `scrollWidth == clientWidth == 375` on the phone, with the chip below the heading and
+  clear of the reset; the four-across → summary-full-row break at 1000px; and the
+  **empty-progress** state (three zeros, no reset button).
+- `contrast.test.mjs` **10/10** and `scale.test.mjs` **12/12**, **no budget moved**.
+  `node tools/validate.js` 460. `node --check` clean on the extracted script block and on
+  `sw.js`. `node tools/icon-packs.mjs` still renders all three sheets after the two
+  deletions.
+- `grep 'stroke="currentColor"' index.html` still returns **0**.
+- Re-ran the whole checklist a second time after the comment tidy, and reloaded the page
+  with **no uncaught console errors**.
+
+### Not verified
+
+- **The live site.** Everything was measured against `python -m http.server` on :8777.
+  `bc261c6` is pushed, but the published Pages build was not opened or re-measured.
+- **Only Chromium**, and only the in-app pane.
+- **The session screens were not re-checked.** The change is confined to the practise
+  page's overview card, but `scrollHeight === innerHeight` on the quiz and results
+  screens was not re-run.
+- **Nothing was clicked.** The reset button, the resume banner and the exam simulation
+  (checklist item 8) were not exercised; the card was rendered and measured, not driven.
+- **The DE/EN switch was driven by `setLang()` from the console**, not by opening the
+  globe menu and clicking (checklist item 5).
+- **No `sw.js` `CACHE` bump** — nothing cache-first changed.
+- The two departures from the mockup that #96 flagged (the 28px heading, the pill buttons)
+  are still open and were not revisited.
+
+### Live
+
+Committed and pushed straight to `main` as
+[`bc261c6`](https://github.com/thelivinsine/eib-quiz/commit/bc261c6) — **no PR**, on the
+user's explicit instruction.

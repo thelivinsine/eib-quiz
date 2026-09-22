@@ -418,8 +418,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (**reversed 2026-09-21**: they stayed three columns until the labels grew,
   and at 375px three columns give the label an 85px box while `BEANTWORTET` sets 109 —
   one German word, nothing to wrap, so it simply ran past its column; as rows the label
-  has its width and the `.ds-sub` line goes. The tiles those columns once were are gone
-  as of 2026-09-22, and the row layout stays: the measurement was never about the border), and the exam timer goes
+  has its width. The tiles those columns once were are gone as of 2026-09-22, and so is
+  the `.ds-sub` line the phone rule used to hide — at every width, not just here — and
+  the row layout stays: the measurement was never about the border or the sub-line), and the exam timer goes
   to one line. The quiz readouts drop their hairlines and tighten to a `--space-sm` gap so all four stay
   on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
   the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
@@ -864,22 +865,27 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--space-2xl` (40) is not available — it is not a gap rung anywhere in this sheet
       and using it would take `gapRungs` from 7 to 8.
     - **`align-items: center` on the grid is what makes four bare blocks read as a
-      row.** The ring block is 104px tall and a readout is 68, so stretched (the
-      default) the readouts hang from the top with 36px of nothing under them.
-    - **THE PLATES ARE NOT ON THE RING'S AXIS, AND THAT WAS THE CHOICE.** A readout is
-      not symmetric about its own plate — the sub-line hangs below it — so centring the
-      BLOCK leaves the plate ~12px above the ring's centre, and `0%` and the three
-      figures sit on two slightly different lines. A variant that padded each readout to
-      put every plate exactly on the ring's axis was built and rendered beside this one
-      on 2026-09-22; **this one was picked**, because forcing the alignment pushed the
-      three readouts visibly low in their own columns. If it is ever revisited, the
-      spacer is `calc(var(--fs-2xs) * var(--lh-ui) + var(--space-sm))` on `.dash-stat`
-      with `align-items: center` left alone — not a 30px literal, which is the same
-      number and breaks the day the ring resizes.
-    - **German drops a word rather than a line.** `dash.due` is `Wiederholung`, not
-      `Zur Wiederholung`: at the 12px floor the longer form sets 137.5px in a 131px
-      column, wraps, and drops that readout's sub-line out of line with the other two.
-      The sub-line under it still reads "Fragen zur Wiederholung".
+      row.** The ring block is 104px tall and a readout is **41.6** (it was 68 while
+      each carried a plate and a sub-line), so stretched — the default — the readouts
+      hang from the top with 62px of nothing under them.
+    - **The plate-vs-ring-axis question is CLOSED, because the plate is gone**
+      (2026-09-22). It was real while a readout was a plate with a sub-line hanging
+      below it: the block was not symmetric about its own plate, so centring it left
+      every plate ~12px above the ring's centre, and a padded variant that forced them
+      onto the axis was built, rendered beside this one and rejected for pushing the
+      three readouts low in their columns. A figure over a name has nothing hanging
+      below it, so plain `align-items: center` puts all four blocks on one line —
+      **measured at 261.6 for the ring and all three readouts**. Do not reintroduce a
+      spacer here.
+    - **`dash.due` is `Wiederholung`, and the constraint that forced it is GONE.**
+      It was picked because the longer `Zur Wiederholung` sets 137.5px at the 12px
+      floor against the 131px the label had left once the plate and its gap were taken
+      off the column — it wrapped, and dropped that readout out of line with the other
+      two. **With the plate gone the column is 195.3px and 137.5 would fit** (measured
+      2026-09-22 at 1280px). The short form stays because nobody asked for it back, not
+      because it has to; if the longer one is ever wanted, re-measure at the 1160
+      breakpoint rather than assuming, and the sub-line that used to read "Fragen zur
+      Wiederholung" beneath it no longer exists.
     - **The section's HEADING lives inside the card here**, unlike every other section
       on the page: the mockup draws one panel that opens with its own title, a lead and
       an encouragement chip (`.dash-pill`, `dash.pill`, the new `leaf` glyph).
@@ -1740,6 +1746,9 @@ tools/            data-generation + validation scripts (not served)
 docs/             project notes (TODO.md, BUG_AUDIT_MEMORY.md), plans/, research/
   Mockups/        design boards, generated illustrations, licensed photography
 legacy/           May 28 build; not production, do NOT publish from it
+claude-context-kit/  vendored method kit (skills + the theme/type references this
+                  file cites); deliberately knows nothing about this project — read
+                  it, do not rewrite it
 ```
 
 Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.json`,
