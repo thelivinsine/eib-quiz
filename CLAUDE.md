@@ -707,11 +707,28 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     page. (The practise page's own tiles took `--band` later the same day — see the
     practise-tile note below — which is a tile ON the page, not a panel around a set
     of them.)
-  - **The why band's air is in MARGINS and PADDING, never in the grid's `gap`**
-    (2026-09-21). `#whyBand` takes `padding-block: var(--space-2xl)`, its section head
-    `margin-bottom: var(--space-2xl)` (scoped — the global one is 12px and shared),
-    `.why-grid` a `--space-xl` panel inset, `.why-item` a `--space-md` icon-to-text gap,
-    and `.why-item p` a `--space-xs` top margin. **The four columns stay 28px apart on
+  - **ONE BLOCK SETS THE GAP TO THE NEXT, AND IT IS `.home-section`'s MARGIN**
+    (2026-09-22, on request: "optimize the space within the bands"). `#whyBand` carried
+    `padding-block: var(--space-2xl)` of its own, written when it was the BARE section
+    between two panels; once it became the panel that padding just paid the 40px section
+    gap a second time — **measured 80px between the panel's edge and the numbers under
+    it against 40 everywhere else**, which is the doubling the screenshot was pointing
+    at. It is deleted, the rhythm is a uniform 40 (28 below 620px), and the page came
+    down 1439 -> **1339px** at 1280 with nothing inside a band touched.
+    - **Its ONE consumer that was not a gap is `scroll-margin-top`**: "Learn more" jumps
+      to `#whyBand`, and that padding was the air between the sticky header and the
+      heading after the jump. The rule is `calc(var(--header-h) + var(--space-lg))` now.
+      A scroll target that loses its top padding needs its scroll margin re-derived.
+    - **The hero needs no rule for this**: it is not a `.home-section` and never took one
+      from that margin — its own `padding-block` ends with 40px, so the ink gap above
+      the why heading measures 44, in line with the 40s below it.
+  - **The why band's remaining air is in MARGINS and PADDING, never in the grid's `gap`**
+    (2026-09-21). Its section head takes `margin-bottom: var(--space-lg)` (scoped — the
+    global one is 12px and shared; it was `--space-2xl` until 2026-09-22, when the panel's
+    own edge took over half the separating that 40px of whitespace had been doing alone,
+    and `.modes-band`'s head is the same value for the same shape), `.why-grid` a
+    `--space-xl` panel inset, `.why-item` a `--space-md` icon-to-text gap, and
+    `.why-item p` a `--space-xs` top margin. **The four columns stay 28px apart on
     purpose**: the next rung up is `--space-2xl`, which is not a gap anywhere in this
     sheet, so using it would take `gapRungs` from 7 to 8 and bust the budget the ratchet
     holds. The cramping was vertical anyway. **`.why-item`'s own `padding-block` is GONE**
@@ -742,6 +759,18 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       name the why band's title and body, and `text/canvas` and `muted/canvas` the
       numbers'. A pair whose description names the wrong consumer is the stale-ground bug
       that file keeps catching.
+  - **THE CTA BAND READS copy · note · ornament · action** (2026-09-22, on request).
+    The button used to sit straight after the copy with the gate and the note to its
+    right; the note and the button traded places, so the primary action closes the row.
+    **Swapped in the MARKUP, not with CSS `order`**: there is only one focusable thing in
+    the band so focus order could not have gone wrong either way, but a screen reader
+    reads the DOM, and the order it hears should be the order on screen.
+  - **THE TWO SCRIPT NOTES SWAPPED BANDS** in the same pass, also on request: the numbers
+    row carries "Citizenship opens new paths." and the CTA band "A small step. A bigger
+    future." **The KEYS did not move with the values** — `stats.annotation` and
+    `cta.annotation` each still name the band they are rendered in — so look for one of
+    these lines by its VALUE, not by its key. Both are hidden below 620px, with
+    `.cta-art`, so this is a desktop-only arrangement.
   - **`.result-stats` is the ONLY hairline-separated band left**, and its `gap: 1px` is
     the only such literal in the sheet. Writing a second one takes `literalSpacing` to 3
     and `gapRungs` to 8, both over budget — so a band that wants hairlines JOINS that

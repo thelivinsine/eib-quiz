@@ -641,6 +641,36 @@ back byte-for-byte as the old layout while the file on disk was plainly changed.
 Unregistering the worker, clearing CacheStorage and navigating with a `?cb=` query fixed
 it. Check the file on disk before believing a measurement that says nothing happened.
 
+## Session developments (2026-09-22, the landing page's rhythm)
+
+- **The doubled section gap is gone.** `#whyBand` carried `padding-block:
+  var(--space-2xl)` of its own, written when it was the BARE section between two panels.
+  Once it became the panel, that padding paid the 40px `.home-section` gap a second time:
+  **80px between the panel's edge and the numbers under it against 40 everywhere else**,
+  which is what the screenshot was pointing at. Deleted, so one block sets the gap to the
+  next and `.home-section` is the only place it is set. Its section head came down with
+  it, `--space-2xl` -> `--space-lg`, because the panel's own edge now does half the
+  separating 40px of whitespace had been doing alone. **Nothing inside a band was
+  touched** and the page still came down 1439 -> **1339px** at 1280.
+- **A scroll target that loses its top padding needs its scroll margin re-derived.**
+  "Learn more" jumps to `#whyBand`, and that padding was the air between the sticky
+  header and the heading after the jump; `scroll-margin-top` is
+  `calc(var(--header-h) + var(--space-lg))` now.
+- **The hero needed no rule**: it is not a `.home-section`, so it never took a gap from
+  that margin — its own `padding-block` ends with 40px. Measured: the ink gap above the
+  why heading is 44, in line with the 40s below it.
+- **The two script notes swapped bands**, and **the CTA band's note and button swapped
+  places** — it reads copy · note · ornament · action now. The button swap is in the
+  MARKUP rather than CSS `order`: only one focusable element is in that band, so focus
+  order was never at risk, but a screen reader reads the DOM and should hear what is on
+  screen. The note KEYS did not move with the values, so `stats.annotation` and
+  `cta.annotation` each still name the band they render in — look for one of those lines
+  by its value.
+
+Measured at 1280 and 375 in both themes and both languages: the ink gaps are 44 / 40 / 40,
+nothing overflows, and the notes and the ornament are still hidden below 620px, so the
+band arrangement is desktop-only. Both ratchets pass with every metric at budget.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).

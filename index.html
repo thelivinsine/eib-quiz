@@ -1046,13 +1046,19 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
         }
-        /* Its own block of air: the section sits between two panels on a white page
-           with nothing but whitespace to separate it from either. */
-        #whyBand { padding-block: var(--space-2xl); }
-        /* 40px under the heading rather than the global 12px. A centred heading over a
-           four-column row needs to read as a heading, not as a first line. Scoped to
-           this section: .section-head's own margin is shared with every other one. */
-        #whyBand .section-head { margin-bottom: var(--space-2xl); }
+        /* #whyBand's own padding-block: var(--space-2xl) is GONE (2026-09-22, on
+           request: "optimize the space within the bands"). It was written when this
+           section was the bare one between two panels and had nothing but whitespace to
+           separate it from either; the section IS the panel now, so all it did was pay
+           the 40px section gap a SECOND time — measured 80px between the panel's edge
+           and the numbers under it against 40px everywhere else on the page, which is
+           the doubling the screenshot was pointing at. The gap is uniform now and
+           .home-section is the one place it is set. */
+        /* --space-lg under the heading rather than the global 12px, and down from 40 in
+           the same pass: a centred heading over a panel still has to read as a heading,
+           but the panel's own edge does half the separating that 40px of whitespace
+           used to do alone. Same value as .modes-band's, which is the same shape. */
+        #whyBand .section-head { margin-bottom: var(--space-lg); }
         /* Same reasoning in the practise band, which is now a single centred line
            over the picker and the five cards. */
         .modes-band .section-head { margin-bottom: var(--space-lg); }
@@ -1173,7 +1179,9 @@
            and without this the sticky header sits on top of the heading it scrolled to.
            --header-h is what syncHeaderHeight() measures, so it tracks the phone's
            shorter strip too — a fixed 76px was the desktop header's height alone. */
-        #whyBand { scroll-margin-top: var(--header-h); }
+        /* + --space-lg: the section's own 40px of top padding used to be the air
+           between the sticky header and this heading after the jump, and it is gone. */
+        #whyBand { scroll-margin-top: calc(var(--header-h) + var(--space-lg)); }
 
         /* ---- Overview card: ONE card, FOUR BLOCKS, no tiles ----
            Rebuilt 2026-09-21 against docs/Mockups/ui/where-you-stand.png, and the
@@ -3013,12 +3021,17 @@
                     <h2 data-i18n="cta.title"></h2>
                     <p class="cta-lead" data-i18n="cta.lead"></p>
                 </div>
+                <!-- The note and the button traded places on 2026-09-22, on request, so
+                     the band now reads copy · note · ornament · action and the primary
+                     button closes the row. Swapped in the MARKUP rather than with CSS
+                     `order`, so the reading order a screen reader gets is the order on
+                     screen. -->
+                <p class="script-note cta-note" data-i18n="cta.annotation"></p>
+                <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
                 <button class="btn-primary btn-lg cta-btn" onclick="showScreen('practise')">
                     <span data-i18n="cta.button"></span>
                     <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                 </button>
-                <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
-                <p class="script-note cta-note" data-i18n="cta.annotation"></p>
             </section>
 
         </section>
@@ -3517,13 +3530,16 @@
             'stats.2':             { en: 'Federal states',           de: 'Bundesländer' },
             'stats.3':             { en: 'Languages (German & English)', de: 'Sprachen (Deutsch & Englisch)' },
             'stats.4':             { en: 'Minutes (real test)',      de: 'Minuten (echte Prüfung)' },
-            'stats.annotation':    { en: 'A small step. A bigger future.', de: 'Ein kleiner Schritt. Eine große Zukunft.' },
+            // The two script notes SWAPPED bands on 2026-09-22, on request. The keys
+            // did not move with them — each still names the band it is rendered in —
+            // so read the value, not the name, when looking for one of these lines.
+            'stats.annotation':    { en: 'Citizenship opens new paths.', de: 'Einbürgerung öffnet neue Wege.' },
 
             'cta.eyebrow':         { en: 'Ready to get started?',    de: 'Bereit loszulegen?' },
             'cta.title':           { en: 'Take the next step today.', de: 'Geh heute den nächsten Schritt.' },
             'cta.lead':            { en: 'Practise, build your confidence and reach your goal.', de: 'Übe, gewinne Sicherheit und erreiche dein Ziel.' },
             'cta.button':          { en: 'Start practising',         de: 'Jetzt üben' },
-            'cta.annotation':      { en: 'Citizenship opens new paths.', de: 'Einbürgerung öffnet neue Wege.' },
+            'cta.annotation':      { en: 'A small step. A bigger future.', de: 'Ein kleiner Schritt. Eine große Zukunft.' },
 
             // home sections
             'home.progress.title': { en: 'Where you stand',         de: 'Dein Stand' },
