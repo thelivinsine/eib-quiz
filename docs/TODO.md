@@ -2157,3 +2157,12 @@ which is not clearance; hence `--fs-sm` in the 620px block (175.4 in 189).
 - **No `sw.js` `CACHE` bump** — nothing cache-first changed.
 - The mockup departures inherited from earlier sessions (the 28px heading, the pill
   buttons) were not revisited.
+
+### Live
+
+Squash-merged to `main` and pushed as
+[`fc9e8e7`](https://github.com/thelivinsine/eib-quiz/commit/fc9e8e7) — **no PR**, on the
+user's explicit instruction after the diff review, which is how a tweak ships here
+(`CLAUDE.md`'s "ship via PR + merge" is applied by SIZE). The work was committed on
+`ui/where-you-stand-type` first, reviewed there — that review is what caught the four
+stale comments above — then squashed; the branch is deleted.
