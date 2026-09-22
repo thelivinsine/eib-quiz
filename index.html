@@ -569,7 +569,17 @@
         /* Centred by auto margins rather than by being the middle of a
            space-between row: .session-back is display:none most of the time, so the
            number of flex children changes and space-between would move the nav with it. */
-        .header-nav { display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto; }
+        /* The nav sits LOW in the strip, not on its centre line (2026-09-22, on
+     request: "a bit closer to the header border line downwards"). align-self does
+     the first 4px structurally - the links' box bottom lands on the brand's, which
+     is the tallest thing in the row and what sets the line - and the negative
+     margin takes it 4px further, into the strip's own bottom padding. It cannot
+     change the header's height: 36 - 4 = 32 is still under the brand's 44, so the
+     flex line is sized by the brand either way, and --header-h with it. */
+        .header-nav {
+            display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto;
+            align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs));
+        }
         .nav-link {
             display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-sm);
@@ -1008,20 +1018,33 @@
         .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
         .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
 
-        /* The why-band and the numbers band are hairline-separated bands; the shared
-           rule lives with .result-stats, which is where that idiom is written down. */
-        .stats-grid { list-style: none; }
-        /* The why band is NOT a panel, and it is the one of the three that is not.
-           Four claims about the product read as four claims; boxing them in a tinted
-           panel with hairline dividers turned them into a table, and the tinted discs
-           beside them already group each icon with its own line. So no fill, no
-           hairline, no 1px separator gap — the items sit straight on the page and a
-           real gap does the separating. The numbers band and the CTA band keep the
-           panel: a row of four FIGURES is a readout and does want a frame. */
+        /* THE TWO BANDS SWAPPED TREATMENTS ON 2026-09-22, on request, against a
+           screenshot ("invert the ... formatting for the sections"). Read this before
+           reaching for either, because it reverses what stood here for a day:
+             - the WHY band is the PANEL now - --band, a --border hairline and the
+               16px radius - and it has NO vertical separators, which is the half of
+               the old argument that survives: hairlines between four CLAIMS turned
+               them into a table. A frame around the set does not; it groups them.
+             - the NUMBERS band is DISSOLVED to the page. No fill, no hairline, no 1px
+               separator gap. It left the shared .result-stats rule to do it, so that
+               rule now has exactly one consumer - the results screen - and the 1px gap
+               is still the sheet's only such literal.
+           The argument it replaces ran the other way ("a row of four FIGURES is a
+           readout and does want a frame"), and the CTA band and the footer are still
+           panels, so the page still alternates. */
+        .stats-grid {
+            list-style: none;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: var(--space-xl);
+        }
         .why-grid {
             list-style: none;
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: var(--space-xl);
+            padding: var(--space-xl);
+            background: var(--band);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
         }
         /* Its own block of air: the section sits between two panels on a white page
            with nothing but whitespace to separate it from either. */
@@ -1039,10 +1062,10 @@
                the text starts, and --space-md is already a gap rung so this costs the
                histogram nothing. */
             display: flex; align-items: flex-start; gap: var(--space-md);
-            /* Vertical air INSIDE the item, not horizontal: padding-inline here would
-               inset the first and last items from the page's content edge and break
-               their alignment with every other section. */
-            padding-block: var(--space-sm);
+            /* No padding of its own any more: the panel's --space-xl is the inset now,
+               on all four sides, and the grid's gap is what separates a wrapped row.
+               The old padding-block was the item's only vertical air while these sat
+               straight on the page. */
         }
         .why-icon {
             flex: none; display: grid; place-items: center;
@@ -1054,12 +1077,13 @@
         .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
         .why-item p { margin-top: var(--space-xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
 
+        /* Bare on the page: no fill to inset, so the padding is vertical air only -
+           the same shape .why-item carried while IT was the one sitting on the page. */
         .stats-item {
             flex: 1 1 130px; min-width: 0;
             display: flex; flex-direction: column; align-items: center; gap: var(--space-2xs);
-            padding: var(--space-md);
+            padding-block: var(--space-sm);
             text-align: center;
-            background: var(--band);
         }
         /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
            counters take, and it does not outrank an --fs-xl section heading. */
@@ -2407,12 +2431,12 @@
         /* ONE band, figures separated by hairlines — the same move the home overview card
            makes. It replaces two wells and three more cards: five boxes for five numbers,
            each a container holding nothing but a label and a figure. */
-        /* Three bands are built this way now: the results breakdown, the landing tier's
-           why-band and its four headline numbers. One rule, so the hairline gap below is
-           the only 1px literal in the sheet. */
-        /* .why-grid was the third selector here until 2026-09-21 and is not any more:
-           it is no longer a panel at all. See its own rule above. */
-        .result-stats, .stats-grid {
+        /* ONE consumer now. .why-grid left on 2026-09-21 (it stopped being a panel)
+           and .stats-grid on 2026-09-22 (it stopped being one too - see the swap note
+           beside .why-grid). The rule stays written this way because the 1px gap below
+           is still the sheet's only such literal and this is where that idiom is
+           explained; a second band that wants hairlines joins this selector. */
+        .result-stats {
             display: flex; flex-wrap: wrap; justify-content: center;
             border: 1px solid var(--border); border-radius: var(--radius);
             /* The separators are a 1px GAP over the band's own colour, not a border on
@@ -2953,9 +2977,9 @@
                 </div>
             </div>
 
-            <!-- 3b · Why — the landing tier's argument. Four claims, hairline-separated
-                 by a 1px GAP over the band's ground: a border-left draws a stray rule on
-                 the first cell of a wrapped row, which is the results band's lesson. -->
+            <!-- 3b · Why — the landing tier's argument, and the page's one PANEL of
+                 four claims (2026-09-22): a frame around the set, and deliberately no
+                 hairlines between them. -->
             <section class="home-section" id="whyBand">
                 <div class="section-head section-head--centred">
                     <p class="eyebrow" data-i18n="why.eyebrow"></p>
@@ -2969,8 +2993,8 @@
                 </ul>
             </section>
 
-            <!-- 3c · The four headline numbers. They are READOUTS: capped at --fs-2xl so
-                 they cannot outrank a heading. -->
+            <!-- 3c · The four headline numbers, straight on the page since 2026-09-22.
+                 They are READOUTS: --fs-3xl is a display-numeral step, not a heading. -->
             <section class="home-section">
                 <ul class="stats-grid">
                     <li class="stats-item"><span class="stats-num">300</span><span class="stats-label" data-i18n="stats.1"></span></li>

@@ -112,7 +112,7 @@ const AA_LARGE = 3;
 // in the list at all.
 const PAIRS = [
   ["text", "surface", AA, "question text and headings in a tile"],
-  ["text", "canvas", AA, "anything painted straight onto the page"],
+  ["text", "canvas", AA, "anything painted straight onto the page, the four headline numbers included"],
   ["sub-text", "surface", AA, "lead paragraphs, explanation bodies, mode-card descriptions"],
   ["muted", "surface", AA, "eyebrows, the nav legend, a mode card's meta and time"],
   ["muted", "surface2", AA, "the dimmed options after an answer, hint rows"],
@@ -120,8 +120,8 @@ const PAIRS = [
   ["faint", "surface", AA, "the /310 denominator and the mode time estimate"],
   // The practise band's panel is a step DOWN from the canvas, so it is a ground the
   // surface pairs above do not cover. The cards ON it are ordinary --surface tiles.
-  ["text", "band", AA, "the CTA band's heading and the four headline numbers"],
-  ["muted", "band", AA, "the numbers band's labels and the CTA band's note"],
+  ["text", "band", AA, "the CTA band's heading, and a why-band claim's title since the two landing bands swapped panels on 2026-09-22"],
+  ["muted", "band", AA, "a why-band claim's body copy and the CTA band's note"],
   // The footer is a --band panel too, and its small print is --sub-text rather than
   // --muted: the source note, the disclaimer and the licence are things a reader may
   // actually need. This ground was unasserted for that tier since the footer shipped.
@@ -133,7 +133,7 @@ const PAIRS = [
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
   // dark they do not, because --surface is a rung above the canvas there.
-  ["muted", "canvas", AA, "a why-band item's body copy, straight on the page"],
+  ["muted", "canvas", AA, "the four headline numbers' labels, straight on the page"],
   ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
   ["accent-text", "surface", AA, "Starten links, FRAGE n, the active EN toggle"],
@@ -235,7 +235,7 @@ const FILLS = [
   // that when the practise band's panel went. A pair with no consumer is the
   // stale-ground bug this file keeps catching, so it goes rather than being kept warm.
   ["surface", "accent-soft", NEST, "the book plate on the resume banner"],
-  ["surface2", "band", NEST, "a practise tile under the pointer in light"],
+  ["surface2", "band", NEST, "a practise tile under the pointer in light, and a why-band icon disc on the panel"],
   ["surface3", "band", STATE, "a practise tile pressed"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.
