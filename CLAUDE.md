@@ -84,6 +84,15 @@
     minutes of a deploy is not evidence.** Check `gh api repos/<o>/<r>/pages/builds`
     for the build, then a cache-busted URL for the origin, then the bare URL for the edge
     — and say which of the three you measured.
+    **`curl` cannot do it: the Bash tool has no network egress** ("Recv failure:
+    Connection was reset", verified 2026-09-22). Load the live site in the browser pane
+    and run both fetches from inside the page — same-origin, so `fetch(path + '?cb=' +
+    Date.now(), {cache:'reload'})` gives the origin and a plain `fetch(path)` the edge,
+    with `age` and `last-modified` off the response headers. Comparing bytes against the
+    local file needs `.replace(/
+/g, '
+')` first: the working tree is CRLF and the
+    served file is LF, which is one byte per line (5,559 of them) of pure noise.
 
 ## App Shape
 
