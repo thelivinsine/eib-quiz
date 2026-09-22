@@ -770,8 +770,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       only reason the class exists.
   - **The mode cards carry a NAMED action, and their plates are NEUTRAL** (the action
     2026-09-21 against the mockup; the colour came the same day and **went again the
-    same day, on request — no icon in this app is painted in an accent or a semantic
-    hue, bar the overview card's three readout plates**). Exam blue, All questions green, Your state amber, Smart review rose and By
+    same day, on request — **no icon in this app is painted in an accent or a semantic
+    hue at all**, since the overview card's three readout plates went on 2026-09-22).
+    Exam blue, All questions green, Your state amber, Smart review rose and By
     topic violet each painted a tinted `--radius-sm` plate and a solid start disc;
     all five are `--surface2` + `--sub-text` now, and the five cards differ by their
     GLYPH and their words alone. The plate and the disc stay — a mode card's icon is
@@ -785,11 +786,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **ICON PLATES: one neutral pair, and no hues at all** (2026-09-21, on request).
     `[data-hue]` is a single rule now — `--hue-tint: var(--surface2)`,
     `--hue-ink: var(--sub-text)` — read by the why marks, the mode icons and the solid
-    start discs alike. **The ONE exception is the overview card**, which took the
-    mockup's blue / green / amber plates back hours later on request ("stay true to
-    the mockup"); it overrides the same two variables locally with
-    `.dash-stat--blue` / `--green` / `--amber`, so the rule below still governs
-    everything else. `--on-hue` stays as the glyph ON a solid disc, one value per
+    start discs alike, and **there is no longer any exception**: the overview card
+    took the mockup's blue / green / amber plates back on 2026-09-21 and lost them
+    again on 2026-09-22 when its readouts were reduced to a figure over a name, so
+    `.dash-stat--blue` / `--green` / `--amber` are deleted. `--on-hue` stays as the glyph ON a solid disc, one value per
     theme (`#FFFFFF` light, `#1A1A1A` dark), and reads 10.09 / 11.40 on `--sub-text`.
     The five `[data-hue="..."]` rules that mapped blue/green/amber/rose/violet onto
     `--accent-soft`, `--green-dim`, `--gold-dim`, `--red-dim` and `--violet-dim` are
@@ -819,20 +819,40 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     so the frame was saying nothing the plate did not.
     `.dash-grid` is `1.7fr 1fr 1fr 1fr`: a wide `.dash-summary` holding the ring and a
     VERDICT (a headline and a line of advice), then three `.dash-stat` readouts, each a
-    hued plate + figure + name + one line saying what the figure counts. `.dash-body`
+    figure over its name. `.dash-body`
     and `.dash-stats` went with the old single row; **`.dash-tile` went with the
     borders, and `.dash-tile--ring` lost the prefix with it**.
+    - **A READOUT IS A FIGURE OVER ITS NAME, and nothing else** (2026-09-22, on
+      request). The hued plate and the `.ds-sub` line under the name both went, one
+      day after the mockup put them there. The sub-line said what the name already
+      said — "Answered" over "Questions you've attempted", "Mastered" over "Questions
+      you've mastered" — so the card stated each of its three numbers twice and drew a
+      box beside each one to do it. `.dash-stat-top`, `.dash-stat-icon`,
+      `.dash-stat-fig`, `.ds-sub`, the three `dash.*Sub` strings and the three
+      `.dash-stat--*` hue rules are all deleted; `.dash-stat` IS what
+      `.dash-stat-fig` was, a `--space-2xs` column of `.ds-num` over `.ds-label`.
+      `ICONS.file` and `ICONS.checkCircle` lost their only reader and went with it,
+      from `tools/icon-packs.mjs` as well as from `index.html`. `--accent-soft`,
+      `--green-dim` and `--gold-dim` all keep other consumers, so the palette and
+      `contrast.test.mjs` are untouched.
+    - **THE ENCOURAGEMENT CHIP RIDES THE RESET GLYPH'S LINE** (2026-09-22, on request).
+      `.progress-reset` is absolute at `top: 6px` in a `--ctl-md` box, so its glyph's
+      centre is 6 + 22 = 28px below the card's top edge — which is exactly the card's
+      own `--space-xl` padding, i.e. where `.dash-head` starts. `.dash-pill` takes
+      `margin-top: calc(var(--ctl-sm) / -2)`, half its own height, which lifts its
+      centre onto that line (measured: both at 118.0 at 1280px, 72.0 at 1000px).
+      **Derived, not a `-18px` literal**, so it tracks `--ctl-sm`; and the 620px
+      block sets it back to 0, because the head becomes a COLUMN down there and the
+      lift would ride the pill up over the heading.
     - **FOUR ACROSS IS A WIDE-SCREEN LAYOUT, and it breaks at 1160 — the mode grid's own
-      number** (2026-09-22). Below it a readout column is ~150px, which leaves the label
-      86px after the 44px plate and the 20px gap: `Due for review` sets 111.7 and
-      `WIEDERHOLUNG` 107, both wrapped to two lines, and `align-items: center` then put
-      one plate 8px below the other two — **the row stopped reading as a row, which is
-      the exact fault the centring and the shortened `dash.due` string exist to
-      prevent**. The tiles' 32px of padding had been hiding it by making the column even
-      narrower, so the dissolve improved the numbers without fixing the fault, and the
-      `.dash-stat-top` gap going `--space-ms` -> `--space-lg` cost 8 of the 32 back.
-      **Narrowing the columns to `1fr` each is NOT the fix** — it starves the verdict to
-      ~40px instead. `.dash-summary` takes `grid-column: 1 / -1` below 1160 and the three
+      number** (2026-09-22). It was the LABEL that set this break: a ~150px column less
+      the 44px plate and its 20px gap left 86px for `Due for review` (111.7) and
+      `WIEDERHOLUNG` (107), both of which wrapped and, under `align-items: center`,
+      dropped their plate 8px below the other two — **the row stopped reading as a row,
+      which is the exact fault the centring and the shortened `dash.due` string exist
+      to prevent**. **The plate went the same day** and the label has the whole column
+      now, so what the break buys is the VERDICT's width: **narrowing the columns to
+      `1fr` each is still NOT the fix** — it starves the verdict to ~40px instead. `.dash-summary` takes `grid-column: 1 / -1` below 1160 and the three
       readouts share the full width (244px each at 900px). Measured in BOTH languages at
       1400 / 1200 / 1159 / 1024 / 900 / 760, and single-column at 375.
     - **WHAT REPLACES THE BORDERS IS AIR AND ALIGNMENT, and both had to GROW.** The
@@ -876,14 +896,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       file keeps catching. `faint / band` was ADDED in the same commit — the `/310`
       denominator used to sit on a `--surface` readout tile and now sits on the card.
       The only fill left inside the card is the resume banner's tint.
-    - **THIS CARD IS THE ONE PLACE ICONS CARRY A HUE** (same request). Answered is blue,
-      mastered green, due amber, the encouragement chip green and the resume banner's
-      book `--accent-text`, all exactly as drawn. They are scoped as
-      `.dash-stat--blue` / `--green` / `--amber` rather than by restoring the five
-      `[data-hue]` rules: `[data-hue]` stays neutral, so the mode cards and the why
-      marks are unaffected. Each is a `--*-dim` / `--*` pair the palette already
-      carries, so `contrast.test.mjs` asserted all three before they were used.
-      **If the neutral rule is ever reasserted, it is three declarations here.**
+    - **THE THREE READOUT PLATES ARE GONE, and with them the app's last hued icons**
+      (2026-09-22, on request — they lasted one day). The card still carries the
+      mockup's hue in two places, both of them text or a fill rather than a plate: the
+      encouragement chip is green and the resume banner's book is `--accent-text`.
+      **If the plates ever come back it is three `--hue-tint` / `--hue-ink`
+      declarations here**, scoped to this card — never by re-tinting `[data-hue]`,
+      which stays neutral for the mode cards and the why marks.
     - **The verdict has four tiers**, picked in `renderHomeStatus()` from the answered
       count and the accuracy: nothing answered, then below / above **52%**, which is
       the exam's own 17-of-33 pass mark, then 80%+. That is why "on track" can say
@@ -960,13 +979,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       units, which is the ~16px stub the mockup draws. It used to set
       `opacity = pct >= 2 ? 1 : 0` — it hid exactly the state a new learner spends the
       whole of their first visit looking at, and an empty dial reads as a broken one.
-    - **THE PLATE-TO-FIGURE GAP IS THE MOCKUP'S `--space-lg`, and it only fits because
-      the tiles went.** While each readout was a tile, its 32px of padding came off the
-      column: "DUE FOR REVIEW" sets 111.6px at the 12px floor (the mockup's own label is
-      ~10px and sets ~92) and had 104.4 to sit in, so the gap had to drop to
-      `--space-ms` to buy the line back. Dissolved, the column is 131px and the mockup's
-      20 fits with room. **Re-measure this pair if the grid ever narrows** — the English
-      label and the German one are both within 25px of their column.
+    - **THE FIGURE-TO-NAME GAP IS `--space-2xs`**, which is what `.dash-stat-fig`
+      already used inside the plate's row. Not `--space-3xs`: 2px is not a gap rung in
+      this sheet and minting one busts the ratchet's `gapRungs` budget. (The
+      plate-to-figure gap this replaces was `--space-lg`, and the width argument that
+      set it — "DUE FOR REVIEW" at 111.6px against a 104.4px box — is what the plate's
+      removal settled: the label has the whole 131px column now.)
     - **The VERDICT is 13/12px, not 15/13.** The mockup sets both lines at ~12 and
       separates them by weight and colour alone; one rung is kept between them because a
       headline at the floor is the placeholder tier. That drop is also what puts
@@ -1330,10 +1348,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     container inside a container. But the **why marks and a mode card's
     icon** each take a disc, because the mockup draws them that way — and the
     disc is **NEUTRAL** (`--surface2` + `--sub-text`) since 2026-09-21, on request: the
-    five per-card hues went. **The overview card's three readout plates are the
-    exception** and carry the mockup's blue / green / amber, restored the same day on
-    "stay true to the mockup" — see ICON PLATES above before reaching for colour
-    anywhere else.
+    five per-card hues went. **There is no coloured plate left anywhere** — the
+    overview card's three were the last, restored on 2026-09-21 and removed on
+    2026-09-22 with the readouts' whole plate — see ICON PLATES above before reaching
+    for colour anywhere else.
     **A topic chip's glyph is grey at rest and `--text` on hover** — it was the accent
     until the same pass; a hover on a plateless glyph is still a COLOUR change, never a
     fill that draws the box back on. The hit target stays (34/44px, and the coarse-pointer floor is untouched),
@@ -1581,7 +1599,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 28 glyphs — 26 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 26 glyphs — 24 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -1590,10 +1608,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   scroll arrows are inline solid paths for the same reason
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
-  production. **`file`, `checkCircle` and `leaf` were drawn that way on 2026-09-21** for
-  the rebuilt overview card — `checkCircle` reuses the pack's own `donut()` helper rather
-  than drawing a second ring by hand, and its tick is `shield`'s scaled to the smaller
-  hole. The `line` and `duotone` objects do NOT carry them, which is already true of
+  production — **and a glyph that loses its last reader is DELETED from both**, which is
+  what `file` and `checkCircle` did on 2026-09-22 when the overview card's readouts
+  dropped their plates one day after those two were drawn for them. `leaf` stays: it is
+  the encouragement chip's. The `line` and `duotone` objects do NOT carry it, which is
+  already true of
   `book`, `shield`, `star`, `topic` and `globe`: only `solid` ships.
   **Two of them are ALIASES, not drawings**: `ICONS.community = ICONS.society` and
   `ICONS.clock = ICONS.history` (2026-09-21) — a group IS the society glyph, and the

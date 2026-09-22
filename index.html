@@ -1175,8 +1175,16 @@
             margin-bottom: var(--space-xl);
         }
         .dash-head .section-head { margin-bottom: 0; }
+        /* THE PILL SITS ON THE RESET GLYPH'S LINE (2026-09-22, on request). The reset
+           is absolute at top: 6px in a --ctl-md box, so its glyph's centre is
+           6 + 22 = 28px below the card's top edge — which is exactly the card's own
+           --space-xl padding, i.e. where .dash-head starts. Lifting the pill by half
+           its own height puts its centre on that same line. Derived rather than a
+           -18px literal so it tracks --ctl-sm, and the 620px block puts it back to 0
+           where the head becomes a column. */
         .dash-pill {
             flex: none;
+            margin-top: calc(var(--ctl-sm) / -2);
             display: inline-flex; align-items: center; gap: var(--space-2xs);
             /* --ctl-sm: the mockup's chip is 36px tall, which is also what sits
                level with a 28px heading's line box beside it. */
@@ -1203,16 +1211,15 @@
             gap: var(--space-xl);
         }
         /* FOUR ACROSS IS A WIDE-SCREEN LAYOUT ONLY, and 1160 is the same width the
-           mode grid breaks at. Below it a readout column is ~150px, which leaves the
-           label 86px after the 44px plate and the 20px gap — under "Due for review"
-           (111.7) and under "Wiederholung" (107). Both wrapped to two lines, and with
-           align-items: center a taller readout drops its plate 8px below the other
-           two, so the row stopped reading as a row: exactly the fault the shortened
-           German string and the centring exist to prevent. Narrowing the columns to
-           1fr each does not fix it — it starves the verdict instead — so the summary
-           takes a row of its own and the three readouts share the full width (244px
-           each at a 900px viewport, one line in both languages). Measured, both
-           languages, 1400 / 1200 / 1159 / 1024 / 900 / 760 / 640. */
+           mode grid breaks at. It was the LABEL that set this break: a ~150px column
+           less the 44px plate and its 20px gap left 86px for "Due for review" (111.7)
+           and "Wiederholung" (107), both of which wrapped and dropped their plate out
+           of the row. The plate went on 2026-09-22 and the label has the whole column
+           now, so what the break buys is the VERDICT's width — narrowing the columns
+           to 1fr each starves the sentence beside the ring instead. Below it the
+           summary takes a row of its own and the three readouts share the full width
+           (244px each at a 900px viewport). Measured, both languages,
+           1400 / 1200 / 1159 / 1024 / 900 / 760 / 640. */
         @media (max-width: 1160px) {
             .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .dash-summary { grid-column: 1 / -1; }
@@ -1328,39 +1335,17 @@
             white-space: nowrap;
         }
 
-        /* A readout: a plate, then the figure over its name, then one line saying
-           what the figure counts. The plate is the app's one neutral pair. */
-        /* NO SPACER ABOVE THE PLATE. A readout is a plate with a sub-line hanging
-           below it, so it is not symmetric about its own plate: centred as a BLOCK it
-           sits ~12px higher than a version padded to put every plate on the ring's
-           exact centre line. Both were built and rendered side by side on 2026-09-22
-           and this one was picked — the four blocks share a centre, which is what makes
-           the row read as a row, and forcing the plates onto the ring's axis pushed the
-           three readouts visibly low in their own column. */
-        .dash-stat { display: flex; flex-direction: column; gap: var(--space-sm); min-width: 0; }
-        /* The mockup's three plate colours, and the app's ONLY hued icons. They are
-           scoped to this card rather than restored to [data-hue], which stays neutral
-           for the mode cards and the why marks. Each is a --*-dim / --* pair the
-           palette already carries, so contrast.test.mjs already asserts all three. */
-        .dash-stat--blue  { --hue-tint: var(--accent-soft); --hue-ink: var(--accent-text); }
-        .dash-stat--green { --hue-tint: var(--green-dim);   --hue-ink: var(--green); }
-        .dash-stat--amber { --hue-tint: var(--gold-dim);    --hue-ink: var(--gold); }
-        /* --space-lg, the mockup's own ~20px. It was --space-ms while a tile's padding
-           ate 32px of the column and "DUE FOR REVIEW" (111.6px at the 12px floor) had
-           104.4 to sit in; with the tiles dissolved the column is 131 and the mockup's
-           value fits with room to spare. Re-measure this if the grid ever narrows. */
-        .dash-stat-top { display: flex; align-items: center; gap: var(--space-lg); min-width: 0; }
-        .dash-stat-icon {
-            flex: none; display: grid; place-items: center;
-            width: var(--ctl-md); height: var(--ctl-md);
-            border-radius: var(--radius-sm);
-            background: var(--hue-tint); color: var(--hue-ink);
-        }
-        .dash-stat-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        /* --space-2xs, not --space-3xs: 2px is not a gap rung in this sheet and
-           minting one busts the ratchet's gapRungs budget. */
-        .dash-stat-fig { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
-        .ds-sub { color: var(--muted); font-size: var(--fs-2xs); line-height: var(--lh-ui); }
+        /* A READOUT IS A FIGURE OVER ITS NAME, and nothing else (2026-09-22, on
+           request). Two things went: the hued plate — the app's only hued icons, the
+           three --*-dim / --* pairs restored here on request the day before — and the
+           .ds-sub line under the name. That line said what the name said ("Answered"
+           over "Questions you've attempted"), so the card stated each of its three
+           numbers twice and drew a box beside each one to do it.
+           --space-2xs, not --space-3xs: 2px is not a gap rung in this sheet and
+           minting one busts the ratchet's gapRungs budget. This block IS what
+           .dash-stat-fig was — the plate's row wrapper went with the plate rather
+           than being kept as a flex column wrapped round a flex column. */
+        .dash-stat { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
         /* German sets these names as one long word; the backstop keeps a label that
            outgrows its tile inside it rather than across its border. */
         .dash-stat .ds-label { overflow-wrap: anywhere; }
@@ -2494,14 +2479,14 @@
                of them give the label an 85px box while "BEANTWORTET" sets 109 and
                "ZUR WIEDERHOLUNG" more — one German word, so there is nothing to wrap
                and it simply runs past its column. As rows the label has the width it
-               needs, the plate keeps its place beside the figure, and the sub-line
-               goes. --space-lg of gap, not --space-2xs: down here the rows are the
+               needs. --space-lg of gap, not --space-2xs: down here the rows are the
                only thing separating them now that the tiles are gone, and the desktop
                --space-xl is a whole readout's height on a phone. */
             .dash-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-            .dash-stat-icon { width: var(--ctl-sm); height: var(--ctl-sm); }
-            .ds-sub { display: none; }
+            /* The head STACKS down here, so the pill's desktop lift has to come off
+               or it rides up over the heading it now sits under. */
             .dash-head { flex-direction: column; gap: var(--space-sm); }
+            .dash-pill { margin-top: 0; }
             .ready-ring-wrap { width: 104px; height: 104px; }
             /* Full width down here, label hard left and pill hard right, rather than
                a centred pair with the band's padding wasted either side of it. */
@@ -3116,10 +3101,8 @@
                already a ringed globe with a meridian — this is that, without the
                flag-pole crossbar, so the two read as one family. */
             globe: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>'),
-            // The overview card's readouts. Same three as tools/icon-packs.mjs's solid
-            // pack, which is where they were drawn — keep the two in step.
-            file: _svg('<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>'),
-            checkCircle: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.6a7.4 7.4 0 1 0 0 14.8a7.4 7.4 0 1 0 0 -14.8Z"/><path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>'),
+            // The overview card's encouragement chip. Same drawing as
+            // tools/icon-packs.mjs's solid pack — keep the two in step.
             leaf: _svg('<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>'),
         };
         // A clock IS the history glyph (a donut with two hands) and a group IS the
@@ -3323,9 +3306,6 @@
             'dash.resumeGo':       { en: 'Resume',                  de: 'Fortsetzen' },
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
             'dash.pill':           { en: 'Small steps make big progress.', de: 'Kleine Schritte, großer Fortschritt.' },
-            'dash.answeredSub':    { en: "Questions you've attempted", de: 'Fragen, die du versucht hast' },
-            'dash.masteredSub':    { en: "Questions you've mastered",  de: 'Fragen, die du beherrschst' },
-            'dash.dueSub':         { en: 'Questions to review',      de: 'Fragen zur Wiederholung' },
             // The verdict beside the ring. Four tiers, picked in renderHomeStatus():
             // nothing answered, then below / above the exam's 17-of-33 pass mark
             // (52%), then comfortably above it.
@@ -4014,18 +3994,12 @@
                     </div>`;
             }
 
-            // One readout tile: plate, figure, name, and the line that says what the
-            // figure counts. The plate reads --hue-tint/--hue-ink like every other.
-            const stat = (icon, num, label, sub, extra = '') => `
+            // One readout: the figure over its name. No plate, no sub-line — see
+            // .dash-stat in the sheet.
+            const stat = (num, label, extra = '') => `
                 <div class="dash-stat${extra}">
-                    <div class="dash-stat-top">
-                        <span class="dash-stat-icon" aria-hidden="true">${icon}</span>
-                        <span class="dash-stat-fig">
-                            <span class="ds-num">${num}</span>
-                            <span class="ds-label">${label}</span>
-                        </span>
-                    </div>
-                    <span class="ds-sub">${sub}</span>
+                    <span class="ds-num">${num}</span>
+                    <span class="ds-label">${label}</span>
                 </div>`;
 
             el.innerHTML = `
@@ -4046,9 +4020,9 @@
                             <p>${t('dash.verdict.' + vk + 'Sub')}</p>
                         </div>
                     </div>
-                    ${stat(ICONS.file, `${answeredInPool}<span class="ds-of"> / ${totalPool}</span>`, t('dash.answered'), t('dash.answeredSub'), ' dash-stat--blue')}
-                    ${stat(ICONS.checkCircle, mastered, t('dash.mastered'), t('dash.masteredSub'), ' dash-stat--green')}
-                    ${stat(ICONS.clock, due, t('dash.due'), t('dash.dueSub'), ' dash-stat--amber' + (due ? ' dash-stat--due' : ''))}
+                    ${stat(`${answeredInPool}<span class="ds-of"> / ${totalPool}</span>`, t('dash.answered'))}
+                    ${stat(mastered, t('dash.mastered'))}
+                    ${stat(due, t('dash.due'), due ? ' dash-stat--due' : '')}
                 </div>
                 ${resumeHtml}
                 ${answeredInPool > 0 ? `<button class="progress-reset" title="${t('dash.reset')}" aria-label="${t('dash.reset')}" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${ICONS.reset}</button>` : ''}`;
