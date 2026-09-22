@@ -24,9 +24,11 @@ function band(cx, cy, ro, ri, a0, a1) {
     const [x2, y2] = pt(cx, cy, ri, a1), [x3, y3] = pt(cx, cy, ri, a0);
     return `M${x0} ${y0}A${ro} ${ro} 0 ${big} 1 ${x1} ${y1}L${x2} ${y2}A${ri} ${ri} 0 ${big} 0 ${x3} ${y3}Z`;
 }
-// Tangential arrowhead sitting on the end of a band.
-function head(cx, cy, ro, ri, a, adv) {
-    const [x0, y0] = pt(cx, cy, ro + 1.1, a), [x1, y1] = pt(cx, cy, ri - 1.1, a);
+// Tangential arrowhead sitting on the end of a band. `flare` is how far it stands proud
+// of the band on each side: at the default 1.1 the head is barely twice the band's width,
+// which disappears at 18px — pass more for a glyph that has to read small.
+function head(cx, cy, ro, ri, a, adv, flare = 1.1) {
+    const [x0, y0] = pt(cx, cy, ro + flare, a), [x1, y1] = pt(cx, cy, ri - flare, a);
     const [x2, y2] = pt(cx, cy, (ro + ri) / 2, a + adv);
     return `M${x0} ${y0}L${x1} ${y1}L${x2} ${y2}Z`;
 }
@@ -95,7 +97,7 @@ const line = {
 };
 
 const RING = ev(donut(12, 12, 9.2, 6.6));
-const RESET_ARC = band(12, 12, 9.4, 6.8, -70, 210) + head(12, 12, 9.4, 6.8, 210, 34);
+const RESET_ARC = band(12, 12, 8.8, 6.4, -55, 192) + head(12, 12, 8.8, 6.4, 192, 52, 3.2);
 const WAVES = `<path d="${band(12, 12, 8.6, 7.1, -44, 44)}"/><path d="${band(12, 12, 11.4, 9.9, -46, 46)}"/>`;
 const HANDLES = `<path d="${band(7.4, 7.8, 3.3, 1.9, 90, 270)}"/><path d="${band(16.6, 7.8, 3.3, 1.9, -90, 90)}"/>`;
 const STEM = r(11.1, 12.4, 1.8, 5.4, 0.9) + r(8.6, 17.6, 6.8, 1.9, 0.95) + r(6.8, 19.6, 10.4, 2, 1);

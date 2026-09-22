@@ -28,10 +28,18 @@ same day. Reference only: read them, do not cut assets out of them (see
 | `logo-kit.png` | Logo lockups, palette and an icon library — **not shipped** |
 
 `where-you-stand.png` is the exception to everything below: it was built, and
-the overview card on the practise page follows it closely (see the
-"four tiles and its own heading" block in `CLAUDE.md` for the three places it
-deliberately differs — dark mode's shading, the German ring caption and the
-Resume button's fill). `logo-kit.png` is NOT shipped: it draws a different
+the overview card on the practise page follows it closely — see the
+**"The overview card is ONE CARD AND FOUR BARE BLOCKS"** block in `CLAUDE.md`,
+which names every place it deliberately differs. As of 2026-09-22 those are:
+the four bordered tiles are **dissolved** (the card is one ground and the four
+blocks sit bare on it), there is **no rule between the ring and the verdict**,
+the mountains are **stepped in size and sit lower in the banner** than the
+traced silhouette, the Resume button's label stays mode-agnostic ("Resume"), the
+buttons are pills where the mockup draws rounded rects, and the heading is 28px
+where the mockup measures ~31 — there is no rung between `--fs-2xl` and
+`--fs-3xl`. The mockup's micro-copy also runs 9-12px against this app's 12px
+floor, which the ring's caption is now the single named exemption from.
+`logo-kit.png` is NOT shipped: it draws a different
 brand mark from the German-flag tile the app uses, a stroked icon library where
 the app ships solid glyphs, and pages (`About`, `FAQs`) that were deliberately
 removed.

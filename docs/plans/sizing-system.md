@@ -179,6 +179,9 @@ is 25.6px — about 25% taller than any of them, paid once per line, everywhere.
 
 ```css
 --fs-2xs:  0.75rem;    /* 12px  — meta, captions, nav cells. THE FLOOR. */
+                       /* one exemption since 2026-09-22: .ready-ring-sub at 9px,
+                          named in TYPE_EXEMPT in tools/scale.test.mjs — see
+                          "Two regressions from the 12px floor" below. */
 --fs-xs:   0.8125rem;  /* 13px  — secondary labels, dense chrome */
 --fs-sm:   0.875rem;   /* 14px  — buttons, chips, compact UI */
 --fs-base: 0.9375rem;  /* 15px  — card descriptions, body copy */
@@ -465,6 +468,20 @@ under 16px makes iOS Safari zoom on focus.
   German is **"Quote"**. The full "Trefferquote" still lives on the
   `aria-label`/`title`. The first attempt shipped `dash.accuracy` into the dial
   and printed TREFFERQUOTE straight across the ring.
+  **Superseded 2026-09-22: it is 9px and tracked, and it is the floor's one
+  exemption.** Measured against the mockup at equal scale, ACCURACY sets 54.2px
+  there inside an 89px dial where `--fs-2xs` untracked sets 68.3 — a quarter
+  wider, reading as a second headline under the percentage rather than as its
+  name. At 9px with `--ls-caps` it is 55.5, and the tracking the 12px version had
+  to drop comes back with the smaller size. The exemption is **named in
+  `TYPE_EXEMPT` in `tools/scale.test.mjs`, not bought with a budget of 1**: a
+  budget says "one is tolerated" and invites a second, a selector says which and
+  why. The argument for this one is that the caption carries no information of
+  its own — the wrapper is `role="img"` with `aria-label="0% Accuracy"`, and the
+  figure it names is at 22px two pixels above it. So the rule in this section
+  still stands for every label that has something to say; this one does not, and
+  `--fs-xl` for the percentage beside it needed no change at all (32.5px against
+  the mockup's 32.7).
 - **The four quiz readouts wrapped at 360px in German.** CLAUDE.md requires them
   on one line. The LABEL is what is wide, not the figure — "Beantwortet" alone
   sets ~100px at 12px. The answered readout drops its word on a phone

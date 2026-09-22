@@ -1136,27 +1136,35 @@
            shorter strip too — a fixed 76px was the desktop header's height alone. */
         #whyBand { scroll-margin-top: var(--header-h); }
 
-        /* ---- Overview card: its own heading, four tiles, the resume banner ----
-           Rebuilt 2026-09-21 against docs/Mockups/ui/where-you-stand.png. The card
-           holds the section's heading and an encouragement chip, then a wide
-           ring+verdict tile beside three readout tiles, then the resume banner.
-           LIGHT TAKES THE MOCKUP'S SHADES EXACTLY (on request, "stay true to the
-           mockup"): a white card, a --band summary tile recessed inside it and white
-           readouts separated by their hairlines alone — which is light's own system,
-           where a tile IS the page colour and the edge does the separating. DARK
-           cannot copy it (nothing goes below the page there, per theme-dark.md §3), so
-           it keeps a --band card with --surface readouts stepping UP out of it, and
-           the summary tile stays on the card's own ground with a hairline. The
-           contrast that matters — three bright readouts beside one quiet summary — is
-           the same in both.
-           This card is also the ONE place icons carry the mockup's hues — see
+        /* ---- Overview card: ONE card, FOUR BLOCKS, no tiles ----
+           Rebuilt 2026-09-21 against docs/Mockups/ui/where-you-stand.png, and the
+           tiles DISSOLVED on 2026-09-22 on request. The mockup draws the ring+verdict
+           and the three readouts as four bordered plates inside the card; they are
+           four bare blocks on the card's own ground now. Five boxes to say one thing
+           is the containers-inside-containers look this sheet keeps taking out, and
+           each readout already has a coloured plate anchoring it — the frame was
+           saying nothing the plate did not.
+           WHAT REPLACES THE BORDERS IS AIR AND ALIGNMENT, and both had to grow to do
+           it: the card's inset went --space-lg -> --space-xl, the grid's gap
+           --space-md -> --space-xl, and `align-items: center` puts all four blocks on
+           one axis so the row reads as a row rather than four things that happen to
+           start at the same height. A tile's own padding used to do the separating;
+           with the tiles gone the gap is the only thing left, so it has to be bigger
+           than the padding it replaced, not the same.
+           The light/dark tile shades went with the tiles. Everything here sits on
+           --surface in light and --band in dark, i.e. on the card, and the only fill
+           left inside it is the resume banner's tint.
+           This card is still the ONE place icons carry the mockup's hues — see
            .dash-stat--blue/green/amber below. */
         .dash {
             position: relative;
             background: var(--band);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: var(--space-md);
+            /* --space-xl. The mockup measures ~20 here, but its content is tiles with
+               their own padding; bare blocks sit right on this inset, so 20px put the
+               ring's stroke that far from the card's border and read as a crop. */
+            padding: var(--space-xl);
         }
         html.light .dash { background: var(--surface); }
         /* --ctl-md of reserved right-hand room, because .progress-reset is absolutely
@@ -1164,13 +1172,15 @@
         .dash-head {
             display: flex; align-items: flex-start; justify-content: space-between;
             gap: var(--space-md); padding-right: var(--ctl-md);
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space-xl);
         }
         .dash-head .section-head { margin-bottom: 0; }
         .dash-pill {
             flex: none;
             display: inline-flex; align-items: center; gap: var(--space-2xs);
-            min-height: var(--ctl-xs); padding: 0 var(--space-ms);
+            /* --ctl-sm: the mockup's chip is 36px tall, which is also what sits
+               level with a 28px heading's line box beside it. */
+            min-height: var(--ctl-sm); padding: 0 var(--space-ms);
             border-radius: var(--radius-pill);
             background: var(--green-dim); color: var(--green);
             font-size: var(--fs-2xs); font-weight: 600;
@@ -1179,36 +1189,45 @@
         .dash-pill-icon { display: grid; place-items: center; }
         .dash-pill-icon svg { width: var(--icon-xs); height: var(--icon-xs); }
 
-        /* The ring tile is the widest column because it carries a sentence; the three
-           readouts are equal. Spelled out rather than auto-fit: the verdict must not
-           be squeezed to a readout's width. */
+        /* The summary block is the widest column because it carries a sentence; the
+           three readouts are equal. Spelled out rather than auto-fit: the verdict must
+           not be squeezed to a readout's width.
+           align-items: center is what makes four bare blocks read as one row — the
+           ring is 104px tall and a readout is 68, so stretched (the default) the
+           readouts hang from the top with 36px of nothing under them. Centred, all
+           four share an axis. */
         .dash-grid {
             display: grid;
             grid-template-columns: 1.7fr 1fr 1fr 1fr;
-            gap: var(--space-sm);
+            align-items: center;
+            gap: var(--space-xl);
         }
-        /* --radius-sm inside a --radius card: inner = outer − padding, snapped. */
-        .dash-tile {
+        /* .dash-tile is GONE with the borders (2026-09-22): with no fill, no edge, no
+           radius and no padding it was a min-width carrier, and both its consumers
+           already set that themselves. .dash-tile--ring lost the prefix with it. */
+        .dash-summary {
             min-width: 0;
-            padding: var(--space-md);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--surface);
-        }
-        /* The summary tile stays on the card's own ground — its hairline is what
-           separates it, exactly as a white card on a white page is separated. */
-        .dash-tile--ring {
-            background: var(--band);
             display: grid; grid-template-columns: auto 1fr;
             align-items: center; gap: var(--space-md);
         }
+        /* NO RULE BETWEEN THE RING AND THE VERDICT (2026-09-22, on request). The
+           mockup draws one; it was removed anyway, because the ring is already a shape
+           with its own edge and a hairline two tokens from it is a divider inside a
+           tile inside a card. The padding stays — with .dash-summary's gap it is the
+           32px that separates them now, and a circle beside a sentence wants more room
+           than two straight edges would. */
         .dash-verdict {
             min-width: 0;
             padding-left: var(--space-md);
-            border-left: 1px solid var(--border);
         }
-        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
-        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
+        /* The mockup sets BOTH of these at ~12px and separates them by weight and
+           colour alone — the ring's percentage is what carries this tile, not the
+           sentence beside it. One rung of size is kept between them because a
+           headline at the 12px floor is the placeholder tier; the drop from 15px is
+           also what puts "You are just getting started" back on ONE line, which is
+           what made this tile taller than the mockup's in the first place. */
+        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-xs); font-weight: 600; }
+        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-2xs); line-height: var(--lh-prose); }
 
         .state-picker {
             position: relative;
@@ -1256,34 +1275,53 @@
             transform: rotate(45deg); pointer-events: none;
         }
 
+        /* 104px of BOX, and the viewBox is cropped to "5 5 110 110" so the drawn
+           circle actually fills it: at the old "0 0 120 120" the stroke only ever
+           reached 108 of 120 units, so a 104px wrap rendered a 94px ring — 11% short
+           of the mockup's 104. r stays 50 and the dasharray stays 314, which is what
+           the JS animation counts on; only the window onto them moved. */
         .ready-ring-wrap { position: relative; width: 104px; height: 104px; flex-shrink: 0; }
         .ready-ring { width: 100%; height: 100%; display: block; }
-        .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 8; }
+        .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
         .ready-ring-bar {
-            fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round;
+            fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round;
             stroke-dasharray: 314; stroke-dashoffset: 314;
             transition: stroke-dashoffset 0.95s var(--ease-spring);
         }
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        /* The caption the mockup puts under the percentage. It was removed in
-           September because "Trefferquote" sets ~106px at the 12px floor inside an
-           88px dial; the ring is 104px here, .ready-ring-center is absolutely
-           positioned so the word can use the tile's own gap either side, and nowrap
-           keeps it one line rather than breaking a German compound in half. */
+        /* The caption the mockup puts under the percentage, and THE ONE PLACE IN THE
+           APP BELOW THE 12px FLOOR (2026-09-22, on request, measured). The mockup sets
+           ACCURACY 54.2px wide inside an 89px dial; at --fs-2xs untracked it was 68.3,
+           a quarter wider, and it read as a second headline under the percentage rather
+           than as the percentage's name. 9px tracked puts it at 55.5.
+           The floor is a real rule — tools/scale.test.mjs budgets it and every other
+           tier obeys it — so the exception is argued, not assumed: this caption carries
+           NO information of its own. The wrapper is role="img" with
+           aria-label="0% Accuracy", so a screen reader gets the full word (and the full
+           German "Trefferquote") whatever this says, and a reader who cannot make out
+           9px uppercase has the same figure at 22px two pixels above it. Nothing else
+           in the app may follow it down.
+           The tracking comes BACK with the smaller size: --ls-caps was dropped when this
+           was 12px because tracked-out ACCURACY set 78px and grazed the stroke on both
+           sides. At 9px it is 55.5 in an 87px hole. */
         .ready-ring-sub {
-            margin-top: var(--space-3xs);
-            color: var(--muted); font-size: var(--fs-2xs); font-weight: 600;
-            /* NO letter-spacing, unlike every other uppercase micro-label: tracked
-               out with --ls-caps, ACCURACY sets 78px and grazes the dial's stroke on
-               both sides. Inherited normal is the same as --ls-normal and does not
-               spend a third tracking value against the ratchet's budget of two. */
+            margin-top: var(--space-2xs);
+            color: var(--muted); font-size: 0.5625rem; font-weight: 600;
+            letter-spacing: var(--ls-caps);
             text-transform: uppercase;
             white-space: nowrap;
         }
 
         /* A readout: a plate, then the figure over its name, then one line saying
            what the figure counts. The plate is the app's one neutral pair. */
+        /* NO SPACER ABOVE THE PLATE. A readout is a plate with a sub-line hanging
+           below it, so it is not symmetric about its own plate: centred as a BLOCK it
+           sits ~12px higher than a version padded to put every plate on the ring's
+           exact centre line. Both were built and rendered side by side on 2026-09-22
+           and this one was picked — the four blocks share a centre, which is what makes
+           the row read as a row, and forcing the plates onto the ring's axis pushed the
+           three readouts visibly low in their own column. */
         .dash-stat { display: flex; flex-direction: column; gap: var(--space-sm); min-width: 0; }
         /* The mockup's three plate colours, and the app's ONLY hued icons. They are
            scoped to this card rather than restored to [data-hue], which stays neutral
@@ -1292,7 +1330,11 @@
         .dash-stat--blue  { --hue-tint: var(--accent-soft); --hue-ink: var(--accent-text); }
         .dash-stat--green { --hue-tint: var(--green-dim);   --hue-ink: var(--green); }
         .dash-stat--amber { --hue-tint: var(--gold-dim);    --hue-ink: var(--gold); }
-        .dash-stat-top { display: flex; align-items: center; gap: var(--space-sm); min-width: 0; }
+        /* --space-lg, the mockup's own ~20px. It was --space-ms while a tile's padding
+           ate 32px of the column and "DUE FOR REVIEW" (111.6px at the 12px floor) had
+           104.4 to sit in; with the tiles dissolved the column is 131 and the mockup's
+           value fits with room to spare. Re-measure this if the grid ever narrows. */
+        .dash-stat-top { display: flex; align-items: center; gap: var(--space-lg); min-width: 0; }
         .dash-stat-icon {
             flex: none; display: grid; place-items: center;
             width: var(--ctl-md); height: var(--ctl-md);
@@ -1311,19 +1353,30 @@
            and a coloured numeral is the whole of it — a tinted slab behind it
            reads as brown mud on charcoal and buys no more attention. */
         .dash-stat--due .ds-num { color: var(--gold); }
-        /* A counter is a READOUT. It reports on the section it sits in; it does not
-           outrank the heading above it or the cards you are meant to press. Same move
-           .stat-value made on the quiz screen (20.8 -> 16). */
-        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
-        .ds-of { color: var(--faint); font-size: var(--fs-xs); font-weight: 500; }
+        /* THE FIGURE IS THE LOUDEST THING IN ITS TILE (2026-09-22, measured off the
+           mockup: a digit stands 15.3px there against 12.0 at --fs-lg, i.e. ~23px, so
+           --fs-xl). It was --fs-lg on the argument that a counter is a READOUT and must
+           not outrank the heading above it — but --fs-2xl is what the heading takes, so
+           22px still sits a clear rung below it, and the mockup's whole readout tile is
+           built the other way round: a big number over a 12px name over a 12px line of
+           explanation. The tile has ONE thing to say and this is it. */
+        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        /* margin-left on top of the string's own leading space: the mockup sets the
+           total off the figure at ~9px and " /" alone buys 3. */
+        .ds-of { margin-left: var(--space-2xs); color: var(--faint); font-size: var(--fs-xs); font-weight: 500; }
 
         /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
+        /* NO HAIRLINE. The mockup draws this as a tint and nothing else — measured
+           #EEF4FE edge to edge with no darker line anywhere on its border — and an
+           --accent-line rule round a fill that is already 1.09 off the card reads as
+           a second box inside the box. */
         .resume-banner {
             position: relative; overflow: hidden;
-            margin-top: var(--space-md);
-            padding: var(--space-ms) var(--space-md);
+            /* --space-xl: this is the only fill left inside the card, so it has to sit
+               a clear step below a row that no longer has edges of its own. */
+            margin-top: var(--space-xl);
+            padding: var(--space-md) var(--space-lg);
             background: var(--accent-soft);
-            border: 1px solid var(--accent-line);
             border-radius: var(--radius);
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--space-md); flex-wrap: wrap;
@@ -1344,7 +1397,7 @@
            83px tall in a 68px banner, so overflow: hidden cropped the peaks and the
            flag with them — the ornament's whole point, invisible. */
         .resume-art {
-            position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-10%);
+            position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-35%);
             z-index: 0; pointer-events: none;
             /* --accent-line, not .cta-art's --border-hover: the mockup's peaks are a
                desaturated BLUE on the banner's blue wash (#C9D7F5 measured, and light's
@@ -1355,11 +1408,22 @@
         /* aspect-ratio, not just width: auto. An inline SVG's auto width is the
            engine's call — Chromium derives it from the viewBox against the definite
            height, but an engine that resolves it to 100% of the containing block
-           would stretch the peaks across the whole banner. 3/1 is the viewBox. */
-        .resume-art svg { height: 100%; width: auto; aspect-ratio: 3 / 1; display: block; }
+           would stretch the peaks across the whole banner. 4.5/1 is the viewBox, and
+           it plus translateX(-35%) is what lands the range the mockup measures: the
+           peaks start ~36% across the banner and the last slope reaches the ground at
+           ~75%, clear of the text on the left and the buttons on the right. */
+        .resume-art svg { height: 100%; width: auto; aspect-ratio: 5.25 / 1; display: block; }
+        /* THE ACCENT, NOT --btn-fill. Everywhere else in this app a primary button is
+           the mockups' near-black navy; on THIS banner the mockup paints it accent blue
+           (#3474F8 measured against light's #2563EB), because the banner is already a
+           blue tint and a navy slab in the middle of it reads as a hole. --ctl-md, not
+           .btn-sm's 36px: the mockup's is 41px tall. */
+        .resume-banner .btn-primary { background: var(--accent-fill); color: var(--on-accent); }
+        .resume-banner .btn-primary, .resume-banner .btn-secondary { min-height: var(--ctl-md); }
         .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
         .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); min-width: 0; }
         .resume-text strong { color: var(--text); font-size: var(--fs-base); }
+        .resume-text > span { font-size: var(--fs-xs); }
         .resume-actions { position: relative; z-index: 1; display: flex; gap: var(--space-sm); }
 
         /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
@@ -1372,7 +1436,10 @@
             background: none; border: none; color: var(--muted);
             transition: color 0.2s var(--ease);
         }
-        .progress-reset svg { width: var(--icon-md); height: var(--icon-md); }
+        /* --icon-lg, not --icon-md: this is a circular arrow, and an 18px ring leaves
+           its arrowhead about two pixels of head. The hit target is --ctl-md either
+           way, so the extra four pixels cost nothing. */
+        .progress-reset svg { width: var(--icon-lg); height: var(--icon-lg); }
         .progress-reset:hover { color: var(--red-text); }
 
         /* ============================================================
@@ -2406,16 +2473,17 @@
             .section-head p { display: none; }
             .section-head h2, .cta-copy h2 { font-size: var(--fs-lg); }
             .section-head p { font-size: var(--fs-sm); }
-            .dash { padding: var(--space-ms); }
+            .dash { padding: var(--space-md); }
             /* ONE column on a phone, and this reverses the old rule that "the three
-               overview stats stay three columns". They cannot any more: a readout is
-               a bordered tile now, and at 375px three of them give the label an 85px
-               box while "BEANTWORTET" sets 109 and "ZUR WIEDERHOLUNG" more — one
-               German word, so there is nothing to wrap and it simply spilled over the
-               tile's own edge. As rows the label has the width it needs, the plate
-               keeps its place beside the figure, and the sub-line goes. */
-            .dash-grid { grid-template-columns: 1fr; gap: var(--space-2xs); }
-            .dash-tile { padding: var(--space-sm); }
+               overview stats stay three columns". They cannot any more: at 375px three
+               of them give the label an 85px box while "BEANTWORTET" sets 109 and
+               "ZUR WIEDERHOLUNG" more — one German word, so there is nothing to wrap
+               and it simply runs past its column. As rows the label has the width it
+               needs, the plate keeps its place beside the figure, and the sub-line
+               goes. --space-md of gap, not --space-2xs: down here the rows are the
+               only thing separating them now that the tiles are gone, and the desktop
+               --space-xl is a whole readout's height on a phone. */
+            .dash-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
             .dash-stat-icon { width: var(--ctl-sm); height: var(--ctl-sm); }
             .ds-sub { display: none; }
             .dash-head { flex-direction: column; gap: var(--space-sm); }
@@ -3018,7 +3086,12 @@
             arrowRight: _svg('<path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/>'),
             chevron: _svg('<path d="M12 16.1 4.8 8.9l1.8-1.8L12 12.5l5.4-5.4 1.8 1.8Z"/>'),
             close: _svg('<path d="M6.9 5.2 12 10.3l5.1-5.1 1.7 1.7L13.7 12l5.1 5.1-1.7 1.7L12 13.7l-5.1 5.1-1.7-1.7L10.3 12 5.2 6.9Z"/>'),
-            reset: _svg('<path d="M15.21 3.17A9.4 9.4 0 1 1 3.86 7.3L6.11 8.6A6.8 6.8 0 1 0 14.33 5.61ZM2.91 6.75L7.06 9.15L8.45 4.72Z"/>'),
+            // Redrawn 2026-09-22: the arrowhead was 4.8 units on a 2.6 band and, at the
+            // 18px this ships at, read as a nub on a broken ring — the glyph said
+            // "loading", not "start again". The band is thinner (2.4) and the head
+            // flares to 8.4, 3.5x its width, so there is an arrow at 22px and not just
+            // at 72. See RESET_ARC in tools/icon-packs.mjs for the generator.
+            reset: _svg('<path d="M17.05 4.79A8.8 8.8 0 1 1 3.39 10.17L5.74 10.67A6.4 6.4 0 1 0 15.67 6.76ZM0.26 9.51L8.87 11.33L8.67 5.17Z"/>'),
             trendUp: _svg('<rect x="3.6" y="13.4" width="3.8" height="7" rx="1.2"/><rect x="10.1" y="10" width="3.8" height="10.4" rx="1.2"/><rect x="16.6" y="6.2" width="3.8" height="14.2" rx="1.2"/><path d="M13.6 3.2h7.2v7.2l-2.5-2.5-4.6 4.6-3.6-3.6-6.3 6.3-1.8-1.8 8.1-8.1 3.6 3.6 3-3Z"/>'),
             book: _svg('<path d="M11 6.6C9.2 5.2 6.9 4.4 4.5 4.4c-.7 0-1.4.1-2.1.2a1.1 1.1 0 0 0-.9 1.1v11.6a1.1 1.1 0 0 0 1.4 1.1c.5-.1 1.1-.2 1.6-.2 2.2 0 4.3.8 6 2.2.1.1.3.1.5 0Z"/><path d="M13 6.6c1.8-1.4 4.1-2.2 6.5-2.2.7 0 1.4.1 2.1.2a1.1 1.1 0 0 1 .9 1.1v11.6a1.1 1.1 0 0 1-1.4 1.1c-.5-.1-1.1-.2-1.6-.2-2.2 0-4.3.8-6 2.2-.1.1-.3.1-.5 0Z"/>'),
             shield: _svg('<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>'),
@@ -3048,7 +3121,34 @@
         // the tallest, cropped by the banner's own bottom edge. Decorative like
         // GATE_ART — the banner must lay out correctly without it, which is why it is
         // absolutely positioned and pointer-events: none.
-        const MOUNTAIN_ART = '<svg viewBox="0 0 240 80" fill="currentColor" stroke="none" aria-hidden="true"><path d="M0 80 62 32 124 80Z" opacity="0.55"/><path d="M58 80 116 24 174 80Z" opacity="0.75"/><path d="M112 80 174 20 236 80Z"/><path d="M172 0h3.4v22H172Z"/><path d="M175.4 1 194 7.6 175.4 14.2Z"/></svg>';
+        // The resume banner's ornament, traced off docs/Mockups/ui/where-you-stand.png
+        // (2026-09-22). Three ROUNDED peaks, not triangles: the mockup's are bell
+        // curves, with the flag on the right-hand one.
+        // THE THREE ARE DELIBERATELY DIFFERENT SIZES and the whole range sits LOW in
+        // the block (on request): the apexes are at 60 / 48 / 34 of 80, so the peaks
+        // stand 20 / 32 / 46 units — a 1 : 1.6 : 2.3 step, where the traced version had
+        // two of them the same height (39 / 30 / 30) and read as one ridge. The tallest
+        // peak now tops out at 57% of the banner and the flag's knob at 10.5 of 80, so
+        // there is a clear band of air above the whole illustration. The peaks are
+        // currentColor at three
+        // opacities (0.15/0.5/1, derived from the three layer fills MEASURED on the
+        // mockup: #EAF0FC, #DCE7FC and #C5D8FB over its #EFF4FD banner, which is 5, 19
+        // and 42 points of red below the ground against --accent-line's 40 at full
+        // strength); the POLE and the FLAG are not — drawn in the ornament's own pale
+        // blue they were invisible, which is how the old art shipped a flag nobody
+        // could see. The pole is --text rather than the mockup's own #234291: that
+        // literal is dark-on-light only, and in dark mode a dark pole on a dark banner
+        // disappears — --text flips with the theme and is the same near-black navy in
+        // light. They carry no text, so they assert nothing in contrast.test.mjs,
+        // exactly as .brand-mark's flag does not.
+        const MOUNTAIN_ART = '<svg viewBox="0 0 420 80" fill="currentColor" stroke="none" aria-hidden="true">'
+            + '<path opacity="0.15" d="M-10 80C33.2 65.6 40.4 60 50 60 59.6 60 66.8 65.6 110 80Z"/>'
+            + '<path opacity="0.5" d="M80 80C144.8 57 155.6 48 170 48 184.4 48 195.2 57 260 80Z"/>'
+            + '<path d="M190 80C265.6 46.9 278.2 34 295 34 314.2 34 328.6 46.9 415 80Z"/>'
+            + '<path style="fill:var(--text)" d="M294 12h2v23h-2Z"/>'
+            + '<circle style="fill:var(--text)" cx="295" cy="10.5" r="2.6"/>'
+            + '<path style="fill:var(--accent)" d="M296.5 14 312 20 296.5 26Z"/>'
+            + '</svg>';
 
         // German federal states (code -> name), display order. Each has 10 state-specific questions.
         const STATES = {
@@ -3194,7 +3294,11 @@
             'dash.accuracyShort':  { en: 'Accuracy',                de: 'Quote' },
             'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
-            'dash.due':            { en: 'Due for review',          de: 'Zur Wiederholung' },
+            // German drops the "Zur": at the 12px floor "ZUR WIEDERHOLUNG" sets 137.5px
+            // in a 131px column and wraps, which drops that readout's sub-line out of
+            // line with the other two. "WIEDERHOLUNG" is 107 and the sub-line under it
+            // still reads "Fragen zur Wiederholung".
+            'dash.due':            { en: 'Due for review',          de: 'Wiederholung' },
             'dash.state':          { en: 'Your state',              de: 'Dein Bundesland' },
             'dash.statePick':      { en: 'Choose your state',       de: 'Bundesland wählen' },
             'dash.reset':          { en: 'Reset progress',          de: 'Fortschritt zurücksetzen' },
@@ -3204,14 +3308,14 @@
             'dash.resumeGo':       { en: 'Resume',                  de: 'Fortsetzen' },
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
             'dash.pill':           { en: 'Small steps make big progress.', de: 'Kleine Schritte, großer Fortschritt.' },
-            'dash.answeredSub':    { en: 'Questions you have attempted', de: 'Fragen, die du versucht hast' },
-            'dash.masteredSub':    { en: 'Questions you have mastered',  de: 'Fragen, die du beherrschst' },
+            'dash.answeredSub':    { en: "Questions you've attempted", de: 'Fragen, die du versucht hast' },
+            'dash.masteredSub':    { en: "Questions you've mastered",  de: 'Fragen, die du beherrschst' },
             'dash.dueSub':         { en: 'Questions to review',      de: 'Fragen zur Wiederholung' },
             // The verdict beside the ring. Four tiers, picked in renderHomeStatus():
             // nothing answered, then below / above the exam's 17-of-33 pass mark
             // (52%), then comfortably above it.
-            'dash.verdict.start':     { en: 'You are just getting started', de: 'Du fängst gerade erst an' },
-            'dash.verdict.startSub':  { en: 'Answer a few questions to see your progress here.', de: 'Beantworte ein paar Fragen, um deinen Fortschritt hier zu sehen.' },
+            'dash.verdict.start':     { en: "You're just getting started", de: 'Du fängst gerade erst an' },
+            'dash.verdict.startSub':  { en: 'Answer more questions to see your progress.', de: 'Beantworte mehr Fragen, um deinen Fortschritt zu sehen.' },
             'dash.verdict.building':  { en: 'Keep going',              de: 'Bleib dran' },
             'dash.verdict.buildingSub': { en: 'You are still under the pass mark of 17 out of 33.', de: 'Du liegst noch unter der Bestehensgrenze von 17 von 33.' },
             'dash.verdict.onTrack':   { en: 'You are on track',        de: 'Du bist auf Kurs' },
@@ -3898,7 +4002,7 @@
             // One readout tile: plate, figure, name, and the line that says what the
             // figure counts. The plate reads --hue-tint/--hue-ink like every other.
             const stat = (icon, num, label, sub, extra = '') => `
-                <div class="dash-tile dash-stat${extra}">
+                <div class="dash-stat${extra}">
                     <div class="dash-stat-top">
                         <span class="dash-stat-icon" aria-hidden="true">${icon}</span>
                         <span class="dash-stat-fig">
@@ -3911,9 +4015,9 @@
 
             el.innerHTML = `
                 <div class="dash-grid">
-                    <div class="dash-tile dash-tile--ring">
+                    <div class="dash-summary">
                         <div class="ready-ring-wrap" role="img" title="${ring}% ${t('dash.accuracy')}" aria-label="${ring}% ${t('dash.accuracy')}">
-                            <svg class="ready-ring" viewBox="0 0 120 120" aria-hidden="true">
+                            <svg class="ready-ring" viewBox="5 5 110 110" aria-hidden="true">
                                 <circle class="ready-ring-track" cx="60" cy="60" r="50"></circle>
                                 <circle class="ready-ring-bar" id="readyRingBar" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle>
                             </svg>
@@ -3942,12 +4046,18 @@
             const lbl = document.getElementById('readyRingPct');
             if (!bar || !lbl) return;
             const C = 314; // 2*PI*r(50)
-            bar.style.opacity = pct >= 2 ? '1' : '0'; // hide tiny arcs (round cap would show a stray dot)
+            // THE CAP SHOWS AT 0%, because the mockup draws it: an empty dial reads as
+            // a broken one, and the stub is where the ring starts from. A round linecap
+            // renders nothing on a zero-length dash, so the arc has a floor — 10 of 314
+            // units, which is the ~16px stub the mockup measures. This replaces the old
+            // `opacity = pct >= 2 ? 1 : 0`, which hid exactly the state a new learner
+            // spends all of their first visit looking at.
+            const MIN_ARC = 10;
             bar.style.strokeDashoffset = C;
             lbl.textContent = '0%';
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             requestAnimationFrame(() => requestAnimationFrame(() => {
-                bar.style.strokeDashoffset = String(C * (1 - pct / 100));
+                bar.style.strokeDashoffset = String(C - Math.max(MIN_ARC, C * pct / 100));
                 if (reduce) { lbl.textContent = pct + '%'; return; }
                 const t0 = performance.now(), dur = 900;
                 const tick = now => {

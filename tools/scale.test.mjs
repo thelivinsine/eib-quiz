@@ -52,7 +52,7 @@ const CONTROL_SCALE = [28, 36, 44, 52];
  */
 const BUDGETS = {
   literalFontSizes:     [0, "reached 2026-09-20 (phase 2). A literal font-size is now a bug."],
-  fontSizesBelowFloor:  [0, "reached 2026-09-20 (phase 4). 12px is the floor."],
+  fontSizesBelowFloor:  [0, "reached 2026-09-20 (phase 4). 12px is the floor. One named exemption — see TYPE_EXEMPT."],
   offScaleSpacing:      [0, "reached 2026-09-20 (phase 3). Off-scale spacing is now a bug."],
   // The two left are the results band's 1px separator gap, which is a hairline
   // rather than rhythm and has no rung to snap to.
@@ -169,19 +169,31 @@ const SPACING_PROPS = [
 
 // --- the metrics ---------------------------------------------------------------------------
 
-const fontSizeValues = valuesOf("font-size")
-  .map((d) => px(d.value))
-  .filter((n) => n !== null);
+/**
+ * The ONE type rule allowed off the scale, named rather than budgeted — the same shape as
+ * ICON_EXEMPT below, and for the same reason: a budget of 1 says "one bug is tolerated" and
+ * invites a second, where a named selector says which one and why.
+ *
+ * .ready-ring-sub is the accuracy ring's caption at 9px (2026-09-22, on request, measured:
+ * the mockup sets ACCURACY 54.2px wide inside an 89px dial and --fs-2xs untracked sets 68.3).
+ * It is exempt because it carries NO information of its own — the wrapper is role="img" with
+ * aria-label="0% Accuracy", and the figure it names is at 22px two pixels above it. Nothing
+ * else in the sheet may join it: a new selector here needs the same argument, in writing.
+ */
+const TYPE_EXEMPT = /\.ready-ring-sub/;
 
 /**
  * font-size declarations still written as a literal rather than a --fs-* token. This is the
  * number phase 2 drives to zero; a var() reference is the goal, so it must not be counted.
  */
 const literalFontSizes = valuesOf("font-size").filter(
-  (d) => !/var\(/.test(d.value) && d.value !== "inherit",
+  (d) => !/var\(/.test(d.value) && d.value !== "inherit" && !TYPE_EXEMPT.test(d.rule.selector),
 ).length;
 
-const fontSizesBelowFloor = fontSizeValues.filter((n) => n < Math.min(...TYPE_SCALE)).length;
+const fontSizesBelowFloor = valuesOf("font-size")
+  .filter((d) => !TYPE_EXEMPT.test(d.rule.selector))
+  .map((d) => px(d.value))
+  .filter((n) => n !== null && n < Math.min(...TYPE_SCALE)).length;
 
 const offScaleSpacing = valuesOf(...SPACING_PROPS).flatMap((d) =>
   parts(d.value)

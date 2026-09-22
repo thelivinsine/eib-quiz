@@ -127,6 +127,9 @@ const PAIRS = [
   // actually need. This ground was unasserted for that tier since the footer shipped.
   ["sub-text", "band", AA, "the footer's source note and disclaimer"],
   ["faint", "canvas", AA, "the same two, where a tile is not behind them"],
+  // The /310 denominator sat on a --surface readout tile until 2026-09-22; with the
+  // overview card's tiles dissolved it sits on the card itself, which is --band in dark.
+  ["faint", "band", AA, "the /310 denominator on the overview card in dark"],
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
   // dark they do not, because --surface is a rung above the canvas there.
@@ -225,12 +228,11 @@ const FILLS = [
   // chips and lists take the landing page's pale panel, so its edge and its two state
   // fills are back. Light scopes hover to --surface2 because --hover is 1.047 here.
   ["border", "band", HAIRLINE, "a practise tile's hairline on its own fill"],
-  // The overview card rebuilt against the mockup (2026-09-21) puts three WHITE
-  // readout tiles inside the --band card, so surface/band is a live nesting pair
-  // again — it was deleted when the practise band's panel went. The mockup's own
-  // card/tile pair is the other way up (near-white card, --band summary tile); the
-  // relationship, and this ratio, are the same either way.
-  ["surface", "band", NEST, "a readout tile inside the overview card"],
+  // surface/band is GONE AGAIN (2026-09-22): the overview card's tiles were dissolved
+  // on request, so nothing in the app puts a --surface fill on a --band ground any
+  // more. It was last added on 2026-09-21 for those readout tiles, and deleted before
+  // that when the practise band's panel went. A pair with no consumer is the
+  // stale-ground bug this file keeps catching, so it goes rather than being kept warm.
   ["surface", "accent-soft", NEST, "the book plate on the resume banner"],
   ["surface2", "band", NEST, "a practise tile under the pointer in light"],
   ["surface3", "band", STATE, "a practise tile pressed"],

@@ -178,9 +178,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     counters and the ring's percentage — the scale colliding where it needs distinction,
     which is the exact fault the `--fs-*` ramp exists to remove, reproduced a level up.
     `.ds-num` and the featured card's title moved to `--fs-lg` (the card itself is gone as
-    of 2026-09-21; the counter's step is what survives). A counter is a
+    of 2026-09-21). A counter is a
     READOUT: it reports on its section and does not outrank the heading above it or the
     card you are meant to press — the same move `.stat-value` made on the quiz screen.
+    **`.ds-num` went BACK UP to `--fs-xl` on 2026-09-22**, measured off
+    `ui/where-you-stand.png`: a digit stands 15.3px there against 12.0 at `--fs-lg`, i.e.
+    ~23px. That does not reopen the rule — the section heading is `--fs-2xl`, so 22 is
+    still a clear rung below it, and the readout tile the mockup draws has exactly one
+    thing to say. The collision the rule exists to prevent was FOUR things at `--fs-xl`
+    at once; the ring's percentage is the only other one left.
     The featured card kept its emphasis in hue, width and a solid Start pill, never size —
     and is retired; the five mode cards are peers.
   - **No drop shadows on a TILE, in either theme.** A tile is a fill plus a hairline, and
@@ -242,6 +248,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--btn-fill` is that navy with `--on-btn` white; **dark holds the accent blue**,
     because a near-black button on charcoal is not a button. `--accent-fill` still exists
     and is still asserted — it is a picked option's letter chip and the mastery tile.
+    **The resume banner is the ONE exception** (2026-09-22, measured): its mockup paints
+    Resume in accent blue (`#3474F8`, against light's `#2563EB`), because the banner is
+    already an `--accent-soft` tint and a near-black slab in the middle of it reads as a
+    hole rather than a button. `.resume-banner .btn-primary` overrides the fill there and
+    nowhere else.
     **`--ink-tile` and `--on-dark` are GONE** (2026-09-21): they existed only for the header's
     charcoal `E` tile, the brand mark is the German flag now, and nothing else read them. The
     two token pairs and the `#fff` literal that asserted the old mark went from
@@ -265,9 +276,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       default), `--lh-prose` (1.55, and ONLY running text — `.hero-lead`, `.mode-description`,
       `.section-head p`, `.explanation-text`, `.review-explanation`, `.question-english`).
       Unitless on purpose: a length would be inherited verbatim by a 12px label.
-    - **`--fs-2xs` (12px) is the FLOOR.** Of the four references three render nothing below
-      12px and the fourth stops at 13; the 11px tokens that exist went unused on every page
-      measured. NINE steps, 12/13/14/15/16/18/22/28/36, plus one `--fs-hero` clamp —
+    - **`--fs-2xs` (12px) is the FLOOR, with ONE named exemption.** Of the four references
+      three render nothing below 12px and the fourth stops at 13; the 11px tokens that exist
+      went unused on every page measured. The exemption is `.ready-ring-sub` at **9px**
+      (2026-09-22, on request) — see the accuracy-ring note below — and it is named in
+      `TYPE_EXEMPT` in `tools/scale.test.mjs` rather than bought with a budget of 1, because
+      a budget says "one is tolerated" and invites a second where a selector says which and
+      why. **A second entry there needs the same argument, in writing.** NINE steps, 12/13/14/15/16/18/22/28/36, plus one `--fs-hero` clamp —
       `--fs-3xl` (36px) was minted for the score ring and the landing page's four
       headline numbers are its second consumer.
       **A font-size written as a literal is a bug**, exactly as a literal radius is.
@@ -312,9 +327,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       inside an 88px dial. The percentage stays; the NAME moved to the wrapper's
       `aria-label`/`title`, where the longest German compound costs nothing. `.ready-ring-sub`
       is gone. **It came back on 2026-09-21** when the overview card was rebuilt against
-      its mockup — and this measurement is exactly what it cost: a 104px dial, no
-      letter-spacing, and a separate `dash.accuracyShort` whose German is "Quote". The
-      rule stands; the caption obeys it rather than breaking it.
+      its mockup — and this measurement is exactly what it cost: a 104px dial, a
+      separate `dash.accuracyShort` whose
+      German is "Quote" — and, from 2026-09-22, **the app's one sub-floor size**. That
+      last one is the rule being BENT rather than obeyed, and the argument is written
+      into `TYPE_EXEMPT`: this caption carries no information of its own. The wrapper is
+      `role="img"` with `aria-label="0% Accuracy"`, so a screen reader gets the whole
+      word whatever the caption says, and the figure it names is at 22px two pixels
+      above it. A label with something to say still moves out; this one has nothing.
     - **On a phone the answered readout shows its figure and hides its word**
       (`.stats-bar .stat:last-child .stat-label`). Once the labels cleared the 12px floor the
       four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
@@ -365,6 +385,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Fonts is the only external dep). Catalogue images always show in **true colours**.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
+    **The WINDOW onto that geometry is what you move, not the geometry** (2026-09-22):
+    `.ready-ring`'s viewBox is `5 5 110 110`, not `0 0 120 120`, because at r=50 with a
+    9-unit stroke the ink only ever reaches 109 of 120 units — so a 104px wrap drew a 94px
+    ring, 11% under the mockup's. Cropping the viewBox to the ink makes the drawn circle
+    fill its box; r, C and the dasharray are untouched.
 - **The hero's two buttons read at the HEADER's size, not the CTA band's** (2026-09-21,
   on request, later the same day). All three share `--ctl-md` and `--icon-sm`, and the
   hero's pair (`--space-lg` of side padding) dropped from `--fs-base` to **`--fs-2xs`**
@@ -390,10 +415,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   does not zoom on focus; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
   header respect `env(safe-area-inset-*)`. Under 620px the mode cards become a single-column list
   (icon beside the title), the three overview readouts become ONE column of rows
-  (**reversed 2026-09-21**: they stayed three columns until they became bordered tiles,
-  and at 375px three tiles give the label an 85px box while `BEANTWORTET` sets 109 and
-  `ZUR WIEDERHOLUNG` more — one German word, nothing to wrap, so it spilled over the
-  tile's own edge; as rows the label has its width and the `.ds-sub` line goes), and the exam timer goes
+  (**reversed 2026-09-21**: they stayed three columns until the labels grew,
+  and at 375px three columns give the label an 85px box while `BEANTWORTET` sets 109 —
+  one German word, nothing to wrap, so it simply ran past its column; as rows the label
+  has its width and the `.ds-sub` line goes. The tiles those columns once were are gone
+  as of 2026-09-22, and the row layout stays: the measurement was never about the border), and the exam timer goes
   to one line. The quiz readouts drop their hairlines and tighten to a `--space-sm` gap so all four stay
   on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
   the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
@@ -784,28 +810,59 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     left "Berlin" with a 165px gap before the caret. The visible value is a `.state-picker-value`
     span and the `<select>` is a transparent overlay across the pill; `onStateChange` updates the
     span rather than re-rendering the control, which would drop focus mid-interaction.
-  - **The overview card is FOUR TILES and its own heading** (2026-09-21, on request,
-    against `docs/Mockups/ui/where-you-stand.png` — **this
-    reverses "one band, not four boxes"**, which held from 2026-09-20 until the mockup
-    arrived). `.dash-grid` is `1.7fr 1fr 1fr 1fr`: a wide `.dash-tile--ring` holding the
-    ring, a hairline and a VERDICT (a headline and a line of advice), then three
-    `.dash-stat` readouts, each a neutral plate + figure + name + one line saying what
-    the figure counts. `.dash-body` and `.dash-stats` are gone with the old single row.
+  - **The overview card is ONE CARD AND FOUR BARE BLOCKS** (2026-09-22, on request —
+    **the tiles are dissolved**). It was four bordered tiles from 2026-09-21, drawn that
+    way in `docs/Mockups/ui/where-you-stand.png`, which had itself reversed "one band,
+    not four boxes". The mockup still wins on everything else in this card; on this it
+    does not. Five boxes to say one thing is the containers-inside-containers look this
+    sheet keeps taking out, and each readout already has a coloured plate anchoring it,
+    so the frame was saying nothing the plate did not.
+    `.dash-grid` is `1.7fr 1fr 1fr 1fr`: a wide `.dash-summary` holding the ring and a
+    VERDICT (a headline and a line of advice), then three `.dash-stat` readouts, each a
+    hued plate + figure + name + one line saying what the figure counts. `.dash-body`
+    and `.dash-stats` went with the old single row; **`.dash-tile` went with the
+    borders, and `.dash-tile--ring` lost the prefix with it**.
+    - **WHAT REPLACES THE BORDERS IS AIR AND ALIGNMENT, and both had to GROW.** The
+      card's inset went `--space-lg` -> `--space-xl` and the grid's gap `--space-md` ->
+      `--space-xl`, so the card now runs on one rhythm: 28px inset, 28 between the head
+      and the row, 28 between the row and the resume banner, 28 between columns. A
+      tile's own padding used to do the separating; with the tiles gone the gap is all
+      there is, so it has to be BIGGER than the padding it replaced, not the same.
+      `--space-2xl` (40) is not available — it is not a gap rung anywhere in this sheet
+      and using it would take `gapRungs` from 7 to 8.
+    - **`align-items: center` on the grid is what makes four bare blocks read as a
+      row.** The ring block is 104px tall and a readout is 68, so stretched (the
+      default) the readouts hang from the top with 36px of nothing under them.
+    - **THE PLATES ARE NOT ON THE RING'S AXIS, AND THAT WAS THE CHOICE.** A readout is
+      not symmetric about its own plate — the sub-line hangs below it — so centring the
+      BLOCK leaves the plate ~12px above the ring's centre, and `0%` and the three
+      figures sit on two slightly different lines. A variant that padded each readout to
+      put every plate exactly on the ring's axis was built and rendered beside this one
+      on 2026-09-22; **this one was picked**, because forcing the alignment pushed the
+      three readouts visibly low in their own columns. If it is ever revisited, the
+      spacer is `calc(var(--fs-2xs) * var(--lh-ui) + var(--space-sm))` on `.dash-stat`
+      with `align-items: center` left alone — not a 30px literal, which is the same
+      number and breaks the day the ring resizes.
+    - **German drops a word rather than a line.** `dash.due` is `Wiederholung`, not
+      `Zur Wiederholung`: at the 12px floor the longer form sets 137.5px in a 131px
+      column, wraps, and drops that readout's sub-line out of line with the other two.
+      The sub-line under it still reads "Fragen zur Wiederholung".
     - **The section's HEADING lives inside the card here**, unlike every other section
       on the page: the mockup draws one panel that opens with its own title, a lead and
       an encouragement chip (`.dash-pill`, `dash.pill`, the new `leaf` glyph).
       `#homeStatus` holds only what `renderHomeStatus()` paints, and the head is static
       markup inside `.dash` so it keeps its `data-i18n` and the 620px rule that hides a
       section's lead.
-    - **LIGHT takes the mockup's shades exactly; DARK cannot** (on request, "stay true
-      to the mockup", reversing the inversion shipped an hour earlier). The mockup is a
-      near-white card (#FBFCFE) holding a `--band` summary tile (#F5F8FD) and white
-      readouts (#FEFEFE) — which is light's own system, where a tile IS the page colour
-      and the hairline separates. So `html.light .dash` is `--surface`. **Dark keeps the
-      `--band` card** with `--surface` readouts stepping UP out of it: nothing goes
-      below the page there (`theme-dark.md` §3), so a recessed summary tile is not
-      available. `surface / band` is a live FILLS pair again either way — the readouts
-      on the card in dark, the summary tile inside the white card in light.
+    - **THE CARD IS ONE GROUND: `--surface` in light, `--band` in dark.** It used to
+      hold tiles at a second shade — the mockup's near-white card (#FBFCFE) with a
+      `--band` summary tile (#F5F8FD) and white readouts (#FEFEFE) in light, and the
+      inverse in dark because nothing goes below the page there (`theme-dark.md` §3).
+      Those shades went with the tiles on 2026-09-22, and **`surface / band` went out of
+      `contrast.test.mjs` with them**: nothing in the app puts a `--surface` fill on a
+      `--band` ground any more, and a pair with no consumer is the stale-ground bug that
+      file keeps catching. `faint / band` was ADDED in the same commit — the `/310`
+      denominator used to sit on a `--surface` readout tile and now sits on the card.
+      The only fill left inside the card is the resume banner's tint.
     - **THIS CARD IS THE ONE PLACE ICONS CARRY A HUE** (same request). Answered is blue,
       mastered green, due amber, the encouragement chip green and the resume banner's
       book `--accent-text`, all exactly as drawn. They are scoped as
@@ -818,28 +875,96 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       count and the accuracy: nothing answered, then below / above **52%**, which is
       the exam's own 17-of-33 pass mark, then 80%+. That is why "on track" can say
       something the app can point at.
-    - **`.ready-ring-sub` IS BACK, and German gets a SHORTER WORD** (on request). The
-      mockup puts the name under the percentage; the caption was removed in September
-      because "Trefferquote" sets ~106px at the 12px floor. The ring is 104px now (up
-      from 88) and the caption carries **no letter-spacing** — tracked out with
-      `--ls-caps` even ACCURACY sets 78px and grazes the stroke, and a third tracking
-      value busts the ratchet anyway. That is still not enough for German, so
-      **`dash.accuracyShort`** is a separate key: `Accuracy` / **`Quote`**. The full
-      "Trefferquote" stays on the wrapper's `title`/`aria-label`, where its length
-      costs nothing. Verified in both languages — rendered, not reasoned about; the
-      first attempt printed TREFFERQUOTE straight across the dial.
-    - **The mountain ornament is built** (`MOUNTAIN_ART`, beside `GATE_ART`): three
-      peaks and a flag on the tallest, cropped by the banner's bottom edge.
+    - **`.ready-ring-sub` IS BACK, at 9px, TRACKED — the app's only sub-floor type**
+      (on request; 2026-09-21, re-measured 2026-09-22). The mockup puts the name under
+      the percentage and sets it **54.2px wide inside an 89px dial**; at `--fs-2xs`
+      untracked it was 68.3, a quarter wider, and it read as a second headline under the
+      figure rather than as the figure's name. 9px with `--ls-caps` is 55.5.
+      **`0%` itself needed nothing** — `--fs-xl` measures 32.5px against the mockup's
+      32.7, which is why "make the label smaller" means this caption and not the
+      percentage. The two were measured side by side at equal scale before either moved.
+      The tracking came back WITH the smaller size: it was dropped at 12px because
+      tracked-out ACCURACY set 78px and grazed the stroke on both sides.
+      German still needs a shorter word, so **`dash.accuracyShort`** is a separate key:
+      `Accuracy` / **`Quote`**. The full "Trefferquote" stays on the wrapper's
+      `title`/`aria-label`, where its length costs nothing. Verified in both languages —
+      rendered, not reasoned about; the first attempt printed TREFFERQUOTE straight
+      across the dial.
+    - **THERE IS NO RULE BETWEEN THE RING AND THE VERDICT** (2026-09-22, on request).
+      The mockup draws one and it was removed anyway: the ring is already a shape with
+      its own edge, and a hairline two tokens away from it is a divider inside a tile
+      inside a card — the containers-in-containers move this sheet keeps undoing.
+      `.dash-verdict` keeps its `padding-left`, which with the grid gap is the 32px that
+      separates them now.
+    - **The mountain ornament is TRACED, not sketched** (`MOUNTAIN_ART`, beside
+      `GATE_ART`; redrawn 2026-09-22 off the mockup's own pixels). Three peaks and a
+      flag on the right-hand one, cropped by the banner's bottom edge.
+      - **They are BELL CURVES with straight flanks, not triangles.** The mockup's
+        silhouette was read out column by column: each flank is near-linear over most
+        of its run and rounds only at the apex, so each path is a cubic whose first
+        control point sits ON the base-to-apex line at t=0.72 and whose second sits
+        0.16 of the way back from the apex. Three passes missed this in three different
+        directions — plain triangles, then Gaussian humps, then spikes — and only the
+        column read settled it.
+      - **The peaks are BROAD**: 120-225 viewBox units wide against 20-46 tall, which is
+        roughly what the extrapolated flanks measure. The viewBox is `0 0 420 80` with
+        `aspect-ratio: 5.25 / 1`, which under `translateX(-35%)` puts the field at
+        ~36-75% across the banner — the mockup's own 35-74%.
+      - **THE THREE ARE DELIBERATELY DIFFERENT SIZES, AND THE RANGE SITS LOW**
+        (2026-09-22, on request). Apexes at **60 / 48 / 34** of 80, so the peaks stand
+        20 / 32 / 46 units — a 1 : 1.6 : 2.3 step. The traced version had two of them at
+        the same height (39 / 30 / 30) and read as one ridge, and its tallest reached 29,
+        which left the flag's knob 5.5 units off the top edge. The tallest peak now tops
+        out at 57% of the banner and the knob at 10.5, so there is a clear band of air
+        above the whole illustration. **This is the one place the ornament leaves the
+        mockup on purpose** — everything else about it is traced.
       - **It is sized FROM the banner** — `top: 0; bottom: 0` with `height: 100%` on
         the SVG — because at a fixed 250px it stood 83px tall in a 68px banner and
         `overflow: hidden` cropped the peaks and the flag with them.
-      - **The flag has to clear the apex.** Drawn inside the silhouette it is the same
-        colour as it, so the first version shipped three peaks and no flag at all.
+      - **The flag has to clear the apex, and it needs its OWN colours.** Drawn in
+        `currentColor` it is the same pale blue as the peaks, so the first version
+        shipped three peaks and no flag anyone could see. The pole and its knob are
+        `--text` and the pennant is `--accent`, written as `style="fill:var(--...)"` on
+        the paths. The mockup's pole is `#234291`; `--text` is used instead because a
+        dark literal vanishes on a dark banner and `--text` flips with the theme. Like
+        `.brand-mark`'s flag these carry no text, so `contrast.test.mjs` asserts
+        nothing about them.
       - **`--accent-line`, not `.cta-art`'s `--border-hover`**: the mockup's peaks are
         a desaturated blue (#C9D7F5 measured) on the banner's blue wash, and light's
         `--accent-line` is #BFD4FA. A grey ornament on a tinted ground reads as dirt.
+        The three layers are **0.15 / 0.5 / 1**, derived from the mockup's measured
+        fills (#EAF0FC, #DCE7FC, #C5D8FB over its #EFF4FD banner = 5, 19 and 42 points
+        of red below the ground, against `--accent-line`'s 40 at full strength). At the
+        old 0.55/0.75/1 the two back layers were four times too strong.
       - Hidden below 620px with `.cta-art`, where the banner stacks and there is no
         room behind the row.
+    - **The banner has NO HAIRLINE, and its buttons are `--ctl-md`** (2026-09-22). The
+      mockup draws it as a tint edge to edge with no border anywhere on it, and an
+      `--accent-line` rule round a fill already 1.09 off the card reads as a box inside
+      a box. `--space-md var(--space-lg)` of padding, and the two buttons keep
+      `.btn-sm`'s 13px label on a 44px body.
+    - **THE RING SHOWS ITS CAP AT 0%.** `animateReadyRing` floors the arc at 10 of 314
+      units, which is the ~16px stub the mockup draws. It used to set
+      `opacity = pct >= 2 ? 1 : 0` — it hid exactly the state a new learner spends the
+      whole of their first visit looking at, and an empty dial reads as a broken one.
+    - **THE PLATE-TO-FIGURE GAP IS THE MOCKUP'S `--space-lg`, and it only fits because
+      the tiles went.** While each readout was a tile, its 32px of padding came off the
+      column: "DUE FOR REVIEW" sets 111.6px at the 12px floor (the mockup's own label is
+      ~10px and sets ~92) and had 104.4 to sit in, so the gap had to drop to
+      `--space-ms` to buy the line back. Dissolved, the column is 131px and the mockup's
+      20 fits with room. **Re-measure this pair if the grid ever narrows** — the English
+      label and the German one are both within 25px of their column.
+    - **The VERDICT is 13/12px, not 15/13.** The mockup sets both lines at ~12 and
+      separates them by weight and colour alone; one rung is kept between them because a
+      headline at the floor is the placeholder tier. That drop is also what puts
+      "You are just getting started" back on ONE line, which is what made this tile
+      taller than the mockup's.
+    - **The card's padding and every gap inside it are `--space-xl`** (2026-09-22). The
+      mockup measures ~20 and ~14, but its content is tiles with their own padding; bare
+      blocks sit right on the card's inset, so 20px put the ring's stroke that far from
+      the border and read as a crop. `.dash-summary`'s own asymmetric padding
+      (`var(--space-sm) var(--space-md)`, which existed so the tile's height could BE
+      the ring) went with the tiles — it has no fill to inset any more.
     - There is no `OVERVIEW` eyebrow — the card's own heading says it, and the
       `dash.eyebrow` key is gone. `Reset progress` is still a **corner glyph**
       (`.progress-reset`, `ICONS.reset`, absolutely positioned top-right of `.dash`,
@@ -1259,7 +1384,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   are gone — everything reads `--space-*`.) Display numbers came down
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
-  and `.btn-lg` (both `--ctl-md` today) and the glossary rows.
+  and `.btn-lg` (both `--ctl-md` today) and the glossary rows. Two of those numbers are
+  history rather than current state: the ready ring is 104px and `.ds-num` is `--fs-xl`,
+  both re-derived from `ui/where-you-stand.png`.
   - **The two segs sit in two places and take two sizes.** In `#prefsMenu`'s panel a menu
     option is something you aim at, so `.hmenu-panel .seg-btn` takes the ordinary
     **`--ctl-md`** (44px) under `@media (pointer: coarse)`. In the header ROW the theme
@@ -1623,7 +1750,10 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   falls without the budget being lowered in the same commit. Two checks are hard rather than
   budgeted: no property declared twice for one selector in one scope (the `.stat { gap }` bug
   class, which shipped three times), and no literal `border-radius`. The `vh`-then-`svh`
-  fallback is the one allowed duplicate.
+  fallback is the one allowed duplicate. `TYPE_EXEMPT` is the type
+  scale's one named exemption (`.ready-ring-sub` at 9px) and `ICON_EXEMPT` the icon
+  scale's; both are selectors rather than budget numbers, so the sheet cannot drift into
+  a second one unnoticed.
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
@@ -1635,7 +1765,9 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   `ICONS` ships today**). `node tools/icon-packs.mjs <dir>`
   writes three HTML sheets; the header comment has the headless-Chrome line that turns each
   into `docs/icon-pack-<style>.png`. A design reference, not part of the build — nothing in
-  `index.html` reads it.
+  `index.html` reads it, **so a redraw has to be copied across by hand**: `RESET_ARC` and
+  `ICONS.reset` were diffed after the 2026-09-22 redraw to confirm the generator and the
+  shipped string still agree.
 - `tools/categorize.js` - assigns a `category` to every question (rights/politics/history/
   society/symbols) using question text + correct answer keyword matching.
 - `tools/extract-catalogue-images.py` - parses the official BAMF PDF to enumerate all image
