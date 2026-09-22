@@ -1202,6 +1202,21 @@
             align-items: center;
             gap: var(--space-xl);
         }
+        /* FOUR ACROSS IS A WIDE-SCREEN LAYOUT ONLY, and 1160 is the same width the
+           mode grid breaks at. Below it a readout column is ~150px, which leaves the
+           label 86px after the 44px plate and the 20px gap — under "Due for review"
+           (111.7) and under "Wiederholung" (107). Both wrapped to two lines, and with
+           align-items: center a taller readout drops its plate 8px below the other
+           two, so the row stopped reading as a row: exactly the fault the shortened
+           German string and the centring exist to prevent. Narrowing the columns to
+           1fr each does not fix it — it starves the verdict instead — so the summary
+           takes a row of its own and the three readouts share the full width (244px
+           each at a 900px viewport, one line in both languages). Measured, both
+           languages, 1400 / 1200 / 1159 / 1024 / 900 / 760 / 640. */
+        @media (max-width: 1160px) {
+            .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .dash-summary { grid-column: 1 / -1; }
+        }
         /* .dash-tile is GONE with the borders (2026-09-22): with no fill, no edge, no
            radius and no padding it was a min-width carrier, and both its consumers
            already set that themselves. .dash-tile--ring lost the prefix with it. */
@@ -2480,7 +2495,7 @@
                "ZUR WIEDERHOLUNG" more — one German word, so there is nothing to wrap
                and it simply runs past its column. As rows the label has the width it
                needs, the plate keeps its place beside the figure, and the sub-line
-               goes. --space-md of gap, not --space-2xs: down here the rows are the
+               goes. --space-lg of gap, not --space-2xs: down here the rows are the
                only thing separating them now that the tiles are gone, and the desktop
                --space-xl is a whole readout's height on a phone. */
             .dash-grid { grid-template-columns: 1fr; gap: var(--space-lg); }

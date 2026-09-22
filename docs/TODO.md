@@ -1873,3 +1873,74 @@ PR [#96](https://github.com/thelivinsine/eib-quiz/pull/96), squash-merged to `ma
 heading at 28px against its ~31 (no rung between `--fs-2xl` and `--fs-3xl`), and pill
 buttons where both mockups draw ~13px rounded rects — an app-wide change, not a one-card
 one, and it is waiting on a decision.
+
+---
+
+## Session developments (2026-09-22, diff review of #96)
+
+A review pass over the squash-merged #96, on request. Two corrections, both in
+`index.html`; no new feature work.
+
+### The one real fault
+
+**#96's overview row only fitted above ~1160px.** `.dash-grid` is `1.7fr 1fr 1fr 1fr` at
+every width down to 620, and below ~1160 a readout column measures ~150px — 86px for the
+label after the 44px plate and the 20px gap. `Due for review` sets 111.7 and
+`WIEDERHOLUNG` 107, so both wrapped to two lines, the three `.dash-stat` blocks came out
+96 / 83 / 81px tall, and `align-items: center` put the amber plate at y=228 against 220
+for the other two. **The row stopped reading as a row — the exact fault the centring and
+the shortened `dash.due` string exist to prevent**, and the comment on `.dash-stat-top`
+claiming the column "fits with room to spare" is only true at the widest sizes.
+
+Not a regression #96 introduced: the tiles' 32px of padding made the column *narrower*
+still, so the dissolve improved the numbers without fixing the fault (the gap going
+`--space-ms` -> `--space-lg` gave 8 of those 32 back). It is a fault #96 left standing
+while documenting the opposite.
+
+`.dash-summary { grid-column: 1 / -1 }` below 1160 — the mode grid's own breakpoint — with
+the three readouts on `repeat(3, minmax(0, 1fr))`. **Narrowing all four columns to `1fr`
+was tried first and rejected**: it fixes the labels and starves the verdict to ~40px.
+
+### Also corrected
+
+- The 620px `.dash-grid` comment argued for `--space-md` where the rule sets
+  `--space-lg`.
+
+### Reported, not changed
+
+- **The resume banner's primary button clears AA by 0.04 when hovered.** #96 moved it from
+  `--btn-fill` (near-black navy) to `--accent-fill` (`#2563EB`); `.btn-primary:hover` is
+  `filter: brightness(1.08)`, which renders ~`#286BFE`, on which `--on-accent` white
+  measures **4.54** (rest 5.17, active 5.70). It passes, so the design was left alone — but
+  a filter is invisible to `contrast.test.mjs`, so the next re-derivation of
+  `--accent-fill` fails silently. Same class as the `.nav-link--cta` hover the sheet
+  already documents.
+
+### Verified
+
+- `contrast.test.mjs` 10/10 and `scale.test.mjs` 12/12, **no budget moved**.
+  `node tools/validate.js` 460. `node --check` clean on the extracted script block and on
+  `sw.js`; `manifest.json` parses.
+- The overview row measured in the in-app pane with real viewport emulation, **both
+  languages**, at **1400 / 1200 / 1159 / 1024 / 900 / 760 / 640** and at **375**: every
+  label one line from 1400 down to 760, all three plate tops identical at every width
+  above 620, and `scrollWidth == innerWidth` at 375.
+- `1159` and `1024` checked either side of the new breakpoint; `1400`/`1200` confirm the
+  four-across layout is untouched above it.
+- The reset glyph's generator (`RESET_ARC`) still regenerates the shipped `ICONS.reset`
+  string byte for byte — re-diffed, because the review touched neither.
+
+### Not verified
+
+- **The live site.** Everything was measured against `python -m http.server`.
+- **Only Chromium**, and only the in-app pane.
+- **640px still wraps two labels** (`Due for review`, `Beantwortet`). The plates stay
+  aligned there, so the fault this session fixed is gone, but the 620-680 band was left as
+  found rather than tuned.
+- **The session screens were not re-checked.** The change is one media query on the
+  practise page, but `scrollHeight === innerHeight` on the quiz and results screens was not
+  re-run.
+- **Nothing was clicked**, and the exam simulation (checklist item 8) was not run.
+- **No `sw.js` `CACHE` bump** — nothing cache-first changed.
+- The two departures from the mockup #96 flagged (the 28px heading, the pill buttons) are
+  still open and were not revisited.
