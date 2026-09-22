@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-21_
+_Last updated: 2026-09-22_
 
 ## Project status
 
@@ -1715,3 +1715,157 @@ PR [#95](https://github.com/thelivinsine/eib-quiz/pull/95), squash-merged to `ma
 **`5dd5bf2`** after the review above. `docs/Mockups/ui/where-you-stand.png` and
 `logo-kit.png` are tracked with it; the logo kit is **not** shipped — it draws a different
 brand mark, a stroked icon library and pages that were deliberately removed.
+
+---
+
+## Session close (2026-09-22, the overview card against its mockup, then dissolved)
+
+One card, six requests, and the last one reverses the shape the first five refined. The
+order matters, because "the tiles are gone" reads as a regression against #95 without it.
+
+### 1. Fidelity: the card measured against `ui/where-you-stand.png`
+
+The user said the card still did not look like the mockup. Both were measured at equal
+scale — the mockup's card is 2074px and the app's 1060, so they map 1:2.02 and can be
+compared pixel for pixel — and the gaps were real:
+
+| | was | now | mockup |
+|---|---|---|---|
+| `.ds-num` | `--fs-lg` (18) | **`--fs-xl` (22)** | ~23 |
+| ring drawn size | 94px | **104px** | 104 |
+| ring at 0% | invisible | **blue cap** | cap |
+| verdict head / body | 15 / 13px | **13 / 12px** | ~12 / ~12 |
+| resume button | navy `--btn-fill`, 36px | **`--accent-fill`, `--ctl-md`** | blue, 41px |
+| banner | `--accent-line` hairline | **no border** | none |
+| mountains | 3 triangles, flag clipped | **traced bell curves** | — |
+| pill | `--ctl-xs` | **`--ctl-sm`** | 36 |
+
+Three of those are worth keeping the reasoning for:
+
+- **The ring's window moved, not its geometry.** `.ready-ring`'s viewBox is `5 5 110 110`:
+  at r=50 with a 9-unit stroke the ink only ever reaches 109 of 120 units, so a 104px wrap
+  drew a 94px ring. r, C and the `stroke-dasharray` are untouched, which is what the JS
+  animation counts on.
+- **`animateReadyRing` floors the arc at 10 of 314 units.** It used to set
+  `opacity = pct >= 2 ? 1 : 0` — it hid exactly the state a new learner spends their whole
+  first visit looking at, and an empty dial reads as a broken one.
+- **`.resume-banner .btn-primary` is the ONE exception to "a primary button is
+  `--btn-fill`"**: the banner is already an `--accent-soft` tint and a near-black slab in
+  the middle of it reads as a hole.
+
+### 2. The ornament, traced three times
+
+The mockup's silhouette was read out column by column. Each flank is near-linear over most
+of its run and rounds only at the apex, so each peak is a cubic whose first control point
+sits ON the base-to-apex line at t=0.72 and whose second sits 0.16 back from the apex.
+Three earlier passes missed this in three directions — plain triangles, then Gaussian
+humps, then spikes. The pole and pennant needed their OWN colours (`--text` and `--accent`
+via `style="fill:var(--...)"`); in `currentColor` they are the same pale blue as the peaks,
+which is how the old art shipped a flag nobody could see. Layer opacities are **0.15 / 0.5
+/ 1**, derived from the mockup's measured fills, against 0.55 / 0.75 / 1 — the two back
+layers were four times too strong.
+
+On request the three peaks were then **stepped in size and dropped down the block**: apexes
+at 60 / 48 / 34 of 80, so they stand 20 / 32 / 46 units (1 : 1.6 : 2.3). The traced version
+had two of them the same height and read as one ridge. **This is the one place the ornament
+leaves the mockup on purpose.**
+
+### 3. The ring's caption, and the 12px floor's first exemption
+
+"Make the accuracy label much smaller" was measured before it was acted on, and the
+measurement redirected the change: `0%` is **already right** (32.5px against the mockup's
+32.7). It is the caption that was a quarter too wide — 68.3px at `--fs-2xs` untracked
+against the mockup's 54.2 inside an 89px dial.
+
+`.ready-ring-sub` is **9px with `--ls-caps`** now (55.5px), the tracking coming back with
+the smaller size. It is the app's only sub-floor type, and it is **named in `TYPE_EXEMPT`
+in `tools/scale.test.mjs` rather than bought by raising `fontSizesBelowFloor` to 1** — a
+budget says "one is tolerated" and invites a second; a selector says which and why. The
+argument: this caption carries no information of its own (`role="img"` +
+`aria-label="0% Accuracy"` on the wrapper, and the figure it names is 22px two pixels
+above). `docs/plans/sizing-system.md` §"Two regressions from the 12px floor" is corrected
+to match.
+
+### 4. The vertical rule beside the ring — removed
+
+The mockup draws one; it went anyway, on request. The ring is already a shape with its own
+edge, and a hairline two tokens from it is a divider inside a tile inside a card.
+
+### 5. THE TILES DISSOLVED — this reverses #95's "four tiles"
+
+On request, and the mockup loses this one. `.dash-tile` is gone with the borders and
+`.dash-tile--ring` became **`.dash-summary`**; four bare blocks sit on the card's one
+ground. Five boxes to say one thing is the containers-inside-containers look this sheet
+keeps taking out, and each readout already has a coloured plate anchoring it.
+
+- **What replaces the borders is air, and it had to GROW.** The card's inset went
+  `--space-lg` -> `--space-xl` and the grid gap `--space-md` -> `--space-xl`: one rhythm,
+  28px, for the inset, the head-to-row gap, the columns and the row-to-banner gap. A tile's
+  padding used to do the separating; the gap replacing it cannot be the same size.
+  `--space-2xl` is not available — 40 is not a gap rung anywhere in this sheet and would
+  take `gapRungs` from 7 to 8.
+- **`align-items: center`, not a plate-on-the-ring's-axis spacer.** A readout is not
+  symmetric about its own plate, so centring the block leaves the plate ~12px above the
+  ring's centre. A variant that padded each readout to put every plate exactly on the ring's
+  axis was built and rendered beside this one; **the user picked the simpler one.** The
+  spacer is written down in `CLAUDE.md` in case it is revisited — as
+  `calc(var(--fs-2xs) * var(--lh-ui) + var(--space-sm))`, not the 30px literal that
+  produces the same number and breaks the day the ring resizes.
+- **The plate-to-figure gap went BACK UP to the mockup's `--space-lg`.** While each readout
+  was a tile its 32px of padding came off the column: "DUE FOR REVIEW" sets 111.6px at the
+  12px floor (the mockup's own label is ~10px and sets ~92) and had 104.4 to sit in. The
+  column is 131px dissolved.
+- **German drops a word rather than a line.** `dash.due` is `Wiederholung`, not
+  `Zur Wiederholung` — 137.5px in a 131px column wraps and drops that readout's sub-line out
+  of line with the other two. The sub-line under it still reads "Fragen zur Wiederholung".
+- **`surface / band` left `contrast.test.mjs`** with its last consumer, and **`faint / band`
+  joined it**: the `/310` denominator used to sit on a `--surface` readout tile and now sits
+  on the card, which is `--band` in dark.
+
+### 6. `ICONS.reset`, redrawn
+
+Its arrowhead was 4.8 units on a 2.6 band and, at the 18px it shipped at, read as a nub on a
+broken ring — the glyph said "loading". The band is 2.4 now and the head flares to 8.4, 3.5x
+its width, **and** it renders at `--icon-lg`. The redraw alone still disappeared at 18px;
+both were needed. `head()` in `tools/icon-packs.mjs` took a `flare` argument for it,
+defaulting to the old 1.1 so no other glyph moved, and the generator's output was diffed
+against the shipped string.
+
+### Verified
+
+- `contrast.test.mjs` 10/10 and `scale.test.mjs` 12/12, **no budget moved** — the type
+  exemption is a named selector, not a raised number. `node tools/validate.js` 460.
+  `node --check` clean on the extracted script block and on `sw.js`; `manifest.json` parses.
+- Rendered at **1280x900** in headless Chrome at 2x in **English, German and dark**, and
+  measured in the in-app pane at 1280 and 375.
+- **No horizontal overflow at 375px** on Home and Practise, both languages, and zero
+  elements overflowing the viewport inside `#practiseScreen`.
+- The card measures **348.5px** in both languages — German no longer runs taller.
+- Language switch exercised both ways (`Where you stand` <-> `Dein Stand`).
+- `grep 'stroke="currentColor"'` still returns 0, and `RESET_ARC` in the icon pack
+  regenerates the shipped `ICONS.reset` string byte for byte.
+- The reset glyph magnified 4x in **both** themes.
+
+### Not verified
+
+- **The live site.** Everything was measured against `python -m http.server`.
+- **Only Chromium.** Both the in-app pane and headless Chrome are Chromium.
+- **Only the `building` verdict was ever on screen.** `start`, `onTrack` and `strong` come
+  from the same two-comparison expression and were read, not exercised.
+- **The session screens were not re-checked.** The diff is confined to the practise page's
+  overview card, but `scrollHeight === innerHeight` on the quiz and results screens was not
+  re-run this session.
+- **Nothing was clicked.** Resume, Discard and the reset button's confirm were rendered, not
+  exercised; the exam simulation (checklist item 8) was not run.
+- **No `sw.js` `CACHE` bump**, on the judgement that nothing cache-first changed —
+  `index.html` is network-first and the favicon, manifest and PNG icons were untouched.
+- The mountains' stepped sizes and the banner's headroom were judged on screen, not measured
+  against a target; the ornament is hidden below 620px and was not looked at on a phone.
+- The heading stays 28px against the mockup's ~31: there is no rung between `--fs-2xl` and
+  `--fs-3xl`, and a literal font-size fails the ratchet. Flagged to the user, not fixed.
+- The buttons stay pills where both mockups draw ~13px rounded rects. Flagged as an
+  app-wide question rather than changed in one card.
+
+### Live
+
+_To be filled in when the PR merges._
