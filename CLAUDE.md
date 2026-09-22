@@ -73,6 +73,17 @@
   in `install` has the identical default, so a fresh install could seed itself from the very
   copies it exists to replace. **If a deploy looks like it did not ship, check this before
   suspecting Pages.**
+  - **There is a THIRD cache under those two: Fastly's edge, and `cache: 'reload'` does
+    not touch it** (2026-09-22). `cache: 'reload'` bypasses the BROWSER's HTTP cache, so
+    it proves what the edge holds — not what the origin built. Verified minutes after a
+    deploy whose Pages build already reported `built`: the bare URL returned the previous
+    object (byte-identical to the old build, old comment present) while the SAME URL with
+    a `?cb=<timestamp>` returned the new one, 298 bytes longer, `age: 0`, and a
+    `last-modified` matching the new build. A distinct cache key forces an origin fetch;
+    the bare URL waits out its `max-age=600`. **So a "did not ship" reading within ten
+    minutes of a deploy is not evidence.** Check `gh api repos/<o>/<r>/pages/builds`
+    for the build, then a cache-busted URL for the origin, then the bare URL for the edge
+    — and say which of the three you measured.
 
 ## App Shape
 
@@ -1719,8 +1730,26 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   clientWidth == 375`, zero overflowing elements. Headless is still the right tool for a
   full-page SCREENSHOT and for reading the parsed stylesheet; for anything where the
   VIEWPORT WIDTH is the thing under test, use real device emulation. A corollary worth
-  keeping: the pane will not reliably paint a screenshot, but its JS measurement is always
-  sound, so measure there and screenshot in headless.
+  keeping: the pane will not reliably paint a screenshot, but a LAID-OUT pane's JS
+  measurement is sound, so measure there and screenshot in headless. **"Laid out" is a
+  real precondition, not a formality** — see the next gotcha, which is how that sentence
+  came to be qualified.
+- **A pane tab with NO layout viewport reports `innerWidth === 0`, and every number you
+  compute from it is garbage** (2026-09-22). A freshly opened tab — `tabs_create` then
+  `navigate`, before anything pins a size — can have no layout viewport at all. Nothing
+  errors: `getBoundingClientRect()` returns numbers, `getComputedStyle()` returns values,
+  and every `max-width` media query matches, so the page is measured in its NARROWEST
+  branch while you believe you are at desktop width. On the live site this read the
+  overview card's chip at 215.5 against a reset glyph at 118.2 and the three readouts
+  200px apart — **an exact description of the phone layout, reported as a broken desktop
+  one**, and it was very nearly filed as a regression in a change that had just been
+  verified locally. `resize_window` with an explicit width fixed it, and the same build
+  then measured 118.0 / 118.0 with all four blocks on one centre.
+  **Read `innerWidth` before trusting any geometry from a tab you did not size**, and
+  treat 0 as "no measurement" rather than as a small number. Same family as the two
+  gotchas above it — the `--window-size` trap and the hidden-pane `ResizeObserver` —
+  and in all three the pane answers confidently with a layout that is not the one under
+  test.
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,
