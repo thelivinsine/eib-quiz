@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://thelivinsine.github.io/eib-quiz/">
     <!-- Pre-paint theme guard: default = light "paper" (the signature bento look);
          only go dark (charcoal) when the user explicitly saved 'dark'. Prevents FOUC. -->
-    <script>try{if(localStorage.getItem('theme')!=='dark')document.documentElement.classList.add('light');}catch(e){document.documentElement.classList.add('light');}</script>
+    <script>try{var _t=localStorage.getItem('theme');if(!(_t==='dark'||(_t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches)))document.documentElement.classList.add('light');}catch(e){document.documentElement.classList.add('light');}</script>
 
     <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -574,19 +574,30 @@
             display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-sm);
             background: none; border: none; border-radius: var(--radius-sm);
-            font-size: var(--fs-2xs); font-weight: 600; color: var(--muted);
+            font-size: var(--fs-sm); font-weight: 600; color: var(--muted);
             transition: color 0.18s var(--ease);
         }
         .nav-link:hover { color: var(--text); }
-        /* The mockup underlines the current section. A box-shadow rather than a
-           border, so the rule does not add to the control's height. */
-        .nav-link--active { color: var(--text); box-shadow: inset 0 -2px 0 var(--text); border-radius: 0; }
+        /* The mockup underlines the current section, and the underline belongs to the
+           WORD, not to the control's box (2026-09-22, on request: "closer to the text").
+           It was `box-shadow: inset 0 -2px 0`, which draws along the bottom of a 36px
+           hit target - about 9px of nothing under the label. text-decoration is the
+           native answer: it tracks the text at any size, skips descenders, and still
+           adds nothing to the control's height, which is the whole reason the
+           box-shadow was chosen over a border. The label went up a rung with it
+           (--fs-2xs -> --fs-sm), so the nav is the ONE thing in the header strip that
+           is not 12px: it is the only CONTENT in the row - the language pill and the
+           theme seg are chrome you glance at. */
+        .nav-link--active {
+            color: var(--text);
+            text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px;
+        }
         /* PRACTISE is the way in, so it is DRAWN LOUDER than Home - but it is still a
            LINK, not a button (2026-09-21, on request; it wore --btn-fill in a pill for
            a few hours before that). Same shape as .nav-link, one size up and in the
-           accent (the SIZE step went on 2026-09-21, on request: the header strip is
-           one size now — nav, globe summary and theme toggle all at --fs-2xs — so
-           Practise is drawn louder by colour alone):
+           accent (the SIZE step went on 2026-09-21, on request; the nav took a size
+           of its own back on 2026-09-22, also on request, but BOTH links took it, so
+           Practise is still drawn louder by colour alone):
            two items in a two-item nav should read as the same kind of thing,
            and a solid pill beside a bare word reads as a control that does something
            rather than a page you go to. The hero's Start and the CTA band still carry
@@ -603,9 +614,9 @@
            is invisible to that test, so the ratchet cannot catch this one. 0.88 is 6.31. */
         html.light .nav-link--cta:hover { filter: brightness(0.88); }
         .nav-link--cta:active { filter: brightness(0.9); }
-        .nav-link--cta.nav-link--active {
-            color: var(--accent-text); box-shadow: inset 0 -2px 0 var(--accent-text);
-        }
+        /* The underline is text-decoration now, so it takes currentColor and this
+           override is down to the colour it always was. */
+        .nav-link--cta.nav-link--active { color: var(--accent-text); }
 
         /* About and FAQs were here as aria-disabled buttons wearing a "Soon" chip,
            and both are GONE (2026-09-21, on request) along with .nav-soon, the
@@ -616,47 +627,26 @@
 
         .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
 
-        /* The globe menu. A <details>, so the disclosure behaviour is the platform's. */
-        .hmenu { position: relative; }
-        .hmenu-summary {
-            display: inline-flex; align-items: center; gap: var(--space-sm);
+        /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
+           reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
+           one pill that NAMES the current one and flips on a click; a disclosure spent
+           a click choosing between two. That retired the whole .hmenu-* block - the
+           <details>, its panel, #schemeLabel and syncThemeControlPlacement() - and the
+           ~56px it frees is what pays for both nav links on a phone. The accent is the
+           reference's, and it is the readout's point: the pill says what you are
+           reading in, not what you would get.
+           THE APP'S ONE SHADOW WENT WITH IT. The argument is in git and still holds if
+           anything floats again: an overlay above unrelated content on a white canvas
+           cannot be held off the page by a hairline alone. Nothing floats today. */
+        .lang-toggle {
+            display: inline-flex; align-items: center; justify-content: center;
             min-height: var(--ctl-sm); padding: 0 var(--space-ms);
             border-radius: var(--radius-pill);
             border: 1px solid var(--border); background: var(--surface);
-            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
-            cursor: pointer; list-style: none;
-            transition: border-color 0.18s var(--ease), color 0.18s var(--ease);
+            font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-text);
+            transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
         }
-        .hmenu-summary::-webkit-details-marker { display: none; }
-        .hmenu-summary::marker { content: ''; }
-        .hmenu-summary:hover { color: var(--text); border-color: var(--border-hover); }
-        .hmenu-icon { display: grid; place-items: center; color: var(--muted); }
-        .hmenu-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
-        .hmenu-caret { display: grid; place-items: center; color: var(--muted); transition: transform 0.18s var(--ease); }
-        .hmenu-caret svg { width: var(--icon-xs); height: var(--icon-xs); }
-        .hmenu[open] .hmenu-caret { transform: rotate(180deg); }
-        .hmenu-panel {
-            position: absolute; top: calc(100% + var(--space-sm)); right: 0;
-            z-index: 10; min-width: 176px;
-            display: flex; flex-direction: column; gap: var(--space-sm);
-            padding: var(--space-ms);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
-        /* THE one shadow in the app, and the one thing in it that genuinely floats:
-           an overlay panel above unrelated content, on a white canvas where the
-           hairline alone cannot hold it off the page beneath. CLAUDE.md's no-shadow
-           rule always carried this condition ("light would only earn a shadow under
-           something that genuinely floats, and nothing in this app does") — the
-           second clause is what changed, and the rule now records it. Dark needs none:
-           its --surface is 1.15 ABOVE the canvas, so the fill already separates.
-           The literal is not in LITERAL_PAIRS because a shadow carries no text and
-           so has no pair to assert — the same reason .brand-mark's flag is exempt. */
-        html.light .hmenu-panel { box-shadow: 0 12px 28px rgba(15, 25, 41, 0.12); }
-        .hmenu-panel .eyebrow { display: block; }
-        .hmenu-panel .seg { width: 100%; }
-        .hmenu-panel .seg-btn { flex: 1; }
+        .lang-toggle:hover { border-color: var(--border-hover); background: var(--hover); }
         .seg {
             display: inline-flex;
             padding: var(--space-3xs); gap: var(--space-2xs);
@@ -672,6 +662,16 @@
             border-radius: var(--radius-pill);
             transition: color 0.2s var(--ease), background 0.2s var(--ease);
         }
+        /* An ICON segment is square: no side padding, because the glyph is the whole
+           label. Three of them cost ~92px against the two-word toggle's ~120, which is
+           the other half of what lets the seg stay in the header ROW at every width -
+           it used to move into the globe menu below 620px. */
+        .seg-btn--icon { width: var(--ctl-xs); padding: 0; display: grid; place-items: center; }
+        .seg-btn--icon svg { width: var(--icon-sm); height: var(--icon-sm); }
+        /* The reference paints the CHOSEN mode in the accent, and an icon needs it more
+           than a word did: there is no label to read, so the fill and hairline that
+           .seg-btn.active already draws are carrying the state on their own. */
+        #schemeSeg .seg-btn.active { color: var(--accent-text); }
         .seg-btn:hover { color: var(--text); }
         /* The selected segment steps back UP to the tile fill and gets a
            hairline — colour alone is too close to carry the state. */
@@ -2068,14 +2068,12 @@
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
-            /* The two segs sit in two places now and want two sizes. In the PANEL a
-               menu option is something you aim at, so it takes the ordinary 44px
-               floor. In the ROW the theme toggle is back to being glance-only chrome
-               in a strip with two other things, which is the exception --ctl-sm is
-               for. The `>` is load-bearing: it keeps this off the panel's seg, which
-               is nested inside .hmenu. */
-            .hmenu-panel .seg-btn { min-height: var(--ctl-md); }
-            .header-controls > .seg .seg-btn { min-height: var(--ctl-sm); }
+            /* The theme seg is glance-only chrome in a strip with two other things,
+               which is the exception --ctl-sm is for (36px, over the 24px WCAG 2.5.8
+               floor). WIDTH as well as height: .seg-btn--icon is square, so without it
+               a thumb gets a 28x36 target. The `>` keeps this off the navigator's
+               .qnav-seg, which has a rule of its own. */
+            .header-controls > .seg .seg-btn { min-height: var(--ctl-sm); width: var(--ctl-sm); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
             /* Previous/Next and the results screen's three actions are sized DOWN on
@@ -2724,46 +2722,54 @@
                what decides this grid, not the icon. */
             .topic-grid { grid-template-columns: 1fr; }
             .sub-card { padding: var(--space-md); }
-            .header-content { padding: var(--space-xs) var(--space-md); }
+            .header-content { padding: var(--space-xs) var(--space-md); gap: var(--space-sm); }
             .header-controls { gap: var(--space-2xs); }
-            .seg { padding: 1px; }
+            .seg { padding: 1px; gap: 0; }
+            .nav-link { padding: 0 var(--space-2xs); }
+            .header-nav { gap: var(--space-2xs); }
+            .lang-toggle { padding: 0 var(--space-sm); }
             /* The .header-controls .seg-btn shrink to --ctl-xs that used to sit here
                is GONE. It was written for two segmented controls standing in the
-               header strip; they moved into #prefsMenu's panel on 2026-09-21, so all
-               the rule did down here was undo the coarse-pointer 44px floor above it
-               (it is stated later in the sheet, so source order gave it the win) and
-               hand a phone four 28px targets inside an opened menu. */
+               header strip; the one that is left is three ICONS wide, and shrinking it
+               here would undo the coarse-pointer floor above it (it is stated later in
+               the sheet, so source order gives it the win) and hand a phone three 28px
+               targets. */
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
             .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); }
             .brand-name { font-size: var(--fs-sm); }
-            /* The strip is a glance down here: the tagline restates what the page
-               already says, and brand + nav + menu + toggle does not fit a 343px
-               content width. */
-            /* The nav goes with it, and a ONE-ITEM nav ("the page you are not on")
-               was tried on the day Practise became a screen and does not fit either.
-               Measured at 375px: the content row is 343, the brand is 77 and the
-               controls are 211, which leaves 55px for a link that sets 56 ("Home")
-               to 71 ("Practise"). Dropping the nav's auto margins changes nothing -
-               the row is simply full, and dropping About and FAQs did not free any
-               of it (they sat in the nav, which was already hidden down here). So on
-               a phone the two pages are reached the conventional way: the hero's
-               Start button and the CTA band go to Practise, and the BRAND MARK goes
-               home from anywhere. Do not add a nav item down here without taking
-               something else out of the row. */
+            /* BOTH PAGES ARE IN THE PHONE'S NAV (2026-09-22, on request: "in mobile
+               view the header should show both the pages similar to the desktop
+               view"). This is the third answer here and each one was a width problem:
+               the nav was hidden outright while the row carried brand + globe menu +
+               a two-word theme seg, then it showed ONE item (the page you are not on)
+               once the seg moved into that menu, and it shows both now that the menu
+               is a 46px EN pill and the seg is three icons.
+               WHAT PAYS FOR IT, measured at 375px: the globe summary (92) became the
+               EN pill (46), the theme seg came back into the row (+92 against the menu
+               it was hidden in), and the BRAND NAME went the way of the tagline (-62),
+               leaving the flag mark - which is still the way home from anywhere. The
+               nav's own gaps and padding are tightened here too, because a 14px label
+               in two links is the thing this row now spends its width on.
+               Do not add a fourth item to this row without taking one out. */
             .brand-tagline { display: none; }
-            /* A ONE-ITEM NAV, and the item is the page you are NOT on (2026-09-22, on
-               request: "there is no way to go to the practise page in mobile view").
-               The nav was hidden outright down here because the row had no room — brand,
-               globe and a two-word theme seg filled it. The seg moves INTO the globe menu
-               on a phone now (syncThemeControlPlacement), and that is the room this
-               needed. Hiding the ACTIVE link is what makes it one item without a second
-               markup path: syncNav() already moves .nav-link--active on every
-               showScreen(), so the header always offers the other page, and the brand
-               mark still goes home from anywhere. */
+            .brand-name { display: none; }
             .header-nav { display: flex; }
-            .header-nav .nav-link--active { display: none; }
+            /* The four-item row is measured at 375 and clears by 14.8px; at 320 the
+               same row overruns the content edge by 41 and `overflow-x: clip` hides
+               it, which is the backstop and not the plan - the moon button was simply
+               cut off. Three trims, all of them stated AFTER the coarse-pointer block
+               so source order gives them the win: half the side gutter, a tighter gap
+               between the three groups, and 28px-wide scheme buttons (28x36 targets,
+               still over the 24px WCAG 2.5.8 floor, and only on a screen this narrow).
+               The row needs 361.5px to fit as it stands, so 360 is where it stops
+               fitting and 375 is left exactly as measured. At 320 it then ends at
+               296.7 in a 304px box, 7.3px clear. */
+            @media (max-width: 360px) {
+                .header-content { padding-inline: var(--space-sm); gap: var(--space-2xs); }
+                .header-controls > .seg .seg-btn { width: var(--ctl-xs); }
+            }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
                and it is the half that actually varies. Stacked, both read in full and
@@ -2882,42 +2888,25 @@
                 <button class="nav-link nav-link--cta" type="button" data-screen="practise" onclick="showScreen('practise')" data-i18n="nav.navPractise"></button>
             </nav>
             <div class="header-controls">
-                <!-- One globe menu instead of two segmented controls, per the mockup.
-                     A native <details> so open/close, Enter, Space and focus order come
-                     free; the only JS is closing it on an outside click or Escape. The
-                     theme switch moved INSIDE it — the mockup shows one control here,
-                     and appearance is a preference you set once. -->
-                <details class="hmenu" id="prefsMenu">
-                    <summary class="hmenu-summary" data-i18n-aria="nav.preferences">
-                        <span class="hmenu-icon" data-icon="globe" aria-hidden="true"></span>
-                        <span id="langBadge">EN</span>
-                        <span class="hmenu-caret" data-icon="chevron" aria-hidden="true"></span>
-                    </summary>
-                    <div class="hmenu-panel">
-                        <span class="eyebrow" data-i18n="nav.language"></span>
-                        <div class="seg" role="group" data-i18n-aria="nav.language">
-                            <button class="seg-btn active" id="langEn" onclick="setLang('en')" lang="en" aria-pressed="true">EN</button>
-                            <button class="seg-btn" id="langDe" onclick="setLang('de')" lang="de" aria-pressed="false">DE</button>
-                        </div>
-                        <!-- The theme seg is MOVED in here below 620px (see
-                             syncThemeControlPlacement) rather than duplicated: #darkBtn
-                             and #lightBtn are ids that setTheme() writes aria-pressed on,
-                             and a copy would be a second element wearing the same id.
-                             This label waits for it and stays [hidden] while the seg is
-                             up in the row. -->
-                        <span class="eyebrow" id="schemeLabel" data-i18n="nav.scheme" hidden></span>
-                    </div>
-                </details>
-                <!-- The theme toggle sits in the ROW, not in the menu: it is a
-                     two-state switch you flip on sight, and burying it behind a
-                     disclosure cost a click to do something instant. The globe menu
-                     keeps the language, which is the thing that needs a current-value
-                     readout. (The .header-cta "Start practising" that used to close
-                     this row is gone: the hero's own Start is ten pixels below it on
-                     the landing tier, and the dashboard tier has the mode band.) -->
+                <!-- Two controls, both in the ROW at every width, per the reference:
+                     a pill that NAMES the language and flips on a click, and a
+                     sun/monitor/moon segment for the scheme. The globe <details> that
+                     used to hold both is gone — a disclosure to choose between two
+                     languages spent a click, and on a phone it was hiding the theme
+                     seg to buy room the nav needed. Neither is text-heavy now, so both
+                     fit beside two nav links at 375px. The label is painted by
+                     paintLangControls(), not by data-i18n: "EN"/"DE" is a language
+                     CODE, identical in both languages, and the aria-label is what
+                     changes with the switch. -->
+                <button class="lang-toggle" id="langToggle" onclick="toggleLang()">EN</button>
+                <!-- Three modes, and System is the new one: it follows
+                     prefers-color-scheme live. Light is still the DEFAULT with nothing
+                     saved, so a first visit is unchanged. Icon-only, so each button
+                     carries its name in aria-label rather than on its face. -->
                 <div class="seg" id="schemeSeg" role="group" data-i18n-aria="nav.scheme">
-                    <button class="seg-btn active" id="darkBtn" data-i18n="nav.dark" aria-pressed="true">Dark</button>
-                    <button class="seg-btn" id="lightBtn" data-i18n="nav.light" aria-pressed="false">Light</button>
+                    <button class="seg-btn seg-btn--icon active" id="lightBtn" data-icon="sun" data-i18n-aria="nav.light" aria-pressed="true"></button>
+                    <button class="seg-btn seg-btn--icon" id="systemBtn" data-icon="monitor" data-i18n-aria="nav.system" aria-pressed="false"></button>
+                    <button class="seg-btn seg-btn--icon" id="darkBtn" data-icon="moon" data-i18n-aria="nav.dark" aria-pressed="false"></button>
                 </div>
             </div>
         </div>
@@ -3324,10 +3313,14 @@
             shield: _svg('<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>'),
             star: _svg('<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>'),
             topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
-            /* The header's preferences menu. Same drawing as ICONS.symbols, which is
-               already a ringed globe with a meridian — this is that, without the
-               flag-pole crossbar, so the two read as one family. */
-            globe: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.4a7.6 7.6 0 1 0 0 15.2a7.6 7.6 0 1 0 0 -15.2Z"/><rect x="2.9" y="11.1" width="18.2" height="1.8" rx="0.9"/><path fill-rule="evenodd" d="M12 2.9c2.7 2.6 4.1 5.7 4.1 9.1s-1.4 6.5-4.1 9.1c-2.7-2.6-4.1-5.7-4.1-9.1s1.4-6.5 4.1-9.1ZM12 6.2c-1.7 1.9-2.6 3.8-2.6 5.8s.9 3.9 2.6 5.8c1.7-1.9 2.6-3.8 2.6-5.8s-.9-3.9-2.6-5.8Z"/>'),
+            /* The header's three scheme modes. `globe` stood here until 2026-09-22
+               and went with the menu that was its only reader — ICONS.symbols is the
+               same drawing if it is ever wanted back. Same solid family: a disc plus
+               eight detached rays, a screen on a stand, and a crescent cut from one
+               disc by another. */
+            sun: _svg('<circle cx="12" cy="12" r="4.2"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(45 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(90 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(135 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(180 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(225 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(270 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(315 12 12)"/>'),
+            monitor: _svg('<rect x="2.8" y="4.2" width="18.4" height="12.6" rx="2.2"/><rect x="10.9" y="16.8" width="2.2" height="2.8"/><rect x="7.4" y="19.4" width="9.2" height="2" rx="1"/>'),
+            moon: _svg('<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>'),
             // The overview card's encouragement chip. Same drawing as
             // tools/icon-packs.mjs's solid pack — keep the two in step.
             leaf: _svg('<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>'),
@@ -3443,11 +3436,16 @@
             // are on screen at once and one of them abandons the round.
             'nav.backAria':        { en: 'Back to the start page',  de: 'Zurück zur Startseite' },
             'nav.tagline':         { en: 'Learn · Practise · Pass',  de: 'Lernen · Üben · Bestehen' },
+            // The three scheme buttons are icon-only, so these are their aria-labels
+            // rather than their faces. nav.language / nav.preferences went with the
+            // menu that read them; the toggle names the ACTION instead, because a pill
+            // that already shows "EN" needs to say what pressing it does.
             'nav.scheme':          { en: 'Colour scheme',           de: 'Farbschema' },
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
-            'nav.language':        { en: 'Interface language',      de: 'Sprache der Oberfläche' },
-            'nav.preferences':     { en: 'Language and appearance', de: 'Sprache und Darstellung' },
+            'nav.system':          { en: 'Match system',            de: 'Wie das System' },
+            'nav.switchToDe':      { en: 'Switch to German',        de: 'Auf Deutsch umschalten' },
+            'nav.switchToEn':      { en: 'Switch to English',       de: 'Auf Englisch umschalten' },
             // The mockup names the action on every card ("Start Simulation", "Choose
             // Topics"). Kept SHORT on purpose: at five columns inside a 1060px cap the
             // row is ~145px wide, and German is the language that decides that.
@@ -3691,18 +3689,23 @@
         }
 
         /**
-         * The two segments and the globe summary's badge, which all three say the same
-         * thing. ONE site, because initLang() and setLang() both need it and the pasted
-         * copy would have drifted the moment the badge showed anything but a code.
-         * The badge is not a data-i18n string: it is a language CODE, identical in
-         * both languages, so applyStaticStrings() must not own it.
+         * The toggle's face and its accessible name. ONE site, because initLang() and
+         * setLang() both need it. The face is a language CODE, identical in both
+         * languages, so applyStaticStrings() must not own it — but the aria-label has
+         * to say what pressing does, and that string IS translated, so it is written
+         * here rather than through data-i18n-aria.
          */
         function paintLangControls() {
             document.documentElement.lang = lang;
-            setSegment(document.getElementById('langDe'), lang === 'de');
-            setSegment(document.getElementById('langEn'), lang === 'en');
-            const badge = document.getElementById('langBadge');
-            if (badge) badge.textContent = lang.toUpperCase();
+            const btn = document.getElementById('langToggle');
+            if (!btn) return;
+            btn.textContent = lang.toUpperCase();
+            btn.setAttribute('aria-label', t(lang === 'en' ? 'nav.switchToDe' : 'nav.switchToEn'));
+        }
+
+        /** Two languages, so the pill flips rather than opening a menu. */
+        function toggleLang() {
+            setLang(lang === 'en' ? 'de' : 'en');
         }
 
         /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
@@ -3875,34 +3878,36 @@
         // ============================================================
         // THEME MANAGEMENT
         // ============================================================
+        // THREE MODES since 2026-09-22 (light / system / dark, per the reference's
+        // sun/monitor/moon). 'system' follows prefers-color-scheme and keeps following
+        // it: the OS can flip while the tab is open, so the query is listened to, not
+        // just read. What did NOT change is the DEFAULT — nothing saved is still light,
+        // not system, so a first visit looks exactly as it did. The pre-paint script in
+        // <head> has to agree with this or a system-dark reader gets a white flash.
+        const _schemeMql = window.matchMedia('(prefers-color-scheme: dark)');
+
         function initTheme() {
-            // Default = light "paper" (the signature bento look); only dark if explicitly saved.
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
+            const saved = localStorage.getItem('theme');
+            setTheme(saved === 'dark' || saved === 'system' ? saved : 'light');
         }
 
-        function setTheme(theme) {
+        function setTheme(mode) {
+            if (mode !== 'dark' && mode !== 'system') mode = 'light';
+            const dark = mode === 'dark' || (mode === 'system' && _schemeMql.matches);
             const meta = document.getElementById('themeColorMeta');
-            if (theme === 'light') {
-                document.documentElement.classList.add('light');
-                state.themeDark = false;
-                setSegment(document.getElementById('darkBtn'), false);
-                setSegment(document.getElementById('lightBtn'), true);
-                localStorage.setItem('theme', 'light');
-                if (meta) meta.setAttribute('content', '#FFFFFF');
-            } else {
-                document.documentElement.classList.remove('light');
-                state.themeDark = true;
-                setSegment(document.getElementById('darkBtn'), true);
-                setSegment(document.getElementById('lightBtn'), false);
-                localStorage.setItem('theme', 'dark');
-                if (meta) meta.setAttribute('content', '#1A1A1A');
-            }
+            document.documentElement.classList.toggle('light', !dark);
+            state.themeDark = dark;
+            setSegment(document.getElementById('lightBtn'), mode === 'light');
+            setSegment(document.getElementById('systemBtn'), mode === 'system');
+            setSegment(document.getElementById('darkBtn'), mode === 'dark');
+            localStorage.setItem('theme', mode);
+            if (meta) meta.setAttribute('content', dark ? '#1A1A1A' : '#FFFFFF');
         }
+
+        // Only while the reader is ON system: in light or dark their choice stands.
+        _schemeMql.addEventListener('change', () => {
+            if (localStorage.getItem('theme') === 'system') setTheme('system');
+        });
 
         // ============================================================
         // SCREEN MANAGEMENT
@@ -5255,6 +5260,7 @@
         // EVENT LISTENERS
         // ============================================================
         document.getElementById('darkBtn').addEventListener('click', () => setTheme('dark'));
+        document.getElementById('systemBtn').addEventListener('click', () => setTheme('system'));
         document.getElementById('lightBtn').addEventListener('click', () => setTheme('light'));
 
         document.getElementById('nextBtn').addEventListener('click', () => {
@@ -5391,19 +5397,6 @@
         initTheme();
         initLang();
 
-        // A <details> gives us the disclosure for free but stays open on an outside
-        // click, which for a header menu reads as broken. Two listeners, no state.
-        const _prefsMenu = document.getElementById('prefsMenu');
-        document.addEventListener('click', (e) => {
-            if (_prefsMenu.open && !_prefsMenu.contains(e.target)) _prefsMenu.open = false;
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && _prefsMenu.open) {
-                _prefsMenu.open = false;
-                _prefsMenu.querySelector('summary').focus();
-            }
-        });
-
         async function loadQuestions() {
             try {
                 const res = await fetch('questions.json', { cache: 'no-cache' });
@@ -5434,27 +5427,11 @@
          * reach for mid-round; on a phone the whole body folds, since a strip there has
          * no room to keep anything.
          */
-        // THE THEME SEG HAS TWO HOMES AND ONE ELEMENT (2026-09-22, on request). In the
-        // header row on a desktop, inside #prefsMenu's panel on a phone — which is what
-        // frees the row for the one-item nav down there. It is MOVED rather than
-        // duplicated because #darkBtn/#lightBtn are ids setTheme() writes aria-pressed on,
-        // and two elements cannot share one. The panel's own rules then apply to it for
-        // free: full width, and --ctl-md buttons under @media (pointer: coarse), which is
-        // the thumb floor the header row deliberately does not give it.
-        // Paired with the CSS in the 620px block; both read 620, and they must agree.
-        function syncThemeControlPlacement() {
-            const seg = document.getElementById('schemeSeg');
-            const label = document.getElementById('schemeLabel');
-            const panel = document.querySelector('.hmenu-panel');
-            const row = document.querySelector('.header-controls');
-            if (!seg || !label || !panel || !row) return;
-            const phone = window.matchMedia('(max-width: 620px)').matches;
-            const home = phone ? panel : row;
-            // Only when it actually has to move: appendChild on every resize event would
-            // rip the control out of the DOM mid-interaction and drop focus with it.
-            if (seg.parentElement !== home) home.appendChild(seg);
-            label.hidden = !phone;
-        }
+        // syncThemeControlPlacement() stood here until 2026-09-22. The theme seg had
+        // two homes — the header row on a desktop, #prefsMenu's panel on a phone — and
+        // was MOVED between them rather than duplicated, because its buttons are ids
+        // setTheme() writes aria-pressed on. Three icons fit the row at every width, so
+        // there is one home again and no JS to keep the two in step.
 
         function syncNavHeaderRole() {
             const tgl = document.getElementById('sidebarToggle');
@@ -5498,11 +5475,7 @@
         document.getElementById('imgZoomClose').addEventListener('click', closeZoom);
         document.getElementById('imgZoomBackdrop').addEventListener('click', closeZoom);
         syncNavHeaderRole();
-        syncThemeControlPlacement();
-        // resize rather than a matchMedia change listener: the latter did not fire under
-        // viewport emulation, and this has to be right at whatever width the reader lands on.
         window.addEventListener('resize', syncNavHeaderRole);
-        window.addEventListener('resize', syncThemeControlPlacement);
         document.getElementById('endScreen').addEventListener('scroll', syncEndScrollCue, { passive: true });
         // ...and the page, for the short-viewport case where #endScreen is not the
         // scroller and its own scroll event therefore never fires.

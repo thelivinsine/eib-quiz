@@ -568,6 +568,49 @@ resizing the viewport mid-session, which leaves `--header-h` stale; a **fresh** 
 375px is exact on both axes.
 
 
+## Session developments (2026-09-22, the header row)
+
+Three asks, one row: adopt a reference UI's control language (an EN pill beside a
+sun/monitor/moon segment), show BOTH pages in the phone's nav, and bring the active
+link's underline closer to a larger label. The first is what made the second possible.
+
+- **The globe `<details>` is gone.** It held the language and, below 620px, the theme seg
+  as well. Two languages do not need a disclosure — `#langToggle` is a pill showing the
+  current code that flips on press — and the deletion took `.hmenu-*`, `#langBadge`,
+  `#schemeLabel`, `syncThemeControlPlacement()`, the outside-click and Escape listeners,
+  the `nav.language` / `nav.preferences` strings, `ICONS.globe` (in both `index.html` and
+  `tools/icon-packs.mjs`) and **the app's only drop shadow** with it. Net: ~90 lines out.
+- **The scheme has three modes: light / system / dark**, as `sun` / `monitor` / `moon`.
+  `system` follows `prefers-color-scheme` and keeps following it (`_schemeMql` is listened
+  to, and the listener acts only while the stored mode is `system`). **The default did not
+  change** — nothing stored is still light — and the pre-paint script in `<head>` learned
+  the third value so a system-dark reader gets no white flash.
+- **The underline is `text-decoration`, not `box-shadow: inset`.** A box-shadow draws at
+  the bottom of the control, which is a 36px hit target around the word; the native
+  property tracks the text, skips descenders and still adds nothing to the height. The nav
+  went `--fs-2xs` -> `--fs-sm` (14px) with it and is now the one thing in the header strip
+  that is not 12px — it is the only content in that row.
+- **Both nav links show on a phone, and the width was found rather than assumed.** The
+  globe summary (92px) became a 46px pill, the seg came back into the row as three square
+  icon buttons (92px against a two-word toggle's ~120), the nav's own gaps tightened, and
+  the BRAND NAME joined the tagline in hiding below 620px (-62px). Measured at 375: the row
+  ends at 359 in a 359px box with 14.8px between the nav and the pill, German narrower than
+  English. Below 360px a nested media block trims the gutter, the group gap and the button
+  width (28x36, over the 24px WCAG 2.5.8 floor) — the row needs 361.5px as it stands, which
+  is where that breakpoint comes from; at 320 it then ends at 296.7 in a 304px box.
+
+**Verified in the pane** at 320 / 360 / 375 / 620 / 940 / 1400: nothing clipped,
+`scrollWidth == innerWidth` everywhere, `scrollHeight == innerHeight` on the quiz screen,
+the nav's `aria-current` follows `showScreen()`, the language toggle flips face + label +
+storage, and all three scheme buttons paint, persist and survive a reload. Both ratchets
+(`contrast.test.mjs`, `scale.test.mjs`) pass with every metric still at budget.
+
+**One thing could NOT be verified here**: the `prefers-color-scheme` **change event** does
+not fire under the preview pane's emulation — a freshly armed listener saw `matches` flip
+false -> true and got nothing — which is the same gotcha that made `syncNavHeaderRole` use
+`resize`. The handler's body was proved by calling `setTheme('system')` against a dark
+`prefers-color-scheme`; the delivery needs a real OS toggle.
+
 ## Notes for future work
 - **PWA updates:** when changing cached assets, bump `CACHE` in `sw.js` so installed PWAs
   and SW-cached browser tabs pick up the new version (otherwise users see a stale build).

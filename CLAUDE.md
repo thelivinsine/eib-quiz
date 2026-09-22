@@ -212,14 +212,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **No drop shadows on a TILE, in either theme.** A tile is a fill plus a hairline, and
     there are still no `--shadow-*` tokens; do not reintroduce one for a tile. This rule
     always carried a condition — "light would only earn a shadow under something that
-    genuinely floats, and nothing in this app does" — and on 2026-09-21 the second
-    clause stopped being true: `#prefsMenu`'s panel is an overlay above unrelated content,
-    and on a white canvas the hairline alone cannot hold it off the page beneath.
-    `html.light .hmenu-panel` is therefore **the one shadow in the app**, scoped to light
-    because dark's `--surface` is already 1.15 above its canvas and the fill separates it.
-    Its literal is not in `LITERAL_PAIRS` for the same reason `.brand-mark`'s flag is not:
-    a shadow carries no text, so there is no pair to assert. **A second shadow needs a
-    second thing that genuinely floats** — not a tile that would like more presence.
+    genuinely floats, and nothing in this app does" — and for one day (2026-09-21 to
+    2026-09-22) the second clause was false: `#prefsMenu`'s panel was an overlay above
+    unrelated content, so `html.light .hmenu-panel` was **the app's one shadow**, scoped
+    to light because dark's `--surface` is already 1.15 above its canvas and the fill
+    separates it. **THE PANEL IS GONE and so is the shadow** — the language is a toggle
+    pill now — so the rule is back to being absolute: **there is no shadow anywhere in
+    this app.** The condition still stands if something genuinely floats again (and that
+    literal would again be outside `LITERAL_PAIRS`, for the same reason `.brand-mark`'s
+    flag is: a shadow carries no text, so there is no pair to assert) — but a tile that
+    would like more presence is not that thing.
   - **In light EVERYTHING steps down; in dark everything steps up.** Light's page is
     white, so there is no "up": a tile is the page colour plus a hairline, `--surface2` is
     a well inset below it, and hover steps further down (`--hover`). In dark all of it
@@ -427,8 +429,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The hero's two buttons read at the HEADER's size, not the CTA band's** (2026-09-21,
   on request, later the same day). All three share `--ctl-md` and `--icon-sm`, and the
   hero's pair (`--space-lg` of side padding) dropped from `--fs-base` to **`--fs-2xs`**
-  so Start now and Learn more match the theme toggle, the globe summary and the two nav
-  links — the whole chrome tier is one size now. The CTA band's button keeps `--fs-base`
+  so Start now and Learn more match the theme toggle and the language pill. The two nav
+  links LEFT that tier on 2026-09-22, on request — see the nav's own note — so the chrome
+  is one size and the navigation is a rung above it. The CTA band's button keeps `--fs-base`
   through `.btn-lg`: it is the page's last call, not header chrome, and nothing about it
   was asked to move. Before that pass the hero's were a rung LARGER than the band's
   (`--ctl-lg` / `--space-xl` / `--fs-md`).
@@ -500,9 +503,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **PRACTISE is drawn LOUDER than Home, and is still a LINK** (2026-09-21, on request).
     `.nav-link--cta` is the same shape as `.nav-link` — no fill, no pill — and in
     `--accent-text`. **It is drawn louder by COLOUR ALONE**: the size step (`--fs-md`)
-    went hours later the same day, on request, when the whole header strip was pinned to
-    one size — `.nav-link`, `.hmenu-summary` and `.seg-btn` are all `--fs-2xs`, so the
-    two nav items and the two toggles beside them read as one row of chrome. **It wore `--btn-fill` in a pill for a
+    went on 2026-09-21, on request, when the whole header strip was pinned to one size.
+    **BOTH links went back UP to `--fs-sm` (14px) on 2026-09-22, on request** ("the text
+    should be enlarged to an optimum size"), and they moved TOGETHER, so the colour is
+    still the only thing that separates them. The strip around them is still `--fs-2xs`:
+    the nav is the only CONTENT in that row, and the language pill and the scheme seg are
+    chrome you glance at. **It wore `--btn-fill` in a pill for a
     few hours the same day and that was wrong**: two items in a two-item nav should read
     as the same KIND of thing, and a solid button beside a bare word reads as a control
     that acts rather than a page you go to. The hero's Start and the CTA band still carry
@@ -523,32 +529,51 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     this is navigation to another one.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
     thing that says which page you are on, and it is not available to a screen reader.
-  - **The LANGUAGE lives inside `#prefsMenu`; the THEME toggle sits in the header row on
-    a desktop and INSIDE THE MENU on a phone** (the split 2026-09-21, the phone case
-    2026-09-22, both on request). The split is not arbitrary: a language needs a
-    current-value readout, which is what the globe summary gives it, while the theme is a
-    two-state switch you flip on sight and a disclosure cost a click to do something
-    instant. On a phone that trade flips — the row's width is worth more than the click,
-    because it is what pays for the one-item nav.
-    **`syncThemeControlPlacement()` MOVES the one element rather than duplicating it**:
-    `#darkBtn`/`#lightBtn` are ids `setTheme()` writes `aria-pressed` on, and two elements
-    cannot share an id. It runs at boot and on resize (resize, not a `matchMedia` change
-    listener — the latter does not fire under viewport emulation), appends only when the
-    parent actually has to change so a resize storm cannot rip the control out from under
-    a press, and flips `#schemeLabel`'s `hidden` with it. Inside the panel the seg inherits
-    the panel's own rules for free, including the `--ctl-md` buttons under
-    `@media (pointer: coarse)` that the header row deliberately does not give it (measured:
-    all four panel buttons 44px at 375). **The CSS and the JS both read 620 and must
-    agree.** `#prefsMenu` is a native `<details>`, so open/close, Enter, Space and focus
-    order are the platform's; the only JS is two listeners closing it on an outside click
-    or Escape. `setLang()` AND `initLang()` both call `paintLangControls()`, which writes
-    `#langBadge` — a language CODE, the same in both languages, so it is not a
-    `data-i18n` string.
+  - **THE UNDERLINE BELONGS TO THE WORD, NOT TO THE BOX** (2026-09-22, on request:
+    "the underline ... should stay closer to the text"). It was `box-shadow: inset 0 -2px
+    0`, which draws along the bottom edge of the control — and the control is a 36px hit
+    target around a 14px label, so the rule sat ~9px under the word. It is
+    `text-decoration: underline` with `text-decoration-thickness: 2px` and
+    `text-underline-offset: 5px`: native, it tracks the text at any size, it skips
+    descenders, and — the reason the box-shadow was chosen in the first place — it still
+    adds nothing to the control's height. It takes `currentColor`, so
+    `.nav-link--cta.nav-link--active` is down to the colour it always was.
+  - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN pill and a sun/monitor/moon
+    seg** (2026-09-22, on request, against a reference UI). The globe `<details>` that
+    held the language — and, on a phone, the theme seg as well — is **gone**, and with it
+    `.hmenu-*`, `#langBadge`, `#schemeLabel`, `syncThemeControlPlacement()`, the two
+    listeners that closed it on an outside click or Escape, the app's one shadow, and the
+    `nav.language` / `nav.preferences` strings.
+    - **A disclosure to choose between TWO things spends a click.** `#langToggle` is a
+      pill that shows the current code and flips on press (`toggleLang()`); it is in
+      `--accent-text` because it is a readout of what you are reading IN, not an offer.
+      `paintLangControls()` still owns its face — a language CODE is identical in both
+      languages, so `applyStaticStrings()` must not — and it also writes the
+      `aria-label`, which DOES translate ("Switch to German" / "Auf Englisch
+      umschalten"): a pill already showing "EN" has to say what pressing it does.
+    - **THE SCHEME HAS THREE MODES NOW — light / system / dark.** `system` follows
+      `prefers-color-scheme` and keeps following it: the OS can flip while the tab is
+      open, so `_schemeMql` is LISTENED to and not just read, and the listener acts only
+      while the stored mode is `system`. **The DEFAULT did not change**: nothing stored
+      is still light, so a first visit looks exactly as it did. **The pre-paint script in
+      `<head>` has to agree with `initTheme()`** or a system-dark reader gets a white
+      flash before the JS runs. *The change EVENT cannot be verified in the preview
+      pane* — a `matchMedia` change listener does not fire under its emulation (the same
+      gotcha that made `syncNavHeaderRole` use `resize`), so `matches` flips and nothing
+      is delivered; `setTheme('system')` was called by hand against a dark
+      `prefers-color-scheme` to prove the body of it.
+    - **Icon-only buttons carry their names in `aria-label`** (`nav.light` /
+      `nav.system` / `nav.dark`), and `.seg-btn--icon` is SQUARE — `--ctl-xs` wide, no
+      side padding — so the three cost ~92px against the two-word toggle's ~120. That,
+      plus the pill being 46px where the globe summary was 92, is what buys the phone's
+      two nav links.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the German flag** in a rounded `--ctl-sm` square, beside a
   `.brand-lockup` of `EIB Quiz` over the `nav.tagline` line. The name is markup, not `I18N`:
-  a product name is not translated. The tagline is hidden below 620px. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
+  a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
+  **so is the NAME** — the flag mark alone stands for the brand on a phone, and the 62px
+  that frees is part of what pays for two nav links down there. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
 - **HOME AND PRACTISE ARE TWO SCREENS** (2026-09-21, on request — this replaces the
   two-tier home screen that `docs/plans/landing-page-refactor.md` describes).
@@ -599,18 +624,28 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **`initHomeScreen()` is still the one door that repaints Practise.** Callers do not
     call the individual renderers. The NAME is unchanged deliberately: a dozen call sites,
     one screen split.
-  - **On a phone the nav is ONE ITEM, and the item is the page you are NOT on**
-    (2026-09-22, on request: "there is no way to go to the practise page in mobile view").
-    This reverses the rule that a one-item nav "was measured and does not fit": it did not
-    fit while the row carried brand + globe + a two-word theme seg, and **the seg moves
-    into the globe menu on a phone now**, which is the room it needed. The mechanism is
-    `.header-nav .nav-link--active { display: none }` in the 620px block — `syncNav()`
-    already moves that class on every `showScreen()`, so the header always offers the other
-    page with no second markup path and no JS of its own. Verified by clicking it at 375px:
-    Home shows "Practise", and after the tap Practise shows "Home".
-    The old routes still work — the hero's Start button, the CTA band, and the BRAND MARK
-    home from anywhere — and `body.in-session .header-nav { display: none }` still wins in
-    a round.
+  - **ON A PHONE THE NAV SHOWS BOTH PAGES, exactly as the desktop does** (2026-09-22, on
+    request). This is the third answer here and every one of them was a WIDTH problem, so
+    read the ledger before changing anything in that row:
+    1. hidden outright, while the row carried brand + globe menu + a two-word theme seg;
+    2. ONE item — the page you are NOT on, via
+       `.header-nav .nav-link--active { display: none }` — once the seg moved into the
+       menu;
+    3. both, now that the menu is a 46px EN pill and the seg is three icons.
+    **WHAT PAYS FOR IT, measured at 375px**: the globe summary (92) became the EN pill
+    (46), the theme seg came back into the row (+92 against the menu it was hidden in),
+    the nav's own gaps and padding tightened, and **the BRAND NAME went the way of the
+    tagline** (-62) — the flag mark alone is still the way home from anywhere. The row
+    ends at 359 in a 359px box with 14.8px of slack between the nav and the pill, and
+    German is narrower than English here ("Start"/"Üben" against "Home"/"Practise").
+    **Below 360px it needs three more trims** and gets them in a nested
+    `@media (max-width: 360px)`: half the side gutter, a tighter gap between the three
+    groups, and `--ctl-xs`-wide scheme buttons (28x36, still over the 24px WCAG 2.5.8
+    floor). The row needs 361.5px as it stands, which is where that number comes from —
+    at 320 it then ends at 296.7 in a 304px box. Measured at 320 / 360 / 375 in both
+    languages, with nothing clipped at any of them.
+    **Do not add a fourth item to this row without taking one out.**
+    `body.in-session .header-nav { display: none }` still wins in a round.
 - **The LANDING PAGE is a hero, why, four numbers and one last call.** (The mode band left
   it for `#practiseScreen`; the notes below still describe the same components.)
   - **The hero is two columns**: eyebrow / headline / lead / two buttons on the left,
@@ -1618,15 +1653,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   and `.btn-lg` (both `--ctl-md` today) and the glossary rows. Two of those numbers are
   history rather than current state: the ready ring is 104px, re-derived from
   `ui/where-you-stand.png`, and `.ds-num` is `--fs-md`.
-  - **The two segs sit in two places and take two sizes.** In `#prefsMenu`'s panel a menu
-    option is something you aim at, so `.hmenu-panel .seg-btn` takes the ordinary
-    **`--ctl-md`** (44px) under `@media (pointer: coarse)`. In the header ROW the theme
-    toggle is glance-only chrome in a strip with two other things, which is what the
-    `--ctl-sm` exception is for: `.header-controls > .seg .seg-btn`, and **the `>` is
-    load-bearing** — it is what keeps this rule off the panel's seg, which is nested
-    inside `.hmenu`. The 620px rule that used to pin every header seg to 28px is
-    **deleted**: stated later in the sheet it won on source order and silently undid the
-    thumb floor. `.brand` / `.session-back` are `--ctl-sm` (`--ctl-md` on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
+  - **There is ONE header seg and it is glance-only chrome**, in a strip with two other
+    things, which is what the `--ctl-sm` exception is for:
+    `.header-controls > .seg .seg-btn` under `@media (pointer: coarse)`, and it sets
+    **WIDTH as well as height** because `.seg-btn--icon` is square — without it a thumb
+    gets a 28x36 target. **The `>` is load-bearing**: it keeps the rule off the
+    navigator's `.qnav-seg`, which has its own. (It also used to keep it off the globe
+    panel's seg, which took the full `--ctl-md`; both the panel and its seg are gone.)
+    The 620px rule that used to pin every header seg to 28px is **deleted**: stated later
+    in the sheet it won on source order and silently undid the thumb floor. The ONE place
+    28px is deliberate is the nested 360px block above, where the alternative is a
+    clipped button. `.brand` / `.session-back` are `--ctl-sm` (`--ctl-md` on coarse). They are chrome you touch rarely, in a row with nothing else to hit;
     everything that is CONTENT — options, nav cells, the card's own buttons — keeps 44px
     **on a coarse pointer**. WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the
     rest of the app holds to.
@@ -1799,7 +1836,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 26 glyphs — 24 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 28 glyphs — 26 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -1810,10 +1847,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
   production — **and a glyph that loses its last reader is DELETED from both**, which is
   what `file` and `checkCircle` did on 2026-09-22 when the overview card's readouts
-  dropped their plates one day after those two were drawn for them. `leaf` stays: it is
+  dropped their plates one day after those two were drawn for them — and what `globe`
+  did the same day, when the menu that was its only reader became a text pill
+  (`ICONS.symbols` is the same drawing if it is ever wanted back). `sun`, `monitor` and
+  `moon` were drawn in that commit for the header's three scheme modes; the sun's eight
+  rays are ONE rect rotated about the centre in the generator, and the shipped string was
+  diffed against the generator's output, which is the check that pack exists for. `leaf` stays: it is
   the encouragement chip's. The `line` and `duotone` objects do NOT carry it, which is
   already true of
-  `book`, `shield`, `star`, `topic` and `globe`: only `solid` ships.
+  `book`, `shield`, `star`, `topic`, `sun`, `monitor` and `moon`: only `solid` ships.
   **Two of them are ALIASES, not drawings**: `ICONS.community = ICONS.society` and
   `ICONS.clock = ICONS.history` (2026-09-21) — a group IS the society glyph, and the
   history glyph IS a clock face (a donut with two hands), so there is one definition to
@@ -1830,8 +1872,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - `index.html` loads question data at runtime from `questions.json` via `fetch`
   (so the app must be served over http/https, not opened via `file://`).
 - Google Fonts is the only intended external network dependency.
-- Dark/light theme uses `localStorage` key `theme`; UI language uses `eib_lang`
-  (default `en`).
+- The colour scheme uses `localStorage` key `theme`, and it holds one of THREE values
+  since 2026-09-22 — `light` | `system` | `dark`. Nothing stored still means light.
+  UI language uses `eib_lang` (default `en`).
 - Learning progress IS persisted (reintroduced 2026-06-20): spaced-repetition records
   under `localStorage` key `eib_progress_v1`, a resumable in-progress session under
   `eib_session_v1`, and a results history under `eib_history_v1`. A "Fortschritt
@@ -2103,9 +2146,11 @@ Before publishing any app change:
 4b. Run `node --test tools/scale.test.mjs` — the size-system ratchet. If a budget FALLS,
    lower it in the same commit; the test says so explicitly. If one RISES, that is a
    regression.
-5. Open the header's globe menu, switch to DE and back: no chrome string may stay in
-   the other language, the question text must stay German in both, and `#langBadge`
-   on the summary must follow the switch.
+5. Press the header's EN pill, and again: no chrome string may stay in the other
+   language, the question text must stay German in both, and the pill's own face AND its
+   `aria-label` must follow the switch. Then walk the three scheme buttons — light,
+   system, dark — and reload on each: the seg's `aria-pressed` and the painted theme must
+   both come back, and `system` must match `prefers-color-scheme` with no flash.
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43
    image questions render, progress persists across reload, and Smart Review surfaces
    due/weak questions. Check **both pages** — Home and Practise — at 375px wide:
