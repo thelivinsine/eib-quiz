@@ -1868,4 +1868,8 @@ against the shipped string.
 
 ### Live
 
-_To be filled in when the PR merges._
+PR [#96](https://github.com/thelivinsine/eib-quiz/pull/96), squash-merged to `main` as
+**`6014457`**. Two departures from the mockup were flagged to the user and left: the
+heading at 28px against its ~31 (no rung between `--fs-2xl` and `--fs-3xl`), and pill
+buttons where both mockups draw ~13px rounded rects — an app-wide change, not a one-card
+one, and it is waiting on a decision.
