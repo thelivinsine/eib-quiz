@@ -1944,3 +1944,9 @@ was tried first and rejected**: it fixes the labels and starves the verdict to ~
 - **No `sw.js` `CACHE` bump** — nothing cache-first changed.
 - The two departures from the mockup #96 flagged (the 28px heading, the pill buttons) are
   still open and were not revisited.
+
+### Live
+
+PR [#97](https://github.com/thelivinsine/eib-quiz/pull/97), squash-merged to `main` as
+**`e188240`**. The resume button's 4.54 hovered ratio was reported and left as a design
+decision, not fixed.
