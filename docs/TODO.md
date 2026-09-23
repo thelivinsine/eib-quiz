@@ -2874,3 +2874,4 @@ looked at, and every glyph stays inside its 24-unit box at 2.75.
 
 ### Not verified
 - Dark theme was not screenshotted; the rule is theme-independent (`currentColor`).
+- **Merged directly to `main` as `e0e058c`** (on request, no PR). Pages publishes it from there.
