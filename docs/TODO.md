@@ -26,7 +26,8 @@ home screen (`hasProgress()` + `data-tier`) is retired.
 - SEO/meta, Open Graph + Twitter cards (rasterized `og-image.png`), JSON-LD, `favicon.svg`.
 - Accessibility: `:focus-visible`, `prefers-reduced-motion`, `aria-live` results,
   `lang="en"` on English text and `lang="de"` on the German exam text, WCAG AA contrast in
-  both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets.
+  both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets on content
+  controls (the header strip is a deliberate 36px exception — see Touch targets below).
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
@@ -68,8 +69,9 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 - **Touch targets under 44px** — fixed at the time, and the rule has since been restated:
   every CONTENT control (options, nav cells, the card's buttons, the progress-reset link)
   holds 44px via `--ctl-md`, and a `@media (pointer: coarse)` block raises the touch cases
-  a rung. The header strip is a **deliberate exception** — `.seg-btn` is 28px and
-  `.brand`/`.session-back` 36px, all clearing WCAG 2.5.8's 24px. The original claim here
+  a rung. The header strip is a **deliberate exception** — the EN box and the scheme seg's
+  cells are 36px (the cells 28px wide below 360px) and `.brand`/`.session-back` 36px, all
+  clearing WCAG 2.5.8's 24px. The original claim here
   ("every button, select and summary measures ≥44px") has not been true since that
   exception was introduced; see the App Shape section of `CLAUDE.md`.
 
@@ -2920,3 +2922,73 @@ exam still draws 30 + 3.
 - No browser without `:has()` was tried. The split rule's effect there is argued.
 - No phone width was re-measured after the reorder. The cells' widths did not change.
 - Chromium only.
+
+## Session developments (2026-09-23, type roles and tablet/phone layout)
+
+Branch `typography-responsive`, shipped as PR #104 (squash-merged on the user's go-ahead after
+the code review below). Spec and plan:
+`docs/plans/2026-09-23-typography-and-responsive-{design,plan}.md`.
+
+- **Every piece of text reads one of 16 `--type-*` roles** (`font: var(--type-*)`), each
+  a `font` shorthand of `--fs-*` / `--lh-*` / `--font-*`. Phone type is two token
+  overrides in a max-width 700px block (heading 22, figure-lg 28; 700 because the 5.2vw headline only clears 36px above 692). `scale.test.mjs` gained the
+  `typeOutsideRoles` ratchet (160 -> 0), a role-format test, a 12px floor test for the
+  roles and a hierarchy test at both widths.
+- **Labels are sentence case** everywhere (quiz readouts, results figures, footer column
+  titles, the history badge); nothing is uppercase (the two taglines only keep `--ls-caps`
+  tracking).
+- **No nav underline**: the current page is `--text`, the other link `--muted`.
+- **Phone hierarchy fixed**: headline 32 > numbers 28 > headings 22 (numbers were 36,
+  headings 18); the question is 18 over 16px answers (both were 16).
+- **Tablet (621-940)**: the quiz keeps Previous/Next under the answers (gap 16px at
+  768x1024, was ~430); the mode grid is six half-tracks so the last two cards centre under
+  the first three, all five one height; the script notes and the gate hide below 940, so
+  the CTA band is one row (122px tall at 768, was 209).
+- **Found and fixed**: the phone readout gap (`--space-sm`) had never applied — the
+  in-session rule's `--space-md` outranked it — and the image credit was an inline 10.9px.
+- The dark-mode why/CTA panels (practise tile shade) ride on the branch as its first commit.
+
+### Verified
+Contrast + scale (28 tests), `validate.js` (460 questions), `node --check` on `sw.js` and
+the main script, `manifest.json` parses. In the pane with `innerWidth` read first: a role
+audit (every visible text element's computed font matched against the 16 roles) is empty on
+Home, Practise (details open), the quiz (image question, explanation open, exam) and results
+at 375 / 768 / 1024 / 1280 in EN and DE. No horizontal overflow at 320 / 375 / 768 / 1024;
+`scrollHeight == innerHeight` on the quiz at 360 / 375 / 620 / 768 / 940 / 1400 with the
+navigator closed and open, and on results at 375 / 768 / 1280. Quiz readouts one line at 360
+in both languages even at 150 / 150 / 50% / 300. All figures compute `tabular-nums`. Mode
+grid measured one height and centred (offset 0.0) at 768 and 1024 in both languages. All
+four verdict headlines one line at 320. The language switch leaves no stale `data-i18n`
+string; the three scheme modes survive a reload.
+
+### Not verified
+- The role audit matches computed signatures, so two roles with the same signature as an
+  unrelated style (e.g. Inter 15/600 = control) can pass a wrong-role element; the declared
+  CSS ratchet is the backstop.
+- No real touch device, no Safari/Firefox; the pane cannot show a hover.
+- 900x600 scrolls, by the existing max-height 640 release, not locked.
+
+### Final review and where it is
+- **Final review** (fresh reviewer): no Critical findings. Two were fixed. First, phone type
+  moved from 620 to 700px, because the 5.2vw headline sat under the 36px figure at
+  621-692px (measured 32.3 against 36 at 621, now 32.3 against 28). A test now sweeps the
+  hierarchy at every width from 320 to 1600. Second, the role tests had holes: a misspelt
+  `--type-*` name passed, and an exception could grow a property it was never granted.
+  Stale comments were corrected too. The colour-only page marker in the nav was left as
+  the user chose it, and is raised in the PR.
+- **Code review fixes** (same day, on the branch): the inactive nav link is also a weight
+  lighter (400), because colour alone was 2.85 / 2.10:1; the results ring shrinks at 700 with
+  its numeral; the `/ 310` and `/ 300` denominators keep `tabular-nums`; list rows
+  (`.hist-row`, `.hist-exam-stats`, `.review-answer`) keep `--lh-ui`; the why/CTA panels
+  read a `--panel` token instead of an `html.light` override; `button, select` reset with
+  `font: inherit`; the 621-940 tablet block is gone (its two phone rules moved into the 620
+  block, which also closes the 620-621px sub-pixel gap); the closing-pair selector no longer
+  hard-codes `:nth-child(4)`; the duplicate label rules joined the shared list.
+  The quiz readouts wrapped at 320 as soon as the counts reached two digits (the row needs
+  up to 310px, the screen had 256): the row drops its phone inset and, below 342px, the
+  score's word, and now holds one line at 320 / 343 / 360 in both languages.
+- **PR #104 is squash-merged to `main`**. Main's `b1328ff` was merged into the branch first;
+  the only conflicts were the nav rule, where the branch's no-underline version won, and this
+  file. **The review's fixes were written by the session that reviewed them**, so no second
+  reader has seen `e867ec9`. After `e867ec9` the full role audit was not re-run; it would flag
+  the three list rows and the inactive nav link by design (14/400 at `--lh-ui` matches no role).

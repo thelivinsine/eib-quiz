@@ -296,26 +296,51 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     script margin-notes — read by `.script-note` alone and NEVER inherited by body copy); `--font-mono` is
     aliased to Inter (kept only so JS refs resolve). All three arrive in **one** Google Fonts
     `<link>`; keep it one request when adding a face. Display
-    weights top out at 700. Uppercase micro-labels take `--ls-caps` (0.06em) and share one rule (`.stat-label` and its list; `.eyebrow` is GONE — see the landing page
-    + shared list).
+    weights top out at 700. Micro-labels are SENTENCE CASE since 2026-09-23 (`--type-label`,
+    no uppercase, no `--ls-caps`) and still share one rule (`.stat-label` and its list;
+    `.eyebrow` is GONE — see the landing page + shared list). `--ls-caps` survives on the
+    two taglines alone.
   - **There is a SIZE system now, and it is measured** (2026-09-20), against
     `claude-context-kit/docs/reference/type-and-space.md` — four shipping design systems
     (Stripe Sail, GitHub Primer, Linear, Khan Wonder Blocks) read out of their live DOM, token
     layer and rendered layer both. `node --test tools/scale.test.mjs` enforces it as a ratchet.
     `docs/plans/sizing-system.md` is the phased plan; **all six phases are done**.
+    - **EVERY PIECE OF TEXT IS ON ONE OF 16 TYPE ROLES** (2026-09-23, on request: "set a
+      clear typography"). `--type-display` / `-heading` / `-subheading` / `-title` /
+      `-option` / `-body` / `-small` / `-label` / `-caption` / `-figure-lg` / `-figure-md`
+      / `-figure-sm` / `-script` / `-control` / `-control-sm` / `-chip`, each a `font`
+      shorthand of `--fs-*` / `--lh-*` / `--font-*` in `:root`, read as
+      `font: var(--type-*)`. **`font:` goes FIRST in its rule** — it resets
+      `font-variant-numeric` and `line-height`, so a figure re-declares `tabular-nums`
+      after it; it carries no tracking, so a head-family role keeps `--ls-display` on the
+      component. Phone type is TWO token overrides in a `max-width: 700px` block (heading 22,
+      figure-lg 28); no component states a font size. `scale.test.mjs` holds it:
+      `typeOutsideRoles` is 0, `ROLE_EXEMPT` names the only exceptions (body, the iOS
+      `<select>`, the wordmark, two glyphs, EN's 700, the inactive nav link's 400, three
+      inline emphasis spans). `button` and `select` reset with `font: inherit`, not just
+      the family, so a button that forgets its role inherits rather than taking the UA's
+      13.33px, and a hierarchy test keeps display > figure-lg > heading >
+      subheading > title and the question > its answers at EVERY width, 320 to 1600 — the phone had
+      all three inverted (numbers 36 over a 32 headline, headings 18 over 16 titles, the
+      question 16 = its answers). **Labels are sentence case** — nothing in the sheet is
+      uppercase; the two taglines are sentence case too and only keep `--ls-caps` tracking. Spec and plan: `docs/plans/2026-09-23-typography-*`.
     - **Compare the LINE BOX, not the ratio.** All four references land their dominant UI line
       at 19.5-21px whatever ratio gets them there. This app was `16px x 1.6 = 25.6px`, ~25%
       taller than any of them, paid once per line everywhere. `body` is `--lh-ui` (1.3) = 20.8px.
       Three leadings: `--lh-tight` (1.15, display numerals and the hero), `--lh-ui` (the
       default), `--lh-prose` (1.55, and ONLY running text — `.hero-lead`, `.mode-description`,
       `.section-head p`, `.explanation-text`, `.review-explanation`, `.question-english`).
+      A LIST ROW that reads `--type-small` for its 14px (`.hist-row`, `.hist-exam-stats`,
+      `.review-answer`) puts `line-height: var(--lh-ui)` back after the role: a row is not
+      running text.
       Unitless on purpose: a length would be inherited verbatim by a 12px label.
     - **`--fs-2xs` (12px) is the FLOOR, and NOTHING is exempt.** Of the four references
       three render nothing below 12px and the fourth stops at 13; the 11px tokens that exist
       went unused on every page measured. `TYPE_EXEMPT` existed twice in one day, both times
       for the overview card's names (`.ready-ring-sub` at 9px, then it plus `.ds-label` at
-      11px), and **what retired it was FORMAT, not size**: those four are the verdict
-      paragraph's rule now — `--fs-xs`, 400, no uppercase, no tracking — which is quieter
+      11px), and **what retired it was FORMAT, not size**: those four took the verdict
+      paragraph's rule — `--fs-xs`, 400, no uppercase, no tracking (`--type-label` since
+      2026-09-23) — which is quieter
       AND narrower than 11px uppercase was, on a scale step. A tracked capital is wide.
       **If one is ever needed again it is a NAMED SELECTOR, never a budget of 1** — a
       budget says "one is tolerated" and invites a second where a selector says which and
@@ -365,7 +390,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       off-scale spacing, 2 tracking values, 1 remaining `min-height` literal (the 120px
       placeholder under a MISSING option image, which is a box and not a control).
     - **The quiz screen's hierarchy is the right way up now.** `.question-text` is 18px and
-      the largest text on the screen; `.stat-value` came DOWN from 20.8 to 16 and the answer
+      the largest text on the screen (`--type-subheading`, and 18 on a phone too since
+      2026-09-23 — the phone had it at 16, the same as its answers); `.stat-value` came DOWN from 20.8 to 16 and the answer
       options went UP from 14.4 to 16. Emphasis is made by lowering chrome, never by
       inflating content.
     - **A label that has to break the type scale to fit its container does not belong inside
@@ -375,8 +401,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       is gone. **It came back on 2026-09-21** when the overview card was rebuilt against
       its mockup — and this measurement is exactly what it cost: a 104px dial, a
       separate `dash.accuracyShort` whose
-      German is "Quote". It was 9px, then 12px, then 11px in a single day, and it is the
-      **verdict paragraph's rule** now — `--fs-xs`, 400, sentence case — shared with
+      German is "Quote". It was 9px, then 12px, then 11px in a single day, and it is
+      **`--type-label`** now (2026-09-23; it was the verdict paragraph's rule) — `--fs-xs`,
+      400, sentence case — shared with
       `.ds-label`, so the dial's caption and the three readout names are one declaration.
       Dropping the uppercase is what made the fit a non-question: "Accuracy" sets **58.2 in
       an 83.7px chord** and "Quote" 37.1. The wrapper is still
@@ -388,6 +415,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       four readouts no longer fitted one 360px line in German — and the LABEL is what is wide,
       not the number ("Beantwortet" alone is ~100px). `n / total` is the one readout that
       names itself beside Richtig / Falsch / Score, so it is the one that can give the word up.
+      **Below 342px the score gives its word up too** (`.stat:nth-child(3)`, 2026-09-23), and
+      on every phone the readout row has NO side inset (it is centred, so the inset aligned
+      nothing): at 16px figures over 13px labels the row needs up to **310.4px** in English
+      (150 / 150 / 50% / 300 / 300) and 320 has 288. Measured one line at 320 / 343 / 360 in
+      both languages at 5/3, 60/40 and 150/150. **Measure a readout with `flex: none`**: with
+      wrapping off, the answered item SHRINKS and the total comes out ~30px short.
     - **A token must never be minted larger than the value it replaces IN SILENCE.**
       `--fs-hero` was first written as `clamp(1.75rem, 3.2vw, 2.5rem)` and undid the phase-5
       headline cut it was supposed to carry — the hero measured 283px on a phone while the
@@ -399,7 +432,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       hero at 38px against 59, the three section headings at 22 against 30, the four
       headline numbers at 28 against 39. So `--fs-hero` is `clamp(2rem, 5.2vw, 3.5rem)`
       (56px desktop, 32 on a phone), `.section-head h2` and `.cta-copy h2` take `--fs-2xl`,
-      and `.stats-num` takes `--fs-3xl`. The BODY tier did not move — phases 1-5 were about
+      and `.stats-num` takes `--fs-3xl` (`--type-figure-lg` since 2026-09-23 — weight 600, and
+      **28 on a phone**, so the 32px headline outranks it). The BODY tier did not move — phases 1-5 were about
       line boxes and padding, and none of that was reopened. The page grew 1564 -> 1753px
       desktop (+12%) and 3.31 screens at 375px **as measured that day**. It has moved
       several times since (the why band's air, the footer, the hero crop); the landing
@@ -509,8 +543,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   there the third takes its own line instead of a German word breaking mid-word), and the exam timer goes
   to one line. The quiz readouts drop their hairlines and tighten to a `--space-sm` gap so all four stay
   on ONE line in both languages at 360px — they are the one thing on that row worth reading, so
-  the numbers went UP rather than down (they are `--fs-2xs` today). The header goes the other way: it is a strip
-  you glance at, so `.header-controls .seg-btn` is `--ctl-xs`, `.session-back` `--ctl-sm` and the
+  the numbers went UP rather than down (figure-sm 16 over label 13 since 2026-09-23, paid for by
+  the phone's 8px readout gap — which had never applied, because the in-session rule's 16px
+  outranked it on specificity, until the bigger figures wrapped the German row and exposed it). The header goes the other way: it is a strip
+  you glance at, so the header seg's cells are `--ctl-sm` (`--ctl-xs` wide below 360px), `.session-back` `--ctl-sm` and the
   brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
   **There is no `.header-cta` any more** (2026-09-21, on request). The header used to end
   in a "Start practising" pill beside the controls; the hero's own Start sits ten pixels
@@ -533,26 +569,28 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `nav.soon` / `nav.soonTitle`. They were `aria-disabled` buttons wearing a "Soon" chip
     for pages that do not exist. **If either is built it comes back as an ordinary
     `.nav-link` with a `data-screen` and a screen behind it** — not as a promise.
-  - **BOTH NAV LINKS ARE `--text`, and the underline alone marks the page**
-    (2026-09-23, on request: Practise "should also be in black"). `.nav-link--cta` is
-    **gone** — the accent, its `brightness()` hovers and the active override with it. It
-    had drawn Practise louder than Home in `--accent-text` since 2026-09-21. Hover steps
-    the label back to `--sub-text`; with both links already the darkest tier there is no
-    darker state to step to. It is inside `@media (hover: hover)`: on a touch screen a tap
-    leaves `:hover` stuck on the link just made active, which would grey the current page. **The old `brightness()` lesson still holds anywhere it is
+  - **THE CURRENT PAGE IS `--text` AND THE OTHER LINK IS `--muted`** (2026-09-23, on
+    request: "get rid of underline for header page selection"). Earlier the same day both
+    links were `--text` (on request: Practise "should also be in black") with an underline
+    marking the page; the underline went, so colour took the job over — and **weight
+    with it**: `--text` against `--muted` is 2.85:1 in light and 2.10 in dark, under WCAG
+    1.4.1's 3:1 for a colour-only cue, so the other link is also 400 against the role's
+    600 (`.nav-link:not(.nav-link--active)`, a named `ROLE_EXEMPT`). `.nav-link--cta`
+    is **gone** — the accent, its `brightness()` hovers and the active override with it;
+    it had drawn Practise louder than Home in `--accent-text` since 2026-09-21. Hover
+    steps the inactive link up to `--text` and leaves it at 400, so a hover never looks
+    current. It is inside `@media (hover: hover)`: on a
+    touch screen a tap leaves `:hover` stuck on the link just pressed. **The old `brightness()` lesson still holds anywhere it is
     tried again**: a filter on TEXT is a contrast change `contrast.test.mjs` cannot see
     (`brightness(1.12)` put `#2563EB` at 4.36 on white) — change a token instead.
     `accent-text / canvas` is still asserted, for any accent word straight on the page.
-  - **The active nav link carries `aria-current="page"`.** The underline is the only other
-    thing that says which page you are on, and it is not available to a screen reader.
-  - **THE UNDERLINE BELONGS TO THE WORD, NOT TO THE BOX** (2026-09-22, on request:
-    "the underline ... should stay closer to the text"). It was `box-shadow: inset 0 -2px
-    0`, which draws along the bottom edge of the control — and the control is a 36px hit
-    target around a 14px label, so the rule sat ~9px under the word. It is
-    `text-decoration: underline` with `text-decoration-thickness: 2px` and
-    `text-underline-offset: 5px`: native, it tracks the text at any size, it skips
-    descenders, and — the reason the box-shadow was chosen in the first place — it still
-    adds nothing to the control's height. It takes `currentColor`.
+  - **The active nav link carries `aria-current="page"`.** Colour and weight are the
+    only other things that say which page you are on, and neither reaches a screen reader.
+  - **THE UNDERLINE IS GONE** (2026-09-23, on request). It was `text-decoration:
+    underline` (2px, offset 5px), which on 2026-09-22 replaced a `box-shadow: inset 0 -2px
+    0` because the shadow drew along the bottom of the 36px box, ~9px under the word. **If
+    an underline ever comes back, it belongs to the word (`text-decoration`), not to the
+    box.**
   - **The nav and the toggles sit on the strip's CENTRE line** (2026-09-23, on request:
     "quite close to the border"). This reverses 2026-09-22's "a bit closer to the header
     border line downwards", which put them 8px low with `align-self: flex-end` plus a
@@ -806,6 +844,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     page. (The practise page's own tiles took `--band` later the same day — see the
     practise-tile note below — which is a tile ON the page, not a panel around a set
     of them.)
+    **IN DARK THE WHY AND CTA BANDS ARE THE PRACTISE TILE** (2026-09-23, on request:
+    "adapted by referencing the practise page"): `--tile` on `--tile-edge`, the same
+    #202020 / #2F2F2F as the mode cards and the overview card, where `--band` on
+    `--border` was a brighter slab in the heaviest outline on the page. They read
+    `--panel` / `--tile-edge`: `--panel` is `--tile`'s hex in dark and `--band`'s in light,
+    written as literal hex in both token blocks because `contrast.test.mjs` parses tokens as
+    hex and cannot resolve a `var()`. So **light did not move** (`--tile-edge` IS `--border`
+    there), and the text, disc and edge pairs are asserted against `panel` itself. (It was
+    an `html.light .why-grid, html.light .cta-band` override for one commit.) **The footer was left on `--band`
+    / `--border`** — it is shared with the Practise page, where it already sat under
+    `--tile` cards.
   - **ONE BLOCK SETS THE GAP TO THE NEXT, AND IT IS `.home-section`'s MARGIN**
     (2026-09-22, on request: "optimize the space within the bands"). `#whyBand` carried
     `padding-block: var(--space-2xl)` of its own, written when it was the BARE section
@@ -839,7 +888,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **THE WHY BAND AND THE NUMBERS BAND SWAPPED TREATMENTS** (2026-09-22, on request,
     against a screenshot: "invert the ... formatting for the sections"). This reverses
     what stood here for a day, so read both halves before touching either:
-    - **The WHY band is the PANEL**: `--band`, a `--border` hairline, the 16px radius and
+    - **The WHY band is the PANEL**: `--band` on a `--border` hairline in light (`--tile` on
+      `--tile-edge` in dark since 2026-09-23 — see the panels note above), the 16px radius and
       a `--space-xl` inset — **and no vertical separators**, which is the half of the old
       argument that survives. Hairlines between four CLAIMS turn them into a table; a
       frame around the SET does not, it groups them.
@@ -868,8 +918,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     row carries "Citizenship opens new paths." and the CTA band "A small step. A bigger
     future." **The KEYS did not move with the values** — `stats.annotation` and
     `cta.annotation` each still name the band they are rendered in — so look for one of
-    these lines by its VALUE, not by its key. Both are hidden below 620px, with
-    `.cta-art`, so this is a desktop-only arrangement.
+    these lines by its VALUE, not by its key. Both are hidden below **940px** (620 until
+    2026-09-23), with `.cta-art`: at tablet width the numbers band's note wrapped onto a
+    line of its own and the CTA band's pushed its button under the copy.
   - **`.result-stats` is the ONLY hairline-separated band left**, and its `gap: 1px` is
     the only such literal in the sheet. Writing a second one takes `literalSpacing` to 3
     and `gapRungs` to 8, both over budget — so a band that wants hairlines JOINS that
@@ -904,8 +955,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     decision — it was put to the user and answered no. No card names its action in words
     since 2026-09-23 — see the mockup's card below.
   - **The grid's column counts are spelled out, not `auto-fit`.** With five cards, four
-    columns strand the fifth on a row of its own and two columns strand it on a third. Only
-    5, 3 and 1 divide the set cleanly: five above **1160px**, three to 620px, one below.
+    columns strand the fifth on a row of its own and two columns strand it on a third. Five
+    above **1160px**, three to 620px, one below. **The three-column range is a SIX-track
+    grid** (2026-09-23): each card spans two and the first card of a closing pair starts on
+    the second (`:nth-child(3n + 1):nth-last-child(2)`, not `:nth-child(4)`, so a sixth card
+    cannot leave a hole), the last two centre under the first three, and
+    `grid-auto-rows: 1fr` makes all five one height. They fell 3 + 2 before, the pair hard left and taller than the row above.
   - **1160px is a breakpoint that German set.** At five columns the title box is ~135px
     whatever the viewport (it was ~167 before the band's padding came off the grid), because
     `main` caps the content long before the screen does, and `Prüfungssimulation` is one
@@ -1151,7 +1206,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
         `dash.verdict.buildingSub`) takes them as placeholders — change the exam there,
         in one place. `.dash-pass` under the verdict is its key: the same bar, "Pass mark 52%"
         (`dash.passMark`);
-      - the percentage at **`--fs-xl`/700**, the card's one large figure and still a rung
+      - the percentage at **`--fs-xl`** (`--type-figure-md`, weight 600 since 2026-09-23), the card's one large figure and still a rung
         under the section heading's `--fs-2xl`.
       Measured: arc and knob land exactly (67% -> dashoffset 103.6, knob 241.2deg); the
       summary pair centres at 1000px; at 375 the reset glyph (308-352) clears the ring
@@ -1261,8 +1316,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       The mockup does it the other way — a ~23px figure over a ~9.5px caption in an 89px
       dial — and this is a deliberate departure from it: bare blocks on a card have no
       tile to balance a big figure, so the row is harmonised against ITSELF instead.
-      **The four labels ARE the verdict's paragraph** (2026-09-22, on request): the
-      same `--fs-xs` / 400 / `--muted` / `--lh-prose`, and — the point — **no uppercase
+      **The four labels WERE the verdict's paragraph** (2026-09-22, on request; since
+      2026-09-23 they are `--type-label`, 13/400 at `--lh-ui`, and the paragraph is
+      `--type-small`): the same `--fs-xs` / 400 / `--muted` / `--lh-prose`, and — the point — **no uppercase
       and no `--ls-caps`**. They are sentence case now ("Answered", "Due for review"),
       which is how the strings were always written; the shouting was CSS. This is the
       third answer to "not bold and reduced" and the only one that needed no exemption:
@@ -1353,14 +1409,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       plate-to-figure gap this replaces was `--space-lg`, and the width argument that
       set it — "DUE FOR REVIEW" at 111.6px against a 104.4px box — is what the plate's
       removal settled: the label has the whole 131px column now.)
-    - **The VERDICT is 15/13px** (`--fs-base` / `--fs-xs`), and **14/13 below 620px**.
+    - **The VERDICT is `--type-title` over `--type-small`** (16/14, since 2026-09-23;
+      it was 15/13 with a 14/13 phone step, and the history below is that version's).
       It went 15/13 -> 13/12 -> 12/12 -> back to 15/13 in one day (2026-09-22), the last
       move on request: at 12/12 it was the smallest thing in the card and read as a
       caption on the ring rather than as the card's own sentence. What makes 15 safe is
       the grid, not luck — `.dash-summary` went to `2fr`, so the verdict box is 247px and
       the worst headline ("You're just getting started", 188.0) clears it by 59.
-      **On a phone that box is 189px and the same string sets 188**, one pixel, which is
-      not clearance — hence the rung down to `--fs-sm` (175.4 in 189) in the 620px block.
+      **On a phone that box was 189px and the same string set 188**, one pixel, which is
+      why there WAS a rung down to `--fs-sm` in the 620px block. It is gone: the summary
+      stacks on a phone, so the headline has the card's full width, and all four tiers
+      measure one line at 320 in both languages at 16px.
       All four tiers measured in both languages at both widths: every headline is ONE
       line, which is what keeps this block shorter than the ring beside it (152px since
       2026-09-23; the verdict with its pass-mark key measures 70 at 1280).
@@ -1647,8 +1706,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     from BELOW the bar: its `--space-2xl` is a desktop rhythm, and at `--space-lg` down
     here the four options of an ordinary question still fit without a scroller at 375x667
     (measured: it scrolled with the gap left at 40px). The tally shrank one step with it —
-    `.stat-value` and its label both sit at `--fs-2xs` — because at the bottom of the column
-    it no longer has to carry the row the way it did at the top.
+    `.stat-value` and its label sat at `--fs-2xs` — because at the bottom of the column
+    it no longer has to carry the row the way it did at the top. (Since 2026-09-23 they are
+    figure-sm 16 / label 13 on a phone too: one role, one look.)
   - **On a phone the bar and the button row take the QUESTION's width** (2026-09-20).
     Below 620px `.question-card` carries `--space-md` of padding, which insets the
     question and its options; `.quiz-progress` hangs off `#quizScreen` and `.quiz-nav`
@@ -1731,8 +1791,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     gap between the readouts and the question they report on, and pushed the question away from
     the panel's top edge; the readouts now sit `--space-md` above the question (measured
     16px) and the slack falls below the answers, where the panel's own bottom edge already is.
-  - Below 940px the card goes back to filling its area, so the two buttons hold one position
+  - Below 620px the card goes back to filling its area, so the two buttons hold one position
     on every question, directly above the overview strip where a thumb can learn them.
+    **On a tablet (621-940px, since 2026-09-23) it does not**: the card is content-sized and
+    the column centres in its row, so Previous and Next sit under the answers — pinned,
+    they left ~430px of nothing on a 1024px-tall tablet (measured 16px now). There is no
+    tablet block for it: the stretch (`.quiz-main { align-self: stretch }`,
+    `.question-card { flex: 1 }`) lives in the 620px block, so 621-940 simply keeps the
+    base rules.
   - **There is no rule above Previous and Next**, and the buttons are the one standard
     button (44px, 15px — they were 36px / 13px until 2026-09-23); 15px is still under the
     18px question and the 16px options, so they do not outweigh what they move you through. **The keyboard hint rides between them**, inside
@@ -1812,7 +1878,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     The meta row and `.quiz-nav` take `--space-sm`, and `.options` 12px. The question
     is `--fs-lg`, an option is `--fs-md` in a `--ctl-md` row (`--ctl-lg` under
     `@media (pointer: coarse)` — a thumb gets the height back, a mouse does not need it) with a
-    26px letter chip, and the explanation is `--fs-sm`. At 994x734 a four-option text question
+    26px letter chip, and the explanation is `--type-body` (15px, `--lh-prose`; it was
+    `--fs-sm` until 2026-09-23). At 994x734 a four-option text question
     fits with no scroller at all; a four-IMAGE question or an open explanation still scrolls
     `.question-body`, which is what it is for.
 - **The sizing scale was tightened for a page of sections** (2026-09-20). `--space-lg`
@@ -1884,7 +1951,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **The results page is a hero, one band and a list** (2026-09-20) — five boxes fewer.
   - **The score is not in a card.** `.score-hero` puts the ring, the verdict pill and the
     pass-mark note straight on the page, the way the question does. A box round a ring
-    says nothing the ring does not. The ring is **190px** (160 under 620px) and the three
+    says nothing the ring does not. The ring is **190px** (160 at 700px and below — the same step that takes
+    its numeral to 28, so the dial and the figure shrink together) and the three
     actions below it are the standard button: the ring is the result, the
     buttons are only what you do next, and with no card around either the ring has to
     carry the screen on its own.
@@ -2223,10 +2291,15 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `tools/scale.test.mjs` - the size system as a test: the type/space/control/tracking scales,
   asserted against `index.html` (`node --test tools/scale.test.mjs`). It is a RATCHET — each
   metric has a budget in `BUDGETS`, and the test fails both when a number rises and when it
-  falls without the budget being lowered in the same commit. Two checks are hard rather than
-  budgeted: no property declared twice for one selector in one scope (the `.stat { gap }` bug
-  class, which shipped three times), and no literal `border-radius`. The `vh`-then-`svh`
-  fallback is the one allowed duplicate. **`ICON_EXEMPT` is the only named exemption**;
+  falls without the budget being lowered in the same commit. The hard checks, not budgeted:
+  no property declared twice for one selector in one scope (the `.stat { gap }` bug class,
+  which shipped three times), no literal `border-radius`, and — since 2026-09-23 — the type
+  roles: 16 `--type-*` tokens built only from `--fs-*` / `--lh-*` / `--font-*`, none under
+  12px, every `font:` naming a role that exists, and the hierarchy holding at every width
+  from 320 to 1600. The `vh`-then-`svh` fallback is the one allowed duplicate. **Two named
+  exemptions**: `ICON_EXEMPT` (selectors) and `ROLE_EXEMPT` (a selector-to-PROPERTY map
+  for the `typeOutsideRoles` ratchet, so an exempt rule cannot grow a property it was never
+  granted);
   `TYPE_EXEMPT` existed twice on 2026-09-22 (the overview card's names at 9px, then at
   11px) and both times FORMAT retired it — sentence case with no tracking is quieter and
   narrower than tracked capitals, on a scale step. An exemption is a selector rather than a

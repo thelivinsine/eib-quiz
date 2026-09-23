@@ -150,6 +150,9 @@
                2.02 on the tile, where --hover's fill would be a 1.6 slab. */
             --tile-hover:      #282828;
             --tile-edge-hover: #505050;
+            /* The landing page's why and CTA panels: the tile's shade in dark (--tile's
+               value), --band's recess in light. A token, not an html.light override. */
+            --panel:           #202020;
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
@@ -327,6 +330,30 @@
                it must never be inherited by body copy. */
             --font-hand: 'Caveat', 'Bricolage Grotesque', cursive;
 
+            /* ---- TYPE ROLES (2026-09-23) -----------------------------------------
+               Every piece of text is on exactly ONE of these, read as
+               `font: var(--type-*)` — and `font:` goes FIRST in its rule, because the
+               shorthand resets font-variant-numeric and line-height. It carries no
+               tracking, so a head-family role keeps --ls-display on the component.
+               Phone sizes are two overrides in the max-width 700px block; no component states a
+               font size. Spec: docs/plans/2026-09-23-typography-and-responsive-design.md */
+            --type-display:    700 var(--fs-hero)/var(--lh-tight) var(--font-head);
+            --type-heading:    600 var(--fs-2xl)/var(--lh-ui) var(--font-head);
+            --type-subheading: 600 var(--fs-lg)/var(--lh-ui) var(--font-head);
+            --type-title:      600 var(--fs-md)/var(--lh-ui) var(--font-head);
+            --type-option:     400 var(--fs-md)/var(--lh-ui) var(--font-body);
+            --type-body:       400 var(--fs-base)/var(--lh-prose) var(--font-body);
+            --type-small:      400 var(--fs-sm)/var(--lh-prose) var(--font-body);
+            --type-label:      400 var(--fs-xs)/var(--lh-ui) var(--font-body);
+            --type-caption:    400 var(--fs-2xs)/var(--lh-ui) var(--font-body);
+            --type-figure-lg:  600 var(--fs-3xl)/var(--lh-tight) var(--font-head);
+            --type-figure-md:  600 var(--fs-xl)/var(--lh-tight) var(--font-head);
+            --type-figure-sm:  600 var(--fs-md)/var(--lh-tight) var(--font-head);
+            --type-script:     400 var(--fs-xl)/var(--lh-ui) var(--font-hand);
+            --type-control:    600 var(--fs-base)/var(--lh-ui) var(--font-body);
+            --type-control-sm: 600 var(--fs-sm)/var(--lh-ui) var(--font-body);
+            --type-chip:       600 var(--fs-2xs)/var(--lh-ui) var(--font-body);
+
             --ease:        cubic-bezier(0.4, 0, 0.2, 1);
             --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
@@ -368,6 +395,7 @@
             --tile-edge:       #E0E7F1;
             --tile-hover:      #EEF3FA;
             --tile-edge-hover: #C8D2E2;
+            --panel:           #F5F8FC;   /* --band's value */
 
             --border:       #E0E7F1;   /* 1.245 on a tile AND on the page */
             --border-soft:  #EDF1F8;
@@ -450,8 +478,10 @@
         }
 
         img { max-width: 100%; display: block; }
-        button { font-family: inherit; cursor: pointer; color: inherit; }
-        select { font-family: inherit; }
+        /* The whole font, not just the family: the UA gives a <button> 13.33px, so a new
+           button whose rule forgets its role would render under the 12px floor. */
+        button { font: inherit; cursor: pointer; color: inherit; }
+        select { font: inherit; }
         ::selection { background: var(--accent-soft); color: var(--text); }
         :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: var(--radius-xs); }
 
@@ -486,15 +516,12 @@
            ============================================================ */
         [data-hue] { --hue-tint: var(--surface2); --hue-ink: var(--sub-text); }
 
-        /* Shared uppercase micro-label */
+        /* Shared micro-label: --type-label, sentence case since 2026-09-23 (it was
+           uppercase 12/600 with --ls-caps). */
         .stat-label, .breakdown-label, .review-q-num,
-        .timer-label,
+        .timer-label, .ds-label, .ready-ring-sub,
         .sidebar-title, .question-num {
-            font-family: var(--font-body);
-            font-size: var(--fs-2xs);
-            font-weight: 600;
-            letter-spacing: var(--ls-caps);
-            text-transform: uppercase;
+            font: var(--type-label);
             color: var(--muted);
         }
 
@@ -568,17 +595,18 @@
         html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
         .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
-        .brand-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
+        .brand-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); }
 
         /* Inside a session the logo is a link that loses your round, dressed as a
            logo. Body.in-session swaps the two; nothing branches in JS. */
         .session-back {
+            font: var(--type-control-sm);
             display: none;
             align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm);
             background: var(--surface2); border: 1px solid var(--border);
             border-radius: var(--radius-ctl);
-            color: var(--sub-text); font-size: var(--fs-sm); font-weight: 600;
+            color: var(--sub-text);
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
         .session-back:hover { background: var(--hover); border-color: var(--border-hover); color: var(--text); }
@@ -594,30 +622,24 @@
            plus a -4px margin - which left the nav box 4px off the hairline. */
         .header-nav { grid-column: 2; display: flex; align-items: center; gap: var(--space-sm); }
         .nav-link {
+            font: var(--type-control-sm);
             display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-sm);
             background: none; border: none; border-radius: var(--radius-sm);
-            font-size: var(--fs-sm); font-weight: 600; color: var(--text);
+            color: var(--muted);
             transition: color 0.18s var(--ease);
         }
-        /* BOTH LINKS ARE --text (2026-09-23, on request: Practise "should also be in
-           black"). The underline alone says which page you are on, so hover can only
-           step the colour back a tier - and only where hover exists: a tap leaves :hover
-           stuck on the link you just made active, which would grey the current page. */
-        @media (hover: hover) { .nav-link:hover { color: var(--sub-text); } }
-        /* The mockup underlines the current section, and the underline belongs to the
-           WORD, not to the control's box (2026-09-22, on request: "closer to the text").
-           It was `box-shadow: inset 0 -2px 0`, which draws along the bottom of a 36px
-           hit target - about 9px of nothing under the label. text-decoration is the
-           native answer: it tracks the text at any size, skips descenders, and still
-           adds nothing to the control's height, which is the whole reason the
-           box-shadow was chosen over a border. The label went up a rung with it
-           (--fs-2xs -> --fs-sm), so the nav is the ONE thing in the header strip that
-           is not 12px: it is the only CONTENT in the row - the language pill and the
-           theme seg are chrome you glance at. */
-        .nav-link--active {
-            text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px;
-        }
+        /* THE CURRENT PAGE IS --text AND THE OTHER LINK IS --muted (2026-09-23, on
+           request: "get rid of underline for header page selection"). The underline was
+           the only visible marker, and colour alone is not enough: --text against
+           --muted is 2.85:1 in light and 2.10 in dark, under WCAG 1.4.1's 3:1, and a
+           hovered link turns --text too. So the other link is also a WEIGHT lighter,
+           400 against the role's 600, and a hover never makes it look current.
+           aria-current="page" still names the page to a screen reader. Hover is inside
+           (hover: hover): a tap leaves :hover stuck on the link just pressed. */
+        .nav-link:not(.nav-link--active) { font-weight: 400; }
+        @media (hover: hover) { .nav-link:hover { color: var(--text); } }
+        .nav-link--active { color: var(--text); }
 
         /* About and FAQs were here as aria-disabled buttons wearing a "Soon" chip,
            and both are GONE (2026-09-21, on request) along with .nav-soon, the
@@ -647,11 +669,12 @@
            fills and the accent used to say, a darker grey and WEIGHT say now. EN is the
            code you are reading in, so it wears the chosen tier - --text at 700. */
         .lang-toggle {
+            font: var(--type-chip);
             display: inline-flex; align-items: center; justify-content: center;
             min-height: var(--ctl-sm); min-width: var(--ctl-sm); padding: 0 var(--space-xs);
             border-radius: var(--radius-ctl);
             border: 1px solid var(--border); background: none;
-            font-size: var(--fs-2xs); font-weight: 700; color: var(--text);
+            font-weight: 700; color: var(--text);
             transition: border-color 0.18s var(--ease);
         }
         .lang-toggle:hover { border-color: var(--border-hover); }
@@ -663,9 +686,9 @@
             border-radius: var(--radius-pill);
         }
         .seg-btn {
+            font: var(--type-chip);
             border: 1px solid transparent; background: none;
             color: var(--muted);
-            font-size: var(--fs-2xs); font-weight: 600;
             min-height: var(--ctl-xs); padding: 0 var(--space-ms);
             border-radius: var(--radius-pill);
             transition: color 0.2s var(--ease), background 0.2s var(--ease);
@@ -970,20 +993,16 @@
         .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 
         .hero-headline {
-            font-family: var(--font-head);
-            font-weight: 700;
-            font-size: var(--fs-hero);
-            line-height: var(--lh-tight);
+            font: var(--type-display);
             letter-spacing: var(--ls-display);
             color: var(--text);
             text-wrap: balance;
         }
         .hero-lead {
+            font: var(--type-body);
             max-width: 46ch;
             margin-top: var(--space-ms);
             color: var(--sub-text);
-            font-size: var(--fs-md);
-            line-height: var(--lh-prose);
             text-wrap: pretty;
         }
         .hero-cta-row {
@@ -1011,9 +1030,7 @@
         /* The handwritten margin notes — the mockup's signature, and the only place
            --font-hand is allowed. Never inherited by body copy. */
         .script-note {
-            font-family: var(--font-hand);
-            font-size: var(--fs-xl);
-            line-height: var(--lh-ui);
+            font: var(--type-script);
             color: var(--muted);
         }
         /* .hero-note is GONE, and it was the crop that killed it. It needed a patch of
@@ -1051,10 +1068,15 @@
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: var(--space-xl);
             padding: var(--space-xl);
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--panel);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
         }
+        /* The landing page's two panels take the PRACTISE TILE in dark (2026-09-23, on
+           request): --panel is --tile's shade on --tile-edge, 1.068 off the page with the
+           hairline doing the separating, where --band on --border was a brighter slab in
+           a heavy outline. Light keeps its --band recess; --tile-edge IS --border there,
+           so its edge did not move. */
         /* #whyBand's own padding-block: var(--space-2xl) is GONE (2026-09-22, on
            request: "optimize the space within the bands"). It was written when this
            section was the bare one between two panels and had nothing but whitespace to
@@ -1089,8 +1111,8 @@
             background: var(--hue-tint); color: var(--hue-ink);
         }
         .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
-        .why-item p { margin-top: var(--space-xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
+        .why-item h3 { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .why-item p { font: var(--type-small); margin-top: var(--space-xs); color: var(--muted); }
 
         /* Bare on the page: no fill to inset, so the padding is vertical air only -
            the same shape .why-item carried while IT was the one sitting on the page. */
@@ -1100,15 +1122,15 @@
             padding-block: var(--space-sm);
             text-align: center;
         }
-        /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
-           counters take, and it does not outrank an --fs-xl section heading. */
+        /* --type-figure-lg: it outranks a section heading and sits under the display
+           headline at every width (36 over 28 on a desktop, 28 over 22 below 700px). */
         .stats-num {
-            font-family: var(--font-head); font-weight: 700;
-            font-size: var(--fs-3xl); line-height: var(--lh-tight);
+            font: var(--type-figure-lg);
+            font-variant-numeric: tabular-nums;
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
-        .stats-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+        .stats-label { font: var(--type-label); color: var(--muted); }
         .stats-item--note { flex: 1 1 170px; justify-content: center; }
 
         .cta-band {
@@ -1116,18 +1138,18 @@
             display: flex; align-items: center; flex-wrap: wrap;
             gap: var(--space-lg);
             padding: var(--space-xl);
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--panel);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
             overflow: hidden;
         }
         .cta-copy { flex: 1 1 280px; min-width: 0; }
         .cta-copy h2 {
-            font-family: var(--font-head); font-weight: 600;
-            font-size: var(--fs-2xl); letter-spacing: var(--ls-display);
+            font: var(--type-heading);
+            letter-spacing: var(--ls-display);
             color: var(--text);
         }
-        .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
+        .cta-lead { font: var(--type-body); margin-top: var(--space-2xs); color: var(--muted); }
         .cta-btn { flex: none; }
         /* An ornament. Take it out and the band is still heading, lead and button. */
         .cta-art { flex: none; display: block; color: var(--border-hover); }
@@ -1161,20 +1183,17 @@
             margin-bottom: var(--space-md);
         }
         .section-head h2 {
-            font-family: var(--font-head);
-            font-weight: 600;
-            font-size: var(--fs-2xl);
+            font: var(--type-heading);
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
         .section-head p {
+            font: var(--type-body);
             margin-top: var(--space-2xs);
-            font-size: var(--fs-base);
-            line-height: var(--lh-prose);
             color: var(--muted);
         }
         /* The tail is reference material, not something to act on. */
-        .home-section--quiet .section-head h2 { font-size: var(--fs-lg); }
+        .home-section--quiet .section-head h2 { font: var(--type-subheading); }
 
         /* The one scrollToId() target left: "Learn more" lands on #whyBand,
            and without this the sticky header sits on top of the heading it scrolled to.
@@ -1308,7 +1327,10 @@
         .dash-verdict {
             min-width: 0;
         }
-        /* 15/13, AND 14/13 ON A PHONE (2026-09-22, on request). The mockup sets both
+        /* --type-title OVER --type-small (16/14 since 2026-09-23, with NO phone step: the
+           summary stacks on a phone, so the headline has the card's full width and all
+           four tiers measure one line at 320). The history below is the 15/13 version's.
+           15/13, AND 14/13 ON A PHONE (2026-09-22, on request). The mockup sets both
            lines at ~12 and separates them by weight and colour alone; this card went
            there for an hour and it was wrong in the room — at 12/12 the verdict was the
            smallest thing in the card and read as a caption on the ring rather than as
@@ -1320,13 +1342,14 @@
            is not clearance — so the 620px block takes it down a rung. Every headline
            is ONE line, measured at four tiers x two languages x both widths, and that
            is what keeps this block shorter than the 152px ring beside it. */
-        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
-        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
+        .dash-verdict strong { font: var(--type-title); letter-spacing: var(--ls-display); display: block; color: var(--text); }
+        .dash-verdict p { font: var(--type-small); margin-top: var(--space-2xs); color: var(--muted); }
         /* The key to the tick on the ring: the same --text bar, beside its name. */
         .dash-pass {
+            font: var(--type-label);
             display: inline-flex; align-items: center; gap: var(--space-sm);
             margin-top: var(--space-sm);
-            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
+            color: var(--sub-text);
         }
         .dash-pass::before { content: ''; width: 3px; height: 12px; border-radius: var(--radius-xs); background: var(--text); }
 
@@ -1369,8 +1392,8 @@
         /* The pill hugs this, so it fits "Berlin" as well as it fits
            "Mecklenburg-Vorpommern". */
         .state-picker-value {
+            font: var(--type-control-sm);
             color: var(--text);
-            font-size: var(--fs-sm); font-weight: 600;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             min-width: 0;
         }
@@ -1424,7 +1447,7 @@
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         /* --fs-xl, the card's one large figure: still a rung under the --fs-2xl
            section heading above it, so the heading keeps the section. */
-        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 700; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        .ready-ring-pct { font: var(--type-figure-md); color: var(--text); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
         /* The caption the mockup puts under the percentage, and it IS the three
            readouts' label — the rule below carries both, so the card's four blocks
            share one label treatment and one figure treatment.
@@ -1448,15 +1471,8 @@
            It also buys WIDTH, which is what the phone row lives on: uppercase + 0.06em
            is wide, so the widest German name went 97.4 -> ~80 while gaining 2px of
            size.
-           They stay out of the shared micro-label rule: a quiz readout's label, a tile
-           eyebrow and a review number are all still --fs-2xs uppercase at 600. */
-        .ds-label, .ready-ring-sub {
-            font-family: var(--font-body);
-            font-size: var(--fs-xs);
-            font-weight: 400;
-            line-height: var(--lh-prose);
-            color: var(--muted);
-        }
+           Since 2026-09-23 they are in the shared micro-label list near the top of the
+           sheet; they were kept apart only while that rule was uppercase. */
         .ready-ring-sub {
             margin-top: var(--space-2xs);
             white-space: nowrap;
@@ -1500,14 +1516,14 @@
            weight, tracking and tabular numerals match the ring's figure exactly, so
            the card's four blocks are ONE treatment: an --fs-md figure over an 11px
            name, four times. If either moves, move both. */
-        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        .ds-num { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         /* margin-left on top of the string's own leading space: the mockup sets the
            total off the figure at ~9px and " /" alone buys 3. --fs-2xs came down from
            --fs-xs with the figure and then STAYED while the figure fell twice more
            (on request: "keep the size of 310 intact"). That is the point of it — the
            denominator is a SCALE, not part of the number, and at 12px under a 16px
            figure it reads one rung down rather than three. */
-        .ds-of { margin-left: var(--space-2xs); color: var(--faint); font-size: var(--fs-2xs); font-weight: 500; }
+        .ds-of { font: var(--type-caption); font-variant-numeric: tabular-nums; margin-left: var(--space-2xs); color: var(--faint); }
 
         /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
         /* NO HAIRLINE. The mockup draws this as a tint and nothing else — measured
@@ -1563,9 +1579,9 @@
            blue tint and a navy slab in the middle of it reads as a hole. */
         .resume-banner .btn-primary { background: var(--accent-fill); color: var(--on-accent); }
         .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
-        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); min-width: 0; }
-        .resume-text strong { color: var(--text); font-size: var(--fs-base); }
-        .resume-text > span { font-size: var(--fs-xs); }
+        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--muted); min-width: 0; }
+        .resume-text strong { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .resume-text > span { font: var(--type-label); }
         .resume-actions { position: relative; z-index: 1; display: flex; gap: var(--space-sm); }
 
         /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
@@ -1619,7 +1635,14 @@
            content width is a 157px card, and "Prüfungssimulation" is one 18-character
            word that does not fit in one. Measured in German, which is what decides it. */
         @media (max-width: 1160px) {
-            .modes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            /* Five cards on three columns fell 3 + 2 with the pair hard left and taller
+               than the row above. Six half-tracks, each card two of them, and the first
+               card of a closing row of two starts on the second, so a closing pair
+               centres under the row above it whatever the count (not :nth-child(4),
+               which only holds for five). 1fr rows make every card one height. */
+            .modes-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+            .modes-grid > .mode-card { grid-column: span 2; }
+            .modes-grid > .mode-card:nth-child(3n + 1):nth-last-child(2) { grid-column: 2 / span 2; }
         }
         /* THE PRACTISE-MODE MOCKUP'S CARD (2026-09-23, on request: "adapting the tile's
            shade, making them minimalistic"). A --tile on its hairline; a circular disc;
@@ -1641,7 +1664,6 @@
             cursor: pointer;
             display: flex; flex-direction: column;
             text-align: center;
-            font: inherit; color: inherit;
             transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
         }
         @media (hover: hover) {
@@ -1669,17 +1691,18 @@
            properly (the root carries lang="de" when the UI is German) and
            `overflow-wrap: anywhere` is the backstop, exactly as `.opt-num` handles
            "Christusmonogramm". */
-        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
+        .mode-title { font: var(--type-title); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
         .mode-description {
-            color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose);
+            font: var(--type-small);
+            color: var(--sub-text);
             margin-bottom: var(--space-md);
         }
         /* Only work that is actually waiting gets a colour, and it sits on its own line
            above the foot, centred, where the mockup puts "2 due". */
         .mode-flag {
+            font: var(--type-chip);
             align-self: center;
             margin-top: auto; margin-bottom: var(--space-ms);
-            font-size: var(--fs-2xs); font-weight: 600;
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
@@ -1696,9 +1719,10 @@
         /* --sub-text, not --muted: the mockup's facts measure as bright as its
            description. nowrap per fact, so a fact never breaks mid-phrase. */
         .mode-meta {
+            font: var(--type-caption);
             display: flex; align-items: baseline; gap: var(--space-2xs);
             min-width: 0; white-space: nowrap;
-            font-size: var(--fs-2xs); color: var(--sub-text);
+            color: var(--sub-text);
             font-variant-numeric: tabular-nums;
         }
         /* THE ONE PLACE THIS LEAVES THE MOCKUP. At five across the card's content box is
@@ -1745,8 +1769,8 @@
         }
         .topic-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .topic-chip-body { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; flex: 1; }
-        .topic-chip-name { font-weight: 600; font-size: var(--fs-base); color: var(--text); }
-        .topic-chip-meta { font-size: var(--fs-2xs); color: var(--muted); }
+        .topic-chip-name { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .topic-chip-meta { font: var(--type-caption); color: var(--muted); }
         .topic-chip-bar { display: block; height: 3px; margin-top: var(--space-3xs); border-radius: var(--radius-xs); background: var(--surface3); overflow: hidden; }
         .topic-chip-bar > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
         .topic-chip-go { flex-shrink: 0; color: var(--faint); display: grid; place-items: center; }
@@ -1780,21 +1804,23 @@
             border-radius: var(--radius);
         }
 
-        /* History */
+        /* History. .hist-exam-stats and .hist-row read --type-small's 14px but NOT its
+           --lh-prose: they are list rows, not running text, so they keep --lh-ui (as
+           .review-answer does). Prose leading is for sentences a reader reads through. */
         .hist-exam { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-md); background: var(--surface2); border-color: var(--border-soft); }
-        .hist-exam-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-size: var(--fs-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
+        .hist-exam-stats { font: var(--type-small); line-height: var(--lh-ui); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
         .hist-exam-stats strong { color: var(--text); font-variant-numeric: tabular-nums; }
         .hist-bars { display: flex; align-items: flex-end; gap: var(--space-sm); height: 52px; }
         .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: var(--radius-xs) var(--radius-xs) 0 0; background: var(--muted); transition: height 0.4s var(--ease); }
         .hist-bar.pass { background: var(--teal-deep); }
         .hist-bar.fail { background: var(--red); }
         .hist-list { border-radius: var(--radius); overflow: hidden; border-color: var(--border-soft); }
-        .hist-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); font-size: var(--fs-sm); flex-wrap: wrap; }
+        .hist-row { font: var(--type-small); line-height: var(--lh-ui); display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
         .hist-row:last-child { border-bottom: none; }
         .hist-mode { font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
-        .hist-date { color: var(--muted); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums; }
+        .hist-date { font: var(--type-caption); color: var(--muted); font-variant-numeric: tabular-nums; }
         .hist-score { color: var(--sub-text); font-weight: 500; font-variant-numeric: tabular-nums; }
-        .hist-badge { font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: var(--ls-caps); padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill); }
+        .hist-badge { font: var(--type-chip); padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill); }
         .hist-badge.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .hist-badge.fail { color: var(--red-text); background: var(--red-dim); }
 
@@ -1803,7 +1829,7 @@
         .glossary-wrap { border-radius: var(--radius); overflow: hidden; }
         details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
         details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
-        .glossary-summary { padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); font-weight: 600; font-size: var(--fs-base); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
+        .glossary-summary { font: var(--type-title); letter-spacing: var(--ls-display); padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
         /* --hover, not --tile-hover: this row has no edge to change, so the fill is the
            whole state and needs dark's 1.20 step (--tile-hover is 1.105 on a tile). */
         .glossary-summary:hover { background: var(--hover); }
@@ -1814,9 +1840,9 @@
         .hist-body .hist-list { border: none; border-radius: 0; }
         .gloss-item { border-bottom: 1px solid var(--border-soft); }
         .gloss-item:last-child { border-bottom: none; }
-        .gloss-item > summary { padding: var(--space-ms) var(--space-md); font-weight: 600; font-size: var(--fs-sm); color: var(--text); transition: color 0.2s var(--ease); }
+        .gloss-item > summary { font: var(--type-control-sm); padding: var(--space-ms) var(--space-md); color: var(--text); transition: color 0.2s var(--ease); }
         .gloss-item > summary:hover { color: var(--accent-text); }
-        .gloss-def { padding: 0 var(--space-md) var(--space-ms); display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--sub-text); }
+        .gloss-def { font: var(--type-small); padding: 0 var(--space-md) var(--space-ms); display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--sub-text); }
         .gloss-en { color: var(--muted); font-style: italic; }
 
         /* ============================================================
@@ -1837,8 +1863,7 @@
            Below 620px the side padding drops to --space-md and paired buttons
            share their row (see the 620px block): side by side, not stacked. */
         .btn-primary, .btn-secondary {
-            font-family: var(--font-body);
-            font-weight: 600; font-size: var(--fs-base);
+            font: var(--type-control);
             min-height: var(--ctl-md);
             padding: var(--space-xs) var(--space-xl);
             border-radius: var(--radius-ctl);
@@ -1884,12 +1909,13 @@
         .footer-col--brand { flex: 1 1 260px; max-width: 34ch; }
         .footer-brand { display: flex; align-items: center; gap: var(--space-sm); }
         .footer-blurb {
+            font: var(--type-small);
             margin-top: var(--space-md);
-            font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--sub-text);
+            color: var(--sub-text);
         }
         .footer-col-title {
-            font-size: var(--fs-2xs); font-weight: 600; letter-spacing: var(--ls-caps);
-            text-transform: uppercase; color: var(--muted);
+            font: var(--type-label);
+            color: var(--muted);
             margin-bottom: var(--space-md);
         }
         .footer-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-sm); }
@@ -1897,20 +1923,21 @@
            external source read identically. Underline on hover only: four stacked
            permanently-underlined lines read as a wall. */
         .footer-link {
+            font: var(--type-label);
             display: inline-block; text-align: left;
             padding: 0; border: 0; background: none;
-            font-family: inherit; font-size: var(--fs-xs); line-height: var(--lh-ui);
             color: var(--sub-text); text-decoration: none; cursor: pointer;
             transition: color 0.16s var(--ease);
         }
         .footer-link:hover { color: var(--accent-text); text-decoration: underline; }
         .footer-bar {
+            font: var(--type-caption);
             max-width: var(--maxw); margin: 0 auto;
             margin-top: var(--space-2xl); padding-top: var(--space-md);
             border-top: 1px solid var(--border);
             display: flex; flex-wrap: wrap; align-items: baseline;
             justify-content: space-between; gap: var(--space-sm);
-            font-size: var(--fs-2xs); line-height: var(--lh-prose); color: var(--muted);
+            color: var(--muted);
         }
         .footer-legal a { color: inherit; text-decoration: underline; }
         .footer-legal a:hover { color: var(--accent-text); }
@@ -1919,7 +1946,7 @@
             font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base);
             letter-spacing: var(--ls-display); color: var(--text);
         }
-        .footer-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
+        .footer-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -1964,13 +1991,15 @@
            is six things to look at. Whitespace does the separating, the labels drop
            to the quietest tier, and the numbers carry the row. */
         .stat { display: flex; align-items: baseline; gap: var(--space-sm); padding: 0; }
-        /* --muted, not --faint: at 0.63rem uppercase these were the smallest type on the
-           screen painted in the quietest tier (4.52 light / 5.67 dark), and on a phone
-           the row now sits at the bottom where it has to be legible in one glance.
-           --faint is for placeholder and disabled, not for a label you read. */
-        .stat .stat-label { color: var(--muted); font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
-        .stat-value { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        .stat-of { color: var(--muted); font-size: var(--fs-xs); font-weight: 500; }
+        /* The label is the shared micro-label rule's: --muted, not --faint, because at
+           0.63rem uppercase these were once the smallest type on the screen painted in
+           the quietest tier (4.52 light / 5.67 dark), and on a phone the row sits at the
+           bottom where it has to be legible in one glance. --faint is for placeholder
+           and disabled, not for a label you read. */
+        .stat-value { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        /* tabular-nums again: the font shorthand resets what the span inherited from
+           the figure around it. */
+        .stat-of { font: var(--type-caption); font-variant-numeric: tabular-nums; color: var(--muted); }
 
         /* The question column — readouts, question, buttons — beside the navigator.
            Column gap only, and wider than the page's rhythm: the two are different
@@ -1993,15 +2022,14 @@
             display: flex; align-items: baseline; justify-content: center; gap: var(--space-sm);
             padding: 0; text-align: center; background: none; border: 0; border-radius: 0;
         }
-        #timer .timer-label, #timer .timer-display, #timer .pacing-info { font-size: var(--fs-sm); line-height: 1.3; }
         /* One line, so it needs a line's worth of room under it and no more. */
         body.in-session #timer { margin-bottom: var(--space-sm); }
         /* With no border left to pulse, the danger state is carried by the figure. */
         #timer.danger { animation: pulseDanger 1.1s var(--ease) infinite; }
         @keyframes pulseDanger { 50% { opacity: 0.55; } }
-        .timer-display { font-family: var(--font-head); font-weight: 600; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        .timer-display { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         #timer.danger .timer-display { color: var(--red-text); }
-        .pacing-info { font-weight: 600; margin-top: 0; font-variant-numeric: tabular-nums; }
+        .pacing-info { font: var(--type-label); margin-top: 0; font-variant-numeric: tabular-nums; }
 
         /* A 3px hairline told you nothing but "some". This is a real track: 8px, the
            quarters marked so a length means something at a glance, and a bright tip on
@@ -2044,7 +2072,8 @@
         /* --muted: it names the topic of the question you are reading, which is content,
            not a placeholder. The separator dot stays in --faint — that IS decoration. */
         .question-category {
-            font-size: var(--fs-2xs); font-weight: 500; color: var(--muted);
+            font: var(--type-label);
+            color: var(--muted);
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .question-category:empty { display: none; }
@@ -2054,8 +2083,8 @@
            page is a decoration. They stay small and quiet — a hairline and the tile
            fill — but never borderless. */
         .speak-btn, .bilingual-toggle {
+            font: var(--type-chip);
             border: none; background: none; color: var(--sub-text);
-            font-size: var(--fs-2xs); font-weight: 600;
             min-height: var(--ctl-sm); padding: 0 var(--space-xs);
             display: inline-flex; align-items: center; justify-content: center;
             transition: color 0.16s var(--ease);
@@ -2083,15 +2112,18 @@
         .speak-btn:hover, .bilingual-toggle:hover { color: var(--text); }
         .bilingual-toggle.active { color: var(--accent-text); }
 
-        .question-text { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); line-height: 1.4; letter-spacing: var(--ls-display); color: var(--text); text-wrap: pretty; }
+        .question-text { font: var(--type-subheading); letter-spacing: var(--ls-display); color: var(--text); text-wrap: pretty; }
         .question-text:focus { outline: none; }
-        .question-english { display: none; margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); line-height: var(--lh-prose); }
+        .question-english { font: var(--type-small); display: none; margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px dashed var(--border); color: var(--muted); }
         .question-english.show { display: block; }
         .question-image { width: 100%; max-width: 294px; margin: var(--space-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-        #imageCredit { color: var(--muted); }
+        /* Was an inline 0.68rem — 10.9px, under the floor, and invisible to
+           scale.test.mjs because it lived in the markup. */
+        #imageCredit { font: var(--type-caption); color: var(--muted); text-align: center; margin: calc(-1 * var(--space-2xs)) 0 var(--space-xs); }
 
         .options { display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-lg); }
         .option-btn {
+            font: var(--type-option);
             display: flex; align-items: center; gap: var(--space-sm);
             width: 100%; text-align: left;
             min-height: var(--ctl-md);
@@ -2103,7 +2135,6 @@
                therefore the washed-out look. On a WHITE canvas that argument inverts:
                --surface IS the page, and --surface2 is a clear 1.15 step above it. */
             background: var(--surface2); color: var(--text);
-            font-size: var(--fs-md); line-height: 1.4;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
 
@@ -2117,9 +2148,9 @@
         .option-btn:active:not(:disabled) { background: var(--surface3); }
         .option-btn:disabled { cursor: default; }
         .opt-letter {
+            font: var(--type-chip);
             flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
-            font-weight: 600; font-size: var(--fs-2xs);
             /* The chip is the well inside the option now that the option is the tile.
                Its letter is --sub-text, not --muted: A/B/C/D is how you name the answer
                you are picking, and --muted put it at 4.68 on the chip in dark — the
@@ -2135,7 +2166,7 @@
         .opt-text-wrap { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
         /* The English line IS the answer for a reader using the translation, so it takes
            the secondary tier rather than the quietest one. */
-        .option-en-text { display: none; font-size: var(--fs-2xs); color: var(--sub-text); font-style: italic; }
+        .option-en-text { font: var(--type-caption); display: none; color: var(--sub-text); font-style: italic; }
         .option-en-text.show { display: block; }
         /* The dim is a text tier now; the fill it used to borrow is the base. */
         /* :not(.picked) too — in the exam the chosen option carries no green or red, so
@@ -2185,9 +2216,9 @@
         /* On a pointer device the invitation is the hover itself: a veil over the
            picture carrying the words, so nothing sits on top of the answer at rest. */
         .opt-img-hover {
+            font: var(--type-chip);
             position: absolute; inset: 0; display: grid; place-items: center;
             padding: var(--space-sm); text-align: center;
-            font-size: var(--fs-2xs); font-weight: 600; line-height: 1.3;
             /* 0.60, not 0.55: the veil lets 45%/40% of the picture through, so the WORST
                case is a white crest, and at 0.55 the composite was #78787A — 4.41 against
                #fff at 0.76rem, under the AA floor. 0.60 composites to #6B6C6E, 5.26. Both
@@ -2202,7 +2233,7 @@
         .question-image { cursor: zoom-in; }
         /* Where there is no hover to carry the message, one quiet line does — under the
            question, above the pictures it is talking about. */
-        .img-zoom-hint { display: none; margin: 0 0 var(--space-sm); text-align: center; font-size: var(--fs-2xs); color: var(--muted); }
+        .img-zoom-hint { font: var(--type-caption); display: none; margin: 0 0 var(--space-sm); text-align: center; color: var(--muted); }
         @media (hover: none) { .img-zoom-hint { display: block; } }
 
         /* ---- Image lightbox ---- */
@@ -2228,7 +2259,7 @@
         .img-zoom-close:hover { color: var(--text); }
         .img-zoom-close svg { width: var(--icon-md); height: var(--icon-md); }
         .img-zoom img { display: block; width: 100%; max-height: calc(100svh - 190px); object-fit: contain; border-radius: var(--radius-sm); }
-        .img-zoom-caption { font-size: var(--fs-xs); color: var(--sub-text); text-align: center; }
+        .img-zoom-caption { font: var(--type-label); color: var(--sub-text); text-align: center; }
         @media (max-width: 620px) {
             .img-zoom { padding: var(--space-md); }
             .img-zoom-figure { padding: var(--space-sm); }
@@ -2237,14 +2268,14 @@
            min-content width alone made that column wider than its neighbour, and with
            `1fr` meaning minmax(auto, 1fr) the grid handed it the extra space. The two
            tiles then held different-sized pictures for no reason but a label. */
-        .option-btn--image .opt-num { font-size: var(--fs-xs); font-weight: 500; color: var(--sub-text); text-align: center; overflow-wrap: anywhere; }
+        .option-btn--image .opt-num { font: var(--type-label); color: var(--sub-text); text-align: center; overflow-wrap: anywhere; }
         .option-btn--image.img-missing .opt-img { display: grid; place-items: center; min-height: 120px; }
-        .option-btn--image.img-missing .opt-img::after { content: attr(data-missing); font-size: var(--fs-2xs); color: var(--muted); }
+        .option-btn--image.img-missing .opt-img::after { font: var(--type-caption); content: attr(data-missing); color: var(--muted); }
         .option-btn--image.img-missing .opt-img img { display: none; }
 
-        .keyboard-hint { position: relative; padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-ms); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--fs-2xs); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
+        .keyboard-hint { font: var(--type-caption); position: relative; padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-ms); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
-        kbd { font-size: var(--fs-2xs); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
+        kbd { font: var(--type-chip); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); }
         .keyboard-hint-close {
             margin-left: var(--space-2xs); width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
             display: grid; place-items: center;
@@ -2257,11 +2288,11 @@
         .explanation.show { display: block; }
         .explanation.correct { border-color: var(--green); background: var(--green-dim); }
         .explanation.incorrect { border-color: var(--red); background: var(--red-dim); }
-        .explanation-header { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-base); margin-bottom: var(--space-2xs); letter-spacing: var(--ls-display); }
+        .explanation-header { font: var(--type-title); margin-bottom: var(--space-2xs); letter-spacing: var(--ls-display); }
         .explanation.correct .explanation-header { color: var(--green); }
         .explanation.incorrect .explanation-header { color: var(--red-text); }
-        .explanation-text { color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose); }
-        .explanation-english { display: none; margin-top: var(--space-xs); color: var(--muted); font-size: var(--fs-xs); font-style: italic; }
+        .explanation-text { font: var(--type-body); color: var(--sub-text); }
+        .explanation-english { font: var(--type-small); display: none; margin-top: var(--space-xs); color: var(--muted); font-style: italic; }
         .explanation-english.show { display: block; }
 
         /* Sidebar navigator */
@@ -2322,10 +2353,11 @@
         .qnav-group { border-radius: var(--radius-sm); }
         .qnav-group + .qnav-group { border-top: 1px solid var(--border-soft); padding-top: var(--space-2xs); }
         .qnav-group-head {
+            font: var(--type-chip);
             display: flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-2xs);
             cursor: pointer; list-style: none;
-            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
+            color: var(--sub-text);
         }
         .qnav-group-head::-webkit-details-marker { display: none; }
         /* One caret, drawn here, rotating on open. */
@@ -2348,14 +2380,14 @@
         #navActions:empty { display: none; }
         #navActions { flex-shrink: 0; margin: 0 0 var(--space-sm); }
         .qnav-seg { display: flex; width: 100%; }
-        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 var(--space-xs); font-size: var(--fs-2xs); min-height: var(--ctl-xs); }
+        .qnav-seg .seg-btn { font: var(--type-chip); flex: 1; min-width: 0; padding: 0 var(--space-xs); min-height: var(--ctl-xs); }
 
         /* Stated after the base rules above, not with the other coarse-pointer
            overrides earlier in the sheet — same specificity, so source order decides. */
         @media (pointer: coarse) {
             .qnav-seg .seg-btn, .qnav-group-head { min-height: var(--ctl-md); }
         }
-        .q-nav-btn { aspect-ratio: 1; min-height: var(--ctl-xs); border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: var(--fs-2xs); font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
+        .q-nav-btn { font: var(--type-chip); aspect-ratio: 1; min-height: var(--ctl-xs); border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .q-nav-btn.qnav-current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); }
         /* Answered, mark withheld — the exam's cell. */
@@ -2367,7 +2399,7 @@
            END SCREEN
            ============================================================ */
         .end-screen { max-width: 680px; margin: 0 auto; text-align: center; }
-        .end-screen > h1 { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-2xl); letter-spacing: var(--ls-display); margin-bottom: var(--space-lg); }
+        .end-screen > h1 { font: var(--type-heading); letter-spacing: var(--ls-display); margin-bottom: var(--space-lg); }
         /* A ROW, not a stack. The card is 680px wide and held a 170px ring centred in it
            with a pill underneath: 286px tall and empty either side of the ring. The ring
            sits ON the page now: a box around a ring and a verdict says nothing the ring
@@ -2378,14 +2410,14 @@
         .score-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
         .score-ring-bar { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.1s var(--ease-spring); }
         .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2xs); }
-        .score-ring-pct { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-3xl); letter-spacing: var(--ls-display); line-height: 1; font-variant-numeric: tabular-nums; color: var(--text); }
-        .score-ring-center .score-number { font-size: var(--fs-sm); font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+        .score-ring-pct { font: var(--type-figure-lg); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        .score-ring-center .score-number { font: var(--type-label); color: var(--muted); font-variant-numeric: tabular-nums; }
         /* Only an exam has a pass mark, so on every other round this is empty — and an
            empty inline-block still spent its margin and padding as a blank band under
            the ring. Visible once it has something to say. */
         .pass-fail:empty { display: none; }
         /* align-self so the pill is as wide as its words, inside a stretch column. */
-        .pass-fail { display: inline-block; align-self: center; margin: 0; font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-pill); }
+        .pass-fail { font: var(--type-title); letter-spacing: var(--ls-display); display: inline-block; align-self: center; margin: 0; padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-pill); }
         .pass-fail.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .pass-fail.fail { color: var(--red-text); background: var(--red-dim); }
         /* ONE band, figures separated by hairlines — the same move the home overview card
@@ -2414,9 +2446,9 @@
             background: var(--surface);
         }
 
-        .result-stat .rs-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--muted); }
-        .result-stat .rs-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        .pass-threshold-note { font-size: var(--fs-xs); color: var(--muted); margin: 0; }
+        .result-stat .rs-label { font: var(--type-label); color: var(--muted); }
+        .result-stat .rs-num { font: var(--type-figure-md); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        .pass-threshold-note { font: var(--type-label); color: var(--muted); margin: 0; }
         .pass-threshold-note[hidden] { display: none; }
         .review-section { margin-top: var(--space-xl); text-align: left; }
         .review-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin-bottom: var(--space-lg); }
@@ -2424,20 +2456,20 @@
            no button since Retry moved up to the action row — so it centres rather than
            hanging off the left edge. */
         .review-section-header--solo { justify-content: center; }
-        .review-section-header h2 { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); letter-spacing: var(--ls-display); }
+        .review-section-header h2 { font: var(--type-subheading); letter-spacing: var(--ls-display); }
         .review-header-actions { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
-        .review-count { color: var(--muted); font-size: var(--fs-sm); }
+        .review-count { font: var(--type-label); color: var(--muted); }
         .review-item { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-sm); }
         .review-q-num { margin-bottom: var(--space-xs); }
-        .review-q-text { font-weight: 600; font-size: var(--fs-md); line-height: 1.4; margin-bottom: var(--space-md); }
+        .review-q-text { font: var(--type-title); letter-spacing: var(--ls-display); margin-bottom: var(--space-md); }
         .review-answers { display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-md); }
-        .review-answer { font-size: var(--fs-sm); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
+        .review-answer { font: var(--type-small); line-height: var(--lh-ui); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
         .review-answer.user-wrong { color: var(--red-text); background: var(--red-dim); }
         .review-answer.correct-ans { color: var(--green); background: var(--green-dim); }
         /* The exam's list carries every question, so it needs a right and a blank too. */
         .review-answer.user-right { color: var(--green); background: var(--green-dim); }
         .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
-        .review-explanation { font-size: var(--fs-sm); color: var(--sub-text); line-height: var(--lh-prose); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
+        .review-explanation { font: var(--type-small); color: var(--sub-text); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
         .review-explanation-en { color: var(--muted); font-style: italic; margin-top: var(--space-xs); }
 
         /* ============================================================
@@ -2462,6 +2494,11 @@
             .hero-visual { order: -1; max-width: 460px; width: 100%; margin-inline: auto; }
             .hero-text { align-items: center; text-align: center; }
             .hero-lead { margin-inline: auto; }
+            /* The two script notes and the gate are decorative, and at tablet width they
+               have nowhere good to go: the numbers band's note wrapped onto a line of its
+               own under the four figures, and the CTA band's pushed its button under the
+               copy. Hidden here, the CTA band's copy and button share one row. */
+            .stats-item--note, .cta-note, .cta-art { display: none; }
 
             /* body.in-session-prefixed, or the desktop two-column rule outranks this one
                and the areas fight: "main stats" against a single column collapsed the
@@ -2486,12 +2523,6 @@
             body.in-session .quiz-sidebar { z-index: 30; }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
-            /* The card stretches again here, which parks .quiz-nav at the bottom of
-               the column — the two buttons then sit in the same place on every
-               question, directly above the overview strip, where a thumb can learn
-               them. The question itself stays top-aligned inside .question-body.
-               (There is no rule above them: pinned, it would float in open space —
-               and it separated nothing on a wide screen either.) */
             /* The fixed pane height is a DESKTOP rule: down here the navigator is a
                collapsed strip, and a 450px strip is 450px of nothing. */
             body.in-session .quiz-sidebar { height: auto; max-height: none; align-self: auto; }
@@ -2518,11 +2549,6 @@
             /* Back to one line down here: the panel's 248px column is what asked for a
                2x2, and on a phone the row is the full width. */
             body.in-session .quiz-topbar .stats-bar { display: flex; }
-            /* The column has to take the whole row before the card can fill it: the
-               grid places items at the start, so on its own .quiz-main is as tall as
-               its content and flex: 1 has nothing to grow into. */
-            body.in-session .quiz-main { align-self: stretch; }
-            body.in-session .question-card { flex: 1; }
             .quiz-sidebar { width: auto; position: static; padding: var(--space-xs) var(--space-md); margin-top: var(--space-sm); }
             .sidebar-header { cursor: pointer; min-height: var(--ctl-md); display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
@@ -2541,6 +2567,22 @@
                header and the panel's own padding puts the WHOLE panel just under 35%
                of the screen, which is the budget — the question keeps the rest. */
             .sidebar-body.expanded { display: flex; max-height: 26vh; max-height: 26svh; }
+        }
+
+        /* The phone's two type steps, and the ONLY place a phone font size lives: a
+           heading drops to 22 and a big figure to 28, so the display headline still
+           outranks both. 700, NOT the 620 layout breakpoint: --fs-hero is 5.2vw, so the
+           headline only clears the 36px figure above 692px — at 621-692 it was 32-36
+           against 36 (final review, 2026-09-23). scale.test.mjs checks every width. */
+        @media (max-width: 700px) {
+            :root {
+                --type-heading:   600 var(--fs-xl)/var(--lh-ui) var(--font-head);
+                --type-figure-lg: 600 var(--fs-2xl)/var(--lh-tight) var(--font-head);
+            }
+            /* The results ring steps down WITH its numeral (190 -> 160px): at 620 the
+               ring shrank while a 700px step had already dropped the figure to 28, so
+               621-700 showed a phone numeral in a desktop dial. */
+            .score-ring-wrap { width: 160px; height: 160px; }
         }
 
         @media (max-width: 620px) {
@@ -2562,7 +2604,7 @@
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { flex: 1 1 0; min-width: 0; }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
-            .stats-item--note, .cta-note, .cta-art, .resume-art { display: none; }
+            .resume-art { display: none; }
 
             .why-item { flex-basis: 100%; }
             /* Stacked, the small print has nothing to sit opposite, so it stops
@@ -2584,8 +2626,6 @@
                while the headings above them already name the section. The heading stays;
                the gloss goes. */
             .section-head p { display: none; }
-            .section-head h2, .cta-copy h2 { font-size: var(--fs-lg); }
-            .section-head p { font-size: var(--fs-sm); }
             .dash { padding: var(--space-md); }
             /* ONE column on a phone, and this reverses the old rule that "the three
                overview stats stay three columns". They cannot any more: at 375px three
@@ -2655,12 +2695,6 @@
                makes them their own line's whole width so justify-content has
                something to centre them in. */
             .resume-actions { width: 100%; justify-content: center; }
-            /* A RUNG DOWN, BECAUSE THE PHONE'S VERDICT BOX IS 189px. The desktop
-               --fs-base headline clears it by ONE pixel — "You're just getting started"
-               sets 188.0 — and a pixel is not clearance: a font that loads a hair wider
-               wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
-               keeps --fs-base; measured in both languages at every verdict tier. */
-            .dash-verdict strong { font-size: var(--fs-sm); }
             /* NO PHONE OVERRIDE (2026-09-22, on request). It used to go full width
                with the label hard left and the pill hard right — and `flex: 1` on the
                pill is what stretched it, so "Berlin" sat in a 250px capsule with a
@@ -2674,10 +2708,11 @@
             /* One card a row on a phone, read as a list row: flush left, the disc beside
                the name. The foot row needs nothing here - it is already facts left,
                arrow right, which is the end of a list row's diagonal. */
-            .modes-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
+            .modes-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: var(--space-sm); }
+            .modes-grid > .mode-card, .modes-grid > .mode-card:nth-child(3n + 1):nth-last-child(2) { grid-column: auto; }
             .mode-card { text-align: left; }
             .mode-card .mode-head { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
-            .mode-card .mode-description { margin-bottom: var(--space-sm); font-size: var(--fs-xs); }
+            .mode-card .mode-description { margin-bottom: var(--space-sm); }
             .mode-card .mode-flag { align-self: flex-start; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
@@ -2696,11 +2731,10 @@
                header strip; the one that is left is three ICONS wide, and shrinking it
                here would hand a phone three 28px targets (the nested 360px block is the
                one place that does, where the alternative is a clipped button). */
-            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
+            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
             .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); }
-            .brand-name { font-size: var(--fs-sm); }
             /* BOTH PAGES ARE IN THE PHONE'S NAV (2026-09-22, on request: "in mobile
                view the header should show both the pages similar to the desktop
                view"). This is the third answer here and each one was a width problem:
@@ -2743,6 +2777,17 @@
             .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: var(--space-2xs); }
             .question-category { white-space: normal; }
             .question-category::before { content: none; }
+            /* PHONES ONLY (this lived in the 940 block until 2026-09-23; between 621 and
+               940 the base rules keep Previous/Next under the answers, where a
+               1024px-tall tablet had ~430px of nothing between them). The card
+               stretches here, which parks .quiz-nav at the bottom of the column: the two
+               buttons sit in the same place on every question, directly above the
+               overview strip, where a thumb can learn them. The column has to take the
+               whole row first — the grid places items at the start, so on its own
+               .quiz-main is as tall as its content and flex: 1 has nothing to grow into.
+               (There is no rule above the buttons: pinned, it would float in open space.) */
+            body.in-session .quiz-main { align-self: stretch; }
+            body.in-session .question-card { flex: 1; }
             .question-card { padding: var(--space-md); }
             /* The card's padding insets the question and its options by --space-md a
                side; the progress bar hangs off #quizScreen and .quiz-nav off .quiz-main,
@@ -2750,12 +2795,13 @@
                question they belong to. Measured at 390px: question 32-358, bar and
                buttons 16-374. They take the same inset now, so the bar starts where the
                question starts and Previous sits under the first option. Only below
-               620px — above it the card has no padding and the three already agree. */
+               620px — above it the card has no padding and the three already agree.
+               The readouts are NOT in this list (2026-09-23): the row is centred, so an
+               inset aligns nothing and only costs width — at 320 it left 256px for a row
+               that needs up to 310. */
             body.in-session .quiz-progress,
             .quiz-nav,
-            body.in-session .quiz-topbar,
             body.in-session .quiz-sidebar { margin-inline: var(--space-md); }
-            .question-text { font-size: var(--fs-md); }
             body.in-session main { padding-left: var(--space-md); padding-right: var(--space-md); }
             /* Same trade, against the phone's narrower gutter. */
             body.in-session #endScreen.active {
@@ -2782,9 +2828,11 @@
             /* ...and the progress bar drops clear of that row instead of sitting tight
                under the hairline. */
             body.in-session .quiz-progress { margin-top: var(--space-sm); margin-bottom: var(--space-lg); }
-            /* One step down: the tally is a glance, and at the bottom of the column it
-               no longer has to carry the row the way it did at the top. */
-            .stats-bar { column-gap: var(--space-sm); row-gap: var(--space-2xs); }
+            /* body.in-session .quiz-topbar-prefixed, or the in-session rule's --space-md
+               outranks it on specificity: this 8px never applied until 2026-09-23, when
+               the readouts went to figure-sm 16 + label 13 and three-digit counts in
+               German wrapped the row at 360px. */
+            body.in-session .quiz-topbar .stats-bar { column-gap: var(--space-sm); row-gap: var(--space-2xs); }
             /* One declaration each. Three stacked PRs left three `.stat { gap }` rules
                (6/4/5px, last won) and set the label's size twice, so the "one size"
                a comment here claimed was overridden three lines under it. These are
@@ -2792,7 +2840,6 @@
                `border-left: none` with nothing to cancel — the base rule carries no
                border since the hairlines between the readouts were dropped. */
             .stat { padding: 0; gap: var(--space-2xs); }
-            .stat-value, .stat-of { font-size: var(--fs-2xs); }
             /* The answered readout drops its word, not its figure. Once the labels
                cleared the 12px floor the four no longer fitted one 360px line in
                German: "Beantwortet" alone sets ~100px, and the LABEL is what is wide,
@@ -2800,14 +2847,19 @@
                beside Richtig, Falsch and Score it can only be the count — so it is
                the one that can give the word up and keep the row on one line. */
             .stats-bar .stat:last-child .stat-label { display: none; }
-            .stat .stat-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
+            /* ...and below 342px the score gives its word up too, for the same reason:
+               a percentage names itself. The row needs up to 310px in English (150 /
+               150 / 50% / 300 / 300) and a 320px screen has 288, so it wrapped as soon
+               as the counts reached two digits; without the word it needs 269. Above
+               342 the full row fits (w - 32 >= 310.4). In the exam the answered count
+               is the only readout, so there is no third child to hide. */
+            @media (max-width: 342px) {
+                .stats-bar .stat:nth-child(3) .stat-label { display: none; }
+            }
             /* Wraps to two rows rather than squeezing five figures into 390px. */
             .result-stat { min-width: 30%; }
-            .score-ring-wrap { width: 160px; height: 160px; }
-            /* One step down with the dial (190 -> 160px). It re-stated --fs-3xl, the value
-               its base already carried, so the ring shrank and the numeral did not. */
-            .score-ring-pct { font-size: var(--fs-2xl); }
-            .hist-row { font-size: var(--fs-xs); gap: var(--space-sm); }
+            .hist-row { gap: var(--space-sm); }
+
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the
                pictures to still be legible, and down here they would not be. */
@@ -2822,7 +2874,7 @@
             .options--image { max-width: min(92%, 26svh); }
             /* The label is what tips a 2x2 over on a narrow screen — "Christusmonogramm
                (Chi-Rho)" sets in three lines. It only has to name the picture. */
-            .option-btn--image .opt-num { font-size: var(--fs-2xs); line-height: 1.25; }
+            .option-btn--image .opt-num { font: var(--type-caption); }
             .option-btn--image { padding: var(--space-sm); gap: var(--space-sm); }
         }
     </style>
@@ -2842,8 +2894,8 @@
                 <span data-i18n="nav.back"></span>
             </button>
             <!-- The mockup's centre nav, and both links go somewhere: Home is the
-                 landing page, Practise is the app. Both are plain --text links; the
-                 underline alone marks the page you are on. Nothing here promises a page we do not have —
+                 landing page, Practise is the app. The current page is --text at 600,
+                 the other --muted at 400 (colour AND weight: colour alone was under 3:1). Nothing here promises a page we do not have —
                  About and FAQs were aria-disabled buttons wearing a "Soon" chip until
                  2026-09-21 and are gone. -->
             <nav class="header-nav" data-i18n-aria="nav.sections">
@@ -3066,7 +3118,7 @@
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
                         <img id="questionImage" class="question-image" style="display: none;">
-                        <div id="imageCredit" style="display: none; font-size: 0.68rem; color: var(--muted); text-align: center; margin: -4px 0 6px;"></div>
+                        <div id="imageCredit" style="display: none;"></div>
 
                         <div class="options" id="optionsContainer" lang="de"></div>
 

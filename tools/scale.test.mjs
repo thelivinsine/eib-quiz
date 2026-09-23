@@ -22,7 +22,11 @@
 // target for every one of them is in the trailing comment.
 // ---------------------------------------------------------------------------------------
 //
-// What it cannot do: it reads *declared* CSS, not painted pixels. It cannot see what a rule
+// What it cannot do: it reads *declared* CSS, not painted pixels. Nor can it see a NEW text
+// element whose rule sets no font at all — it inherits (a <button> too, since the reset is
+// `font: inherit` rather than the UA's 13.33px), so it silently takes its parent's role;
+// only the browser role audit in docs/plans/2026-09-23-typography-and-responsive-plan.md
+// catches that. It cannot see what a rule
 // actually wins on screen, and it does not evaluate calc() or var() indirection. Browser
 // measurement is still the last word — see the plan's acceptance criteria.
 //
@@ -66,7 +70,10 @@ const BUDGETS = {
   distinctTracking:     [2, "reached 2026-09-20 (phase 3): --ls-caps and --ls-display."],
   literalIconSizes:     [0, "reached 2026-09-20. An icon size is --icon-*, a hit target --ctl-*."],
   gapRungs:             [7, "target ~5 — two rungs should carry the page; 2px and 6px merged away."],
-  globalLineHeights:    [7, "target ~9 — one per --fs-* pair plus --lh-prose"],
+  globalLineHeights:    [3, "leading lives in the --type-* roles since 2026-09-23; what is left is glyph boxes and the lockups"],
+  // Component rules that still state font-size / font-family / font-weight instead of
+  // reading a --type-* role. ROLE_EXEMPT names the only ones allowed; target 0.
+  typeOutsideRoles:     [0, "reached 2026-09-23. Every text rule reads a --type-* role; ROLE_EXEMPT names the rest."],
 };
 
 // ===========================================================================================
@@ -142,6 +149,36 @@ const ALL_DECLS = RULES.flatMap((r) => decls(r.body).map(([p, v]) => [r, p, v]))
 
 const valuesOf = (...props) =>
   ALL_DECLS.filter(([, p]) => props.includes(p)).map(([r, p, v]) => ({ rule: r, prop: p, value: v }));
+
+// --- type roles (2026-09-23) -------------------------------------------------------------
+// Every piece of text reads one --type-* role as `font: var(--type-*)`. decls() above drops
+// custom properties, so the role tokens are parsed here on their own.
+const customProps = (body) =>
+  Object.fromEntries([...body.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;]+);/gi)].map(([, k, v]) => [k, v.trim()]));
+const ROOT = customProps(RULES.filter((r) => r.scope === "" && r.selector === ":root").map((r) => r.body).join(";"));
+/** The phone type overrides: the one :root inside a media query that redefines roles. */
+const PHONE_ROOT = customProps(
+  RULES.filter((r) => r.selector === ":root" && r.scope && /--type-/.test(r.body)).map((r) => r.body).join(";"),
+);
+const ROLE_NAMES = Object.keys(ROOT).filter((k) => k.startsWith("--type-"));
+
+/** An --fs-* token in px. --fs-hero is a clamp: its floor on a phone, its ceiling elsewhere. */
+function fsPx(token, phone) {
+  const v = ROOT[token];
+  assert.ok(v, `${token} is not defined in :root`);
+  const rem = /^([\d.]+)rem$/.exec(v);
+  if (rem) return +rem[1] * ROOT_PX;
+  const clamp = /^clamp\(([\d.]+)rem,\s*[^,]+,\s*([\d.]+)rem\)$/.exec(v);
+  if (clamp) return (phone ? +clamp[1] : +clamp[2]) * ROOT_PX;
+  throw new Error(`cannot resolve ${token}: ${v}`);
+}
+const ROLE_RE = /^(\d{3})\s+var\((--fs-[a-z0-9]+)\)\s*\/\s*var\((--lh-[a-z]+)\)\s+var\((--font-[a-z]+)\)$/;
+function role(name, phone = false) {
+  const v = (phone && PHONE_ROOT[name]) || ROOT[name];
+  const m = ROLE_RE.exec(v ?? "");
+  assert.ok(m, `${name} is not "<weight> var(--fs-*)/var(--lh-*) var(--font-*)": ${v}`);
+  return { weight: +m[1], size: fsPx(m[2], phone), lh: m[3], family: m[4] };
+}
 
 // --- normalising -------------------------------------------------------------------------
 
@@ -262,7 +299,32 @@ const gapRungs = new Set(
 
 const globalLineHeights = new Set(valuesOf("line-height").map((d) => d.value)).size;
 
+/**
+ * The only rules allowed to state type outside a role (spec §1, "Named exceptions"): the
+ * inherited default, iOS's no-zoom <select>, the wordmark, two glyphs used as icons, the EN
+ * code's requested 700, the inactive nav link's 400 (its non-colour cue), and three inline
+ * emphasis spans that set a weight inside a parent's role. A selector, never a budget: it says which and why.
+ */
+const ROLE_EXEMPT = {
+  "body": ["font-family", "font-size"],
+  ".state-picker select": ["font-size"],
+  ".brand-name": ["font-family", "font-size", "font-weight"],
+  ".footer-name": ["font-family", "font-size", "font-weight"],
+  ".glossary-summary::after": ["font-size"],
+  ".keyboard-hint-close": ["font-size"],
+  ".lang-toggle": ["font-weight"],
+  ".nav-link:not(.nav-link--active)": ["font-weight"],
+  ".hist-mode": ["font-weight"],
+  ".hist-score": ["font-weight"],
+  ".qnav-group-count": ["font-weight"],
+};
+// Per PROPERTY, not per selector: an exempt rule that grows a font-size it was never
+// granted counts like any other.
+const typeOutsideRoles = valuesOf("font-size", "font-family", "font-weight")
+  .filter((d) => !(ROLE_EXEMPT[d.rule.selector.trim()] ?? []).includes(d.prop)).length;
+
 const MEASURED = {
+  typeOutsideRoles,
   literalFontSizes,
   fontSizesBelowFloor,
   offScaleSpacing: offScaleSpacing.length,
@@ -343,6 +405,69 @@ test("every border-radius is a token, a percentage or 0", () => {
     .filter((d) => !/var\(|%/.test(d.value) && !["0", "inherit"].includes(d.value))
     .map((d) => `${d.rule.selector} { ${d.prop}: ${d.value} }`);
   assert.deepEqual(literals, [], "a literal radius — use --radius-xs/-sm/-ctl/--radius/--radius-pill");
+});
+
+test("every type role is built only from --fs-*, --lh-* and --font-*", () => {
+  assert.equal(ROLE_NAMES.length, 16, `expected 16 --type-* roles, found ${ROLE_NAMES.length}: ${ROLE_NAMES.join(", ")}`);
+  for (const name of ROLE_NAMES) { role(name); role(name, true); }
+  for (const name of Object.keys(PHONE_ROOT))
+    assert.ok(ROLE_NAMES.includes(name), `the phone :root overrides ${name}, which is not a role`);
+});
+
+test("no type role renders below the 12px floor, at either width", () => {
+  for (const name of ROLE_NAMES) for (const phone of [false, true]) {
+    const { size } = role(name, phone);
+    assert.ok(size >= Math.min(...TYPE_SCALE), `${name} is ${size}px${phone ? " on a phone" : ""}`);
+  }
+});
+
+test("the type hierarchy is the right way up at both widths", () => {
+  for (const phone of [false, true]) {
+    const s = (n) => role(`--type-${n}`, phone).size;
+    const at = phone ? "on a phone" : "on a desktop";
+    const chain = ["display", "figure-lg", "heading", "subheading", "title"];
+    for (let i = 1; i < chain.length; i++)
+      assert.ok(s(chain[i - 1]) > s(chain[i]), `${chain[i - 1]} (${s(chain[i - 1])}) must outrank ${chain[i]} (${s(chain[i])}) ${at}`);
+    assert.ok(s("subheading") > s("option"), `the question (${s("subheading")}) must outrank its answers (${s("option")}) ${at}`);
+  }
+});
+
+// The two-width test above reads the clamp's floor and ceiling only, and --fs-hero is
+// fluid (5.2vw) in between: at 621-692px the headline was 32-36px while figure-lg was
+// still 36 (final review, 2026-09-23). This one resolves every role at EVERY width.
+const PHONE_TYPE_MAX = (() => {
+  const scopes = RULES.filter((r) => r.selector === ":root" && r.scope && /--type-/.test(r.body)).map((r) => r.scope);
+  const m = scopes.map((s) => /max-width:\s*(\d+)px/.exec(s)).filter(Boolean);
+  assert.equal(m.length, 1, `expected exactly one media query overriding --type-* in :root, found ${m.length}`);
+  return +m[0][1];
+})();
+function sizeAt(name, w) {
+  const v = (w <= PHONE_TYPE_MAX && PHONE_ROOT[name]) || ROOT[name];
+  const token = ROLE_RE.exec(v)[2];
+  const clamp = /^clamp\(([\d.]+)rem,\s*([\d.]+)vw,\s*([\d.]+)rem\)$/.exec(ROOT[token]);
+  if (clamp) return Math.min(Math.max(+clamp[1] * ROOT_PX, (+clamp[2] * w) / 100), +clamp[3] * ROOT_PX);
+  return fsPx(token, false);
+}
+test("the type hierarchy holds at every width from 320 to 1600", () => {
+  const chain = ["display", "figure-lg", "heading", "subheading", "title"];
+  for (let w = 320; w <= 1600; w++) {
+    const s = (n) => sizeAt(`--type-${n}`, w);
+    for (let i = 1; i < chain.length; i++)
+      assert.ok(s(chain[i - 1]) > s(chain[i]), `${chain[i - 1]} (${s(chain[i - 1]).toFixed(1)}) must outrank ${chain[i]} (${s(chain[i]).toFixed(1)}) at ${w}px`);
+    assert.ok(s("subheading") > s("option"), `the question must outrank its answers at ${w}px`);
+  }
+});
+
+test("every font shorthand outside :root reads a type role", () => {
+  const bad = valuesOf("font")
+    .filter((d) => {
+      if (d.value === "inherit") return false;
+      const m = /^var\((--type-[a-z0-9-]+)\)$/.exec(d.value);
+      // A misspelt role is invalid at computed time, so the element silently inherits.
+      return !m || !ROLE_NAMES.includes(m[1]);
+    })
+    .map((d) => `${d.rule.selector} { font: ${d.value} }`);
+  assert.deepEqual(bad, [], "a font shorthand that is not a --type-* role");
 });
 
 // Print the scoreboard once, so a run says where the cleanup actually stands.
