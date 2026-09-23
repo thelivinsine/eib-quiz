@@ -342,7 +342,7 @@ test("every border-radius is a token, a percentage or 0", () => {
   const literals = valuesOf("border-radius", "border-top-left-radius", "border-top-right-radius")
     .filter((d) => !/var\(|%/.test(d.value) && !["0", "inherit"].includes(d.value))
     .map((d) => `${d.rule.selector} { ${d.prop}: ${d.value} }`);
-  assert.deepEqual(literals, [], "a literal radius — use --radius-xs/-sm/--radius/--radius-pill");
+  assert.deepEqual(literals, [], "a literal radius — use --radius-xs/-sm/-ctl/--radius/--radius-pill");
 });
 
 // Print the scoreboard once, so a run says where the cleanup actually stands.

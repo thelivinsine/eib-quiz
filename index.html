@@ -217,7 +217,8 @@
             --radius-xs:    4px;   /* bars, tracks, swatches, an image inside an option */
             --radius-sm:   10px;   /* wells, nav cells, letter chips, thumbnails, kbd */
             --radius:      16px;   /* every tile and card */
-            --radius-pill: 999px;  /* anything that is a control */
+            --radius-ctl:   8px;   /* a button: the logo kit's, 7.8 measured on a 48px body */
+            --radius-pill: 999px;  /* chips, badges, discs, the state picker */
 
             /* ---- SPACE ----------------------------------------------------------
                The scale was missing its bottom and middle rungs (it jumped 6 -> 8 -> 16),
@@ -567,7 +568,7 @@
             align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm);
             background: var(--surface2); border: 1px solid var(--border);
-            border-radius: var(--radius-pill);
+            border-radius: var(--radius-ctl);
             color: var(--sub-text); font-size: var(--fs-sm); font-weight: 600;
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
@@ -648,28 +649,39 @@
            exist; if either is ever built, it comes back as an ordinary .nav-link
            with a data-screen and a real screen behind it. */
 
-        .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
+        /* The controls share the nav's LINE (2026-09-23, on request: "horizontally
+           aligning with page names"). Same box height, same flex-end, same negative
+           margin as .header-nav, so the two centres are one number at every width
+           instead of the controls riding 8px above the links on the strip's centre. */
+        .header-controls {
+            display: flex; align-items: center; gap: var(--space-sm);
+            min-height: var(--ctl-sm); align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs));
+        }
 
         /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
-           one pill that NAMES the current one and flips on a click; a disclosure spent
-           a click choosing between two. That retired the whole .hmenu-* block - the
-           <details>, its panel, #schemeLabel and syncThemeControlPlacement() - and the
-           ~56px it frees is what pays for both nav links on a phone. The accent is the
-           reference's, and it is the readout's point: the pill says what you are
-           reading in, not what you would get.
-           THE APP'S ONE SHADOW WENT WITH IT. The argument is in git and still holds if
-           anything floats again: an overlay above unrelated content on a white canvas
-           cannot be held off the page by a hairline alone. Nothing floats today. */
-        .lang-toggle {
-            display: inline-flex; align-items: center; justify-content: center;
-            min-height: var(--ctl-sm); padding: 0 var(--space-ms);
-            border-radius: var(--radius-pill);
-            border: 1px solid var(--border); background: var(--surface);
-            font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-text);
-            transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+           one control that NAMES the current one and flips on a click; a disclosure
+           spent a click choosing between two. That retired the whole .hmenu-* block,
+           and the width it frees is what pays for both nav links on a phone.
+           BOTH CONTROLS ARE ONE COMPONENT NOW (2026-09-23, on request): a .seg with a
+           hairline, 4px corners and NO colour anywhere - no accent, no fill, no chip
+           under the chosen segment. Selection is DARKER and BOLDER: --text against
+           --muted, and a 700 code or a glyph thickened by its own outline. The EN code
+           sits in a one-button .seg rather than a pill of its own so the two boxes are
+           the same height on every pointer by construction. 28px tall with a 14px
+           glyph and a 12px code, so they read at the nav labels' scale rather than a
+           size above it. The corner is the logo kit's button proportion (7.8px on a
+           48px body) taken to a 28px box: 4.6, so --radius-xs. */
+        .header-controls > .seg { min-height: var(--ctl-xs); padding: 0; gap: 0; background: none; border-radius: var(--radius-xs); }
+        .header-controls > .seg .seg-btn {
+            min-height: 0; padding: 0 var(--space-xs); border: none; background: none;
+            border-radius: var(--radius-xs); font-weight: 500;
         }
-        .lang-toggle:hover { border-color: var(--border-hover); background: var(--hover); }
+        .header-controls > .seg .seg-btn.active, #langToggle { color: var(--text); font-weight: 700; }
+        .header-controls > .seg .seg-btn svg { width: var(--icon-xs); height: var(--icon-xs); }
+        /* The glyphs are solid, so "bolder" is the silhouette's own outline in its own
+           colour: 1.6 units round a 24-unit drawing, ~0.5px a side at 14px. */
+        .header-controls > .seg .seg-btn.active svg { stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
         .seg {
             display: inline-flex;
             padding: var(--space-3xs); gap: var(--space-2xs);
@@ -691,10 +703,6 @@
            it used to move into the globe menu below 620px. */
         .seg-btn--icon { width: var(--ctl-xs); padding: 0; display: grid; place-items: center; }
         .seg-btn--icon svg { width: var(--icon-sm); height: var(--icon-sm); }
-        /* The reference paints the CHOSEN mode in the accent, and an icon needs it more
-           than a word did: there is no label to read, so the fill and hairline that
-           .seg-btn.active already draws are carrying the state on their own. */
-        #schemeSeg .seg-btn.active { color: var(--accent-text); }
         .seg-btn:hover { color: var(--text); }
         /* The selected segment steps back UP to the tile fill and gets a
            hairline — colour alone is too close to carry the state. */
@@ -1846,7 +1854,7 @@
             font-weight: 600; font-size: var(--fs-base);
             min-height: var(--ctl-md);
             padding: var(--space-ms) var(--space-lg);
-            border-radius: var(--radius-pill);
+            border-radius: var(--radius-ctl);
             border: 1px solid transparent;
             display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease);
@@ -1857,13 +1865,21 @@
         .btn-primary { color: var(--on-btn); background: var(--btn-fill); }
         .btn-primary:hover { filter: brightness(1.08); }
         .btn-primary:active { filter: brightness(0.94); }
-        .btn-secondary { color: var(--sub-text); background: var(--surface); border-color: var(--border); }
-        .btn-secondary:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
+        /* The logo kit's Learn More: near-black label, and in light a SLATE edge rather
+           than the 1.245 hairline a tile uses - a white button on a white page has only
+           its edge to be a button with. Dark keeps --border, which is already 2.16 on
+           the page. */
+        .btn-secondary { color: var(--text); background: var(--surface); border-color: var(--border); }
+        .btn-secondary:hover { background: var(--hover); border-color: var(--border-hover); }
+        html.light .btn-secondary { border-color: var(--faint); }
+        html.light .btn-secondary:hover { border-color: var(--muted); }
         .btn-lg { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
         .btn-sm { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); }
         /* Inside a round the header is a back button and a preferences menu; a section
            nav there points at a page you are not on. */
         body.in-session .header-nav { display: none; }
+        /* With no nav to line up with, the controls go back to the back button's centre. */
+        body.in-session .header-controls { align-self: center; margin-bottom: 0; }
 
         /* ============================================================
            FOOTER — the page's last band, and the small print's home
@@ -2078,8 +2094,11 @@
                which is the exception --ctl-sm is for (36px, over the 24px WCAG 2.5.8
                floor). WIDTH as well as height: .seg-btn--icon is square, so without it
                a thumb gets a 28x36 target. The `>` keeps this off the navigator's
-               .qnav-seg, which has a rule of its own. */
-            .header-controls > .seg .seg-btn { min-height: var(--ctl-sm); width: var(--ctl-sm); }
+               .qnav-seg, which has a rule of its own. The HEIGHT goes on the seg, not
+               the button, and the buttons stretch into it: that keeps the box at 36,
+               the nav's own height, so the two still share a centre on a phone. */
+            .header-controls > .seg { min-height: var(--ctl-sm); }
+            .header-controls > .seg .seg-btn { width: var(--ctl-sm); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
             /* Previous/Next and the results screen's three actions are sized DOWN on
@@ -2718,10 +2737,8 @@
             .header-content { padding: var(--space-xs) var(--space-md); gap: var(--space-sm); }
             .header-controls { gap: var(--space-2xs); }
             .seg { padding: 1px; }
-            .header-controls > .seg { gap: 0; }
             .nav-link { padding: 0 var(--space-2xs); }
             .header-nav { gap: var(--space-2xs); }
-            .lang-toggle { padding: 0 var(--space-sm); }
             /* The .header-controls .seg-btn shrink to --ctl-xs that used to sit here
                is GONE. It was written for two segmented controls standing in the
                header strip; the one that is left is three ICONS wide, and shrinking it
@@ -2892,7 +2909,7 @@
                      paintLangControls(), not by data-i18n: "EN"/"DE" is a language
                      CODE, identical in both languages, and the aria-label is what
                      changes with the switch. -->
-                <button class="lang-toggle" id="langToggle" onclick="toggleLang()">EN</button>
+                <div class="seg"><button class="seg-btn" id="langToggle" onclick="toggleLang()">EN</button></div>
                 <!-- Three modes, and System is the new one: it follows
                      prefers-color-scheme live. Light is still the DEFAULT with nothing
                      saved, so a first visit is unchanged. Icon-only, so each button
