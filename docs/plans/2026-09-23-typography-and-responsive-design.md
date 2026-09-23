@@ -1,6 +1,6 @@
 # Typography roles and tablet/phone layout — design
 
-Status: **implemented on branch typography-responsive; PR open.** Branch
+Status: **implemented on branch typography-responsive; PR #104 open, left for the user to merge.** Branch
 `typography-responsive` (worktree `../EIB-typography`). Ships as a PR, not a direct merge.
 
 ## Intent

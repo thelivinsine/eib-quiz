@@ -26,7 +26,8 @@ home screen (`hasProgress()` + `data-tier`) is retired.
 - SEO/meta, Open Graph + Twitter cards (rasterized `og-image.png`), JSON-LD, `favicon.svg`.
 - Accessibility: `:focus-visible`, `prefers-reduced-motion`, `aria-live` results,
   `lang="en"` on English text and `lang="de"` on the German exam text, WCAG AA contrast in
-  both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets.
+  both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets on content
+  controls (the header strip is a deliberate 36px exception — see Touch targets below).
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
@@ -68,8 +69,9 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 - **Touch targets under 44px** — fixed at the time, and the rule has since been restated:
   every CONTENT control (options, nav cells, the card's buttons, the progress-reset link)
   holds 44px via `--ctl-md`, and a `@media (pointer: coarse)` block raises the touch cases
-  a rung. The header strip is a **deliberate exception** — `.seg-btn` is 28px and
-  `.brand`/`.session-back` 36px, all clearing WCAG 2.5.8's 24px. The original claim here
+  a rung. The header strip is a **deliberate exception** — the EN box and the scheme seg's
+  cells are 36px (the cells 28px wide below 360px) and `.brand`/`.session-back` 36px, all
+  clearing WCAG 2.5.8's 24px. The original claim here
   ("every button, select and summary measures ≥44px") has not been true since that
   exception was introduced; see the App Shape section of `CLAUDE.md`.
 
@@ -2900,7 +2902,7 @@ Branch `typography-responsive` (PR, left for the user to merge). Spec and plan:
 - The dark-mode why/CTA panels (practise tile shade) ride on the branch as its first commit.
 
 ### Verified
-Contrast + scale (27 tests), `validate.js` (460 questions), `node --check` on `sw.js` and
+Contrast + scale (28 tests), `validate.js` (460 questions), `node --check` on `sw.js` and
 the main script, `manifest.json` parses. In the pane with `innerWidth` read first: a role
 audit (every visible text element's computed font matched against the 16 roles) is empty on
 Home, Practise (details open), the quiz (image question, explanation open, exam) and results
@@ -2918,3 +2920,14 @@ string; the three scheme modes survive a reload.
   CSS ratchet is the backstop.
 - No real touch device, no Safari/Firefox; the pane cannot show a hover.
 - 900x600 scrolls, by the existing max-height 640 release, not locked.
+
+### Final review and where it is
+- **Final review** (fresh reviewer): no Critical findings. Two were fixed. First, phone type
+  moved from 620 to 700px, because the 5.2vw headline sat under the 36px figure at
+  621-692px (measured 32.3 against 36 at 621, now 32.3 against 28). A test now sweeps the
+  hierarchy at every width from 320 to 1600. Second, the role tests had holes: a misspelt
+  `--type-*` name passed, and an exception could grow a property it was never granted.
+  Stale comments were corrected too. The colour-only page marker in the nav was left as
+  the user chose it, and is raised in the PR.
+- **PR #104 is open and waiting for the user to merge**; nothing from this block is on `main`
+  yet. The worktree `../EIB-typography` holds the branch.

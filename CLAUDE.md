@@ -535,7 +535,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the numbers went UP rather than down (figure-sm 16 over label 13 since 2026-09-23, paid for by
   the phone's 8px readout gap — which had never applied, because the in-session rule's 16px
   outranked it on specificity, until the bigger figures wrapped the German row and exposed it). The header goes the other way: it is a strip
-  you glance at, so `.header-controls .seg-btn` is `--ctl-xs`, `.session-back` `--ctl-sm` and the
+  you glance at, so the header seg's cells are `--ctl-sm` (`--ctl-xs` wide below 360px), `.session-back` `--ctl-sm` and the
   brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
   **There is no `.header-cta` any more** (2026-09-21, on request). The header used to end
   in a "Start practising" pill beside the controls; the hero's own Start sits ten pixels
@@ -2245,10 +2245,15 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
 - `tools/scale.test.mjs` - the size system as a test: the type/space/control/tracking scales,
   asserted against `index.html` (`node --test tools/scale.test.mjs`). It is a RATCHET — each
   metric has a budget in `BUDGETS`, and the test fails both when a number rises and when it
-  falls without the budget being lowered in the same commit. Two checks are hard rather than
-  budgeted: no property declared twice for one selector in one scope (the `.stat { gap }` bug
-  class, which shipped three times), and no literal `border-radius`. The `vh`-then-`svh`
-  fallback is the one allowed duplicate. **`ICON_EXEMPT` is the only named exemption**;
+  falls without the budget being lowered in the same commit. The hard checks, not budgeted:
+  no property declared twice for one selector in one scope (the `.stat { gap }` bug class,
+  which shipped three times), no literal `border-radius`, and — since 2026-09-23 — the type
+  roles: 16 `--type-*` tokens built only from `--fs-*` / `--lh-*` / `--font-*`, none under
+  12px, every `font:` naming a role that exists, and the hierarchy holding at every width
+  from 320 to 1600. The `vh`-then-`svh` fallback is the one allowed duplicate. **Two named
+  exemptions**: `ICON_EXEMPT` (selectors) and `ROLE_EXEMPT` (a selector-to-PROPERTY map
+  for the `typeOutsideRoles` ratchet, so an exempt rule cannot grow a property it was never
+  granted);
   `TYPE_EXEMPT` existed twice on 2026-09-22 (the overview card's names at 9px, then at
   11px) and both times FORMAT retired it — sentence case with no tracking is quieter and
   narrower than tracked capitals, on a scale step. An exemption is a selector rather than a

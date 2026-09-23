@@ -1,5 +1,11 @@
 # Typography roles and tablet/phone layout — Implementation Plan
 
+Status: **executed 2026-09-23 on branch `typography-responsive`; PR #104 open.** Four
+expectations below were wrong against the tree and were ruled on in the PR rather than forced:
+the desktop quiz gap (171px, the existing resting-position floor), 900x600 (the existing
+height-lock release below 640px), the exam timer's "< 30px" (one line measures 34), and the
+phone type step (moved from 620 to 700px in the final review).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Put every piece of text in the app on one of 16 named type roles, and fix the tablet and phone layouts the audit found broken.
