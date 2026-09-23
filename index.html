@@ -1982,9 +1982,9 @@
            screen painted in the quietest tier (4.52 light / 5.67 dark), and on a phone
            the row now sits at the bottom where it has to be legible in one glance.
            --faint is for placeholder and disabled, not for a label you read. */
-        .stat .stat-label { color: var(--muted); font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
-        .stat-value { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        .stat-of { color: var(--muted); font-size: var(--fs-xs); font-weight: 500; }
+        .stat .stat-label { font: var(--type-label); color: var(--muted); }
+        .stat-value { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        .stat-of { font: var(--type-caption); color: var(--muted); }
 
         /* The question column — readouts, question, buttons — beside the navigator.
            Column gap only, and wider than the page's rhythm: the two are different
@@ -2007,15 +2007,14 @@
             display: flex; align-items: baseline; justify-content: center; gap: var(--space-sm);
             padding: 0; text-align: center; background: none; border: 0; border-radius: 0;
         }
-        #timer .timer-label, #timer .timer-display, #timer .pacing-info { font-size: var(--fs-sm); line-height: 1.3; }
         /* One line, so it needs a line's worth of room under it and no more. */
         body.in-session #timer { margin-bottom: var(--space-sm); }
         /* With no border left to pulse, the danger state is carried by the figure. */
         #timer.danger { animation: pulseDanger 1.1s var(--ease) infinite; }
         @keyframes pulseDanger { 50% { opacity: 0.55; } }
-        .timer-display { font-family: var(--font-head); font-weight: 600; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        .timer-display { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         #timer.danger .timer-display { color: var(--red-text); }
-        .pacing-info { font-weight: 600; margin-top: 0; font-variant-numeric: tabular-nums; }
+        .pacing-info { font: var(--type-label); margin-top: 0; font-variant-numeric: tabular-nums; }
 
         /* A 3px hairline told you nothing but "some". This is a real track: 8px, the
            quarters marked so a length means something at a glance, and a bright tip on
@@ -2058,7 +2057,8 @@
         /* --muted: it names the topic of the question you are reading, which is content,
            not a placeholder. The separator dot stays in --faint — that IS decoration. */
         .question-category {
-            font-size: var(--fs-2xs); font-weight: 500; color: var(--muted);
+            font: var(--type-label);
+            color: var(--muted);
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .question-category:empty { display: none; }
@@ -2068,8 +2068,8 @@
            page is a decoration. They stay small and quiet — a hairline and the tile
            fill — but never borderless. */
         .speak-btn, .bilingual-toggle {
+            font: var(--type-chip);
             border: none; background: none; color: var(--sub-text);
-            font-size: var(--fs-2xs); font-weight: 600;
             min-height: var(--ctl-sm); padding: 0 var(--space-xs);
             display: inline-flex; align-items: center; justify-content: center;
             transition: color 0.16s var(--ease);
@@ -2097,15 +2097,18 @@
         .speak-btn:hover, .bilingual-toggle:hover { color: var(--text); }
         .bilingual-toggle.active { color: var(--accent-text); }
 
-        .question-text { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); line-height: 1.4; letter-spacing: var(--ls-display); color: var(--text); text-wrap: pretty; }
+        .question-text { font: var(--type-subheading); letter-spacing: var(--ls-display); color: var(--text); text-wrap: pretty; }
         .question-text:focus { outline: none; }
-        .question-english { display: none; margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); line-height: var(--lh-prose); }
+        .question-english { font: var(--type-small); display: none; margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px dashed var(--border); color: var(--muted); }
         .question-english.show { display: block; }
         .question-image { width: 100%; max-width: 294px; margin: var(--space-md) auto 0; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-        #imageCredit { color: var(--muted); }
+        /* Was an inline 0.68rem — 10.9px, under the floor, and invisible to
+           scale.test.mjs because it lived in the markup. */
+        #imageCredit { font: var(--type-caption); color: var(--muted); text-align: center; margin: calc(-1 * var(--space-2xs)) 0 var(--space-xs); }
 
         .options { display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-lg); }
         .option-btn {
+            font: var(--type-option);
             display: flex; align-items: center; gap: var(--space-sm);
             width: 100%; text-align: left;
             min-height: var(--ctl-md);
@@ -2117,7 +2120,6 @@
                therefore the washed-out look. On a WHITE canvas that argument inverts:
                --surface IS the page, and --surface2 is a clear 1.15 step above it. */
             background: var(--surface2); color: var(--text);
-            font-size: var(--fs-md); line-height: 1.4;
             transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
         }
 
@@ -2131,9 +2133,9 @@
         .option-btn:active:not(:disabled) { background: var(--surface3); }
         .option-btn:disabled { cursor: default; }
         .opt-letter {
+            font: var(--type-chip);
             flex-shrink: 0; width: 26px; height: 26px; border-radius: var(--radius-sm);
             display: grid; place-items: center;
-            font-weight: 600; font-size: var(--fs-2xs);
             /* The chip is the well inside the option now that the option is the tile.
                Its letter is --sub-text, not --muted: A/B/C/D is how you name the answer
                you are picking, and --muted put it at 4.68 on the chip in dark — the
@@ -2149,7 +2151,7 @@
         .opt-text-wrap { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; }
         /* The English line IS the answer for a reader using the translation, so it takes
            the secondary tier rather than the quietest one. */
-        .option-en-text { display: none; font-size: var(--fs-2xs); color: var(--sub-text); font-style: italic; }
+        .option-en-text { font: var(--type-caption); display: none; color: var(--sub-text); font-style: italic; }
         .option-en-text.show { display: block; }
         /* The dim is a text tier now; the fill it used to borrow is the base. */
         /* :not(.picked) too — in the exam the chosen option carries no green or red, so
@@ -2199,9 +2201,9 @@
         /* On a pointer device the invitation is the hover itself: a veil over the
            picture carrying the words, so nothing sits on top of the answer at rest. */
         .opt-img-hover {
+            font: var(--type-chip);
             position: absolute; inset: 0; display: grid; place-items: center;
             padding: var(--space-sm); text-align: center;
-            font-size: var(--fs-2xs); font-weight: 600; line-height: 1.3;
             /* 0.60, not 0.55: the veil lets 45%/40% of the picture through, so the WORST
                case is a white crest, and at 0.55 the composite was #78787A — 4.41 against
                #fff at 0.76rem, under the AA floor. 0.60 composites to #6B6C6E, 5.26. Both
@@ -2216,7 +2218,7 @@
         .question-image { cursor: zoom-in; }
         /* Where there is no hover to carry the message, one quiet line does — under the
            question, above the pictures it is talking about. */
-        .img-zoom-hint { display: none; margin: 0 0 var(--space-sm); text-align: center; font-size: var(--fs-2xs); color: var(--muted); }
+        .img-zoom-hint { font: var(--type-caption); display: none; margin: 0 0 var(--space-sm); text-align: center; color: var(--muted); }
         @media (hover: none) { .img-zoom-hint { display: block; } }
 
         /* ---- Image lightbox ---- */
@@ -2242,7 +2244,7 @@
         .img-zoom-close:hover { color: var(--text); }
         .img-zoom-close svg { width: var(--icon-md); height: var(--icon-md); }
         .img-zoom img { display: block; width: 100%; max-height: calc(100svh - 190px); object-fit: contain; border-radius: var(--radius-sm); }
-        .img-zoom-caption { font-size: var(--fs-xs); color: var(--sub-text); text-align: center; }
+        .img-zoom-caption { font: var(--type-label); color: var(--sub-text); text-align: center; }
         @media (max-width: 620px) {
             .img-zoom { padding: var(--space-md); }
             .img-zoom-figure { padding: var(--space-sm); }
@@ -2251,14 +2253,14 @@
            min-content width alone made that column wider than its neighbour, and with
            `1fr` meaning minmax(auto, 1fr) the grid handed it the extra space. The two
            tiles then held different-sized pictures for no reason but a label. */
-        .option-btn--image .opt-num { font-size: var(--fs-xs); font-weight: 500; color: var(--sub-text); text-align: center; overflow-wrap: anywhere; }
+        .option-btn--image .opt-num { font: var(--type-label); color: var(--sub-text); text-align: center; overflow-wrap: anywhere; }
         .option-btn--image.img-missing .opt-img { display: grid; place-items: center; min-height: 120px; }
-        .option-btn--image.img-missing .opt-img::after { content: attr(data-missing); font-size: var(--fs-2xs); color: var(--muted); }
+        .option-btn--image.img-missing .opt-img::after { font: var(--type-caption); content: attr(data-missing); color: var(--muted); }
         .option-btn--image.img-missing .opt-img img { display: none; }
 
-        .keyboard-hint { position: relative; padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-ms); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--fs-2xs); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
+        .keyboard-hint { font: var(--type-caption); position: relative; padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-ms); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
-        kbd { font-size: var(--fs-2xs); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); font-weight: 600; }
+        kbd { font: var(--type-chip); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); }
         .keyboard-hint-close {
             margin-left: var(--space-2xs); width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
             display: grid; place-items: center;
@@ -2271,11 +2273,11 @@
         .explanation.show { display: block; }
         .explanation.correct { border-color: var(--green); background: var(--green-dim); }
         .explanation.incorrect { border-color: var(--red); background: var(--red-dim); }
-        .explanation-header { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-base); margin-bottom: var(--space-2xs); letter-spacing: var(--ls-display); }
+        .explanation-header { font: var(--type-title); margin-bottom: var(--space-2xs); letter-spacing: var(--ls-display); }
         .explanation.correct .explanation-header { color: var(--green); }
         .explanation.incorrect .explanation-header { color: var(--red-text); }
-        .explanation-text { color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose); }
-        .explanation-english { display: none; margin-top: var(--space-xs); color: var(--muted); font-size: var(--fs-xs); font-style: italic; }
+        .explanation-text { font: var(--type-body); color: var(--sub-text); }
+        .explanation-english { font: var(--type-small); display: none; margin-top: var(--space-xs); color: var(--muted); font-style: italic; }
         .explanation-english.show { display: block; }
 
         /* Sidebar navigator */
@@ -2336,10 +2338,11 @@
         .qnav-group { border-radius: var(--radius-sm); }
         .qnav-group + .qnav-group { border-top: 1px solid var(--border-soft); padding-top: var(--space-2xs); }
         .qnav-group-head {
+            font: var(--type-chip);
             display: flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-2xs);
             cursor: pointer; list-style: none;
-            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
+            color: var(--sub-text);
         }
         .qnav-group-head::-webkit-details-marker { display: none; }
         /* One caret, drawn here, rotating on open. */
@@ -2362,14 +2365,14 @@
         #navActions:empty { display: none; }
         #navActions { flex-shrink: 0; margin: 0 0 var(--space-sm); }
         .qnav-seg { display: flex; width: 100%; }
-        .qnav-seg .seg-btn { flex: 1; min-width: 0; padding: 0 var(--space-xs); font-size: var(--fs-2xs); min-height: var(--ctl-xs); }
+        .qnav-seg .seg-btn { font: var(--type-chip); flex: 1; min-width: 0; padding: 0 var(--space-xs); min-height: var(--ctl-xs); }
 
         /* Stated after the base rules above, not with the other coarse-pointer
            overrides earlier in the sheet — same specificity, so source order decides. */
         @media (pointer: coarse) {
             .qnav-seg .seg-btn, .qnav-group-head { min-height: var(--ctl-md); }
         }
-        .q-nav-btn { aspect-ratio: 1; min-height: var(--ctl-xs); border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-size: var(--fs-2xs); font-weight: 600; font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
+        .q-nav-btn { font: var(--type-chip); aspect-ratio: 1; min-height: var(--ctl-xs); border: 1px solid var(--border); background: var(--surface2); color: var(--muted); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease); }
         .q-nav-btn:hover { border-color: var(--border-hover); background: var(--hover); color: var(--text); }
         .q-nav-btn.qnav-current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); }
         /* Answered, mark withheld — the exam's cell. */
@@ -2560,6 +2563,19 @@
                header and the panel's own padding puts the WHOLE panel just under 35%
                of the screen, which is the budget — the question keeps the rest. */
             .sidebar-body.expanded { display: flex; max-height: 26vh; max-height: 26svh; }
+        }
+
+        /* TABLET PORTRAIT (621-940px, 2026-09-23, on request): Previous and Next sit
+           directly under the answers, as they do above 940. The phone rule it overrides
+           parks them at the bottom of the column, which on a 1024px-tall tablet left
+           ~430px of nothing between the last answer and the buttons. The card is
+           content-sized again and the column centres in its row; the readouts and the
+           collapsed overview strip keep the rows below, at the bottom of the screen.
+           .quiz-main's max-height: 100% still caps a long question, so .question-body
+           scrolls instead of the page. */
+        @media (min-width: 621px) and (max-width: 940px) {
+            body.in-session .quiz-main { align-self: center; }
+            body.in-session .question-card { flex: 0 1 auto; }
         }
 
         @media (max-width: 620px) {
@@ -2778,7 +2794,6 @@
             .quiz-nav,
             body.in-session .quiz-topbar,
             body.in-session .quiz-sidebar { margin-inline: var(--space-md); }
-            .question-text { font-size: var(--fs-md); }
             body.in-session main { padding-left: var(--space-md); padding-right: var(--space-md); }
             /* Same trade, against the phone's narrower gutter. */
             body.in-session #endScreen.active {
@@ -2807,7 +2822,11 @@
             body.in-session .quiz-progress { margin-top: var(--space-sm); margin-bottom: var(--space-lg); }
             /* One step down: the tally is a glance, and at the bottom of the column it
                no longer has to carry the row the way it did at the top. */
-            .stats-bar { column-gap: var(--space-sm); row-gap: var(--space-2xs); }
+            /* body.in-session .quiz-topbar-prefixed, or the in-session rule's --space-md
+               outranks it on specificity: this 8px never applied until 2026-09-23, when
+               the readouts went to figure-sm 16 + label 13 and three-digit counts in
+               German wrapped the row at 360px. */
+            body.in-session .quiz-topbar .stats-bar { column-gap: var(--space-sm); row-gap: var(--space-2xs); }
             /* One declaration each. Three stacked PRs left three `.stat { gap }` rules
                (6/4/5px, last won) and set the label's size twice, so the "one size"
                a comment here claimed was overridden three lines under it. These are
@@ -2815,7 +2834,6 @@
                `border-left: none` with nothing to cancel — the base rule carries no
                border since the hairlines between the readouts were dropped. */
             .stat { padding: 0; gap: var(--space-2xs); }
-            .stat-value, .stat-of { font-size: var(--fs-2xs); }
             /* The answered readout drops its word, not its figure. Once the labels
                cleared the 12px floor the four no longer fitted one 360px line in
                German: "Beantwortet" alone sets ~100px, and the LABEL is what is wide,
@@ -2823,7 +2841,6 @@
                beside Richtig, Falsch and Score it can only be the count — so it is
                the one that can give the word up and keep the row on one line. */
             .stats-bar .stat:last-child .stat-label { display: none; }
-            .stat .stat-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); }
             /* Wraps to two rows rather than squeezing five figures into 390px. */
             .result-stat { min-width: 30%; }
             .score-ring-wrap { width: 160px; height: 160px; }
@@ -2845,7 +2862,7 @@
             .options--image { max-width: min(92%, 26svh); }
             /* The label is what tips a 2x2 over on a narrow screen — "Christusmonogramm
                (Chi-Rho)" sets in three lines. It only has to name the picture. */
-            .option-btn--image .opt-num { font-size: var(--fs-2xs); line-height: 1.25; }
+            .option-btn--image .opt-num { font: var(--type-caption); }
             .option-btn--image { padding: var(--space-sm); gap: var(--space-sm); }
         }
     </style>
@@ -3088,7 +3105,7 @@
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
                         <img id="questionImage" class="question-image" style="display: none;">
-                        <div id="imageCredit" style="display: none; font-size: 0.68rem; color: var(--muted); text-align: center; margin: -4px 0 6px;"></div>
+                        <div id="imageCredit" style="display: none;"></div>
 
                         <div class="options" id="optionsContainer" lang="de"></div>
 
