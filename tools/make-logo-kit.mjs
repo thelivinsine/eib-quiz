@@ -57,7 +57,7 @@ const markPaths = (v, dx = 0, dy = 0, k = 1) => {
 // 200px mark), cap top 8.05 / baseline 35.5, ink starting 74.4; tagline 13.86,
 // baseline 60.3, ink starting 73.9.
 const NAME = { text: 'EIB Quiz', tracking: -0.02 };
-const TAG = { text: 'Learn · Practise · Pass', tracking: 0 };
+const TAG = { text: 'Learn. Practise. Pass.', tracking: 0 };
 const H_LAYOUT = { name: { size: 41.58, base: 35.5, left: 74.4 }, tag: { size: 13.86, base: 60.3, left: 73.9 } };
 // Stacked, measured off the mockup's stacked tile: name cap top 0.345 H below
 // the mark, cap height 0.455 H, tagline baseline 0.545 H below the name's,

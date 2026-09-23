@@ -168,10 +168,15 @@ const solid = {
     star: '<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>',
     topic: '<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>',
     // sun / monitor / moon moved to `line` on 2026-09-23 - see there.
-    // (file and checkCircle, then leaf, were drawn for the overview card and deleted
-    // with the things that held them: the plates on 2026-09-22, the closing line on 2026-09-23.)
-    // (clock went on 2026-09-23 with the mode cards' clock, its last reader.)
-    // index.html aliases this rather than redrawing it (ICONS.community = ICONS.society).
+    // The overview card's three readouts: a document, a ticked ring and the clock.
+    // Drawn 2026-09-21, deleted with the readouts' plates on 2026-09-22, and back on
+    // 2026-09-23 as bare glyphs above each figure. checkCircle reuses donut(); its
+    // tick is the shield's, scaled to the smaller hole.
+    file: '<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>',
+    checkCircle: ev(donut(12, 12, 9.2, 7.4)) + '<path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>',
+    // (leaf went on 2026-09-23 with the overview card's closing line.)
+    // index.html aliases these rather than redrawing them
+    // (ICONS.community = ICONS.society, ICONS.clock = ICONS.history).
     community: PERSON_B + PERSON_A,
 };
 

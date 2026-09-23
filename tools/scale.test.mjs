@@ -408,7 +408,7 @@ test("every border-radius is a token, a percentage or 0", () => {
 });
 
 test("every type role is built only from --fs-*, --lh-* and --font-*", () => {
-  assert.equal(ROLE_NAMES.length, 16, `expected 16 --type-* roles, found ${ROLE_NAMES.length}: ${ROLE_NAMES.join(", ")}`);
+  assert.equal(ROLE_NAMES.length, 15, `expected 15 --type-* roles, found ${ROLE_NAMES.length}: ${ROLE_NAMES.join(", ")}`);
   for (const name of ROLE_NAMES) { role(name); role(name, true); }
   for (const name of Object.keys(PHONE_ROOT))
     assert.ok(ROLE_NAMES.includes(name), `the phone :root overrides ${name}, which is not a role`);
