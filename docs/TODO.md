@@ -2833,3 +2833,5 @@ light, System and dark were looked at.
 - Light's `--muted` is the app's slate grey (#4F6280), a blue-tinted grey. It is not the
   neutral grey the reference may use.
 - Hover was not seen hovered.
+- **Merged directly to `main` as `9f6044b`** (on request, no PR; the diff is one colour, one
+  icon size and three drawings). Pages publishes it from there.
