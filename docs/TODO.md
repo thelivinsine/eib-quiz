@@ -2706,3 +2706,34 @@ In the preview pane:
 - **The narrow navigator seg's restored gap** was confirmed only as a parsed rule. No
   phone round was opened to look at it.
 - Chromium only. The live site was not opened.
+
+## Session developments (2026-09-23, one button size, header toggles, eyebrows)
+
+- **Every text button is one size**: 44px (`--ctl-md`), a 15px/600 label (`--fs-base`),
+  `--space-xl` a side (`--space-md` below 620px, `--space-sm` below 360px), a 16px glyph,
+  8px corners (`--radius-ctl`, new, measured off `logo-kit.png`). `.btn-sm`, `.btn-lg`,
+  `.btn-group` and every per-context size override are deleted. The rationale is in the
+  BUTTONS comment in `index.html` and in `CLAUDE.md`.
+- The secondary button is the logo kit's Learn More: `--text` label, a `--faint` edge in light.
+- On a phone the hero's two buttons stay **side by side** (one line, 44px, both languages,
+  at 375 and 320).
+- The three grey eyebrows above the landing page's headings are gone, and `.eyebrow` with them.
+- Both nav links are `--text`; `.nav-link--cta` is gone.
+- The header toggles follow the user's screenshot. A first attempt was reverted because it
+  removed the accent, and "remove the colour" meant the fills. They are now hairline boxes
+  with 8px corners, 36px tall, and no fill or chip. EN is in the accent. The chosen mode is
+  a solid accent glyph and the other two are `--muted` outlines drawn in CSS. They sit on
+  the nav's centre line.
+
+### Verified
+Contrast (10), scale (12), `validate.js` and `node --check` pass. In the pane: every button
+measures 44 / 15px / 8px on Home, Practise (resume banner), quiz and results, at 1280 and
+375. Quiz and results stay height-locked at 393 / 620 / 940 / 1280 / 1400 on a four-image
+question with the explanation open. The header row fits at 375 / 361 / 320 in both
+languages. Nav and toggles share one centre (38px), and in a session the toggles line up
+with the back button.
+
+### Not verified
+- Dark mode was not seen rendered. The pane would not repaint it; every colour involved is
+  an asserted token.
+- The results screen's three actions wrap to 2 + 1 on a phone. Three cannot share 343px at 15px.

@@ -103,7 +103,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   against `claude-context-kit/docs/reference/theme-{light,dark}.md`). One cohesive `<style>` block
   in `index.html` (no layered overrides — the whole block IS the system). POV: white/charcoal tiles
   on a flat canvas, **rounded-[16px]** (`--radius`), **8px** buttons (`--radius-ctl`, the logo
-  kit's), **pill** chips and header toggles, and a
+  kit's, and the header's two toggles), **pill** chips, and a
   **DISCIPLINED accent duo**: one **blue** primary + one warm **amber** pop. Two themes
   share the palette — DEFAULT = **light**, canvas **`#FFFFFF`** (ink `#0F1929`);
   `.light` is the default look; dark = **neutral charcoal** (canvas `#1A1A1A`).
@@ -175,17 +175,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Rounding is a three-step scale, one BUTTON value, and a pill — and nothing else.**
     `--radius-xs: 4px` (bars, tracks, swatches, the image inside an image option),
     `--radius-sm: 10px` (wells, nav cells, letter chips, thumbnails, `kbd`), `--radius: 16px`
-    (every tile and card), `--radius-pill` (chips, badges, discs, the header toggles, the
-    state picker).
+    (every tile and card), `--radius-pill` (chips, badges, discs, the state picker).
     **`--radius-ctl: 8px` is the fourth value, minted 2026-09-23 on request against
     `docs/Mockups/ui/logo-kit.png`**: its Start Now / Learn More measure **7.8px on a 48px
-    body** (anti-aliased coverage, all four corners). `.btn-primary`, `.btn-secondary` and
-    `.session-back` read it; buttons were full pills before that. It sits between two
-    steps on purpose — snapping 7.2 (the 44px equivalent) to 10 would be 39% rounder than
-    the mockup. **The header's EN pill and scheme seg were restyled in the same pass and
-    REVERTED on request** — the user did not like the result and said the brief had been
-    misread (4px hairline boxes, no colour, selection by weight, moved onto the nav's
-    line). Ask what was meant before touching them again. `--radius-lg` and `--radius-xl` were deleted, and
+    body** (anti-aliased coverage, all four corners). `.btn-primary`, `.btn-secondary`,
+    `.session-back` and the header's EN box and scheme seg read it; buttons were full
+    pills before that. It sits between two steps on purpose — snapping 7.2 (the 44px
+    equivalent) to 10 would be 39% rounder than the mockup. `--radius-lg` and `--radius-xl` were deleted, and
     eight radii — five of them literals a token search never finds — collapsed into these.
     Nested corners follow **inner = outer − padding, snapped to the nearest step**: a 16px card
     with 14px of padding holds a 10px option, a 10px option with 10px of padding holds its
@@ -299,7 +295,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     script margin-notes — read by `.script-note` alone and NEVER inherited by body copy); `--font-mono` is
     aliased to Inter (kept only so JS refs resolve). All three arrive in **one** Google Fonts
     `<link>`; keep it one request when adding a face. Display
-    weights top out at 700. Uppercase micro-labels take `--ls-caps` (0.06em) and are tile eyebrows (`.eyebrow`
+    weights top out at 700. Uppercase micro-labels take `--ls-caps` (0.06em) and share one rule (`.stat-label` and its list; `.eyebrow` is GONE — see the landing page
     + shared list).
   - **There is a SIZE system now, and it is measured** (2026-09-20), against
     `claude-context-kit/docs/reference/type-and-space.md` — four shipping design systems
@@ -441,29 +437,46 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     9-unit stroke the ink only ever reaches 109 of 120 units — so a 104px wrap drew a 94px
     ring, 11% under the mockup's. Cropping the viewBox to the ink makes the drawn circle
     fill its box; r, C and the dasharray are untouched.
-- **The hero's two buttons read at the HEADER's size, not the CTA band's** (2026-09-21,
-  on request, later the same day). All three share `--ctl-md` and `--icon-sm`, and the
-  hero's pair (`--space-lg` of side padding) dropped from `--fs-base` to **`--fs-2xs`**
-  so Start now and Learn more match the theme toggle and the language pill. The two nav
-  links LEFT that tier on 2026-09-22, on request — see the nav's own note — so the chrome
-  is one size and the navigation is a rung above it. The CTA band's button keeps `--fs-base`
-  through `.btn-lg`: it is the page's last call, not header chrome, and nothing about it
-  was asked to move. Before that pass the hero's were a rung LARGER than the band's
-  (`--ctl-lg` / `--space-xl` / `--fs-md`).
-  - **`.cta-btn`'s own size declarations were DEAD and are deleted.** The markup is
-    `btn-primary btn-lg cta-btn`, and `.btn-lg` sits ~440 lines later at the same
-    single-class specificity, so it won `min-height`, `padding` and `font-size` alike:
-    that button had always rendered at `--ctl-md`, never the `--ctl-lg` its rule asked
-    for. **Measuring it is what found this**, not reading it — and `scale.test.mjs`
-    cannot: its duplicate-property check is per-scope and these were two scopes. Size
-    that button through `.btn-lg`.
-  - The 620px rule for `.hero-cta-row` dropped its `padding` for the same reason: the
-    base now carries that exact value, so the override was a dead declaration.
+- **EVERY TEXT BUTTON IS ONE SIZE: 44px tall, a 15px/600 label, 28px a side, a 16px
+  glyph, 8px corners** (2026-09-23, on request: "determine an ideal text size and button
+  size ... set a standard rule ... apply it across the app"). That is `--ctl-md`,
+  `--fs-base`, `--space-xl`, `--icon-sm`, `--radius-ctl`, all on the base
+  `.btn-primary, .btn-secondary` rule. **There is no `.btn-sm` and no `.btn-lg` any more**,
+  and every per-context size override went with them: the hero pair's 12px label, the
+  quiz nav's and the results actions' 36px/13px, the resume banner's 13px, the CTA
+  button's 18px glyph, and the two coarse-pointer bumps that existed only to undo those.
+  **The reasoning, reconciled rather than picked:**
+  - both mockups (`landing-page.png`, `logo-kit.png`) draw every button 48px tall with
+    a label whose cap height is 11px — **15px** — and ~33px of side padding (0.69 of the
+    height; 30 at 44, and `--space-xl` is the rung under it);
+  - `type-and-space.md` puts the chrome tier at 13-15px, names 44px as the touch target
+    in two of four systems, and Khan — the one learning app among them — renders its
+    buttons at 40/44 with a 16px label;
+  - 44 is this app's touch floor, so ONE size needs no coarse bump and puts nothing a
+    thumb presses at 36px, and 15px stays under the 16px answer options and the 18px
+    question, so a button never outranks the content it acts on.
+  **Only the side padding responds to width**: `--space-md` below 620px and
+  `--space-sm` below 360px (the nested block), because "Jetzt starten" and its arrow
+  are 118px against 108 of room at 320. The height and the label never shrink.
+  **The header's `.session-back` is NOT a text button in this sense** — it is header
+  chrome at `--ctl-sm` beside the brand and the toggles, and it kept its size.
+  - **Buttons stay SIDE BY SIDE on a phone** (2026-09-23, on request). The hero pair
+    used to go `flex-direction: column` at full width below 620px; it is one row now,
+    split evenly with `flex: 1 1 0`. Measured one line, 44px each, in both languages at
+    375 and 320. The results screen's three actions put two on the first line and wrap
+    the third — three cannot share 343px at 15px, and that is what `flex-wrap` is for.
+    **`.btn-group` is deleted**: its phone rule stacked buttons full width, and nothing
+    in the markup used it.
+  - **`.cta-btn` carries only `flex: none`** (and its 620px `width: 100%`, which is a
+    single button, not a pair). Its dead `min-height` / `padding` / `font-size` were
+    found by MEASURING — they lost to `.btn-lg` on source order at equal specificity,
+    and `scale.test.mjs` cannot see a cross-scope duplicate. With `.btn-lg` gone the
+    lesson stands: size a button on the base rule, never on a context selector.
 - **In a session the page keeps wider side gutters** than Home or Practise: `--space-xl`
   (28px) rather than `--space-lg`, because the question is the only thing on screen and
   should not run to the edges. Below 620px it drops back to `--space-md`.
 - **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
-  **on a coarse pointer** (`.btn-*`, the header `.seg-btn` switches, `.state-picker` — which
+  **on a coarse pointer** (`.btn-*` are 44 on every pointer since 2026-09-23, the header `.seg-btn` switches, `.state-picker` — which
   is `--ctl-sm` with a mouse since 2026-09-22 and `--ctl-md` under
   `@media (pointer: coarse)`); `#stateSelect` is `font-size: 16px` so iOS Safari
   does not zoom on focus, and that is NOT a visual choice to be scaled down with the rest
@@ -500,9 +513,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   **There is no `.header-cta` any more** (2026-09-21, on request). The header used to end
   in a "Start practising" pill beside the controls; the hero's own Start sits ten pixels
   below it, so it only ever repeated something already on screen. `nav.startPractice`
-  went with it; `cta.button` is a different string and stays. **`.nav-link--cta` is not
-  its return**: that is the nav's Practise link, which goes to another PAGE rather than
-  restating a button on this one.
+  went with it; `cta.button` is a different string and stays. The nav's Practise link
+  is not its return: it goes to another PAGE rather than restating a button on this one.
   - **The header nav is TWO REAL LINKS: Home and Practise** (2026-09-21). They are the
     app's two pages, they carry `data-screen`, and `showScreen()` calls `syncNav()`, which
     moves `.nav-link--active` and `aria-current="page"` between them. The nav is centred by
@@ -515,33 +527,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `nav.soon` / `nav.soonTitle`. They were `aria-disabled` buttons wearing a "Soon" chip
     for pages that do not exist. **If either is built it comes back as an ordinary
     `.nav-link` with a `data-screen` and a screen behind it** — not as a promise.
-  - **PRACTISE is drawn LOUDER than Home, and is still a LINK** (2026-09-21, on request).
-    `.nav-link--cta` is the same shape as `.nav-link` — no fill, no pill — and in
-    `--accent-text`. **It is drawn louder by COLOUR ALONE**: the size step (`--fs-md`)
-    went on 2026-09-21, on request, when the whole header strip was pinned to one size.
-    **BOTH links went back UP to `--fs-sm` (14px) on 2026-09-22, on request** ("the text
-    should be enlarged to an optimum size"), and they moved TOGETHER, so the colour is
-    still the only thing that separates them. The strip around them is still `--fs-2xs`:
-    the nav is the only CONTENT in that row, and the language pill and the scheme seg are
-    chrome you glance at. **It wore `--btn-fill` in a pill for a
-    few hours the same day and that was wrong**: two items in a two-item nav should read
-    as the same KIND of thing, and a solid button beside a bare word reads as a control
-    that acts rather than a page you go to. The hero's Start and the CTA band still carry
-    the primary button, so nothing lost that voice. The `:hover`, `:active` and
-    `.nav-link--active` overrides all stay — `.nav-link:hover` is (0,2,0) and the active
-    rule repaints the label `--text`, so without them the accent is lost in both states;
-    the active rule also re-states the underline in the accent. `accent-text / canvas` is
-    asserted in `contrast.test.mjs` for it, because the header sits on the canvas and in
-    dark that is a rung below `--surface`. **Its hover STEPS DOWN in light and up in dark,
-    and that is not house style but AA**: `filter: brightness(1.12)` on `#2563EB` renders
-    `#296FFF`, **4.36 on the white canvas** — under the floor the `accent-text / canvas`
-    pair exists to hold, and a FILTER is invisible to `contrast.test.mjs`, so the ratchet
-    passes while the hovered label fails. `html.light .nav-link--cta:hover` is
-    `brightness(0.88)` (6.31). **A brightness filter on TEXT is a contrast change no test
-    here can see** — measure both themes by hand, or change a token instead.
-    This is NOT the old `.header-cta`, which was
-    retired for repeating the hero's button: that was a second CTA on the same page, and
-    this is navigation to another one.
+  - **BOTH NAV LINKS ARE `--text`, and the underline alone marks the page**
+    (2026-09-23, on request: Practise "should also be in black"). `.nav-link--cta` is
+    **gone** — the accent, its `brightness()` hovers and the active override with it. It
+    had drawn Practise louder than Home in `--accent-text` since 2026-09-21. Hover steps
+    the label back to `--sub-text`; with both links already the darkest tier there is no
+    darker state to step to. **The old `brightness()` lesson still holds anywhere it is
+    tried again**: a filter on TEXT is a contrast change `contrast.test.mjs` cannot see
+    (`brightness(1.12)` put `#2563EB` at 4.36 on white) — change a token instead.
+    `accent-text / canvas` is still asserted, for any accent word straight on the page.
   - **The active nav link carries `aria-current="page"`.** The underline is the only other
     thing that says which page you are on, and it is not available to a screen reader.
   - **THE UNDERLINE BELONGS TO THE WORD, NOT TO THE BOX** (2026-09-22, on request:
@@ -551,8 +545,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `text-decoration: underline` with `text-decoration-thickness: 2px` and
     `text-underline-offset: 5px`: native, it tracks the text at any size, it skips
     descenders, and — the reason the box-shadow was chosen in the first place — it still
-    adds nothing to the control's height. It takes `currentColor`, so
-    `.nav-link--cta.nav-link--active` is down to the colour it always was.
+    adds nothing to the control's height. It takes `currentColor`.
   - **The nav sits LOW in the strip, not on its centre line** (2026-09-22, on request:
     "a bit closer to the header border line downwards"). `align-self: flex-end` does the
     first 4px structurally — the links land their box bottom on the BRAND's, which is the
@@ -562,19 +555,43 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     at 1280) and the underline about 12. **It cannot change `--header-h`**: the margin box
     is 36 − 4 = 32, still under the brand's 44, so the line is sized by the brand either
     way — which is the only reason a negative margin is safe here.
-  - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN pill and a sun/monitor/moon
+  - **THE TWO TOGGLES ARE THE USER'S REFERENCE** (2026-09-23, from a screenshot, after a
+    first attempt was reverted). Read this before touching them — the first attempt
+    misread "remove the colour" as removing the ACCENT, and it meant the FILLS:
+    - two hairline boxes (`--border`), **no background and no chip**, `--radius-ctl`
+      corners, both 36px tall (`--ctl-sm`): EN is a SQUARE box, the seg is three
+      SQUARE 36px cells with no padding, `--space-md` between the two (the reference's
+      gap, ~0.46 of the box). The coarse-pointer rule for the seg is gone — the base is
+      already 36 — and the nested 360px block still narrows the cells to 28.
+    - **the ACCENT STAYS**: EN is `--accent-text` at 700, and the chosen mode is its
+      SOLID glyph in the accent. **The other two are OUTLINES in `--muted`** — filled
+      and blue against thin and grey is the "darker and bolder" selection.
+    - **The outline is made from the SOLID set in CSS, not a second icon set**:
+      `.seg-btn:not(.active) svg > :first-child` loses its fill and takes a 2-unit
+      stroke. Each glyph's first shape is its big one (the sun's disc, the monitor's
+      screen, the moon); the thin parts after it — rays, stand — are line-weight
+      already and stay filled. **A glyph added to this seg needs its big shape first.**
+      No markup carries `stroke="currentColor"`, so that grep still comes back empty.
+    - 14px glyphs (`--icon-xs`) and a 12px code, about the reference's 0.37 and 0.33 of
+      the box.
+    - **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
+      `min-height`, `align-self: flex-end` and `-4px` margin, so the centres are one
+      number — 38 at 1280 and at 375, measured — and `body.in-session .header-controls`
+      goes back to `align-self: center`, the back button's line, where there is no nav.
+      Measured row fit: 15px of slack at 375, 8 at 361, 7.5 at 320, both languages.
+  - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN code and a sun/monitor/moon
     seg** (2026-09-22, on request, against a reference UI). The globe `<details>` that
     held the language — and, on a phone, the theme seg as well — is **gone**, and with it
     `.hmenu-*`, `#langBadge`, `#schemeLabel`, `syncThemeControlPlacement()`, the two
     listeners that closed it on an outside click or Escape, the app's one shadow, and the
     `nav.language` / `nav.preferences` strings.
-    - **A disclosure to choose between TWO things spends a click.** `#langToggle` is a
-      pill that shows the current code and flips on press (`toggleLang()`); it is in
-      `--accent-text` because it is a readout of what you are reading IN, not an offer.
+    - **A disclosure to choose between TWO things spends a click.** `#langToggle` shows
+      the current code and flips on press (`toggleLang()`); it is in `--accent-text`
+      because it is a readout of what you are reading IN, not an offer.
       `paintLangControls()` still owns its face — a language CODE is identical in both
       languages, so `applyStaticStrings()` must not — and it also writes the
       `aria-label`, which DOES translate ("EN – Switch to German" / "DE – Auf Englisch
-      umschalten"): a pill already showing "EN" has to say what pressing it does.
+      umschalten"): a box already showing "EN" has to say what pressing it does.
       **The name STARTS with the visible code** (2026-09-23, from the review of
       #98-#102): WCAG 2.5.3 needs the accessible name to contain the visible label, or
       a voice-control user's "click EN" matches nothing.
@@ -596,10 +613,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       is delivered; `setTheme('system')` was called by hand against a dark
       `prefers-color-scheme` to prove the body of it.
     - **Icon-only buttons carry their names in `aria-label`** (`nav.light` /
-      `nav.system` / `nav.dark`), and `.seg-btn--icon` is SQUARE — `--ctl-xs` wide, no
-      side padding — so the three cost ~92px against the two-word toggle's ~120. That,
-      plus the pill being 46px where the globe summary was 92, is what buys the phone's
-      two nav links.
+      `nav.system` / `nav.dark`). The seg is 110px (86 below 360px) and EN 36, where the
+      globe summary was 92 — that is what buys the phone's two nav links.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the logo kit's E** (2026-09-23; it was the flat German flag in a
@@ -682,7 +697,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `body.in-session .header-nav { display: none }` still wins in a round.
 - **The LANDING PAGE is a hero, why, four numbers and one last call.** (The mode band left
   it for `#practiseScreen`; the notes below still describe the same components.)
-  - **The hero is two columns**: eyebrow / headline / lead / two buttons on the left,
+  - **NO GREY LABEL SITS ABOVE A HEADING ON THE LANDING PAGE** (2026-09-23, on request).
+    The hero's "Your step towards a brighter tomorrow", the why band's "Why EIB Quiz?"
+    and the CTA band's "Ready to get started?" are deleted, with `hero.eyebrow` /
+    `why.eyebrow` / `cta.eyebrow` and the four `.eyebrow` context rules. They were the
+    last `.eyebrow` elements in the app, so the class left the shared micro-label list
+    too. A heading states its section; an uppercase line over it restated the page.
+  - **The hero is two columns**: headline / lead / two buttons on the left,
     the Reichstag on the right. Below 940px it stacks with the **photo first**.
   - **THE FOUR FACT CHIPS ARE GONE** (2026-09-21, on request). `.hero-chips` /
     `.hero-chip*` and `hero.chip1`-`4` — 300 official questions, All 16 federal states,
@@ -1251,7 +1272,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       mockup draws it as a tint edge to edge with no border anywhere on it, and an
       `--accent-line` rule round a fill already 1.09 off the card reads as a box inside
       a box. `--space-md var(--space-lg)` of padding, and the two buttons keep
-      `.btn-sm`'s 13px label on a 44px body.
+      the standard button (44px, 15px) since 2026-09-23.
     - **THE RING SHOWS ITS CAP AT 0%.** `animateReadyRing` floors the arc at 10 of 314
       units, which is the ~16px stub the mockup draws. It used to set
       `opacity = pct >= 2 ? 1 : 0` — it hid exactly the state a new learner spends the
@@ -1641,9 +1662,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     16px) and the slack falls below the answers, where the panel's own bottom edge already is.
   - Below 940px the card goes back to filling its area, so the two buttons hold one position
     on every question, directly above the overview strip where a thumb can learn them.
-  - **There is no rule above Previous and Next**, and the buttons are `--fs-xs` on a short row — smaller
-    than a page-level action, because you press them a hundred times a round and they should
-    not weigh as much as the question. **The keyboard hint rides between them**, inside
+  - **There is no rule above Previous and Next**, and the buttons are the one standard
+    button (44px, 15px — they were 36px / 13px until 2026-09-23); 15px is still under the
+    18px question and the 16px options, so they do not outweigh what they move you through. **The keyboard hint rides between them**, inside
     `.quiz-nav`: out of the reading path, on a row that already exists, costing the question no
     height. It is still hidden below 940px and under `@media (hover: none)`.
   - **The question view's spacing says what matters.** The status band is tight to itself
@@ -1733,16 +1754,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   are gone — everything reads `--space-*`.) Display numbers came down
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
-  and `.btn-lg` (both `--ctl-md` today) and the glossary rows. Two of those numbers are
+  and the page-level button (both `--ctl-md` today) and the glossary rows. Two of those numbers are
   history rather than current state: the ready ring is 104px, re-derived from
   `ui/where-you-stand.png`, and `.ds-num` is `--fs-md`.
-  - **There is ONE header seg and it is glance-only chrome**, in a strip with two other
-    things, which is what the `--ctl-sm` exception is for:
-    `.header-controls > .seg .seg-btn` under `@media (pointer: coarse)`, and it sets
-    **WIDTH as well as height** because `.seg-btn--icon` is square — without it a thumb
-    gets a 28x36 target. **The `>` is load-bearing**: it keeps the rule off the
-    navigator's `.qnav-seg`, which has its own. (It also used to keep it off the globe
-    panel's seg, which took the full `--ctl-md`; both the panel and its seg are gone.)
+  - **The header's two toggles are glance-only chrome**, in a strip with the nav, which is
+    what the `--ctl-sm` exception is for: 36px square cells at EVERY pointer since
+    2026-09-23, so no coarse rule is needed. **The `>` in `.header-controls > .seg` is
+    load-bearing**: it keeps those rules off the navigator's `.qnav-seg`, which has its own.
     The 620px rule that used to pin every header seg to 28px is **deleted**: stated later
     in the sheet it won on source order and silently undid the thumb floor. The ONE place
     28px is deliberate is the nested 360px block above, where the alternative is a
@@ -1751,13 +1769,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     **on a coarse pointer**. WCAG 2.5.8 AA asks 24px, and 2.5.5 AAA's 44px is what the
     rest of the app holds to.
     - **That sentence was FALSE until 2026-09-21, and a mobile pass caught it.**
-      `.quiz-nav`'s Previous/Next and `.end-actions`' three buttons are sized down to
-      `--ctl-sm` / `--fs-xs` on purpose, so they do not weigh as much as the question or
-      the score ring beside them — but that rule had no coarse-pointer bump, so the
-      app's **most-pressed control sat at 36px on a thumb**. Both now take `--ctl-md`
-      inside `@media (pointer: coarse)`, which is the move `.option-btn` already makes
-      there: the height comes back on touch and the desktop look is untouched (measured
-      36px with a mouse, 44px on a thumb, both screens still height-locked).
+      `.quiz-nav`'s Previous/Next and `.end-actions`' three buttons were sized down to
+      `--ctl-sm` / `--fs-xs` with no coarse bump, so the app's **most-pressed control
+      sat at 36px on a thumb**. A coarse rule patched it then; since 2026-09-23 every
+      text button is 44px on every pointer, so the patch and the size-down are both gone.
     - **A deliberate size-down still needs the touch floor.** If a control is shrunk for
       visual weight, add it to the coarse block in the same change, or the decision
       silently becomes an accessibility regression on the device most people use.
@@ -1799,7 +1814,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **The score is not in a card.** `.score-hero` puts the ring, the verdict pill and the
     pass-mark note straight on the page, the way the question does. A box round a ring
     says nothing the ring does not. The ring is **190px** (160 under 620px) and the three
-    actions below it are `btn-sm`-sized: the ring is the result, the
+    actions below it are the standard button: the ring is the result, the
     buttons are only what you do next, and with no card around either the ring has to
     carry the screen on its own.
   - **`.result-stats` is ONE band**, the same move the home overview card makes: correct,
@@ -2244,7 +2259,7 @@ Before publishing any app change:
 4b. Run `node --test tools/scale.test.mjs` — the size-system ratchet. If a budget FALLS,
    lower it in the same commit; the test says so explicitly. If one RISES, that is a
    regression.
-5. Press the header's EN pill, and again: no chrome string may stay in the other
+5. Press the header's EN box, and again: no chrome string may stay in the other
    language, the question text must stay German in both, and the pill's own face AND its
    `aria-label` must follow the switch. Then walk the three scheme buttons — light,
    system, dark — and reload on each: the seg's `aria-pressed` and the painted theme must
