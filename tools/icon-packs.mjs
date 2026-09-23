@@ -5,7 +5,8 @@
 //     --force-device-scale-factor=2 --window-size=1120,980 \
 //     --screenshot=docs/icon-pack-line.png <outdir>/icon-pack-line.html
 //
-// "solid" is the set that ships in index.html today (ICONS) — keep the two in step.
+// "solid" is the set that ships in index.html today (ICONS) — keep the two in step —
+// except sun / monitor / moon, which ship from "line" (the header's scheme seg, 2026-09-23).
 // "line" is the stroked set it replaced on 2026-09-20, kept for comparison; "duotone"
 // is the same silhouettes with a 22% ground behind the figure.
 import { writeFileSync, mkdirSync } from 'node:fs';
@@ -94,6 +95,19 @@ const line = {
     close: '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>',
     reset: '<path d="M3.5 12a8.5 8.5 0 1 1 2.8 6.3"/><polyline points="3 6.5 3.5 12 9 11.5"/>',
     trendUp: '<polyline points="4 16 10 10 14 14 20 7"/><polyline points="15 7 20 7 20 12"/>',
+    // THE HEADER'S SCHEME MODES SHIP IN THIS STYLE (2026-09-23, on request: "the toggle
+    // icons should be directly taken from the screenshot" - the user's reference draws
+    // them as line icons). They are the one line set in production; index.html's CSS
+    // strokes them and fills the FIRST shape of the chosen one, so each keeps its body
+    // (disc, screen, crescent) first. A ray is ONE line rotated about the centre: eight
+    // literals would be eight chances to get 45 degrees wrong.
+    sun: '<circle cx="12" cy="12" r="4"/>' + [0, 45, 90, 135, 180, 225, 270, 315]
+        .map(d => `<line x1="12" y1="2" x2="12" y2="4.5"${d ? ` transform="rotate(${d} 12 12)"` : ''}/>`).join(''),
+    monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/>',
+    // A crescent is one disc (r 8.8 about the centre) with a second (r 10, centred
+    // up and to the right) taken out of it: the outer arc is the long way round,
+    // the inner one the short way back.
+    moon: '<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>',
 };
 
 const RING = ev(donut(12, 12, 9.2, 6.6));
@@ -151,18 +165,7 @@ const solid = {
     shield: '<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>',
     star: '<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>',
     topic: '<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>',
-    // The header's three scheme modes, drawn 2026-09-22 for the sun/monitor/moon
-    // segment. `globe` stood here for the preferences menu they replaced and went
-    // with it — ICONS.symbols is the same drawing if it is ever wanted back.
-    // A ray is ONE rect rotated about the centre: eight literals would be eight
-    // chances to get 45 degrees wrong.
-    sun: '<circle cx="12" cy="12" r="4.2"/>' + [0, 45, 90, 135, 180, 225, 270, 315]
-        .map(d => `<rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9"${d ? ` transform="rotate(${d} 12 12)"` : ''}/>`).join(''),
-    monitor: '<rect x="2.8" y="4.2" width="18.4" height="12.6" rx="2.2"/><rect x="10.9" y="16.8" width="2.2" height="2.8"/><rect x="7.4" y="19.4" width="9.2" height="2" rx="1"/>',
-    // A crescent is one disc (r 8.8 about the centre) with a second (r 10, centred
-    // up and to the right) taken out of it: the outer arc is the long way round,
-    // the inner one the short way back.
-    moon: '<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>',
+    // sun / monitor / moon moved to `line` on 2026-09-23 - see there.
     // (file and checkCircle, then leaf, were drawn for the overview card and deleted
     // with the things that held them: the plates on 2026-09-22, the closing line on 2026-09-23.)
     // index.html aliases these rather than redrawing them.

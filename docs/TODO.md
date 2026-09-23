@@ -2754,3 +2754,13 @@ pass. In the pane: the arc and knob land exactly (67% gives dashoffset 103.6 and
 the count-up settles on 67%, the layout is centred with no overflow at 1000 / 375 / 320 in
 both languages, and the reset glyph clears the bigger ring. Screenshots were taken in light
 and dark.
+
+## Session developments (2026-09-23, scheme icons from the reference)
+
+- The header's sun / monitor / moon are now **line icons** taken from the user's reference:
+  a ring with eight short rays, a rounded screen on a neck and base, and a crescent. The
+  header seg's CSS strokes them, and the chosen mode's body is filled in the accent. They
+  moved to `tools/icon-packs.mjs`'s `line` pack, and the shipped strings match the
+  generator's output.
+- The reference's blue moon was not copied. On its light page with System chosen, it is
+  not the resolved theme and is most likely a hover.

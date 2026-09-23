@@ -692,17 +692,19 @@
            hairline — colour alone is too close to carry the state. */
         .seg-btn.active { color: var(--text); background: var(--surface); border-color: var(--border); }
         /* The header's scheme seg: the same box as EN, three SQUARE cells, 14px glyphs,
-           and no chip. The chosen mode is the solid glyph in the accent; the other two
-           are OUTLINES in --muted - darker and bolder is the whole selection signal.
-           The outline is drawn from the solid set rather than a second icon set: each
-           glyph's FIRST shape (the sun's disc, the monitor's screen, the moon) loses its
-           fill and takes a 2-unit stroke; the thin parts after it (rays, stand) are
-           already line-weight and stay filled. Add a glyph here and it needs its big
-           shape first. */
+           and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
+           2-unit round stroke, and the chosen mode's body - its FIRST shape: the disc,
+           the screen, the crescent - filled, in the accent. The other two are --muted
+           lines. (The reference also shows its moon blue; it is a light page with
+           System chosen, so that is not the resolved theme - most likely a hover. Not
+           reproduced.) */
         .header-controls > .seg { min-height: var(--ctl-sm); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
         .header-controls > .seg .seg-btn { width: var(--ctl-sm); min-height: 0; border: none; background: none; border-radius: var(--radius-ctl); }
-        .header-controls > .seg .seg-btn svg { width: var(--icon-xs); height: var(--icon-xs); }
-        .header-controls > .seg .seg-btn:not(.active) svg > :first-child { fill: none; stroke: currentColor; stroke-width: 2; }
+        .header-controls > .seg .seg-btn svg {
+            width: var(--icon-xs); height: var(--icon-xs);
+            fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .header-controls > .seg .seg-btn.active svg > :first-child { fill: currentColor; }
 
         /* ============================================================
            LAYOUT / SCREENS
@@ -3284,8 +3286,11 @@
                same drawing if it is ever wanted back. Same solid family: a disc plus
                eight detached rays, a screen on a stand, and a crescent cut from one
                disc by another. */
-            sun: _svg('<circle cx="12" cy="12" r="4.2"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(45 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(90 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(135 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(180 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(225 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(270 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(315 12 12)"/>'),
-            monitor: _svg('<rect x="2.8" y="4.2" width="18.4" height="12.6" rx="2.2"/><rect x="10.9" y="16.8" width="2.2" height="2.8"/><rect x="7.4" y="19.4" width="9.2" height="2" rx="1"/>'),
+            // LINE icons, the one set that is (2026-09-23, from the user's reference).
+            // Copied from tools/icon-packs.mjs's `line` pack; the header seg's CSS strokes
+            // them, and fills the first shape of the chosen one.
+            sun: _svg('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(315 12 12)"/>'),
+            monitor: _svg('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/>'),
             moon: _svg('<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>'),
             // The overview card's encouragement chip. Same drawing as
             // tools/icon-packs.mjs's solid pack — keep the two in step.

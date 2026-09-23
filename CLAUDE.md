@@ -562,15 +562,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       SQUARE 36px cells with no padding, `--space-md` between the two (the reference's
       gap, ~0.46 of the box). The coarse-pointer rule for the seg is gone — the base is
       already 36 — and the nested 360px block still narrows the cells to 28.
-    - **the ACCENT STAYS**: EN is `--accent-text` at 700, and the chosen mode is its
-      SOLID glyph in the accent. **The other two are OUTLINES in `--muted`** — filled
-      and blue against thin and grey is the "darker and bolder" selection.
-    - **The outline is made from the SOLID set in CSS, not a second icon set**:
-      `.seg-btn:not(.active) svg > :first-child` loses its fill and takes a 2-unit
-      stroke. Each glyph's first shape is its big one (the sun's disc, the monitor's
-      screen, the moon); the thin parts after it — rays, stand — are line-weight
-      already and stay filled. **A glyph added to this seg needs its big shape first.**
-      No markup carries `stroke="currentColor"`, so that grep still comes back empty.
+    - **the ACCENT STAYS**: EN is `--accent-text` at 700, and the chosen mode is in the
+      accent with its body FILLED. **The other two are `--muted` LINES** — filled and
+      blue against thin and grey is the "darker and bolder" selection.
+    - **THE THREE GLYPHS ARE LINE ICONS, TAKEN FROM THE REFERENCE** (2026-09-23, on
+      request: "the toggle icons should be directly taken from the screenshot"). A ring
+      with eight separate short rays, a rounded screen on a neck and base, a crescent —
+      drawn as geometry only, and stroked by the header seg's CSS (`fill: none; stroke:
+      currentColor; stroke-width: 2`, round caps and joins), so no markup carries
+      `stroke="currentColor"` and that grep still comes back empty.
+      `.active svg > :first-child` fills the chosen glyph's BODY — the disc, the screen,
+      the crescent — which is why **each keeps its body as its first shape**. They live
+      in `tools/icon-packs.mjs`'s `line` pack now, and the shipped strings were
+      checked against the generator's output.
+      **The reference also shows its moon blue beside the chosen monitor. It is NOT
+      reproduced**: the reference is a light page, so that is not "the theme System
+      resolved to" (that was tried and backed out the same turn) — most likely a hover.
     - 14px glyphs (`--icon-xs`) and a 12px code, about the reference's 0.37 and 0.33 of
       the box.
     - **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
@@ -1947,7 +1954,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
   `fill="currentColor" stroke="none"` and a glyph still takes the colour of the text tier
-  around it. **No stroked icon is left in the app**: the hero's tick bullets and the two
+  around it. **No stroked icon is left in the app except the header's three scheme
+  glyphs** (line icons since 2026-09-23, from the user's reference; stroked by CSS, not
+  markup): the hero's tick bullets and the two
   scroll arrows are inline solid paths for the same reason
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
@@ -1956,12 +1965,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   dropped their plates one day after those two were drawn for them — and what `globe`
   did the same day, when the menu that was its only reader became a text pill
   (`ICONS.symbols` is the same drawing if it is ever wanted back). `sun`, `monitor` and
-  `moon` were drawn in that commit for the header's three scheme modes; the sun's eight
-  rays are ONE rect rotated about the centre in the generator, and the shipped string was
-  diffed against the generator's output, which is the check that pack exists for. `leaf` is GONE with
+  `moon` were drawn in that commit for the header's three scheme modes and REDRAWN as line
+  icons on 2026-09-23 (they moved to the pack's `line` object); the sun's eight rays are
+  ONE line rotated about the centre in the generator, and the shipped strings were diffed
+  against the generator's output, which is the check that pack exists for. `leaf` is GONE with
   the overview card's closing line (2026-09-23). The `line` and `duotone` objects do
   NOT carry every glyph, which is true of
-  `book`, `shield`, `star`, `topic`, `sun`, `monitor` and `moon`: only `solid` ships.
+  `book`, `shield`, `star` and `topic`: only `solid` ships, bar the three scheme glyphs in `line`.
   **One of them is an ALIAS, not a drawing**: `ICONS.community = ICONS.society` — a group
   IS the society glyph, so there is one definition to maintain rather than two.
   `ICONS.clock = ICONS.history` was the second, and has now been deleted TWICE: once with
