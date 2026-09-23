@@ -2146,6 +2146,13 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   "Einbürgerungstest / Alle 16 Bundesländer / 300 FRAGEN · DE / EN · KOSTENLOS". Never
   hand-edit one of the two files — that drift is why this script exists; change a constant,
   re-run, commit both.
+- `docs/brand/` + `tools/make-logo-kit.mjs` - the logo kit (2026-09-23), drawn from
+  `docs/Mockups/ui/logo-kit.png`: horizontal / stacked / mark lockups in four variants,
+  app icon and favicon, as outlined SVG + PNG + `.ico`. **Generated — never hand-edit**;
+  change a constant and re-run `node tools/make-logo-kit.mjs` (needs Chrome with network:
+  it outlines the fonts via opentype.js). NOT yet wired into the app — the live
+  `favicon.svg`, `img/icons/` and header mark are the old ones. `docs/brand/README.md`
+  has usage, construction and the three deliberate departures from the mockup.
 - `legacy/` - May 28 build (standalone HTML, corrupted JSON, old regen tool). See
   `legacy/README.md`. Do NOT publish from it.
 
