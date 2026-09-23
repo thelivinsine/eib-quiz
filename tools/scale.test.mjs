@@ -69,7 +69,7 @@ const BUDGETS = {
   globalLineHeights:    [7, "target ~9 — one per --fs-* pair plus --lh-prose"],
   // Component rules that still state font-size / font-family / font-weight instead of
   // reading a --type-* role. ROLE_EXEMPT names the only ones allowed; target 0.
-  typeOutsideRoles:     [115, "target 0 — every text rule reads a --type-* role (spec 2026-09-23)."],
+  typeOutsideRoles:     [71, "target 0 — every text rule reads a --type-* role (spec 2026-09-23)."],
 };
 
 // ===========================================================================================

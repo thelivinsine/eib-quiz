@@ -1327,13 +1327,14 @@
            is not clearance — so the 620px block takes it down a rung. Every headline
            is ONE line, measured at four tiers x two languages x both widths, and that
            is what keeps this block shorter than the 152px ring beside it. */
-        .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
-        .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
+        .dash-verdict strong { font: var(--type-title); letter-spacing: var(--ls-display); display: block; color: var(--text); }
+        .dash-verdict p { font: var(--type-small); margin-top: var(--space-2xs); color: var(--muted); }
         /* The key to the tick on the ring: the same --text bar, beside its name. */
         .dash-pass {
+            font: var(--type-label);
             display: inline-flex; align-items: center; gap: var(--space-sm);
             margin-top: var(--space-sm);
-            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
+            color: var(--sub-text);
         }
         .dash-pass::before { content: ''; width: 3px; height: 12px; border-radius: var(--radius-xs); background: var(--text); }
 
@@ -1376,8 +1377,8 @@
         /* The pill hugs this, so it fits "Berlin" as well as it fits
            "Mecklenburg-Vorpommern". */
         .state-picker-value {
+            font: var(--type-control-sm);
             color: var(--text);
-            font-size: var(--fs-sm); font-weight: 600;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             min-width: 0;
         }
@@ -1431,7 +1432,7 @@
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         /* --fs-xl, the card's one large figure: still a rung under the --fs-2xl
            section heading above it, so the heading keeps the section. */
-        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 700; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        .ready-ring-pct { font: var(--type-figure-md); color: var(--text); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
         /* The caption the mockup puts under the percentage, and it IS the three
            readouts' label — the rule below carries both, so the card's four blocks
            share one label treatment and one figure treatment.
@@ -1458,10 +1459,7 @@
            They stay out of the shared micro-label rule: a quiz readout's label, a tile
            eyebrow and a review number are all still --fs-2xs uppercase at 600. */
         .ds-label, .ready-ring-sub {
-            font-family: var(--font-body);
-            font-size: var(--fs-xs);
-            font-weight: 400;
-            line-height: var(--lh-prose);
+            font: var(--type-label);
             color: var(--muted);
         }
         .ready-ring-sub {
@@ -1507,14 +1505,14 @@
            weight, tracking and tabular numerals match the ring's figure exactly, so
            the card's four blocks are ONE treatment: an --fs-md figure over an 11px
            name, four times. If either moves, move both. */
-        .ds-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        .ds-num { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
         /* margin-left on top of the string's own leading space: the mockup sets the
            total off the figure at ~9px and " /" alone buys 3. --fs-2xs came down from
            --fs-xs with the figure and then STAYED while the figure fell twice more
            (on request: "keep the size of 310 intact"). That is the point of it — the
            denominator is a SCALE, not part of the number, and at 12px under a 16px
            figure it reads one rung down rather than three. */
-        .ds-of { margin-left: var(--space-2xs); color: var(--faint); font-size: var(--fs-2xs); font-weight: 500; }
+        .ds-of { font: var(--type-caption); margin-left: var(--space-2xs); color: var(--faint); }
 
         /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
         /* NO HAIRLINE. The mockup draws this as a tint and nothing else — measured
@@ -1570,9 +1568,9 @@
            blue tint and a navy slab in the middle of it reads as a hole. */
         .resume-banner .btn-primary { background: var(--accent-fill); color: var(--on-accent); }
         .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
-        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); min-width: 0; }
-        .resume-text strong { color: var(--text); font-size: var(--fs-base); }
-        .resume-text > span { font-size: var(--fs-xs); }
+        .resume-text { font: var(--type-small); display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--muted); min-width: 0; }
+        .resume-text strong { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .resume-text > span { font: var(--type-label); }
         .resume-actions { position: relative; z-index: 1; display: flex; gap: var(--space-sm); }
 
         /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
@@ -1626,7 +1624,13 @@
            content width is a 157px card, and "Prüfungssimulation" is one 18-character
            word that does not fit in one. Measured in German, which is what decides it. */
         @media (max-width: 1160px) {
-            .modes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            /* Five cards on three columns fell 3 + 2 with the pair hard left and taller
+               than the row above. Six half-tracks, each card two of them, the fourth
+               starting on the second: the last two centre under the first three. 1fr
+               rows make all five one height. */
+            .modes-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+            .modes-grid > .mode-card { grid-column: span 2; }
+            .modes-grid > .mode-card:nth-child(4) { grid-column: 2 / span 2; }
         }
         /* THE PRACTISE-MODE MOCKUP'S CARD (2026-09-23, on request: "adapting the tile's
            shade, making them minimalistic"). A --tile on its hairline; a circular disc;
@@ -1676,17 +1680,18 @@
            properly (the root carries lang="de" when the UI is German) and
            `overflow-wrap: anywhere` is the backstop, exactly as `.opt-num` handles
            "Christusmonogramm". */
-        .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
+        .mode-title { font: var(--type-title); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
         .mode-description {
-            color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose);
+            font: var(--type-small);
+            color: var(--sub-text);
             margin-bottom: var(--space-md);
         }
         /* Only work that is actually waiting gets a colour, and it sits on its own line
            above the foot, centred, where the mockup puts "2 due". */
         .mode-flag {
+            font: var(--type-chip);
             align-self: center;
             margin-top: auto; margin-bottom: var(--space-ms);
-            font-size: var(--fs-2xs); font-weight: 600;
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
@@ -1703,9 +1708,10 @@
         /* --sub-text, not --muted: the mockup's facts measure as bright as its
            description. nowrap per fact, so a fact never breaks mid-phrase. */
         .mode-meta {
+            font: var(--type-caption);
             display: flex; align-items: baseline; gap: var(--space-2xs);
             min-width: 0; white-space: nowrap;
-            font-size: var(--fs-2xs); color: var(--sub-text);
+            color: var(--sub-text);
             font-variant-numeric: tabular-nums;
         }
         /* THE ONE PLACE THIS LEAVES THE MOCKUP. At five across the card's content box is
@@ -1752,8 +1758,8 @@
         }
         .topic-chip-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .topic-chip-body { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; flex: 1; }
-        .topic-chip-name { font-weight: 600; font-size: var(--fs-base); color: var(--text); }
-        .topic-chip-meta { font-size: var(--fs-2xs); color: var(--muted); }
+        .topic-chip-name { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .topic-chip-meta { font: var(--type-caption); color: var(--muted); }
         .topic-chip-bar { display: block; height: 3px; margin-top: var(--space-3xs); border-radius: var(--radius-xs); background: var(--surface3); overflow: hidden; }
         .topic-chip-bar > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
         .topic-chip-go { flex-shrink: 0; color: var(--faint); display: grid; place-items: center; }
@@ -1789,19 +1795,19 @@
 
         /* History */
         .hist-exam { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-md); background: var(--surface2); border-color: var(--border-soft); }
-        .hist-exam-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); font-size: var(--fs-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
+        .hist-exam-stats { font: var(--type-small); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
         .hist-exam-stats strong { color: var(--text); font-variant-numeric: tabular-nums; }
         .hist-bars { display: flex; align-items: flex-end; gap: var(--space-sm); height: 52px; }
         .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: var(--radius-xs) var(--radius-xs) 0 0; background: var(--muted); transition: height 0.4s var(--ease); }
         .hist-bar.pass { background: var(--teal-deep); }
         .hist-bar.fail { background: var(--red); }
         .hist-list { border-radius: var(--radius); overflow: hidden; border-color: var(--border-soft); }
-        .hist-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); font-size: var(--fs-sm); flex-wrap: wrap; }
+        .hist-row { font: var(--type-small); display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
         .hist-row:last-child { border-bottom: none; }
         .hist-mode { font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
-        .hist-date { color: var(--muted); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums; }
+        .hist-date { font: var(--type-caption); color: var(--muted); font-variant-numeric: tabular-nums; }
         .hist-score { color: var(--sub-text); font-weight: 500; font-variant-numeric: tabular-nums; }
-        .hist-badge { font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: var(--ls-caps); padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill); }
+        .hist-badge { font: var(--type-chip); padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill); }
         .hist-badge.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .hist-badge.fail { color: var(--red-text); background: var(--red-dim); }
 
@@ -1810,7 +1816,7 @@
         .glossary-wrap { border-radius: var(--radius); overflow: hidden; }
         details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
         details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
-        .glossary-summary { padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); font-weight: 600; font-size: var(--fs-base); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
+        .glossary-summary { font: var(--type-title); letter-spacing: var(--ls-display); padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
         /* --hover, not --tile-hover: this row has no edge to change, so the fill is the
            whole state and needs dark's 1.20 step (--tile-hover is 1.105 on a tile). */
         .glossary-summary:hover { background: var(--hover); }
@@ -1821,9 +1827,9 @@
         .hist-body .hist-list { border: none; border-radius: 0; }
         .gloss-item { border-bottom: 1px solid var(--border-soft); }
         .gloss-item:last-child { border-bottom: none; }
-        .gloss-item > summary { padding: var(--space-ms) var(--space-md); font-weight: 600; font-size: var(--fs-sm); color: var(--text); transition: color 0.2s var(--ease); }
+        .gloss-item > summary { font: var(--type-control-sm); padding: var(--space-ms) var(--space-md); color: var(--text); transition: color 0.2s var(--ease); }
         .gloss-item > summary:hover { color: var(--accent-text); }
-        .gloss-def { padding: 0 var(--space-md) var(--space-ms); display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--sub-text); }
+        .gloss-def { font: var(--type-small); padding: 0 var(--space-md) var(--space-ms); display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--sub-text); }
         .gloss-en { color: var(--muted); font-style: italic; }
 
         /* ============================================================
@@ -2678,7 +2684,6 @@
                sets 188.0 — and a pixel is not clearance: a font that loads a hair wider
                wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
                keeps --fs-base; measured in both languages at every verdict tier. */
-            .dash-verdict strong { font-size: var(--fs-sm); }
             /* NO PHONE OVERRIDE (2026-09-22, on request). It used to go full width
                with the label hard left and the pill hard right — and `flex: 1` on the
                pill is what stretched it, so "Berlin" sat in a 250px capsule with a
@@ -2692,10 +2697,11 @@
             /* One card a row on a phone, read as a list row: flush left, the disc beside
                the name. The foot row needs nothing here - it is already facts left,
                arrow right, which is the end of a list row's diagonal. */
-            .modes-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
+            .modes-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: var(--space-sm); }
+            .modes-grid > .mode-card, .modes-grid > .mode-card:nth-child(4) { grid-column: auto; }
             .mode-card { text-align: left; }
             .mode-card .mode-head { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
-            .mode-card .mode-description { margin-bottom: var(--space-sm); font-size: var(--fs-xs); }
+            .mode-card .mode-description { margin-bottom: var(--space-sm); }
             .mode-card .mode-flag { align-self: flex-start; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
@@ -2824,7 +2830,7 @@
             /* One step down with the dial (190 -> 160px). It re-stated --fs-3xl, the value
                its base already carried, so the ring shrank and the numeral did not. */
             .score-ring-pct { font-size: var(--fs-2xl); }
-            .hist-row { font-size: var(--fs-xs); gap: var(--space-sm); }
+            .hist-row { gap: var(--space-sm); }
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the
                pictures to still be legible, and down here they would not be. */
