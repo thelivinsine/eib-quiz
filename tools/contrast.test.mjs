@@ -120,8 +120,12 @@ const PAIRS = [
   ["faint", "surface", AA, "the /310 denominator in light, where a practise tile IS --surface"],
   // The practise band's panel is a step DOWN from the canvas, so it is a ground the
   // surface pairs above do not cover. The cards ON it are ordinary --surface tiles.
-  ["text", "band", AA, "the CTA band's heading and a why-band claim's title, in light (dark puts both on --tile since 2026-09-23)"],
-  ["muted", "band", AA, "a why-band claim's body and the CTA band's lead, in light; the state picker's pin in both"],
+  ["text", "band", AA, "the state picker's value on its own fill"],
+  ["muted", "band", AA, "the state picker's pin"],
+  // The landing page's why and CTA panels are --panel since 2026-09-23: --tile's shade in
+  // dark, --band's in light.
+  ["text", "panel", AA, "the CTA band's heading and a why-band claim's title"],
+  ["muted", "panel", AA, "a why-band claim's body, the CTA band's lead and its script note"],
   // The footer is a --band panel too, and its small print is --sub-text rather than
   // --muted: the source note, the disclaimer and the licence are things a reader may
   // actually need. This ground was unasserted for that tier since the footer shipped.
@@ -130,9 +134,9 @@ const PAIRS = [
   // A PRACTISE TILE is --tile since 2026-09-23 (the practise-mode mockup): the overview
   // card, the mode cards, the topic chips and the history/glossary lists. In light it is
   // white, which the surface pairs already cover; in dark it is a rung below --surface.
-  ["text", "tile", AA, "a mode card's title, the overview card's verdict and figures; the why and CTA bands' headings in dark"],
+  ["text", "tile", AA, "a mode card's title, the overview card's verdict and figures"],
   ["sub-text", "tile", AA, "a mode card's description and its facts"],
-  ["muted", "tile", AA, "the overview card's readout names and advice line; the why and CTA bands' body copy in dark"],
+  ["muted", "tile", AA, "the overview card's readout names and advice line"],
   ["faint", "tile", AA, "the /310 denominator on the overview card"],
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
@@ -218,33 +222,35 @@ const FILLS = [
   ["surface2", "canvas", NEST, "an answer option, which is a well on the white page"],
   ["surface3", "surface", STATE, "a progress track and the :active fill"],
   ["border", "surface", HAIRLINE, "a tile's edge and the rule between two rows"],
-  // --band is the numbers band, the CTA band and the footer. The DIRECTION is the
+  // --band is the footer's panel (and --panel's light value). The DIRECTION is the
   // theme's: a recess in light (the mockup's, 1.065 below its white page), a raised
   // panel in dark (1.15 above the page, per theme-dark.md §3 — nothing goes below the
   // page there). The practise band's panel was the fourth and is GONE (2026-09-21, on
   // request), and the three pairs that asserted a mode card ON it went with it: no
   // --surface tile sits on --band any more, resting or hovered or pressed.
   ["canvas", "band", NEST, "the page either side of a panel"],
+  ["canvas", "panel", NEST, "the page either side of the why / CTA panels"],
   ["border", "canvas", HAIRLINE, "the panel's own edge, drawn on the page"],
-  // --band is a panel ground (the why band, the CTA band, the footer) and the state
-  // picker's fill. Practise TILES left it for --tile on 2026-09-23.
+  // --band is a panel ground (the footer) and the state picker's fill. Practise TILES
+  // left it for --tile on 2026-09-23, and the why / CTA panels for --panel.
   ["border", "band", HAIRLINE, "the footer's own hairline"],
-  ["tile-edge", "band", HAIRLINE, "the state picker's rim on its own fill, and the why / CTA bands' edge in light"],
+  ["tile-edge", "band", HAIRLINE, "the state picker's rim on its own fill"],
+  ["tile-edge", "panel", HAIRLINE, "the why / CTA panels' own edge"],
   // `tile / canvas` is NOT asserted, for the same reason `surface / canvas` is not: in
   // light a tile IS the page and its edge separates it. Dark's step is 1.068.
   ["tile-edge", "canvas", HAIRLINE, "a practise tile's hairline, drawn on the page"],
-  ["tile-edge", "tile", HAIRLINE, "the same hairline against the tile's own fill; the why / CTA bands' edge in dark"],
+  ["tile-edge", "tile", HAIRLINE, "the same hairline against the tile's own fill"],
   ["tile-hover", "tile", STATE, "a practise tile under the pointer"],
   ["hover", "tile", STATE, "a glossary / history summary row under the pointer: no edge change, so the fill is the whole state"],
   ["surface3", "tile", STATE, "a practise tile pressed"],
-  ["surface2", "tile", NEST, "a mode card's arrow disc, its icon disc in light, and a why-band disc in dark"],
+  ["surface2", "tile", NEST, "a mode card's arrow disc, and its icon disc in light"],
   // surface/band is GONE AGAIN (2026-09-22): the overview card's tiles were dissolved
   // on request, so nothing in the app puts a --surface fill on a --band ground any
   // more. It was last added on 2026-09-21 for those readout tiles, and deleted before
   // that when the practise band's panel went. A pair with no consumer is the
   // stale-ground bug this file keeps catching, so it goes rather than being kept warm.
   ["surface", "accent-soft", NEST, "the book plate on the resume banner"],
-  ["surface2", "band", NEST, "a why-band icon disc on the panel, in light"],
+  ["surface2", "panel", NEST, "a why-band icon disc on the panel"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.
   ["accent", "canvas", HAIRLINE, "a picked option's accent edge against the page"],

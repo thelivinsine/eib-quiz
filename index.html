@@ -150,6 +150,9 @@
                2.02 on the tile, where --hover's fill would be a 1.6 slab. */
             --tile-hover:      #282828;
             --tile-edge-hover: #505050;
+            /* The landing page's why and CTA panels: the tile's shade in dark (--tile's
+               value), --band's recess in light. A token, not an html.light override. */
+            --panel:           #202020;
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
@@ -392,6 +395,7 @@
             --tile-edge:       #E0E7F1;
             --tile-hover:      #EEF3FA;
             --tile-edge-hover: #C8D2E2;
+            --panel:           #F5F8FC;   /* --band's value */
 
             --border:       #E0E7F1;   /* 1.245 on a tile AND on the page */
             --border-soft:  #EDF1F8;
@@ -474,8 +478,10 @@
         }
 
         img { max-width: 100%; display: block; }
-        button { font-family: inherit; cursor: pointer; color: inherit; }
-        select { font-family: inherit; }
+        /* The whole font, not just the family: the UA gives a <button> 13.33px, so a new
+           button whose rule forgets its role would render under the 12px floor. */
+        button { font: inherit; cursor: pointer; color: inherit; }
+        select { font: inherit; }
         ::selection { background: var(--accent-soft); color: var(--text); }
         :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: var(--radius-xs); }
 
@@ -513,7 +519,7 @@
         /* Shared micro-label: --type-label, sentence case since 2026-09-23 (it was
            uppercase 12/600 with --ls-caps). */
         .stat-label, .breakdown-label, .review-q-num,
-        .timer-label,
+        .timer-label, .ds-label, .ready-ring-sub,
         .sidebar-title, .question-num {
             font: var(--type-label);
             color: var(--muted);
@@ -625,9 +631,13 @@
         }
         /* THE CURRENT PAGE IS --text AND THE OTHER LINK IS --muted (2026-09-23, on
            request: "get rid of underline for header page selection"). The underline was
-           the only visible marker, so colour takes it over; aria-current="page" still
-           names the page to a screen reader. Hover is inside (hover: hover): a tap
-           leaves :hover stuck on the link just pressed. */
+           the only visible marker, and colour alone is not enough: --text against
+           --muted is 2.85:1 in light and 2.10 in dark, under WCAG 1.4.1's 3:1, and a
+           hovered link turns --text too. So the other link is also a WEIGHT lighter,
+           400 against the role's 600, and a hover never makes it look current.
+           aria-current="page" still names the page to a screen reader. Hover is inside
+           (hover: hover): a tap leaves :hover stuck on the link just pressed. */
+        .nav-link:not(.nav-link--active) { font-weight: 400; }
         @media (hover: hover) { .nav-link:hover { color: var(--text); } }
         .nav-link--active { color: var(--text); }
 
@@ -1056,16 +1066,15 @@
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: var(--space-xl);
             padding: var(--space-xl);
-            background: var(--tile);
+            background: var(--panel);
             border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
         }
         /* The landing page's two panels take the PRACTISE TILE in dark (2026-09-23, on
-           request): --tile on --tile-edge, 1.068 off the page with the hairline doing the
-           separating, where --band on --border was a brighter slab in a heavy outline.
-           Light keeps its --band recess; --tile-edge IS --border there, so its edge
-           did not move. Not a token: contrast.test.mjs reads tokens as literal hex. */
-        html.light .why-grid, html.light .cta-band { background: var(--band); }
+           request): --panel is --tile's shade on --tile-edge, 1.068 off the page with the
+           hairline doing the separating, where --band on --border was a brighter slab in
+           a heavy outline. Light keeps its --band recess; --tile-edge IS --border there,
+           so its edge did not move. */
         /* #whyBand's own padding-block: var(--space-2xl) is GONE (2026-09-22, on
            request: "optimize the space within the bands"). It was written when this
            section was the bare one between two panels and had nothing but whitespace to
@@ -1127,7 +1136,7 @@
             display: flex; align-items: center; flex-wrap: wrap;
             gap: var(--space-lg);
             padding: var(--space-xl);
-            background: var(--tile);
+            background: var(--panel);
             border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
             overflow: hidden;
@@ -1460,13 +1469,8 @@
            It also buys WIDTH, which is what the phone row lives on: uppercase + 0.06em
            is wide, so the widest German name went 97.4 -> ~80 while gaining 2px of
            size.
-           They read the same --type-label as the shared micro-label rule since
-           2026-09-23 and could join its list; they were kept apart while that rule
-           was uppercase. */
-        .ds-label, .ready-ring-sub {
-            font: var(--type-label);
-            color: var(--muted);
-        }
+           Since 2026-09-23 they are in the shared micro-label list near the top of the
+           sheet; they were kept apart only while that rule was uppercase. */
         .ready-ring-sub {
             margin-top: var(--space-2xs);
             white-space: nowrap;
@@ -1517,7 +1521,7 @@
            (on request: "keep the size of 310 intact"). That is the point of it — the
            denominator is a SCALE, not part of the number, and at 12px under a 16px
            figure it reads one rung down rather than three. */
-        .ds-of { font: var(--type-caption); margin-left: var(--space-2xs); color: var(--faint); }
+        .ds-of { font: var(--type-caption); font-variant-numeric: tabular-nums; margin-left: var(--space-2xs); color: var(--faint); }
 
         /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
         /* NO HAIRLINE. The mockup draws this as a tint and nothing else — measured
@@ -1573,7 +1577,7 @@
            blue tint and a navy slab in the middle of it reads as a hole. */
         .resume-banner .btn-primary { background: var(--accent-fill); color: var(--on-accent); }
         .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
-        .resume-text { font: var(--type-small); display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--muted); min-width: 0; }
+        .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--muted); min-width: 0; }
         .resume-text strong { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
         .resume-text > span { font: var(--type-label); }
         .resume-actions { position: relative; z-index: 1; display: flex; gap: var(--space-sm); }
@@ -1630,12 +1634,13 @@
            word that does not fit in one. Measured in German, which is what decides it. */
         @media (max-width: 1160px) {
             /* Five cards on three columns fell 3 + 2 with the pair hard left and taller
-               than the row above. Six half-tracks, each card two of them, the fourth
-               starting on the second: the last two centre under the first three. 1fr
-               rows make all five one height. */
+               than the row above. Six half-tracks, each card two of them, and the first
+               card of a closing row of two starts on the second, so a closing pair
+               centres under the row above it whatever the count (not :nth-child(4),
+               which only holds for five). 1fr rows make every card one height. */
             .modes-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 1fr; }
             .modes-grid > .mode-card { grid-column: span 2; }
-            .modes-grid > .mode-card:nth-child(4) { grid-column: 2 / span 2; }
+            .modes-grid > .mode-card:nth-child(3n + 1):nth-last-child(2) { grid-column: 2 / span 2; }
         }
         /* THE PRACTISE-MODE MOCKUP'S CARD (2026-09-23, on request: "adapting the tile's
            shade, making them minimalistic"). A --tile on its hairline; a circular disc;
@@ -1657,7 +1662,6 @@
             cursor: pointer;
             display: flex; flex-direction: column;
             text-align: center;
-            font: inherit; color: inherit;
             transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
         }
         @media (hover: hover) {
@@ -1798,16 +1802,18 @@
             border-radius: var(--radius);
         }
 
-        /* History */
+        /* History. .hist-exam-stats and .hist-row read --type-small's 14px but NOT its
+           --lh-prose: they are list rows, not running text, so they keep --lh-ui (as
+           .review-answer does). Prose leading is for sentences a reader reads through. */
         .hist-exam { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-md); background: var(--surface2); border-color: var(--border-soft); }
-        .hist-exam-stats { font: var(--type-small); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
+        .hist-exam-stats { font: var(--type-small); line-height: var(--lh-ui); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); color: var(--sub-text); margin-bottom: var(--space-md); }
         .hist-exam-stats strong { color: var(--text); font-variant-numeric: tabular-nums; }
         .hist-bars { display: flex; align-items: flex-end; gap: var(--space-sm); height: 52px; }
         .hist-bar { flex: 1 1 0; min-width: 6px; max-width: 34px; border-radius: var(--radius-xs) var(--radius-xs) 0 0; background: var(--muted); transition: height 0.4s var(--ease); }
         .hist-bar.pass { background: var(--teal-deep); }
         .hist-bar.fail { background: var(--red); }
         .hist-list { border-radius: var(--radius); overflow: hidden; border-color: var(--border-soft); }
-        .hist-row { font: var(--type-small); display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
+        .hist-row { font: var(--type-small); line-height: var(--lh-ui); display: flex; align-items: center; gap: var(--space-md); padding: var(--space-ms) var(--space-md); border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
         .hist-row:last-child { border-bottom: none; }
         .hist-mode { font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
         .hist-date { font: var(--type-caption); color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -1983,13 +1989,15 @@
            is six things to look at. Whitespace does the separating, the labels drop
            to the quietest tier, and the numbers carry the row. */
         .stat { display: flex; align-items: baseline; gap: var(--space-sm); padding: 0; }
-        /* --muted, not --faint: at 0.63rem uppercase these were the smallest type on the
-           screen painted in the quietest tier (4.52 light / 5.67 dark), and on a phone
-           the row now sits at the bottom where it has to be legible in one glance.
-           --faint is for placeholder and disabled, not for a label you read. */
-        .stat .stat-label { font: var(--type-label); color: var(--muted); }
+        /* The label is the shared micro-label rule's: --muted, not --faint, because at
+           0.63rem uppercase these were once the smallest type on the screen painted in
+           the quietest tier (4.52 light / 5.67 dark), and on a phone the row sits at the
+           bottom where it has to be legible in one glance. --faint is for placeholder
+           and disabled, not for a label you read. */
         .stat-value { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        .stat-of { font: var(--type-caption); color: var(--muted); }
+        /* tabular-nums again: the font shorthand resets what the span inherited from
+           the figure around it. */
+        .stat-of { font: var(--type-caption); font-variant-numeric: tabular-nums; color: var(--muted); }
 
         /* The question column — readouts, question, buttons — beside the navigator.
            Column gap only, and wider than the page's rhythm: the two are different
@@ -2453,7 +2461,7 @@
         .review-q-num { margin-bottom: var(--space-xs); }
         .review-q-text { font: var(--type-title); letter-spacing: var(--ls-display); margin-bottom: var(--space-md); }
         .review-answers { display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-md); }
-        .review-answer { font: var(--type-small); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
+        .review-answer { font: var(--type-small); line-height: var(--lh-ui); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
         .review-answer.user-wrong { color: var(--red-text); background: var(--red-dim); }
         .review-answer.correct-ans { color: var(--green); background: var(--green-dim); }
         /* The exam's list carries every question, so it needs a right and a blank too. */
@@ -2513,14 +2521,6 @@
             body.in-session .quiz-sidebar { z-index: 30; }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
-            /* (PHONES ONLY since 2026-09-23: the 621-940 tablet block after this one
-               puts the buttons back under the answers.)
-               The card stretches again here, which parks .quiz-nav at the bottom of
-               the column — the two buttons then sit in the same place on every
-               question, directly above the overview strip, where a thumb can learn
-               them. The question itself stays top-aligned inside .question-body.
-               (There is no rule above them: pinned, it would float in open space —
-               and it separated nothing on a wide screen either.) */
             /* The fixed pane height is a DESKTOP rule: down here the navigator is a
                collapsed strip, and a 450px strip is 450px of nothing. */
             body.in-session .quiz-sidebar { height: auto; max-height: none; align-self: auto; }
@@ -2547,11 +2547,6 @@
             /* Back to one line down here: the panel's 248px column is what asked for a
                2x2, and on a phone the row is the full width. */
             body.in-session .quiz-topbar .stats-bar { display: flex; }
-            /* The column has to take the whole row before the card can fill it: the
-               grid places items at the start, so on its own .quiz-main is as tall as
-               its content and flex: 1 has nothing to grow into. */
-            body.in-session .quiz-main { align-self: stretch; }
-            body.in-session .question-card { flex: 1; }
             .quiz-sidebar { width: auto; position: static; padding: var(--space-xs) var(--space-md); margin-top: var(--space-sm); }
             .sidebar-header { cursor: pointer; min-height: var(--ctl-md); display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
@@ -2572,19 +2567,6 @@
             .sidebar-body.expanded { display: flex; max-height: 26vh; max-height: 26svh; }
         }
 
-        /* TABLET PORTRAIT (621-940px, 2026-09-23, on request): Previous and Next sit
-           directly under the answers, as they do above 940. The phone rule it overrides
-           parks them at the bottom of the column, which on a 1024px-tall tablet left
-           ~430px of nothing between the last answer and the buttons. The card is
-           content-sized again and the column centres in its row; the readouts and the
-           collapsed overview strip keep the rows below, at the bottom of the screen.
-           .quiz-main's max-height: 100% still caps a long question, so .question-body
-           scrolls instead of the page. */
-        @media (min-width: 621px) and (max-width: 940px) {
-            body.in-session .quiz-main { align-self: center; }
-            body.in-session .question-card { flex: 0 1 auto; }
-        }
-
         /* The phone's two type steps, and the ONLY place a phone font size lives: a
            heading drops to 22 and a big figure to 28, so the display headline still
            outranks both. 700, NOT the 620 layout breakpoint: --fs-hero is 5.2vw, so the
@@ -2595,6 +2577,10 @@
                 --type-heading:   600 var(--fs-xl)/var(--lh-ui) var(--font-head);
                 --type-figure-lg: 600 var(--fs-2xl)/var(--lh-tight) var(--font-head);
             }
+            /* The results ring steps down WITH its numeral (190 -> 160px): at 620 the
+               ring shrank while a 700px step had already dropped the figure to 28, so
+               621-700 showed a phone numeral in a desktop dial. */
+            .score-ring-wrap { width: 160px; height: 160px; }
         }
 
         @media (max-width: 620px) {
@@ -2721,7 +2707,7 @@
                the name. The foot row needs nothing here - it is already facts left,
                arrow right, which is the end of a list row's diagonal. */
             .modes-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: var(--space-sm); }
-            .modes-grid > .mode-card, .modes-grid > .mode-card:nth-child(4) { grid-column: auto; }
+            .modes-grid > .mode-card, .modes-grid > .mode-card:nth-child(3n + 1):nth-last-child(2) { grid-column: auto; }
             .mode-card { text-align: left; }
             .mode-card .mode-head { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
             .mode-card .mode-description { margin-bottom: var(--space-sm); }
@@ -2789,6 +2775,17 @@
             .question-meta > div:first-child { flex-direction: column; align-items: flex-start; gap: var(--space-2xs); }
             .question-category { white-space: normal; }
             .question-category::before { content: none; }
+            /* PHONES ONLY (this lived in the 940 block until 2026-09-23; between 621 and
+               940 the base rules keep Previous/Next under the answers, where a
+               1024px-tall tablet had ~430px of nothing between them). The card
+               stretches here, which parks .quiz-nav at the bottom of the column: the two
+               buttons sit in the same place on every question, directly above the
+               overview strip, where a thumb can learn them. The column has to take the
+               whole row first — the grid places items at the start, so on its own
+               .quiz-main is as tall as its content and flex: 1 has nothing to grow into.
+               (There is no rule above the buttons: pinned, it would float in open space.) */
+            body.in-session .quiz-main { align-self: stretch; }
+            body.in-session .question-card { flex: 1; }
             .question-card { padding: var(--space-md); }
             /* The card's padding insets the question and its options by --space-md a
                side; the progress bar hangs off #quizScreen and .quiz-nav off .quiz-main,
@@ -2796,10 +2793,12 @@
                question they belong to. Measured at 390px: question 32-358, bar and
                buttons 16-374. They take the same inset now, so the bar starts where the
                question starts and Previous sits under the first option. Only below
-               620px — above it the card has no padding and the three already agree. */
+               620px — above it the card has no padding and the three already agree.
+               The readouts are NOT in this list (2026-09-23): the row is centred, so an
+               inset aligns nothing and only costs width — at 320 it left 256px for a row
+               that needs up to 310. */
             body.in-session .quiz-progress,
             .quiz-nav,
-            body.in-session .quiz-topbar,
             body.in-session .quiz-sidebar { margin-inline: var(--space-md); }
             body.in-session main { padding-left: var(--space-md); padding-right: var(--space-md); }
             /* Same trade, against the phone's narrower gutter. */
@@ -2846,10 +2845,19 @@
                beside Richtig, Falsch and Score it can only be the count — so it is
                the one that can give the word up and keep the row on one line. */
             .stats-bar .stat:last-child .stat-label { display: none; }
+            /* ...and below 342px the score gives its word up too, for the same reason:
+               a percentage names itself. The row needs up to 310px in English (150 /
+               150 / 50% / 300 / 300) and a 320px screen has 288, so it wrapped as soon
+               as the counts reached two digits; without the word it needs 269. Above
+               342 the full row fits (w - 32 >= 310.4). In the exam the answered count
+               is the only readout, so there is no third child to hide. */
+            @media (max-width: 342px) {
+                .stats-bar .stat:nth-child(3) .stat-label { display: none; }
+            }
             /* Wraps to two rows rather than squeezing five figures into 390px. */
             .result-stat { min-width: 30%; }
-            .score-ring-wrap { width: 160px; height: 160px; }
             .hist-row { gap: var(--space-sm); }
+
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the
                pictures to still be legible, and down here they would not be. */

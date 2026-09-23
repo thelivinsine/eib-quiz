@@ -23,7 +23,8 @@
 // ---------------------------------------------------------------------------------------
 //
 // What it cannot do: it reads *declared* CSS, not painted pixels. Nor can it see a NEW text
-// element whose rule sets no font at all — a <button> like that renders at the UA's 13.33px;
+// element whose rule sets no font at all — it inherits (a <button> too, since the reset is
+// `font: inherit` rather than the UA's 13.33px), so it silently takes its parent's role;
 // only the browser role audit in docs/plans/2026-09-23-typography-and-responsive-plan.md
 // catches that. It cannot see what a rule
 // actually wins on screen, and it does not evaluate calc() or var() indirection. Browser
@@ -300,20 +301,19 @@ const globalLineHeights = new Set(valuesOf("line-height").map((d) => d.value)).s
 
 /**
  * The only rules allowed to state type outside a role (spec §1, "Named exceptions"): the
- * inherited default, the two UA resets, iOS's no-zoom <select>, the wordmark, two glyphs
- * used as icons, the EN code's requested 700, and three inline emphasis spans that set a
- * weight inside a parent's role. A selector, never a budget: it says which and why.
+ * inherited default, iOS's no-zoom <select>, the wordmark, two glyphs used as icons, the EN
+ * code's requested 700, the inactive nav link's 400 (its non-colour cue), and three inline
+ * emphasis spans that set a weight inside a parent's role. A selector, never a budget: it says which and why.
  */
 const ROLE_EXEMPT = {
   "body": ["font-family", "font-size"],
-  "button": ["font-family"],
-  "select": ["font-family"],
   ".state-picker select": ["font-size"],
   ".brand-name": ["font-family", "font-size", "font-weight"],
   ".footer-name": ["font-family", "font-size", "font-weight"],
   ".glossary-summary::after": ["font-size"],
   ".keyboard-hint-close": ["font-size"],
   ".lang-toggle": ["font-weight"],
+  ".nav-link:not(.nav-link--active)": ["font-weight"],
   ".hist-mode": ["font-weight"],
   ".hist-score": ["font-weight"],
   ".qnav-group-count": ["font-weight"],

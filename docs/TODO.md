@@ -2889,7 +2889,8 @@ Branch `typography-responsive` (PR, left for the user to merge). Spec and plan:
   `typeOutsideRoles` ratchet (160 -> 0), a role-format test, a 12px floor test for the
   roles and a hierarchy test at both widths.
 - **Labels are sentence case** everywhere (quiz readouts, results figures, footer column
-  titles, the history badge); nothing is uppercase but the two taglines.
+  titles, the history badge); nothing is uppercase (the two taglines only keep `--ls-caps`
+  tracking).
 - **No nav underline**: the current page is `--text`, the other link `--muted`.
 - **Phone hierarchy fixed**: headline 32 > numbers 28 > headings 22 (numbers were 36,
   headings 18); the question is 18 over 16px answers (both were 16).
@@ -2929,5 +2930,16 @@ string; the three scheme modes survive a reload.
   `--type-*` name passed, and an exception could grow a property it was never granted.
   Stale comments were corrected too. The colour-only page marker in the nav was left as
   the user chose it, and is raised in the PR.
+- **Code review fixes** (same day, on the branch): the inactive nav link is also a weight
+  lighter (400), because colour alone was 2.85 / 2.10:1; the results ring shrinks at 700 with
+  its numeral; the `/ 310` and `/ 300` denominators keep `tabular-nums`; list rows
+  (`.hist-row`, `.hist-exam-stats`, `.review-answer`) keep `--lh-ui`; the why/CTA panels
+  read a `--panel` token instead of an `html.light` override; `button, select` reset with
+  `font: inherit`; the 621-940 tablet block is gone (its two phone rules moved into the 620
+  block, which also closes the 620-621px sub-pixel gap); the closing-pair selector no longer
+  hard-codes `:nth-child(4)`; the duplicate label rules joined the shared list.
+  The quiz readouts wrapped at 320 as soon as the counts reached two digits (the row needs
+  up to 310px, the screen had 256): the row drops its phone inset and, below 342px, the
+  score's word, and now holds one line at 320 / 343 / 360 in both languages.
 - **PR #104 is open and waiting for the user to merge**; nothing from this block is on `main`
   yet. The worktree `../EIB-typography` holds the branch.
