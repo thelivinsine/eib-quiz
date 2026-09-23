@@ -2987,7 +2987,7 @@ string; the three scheme modes survive a reload.
   The quiz readouts wrapped at 320 as soon as the counts reached two digits (the row needs
   up to 310px, the screen had 256): the row drops its phone inset and, below 342px, the
   score's word, and now holds one line at 320 / 343 / 360 in both languages.
-- **PR #104 is squash-merged to `main`** as **[`e5bb588`](https://github.com/thelivinsine/eib-quiz/commit/e5bb588)**, which Pages publishes. The worktree `../EIB-typography` and the `typography-responsive` branch still exist. Main's `b1328ff` was merged into the branch first;
+- **PR #104 is squash-merged to `main`** as **[`e5bb588`](https://github.com/thelivinsine/eib-quiz/commit/e5bb588)**, which Pages publishes. The worktree `../EIB-typography` and the `typography-responsive` branch (local and remote) are deleted. Main's `b1328ff` was merged into the branch first;
   the only conflicts were the nav rule, where the branch's no-underline version won, and this
   file. **The review's fixes were written by the session that reviewed them**, so no second
   reader has seen `e867ec9`. After `e867ec9` the full role audit was not re-run; it would flag
