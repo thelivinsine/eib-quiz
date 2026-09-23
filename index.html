@@ -1050,10 +1050,16 @@
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: var(--space-xl);
             padding: var(--space-xl);
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
         }
+        /* The landing page's two panels take the PRACTISE TILE in dark (2026-09-23, on
+           request): --tile on --tile-edge, 1.068 off the page with the hairline doing the
+           separating, where --band on --border was a brighter slab in a heavy outline.
+           Light keeps its --band recess; --tile-edge IS --border there, so its edge
+           did not move. Not a token: contrast.test.mjs reads tokens as literal hex. */
+        html.light .why-grid, html.light .cta-band { background: var(--band); }
         /* #whyBand's own padding-block: var(--space-2xl) is GONE (2026-09-22, on
            request: "optimize the space within the bands"). It was written when this
            section was the bare one between two panels and had nothing but whitespace to
@@ -1115,8 +1121,8 @@
             display: flex; align-items: center; flex-wrap: wrap;
             gap: var(--space-lg);
             padding: var(--space-xl);
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
             overflow: hidden;
         }

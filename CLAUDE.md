@@ -786,6 +786,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     page. (The practise page's own tiles took `--band` later the same day — see the
     practise-tile note below — which is a tile ON the page, not a panel around a set
     of them.)
+    **IN DARK THE WHY AND CTA BANDS ARE THE PRACTISE TILE** (2026-09-23, on request:
+    "adapted by referencing the practise page"): `--tile` on `--tile-edge`, the same
+    #202020 / #2F2F2F as the mode cards and the overview card, where `--band` on
+    `--border` was a brighter slab in the heaviest outline on the page. The base rules
+    read `--tile` / `--tile-edge` and `html.light .why-grid, html.light .cta-band` puts
+    `--band` back, so **light did not move** (`--tile-edge` IS `--border` there). It is an
+    override rather than a `--panel: var(--tile)` token because `contrast.test.mjs` parses
+    tokens as literal hex and cannot resolve a `var()`. **The footer was left on `--band`
+    / `--border`** — it is shared with the Practise page, where it already sat under
+    `--tile` cards.
   - **ONE BLOCK SETS THE GAP TO THE NEXT, AND IT IS `.home-section`'s MARGIN**
     (2026-09-22, on request: "optimize the space within the bands"). `#whyBand` carried
     `padding-block: var(--space-2xl)` of its own, written when it was the BARE section
@@ -819,7 +829,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **THE WHY BAND AND THE NUMBERS BAND SWAPPED TREATMENTS** (2026-09-22, on request,
     against a screenshot: "invert the ... formatting for the sections"). This reverses
     what stood here for a day, so read both halves before touching either:
-    - **The WHY band is the PANEL**: `--band`, a `--border` hairline, the 16px radius and
+    - **The WHY band is the PANEL**: `--band` on a `--border` hairline in light (`--tile` on
+      `--tile-edge` in dark since 2026-09-23 — see the panels note above), the 16px radius and
       a `--space-xl` inset — **and no vertical separators**, which is the half of the old
       argument that survives. Hairlines between four CLAIMS turn them into a table; a
       frame around the SET does not, it groups them.
