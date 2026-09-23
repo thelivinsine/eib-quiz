@@ -2768,9 +2768,9 @@ and dark.
 ## Session close (2026-09-23, buttons, header toggles, Where-you-stand ring)
 
 This work was substantial, so it ended with a PR: **thelivinsine/eib-quiz#103** from
-`header-toggles-buttons`, which is **not merged**. `main` is still `ed50648` and the live site
-is unchanged until the PR merges. The PR body lists what was verified and what was not. The
-open items are: dark-mode buttons were not seen rendered, no hover state was seen hovered,
+`header-toggles-buttons`. It was reviewed and fixed in a follow-up session (below) and
+**merged** as [`2b05bc4`](https://github.com/thelivinsine/eib-quiz/commit/2b05bc4). The PR
+body lists what was verified and what was not. The open items are: dark-mode buttons were not seen rendered, no hover state was seen hovered,
 only Chromium was tested (Safari's SVG `transform-origin` on the ring's knob in particular),
 and the scheme icons were drawn by eye because the reference screenshot never reached disk.
 
@@ -2779,6 +2779,9 @@ and the scheme icons were drawn by eye because the reference screenshot never re
 `/code-review` at xhigh on #103 found thirteen things, and all thirteen are fixed on
 `header-toggles-buttons`. **The same session wrote the fixes it reviewed**, so no second
 reader has seen them.
+
+Live commit: **[`2b05bc4`](https://github.com/thelivinsine/eib-quiz/commit/2b05bc4)**, #103 squash-merged with the fixes on it, on the
+user's go-ahead. `header-toggles-buttons` is deleted. No new PR was opened.
 
 - The ring's arc is plain `--accent`, and so is the knob's ring. The gradient could not
   follow a circle, light's two blues were near-identical, and dark's `--accent-fill` end
