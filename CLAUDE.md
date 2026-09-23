@@ -565,8 +565,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the numbers went UP rather than down (figure-sm 16 over label 13 since 2026-09-23, paid for by
   the phone's 8px readout gap — which had never applied, because the in-session rule's 16px
   outranked it on specificity, until the bigger figures wrapped the German row and exposed it). The header goes the other way: it is a strip
-  you glance at, so the header seg's cells are `--ctl-sm` (`--ctl-xs` wide below 360px), `.session-back` `--ctl-sm` and the
-  brand mark `--ctl-xs` — stated in the 620px block, after the coarse-pointer floor, so source order decides.
+  you glance at, so the header seg's cells are `--ctl-sm` on a thumb (`--ctl-xs` wide below 360px), `.session-back` `--ctl-sm` — stated in the 620px block, after the coarse-pointer floor, so source order decides — and the
+  brand mark is `--ctl-xs` at every width since 2026-09-23.
   **There is no `.header-cta` any more** (2026-09-21, on request). The header used to end
   in a "Start practising" pill beside the controls; the hero's own Start sits ten pixels
   below it, so it only ever repeated something already on screen. `nav.startPractice`
@@ -620,11 +620,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     first attempt was reverted). Read this before touching them — the first attempt
     misread "remove the colour" as removing the ACCENT, and it meant the FILLS:
     - two hairline boxes (`--border`), **no background and no chip**, `--radius-ctl`
-      corners, both 36px tall (`--ctl-sm`): EN is a SQUARE box, the seg is three
-      36px-wide cells with no padding (34 tall inside the seg's own hairline),
-      `--space-md` between the two (the reference's
-      gap, ~0.46 of the box). The coarse-pointer rule for the seg is gone — the base is
-      already 36 — and the nested 360px block still narrows the cells to 28.
+      corners, both **28px** tall (`--ctl-xs`) with a mouse since 2026-09-23 (on
+      request: "scale down the header toggles"; they were 36): EN is a SQUARE box, the
+      seg is 28px-wide cells with no padding, `--space-ms` between the two (the
+      reference's gap, ~0.46 of the box, scaled with it). **`@media (pointer: coarse)`
+      puts all three back to `--ctl-sm`**, so a thumb keeps 36; the nested 360px block
+      still narrows the cells to 28.
     - **GREY ONLY — NO BLUE ON EITHER TOGGLE** (2026-09-23, on request: "the toggle icons
       should not have any blue accent colors, just grey"). EN is `--text` at 700, and
       the chosen mode is `--text` in a BOLDER line; **the other two are `--muted`
@@ -654,8 +655,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       and right points (r 6.36), so the inner edge passes through the icon's centre.
       The reference was never on disk, so this is drawn to its proportions by eye, not
       traced from its pixels.
-    - 16px glyphs (`--icon-sm`) and a 12px code: the sun draws 20 of its 24 units, so
-      it is 13.3px in the 36px box — the reference's 0.37 — and the code is its 0.33.
+    - 14px glyphs (`--icon-xs`) and a 12px code: the sun draws 20 of its 24 units, so
+      it is 11.7px in the 28px box (0.42). The code cannot follow it down — 12px is the
+      type floor — so it is 0.43 of the box against the reference's 0.33.
     - **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
       `min-height` and both are centred in the row, so in a session (no nav) they are
       on the back button's line with no override.
@@ -722,14 +724,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       is delivered; `setTheme('system')` was called by hand against a dark
       `prefers-color-scheme` to prove the body of it.
     - **Icon-only buttons carry their names in `aria-label`** (`nav.light` /
-      `nav.system` / `nav.dark`). The seg is 110px open (86 below 360px) and 38
-      collapsed, and EN 36, where the globe summary was 92 — that is what buys the
-      phone's two nav links.
+      `nav.system` / `nav.dark`). On a thumb the seg is 110px open (86 below 360px)
+      and 38 collapsed, and EN 36, where the globe summary was 92 — that is what buys
+      the phone's two nav links. With a mouse: 86 open, 30 collapsed, EN 28.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the logo kit's E** (2026-09-23; it was the flat German flag in a
-  rounded square before that) in a `--ctl-sm` box, beside a
-  `.brand-lockup` of `EIB Quiz` over the `nav.tagline` line. The name is markup, not `I18N`:
+  rounded square before that) in a `--ctl-xs` box (36 until 2026-09-23, on request:
+  "scale down ... the logo block"; the footer's mark shares the rule), beside a
+  `.brand-lockup` of `EIB Quiz` (`--fs-sm`, down from `--fs-base`) over the `nav.tagline` line. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
   **so is the NAME** — the mark alone stands for the brand on a phone, and the 62px
   that frees is part of what pays for two nav links down there. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
@@ -1214,8 +1217,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       it is a ring followed by a sentence, and a sentence is read from a left edge.
     - **A READOUT IS A GLYPH OVER A FIGURE OVER ITS NAME** (2026-09-23, on request:
       "add the icon right above the text center aligned within their respective
-      blocks"). `.ds-icon` is a BARE `--icon-lg` glyph in `--sub-text` — no plate, no
-      hue; the due numeral stays the one thing in colour — centred over the figure,
+      blocks"). **`.ds-icon` wears the mode cards' disc** (2026-09-23, on request: "the
+      icon style of where you stand should match ... choose your practise mode") —
+      it SHARES `.mode-icon`'s rule: a `--ctl-md` circle, `--surface` in dark /
+      `--surface2` in light, an `--icon-lg` glyph in `--text`. No hue; the due numeral
+      stays the one thing in colour. It was a bare `--sub-text` glyph for an hour. It
+      sits centred over the figure,
       8px above it (a `--space-2xs` margin on top of the column's 4px gap). The glyphs
       are `ICONS.file` (answered), `ICONS.checkCircle` (mastered) and `ICONS.clock`
       (due), the three drawn for the plated version on 2026-09-21, restored to
@@ -1486,7 +1493,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **The card's padding and every gap inside it are `--space-xl`** (2026-09-22). The
       mockup measures ~20 and ~14, but its content is tiles with their own padding; bare
       blocks sit right on the card's inset, so 20px put the ring's stroke that far from
-      the border and read as a crop. `.dash-summary`'s own asymmetric padding
+      the border and read as a crop. **Except the TOP** (2026-09-23, on request: "too
+      much empty space on the top"): the card's top padding and the gap under
+      `.dash-note` are `--space-md`, because 28 + the note + 28 put three times the
+      bottom's air above the ring for one line of small print. 78 -> 54px measured. `.dash-summary`'s own asymmetric padding
       (`var(--space-sm) var(--space-md)`, which existed so the tile's height could BE
       the ring) went with the tiles — it has no fill to inset any more.
     - There is no `OVERVIEW` eyebrow — the card's own heading says it, and the
@@ -1915,19 +1925,31 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     a phone screen the strip competed with the question for the reader's first look; at the
     bottom it is also where a thumb already is. `.quiz-layout`'s rows are
     `minmax(0, 1fr) auto` there, and `.quiz-sidebar` no longer carries `order: -1`.
-  - **The readouts and the navigator are ONE block, and its middle lines up with the
-    question's middle** (2026-09-20). Above 940px `.quiz-layout` is
-    `grid-template-rows: minmax(0, 1fr) auto minmax(0, auto) minmax(0, 1fr)` over
-    `"main ." "main stats" "main nav" "main ."`: a 1fr SPACER row either side of the
-    stats/nav pair takes whatever the question column has spare. Like the head/tail
-    spacers they have a zero basis and only grow, so when the pair is the taller of the
-    two they collapse and nothing moves.
-    - **`.quiz-main` takes `align-self: center`, and that is the other half of it.**
-      The spacers centre the pair against the question while the QUESTION is taller;
-      open the navigator and the pair becomes taller (a 504px pane against a ~500px
-      column at 900px), and without this the question stayed pinned to the top and the
-      centres drifted 36px apart. Measured at delta 0 — closed and open, text and image
-      questions — at 1600x1000, 1280x900, 1024x768 and 980x700.
+  - **THE NAVIGATOR'S TOP EDGE IS THE FIRST ANSWER'S, and the readouts sit straight
+    above it** (2026-09-23, on request). This replaces the pair being CENTRED against
+    the question with a 1fr spacer row either side (2026-09-20). Above 940px
+    `.quiz-layout` is `grid-template-rows: minmax(var(--opts-top, 0px), auto)
+    minmax(0, auto) minmax(0, 1fr)` over `"main stats" "main nav" "main ."`, with the
+    readouts `align-self: end` in the first row, so the navigator starts on the
+    options' line (or lower, if a short question leaves the readouts too little room).
+    - **`--opts-top` is MEASURED**: `syncQuizAside()` sums `#optionsContainer`'s
+      `offsetTop` chain up to `.quiz-layout` (which is `position: relative` for it) and
+      a ResizeObserver on `#timer`, `#questionBody` and every child of `#questionBody`
+      re-runs it — the question, its translation, a prompt image, the options and the
+      explanation that re-centres them all move the options. **`offsetTop`, not a
+      client rect**: a rect taken during the question's entrance animation came out
+      10px low, and nothing resizes when the animation ends. Measured within 1px —
+      fresh, answered, navigator open, image and prompt-image questions, translated,
+      exam — at 1600x1000, 1280x900, 1024x768 and 980x700, locked at every one.
+    - **`.quiz-main` is `align-self: start` above 940px** (it was `center`): the
+      navigator is placed from the column's own offsets, so the column must not move
+      when the navigator grows. 621-940 keeps `center`, which is what centres the
+      tablet's column in its row.
+    - **The readouts are four across, each a figure over its name, inset to the
+      navigator's content edge** (`padding-inline: --space-ms`, `space-between`):
+      `--type-control-sm` figures over `--type-caption` names, a rung under the phone's
+      inline 16/13 row. They were a 2x2 across the navigator's full outer width. The
+      whole treatment sits in a `min-width: 941px` block, so the phone row is untouched.
     - **The nav row is `minmax(0, auto)`, not `auto`.** The pane carries a fixed
       `height: clamp(300px, 56svh, 680px)`, and an auto row refuses to go below it —
       which pushes it out of a locked screen the moment the grid has to shrink.
@@ -1958,8 +1980,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   history rather than current state: the ready ring is 152px (104 was re-derived from
   `ui/where-you-stand.png`), and `.ds-num` is `--fs-md`.
   - **The header's two toggles are glance-only chrome**, in a strip with the nav, which is
-    what the `--ctl-sm` exception is for: 36px-wide cells (34 tall inside the seg's
-    hairline) at EVERY pointer since 2026-09-23, so no coarse rule is needed. **The `>` in `.header-controls > .seg` is
+    what the `--ctl-sm` exception is for: 28px boxes with a mouse and 36 under
+    `@media (pointer: coarse)` since 2026-09-23 (they were 36 at every pointer for
+    part of that day). **The `>` in `.header-controls > .seg` is
     load-bearing**: it keeps those rules off the navigator's `.qnav-seg`, which has its own.
     The 620px rule that used to pin every header seg to 28px is **deleted**: stated later
     in the sheet it won on source order and silently undid the thumb floor. The ONE place
