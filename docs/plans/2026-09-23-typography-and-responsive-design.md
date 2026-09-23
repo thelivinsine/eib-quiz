@@ -1,7 +1,8 @@
 # Typography roles and tablet/phone layout — design
 
-Status: **implemented on branch typography-responsive; PR #104 open, left for the user to merge.** Branch
-`typography-responsive` (worktree `../EIB-typography`). Ships as a PR, not a direct merge.
+Status: **shipped 2026-09-23** — PR #104, squash-merged to `main` after a code review whose
+fixes (`e867ec9`) changed a few details below; `docs/TODO.md` and `CLAUDE.md` hold the current
+version (the nav's 400 weight, the ring stepping at 700, list rows at `--lh-ui`, `--panel`).
 
 ## Intent
 

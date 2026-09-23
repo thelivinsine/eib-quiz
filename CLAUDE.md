@@ -616,9 +616,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **THE THREE GLYPHS ARE LINE ICONS, TAKEN FROM THE REFERENCE** (2026-09-23, on
       request: "the toggle icons should be directly taken from the screenshot"). A ring
       with eight separate short rays, a rounded screen on a neck and base, a crescent —
-      drawn as geometry only, and stroked by the header seg's CSS (`fill: none; stroke:
-      currentColor; stroke-width: 2`, round caps and joins), so no markup carries
-      `stroke="currentColor"` and that grep still comes back empty.
+      drawn as geometry only, wrapped by `_line()` (`fill="none"`, `class="icon-line"`)
+      rather than the solid `_svg()`, and stroked by the global `.icon-line` rule
+      (`stroke: currentColor; stroke-width: 2`, round caps and joins), so no markup
+      carries `stroke="currentColor"` and that grep still comes back empty. Global, not
+      scoped to the seg (2026-09-23, from the review of #103): under `_svg()` and a
+      seg-only stroke, the same glyph anywhere else rendered as a lone disc or a slab.
       **The chosen glyph is BOLDED, not filled** (2026-09-23, on request): `.active svg`
       takes `stroke-width: 2.75` against the resting 2. **Only the SUN also fills** —
       `#lightBtn.active svg > :first-child`, its r 4 disc, which is too small to read
@@ -642,12 +645,28 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--ctl-sm` (max-width, not width, so the 360px block's 28px cells still win).
       It opens on `:hover` (inside `@media (hover: hover)`), on keyboard focus
       (`:has(:focus-visible)` — the hidden cells stay in the tab order, and focusing one
-      is what opens it), and on a TAP where there is no hover: the first tap on the
+      is what opens it), and on a TAP: the first tap on the
       collapsed seg adds `.open` (the button's own listener just re-applies the same
       mode), a second tap chooses and closes, and a `pointerdown` outside closes it.
+      **A "tap" is decided by the `pointerType` of the seg's own `pointerdown`** — touch,
+      pen, or a mouse where `(hover: hover)` is off — **never by the media query alone**:
+      a touchscreen laptop reports hover, so its finger taps could never open the seg
+      (2026-09-23, from the review of #103). A keyboard click has no pointerdown and is
+      always a choice.
       **`.picked` closes it straight after a choice** while the pointer or focus is still
       on it; `mouseleave` and `focusout` clear it. Not `:focus-within` — Chrome focuses a
       clicked button, so the seg would stay open after the mouse left.
+      **The chosen cell is `order: 1`, i.e. LAST.** The controls are right-aligned, so
+      the seg opens leftward; with the sun first, opening slid it 72px away and put the
+      moon under the cursor, and a quick click picked dark. Last, the chosen cell stays
+      put. The cost: the open order depends on the mode, and it no longer matches the
+      Tab order. EN still slides left when the seg opens.
+      **`.open` and the `:has()` rule are TWO rules, not one list**: a browser without
+      `:has()` drops a whole selector list, which took `.open` with it and left a touch
+      reader on old Safari unable to change the theme at all.
+      **`initTheme()` runs BEFORE the first `syncHeaderHeight()`**: that `offsetHeight`
+      forces a style pass, and if it saw the markup's default (light) the collapse
+      transition played on every load for a dark or system reader.
       Measured fit, open: 375 and 320 in both languages with no overflow (the nav clears
       the brand by 10.9 at 320 in English).
   - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN code and a sun/monitor/moon
@@ -684,8 +703,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       is delivered; `setTheme('system')` was called by hand against a dark
       `prefers-color-scheme` to prove the body of it.
     - **Icon-only buttons carry their names in `aria-label`** (`nav.light` /
-      `nav.system` / `nav.dark`). The seg is 110px (86 below 360px) and EN 36, where the
-      globe summary was 92 — that is what buys the phone's two nav links.
+      `nav.system` / `nav.dark`). The seg is 110px open (86 below 360px) and 38
+      collapsed, and EN 36, where the globe summary was 92 — that is what buys the
+      phone's two nav links.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the logo kit's E** (2026-09-23; it was the flat German flag in a
@@ -1180,7 +1200,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
         33), in `--text`, so the ring shows where you are AND where you need to be.
         `PASS_PCT` is derived from the top-level `EXAM_PASS` / `EXAM_SIZE`, which the
         results screen's pass check and `end.threshold` read too, and the verdict tiers
-        read it. `.dash-pass` under the verdict is its key: the same bar, "Pass mark 52%"
+        read it. `EXAM_SIZE` is itself `EXAM_GENERAL + EXAM_STATE` (30 + 3), which
+        `startMode()` draws the paper from, and the copy that names the shape
+        (`mode.exam.desc` / `.badge`, `end.general`, `end.stateOf3`,
+        `dash.verdict.buildingSub`) takes them as placeholders — change the exam there,
+        in one place. `.dash-pass` under the verdict is its key: the same bar, "Pass mark 52%"
         (`dash.passMark`);
       - the percentage at **`--fs-xl`** (`--type-figure-md`, weight 600 since 2026-09-23), the card's one large figure and still a rung
         under the section heading's `--fs-2xl`.
@@ -2055,8 +2079,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
   `fill="currentColor" stroke="none"` and a glyph still takes the colour of the text tier
   around it. **No stroked icon is left in the app except the header's three scheme
-  glyphs** (line icons since 2026-09-23, from the user's reference; stroked by CSS, not
-  markup): the hero's tick bullets and the two
+  glyphs** (line icons since 2026-09-23, from the user's reference; wrapped by `_line()`
+  and stroked by the `.icon-line` rule, not markup): the hero's tick bullets and the two
   scroll arrows are inline solid paths for the same reason
   (`grep 'stroke="currentColor"' index.html` must come back empty). Add a new icon to the
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting

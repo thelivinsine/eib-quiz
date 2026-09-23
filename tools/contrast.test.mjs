@@ -144,10 +144,10 @@ const PAIRS = [
   ["muted", "canvas", AA, "the four headline numbers' labels, and the inactive header nav link, straight on the page"],
   ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
-  ["accent-text", "surface", AA, "Starten links, FRAGE n"],
-  // The header sits on --canvas, which in dark is a rung below --surface. Its EN pill
-  // and the chosen scheme icon have no fill of their own since 2026-09-23.
-  ["accent-text", "canvas", AA, "any accent word straight on the page (the header's EN code and chosen scheme icon were until 2026-09-23; both toggles are grey now)"],
+  ["accent-text", "surface", AA, "the resume banner's book glyph on its --surface plate, and a glossary term under the pointer in light (where a tile IS --surface)"],
+  // --canvas is a rung below --surface in dark, so the pair above does not cover
+  // accent text with no tile behind it. The question card is not a box.
+  ["accent-text", "canvas", AA, "FRAGE n (.question-num) and the active translate toggle, straight on the quiz page"],
   ["accent-text", "accent-soft", AA, "the current question in the navigator grid"],
   ["teal-deep", "teal-tint", AA, "the Bundesland tile label and the Bestanden pill"],
   ["gold", "gold-dim", AA, "the DUE chip on the Smart Review card"],

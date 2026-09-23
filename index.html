@@ -693,43 +693,45 @@
             border-radius: var(--radius-pill);
             transition: color 0.2s var(--ease), background 0.2s var(--ease);
         }
-        /* An ICON segment is square: no side padding, because the glyph is the whole
-           label. Three of them cost ~92px against the two-word toggle's ~120, which is
-           the other half of what lets the seg stay in the header ROW at every width -
-           it used to move into the globe menu below 620px. */
-        .seg-btn--icon { width: var(--ctl-xs); padding: 0; display: grid; place-items: center; }
-        .seg-btn--icon svg { width: var(--icon-sm); height: var(--icon-sm); }
         .seg-btn:hover { color: var(--text); }
         /* The selected segment steps back UP to the tile fill and gets a
            hairline — colour alone is too close to carry the state. */
         .seg-btn.active { color: var(--text); background: var(--surface); border-color: var(--border); }
+        /* The stroke for _line()'s icons, wherever they are used - so a line glyph
+           outside the header seg still draws, instead of rendering as a solid blob. */
+        .icon-line { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         /* The header's scheme seg: the same 36px box as EN, three 36px-wide cells (34
            tall inside the seg's hairline), 16px glyphs (the reference's 0.37 of the box: the
            sun draws 20 of its 24 units), and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
            2-unit round stroke. The chosen mode is --text and a BOLDER 2.75-unit line;
            only the sun also fills its disc (2026-09-23, on request), because an r 4 ring
            is too small to read as bold - a filled screen or crescent read as a blob.
-           The other two are --muted lines. Grey only, never blue. */
+           The other two are --muted lines. Grey only, never blue.
+           COLLAPSED TO THE CHOSEN MODE (2026-09-23, on request). The other two slide
+           to zero width and open on hover, on a TOUCH or pen tap (.open, set in JS
+           from the pointer that tapped), or on keyboard focus. max-width, not width,
+           so the 360px block's 28px cells still win. .picked closes it straight after
+           a choice while the pointer or focus is still on it; mouseleave / focusout
+           clear it. They stay in the tab order: focusing one is what opens the seg. */
         .header-controls > .seg { min-height: var(--ctl-sm); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
-        .header-controls > .seg .seg-btn { width: var(--ctl-sm); min-height: 0; border: none; background: none; border-radius: var(--radius-ctl); }
-        .header-controls > .seg .seg-btn svg {
-            width: var(--icon-sm); height: var(--icon-sm);
-            fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-        }
-        .header-controls > .seg .seg-btn.active svg { stroke-width: 2.75; }
-        #lightBtn.active svg > :first-child { fill: currentColor; }
-        /* COLLAPSED TO THE CHOSEN MODE (2026-09-23, on request). The other two slide
-           to zero width and open on hover, on a tap where there is no hover (.open,
-           set in JS), or on keyboard focus. max-width, not width, so the 360px
-           block's 28px cells still win. .picked closes it straight after a choice
-           while the pointer or focus is still on it; mouseleave / focusout clear it.
-           They stay in the tab order: focusing one is what opens the seg. */
         .header-controls > .seg .seg-btn {
+            width: var(--ctl-sm); min-height: 0; padding: 0;
+            display: grid; place-items: center;
+            border: none; background: none; border-radius: var(--radius-ctl);
             overflow: hidden;
             transition: color 0.2s var(--ease), max-width 0.3s var(--ease), opacity 0.2s var(--ease);
         }
+        .header-controls > .seg .seg-btn svg { width: var(--icon-sm); height: var(--icon-sm); }
+        .header-controls > .seg .seg-btn.active svg { stroke-width: 2.75; }
+        #lightBtn.active svg > :first-child { fill: currentColor; }
+        /* The seg opens LEFTWARD (the controls are right-aligned), so the chosen cell
+           goes LAST: it stays under the pointer and the other two slide in beside it,
+           instead of the sun sliding 72px away and putting the moon under the cursor. */
+        .header-controls > .seg .seg-btn.active { order: 1; }
         .header-controls > .seg .seg-btn:not(.active) { max-width: 0; opacity: 0; }
-        .header-controls > .seg.open .seg-btn,
+        /* Two rules, not one list: a browser without :has() drops the whole list,
+           and .open is the only way a touch reader there can open the seg. */
+        .header-controls > .seg.open .seg-btn { max-width: var(--ctl-sm); opacity: 1; }
         .header-controls > .seg:not(.picked):has(:focus-visible) .seg-btn { max-width: var(--ctl-sm); opacity: 1; }
         @media (hover: hover) {
             .header-controls > .seg:not(.picked):hover .seg-btn { max-width: var(--ctl-sm); opacity: 1; }
@@ -2892,8 +2894,8 @@
                 <span data-i18n="nav.back"></span>
             </button>
             <!-- The mockup's centre nav, and both links go somewhere: Home is the
-                 landing page, Practise is the app. Practise wears the primary button
-                 because it is the way in. Nothing here promises a page we do not have —
+                 landing page, Practise is the app. The current page is --text at 600,
+                 the other --muted at 400 (colour AND weight: colour alone was under 3:1). Nothing here promises a page we do not have —
                  About and FAQs were aria-disabled buttons wearing a "Soon" chip until
                  2026-09-21 and are gone. -->
             <nav class="header-nav" data-i18n-aria="nav.sections">
@@ -2902,8 +2904,9 @@
             </nav>
             <div class="header-controls">
                 <!-- Two controls, both in the ROW at every width, per the reference:
-                     a pill that NAMES the language and flips on a click, and a
-                     sun/monitor/moon segment for the scheme. The globe <details> that
+                     a square box that NAMES the language and flips on a click, and a
+                     sun/monitor/moon segment for the scheme, collapsed to the chosen
+                     mode until it is hovered, tapped or focused. The globe <details> that
                      used to hold both is gone — a disclosure to choose between two
                      languages spent a click, and on a phone it was hiding the theme
                      seg to buy room the nav needed. Neither is text-heavy now, so both
@@ -2917,9 +2920,9 @@
                      saved, so a first visit is unchanged. Icon-only, so each button
                      carries its name in aria-label rather than on its face. -->
                 <div class="seg" id="schemeSeg" role="group" data-i18n-aria="nav.scheme">
-                    <button class="seg-btn seg-btn--icon active" id="lightBtn" data-icon="sun" data-i18n-aria="nav.light" aria-pressed="true"></button>
-                    <button class="seg-btn seg-btn--icon" id="systemBtn" data-icon="monitor" data-i18n-aria="nav.system" aria-pressed="false"></button>
-                    <button class="seg-btn seg-btn--icon" id="darkBtn" data-icon="moon" data-i18n-aria="nav.dark" aria-pressed="false"></button>
+                    <button class="seg-btn active" id="lightBtn" data-icon="sun" data-i18n-aria="nav.light" aria-pressed="true"></button>
+                    <button class="seg-btn" id="systemBtn" data-icon="monitor" data-i18n-aria="nav.system" aria-pressed="false"></button>
+                    <button class="seg-btn" id="darkBtn" data-icon="moon" data-i18n-aria="nav.dark" aria-pressed="false"></button>
                 </div>
             </div>
         </div>
@@ -3288,9 +3291,10 @@
         };
         // Topic chips cover the general themes only (state questions live under Bundesland mode).
         const TOPIC_KEYS = ['rights', 'politics', 'history', 'society', 'symbols'];
-        // The exam: 30 general + 3 state questions (startMode), passed at 17. The results
-        // screen, the history and the overview ring's pass tick all read these.
-        const EXAM_SIZE = 33, EXAM_PASS = 17;
+        // The exam's shape, in one place: startMode() draws the paper from these, and the
+        // results screen, the history, the ring's pass tick and the copy all read them.
+        const EXAM_GENERAL = 30, EXAM_STATE = 3, EXAM_PASS = 17;
+        const EXAM_SIZE = EXAM_GENERAL + EXAM_STATE;
         const PASS_PCT = Math.round(EXAM_PASS / EXAM_SIZE * 100); // 52
 
         // Inline solid icons (24x24, currentColor) — filled silhouettes whose detail is
@@ -3298,6 +3302,8 @@
         // text tier around it. Generated by tools/icon-packs.mjs ("solid" pack); add a new
         // icon there first so the contact sheet keeps documenting production.
         const _svg = inner => `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">${inner}</svg>`;
+        // The LINE icons' wrapper: no fill, and .icon-line in the sheet draws the stroke.
+        const _line = inner => `<svg class="icon-line" viewBox="0 0 24 24" fill="none" aria-hidden="true">${inner}</svg>`;
         const ICONS = {
             allQuestions: _svg('<circle cx="4.7" cy="6" r="1.5"/><circle cx="4.7" cy="12" r="1.5"/><circle cx="4.7" cy="18" r="1.5"/><rect x="8.8" y="4.9" width="11.4" height="2.2" rx="1.1"/><rect x="8.8" y="10.9" width="11.4" height="2.2" rx="1.1"/><rect x="8.8" y="16.9" width="7.4" height="2.2" rx="1.1"/>'),
             bundesland: _svg('<path fill-rule="evenodd" d="M12 22.2c0 0 7.1-6.6 7.1-11.7a7.1 7.1 0 1 0-14.2 0C4.9 15.6 12 22.2 12 22.2ZM12 13.6a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2Z"/>'),
@@ -3330,11 +3336,11 @@
                and went with the menu that was its only reader — ICONS.symbols is the
                same drawing if it is ever wanted back. */
             // LINE icons, the one set that is (2026-09-23, from the user's reference).
-            // Copied from tools/icon-packs.mjs's `line` pack; the header seg's CSS strokes
-            // them, and fills the first shape of the chosen one.
-            sun: _svg('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(315 12 12)"/>'),
-            monitor: _svg('<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4M8 21h8"/>'),
-            moon: _svg('<path d="M12 3A6.36 6.36 0 0 0 21 12A9 9 0 1 1 12 3Z"/>'),
+            // Copied from tools/icon-packs.mjs's `line` pack. _line() leaves them unfilled
+            // and .icon-line strokes them anywhere; the header seg thickens the chosen one.
+            sun: _line('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(315 12 12)"/>'),
+            monitor: _line('<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4M8 21h8"/>'),
+            moon: _line('<path d="M12 3A6.36 6.36 0 0 0 21 12A9 9 0 1 1 12 3Z"/>'),
         };
         // A group IS the society glyph, so the why band's third mark gets the name
         // that says what it means there. (`clock`, the same move for the history
@@ -3538,7 +3544,7 @@
             'dash.verdict.start':     { en: "You're just getting started", de: 'Du fängst gerade erst an' },
             'dash.verdict.startSub':  { en: 'Answer more questions to see your progress.', de: 'Beantworte mehr Fragen, um deinen Fortschritt zu sehen.' },
             'dash.verdict.building':  { en: 'Keep going',              de: 'Bleib dran' },
-            'dash.verdict.buildingSub': { en: 'You are still under the pass mark of 17 out of 33.', de: 'Du liegst noch unter der Bestehensgrenze von 17 von 33.' },
+            'dash.verdict.buildingSub': { en: 'You are still under the pass mark of {pass} out of {total}.', de: 'Du liegst noch unter der Bestehensgrenze von {pass} von {total}.' },
             'dash.verdict.onTrack':   { en: 'You are on track',        de: 'Du bist auf Kurs' },
             'dash.verdict.onTrackSub': { en: 'Above the pass mark. Keep it steady.', de: 'Über der Bestehensgrenze. Bleib dabei.' },
             'dash.verdict.strong':    { en: 'You are close to ready',   de: 'Du bist fast bereit' },
@@ -3550,8 +3556,8 @@
             'mode.topic.badge':    { en: 'Five topics',              de: 'Fünf Themen' },
             'mode.topic.time':     { en: '10–25 min',                de: '10–25 Min' },
             'mode.exam.title':     { en: 'Exam simulation',         de: 'Prüfungssimulation' },
-            'mode.exam.desc':      { en: '30 general questions plus 3 for {state}, drawn at random.', de: '30 allgemeine Fragen plus 3 zu {state}, zufällig gezogen.' },
-            'mode.exam.badge':     { en: '33 questions',            de: '33 Fragen' },
+            'mode.exam.desc':      { en: '{general} general questions plus {n} for {state}, drawn at random.', de: '{general} allgemeine Fragen plus {n} zu {state}, zufällig gezogen.' },
+            'mode.exam.badge':     { en: '{n} questions',           de: '{n} Fragen' },
             'mode.exam.time':      { en: '60 min',                  de: '60 Min' },
             'mode.all.title':      { en: 'All questions',           de: 'Alle Fragen' },
             'mode.all.desc':       { en: 'The whole general catalogue, in order.', de: 'Der gesamte allgemeine Katalog der Reihe nach.' },
@@ -3634,8 +3640,8 @@
             'end.correctCount':    { en: 'Correct',                 de: 'Richtig' },
             'end.wrongCount':      { en: 'Wrong',                   de: 'Falsch' },
             'end.threshold':       { en: 'Pass mark: {pass} of {total} questions ({n}%)', de: 'Bestehensgrenze: {pass} von {total} Fragen ({n} %)' },
-            'end.general':         { en: 'General (of 30)',         de: 'Allgemein (von 30)' },
-            'end.stateOf3':        { en: '{state} (of 3)',          de: '{state} (von 3)' },
+            'end.general':         { en: 'General (of {n})',        de: 'Allgemein (von {n})' },
+            'end.stateOf3':        { en: '{state} (of {n})',       de: '{state} (von {n})' },
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
             /* The exam is a test you retake; every other mode is practice you repeat. The
                button restarts whatever mode you were in, so it says which. */
@@ -4258,7 +4264,7 @@
                         </div>
                         <div class="dash-verdict">
                             <strong>${t('dash.verdict.' + vk)}</strong>
-                            <p>${t('dash.verdict.' + vk + 'Sub')}</p>
+                            <p>${t('dash.verdict.' + vk + 'Sub', { pass: EXAM_PASS, total: EXAM_SIZE })}</p>
                             <span class="dash-pass">${t('dash.passMark', { n: PASS_PCT })}</span>
                         </div>
                     </div>
@@ -4372,8 +4378,8 @@
             const topicsOpen = !document.getElementById('topicSection').hidden;
 
             grid.innerHTML =
-                card(mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
-                     [t('mode.exam.badge'), t('mode.exam.time')]) +
+                card(mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st, general: EXAM_GENERAL, n: EXAM_STATE }),
+                     [t('mode.exam.badge', { n: EXAM_SIZE }), t('mode.exam.time')]) +
                 card(mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
                      [t('mode.all.badge'), t('mode.all.time')]) +
                 card(mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
@@ -4614,7 +4620,7 @@
             } else if (mode === 'review') {
                 state.currentQuestions = reviewQueue;
             } else if (mode === 'exam') {
-                state.currentQuestions = [...sample(generalQuestions(), 30), ...sample(stateQuestions(), 3)];
+                state.currentQuestions = [...sample(generalQuestions(), EXAM_GENERAL), ...sample(stateQuestions(), EXAM_STATE)];
                 state.examStartTime = Date.now();
                 startTimer();
             }
@@ -5154,8 +5160,8 @@
             if (isExam) {
                 const elapsed = state.elapsedSecs || 0;
                 const elapsedStr = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
-                cells += stat(t('end.general'), state.generalCorrect, 'var(--gold)')
-                       + stat(t('end.stateOf3', { state: STATES[state.stateCode] || t('mode.state.title') }), state.stateCorrect, 'var(--gold)')
+                cells += stat(t('end.general', { n: EXAM_GENERAL }), state.generalCorrect, 'var(--gold)')
+                       + stat(t('end.stateOf3', { state: STATES[state.stateCode] || t('mode.state.title'), n: EXAM_STATE }), state.stateCorrect, 'var(--gold)')
                        + stat(t('end.elapsed'), elapsedStr, 'var(--blue)');
                 threshold.textContent = t('end.threshold', { pass: EXAM_PASS, total: EXAM_SIZE, n: PASS_PCT });
                 threshold.hidden = false;
@@ -5272,12 +5278,19 @@
         document.getElementById('darkBtn').addEventListener('click', () => setTheme('dark'));
         document.getElementById('systemBtn').addEventListener('click', () => setTheme('system'));
         document.getElementById('lightBtn').addEventListener('click', () => setTheme('light'));
-        // The scheme seg shows only the chosen mode. With no hover, the first tap on it
-        // just opens it (setTheme above re-applied the same mode); any other click is
-        // a choice and closes it.
+        // The scheme seg shows only the chosen mode. A pointer that cannot hover it open
+        // - touch, pen, or a mouse where the sheet's (hover: hover) rule is off - opens it
+        // with its first click (setTheme above re-applied the same mode); any other click
+        // is a choice and closes it. Decided by the pointer that CLICKED, not only by
+        // (hover: hover): a touchscreen laptop reports hover, and its finger taps could
+        // otherwise never open the seg. A keyboard click has no pointerdown.
         const schemeSeg = document.getElementById('schemeSeg');
+        let _segPointer = '';
+        schemeSeg.addEventListener('pointerdown', e => { _segPointer = e.pointerType; });
         schemeSeg.addEventListener('click', () => {
-            const opening = !schemeSeg.classList.contains('open') && !matchMedia('(hover: hover)').matches;
+            const tap = !!_segPointer && (_segPointer !== 'mouse' || !matchMedia('(hover: hover)').matches);
+            _segPointer = '';
+            const opening = !schemeSeg.classList.contains('open') && tap;
             schemeSeg.classList.toggle('open', opening);
             schemeSeg.classList.toggle('picked', !opening);
         });
@@ -5411,12 +5424,15 @@
         function syncHeaderHeight() {
             document.documentElement.style.setProperty('--header-h', _headerEl.offsetHeight + 'px');
         }
+        // initTheme() BEFORE the first measurement: offsetHeight forces a style pass,
+        // and if that pass sees the markup's default (light) the seg's collapse
+        // transition plays on every load for a dark or system reader.
+        initTheme();
         syncHeaderHeight();
         new ResizeObserver(syncHeaderHeight).observe(_headerEl);
 
         loadProgress();
         loadHistory();
-        initTheme();
         initLang();
 
         async function loadQuestions() {

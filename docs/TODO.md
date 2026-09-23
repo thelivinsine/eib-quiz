@@ -2878,9 +2878,55 @@ looked at, and every glyph stays inside its 24-unit box at 2.75.
 - Dark theme was not screenshotted; the rule is theme-independent (`currentColor`).
 - **Merged directly to `main` as `e0e058c`** (on request, no PR). Pages publishes it from there.
 
+## Session developments (2026-09-23, review of #103 and the three header commits)
+
+No PR was open, so `/code-review` at xhigh ran over #103 plus `9f6044b`, `a2203fe` and
+`e0e058c`. It found ten things and all ten are fixed. **The same session wrote the fixes it
+reviewed**, so no second reader has seen them.
+
+Live commit: **[`b1328ff`](https://github.com/thelivinsine/eib-quiz/commit/b1328ff)**,
+squash-merged straight to `main` from `review-103-fixes` on the user's go-ahead ("no new PR
+needed"). The branch was never pushed and is deleted.
+
+- **The scheme seg's chosen cell is `order: 1` (last).** The seg opens leftward from a
+  right-aligned column. With the sun first, opening it slid the sun 72px away and put the
+  moon under the cursor. EN still slides left on open, and the open order no longer matches
+  the Tab order.
+- **A tap is decided by the seg's `pointerdown` `pointerType`, not only by `(hover: hover)`.**
+  On a touchscreen laptop, finger taps could never open the seg.
+- `.open` and the `:has(:focus-visible)` rule are **two rules**. In one list, a browser
+  without `:has()` dropped `.open` too.
+- `initTheme()` runs **before** the first `syncHeaderHeight()`. Otherwise the collapse
+  transition played on every dark or system load.
+- `EXAM_GENERAL` / `EXAM_STATE` define the exam, `EXAM_SIZE` is their sum, and
+  `startMode()` draws from them. `mode.exam.desc` / `.badge`, `end.general`, `end.stateOf3`
+  and `dash.verdict.buildingSub` take placeholders.
+- sun / monitor / moon use a `_line()` wrapper and a global `.icon-line` stroke, so they draw
+  correctly outside the header seg too. `.seg-btn--icon` is gone, folded into the header rule.
+- `clock` is deleted from `tools/icon-packs.mjs` (no reader). Two `accent-text` pair
+  descriptions in `contrast.test.mjs` now name their real consumers. Three stale header
+  comments were rewritten.
+
+### Verified
+Contrast and scale (22 tests), `validate.js`, `node --check` on the main script and the
+icon-pack generator all pass, and markup carries no `stroke="currentColor"`. In the pane at
+1280 (`innerWidth` read first): the sun keeps its 1126-1162 cell when the seg opens. With
+synthetic pointer events, touch taps open and choose, and mouse and keyboard clicks choose.
+A dark-mode reload starts no seg transition. `ICONS.sun` outside the seg draws stroked. The
+exam card, verdict and results sub-scores render the same strings in both languages, and an
+exam still draws 30 + 3.
+
+### Not verified
+- No real touch device or touchscreen laptop, and no real hover. The pointer events were
+  synthetic.
+- No browser without `:has()` was tried. The split rule's effect there is argued.
+- No phone width was re-measured after the reorder. The cells' widths did not change.
+- Chromium only.
+
 ## Session developments (2026-09-23, type roles and tablet/phone layout)
 
-Branch `typography-responsive` (PR, left for the user to merge). Spec and plan:
+Branch `typography-responsive`, shipped as PR #104 (squash-merged on the user's go-ahead after
+the code review below). Spec and plan:
 `docs/plans/2026-09-23-typography-and-responsive-{design,plan}.md`.
 
 - **Every piece of text reads one of 16 `--type-*` roles** (`font: var(--type-*)`), each
@@ -2941,5 +2987,8 @@ string; the three scheme modes survive a reload.
   The quiz readouts wrapped at 320 as soon as the counts reached two digits (the row needs
   up to 310px, the screen had 256): the row drops its phone inset and, below 342px, the
   score's word, and now holds one line at 320 / 343 / 360 in both languages.
-- **PR #104 is open and waiting for the user to merge**; nothing from this block is on `main`
-  yet. The worktree `../EIB-typography` holds the branch.
+- **PR #104 is squash-merged to `main`**. Main's `b1328ff` was merged into the branch first;
+  the only conflicts were the nav rule, where the branch's no-underline version won, and this
+  file. **The review's fixes were written by the session that reviewed them**, so no second
+  reader has seen `e867ec9`. After `e867ec9` the full role audit was not re-run; it would flag
+  the three list rows and the inactive nav link by design (14/400 at `--lh-ui` matches no role).

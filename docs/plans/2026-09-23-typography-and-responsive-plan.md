@@ -1,6 +1,8 @@
 # Typography roles and tablet/phone layout — Implementation Plan
 
-Status: **executed 2026-09-23 on branch `typography-responsive`; PR #104 open.** Four
+Status: **shipped 2026-09-23** (PR #104, squash-merged after the code-review fixes in `e867ec9`,
+which retired this plan's tablet block and `:nth-child(4)`; the plan below is the record).
+Executed on branch `typography-responsive`. Four
 expectations below were wrong against the tree and were ruled on in the PR rather than forced:
 the desktop quiz gap (171px, the existing resting-position floor), 900x600 (the existing
 height-lock release below 640px), the exam timer's "< 30px" (one line measures 34), and the
