@@ -71,8 +71,8 @@ is **Inter 400**.
 | Slate dark | `#334155` | mono-dark bottom bar and tagline |
 | Slate light | `#CBD2DC` | mono-light middle bar |
 
-These are the mockup's own values. The flag colours are the mockup's brighter red and
-yellow, not the `#DD0000` / `#FFCE00` that the app header's flat flag uses today.
+These are the mockup's own values. The red and yellow are the mockup's brighter ones, not
+the `#DD0000` / `#FFCE00` of the flat flag the header used before this kit.
 
 ## Where this differs from the mockup
 
@@ -82,6 +82,17 @@ yellow, not the `#DD0000` / `#FFCE00` that the app header's flat flag uses today
   lockup at two sizes.
 - **Not included:** the mockup's icon library and feature icons. The app already ships its
   own glyph set (`ICONS` in `index.html`, documented by `tools/icon-packs.mjs`).
-- **Not wired into the app.** The app still uses its old tick `favicon.svg`,
-  `img/icons/icon-*.png` and the flat-flag header mark. Adopting these files is a separate
-  change, and it needs a `CACHE` bump in `sw.js`.
+
+## In the app
+
+The same script writes the app's served copies: `/favicon.svg`, and `img/icons/icon-192.png`
+and `icon-512.png` (rounded tile, `any`), `icon-maskable-512.png` and `apple-touch-icon.png`
+(full-bleed square). `tools/make-og-image.py` reads `svg/eib-quiz-mark-dark.svg` and
+`png/eib-quiz-mark-dark.png` for the social card. The header and footer draw the same paths
+inline in `index.html`, with both colour variants in one SVG and CSS showing one per theme.
+
+To change the mark:
+1. Edit it in `tools/make-logo-kit.mjs` and re-run it.
+2. Re-run `tools/make-og-image.py`.
+3. Copy the new paths into `.brand-mark` in `index.html`.
+4. Bump `CACHE` in `sw.js`, since the favicon and the icons are cached first.

@@ -1,5 +1,6 @@
 // Builds docs/brand/: every logo lockup, the app icon and the favicon, as
-// SVG (text outlined, so no font is needed to open them) and as PNG.
+// SVG (text outlined, so no font is needed to open them) and as PNG - and the
+// app's served copies: /favicon.svg and img/icons/*.png.
 //
 //   node tools/make-logo-kit.mjs
 //
@@ -265,4 +266,14 @@ const bitmaps = rasterise(png);
 for (const [p, b64] of Object.entries(bitmaps)) writeFileSync(join(OUT, p), Buffer.from(b64, 'base64'));
 writeFileSync(join(OUT, 'png', 'favicon.ico'), ico([16, 32, 48].map(n => [n, readFileSync(join(OUT, 'png', `favicon-${n}.png`))])));
 overview();
+
+// The app serves its icons from fixed paths (sw.js precaches favicon.svg and
+// both icon-*.png by name), so the kit writes those copies itself: a hand copy
+// is how the old tick favicon outlived the brand it belonged to.
+// The "any" icons are the rounded tile; the maskable and Apple ones are the
+// full-bleed square, because those platforms cut their own shape.
+writeFileSync(join(ROOT, 'favicon.svg'), files['svg/favicon.svg'].svg);
+for (const [from, to] of [['app-icon-192', 'icon-192'], ['app-icon-512', 'icon-512'],
+  ['app-icon-square-512', 'icon-maskable-512'], ['apple-touch-icon-180', 'apple-touch-icon']])
+  writeFileSync(join(ROOT, 'img', 'icons', `${to}.png`), Buffer.from(bitmaps[`png/${from}.png`], 'base64'));
 console.log(`${Object.keys(files).length} SVG, ${Object.keys(bitmaps).length} PNG, favicon.ico, overview.png -> docs/brand/`);

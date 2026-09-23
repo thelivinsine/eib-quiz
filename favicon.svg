@@ -1,5 +1,1 @@
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EIB Quiz">
-  <rect width="64" height="64" rx="14" fill="#10151D"/>
-  <rect x="3" y="3" width="58" height="58" rx="12" fill="none" stroke="#60A5FA" stroke-width="2" opacity="0.5"/>
-  <path d="M18 33 L28 44 L47 21" fill="none" stroke="#60A5FA" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="400" height="400" role="img" aria-label="EIB Quiz"><title>EIB Quiz</title><rect width="100" height="100" rx="20" fill="#FFFFFF"/><g transform="translate(20.48 19) scale(0.9841)"><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></g></svg>

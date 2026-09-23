@@ -15,7 +15,7 @@
 
     <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="img/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json">
 
     <!-- Open Graph -->
@@ -531,18 +531,21 @@
             gap: var(--space-md);
         }
         .brand { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); }
-        /* The mark is the flag, not a charcoal tile with an E on it. Its three bands are
-           written as literals INSIDE the SVG rather than in a rule: they are the German
-           flag's own values, they are the same in both themes, and they are a graphic
-           with no text on them, so there is no pair for LITERAL_PAIRS to hold. The
-           --ink-tile and --on-dark tokens went with the old mark; nothing else read them. */
+        /* The mark is the logo kit's E (docs/brand/, drawn from docs/Mockups/ui/logo-kit.png;
+           the geometry comes from tools/make-logo-kit.mjs, which is the place to change it).
+           Its colours are literals INSIDE the SVG rather than in a rule: a graphic with no
+           text on it has no pair for LITERAL_PAIRS to hold. It carries BOTH of the kit's
+           colour variants in one drawing: underneath, the dark variant (the navy bar drawn
+           0.75 units smaller over a slate rim, so it does not vanish into a dark canvas);
+           on top, .brand-mark-top, the light variant's full navy bar, which covers the rim
+           and is shown in light only. Base is dark here, as everywhere in this sheet. */
         .brand-mark {
             width: var(--ctl-sm); height: var(--ctl-sm);
-            border-radius: var(--radius-sm);
-            overflow: hidden;
             display: grid; place-items: center;
         }
         .brand-mark svg { width: 100%; height: 100%; display: block; }
+        .brand-mark-top { display: none; }
+        html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
         .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
         .brand-tagline { font-size: var(--fs-2xs); color: var(--muted); letter-spacing: var(--ls-caps); }
@@ -2900,7 +2903,7 @@
     <header>
         <div class="header-content">
             <button class="brand" onclick="showScreen('home')" data-i18n-aria="nav.home">
-                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 60 63" aria-hidden="true"><path fill="#64748B" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0.75H50A9.25 9.25 0 0 1 59.25 10V11A9.25 9.25 0 0 1 50 20.25H0.75V8A7.25 7.25 0 0 1 8 0.75Z"/><path class="brand-mark-top" fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></svg></span>
                 <span class="brand-lockup">
                     <span class="brand-name">EIB Quiz</span>
                     <span class="brand-tagline" data-i18n="nav.tagline"></span>
@@ -3240,10 +3243,10 @@
         <div class="footer-inner">
             <div class="footer-col footer-col--brand">
                 <div class="footer-brand">
-                    <!-- The header's mark, repeated. Its three bands are the flag's own
-                         values and live in the SVG rather than in a rule, so there is no
-                         token to share; one duplicated line beats a JS filler for it. -->
-                    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true"><rect width="12" height="4" fill="#000000"/><rect y="4" width="12" height="4" fill="#DD0000"/><rect y="8" width="12" height="4" fill="#FFCE00"/></svg></span>
+                    <!-- The header's mark, repeated. Its colours are the logo kit's and live
+                         in the SVG rather than in a rule, so there is no token to share;
+                         one duplicated line beats a JS filler for it. -->
+                    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 60 63" aria-hidden="true"><path fill="#64748B" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0.75H50A9.25 9.25 0 0 1 59.25 10V11A9.25 9.25 0 0 1 50 20.25H0.75V8A7.25 7.25 0 0 1 8 0.75Z"/><path class="brand-mark-top" fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></svg></span>
                     <span class="footer-lockup">
                         <span class="footer-name">EIB Quiz</span>
                         <span class="footer-tagline" data-i18n="nav.tagline"></span>
@@ -3395,7 +3398,7 @@
         // literal is dark-on-light only, and in dark mode a dark pole on a dark banner
         // disappears — --text flips with the theme and is the same near-black navy in
         // light. They carry no text, so they assert nothing in contrast.test.mjs,
-        // exactly as .brand-mark's flag does not.
+        // exactly as .brand-mark's E does not.
         const MOUNTAIN_ART = '<svg viewBox="0 0 420 80" fill="currentColor" stroke="none" aria-hidden="true">'
             + '<path opacity="0.15" d="M-10 80C33.2 65.6 40.4 60 50 60 59.6 60 66.8 65.6 110 80Z"/>'
             + '<path opacity="0.5" d="M80 80C144.8 57 155.6 48 170 48 184.4 48 195.2 57 260 80Z"/>'
