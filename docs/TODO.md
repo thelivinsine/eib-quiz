@@ -2651,3 +2651,55 @@ and mapped by card width (362 -> 205.6px).
 - **Headless Chrome, launched back to back from one Bash call, silently writes no
   screenshot after the first.** One launch per call works every time.
 
+
+
+## Session close (2026-09-23, diff review of #98–#102 and its fourteen fixes)
+
+A review of the five merged PRs nobody had reviewed (#98 header row, #99 and #100 landing
+bands, #101 logo kit, #102 practise-mode cards). None was open; the last recorded review
+was #96/#97. It found fourteen things, and all fourteen are fixed here. **The same session
+wrote the fixes it reviewed**, so no second reader has seen them.
+
+### The two that could stop the app booting
+- **`_schemeMql.addEventListener` threw on Safari < 14.** Safari 13.1 parses the script
+  (it has `?.`) but only has `addListener`, so the top-level call threw and nothing after it
+  ran. Now it falls back to `addListener`.
+- **The theme's `localStorage` calls were unguarded**, unlike every other key. In a
+  storage-blocked browser `initTheme()` threw before `loadQuestions()`. They are guarded
+  now, and the change listener reads an in-memory `_themeMode` instead of storage.
+
+### The rest
+- `#langToggle`'s name is now "EN – Switch to German", so it contains its visible label
+  (WCAG 2.5.3).
+- The mode card's container query is 195px, not 240: a container query measures the
+  content box, so the facts were stacking at 820px when one line fit.
+- The glossary/history `<summary>` hover is back on `--hover`. `--tile-hover` is 1.105 on
+  a dark tile, and those rows have no edge to carry the state.
+- The phone's `gap: 0` is scoped to `.header-controls > .seg`, so the navigator's
+  Linear/Shuffle/Topics seg keeps its gap.
+- Two new pairs in `contrast.test.mjs`: `accent-text / hover` (the language pill, 4.54 in
+  dark) and `hover / tile`. Two stale pair descriptions were corrected.
+- `make-logo-kit.mjs` now deletes the old kit only after both network steps succeed. Its
+  tagline reads "Practise", and the kit was re-run. Only the eight lockups that carry the
+  tagline changed; the mark, favicon and app icons came out identical, so no `CACHE` bump.
+- Cleanups: the dead `state.themeDark`, the split `.result-stats` rule, an orphaned
+  `mode.*.start` comment, and a "flag mark" comment.
+
+### Verified
+Contrast (10), scale (12), `validate.js` and `node --check` on the main script all pass.
+In the preview pane:
+- At 820px the facts are on one line; at 1280 they stack with all five arrows on one line.
+- The pill's name follows the language switch: "EN – …" and "DE – …".
+- All three scheme buttons save their mode and paint the right theme.
+- With `localStorage` stubbed to throw, `initTheme()` and `setTheme('system')` run without
+  throwing.
+- At 375px, `scrollWidth` is 375 and the header seg ends at 359.
+
+### Not verified
+- **The Safari fallback was never run.** There was no Safari 13 to test on; the branch is
+  read, not exercised.
+- **The dark summary-row hover was never seen hovered.** Its value was checked in the
+  parsed stylesheet and its ratio worked out by hand.
+- **The narrow navigator seg's restored gap** was confirmed only as a parsed rule. No
+  phone round was opened to look at it.
+- Chromium only. The live site was not opened.

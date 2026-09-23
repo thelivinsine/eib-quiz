@@ -80,6 +80,9 @@ the `#DD0000` / `#FFCE00` of the flat flag the header used before this kit.
   the mockup's proportion leaves each bar under 3px tall.
 - **Primary and horizontal are one file.** The mockup shows two tiles, but they are the same
   lockup at two sizes.
+- **The tagline says "Practise", not "Practice":** "Learn · Practise · Pass" is the app's
+  own `nav.tagline`, and the verb takes the British spelling everywhere else in the app.
+  The mockup's "Practice" was corrected on 2026-09-23 and the kit was re-run.
 - **Not included:** the mockup's icon library and feature icons. The app already ships its
   own glyph set (`ICONS` in `index.html`, documented by `tools/icon-packs.mjs`).
 

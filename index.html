@@ -1723,9 +1723,9 @@
            ~163px, and "300 questions · 60–90 min" is 155px at the 12px floor before the
            28px disc and its gap - the mockup's own facts, scaled, are ~10px, which this
            sheet does not go below. So a narrow card STACKS the two facts and drops the
-           middot. 240px is where one line fits again (155 + 8 + 28 + padding + border);
-           at three across and on a phone the card is wider than that. */
-        @container mode-card (max-width: 240px) {
+           middot. A container query measures the CONTENT box, so the threshold is the
+           one-line foot itself: 155 + 8 + 28 = ~192, and 195 leaves a little slack. */
+        @container mode-card (max-width: 195px) {
             .mode-foot { align-items: flex-end; }
             .mode-meta { flex-direction: column; align-items: flex-start; gap: 0; }
             .mode-sep { display: none; }
@@ -1823,7 +1823,9 @@
         details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
         details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
         .glossary-summary { padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); font-weight: 600; font-size: var(--fs-base); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
-        .glossary-summary:hover { background: var(--tile-hover); }
+        /* --hover, not --tile-hover: this row has no edge to change, so the fill is the
+           whole state and needs dark's 1.20 step (--tile-hover is 1.105 on a tile). */
+        .glossary-summary:hover { background: var(--hover); }
         .glossary-summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: var(--fs-lg); line-height: 1; }
         details.glossary-wrap[open] .glossary-summary::after { content: '−'; }
         .gloss-list { border-top: 1px solid var(--border-soft); }
@@ -2415,9 +2417,11 @@
            and .stats-grid on 2026-09-22 (it stopped being one too - see the swap note
            beside .why-grid). The rule stays written this way because the 1px gap below
            is still the sheet's only such literal and this is where that idiom is
-           explained; a second band that wants hairlines joins this selector. */
+           explained; a second band that wants hairlines joins this selector (and takes
+           margin-top back out into a rule of its own). */
         .result-stats {
             display: flex; flex-wrap: wrap; justify-content: center;
+            margin-top: var(--space-xl);
             border: 1px solid var(--border); border-radius: var(--radius);
             /* The separators are a 1px GAP over the band's own colour, not a border on
                each cell: a border-left lands on the first cell of a wrapped row too, and
@@ -2425,7 +2429,6 @@
                in both directions and cannot do that. */
             gap: 1px; background: var(--border); overflow: hidden;
         }
-        .result-stats { margin-top: var(--space-xl); }
         .result-stat {
             flex: 1 1 0; min-width: 104px;
             padding: var(--space-ms) var(--space-md);
@@ -2714,7 +2717,8 @@
             .sub-card { padding: var(--space-md); }
             .header-content { padding: var(--space-xs) var(--space-md); gap: var(--space-sm); }
             .header-controls { gap: var(--space-2xs); }
-            .seg { padding: 1px; gap: 0; }
+            .seg { padding: 1px; }
+            .header-controls > .seg { gap: 0; }
             .nav-link { padding: 0 var(--space-2xs); }
             .header-nav { gap: var(--space-2xs); }
             .lang-toggle { padding: 0 var(--space-sm); }
@@ -2739,7 +2743,7 @@
                WHAT PAYS FOR IT, measured at 375px: the globe summary (92) became the
                EN pill (46), the theme seg came back into the row (+92 against the menu
                it was hidden in), and the BRAND NAME went the way of the tagline (-62),
-               leaving the flag mark - which is still the way home from anywhere. The
+               leaving the E mark - which is still the way home from anywhere. The
                nav's own gaps and padding are tightened here too, because a 14px label
                in two links is the thing this row now spends its width on.
                Do not add a fourth item to this row without taking one out. */
@@ -3440,9 +3444,6 @@
             'nav.system':          { en: 'Match system',            de: 'Wie das System' },
             'nav.switchToDe':      { en: 'Switch to German',        de: 'Auf Deutsch umschalten' },
             'nav.switchToEn':      { en: 'Switch to English',       de: 'Auf Englisch umschalten' },
-            // The mockup names the action on every card ("Start Simulation", "Choose
-            // Topics"). Kept SHORT on purpose: at five columns inside a 1060px cap the
-            // row is ~145px wide, and German is the language that decides that.
             'nav.sections':        { en: 'Sections',                de: 'Bereiche' },
             'nav.navPractise':     { en: 'Practise',                de: 'Üben' },
             'nav.navHome':         { en: 'Home',                    de: 'Start' },
@@ -3691,7 +3692,8 @@
             const btn = document.getElementById('langToggle');
             if (!btn) return;
             btn.textContent = lang.toUpperCase();
-            btn.setAttribute('aria-label', t(lang === 'en' ? 'nav.switchToDe' : 'nav.switchToEn'));
+            // The name STARTS with the visible code (WCAG 2.5.3): "click EN" has to work.
+            btn.setAttribute('aria-label', lang.toUpperCase() + ' – ' + t(lang === 'en' ? 'nav.switchToDe' : 'nav.switchToEn'));
         }
 
         /** Two languages, so the pill flips rather than opening a menu. */
@@ -3732,7 +3734,6 @@
             showExplanation: false,
             timerInterval: null,
             timeLeft: 3600,
-            themeDark: true,
             missedQuestions: [],   // {q, userAnswerIdx} for wrong-answer review
             examStartTime: null,   // Date.now() when exam begins
             elapsedSecs: null,     // seconds taken, frozen at endQuiz so the results repaint
@@ -3876,29 +3877,35 @@
         // not system, so a first visit looks exactly as it did. The pre-paint script in
         // <head> has to agree with this or a system-dark reader gets a white flash.
         const _schemeMql = window.matchMedia('(prefers-color-scheme: dark)');
+        // The mode in force, held here so the change listener never has to read
+        // storage — which can throw, and every access to it below is guarded.
+        let _themeMode = 'light';
 
         function initTheme() {
-            const saved = localStorage.getItem('theme');
+            let saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
             setTheme(saved === 'dark' || saved === 'system' ? saved : 'light');
         }
 
         function setTheme(mode) {
             if (mode !== 'dark' && mode !== 'system') mode = 'light';
+            _themeMode = mode;
             const dark = mode === 'dark' || (mode === 'system' && _schemeMql.matches);
             const meta = document.getElementById('themeColorMeta');
             document.documentElement.classList.toggle('light', !dark);
-            state.themeDark = dark;
             setSegment(document.getElementById('lightBtn'), mode === 'light');
             setSegment(document.getElementById('systemBtn'), mode === 'system');
             setSegment(document.getElementById('darkBtn'), mode === 'dark');
-            localStorage.setItem('theme', mode);
+            try { localStorage.setItem('theme', mode); } catch (e) {}
             if (meta) meta.setAttribute('content', dark ? '#1A1A1A' : '#FFFFFF');
         }
 
         // Only while the reader is ON system: in light or dark their choice stands.
-        _schemeMql.addEventListener('change', () => {
-            if (localStorage.getItem('theme') === 'system') setTheme('system');
-        });
+        // addListener is the pre-Safari-14 spelling; without the fallback the throw
+        // here would stop the whole script before boot.
+        const _onSchemeChange = () => { if (_themeMode === 'system') setTheme('system'); };
+        if (_schemeMql.addEventListener) _schemeMql.addEventListener('change', _onSchemeChange);
+        else _schemeMql.addListener(_onSchemeChange);
 
         // ============================================================
         // SCREEN MANAGEMENT

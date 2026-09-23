@@ -559,12 +559,21 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--accent-text` because it is a readout of what you are reading IN, not an offer.
       `paintLangControls()` still owns its face — a language CODE is identical in both
       languages, so `applyStaticStrings()` must not — and it also writes the
-      `aria-label`, which DOES translate ("Switch to German" / "Auf Englisch
+      `aria-label`, which DOES translate ("EN – Switch to German" / "DE – Auf Englisch
       umschalten"): a pill already showing "EN" has to say what pressing it does.
+      **The name STARTS with the visible code** (2026-09-23, from the review of
+      #98-#102): WCAG 2.5.3 needs the accessible name to contain the visible label, or
+      a voice-control user's "click EN" matches nothing.
     - **THE SCHEME HAS THREE MODES NOW — light / system / dark.** `system` follows
       `prefers-color-scheme` and keeps following it: the OS can flip while the tab is
       open, so `_schemeMql` is LISTENED to and not just read, and the listener acts only
-      while the stored mode is `system`. **The DEFAULT did not change**: nothing stored
+      while the mode in force is `system` — `_themeMode`, held in memory, so the
+      listener never reads storage. **Every theme access to `localStorage` is
+      try-guarded**, like every other key: `initTheme()` runs at the top level before
+      `loadQuestions()`, so one unguarded throw in a storage-blocked browser killed the
+      whole boot. **The listener falls back to `addListener`**, for the same reason:
+      `MediaQueryList.addEventListener` is Safari 14+, and Safari 13.1 parses this script
+      and would then throw at the top level. **The DEFAULT did not change**: nothing stored
       is still light, so a first visit looks exactly as it did. **The pre-paint script in
       `<head>` has to agree with `initTheme()`** or a system-dark reader gets a white
       flash before the JS runs. *The change EVENT cannot be verified in the preview
@@ -781,7 +790,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     being one too). Neither departure cost the budgets anything — narrowing a selector
     adds no declaration.
   - **A colour written as a literal must be added to LITERAL_PAIRS in `tools/contrast.test.mjs`.**
-    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Eight
+    The test parses the two token blocks; a hex in a rule is invisible to it otherwise. Six
     entries are listed today, three per theme: the letter on the correct and the wrong answer
     chip, and the zoom veil's label. (The hero's margin note was a fourth until its crop
     removed the sky it was measured against.) The veil's shares a shape worth
@@ -833,8 +842,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       "300 questions · 60–90 min" is 155px at the 12px floor, before the 28px disc and its
       gap; the mockup's own facts scale to ~10px, which this sheet never goes below. So
       `.mode-card` is a size container (`container: mode-card / inline-size`) and
-      `@container mode-card (max-width: 240px)` stacks the two facts and hides the middot.
-      At three across (~318px) and on a phone (343px) they are one line, as drawn.
+      `@container mode-card (max-width: 195px)` stacks the two facts and hides the middot.
+      **A container query measures the CONTENT box**, so the threshold is the one-line
+      foot itself (155 + 8 + 28 = ~192). It was 240 until 2026-09-23, derived by adding
+      the card's padding and border as if the query measured the border box — which
+      stacked the facts at 820px, where the content box is 208 and one line fits. Measured
+      after the fix: one line at 820, stacked at 1280 with all five arrows on one line.
     - **The foot CENTRES, and bottom-aligns only when stacked.** Centred is the mockup's
       one-line look (measured: facts and disc share a centre, offset 0.0, at 1024). When
       stacked, a two-line pair and Smart Review's single line centre at different heights,
@@ -872,7 +885,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **Hover steps the fill a rung and the EDGE carries the state**: `--tile-hover`
       (`#282828` dark, `#EEF3FA` light) and `--tile-edge-hover` (`#505050` / `#C8D2E2`).
       `--hover` would have been a 1.6 slab on the new dark tile. `--surface3` is still the
-      press fill.
+      press fill. **The glossary / history `<summary>` rows are the exception and keep
+      `--hover`**: they sit INSIDE a tile and have no edge to change, so the fill is the
+      whole state, and `--tile-hover` is 1.105 on a dark tile — under dark's 1.20 floor.
     - **`.hist-exam` is the one exception**, a well inside the history tile: dark keeps its
       `--surface2`, and `html.light .hist-exam { background: var(--surface) }` keeps the
       white it had.
@@ -880,7 +895,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--surface`.
     - `contrast.test.mjs` asserts `text`/`sub-text`/`muted`/`faint`/`green`/`gold` on
       `--tile`, and `tile-edge` on the canvas, on the tile and on `--band` (the picker's
-      rim), `tile-hover`/`tile`, `surface3`/`tile` and `surface2`/`tile`. **`tile / canvas`
+      rim), `tile-hover`/`tile`, `hover`/`tile` (the summary rows), `surface3`/`tile` and
+      `surface2`/`tile`. **`tile / canvas`
       is deliberately NOT asserted**, for the reason `surface / canvas` is not: in light a
       tile IS the page. The `faint`/`band`, `green`/`band` and `surface3`/`band` pairs went,
       because no practise tile sits on `--band` any more.

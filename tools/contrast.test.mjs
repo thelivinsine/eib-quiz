@@ -117,7 +117,7 @@ const PAIRS = [
   ["muted", "surface", AA, "eyebrows, the nav legend, the quiz readouts' labels"],
   ["muted", "surface2", AA, "the dimmed options after an answer, hint rows"],
   ["sub-text", "surface2", AA, "the glyph in a why mark's plate"],
-  ["faint", "surface", AA, "the /310 denominator and the mode time estimate"],
+  ["faint", "surface", AA, "the /310 denominator in light, where a practise tile IS --surface"],
   // The practise band's panel is a step DOWN from the canvas, so it is a ground the
   // surface pairs above do not cover. The cards ON it are ordinary --surface tiles.
   ["text", "band", AA, "the CTA band's heading, and a why-band claim's title since the two landing bands swapped panels on 2026-09-22"],
@@ -140,7 +140,8 @@ const PAIRS = [
   ["muted", "canvas", AA, "the four headline numbers' labels, straight on the page"],
   ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
-  ["accent-text", "surface", AA, "Starten links, FRAGE n, the active EN toggle"],
+  ["accent-text", "surface", AA, "Starten links, FRAGE n, the language pill and the chosen scheme icon"],
+  ["accent-text", "hover", AA, "the language pill under the pointer"],
   // The header sits on --canvas, which in dark is a rung below --surface, so the
   // pair above did not cover the Practise link once it stopped being a filled pill.
   ["accent-text", "canvas", AA, "the header's Practise link, and any accent word on the page"],
@@ -236,6 +237,7 @@ const FILLS = [
   ["tile-edge", "canvas", HAIRLINE, "a practise tile's hairline, drawn on the page"],
   ["tile-edge", "tile", HAIRLINE, "the same hairline against the tile's own fill"],
   ["tile-hover", "tile", STATE, "a practise tile under the pointer"],
+  ["hover", "tile", STATE, "a glossary / history summary row under the pointer: no edge change, so the fill is the whole state"],
   ["surface3", "tile", STATE, "a practise tile pressed"],
   ["surface2", "tile", NEST, "a mode card's arrow disc, and its icon disc in light"],
   // surface/band is GONE AGAIN (2026-09-22): the overview card's tiles were dissolved
