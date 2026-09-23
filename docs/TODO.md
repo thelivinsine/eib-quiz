@@ -2627,3 +2627,27 @@ rounding was too shy.
 - **Font outlines need a non-browser UA.** The Google Fonts CSS API gives WOFF2 to Chrome,
   which opentype.js cannot parse. The script launches Chrome with `--user-agent=curl/8.0`
   and gets TTF. The Bash tool still has no egress, but a Chrome it launches does.
+
+
+## Session developments (2026-09-23, the practise-mode mockup)
+
+**The mode cards follow `docs/Mockups/ui/practise-modes.png`**, measured off its pixels
+and mapped by card width (362 -> 205.6px).
+
+- **Shade:** every practise tile reads the new `--tile` on `--tile-edge`. In dark that is
+  `#202020`, 1.068 on the page, against the mockup's 1.064, and a `#2F2F2F` hairline, 1.300,
+  exactly the mockup's. Before, the tiles were `--band` on the heavy `--border`. Light did
+  not change.
+- **Minimal:** circular discs; no action label and no clock glyph; one foot row with the
+  facts on the left and an arrow disc on the right; the due chip on its own line. The picker
+  is a filled pill with no visible label (its `aria-label` stays).
+- **The one departure:** at five columns the two facts stack. At the mockup's scale they
+  would be ~10px, under the 12px floor. A container query on the card does it.
+- **Removed:** `--on-hue`, `ICONS.clock`, `mode.*.start`, `dash.state` and
+  `.state-picker-label`, all of which had lost their last reader.
+- **Verified:** contrast and scale tests pass, with new pairs for `--tile`. At 1280, all five
+  arrows share one line in both languages. At 1024 the facts sit on one line, centred on the
+  disc. At 375 there is no overflow, and `scrollWidth` is 375.
+- **Headless Chrome, launched back to back from one Bash call, silently writes no
+  screenshot after the first.** One launch per call works every time.
+

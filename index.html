@@ -139,6 +139,17 @@
                sized --surface; it has no instance on screen since the practise panel
                went, and a tile clears the page by 1.36 rather than 1.18. */
             --band:      #262626;
+            /* A PRACTISE TILE, from the practise-mode mockup (2026-09-23): a tile barely
+               lifts off the page and its hairline does the separating — theme-dark.md §5's
+               "below ~1.20, draw the edge instead". Measured off the mockup and mapped onto
+               these neutral greys: tile 1.068 on the page (mockup 1.064), edge 1.300 on the
+               page and 1.217 on the tile (mockup 1.300 / 1.222). */
+            --tile:            #202020;
+            --tile-edge:       #2F2F2F;
+            /* Hover steps the fill a rung and the EDGE carries the state: --border is
+               2.02 on the tile, where --hover's fill would be a 1.6 slab. */
+            --tile-hover:      #282828;
+            --tile-edge-hover: #505050;
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
@@ -192,12 +203,9 @@
 
             /* The primary button's own fill, separate from --accent-fill. The mockup
                paints every CTA near-black navy, which reads only on a light page; dark
-               keeps the accent blue. --on-hue is the glyph colour on ANY solid hue disc
-               — all five dark hues are light colours, so one token serves all five
-               (white on dark's #A78BFA is 2.72, under the 3.0 non-text floor). */
+               keeps the accent blue. */
             --btn-fill:  #2563EB;
             --on-btn:    #FFFFFF;
-            --on-hue:    #1A1A1A;
 
             --text:     #FFFFFF;   /* 12.82 on a tile, 17.40 on the page */
             --sub-text: #D1D1D1;   /*  8.40 */
@@ -350,6 +358,12 @@
                up out of it. Both clear the 1.05 nesting floor, and the panel carries a
                hairline (1.169 on it) because neither step reaches 1.20. */
             --band:      #F5F8FC;
+            /* Light was already minimal: a tile IS the page plus a hairline. These are
+               the values it carried before the tokens existed. */
+            --tile:            #FFFFFF;
+            --tile-edge:       #E0E7F1;
+            --tile-hover:      #EEF3FA;
+            --tile-edge-hover: #C8D2E2;
 
             --border:       #E0E7F1;   /* 1.245 on a tile AND on the page */
             --border-soft:  #EDF1F8;
@@ -373,7 +387,6 @@
                icons and small discs with; it never fills a button. */
             --btn-fill:  #132338;
             --on-btn:    #FFFFFF;
-            --on-hue:    #FFFFFF;
 
             --apricot:      #D97706;
             --apricot-deep: #B45309;
@@ -443,23 +456,22 @@
            hue any more. The five per-card hues the mockup draws (blue,
            green, amber, rose, violet) are gone from the plates, and with
            them --violet / --violet-dim, whose only consumers they were.
-           What is left is one pair, shared by the why marks, the mode
-           cards' icons and their start discs:
-             --hue-tint  a --surface2 plate  (1.08 on a --band tile, 1.15
-                         on the canvas — the nesting step it always was)
-             --hue-ink   --sub-text, the secondary tier, on the plate and
-                         as the SOLID disc's fill
-           --on-hue is still the glyph on a solid disc, one value per
-           theme, and reads 10.09 light / 11.40 dark on --sub-text.
+           What is left is one pair, read by the why marks alone since
+           the mode cards took the practise-mode mockup's own discs
+           (2026-09-23, see MODE CARDS):
+             --hue-tint  a --surface2 plate  (1.15 on the canvas — the
+                         nesting step it always was)
+             --hue-ink   --sub-text, the secondary tier, on the plate
+           --on-hue went with the solid start discs it was the glyph on.
            The names keep the --hue-* prefix: they are read by rules, by
-           contrast.test.mjs and by the [data-hue] attribute the markup
-           and renderModes() still carry, and renaming three tokens to say
-           "neutral" is churn. A plate that wants colour again restores
-           the five rules that stood here — see git history for #95.
+           contrast.test.mjs and by the [data-hue] attribute the why
+           markup still carries, and renaming them to say "neutral" is
+           churn. A plate that wants colour again restores the five rules
+           that stood here — see git history for #95.
 
            A glyph sitting on the canvas (speak, translate, the
            navigator's chevron, the lightbox close) still has no plate at
-           all; only the why marks, the mode icons and the start discs do.
+           all; only the why marks and the mode cards' discs do.
 
            --hue-ink, NOT --ink: the palette already defines --ink as its
            legacy border alias, so the short name silently redefined a
@@ -490,21 +502,19 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
         }
-        /* A PRACTISE-PAGE tile is the landing page's pale panel (2026-09-21, on
-           request): --band plus the same --border hairline the numbers band, the CTA
-           band and the footer carry, so the two pages read as one surface system. Only
-           the page tiles move — a session screen keeps --surface, because there is no
-           band anywhere near it to match. Both states still step the right way from
-           --band: in light --hover (#EEF3FA) and --surface3 are BELOW it, in dark they
-           are above. */
+        /* A PRACTISE-PAGE tile is --tile on its --tile-edge hairline (2026-09-23, from
+           the practise-mode mockup): in dark a tile barely lifts off the page and the
+           edge separates it; in light it is the page itself plus the hairline, as it
+           already was. Only the page tiles use it — a session screen keeps --surface,
+           because the quiz's own wells are measured against that. */
         .hist-list, .hist-exam, .glossary-wrap {
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
         }
         .topic-chip { transition: background 0.18s var(--ease), border-color 0.18s var(--ease); }
         @media (hover: hover) {
-            .topic-chip:hover { background: var(--hover); border-color: var(--border-hover); }
+            .topic-chip:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
         }
         .topic-chip:active { background: var(--surface3); }
 
@@ -1150,9 +1160,11 @@
         .home-section:last-child { margin-bottom: 0; }
 
         .section-head { margin-bottom: var(--space-ms); max-width: 62ch; }
-        /* The picker centres under the practise band's heading. It was a column beside
-           a left-aligned heading; the heading is centred over the panel now, so there is
-           nothing to sit opposite and the label rides on the same line as the pill. */
+        /* The picker centres under the practise band's heading, and it is the PILL
+           ALONE (2026-09-23): the practise-mode mockup draws no "Your state" label
+           beside it — the pin glyph and the state's name say what it is. The <select>
+           still carries dash.statePick as its aria-label, so a screen reader loses
+           nothing. */
         #statePickerSlot {
             display: flex; flex-direction: row; align-items: center; justify-content: center;
             gap: var(--space-sm); min-width: 0;
@@ -1161,7 +1173,6 @@
                below, and 20px under it read as a gap of its own. */
             margin-bottom: var(--space-md);
         }
-        .state-picker-label { display: block; }
         .section-head h2 {
             font-family: var(--font-head);
             font-weight: 600;
@@ -1211,8 +1222,8 @@
            encouragement chip's green and the resume banner's --accent-text book. */
         .dash {
             position: relative;
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
             /* --space-xl. The mockup measures ~20 here, but its content is tiles with
                their own padding; bare blocks sit right on this inset, so 20px put the
@@ -1226,20 +1237,12 @@
                card always ends with it. */
             padding-bottom: var(--space-md);
         }
-        /* ONE TILE SHADE ON THIS PAGE, AND THE OVERVIEW CARD SETS IT (2026-09-22, on
-           request: "the tile colour shade should be adapted referring to the Where you
-           stand section"). The card took --surface in light on 2026-09-21 and the rest
-           of the page's tiles stayed on --band, so the practise page carried two shades
-           with no rule behind which was which. They are one rule now: --band in dark,
-           where nothing goes below the page (theme-dark.md §3), and --surface in light,
-           where the hairline carries a white tile on a white canvas.
-           Scoped to .light, exactly as the card's own override was. */
-        html.light .dash,
-        html.light .mode-card,
-        html.light .topic-chip,
-        html.light .hist-list,
-        html.light .hist-exam,
-        html.light .glossary-wrap { background: var(--surface); }
+        /* ONE TILE SHADE ON THIS PAGE (2026-09-22, on request), and since 2026-09-23 it
+           is a TOKEN rather than a light-only override: every tile here reads --tile and
+           --tile-edge, which carry the practise-mode mockup's values in dark and the old
+           white-plus-hairline in light. The one exception is .hist-exam, a well inside the
+           history tile: dark keeps its --surface2 well, light keeps the white it had. */
+        html.light .hist-exam { background: var(--surface); }
         /* .dash-head is GONE (2026-09-22): it existed to hold a heading and the
            encouragement line on one row inside the card, and neither is there now — the
            heading moved out and above, the line moved to the foot. .progress-reset is
@@ -1377,8 +1380,11 @@
             display: inline-flex; align-items: center; gap: var(--space-2xs);
             min-height: var(--ctl-sm);
             padding: 0 calc(var(--space-md) + var(--space-sm)) 0 var(--space-sm);
-            background: var(--surface);
-            border: 1px solid var(--border);
+            /* A FILLED pill on a faint rim, the mockup's (1.17 off its page; --band is
+               1.15 in dark). It used to be a --surface pill on the heavy --border, which
+               in dark drew the loudest outline in the section round a setting. */
+            background: var(--band);
+            border: 1px solid var(--tile-edge);
             border-radius: var(--radius-pill);
             color: var(--muted);
             cursor: pointer;
@@ -1460,7 +1466,7 @@
            size.
            They stay out of the shared eyebrow rule: a quiz readout's label, a tile
            eyebrow and a review number are all still --fs-2xs uppercase at 600. */
-        .ds-label, .ready-ring-sub, .state-picker-label {
+        .ds-label, .ready-ring-sub {
             font-family: var(--font-body);
             font-size: var(--fs-xs);
             font-weight: 400;
@@ -1633,110 +1639,49 @@
         @media (max-width: 1160px) {
             .modes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
+        /* THE PRACTISE-MODE MOCKUP'S CARD (2026-09-23, on request: "adapting the tile's
+           shade, making them minimalistic"). A --tile on its hairline; a circular disc;
+           title and description centred; then ONE foot row - the facts on the left, a
+           bare arrow disc on the right. The action LABEL ("Start test") and the clock
+           glyph are gone: the mockup names neither, the disc is the action and the
+           middot says the second fact is a duration. Mapped onto this card by width
+           (362 -> 205.6px) the mockup's card is 249px tall against this one's 250, its
+           disc 47px against 44 and its side padding 20px, which is --space-lg. */
         .mode-card {
             position: relative;
-            /* Taller than it is wide-padded, for the same reason the band is. */
-            padding: var(--space-lg) var(--space-md);
+            /* The foot row is measured against the CARD, not the viewport: a card is
+               205px wide at five across and 290+ at three, whatever the screen. */
+            container: mode-card / inline-size;
+            padding: var(--space-lg);
             border-radius: var(--radius);
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
             cursor: pointer;
-            /* Centred, on request: the plate, the title, the description, the meta row
-               and the action all sit on the card's centre line. The 620px block puts
-               them back left, where the card is a list row rather than a tile. */
             display: flex; flex-direction: column;
             text-align: center;
             font: inherit; color: inherit;
             transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
         }
         @media (hover: hover) {
-            .mode-card:hover { background: var(--hover); border-color: var(--border-hover); }
-            /* The html.light hover override is GONE with the --band ground it was
-               written for (2026-09-22). It raised a light tile to --surface2 because
-               --hover sat 1.047 from --band, which is invisible. On a WHITE tile
-               --hover is 1.115 — light's own reference number for a state change
-               (theme-light.md §4 measures real nav and menu hovers at 1.11), so the
-               base rule is correct unaided again. Dark is unchanged: --hover is 1.437
-               on its band. The press fill stays --surface3 in both. */
+            .mode-card:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
+            .mode-card:hover .mode-go { transform: translateX(3px); }
         }
         .mode-card:active { background: var(--surface3); }
 
-        /* The two html.light .modes-band state rules are GONE with the panel, and they
-           were not equal. The HOVER rule was real: it raised a light card to --surface2
-           because --hover landed 1.067 from --band, under the 1.05 nesting floor. The
-           :ACTIVE rule was a no-op — it set --surface3, which is exactly what
-           .mode-card:active above already sets, so it never painted a pixel; the 1.039
-           figure this file and CLAUDE.md both quoted for it described --hover, a fill
-           the light press never used. Do not "restore" it.
-           On the canvas the base rules stand on their own: press is --surface3, 1.294
-           below white, and hover is --hover, 1.115. That hover is QUIETER than the
-           band's 1.149 and it is still right — theme-light.md §4 is explicit that
-           light's whole state band is "roughly 1.10 to 1.25", measures real nav and menu
-           hovers at 1.11, and warns that a light hover is nearly invisible in daylight
-           whatever value you pick, which is why "neither app relies on hover alone".
-           §4's flat 1.20 floor is the DARK reference's, and reading it onto light is the
-           same category error as reading the light-only mockup onto dark. Every other
-           hoverable tile in light is 1.115 too; the band's 1.149 was compensation for a
-           ground that no longer exists, not a target to preserve. */
-
-        /* The exam card was featured until 2026-09-21: full width, accent-tinted, with a
-           solid Start pill. The landing page sells five modes as peers, so the treatment
-           went with it — along with .mode-start-btn, .msb-arrow and the `mode.start`
-           string, which was the only place any card said "Start" in words. */
-
-        /* The estimate sits in the META row, beside the count. It has been three things:
-           absolutely positioned top-right (it printed on top of the title once the icon
-           joined the title's line), then in the head row pushed right by margin-left:auto
-           — which worked at three cards a row and broke at five, where a nowrap
-           "approx. 60-90 min" claimed 115px of a 165px row and squeezed "All questions"
-           down to 13px. In the meta row it is beside the one other fact the card states,
-           and it can wrap. */
-        .mode-time {
-            display: inline-flex; align-items: center; gap: var(--space-2xs);
-            color: var(--muted);
-        }
-        /* A clock, not a middot: the glyph is what says "duration", which is why the
-           strings could drop "approx."/"ca." and "limit" and fit beside the count. */
-        .mode-time svg { width: var(--icon-xs); height: var(--icon-xs); flex: none; }
-        /* A SOLID disc of the card's hue with a white arrow in it, and the action
-           named beside it — the mockup's "Start Simulation" / "Choose Topics" row. The
-           bare corner arrow it replaces was the compromise made when the cards had no
-           colour to carry an action, and on a touch screen it read as a decoration. The
-           label is --text, not the hue: the mockup's own label measures #000417. */
-        .mode-start {
-            display: flex; align-items: center; justify-content: center; gap: var(--space-sm);
-            margin-top: var(--space-ms);
-            font-size: var(--fs-xs); font-weight: 600; color: var(--text);
-        }
-        .mode-start-dot {
-            flex: none; display: grid; place-items: center;
-            width: var(--ctl-xs); height: var(--ctl-xs);
-            border-radius: var(--radius-pill);
-            background: var(--hue-ink); color: var(--on-hue);
-            transition: transform 0.25s var(--ease-spring);
-        }
-        .mode-start-dot svg { width: var(--icon-xs); height: var(--icon-xs); }
-        @media (hover: hover) {
-            .mode-card:hover .mode-start-dot { transform: translateX(3px); }
-        }
-
-        /* A tinted plate, per the mockup — see the HUE DISCS block. --ctl-md is 44px
-           against the mockup's 48, and concentric rounding puts a --radius-sm (10px)
-           inner corner inside a --radius (16px) card with --space-md of padding. */
+        /* A CIRCLE one rung above the tile, glyph in --text: the mockup's disc measures
+           1.294 on its tile, --surface is 1.271 on --tile. Light has no rung above a
+           white tile, so its disc steps DOWN to --surface2, as every light well does. */
         .mode-icon {
             display: grid; place-items: center;
             width: var(--ctl-md); height: var(--ctl-md); flex-shrink: 0;
-            border-radius: var(--radius-sm);
-            background: var(--hue-tint); color: var(--hue-ink);
-            margin: 0;
+            border-radius: var(--radius-pill);
+            background: var(--surface); color: var(--text);
         }
+        html.light .mode-icon { background: var(--surface2); }
         .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        /* The plate sits ABOVE the title, which is the mockup's card: plate, title,
-           description, then the action row. It goes back to one row on a phone, where
-           the card is a list item rather than a tile. */
         .mode-head { display: flex; flex-direction: column; align-items: center; gap: var(--space-ms); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
-        /* German compounds are one long word, and five cards a row is a 167px title
+        /* German compounds are one long word, and five cards a row is a ~163px title
            box: "Prüfungssimulation" overflows it whatever the width, because `main`
            caps the content long before the viewport does. `hyphens: auto` breaks it
            properly (the root carries lang="de" when the UI is German) and
@@ -1745,33 +1690,57 @@
         .mode-title { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); letter-spacing: var(--ls-display); margin-bottom: 0; hyphens: auto; overflow-wrap: anywhere; }
         .mode-description {
             color: var(--sub-text); font-size: var(--fs-sm); line-height: var(--lh-prose);
-            margin-bottom: var(--space-sm);
+            margin-bottom: var(--space-md);
         }
-        /* A chip states a fact; the fact is small and grey. Only work that is
-           actually waiting gets a colour. */
-        /* ONE line, and the count and the estimate at ONE size: --fs-xs for the count
-           over --fs-2xs for the estimate put 155px of text in a 157px card and wrapped.
-           nowrap is the guarantee rather than the hope - if a translation ever outgrows
-           the card it overflows visibly instead of silently becoming two rows.
-           overflow: hidden is what keeps that overflow INSIDE the tile. Measured, the
-           worst case ("All questions" in English) needs exactly the 165px it has - 0px
-           of slack, not the 2 the note claimed - so anything that narrows the card by a
-           pixel spills it, and a classic vertical scrollbar on this page narrows it by
-           about 7. Without this the estimate drew across the card's own border into the
-           grid gap; clipped at the content edge it is still a visible tell, and it is
-           one the card contains. */
-        .mode-meta {
-            display: flex; align-items: center; justify-content: center; gap: var(--space-2xs); flex-wrap: nowrap;
-            white-space: nowrap; overflow: hidden;
-            margin-top: auto;
-            font-size: var(--fs-2xs); color: var(--muted);
-            font-variant-numeric: tabular-nums;
-        }
+        /* Only work that is actually waiting gets a colour, and it sits on its own line
+           above the foot, centred, where the mockup puts "2 due". */
         .mode-flag {
+            align-self: center;
+            margin-top: auto; margin-bottom: var(--space-ms);
             font-size: var(--fs-2xs); font-weight: 600;
             padding: var(--space-3xs) var(--space-sm); border-radius: var(--radius-pill);
             color: var(--gold); background: var(--gold-dim);
         }
+        /* Centred, as the mockup's one-line facts sit on their disc. Only a STACKED
+           foot bottom-aligns (the container query below): a two-line pair and Smart
+           Review's lone line centre at different heights, and the five arrows have to
+           share one line across the row. */
+        .mode-foot {
+            display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm);
+            margin-top: auto;
+            text-align: left;
+        }
+        .mode-flag + .mode-foot { margin-top: 0; }
+        /* --sub-text, not --muted: the mockup's facts measure as bright as its
+           description. nowrap per fact, so a fact never breaks mid-phrase. */
+        .mode-meta {
+            display: flex; align-items: baseline; gap: var(--space-2xs);
+            min-width: 0; white-space: nowrap;
+            font-size: var(--fs-2xs); color: var(--sub-text);
+            font-variant-numeric: tabular-nums;
+        }
+        /* THE ONE PLACE THIS LEAVES THE MOCKUP. At five across the card's content box is
+           ~163px, and "300 questions · 60–90 min" is 155px at the 12px floor before the
+           28px disc and its gap - the mockup's own facts, scaled, are ~10px, which this
+           sheet does not go below. So a narrow card STACKS the two facts and drops the
+           middot. 240px is where one line fits again (155 + 8 + 28 + padding + border);
+           at three across and on a phone the card is wider than that. */
+        @container mode-card (max-width: 240px) {
+            .mode-foot { align-items: flex-end; }
+            .mode-meta { flex-direction: column; align-items: flex-start; gap: 0; }
+            .mode-sep { display: none; }
+        }
+        /* One rung above the icon disc - the mockup's arrow disc is 1.435 on its tile,
+           --surface2 is 1.455 on --tile - and --surface2 in light too, where it is the
+           same well the icon disc uses. */
+        .mode-go {
+            flex: none; display: grid; place-items: center;
+            width: var(--ctl-xs); height: var(--ctl-xs);
+            border-radius: var(--radius-pill);
+            background: var(--surface2); color: var(--text);
+            transition: transform 0.25s var(--ease-spring);
+        }
+        .mode-go svg { width: var(--icon-xs); height: var(--icon-xs); }
 
         /* ============================================================
            TOPICS — chips on the page; the section heading names them
@@ -1783,8 +1752,8 @@
             min-height: var(--ctl-lg);
             text-align: left;
             border-radius: var(--radius);
-            background: var(--band);
-            border: 1px solid var(--border);
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
         }
         .topic-chip-icon {
             width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
@@ -1854,7 +1823,7 @@
         details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
         details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
         .glossary-summary { padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); font-weight: 600; font-size: var(--fs-base); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
-        .glossary-summary:hover { background: var(--hover); }
+        .glossary-summary:hover { background: var(--tile-hover); }
         .glossary-summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: var(--fs-lg); line-height: 1; }
         details.glossary-wrap[open] .glossary-summary::after { content: '−'; }
         .gloss-list { border-top: 1px solid var(--border-soft); }
@@ -2728,28 +2697,14 @@
                ellipsis, so it shrinks rather than pushing the label off the page
                (checked with Mecklenburg-Vorpommern in German, the worst case). */
 
-            /* One card a row on a phone. They stay GRIDS rather than flex columns so
-               the meta and the arrow can share the last row. */
+            /* One card a row on a phone, read as a list row: flush left, the disc beside
+               the name. The foot row needs nothing here - it is already facts left,
+               arrow right, which is the end of a list row's diagonal. */
             .modes-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
-            .mode-card {
-                display: grid;
-                grid-template-columns: 1fr;
-                grid-template-areas: "title" "desc" "meta" "start";
-                row-gap: var(--space-2xs);
-                text-align: left;
-            }
-            /* Back to one row down here: the card is a list item, not a tile, so the
-               plate sits beside the name rather than stacked above it. */
-            .mode-card .mode-head { grid-area: title; margin-bottom: 0; flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
-            .mode-card .mode-description { grid-area: desc; margin-bottom: 0; font-size: var(--fs-xs); }
-            .mode-card .mode-meta { grid-area: meta; margin: var(--space-2xs) 0 0; justify-content: flex-start; }
-            /* Centred in a TILE, bottom RIGHT in a list row (2026-09-22, on request).
-               Down here the title, the description and the meta are flush left and the
-               card is read top-left to bottom-right, so the action belongs at the end of
-               that diagonal — a centred action floated in the middle of a 343px row, and
-               left-aligned it sat under the description it is not part of. It is already
-               the last grid area, so this is the row's justification and nothing else. */
-            .mode-card .mode-start { grid-area: start; margin-top: var(--space-2xs); justify-content: flex-end; }
+            .mode-card { text-align: left; }
+            .mode-card .mode-head { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
+            .mode-card .mode-description { margin-bottom: var(--space-sm); font-size: var(--fs-xs); }
+            .mode-card .mode-flag { align-self: flex-start; }
 
             /* ONE column, and two-up was tried and reverted: at 175px the long topic
                names ('Fundamental Rights & Constitution') wrap to four lines, so a chip
@@ -3365,10 +3320,9 @@
             // tools/icon-packs.mjs's solid pack — keep the two in step.
             leaf: _svg('<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>'),
         };
-        // A clock IS the history glyph (a donut with two hands) and a group IS the
-        // society glyph, so each reader gets the name that says what it means there:
-        // a mode card's estimate takes `clock`, the why band's third mark `community`.
-        ICONS.clock = ICONS.history;
+        // A group IS the society glyph, so the why band's third mark gets the name
+        // that says what it means there. (`clock`, the same move for the history
+        // glyph, went on 2026-09-23 with the mode cards' clock - its only reader.)
         ICONS.community = ICONS.society;
 
         // Ornament for the CTA band. Solid shapes, never strokes, and purely
@@ -3489,11 +3443,6 @@
             // The mockup names the action on every card ("Start Simulation", "Choose
             // Topics"). Kept SHORT on purpose: at five columns inside a 1060px cap the
             // row is ~145px wide, and German is the language that decides that.
-            'mode.exam.start':     { en: 'Start test',              de: 'Test starten' },
-            'mode.all.start':      { en: 'Start practising',        de: 'Üben starten' },
-            'mode.state.start':    { en: 'Select state',            de: 'Land wählen' },
-            'mode.review.start':   { en: 'Start review',            de: 'Wiederholen' },
-            'mode.topic.start':    { en: 'Choose topic',            de: 'Thema wählen' },
             'nav.sections':        { en: 'Sections',                de: 'Bereiche' },
             'nav.navPractise':     { en: 'Practise',                de: 'Üben' },
             'nav.navHome':         { en: 'Home',                    de: 'Start' },
@@ -3565,7 +3514,6 @@
             // line with the other two. "WIEDERHOLUNG" is 107 and the sub-line under it
             // still reads "Fragen zur Wiederholung".
             'dash.due':            { en: 'Due for review',          de: 'Wiederholung' },
-            'dash.state':          { en: 'Your state',              de: 'Dein Bundesland' },
             'dash.statePick':      { en: 'Choose your state',       de: 'Bundesland wählen' },
             'dash.reset':          { en: 'Reset progress',          de: 'Fortschritt zurücksetzen' },
             'dash.resetConfirm':   { en: 'Reset all learning progress?', de: 'Gesamten Lernfortschritt zurücksetzen?' },
@@ -4057,7 +4005,6 @@
                 .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`)
                 .join('');
             el.innerHTML = `
-                <span class="state-picker-label">${t('dash.state')}</span>
                 <label class="state-picker">
                     ${ICONS.pin}
                     <span class="state-picker-value">${STATES[selectedState]}</span>
@@ -4372,24 +4319,21 @@
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
             const st = STATES[selectedState];
-            // Five equal peers, no featured card. Each NAMES its own action in
-            // .mode-start ("Start test", "Choose topic") beside a solid disc of its own
-            // hue — the mockup's row, and what replaced the bare corner arrow that read
-            // as decoration on a touch screen. The time estimate rides in the meta row
-            // beside the count: as a corner stamp opposite the title it took 115px of a
-            // 165px head row and crushed "All questions" to 13px wide.
-            // Each card carries a data-hue, which is what paints its icon plate and its
-            // start disc — see the HUE DISCS block. The hues are the mockup's four plus
-            // one: rose goes to Smart Review, where "questions you keep getting wrong"
-            // is the one place a warm alert hue says something true.
-            const card = (hue, handler, icon, title, desc, meta, time, action, attrs = '') => `
-                <button class="mode-card" data-hue="${hue}" ${handler}${attrs}>
+            // Five equal peers, the practise-mode mockup's card: disc, title, description,
+            // then one foot row of facts beside a bare arrow disc. Smart Review with work
+            // waiting shows the due chip on its own line and drops its count from the
+            // foot, which is the mockup's "2 due" over "10–15 min".
+            const card = (handler, icon, title, desc, facts, flag = '', attrs = '') => `
+                <button class="mode-card" ${handler}${attrs}>
                     <span class="mode-head">
                         <span class="mode-icon">${icon}</span><span class="mode-title">${title}</span>
                     </span>
                     <span class="mode-description">${desc}</span>
-                    <span class="mode-meta">${meta}<span class="mode-time">${ICONS.clock}${time}</span></span>
-                    <span class="mode-start">${action}<span class="mode-start-dot" aria-hidden="true">${ICONS.arrowRight}</span></span>
+                    ${flag}
+                    <span class="mode-foot">
+                        <span class="mode-meta">${facts.map(f => `<span>${f}</span>`).join('<span class="mode-sep" aria-hidden="true">·</span>')}</span>
+                        <span class="mode-go" aria-hidden="true">${ICONS.arrowRight}</span>
+                    </span>
                 </button>`;
             const mode = m => `onclick="startMode('${m}')"`;
             // The reveal's open state lives on the panel, not in a variable: renderModes()
@@ -4398,17 +4342,17 @@
             const topicsOpen = !document.getElementById('topicSection').hidden;
 
             grid.innerHTML =
-                card('blue', mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
-                     t('mode.exam.badge'), t('mode.exam.time'), t('mode.exam.start')) +
-                card('green', mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
-                     t('mode.all.badge'), t('mode.all.time'), t('mode.all.start')) +
-                card('amber', mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
-                     t('mode.state.badge'), t('mode.state.time'), t('mode.state.start')) +
-                card('rose', mode('review'), ICONS.review, t('mode.review.title'), t('mode.review.desc'),
-                     due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>`
-                         : t('mode.review.badge'), t('mode.review.time'), t('mode.review.start')) +
-                card('violet', 'onclick="toggleTopics(this)"', ICONS.topic, t('mode.topic.title'), t('mode.topic.desc'),
-                     t('mode.topic.badge'), t('mode.topic.time'), t('mode.topic.start'),
+                card(mode('exam'), ICONS.exam, t('mode.exam.title'), t('mode.exam.desc', { state: st }),
+                     [t('mode.exam.badge'), t('mode.exam.time')]) +
+                card(mode('allQuestions'), ICONS.allQuestions, t('mode.all.title'), t('mode.all.desc'),
+                     [t('mode.all.badge'), t('mode.all.time')]) +
+                card(mode('bundesland'), ICONS.bundesland, t('mode.state.title'), t('mode.state.desc', { state: st }),
+                     [t('mode.state.badge'), t('mode.state.time')]) +
+                card(mode('review'), ICONS.review, t('mode.review.title'), t('mode.review.desc'),
+                     due ? [t('mode.review.time')] : [t('mode.review.badge'), t('mode.review.time')],
+                     due ? `<span class="mode-flag">${t('mode.review.badgeDue', { n: due })}</span>` : '') +
+                card('onclick="toggleTopics(this)"', ICONS.topic, t('mode.topic.title'), t('mode.topic.desc'),
+                     [t('mode.topic.badge'), t('mode.topic.time')], '',
                      ` aria-expanded="${topicsOpen}" aria-controls="topicSection"`);
         }
 

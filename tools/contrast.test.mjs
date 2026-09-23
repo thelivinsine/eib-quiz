@@ -114,9 +114,9 @@ const PAIRS = [
   ["text", "surface", AA, "question text and headings in a tile"],
   ["text", "canvas", AA, "anything painted straight onto the page, the four headline numbers included"],
   ["sub-text", "surface", AA, "lead paragraphs, explanation bodies, mode-card descriptions"],
-  ["muted", "surface", AA, "eyebrows, the nav legend, a mode card's meta and time"],
+  ["muted", "surface", AA, "eyebrows, the nav legend, the quiz readouts' labels"],
   ["muted", "surface2", AA, "the dimmed options after an answer, hint rows"],
-  ["sub-text", "surface2", AA, "the glyph in a mode card's icon and arrow chips"],
+  ["sub-text", "surface2", AA, "the glyph in a why mark's plate"],
   ["faint", "surface", AA, "the /310 denominator and the mode time estimate"],
   // The practise band's panel is a step DOWN from the canvas, so it is a ground the
   // surface pairs above do not cover. The cards ON it are ordinary --surface tiles.
@@ -127,9 +127,13 @@ const PAIRS = [
   // actually need. This ground was unasserted for that tier since the footer shipped.
   ["sub-text", "band", AA, "the footer's source note and disclaimer"],
   ["faint", "canvas", AA, "the same two, where a tile is not behind them"],
-  // The /310 denominator sat on a --surface readout tile until 2026-09-22; with the
-  // overview card's tiles dissolved it sits on the card itself, which is --band in dark.
-  ["faint", "band", AA, "the /310 denominator on the overview card in dark"],
+  // A PRACTISE TILE is --tile since 2026-09-23 (the practise-mode mockup): the overview
+  // card, the mode cards, the topic chips and the history/glossary lists. In light it is
+  // white, which the surface pairs already cover; in dark it is a rung below --surface.
+  ["text", "tile", AA, "a mode card's title, the overview card's verdict and figures"],
+  ["sub-text", "tile", AA, "a mode card's description and its facts"],
+  ["muted", "tile", AA, "the overview card's readout names and advice line"],
+  ["faint", "tile", AA, "the /310 denominator on the overview card"],
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
   // dark they do not, because --surface is a rung above the canvas there.
@@ -148,7 +152,8 @@ const PAIRS = [
   ["red-text", "red-dim", AA, "the wrong answer, its explanation and review row"],
   ["blue", "blue-dim", AA, "the elapsed-time subscore"],
   ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar, and the overview card's encouragement line"],
-  ["green", "band", AA, "the overview card's encouragement line, which in dark sits on --band"],
+  ["green", "tile", AA, "the overview card's encouragement line"],
+  ["gold", "tile", AA, "the due-for-review counter on the overview card"],
   ["red-text", "surface", AA, "the FALSCH counter in the quiz stats bar"],
 
   // The answer states repaint a whole option, so every tier that can land on one
@@ -170,13 +175,10 @@ const PAIRS = [
   ["on-accent", "accent-fill", AA, "the label on a primary button and the mastery tile"],
   ["on-btn", "btn-fill", AA, "the label on a CTA — navy in light, accent blue in dark"],
 
-  // The icon plates, NEUTRAL since 2026-09-21 (on request). The five --*-dim / --*
-  // hue pairs that stood here are gone with the colour, and --violet / --violet-dim
-  // went out of the palette with them — the plates were their only consumer, and a
-  // pair with no consumer is the stale-ground fault this list keeps catching. The
-  // plate's glyph is --sub-text on --surface2, which line 119 already asserts; what
-  // is left is the arrow on the SOLID disc, non-text UI and so AA_LARGE.
-  ["on-hue", "sub-text", AA_LARGE, "the arrow on a mode card's neutral start disc"],
+  // The mode cards' two discs carry a --text glyph: --surface / --surface2 in dark,
+  // --surface2 in light. text/surface and text/surface2 above already cover both.
+  // `on-hue / sub-text` went on 2026-09-23 with the solid start disc it described,
+  // and --on-hue with it: a pair with no consumer is the stale-ground fault.
 
   // --accent-soft is a tinted ground rather than a tile, and three tiers land on
   // it: the resume banner's text, a picked option in the exam, and a navigator
@@ -225,18 +227,24 @@ const FILLS = [
   // --surface tile sits on --band any more, resting or hovered or pressed.
   ["canvas", "band", NEST, "the page either side of a panel"],
   ["border", "canvas", HAIRLINE, "the panel's own edge, drawn on the page"],
-  // --band is a TILE ground again (2026-09-21, on request): the practise page's cards,
-  // chips and lists take the landing page's pale panel, so its edge and its two state
-  // fills are back. Light scopes hover to --surface2 because --hover is 1.047 here.
-  ["border", "band", HAIRLINE, "a practise tile's hairline on its own fill"],
+  // --band is a panel ground (the why band, the CTA band, the footer) and the state
+  // picker's fill. Practise TILES left it for --tile on 2026-09-23.
+  ["border", "band", HAIRLINE, "the why band's and the footer's own hairline"],
+  ["tile-edge", "band", HAIRLINE, "the state picker's rim on its own fill"],
+  // `tile / canvas` is NOT asserted, for the same reason `surface / canvas` is not: in
+  // light a tile IS the page and its edge separates it. Dark's step is 1.068.
+  ["tile-edge", "canvas", HAIRLINE, "a practise tile's hairline, drawn on the page"],
+  ["tile-edge", "tile", HAIRLINE, "the same hairline against the tile's own fill"],
+  ["tile-hover", "tile", STATE, "a practise tile under the pointer"],
+  ["surface3", "tile", STATE, "a practise tile pressed"],
+  ["surface2", "tile", NEST, "a mode card's arrow disc, and its icon disc in light"],
   // surface/band is GONE AGAIN (2026-09-22): the overview card's tiles were dissolved
   // on request, so nothing in the app puts a --surface fill on a --band ground any
   // more. It was last added on 2026-09-21 for those readout tiles, and deleted before
   // that when the practise band's panel went. A pair with no consumer is the
   // stale-ground bug this file keeps catching, so it goes rather than being kept warm.
   ["surface", "accent-soft", NEST, "the book plate on the resume banner"],
-  ["surface2", "band", NEST, "a practise tile under the pointer in light, and a why-band icon disc on the panel"],
-  ["surface3", "band", STATE, "a practise tile pressed"],
+  ["surface2", "band", NEST, "a why-band icon disc on the panel"],
   // A tinted ground is not a step in lightness against paper-grey, so the edge is
   // the whole separation and has to clear the floor alone.
   ["accent", "canvas", HAIRLINE, "a picked option's accent edge against the page"],
