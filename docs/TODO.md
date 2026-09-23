@@ -2660,6 +2660,9 @@ bands, #101 logo kit, #102 practise-mode cards). None was open; the last recorde
 was #96/#97. It found fourteen things, and all fourteen are fixed here. **The same session
 wrote the fixes it reviewed**, so no second reader has seen them.
 
+Live commit: **[`9b98fcb`](https://github.com/thelivinsine/eib-quiz/commit/9b98fcb)**. It was squash-merged to `main` with **no PR**, on the
+user's instruction, from `fix/review-98-102`, which is deleted.
+
 ### The two that could stop the app booting
 - **`_schemeMql.addEventListener` threw on Safari < 14.** Safari 13.1 parses the script
   (it has `?.`) but only has `addListener`, so the top-level call threw and nothing after it
