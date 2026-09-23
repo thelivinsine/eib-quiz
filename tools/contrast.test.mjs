@@ -143,7 +143,7 @@ const PAIRS = [
   ["accent-text", "surface", AA, "Starten links, FRAGE n"],
   // The header sits on --canvas, which in dark is a rung below --surface. Its EN pill
   // and the chosen scheme icon have no fill of their own since 2026-09-23.
-  ["accent-text", "canvas", AA, "the header's EN pill and chosen scheme icon, and any accent word straight on the page"],
+  ["accent-text", "canvas", AA, "any accent word straight on the page (the header's EN code and chosen scheme icon were until 2026-09-23; both toggles are grey now)"],
   ["accent-text", "accent-soft", AA, "the current question in the navigator grid"],
   ["teal-deep", "teal-tint", AA, "the Bundesland tile label and the Bestanden pill"],
   ["gold", "gold-dim", AA, "the DUE chip on the Smart Review card"],

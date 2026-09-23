@@ -2815,3 +2815,21 @@ frame.
   `requestAnimationFrame`.
 - No hover state was seen hovered, and nothing was tried on a touch device.
 - Chromium only.
+
+## Session developments (2026-09-23, grey scheme icons)
+
+- The header toggles are **grey only**. EN and the chosen mode are `--text` (the chosen
+  mode's body filled); the other two icons are `--muted` lines. No accent anywhere.
+- sun / monitor / moon are redrawn to the reference's proportions: short rays round an r 4
+  ring, a 20x14 screen on a neck and base, and a full crescent. They are 16px, which
+  matches the reference's 0.37 of the box. The shipped strings match `tools/icon-packs.mjs`.
+
+### Verified
+Contrast (10), scale (12), `validate.js` and `node --check` pass. Headless screenshots in
+light, System and dark were looked at.
+
+### Not verified
+- Drawn to the reference by eye; the screenshot never reached disk.
+- Light's `--muted` is the app's slate grey (#4F6280), a blue-tinted grey. It is not the
+  neutral grey the reference may use.
+- Hover was not seen hovered.

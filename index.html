@@ -644,23 +644,23 @@
            one pill that NAMES the current one and flips on a click; a disclosure spent
            a click choosing between two. That retired the whole .hmenu-* block - the
            <details>, its panel, #schemeLabel and syncThemeControlPlacement() - and the
-           ~56px it frees is what pays for both nav links on a phone. The accent is the
-           reference's, and it is the readout's point: the pill says what you are
-           reading in, not what you would get.
+           ~56px it frees is what pays for both nav links on a phone. It says what you
+           are reading in, not what you would get.
            THE APP'S ONE SHADOW WENT WITH IT. The argument is in git and still holds if
            anything floats again: an overlay above unrelated content on a white canvas
            cannot be held off the page by a hairline alone. Nothing floats today. */
         /* THE TWO CONTROLS FOLLOW THE USER'S REFERENCE (2026-09-23): two hairline
            boxes, no fill, no chip, 8px corners (the buttons' --radius-ctl; the
            reference measures ~0.17 of its height, the logo kit's own proportion). EN is
-           a SQUARE box. The accent stays - it is the reference's - and what the fills
-           used to say, WEIGHT says now: see the scheme seg below. */
+           a SQUARE box. NO BLUE on either (2026-09-23, on request: "just grey"): what the
+           fills and the accent used to say, a darker grey and WEIGHT say now. EN is the
+           code you are reading in, so it wears the chosen tier - --text at 700. */
         .lang-toggle {
             display: inline-flex; align-items: center; justify-content: center;
             min-height: var(--ctl-sm); min-width: var(--ctl-sm); padding: 0 var(--space-xs);
             border-radius: var(--radius-ctl);
             border: 1px solid var(--border); background: none;
-            font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-text);
+            font-size: var(--fs-2xs); font-weight: 700; color: var(--text);
             transition: border-color 0.18s var(--ease);
         }
         .lang-toggle:hover { border-color: var(--border-hover); }
@@ -685,25 +685,20 @@
            it used to move into the globe menu below 620px. */
         .seg-btn--icon { width: var(--ctl-xs); padding: 0; display: grid; place-items: center; }
         .seg-btn--icon svg { width: var(--icon-sm); height: var(--icon-sm); }
-        /* The reference paints the CHOSEN mode in the accent, and an icon needs it more
-           than a word did: there is no label to read, so the fill and hairline that
-           .seg-btn.active already draws are carrying the state on their own. */
-        #schemeSeg .seg-btn.active { color: var(--accent-text); }
         .seg-btn:hover { color: var(--text); }
         /* The selected segment steps back UP to the tile fill and gets a
            hairline — colour alone is too close to carry the state. */
         .seg-btn.active { color: var(--text); background: var(--surface); border-color: var(--border); }
         /* The header's scheme seg: the same 36px box as EN, three 36px-wide cells (34
-           tall inside the seg's hairline), 14px glyphs, and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
+           tall inside the seg's hairline), 16px glyphs (the reference's 0.37 of the box: the
+           sun draws 20 of its 24 units), and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
            2-unit round stroke, and the chosen mode's body - its FIRST shape: the disc,
-           the screen, the crescent - filled, in the accent. The other two are --muted
-           lines. (The reference also shows its moon blue; it is a light page with
-           System chosen, so that is not the resolved theme - most likely a hover. Not
-           reproduced.) */
+           the screen, the crescent - filled, in --text. The other two are --muted
+           lines. Grey only: the chosen mode is DARKER and BOLDER, never blue. */
         .header-controls > .seg { min-height: var(--ctl-sm); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
         .header-controls > .seg .seg-btn { width: var(--ctl-sm); min-height: 0; border: none; background: none; border-radius: var(--radius-ctl); }
         .header-controls > .seg .seg-btn svg {
-            width: var(--icon-xs); height: var(--icon-xs);
+            width: var(--icon-sm); height: var(--icon-sm);
             fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
         }
         .header-controls > .seg .seg-btn.active svg > :first-child { fill: currentColor; }
@@ -3278,9 +3273,9 @@
             // LINE icons, the one set that is (2026-09-23, from the user's reference).
             // Copied from tools/icon-packs.mjs's `line` pack; the header seg's CSS strokes
             // them, and fills the first shape of the chosen one.
-            sun: _svg('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(315 12 12)"/>'),
-            monitor: _svg('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/>'),
-            moon: _svg('<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>'),
+            sun: _svg('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4" transform="rotate(315 12 12)"/>'),
+            monitor: _svg('<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4M8 21h8"/>'),
+            moon: _svg('<path d="M12 3A6.36 6.36 0 0 0 21 12A9 9 0 1 1 12 3Z"/>'),
         };
         // A group IS the society glyph, so the why band's third mark gets the name
         // that says what it means there. (`clock`, the same move for the history

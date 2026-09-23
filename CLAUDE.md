@@ -567,9 +567,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--space-md` between the two (the reference's
       gap, ~0.46 of the box). The coarse-pointer rule for the seg is gone — the base is
       already 36 — and the nested 360px block still narrows the cells to 28.
-    - **the ACCENT STAYS**: EN is `--accent-text` at 700, and the chosen mode is in the
-      accent with its body FILLED. **The other two are `--muted` LINES** — filled and
-      blue against thin and grey is the "darker and bolder" selection.
+    - **GREY ONLY — NO BLUE ON EITHER TOGGLE** (2026-09-23, on request: "the toggle icons
+      should not have any blue accent colors, just grey"). EN is `--text` at 700, and
+      the chosen mode is `--text` with its body FILLED; **the other two are `--muted`
+      LINES**. Darker, filled and bold against lighter and thin is the whole selection
+      signal — the same answer to "darker and bolder" the brief asked for at the start.
+      (The accent was on both for part of the day; `#schemeSeg .seg-btn.active`'s accent
+      rule is deleted.)
     - **THE THREE GLYPHS ARE LINE ICONS, TAKEN FROM THE REFERENCE** (2026-09-23, on
       request: "the toggle icons should be directly taken from the screenshot"). A ring
       with eight separate short rays, a rounded screen on a neck and base, a crescent —
@@ -580,11 +584,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       the crescent — which is why **each keeps its body as its first shape**. They live
       in `tools/icon-packs.mjs`'s `line` pack now, and the shipped strings were
       checked against the generator's output.
-      **The reference also shows its moon blue beside the chosen monitor. It is NOT
-      reproduced**: the reference is a light page, so that is not "the theme System
-      resolved to" (that was tried and backed out the same turn) — most likely a hover.
-    - 14px glyphs (`--icon-xs`) and a 12px code, about the reference's 0.37 and 0.33 of
-      the box.
+      **Redrawn to the reference's proportions the same day** ("replicate exactly as I
+      showed"): rays from r 10 to 8 round an r 4 ring, a wide 20x14 screen on a neck and
+      base, and a full crescent — outer disc r 9, bitten by the circle through its top
+      and right points (r 6.36), so the inner edge passes through the icon's centre.
+      The reference was never on disk, so this is drawn to its proportions by eye, not
+      traced from its pixels.
+    - 16px glyphs (`--icon-sm`) and a 12px code: the sun draws 20 of its 24 units, so
+      it is 13.3px in the 36px box — the reference's 0.37 — and the code is its 0.33.
     - **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
       `min-height`, and shares one `.header-nav, .header-controls` rule for
       `align-self: flex-end` and the `-4px` margin, so the centres are one
@@ -598,8 +605,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     listeners that closed it on an outside click or Escape, the app's one shadow, and the
     `nav.language` / `nav.preferences` strings.
     - **A disclosure to choose between TWO things spends a click.** `#langToggle` shows
-      the current code and flips on press (`toggleLang()`); it is in `--accent-text`
-      because it is a readout of what you are reading IN, not an offer.
+      the current code and flips on press (`toggleLang()`); it is `--text` at 700 (the
+      accent until 2026-09-23), a readout of what you are reading IN, not an offer.
       `paintLangControls()` still owns its face — a language CODE is identical in both
       languages, so `applyStaticStrings()` must not — and it also writes the
       `aria-label`, which DOES translate ("EN – Switch to German" / "DE – Auf Englisch

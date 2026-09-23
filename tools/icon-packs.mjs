@@ -101,13 +101,15 @@ const line = {
     // strokes them and fills the FIRST shape of the chosen one, so each keeps its body
     // (disc, screen, crescent) first. A ray is ONE line rotated about the centre: eight
     // literals would be eight chances to get 45 degrees wrong.
+    // REDRAWN 2026-09-23 to the reference's proportions: short rays (r 10 -> 8) round
+    // an r 4 ring, a wide 20x14 screen on a neck and base, and a full crescent.
     sun: '<circle cx="12" cy="12" r="4"/>' + [0, 45, 90, 135, 180, 225, 270, 315]
-        .map(d => `<line x1="12" y1="2" x2="12" y2="4.5"${d ? ` transform="rotate(${d} 12 12)"` : ''}/>`).join(''),
-    monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/>',
-    // A crescent is one disc (r 8.8 about the centre) with a second (r 10, centred
-    // up and to the right) taken out of it: the outer arc is the long way round,
-    // the inner one the short way back.
-    moon: '<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>',
+        .map(d => `<line x1="12" y1="2" x2="12" y2="4"${d ? ` transform="rotate(${d} 12 12)"` : ''}/>`).join(''),
+    monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4M8 21h8"/>',
+    // A crescent: the outer disc is r 9 about the centre, and the bite is the circle
+    // through its top and right points centred halfway between them (r 6.36), so the
+    // inner edge passes through the icon's centre - the long arc out, the short one back.
+    moon: '<path d="M12 3A6.36 6.36 0 0 0 21 12A9 9 0 1 1 12 3Z"/>',
 };
 
 const RING = ev(donut(12, 12, 9.2, 6.6));
