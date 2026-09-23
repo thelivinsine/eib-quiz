@@ -14,9 +14,12 @@ had moved on. A rasteriser that reads the same constants as the vector cannot
 drift that way again. NEVER hand-edit one of the two outputs; change a constant
 here, re-run, and commit both.
 
-The mark is the German flag in a rounded square, the same mark the header wears
-since phase 6. It replaced a drawn tick, which said nothing about the subject
-and was the one stroked glyph left anywhere in the project.
+The mark is the logo kit's E, in its DARK variant because this card is dark
+(the navy bar carries a slate rim so it does not vanish into the ground). It is
+READ from docs/brand/ rather than redrawn here - the SVG's paths for the vector,
+the kit's PNG for the raster - so re-run tools/make-logo-kit.mjs first if the
+mark changes. It replaced the flat German flag on 2026-09-23, which had itself
+replaced a drawn tick.
 
 The copy stays descriptive rather than the "EIB Quiz / Learn · Practise · Pass"
 lockup: a link preview is read beside its own URL, so the space is better spent
@@ -28,6 +31,7 @@ A social card is only ever seen small, so check the result at thumbnail size
 rather than full width.
 """
 import os
+import re
 from xml.sax.saxutils import escape
 
 from PIL import Image, ImageDraw, ImageFont
@@ -46,9 +50,9 @@ LINE2 = "Alle 16 Bundesländer"
 STRAP = "300 FRAGEN · DE / EN · KOSTENLOS"
 
 # --- geometry, shared by both outputs ---
-MARK = (90, 150, 96)            # x, y, size
-# The flag's own values, as in index.html's .brand-mark. Not theme tokens.
-FLAG = ("#000000", "#DD0000", "#FFCE00")
+MARK = (90, 150, 96)            # x, y, HEIGHT (the mark is 60 x 63 units)
+MARK_SVG = os.path.join("docs", "brand", "svg", "eib-quiz-mark-dark.svg")
+MARK_PNG = os.path.join("docs", "brand", "png", "eib-quiz-mark-dark.png")
 Y1, Y2, Y3 = 370, 460, 535      # text baselines
 X_TEXT, X_STRAP = 90, 92
 FS_BIG, FS_STRAP, TRACK = 92, 34, 6
@@ -75,11 +79,9 @@ def font(candidates, size):
 
 
 def svg():
-    mx, my, ms = MARK
-    band = ms / 3
-    bands = "".join(
-        f'<rect x="0" y="{i * band:g}" width="{ms}" height="{band:g}" fill="{c}"/>'
-        for i, c in enumerate(FLAG))
+    mx, my, mh = MARK
+    with open(os.path.join(ROOT, MARK_SVG), encoding="utf8") as f:
+        paths = re.search(r"</title>(.*)</svg>", f.read(), re.S).group(1)
     return f"""<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">
   <rect width="{W}" height="{H}" fill="{BG}"/>
   <defs>
@@ -89,10 +91,7 @@ def svg():
     </radialGradient>
   </defs>
   <rect width="{W}" height="{H}" fill="url(#glow)"/>
-  <g transform="translate({mx},{my})">
-    <clipPath id="mark"><rect width="{ms}" height="{ms}" rx="20"/></clipPath>
-    <g clip-path="url(#mark)">{bands}</g>
-  </g>
+  <g transform="translate({mx},{my}) scale({mh / 63:g})">{paths}</g>
   <text x="{X_TEXT}" y="{Y1}" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="{FS_BIG}" font-weight="800" fill="{INK}" letter-spacing="-2">{escape(LINE1)}</text>
   <text x="{X_TEXT}" y="{Y2}" font-family="'Segoe UI',Helvetica,Arial,sans-serif" font-size="{FS_BIG}" font-weight="800" fill="{ACCENT}" letter-spacing="-2">{escape(LINE2)}</text>
   <text x="{X_STRAP}" y="{Y3}" font-family="'Courier New',monospace" font-size="{FS_STRAP}" fill="{MUTED}" letter-spacing="{TRACK}">{escape(STRAP)}</text>
@@ -123,17 +122,12 @@ def png():
     img = Image.composite(Image.new("RGB", (W, H), hex2rgb(ACCENT)), img, glow)
 
     d = ImageDraw.Draw(img)
-    mx, my, ms = MARK
+    mx, my, mh = MARK
 
-    # The mark: three bands drawn into a rounded-rectangle mask, which is the
-    # raster equivalent of the SVG's clipPath rather than a second design.
-    mark = Image.new("RGB", (ms, ms), hex2rgb(FLAG[0]))
-    md = ImageDraw.Draw(mark)
-    for i, c in enumerate(FLAG):
-        md.rectangle([0, round(i * ms / 3), ms, round((i + 1) * ms / 3)], fill=hex2rgb(c))
-    mask = Image.new("L", (ms, ms), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, ms - 1, ms - 1], radius=20, fill=255)
-    img.paste(mark, (mx, my), mask)
+    # The kit's own raster of the same mark, downscaled - not a second drawing.
+    mark = Image.open(os.path.join(ROOT, MARK_PNG)).convert("RGBA")
+    mark = mark.resize((round(mh * 60 / 63), mh), Image.LANCZOS)
+    img.paste(mark, (mx, my), mark)
 
     d = ImageDraw.Draw(img)
 

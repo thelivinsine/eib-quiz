@@ -276,7 +276,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     hole rather than a button. `.resume-banner .btn-primary` overrides the fill there and
     nowhere else.
     **`--ink-tile` and `--on-dark` are GONE** (2026-09-21): they existed only for the header's
-    charcoal `E` tile, the brand mark is the German flag now, and nothing else read them. The
+    charcoal `E` tile, the brand mark was the German flag (and is the logo kit's E since
+    2026-09-23), and nothing else read them. The
     two token pairs and the `#fff` literal that asserted the old mark went from
     `contrast.test.mjs` with them.
   - Type: **Bricolage Grotesque** (`--font-head`, display + big numbers) + **Inter**
@@ -578,10 +579,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       two nav links.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
-  The **brand mark is the German flag** in a rounded `--ctl-sm` square, beside a
+  The **brand mark is the logo kit's E** (2026-09-23; it was the flat German flag in a
+  rounded square before that) in a `--ctl-sm` box, beside a
   `.brand-lockup` of `EIB Quiz` over the `nav.tagline` line. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
-  **so is the NAME** — the flag mark alone stands for the brand on a phone, and the 62px
+  **so is the NAME** — the mark alone stands for the brand on a phone, and the 62px
   that frees is part of what pays for two nav links down there. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
   375px after any layout change.
 - **HOME AND PRACTISE ARE TWO SCREENS** (2026-09-21, on request — this replaces the
@@ -644,7 +646,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     **WHAT PAYS FOR IT, measured at 375px**: the globe summary (92) became the EN pill
     (46), the theme seg came back into the row (+92 against the menu it was hidden in),
     the nav's own gaps and padding tightened, and **the BRAND NAME went the way of the
-    tagline** (-62) — the flag mark alone is still the way home from anywhere. The row
+    tagline** (-62) — the mark alone is still the way home from anywhere. The row
     ends at 359 in a 359px box with 14.8px of slack between the nav and the pill, and
     German is narrower than English here ("Start"/"Üben" against "Home"/"Practise").
     **Below 360px it needs three more trims** and gets them in a nested
@@ -789,8 +791,14 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `#10B981` / `#F87171` for two commits after `--green` / `--red` were re-derived to
     `#10C185` / `#F98989`, so the test asserted a colour the app no longer had and
     passed on luck — both grounds happened to get lighter.
-    The German flag in `.brand-mark` is the deliberate exception: its three bands are written
-    inside the SVG, not in a rule, and a graphic carrying no text has no pair to assert.
+    The E in `.brand-mark` is the deliberate exception: its colours are written inside the
+    SVG, not in a rule, and a graphic carrying no text has no pair to assert.
+    **It carries both of the kit's variants in one drawing** (2026-09-23): the DARK one
+    underneath — the navy bar 0.75 units smaller over a `#64748B` rim, so it does not
+    vanish into the charcoal canvas — and `.brand-mark-top`, the light variant's full
+    navy bar, on top, shown only under `html.light`. The CSS only toggles `display`,
+    so no colour literal reaches a rule. Its geometry is `tools/make-logo-kit.mjs`'s;
+    change it there and copy the paths across, as with `ICONS`.
   - **There are FIVE equal mode cards and no featured one** (2026-09-21). Exam, All
     questions, Your state, Smart review, By topic. The exam's full-width accent-tinted
     treatment is gone, and with it `.mode-card--featured`, `.mode-start-btn` and
@@ -1206,7 +1214,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
         `--text` and the pennant is `--accent`, written as `style="fill:var(--...)"` on
         the paths. The mockup's pole is `#234291`; `--text` is used instead because a
         dark literal vanishes on a dark banner and `--text` flips with the theme. Like
-        `.brand-mark`'s flag these carry no text, so `contrast.test.mjs` asserts
+        `.brand-mark`'s E these carry no text, so `contrast.test.mjs` asserts
         nothing about them.
       - **`--accent-line`, not `.cta-art`'s `--border-hover`**: the mockup's peaks are
         a desaturated blue (#C9D7F5 measured) on the banner's blue wash, and light's
@@ -1362,9 +1370,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **`main`'s bottom padding came down from a literal 96px to `--space-2xl`** with it.
     That padding was the home screen's only bottom breathing room (`body.in-session main`
     overrides it outright), and 96 + the footer's own 40 read as a band of nothing.
-  - The mark is the header's flag SVG **repeated**, not shared: its three bands are the
-    flag's own values written inside the SVG rather than in a rule, so there is no token
-    to share and one duplicated line beats a JS filler for it.
+  - The mark is the header's SVG **repeated**, not shared: its colours are the logo kit's,
+    written inside the SVG rather than in a rule, so there is no token to share and one
+    duplicated line beats a JS filler for it.
   - **`sub-text / band` is asserted in `contrast.test.mjs`** for the footer's copy; that
     ground was unasserted for this tier until the footer shipped. (`.footer-meta`, the
     single right-aligned column of small print this replaced, is gone — it was 76ch of
@@ -2139,10 +2147,14 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   `option_images`, `image`, `image_credit` fields).
 - `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
-- `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png` - icons & social card.
+- `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png`,
+  `icon-maskable-512.png`, `apple-touch-icon.png` - icons & social card. The favicon and all
+  four icons are WRITTEN by `tools/make-logo-kit.mjs`; do not edit them by hand.
 - `tools/make-og-image.py` - emits `og-image.svg` AND `og-image.png` from one set of
   constants. **Run for production 2026-09-21**, at the end of the landing-page refactor: the
-  card carries the German flag mark (the header's, replacing a drawn tick) over
+  card carries the logo kit's E in its dark variant (since 2026-09-23; the flat flag before
+  that, a drawn tick before that), READ from `docs/brand/` — so run
+  `tools/make-logo-kit.mjs` first when the mark changes — over
   "Einbürgerungstest / Alle 16 Bundesländer / 300 FRAGEN · DE / EN · KOSTENLOS". Never
   hand-edit one of the two files — that drift is why this script exists; change a constant,
   re-run, commit both.
@@ -2150,9 +2162,13 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   `docs/Mockups/ui/logo-kit.png`: horizontal / stacked / mark lockups in four variants,
   app icon and favicon, as outlined SVG + PNG + `.ico`. **Generated — never hand-edit**;
   change a constant and re-run `node tools/make-logo-kit.mjs` (needs Chrome with network:
-  it outlines the fonts via opentype.js). NOT yet wired into the app — the live
-  `favicon.svg`, `img/icons/` and header mark are the old ones. `docs/brand/README.md`
-  has usage, construction and the three deliberate departures from the mockup.
+  it outlines the fonts via opentype.js). **Wired in 2026-09-23**: the same run writes
+  `/favicon.svg` and the four `img/icons/*.png` (rounded tile for `any`, full-bleed square
+  for `maskable` and Apple), the OG card reads its mark from here, and the header/footer
+  mark is the same geometry inline. **Changing the mark means: re-run it, re-run
+  `tools/make-og-image.py`, copy the paths into `.brand-mark`, and bump `CACHE` in
+  `sw.js`.** `docs/brand/README.md` has usage, construction and the deliberate departures
+  from the mockup.
 - `legacy/` - May 28 build (standalone HTML, corrupted JSON, old regen tool). See
   `legacy/README.md`. Do NOT publish from it.
 
