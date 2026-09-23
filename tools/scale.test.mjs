@@ -66,10 +66,10 @@ const BUDGETS = {
   distinctTracking:     [2, "reached 2026-09-20 (phase 3): --ls-caps and --ls-display."],
   literalIconSizes:     [0, "reached 2026-09-20. An icon size is --icon-*, a hit target --ctl-*."],
   gapRungs:             [7, "target ~5 — two rungs should carry the page; 2px and 6px merged away."],
-  globalLineHeights:    [5, "leading lives in the --type-* roles since 2026-09-23; what is left is glyph boxes and the lockups"],
+  globalLineHeights:    [3, "leading lives in the --type-* roles since 2026-09-23; what is left is glyph boxes and the lockups"],
   // Component rules that still state font-size / font-family / font-weight instead of
   // reading a --type-* role. ROLE_EXEMPT names the only ones allowed; target 0.
-  typeOutsideRoles:     [25, "target 0 — every text rule reads a --type-* role (spec 2026-09-23)."],
+  typeOutsideRoles:     [0, "reached 2026-09-23. Every text rule reads a --type-* role; ROLE_EXEMPT names the rest."],
 };
 
 // ===========================================================================================

@@ -2384,7 +2384,7 @@
            END SCREEN
            ============================================================ */
         .end-screen { max-width: 680px; margin: 0 auto; text-align: center; }
-        .end-screen > h1 { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-2xl); letter-spacing: var(--ls-display); margin-bottom: var(--space-lg); }
+        .end-screen > h1 { font: var(--type-heading); letter-spacing: var(--ls-display); margin-bottom: var(--space-lg); }
         /* A ROW, not a stack. The card is 680px wide and held a 170px ring centred in it
            with a pill underneath: 286px tall and empty either side of the ring. The ring
            sits ON the page now: a box around a ring and a verdict says nothing the ring
@@ -2395,14 +2395,14 @@
         .score-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
         .score-ring-bar { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.1s var(--ease-spring); }
         .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2xs); }
-        .score-ring-pct { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-3xl); letter-spacing: var(--ls-display); line-height: 1; font-variant-numeric: tabular-nums; color: var(--text); }
-        .score-ring-center .score-number { font-size: var(--fs-sm); font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+        .score-ring-pct { font: var(--type-figure-lg); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
+        .score-ring-center .score-number { font: var(--type-label); color: var(--muted); font-variant-numeric: tabular-nums; }
         /* Only an exam has a pass mark, so on every other round this is empty — and an
            empty inline-block still spent its margin and padding as a blank band under
            the ring. Visible once it has something to say. */
         .pass-fail:empty { display: none; }
         /* align-self so the pill is as wide as its words, inside a stretch column. */
-        .pass-fail { display: inline-block; align-self: center; margin: 0; font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-pill); }
+        .pass-fail { font: var(--type-title); letter-spacing: var(--ls-display); display: inline-block; align-self: center; margin: 0; padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-pill); }
         .pass-fail.pass { color: var(--teal-deep); background: var(--teal-tint); }
         .pass-fail.fail { color: var(--red-text); background: var(--red-dim); }
         /* ONE band, figures separated by hairlines — the same move the home overview card
@@ -2431,9 +2431,9 @@
             background: var(--surface);
         }
 
-        .result-stat .rs-label { font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--muted); }
-        .result-stat .rs-num { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
-        .pass-threshold-note { font-size: var(--fs-xs); color: var(--muted); margin: 0; }
+        .result-stat .rs-label { font: var(--type-label); color: var(--muted); }
+        .result-stat .rs-num { font: var(--type-figure-md); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        .pass-threshold-note { font: var(--type-label); color: var(--muted); margin: 0; }
         .pass-threshold-note[hidden] { display: none; }
         .review-section { margin-top: var(--space-xl); text-align: left; }
         .review-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin-bottom: var(--space-lg); }
@@ -2441,20 +2441,20 @@
            no button since Retry moved up to the action row — so it centres rather than
            hanging off the left edge. */
         .review-section-header--solo { justify-content: center; }
-        .review-section-header h2 { font-family: var(--font-head); font-weight: 600; font-size: var(--fs-lg); letter-spacing: var(--ls-display); }
+        .review-section-header h2 { font: var(--type-subheading); letter-spacing: var(--ls-display); }
         .review-header-actions { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
-        .review-count { color: var(--muted); font-size: var(--fs-sm); }
+        .review-count { font: var(--type-label); color: var(--muted); }
         .review-item { padding: var(--space-md); border-radius: var(--radius); margin-bottom: var(--space-sm); }
         .review-q-num { margin-bottom: var(--space-xs); }
-        .review-q-text { font-weight: 600; font-size: var(--fs-md); line-height: 1.4; margin-bottom: var(--space-md); }
+        .review-q-text { font: var(--type-title); letter-spacing: var(--ls-display); margin-bottom: var(--space-md); }
         .review-answers { display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-md); }
-        .review-answer { font-size: var(--fs-sm); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
+        .review-answer { font: var(--type-small); padding: var(--space-sm) var(--space-ms); border-radius: var(--radius-sm); }
         .review-answer.user-wrong { color: var(--red-text); background: var(--red-dim); }
         .review-answer.correct-ans { color: var(--green); background: var(--green-dim); }
         /* The exam's list carries every question, so it needs a right and a blank too. */
         .review-answer.user-right { color: var(--green); background: var(--green-dim); }
         .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
-        .review-explanation { font-size: var(--fs-sm); color: var(--sub-text); line-height: var(--lh-prose); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
+        .review-explanation { font: var(--type-small); color: var(--sub-text); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
         .review-explanation-en { color: var(--muted); font-style: italic; margin-top: var(--space-xs); }
 
         /* ============================================================
@@ -2846,7 +2846,6 @@
             .score-ring-wrap { width: 160px; height: 160px; }
             /* One step down with the dial (190 -> 160px). It re-stated --fs-3xl, the value
                its base already carried, so the ring shrank and the numeral did not. */
-            .score-ring-pct { font-size: var(--fs-2xl); }
             .hist-row { gap: var(--space-sm); }
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the
