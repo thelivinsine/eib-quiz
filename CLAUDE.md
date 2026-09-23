@@ -216,24 +216,29 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     22px read as heavy rather than as a readout ("cheap" was the word).
     The featured card kept its emphasis in hue, width and a solid Start pill, never size —
     and is retired; the five mode cards are peers.
-  - **No drop shadows on a TILE, in either theme.** A tile is a fill plus a hairline, and
-    there are still no `--shadow-*` tokens; do not reintroduce one for a tile. This rule
-    always carried a condition — "light would only earn a shadow under something that
-    genuinely floats, and nothing in this app does" — and for one day (2026-09-21 to
-    2026-09-22) the second clause was false: `#prefsMenu`'s panel was an overlay above
-    unrelated content, so `html.light .hmenu-panel` was **the app's one shadow**, scoped
-    to light because dark's `--surface` is already 1.15 above its canvas and the fill
-    separates it. **THE PANEL IS GONE and so is the shadow** — the language is a toggle
-    pill now — so the rule is back to being absolute: **there is no shadow anywhere in
-    this app.** The condition still stands if something genuinely floats again (and that
-    literal would again be outside `LITERAL_PAIRS`, for the same reason `.brand-mark`'s
-    flag is: a shadow carries no text, so there is no pair to assert) — but a tile that
-    would like more presence is not that thing.
+  - **TILES CARRY A SOFT SHADOW AND LIFT ON HOVER** (2026-09-23, on request: "subtle
+    shadow effects for tile components"). This reverses "no shadow anywhere in this app"
+    and "hover is never a lift". Two tokens per theme, `--shadow-rest` and
+    `--shadow-lift`, sit beside `--tile`. Light is ink-tinted (`#0F1929`) at 4-9% alpha;
+    dark is real black at 18-35%, because a faint shadow is invisible on charcoal. **The
+    hairline still separates a tile; the shadow only adds depth**, so no contrast pair
+    changed. A shadow carries no text, so `contrast.test.mjs` asserts nothing about it.
+    - **Who gets `--shadow-rest`**: one list in the TILE block — the mode cards, topic
+      chips, the overview card, the why and CTA panels, history, glossary, the quiz
+      sidebar and review items. It is not for wells inside a tile (`.hist-exam`,
+      `.resume-banner`) and not for the footer band.
+    - **Who lifts**: `.mode-card`, `.topic-chip` and `.options .option-btn` move
+      `translateY(-2px)` onto `--shadow-lift`; text buttons move 1px onto
+      `--shadow-rest`. Every lift sits inside `@media (hover: hover)`, and every press
+      settles (`scale(0.985)`, `0.99` for an option) with a SHORT `transition-duration`
+      on `:active`, so the press is quick and the release is slow. The fill/edge hover
+      step is unchanged underneath.
   - **In light EVERYTHING steps down; in dark everything steps up.** Light's page is
     white, so there is no "up": a tile is the page colour plus a hairline, `--surface2` is
     a well inset below it, and hover steps further down (`--hover`). In dark all of it
-    goes up. Hover is a fill change, never a lift. (Until 2026-09-21 light raised
-    surfaces UP towards white off a paper-grey page; the white canvas replaced that rule.)
+    goes up. The hover FILL still follows this rule; the lift and shadow above are added
+    on top of it. (Until 2026-09-21 light raised surfaces UP towards white off a
+    paper-grey page; the white canvas replaced that rule.)
   - **An answer option is a WELL on the canvas — `--surface2` in BOTH themes**
     (2026-09-21), with its letter chip and its hover and `:active` fills one rung up at
     `--surface3`. Light used to override this to `--surface`, on the argument that
@@ -2163,6 +2168,30 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - **Animated results:** the results screen shows an SVG score ring with a percentage count-up
   animation (green=pass, red=fail). The quiz has a slim animated progress bar and per-question
   entrance transitions. All motion respects `prefers-reduced-motion`.
+- **Motion system** (2026-09-23, on request). `--ease-out` (`cubic-bezier(0.22, 1, 0.36, 1)`)
+  drives the lifts, entrances and reveals; `--ease` and `--ease-spring` are unchanged.
+  - **Staggered entrance**: the children of `.modes-grid`, `.topic-grid` and `.dash-grid`
+    `riseIn`, each 60ms after the one before (`--i`, set by `nth-child`, capped at 4). It
+    plays whenever they are drawn or shown, so it replays on a repaint such as a language
+    switch. **The fill mode is `backwards`, never `both`**: a filled end state pins
+    `transform` and silently kills the hover lift.
+  - **Landing scroll reveal**: `initReveal()` puts `.reveal` on `#whyBand`, `.stats-grid`
+    and `.cta-band`, and one IntersectionObserver adds `.in` once. The four
+    `.stats-num` figures count up at the same moment, through `countUp(el, n, dur, '')`,
+    which takes a `suffix` (default `'%'`). **The JS adds the hiding class**, so with no
+    JS, no IntersectionObserver or reduced motion, the page shows as written, real
+    figures included.
+  - **Answer feedback**: in practice rounds `.correct.just-picked` plays `correctGlow`
+    (a green ring pulsing out, through `color-mix`, plus a 1.02 pop) and
+    `.incorrect.just-picked` plays `wrongShake` (±3px). The exam's `.picked` keeps
+    `pickPop`, because it must not say which.
+  - **The reduced-motion block zeroes `animation-delay` and `transition-delay` too.**
+    Without that, a staggered card sits invisible through its delay and then pops.
+  - **A hidden preview pane can verify none of this**: it does not paint, does not run
+    IntersectionObserver, and leaves transitions at their start value. Drive headless
+    Chrome over CDP instead (`Input.dispatchMouseEvent` for hover,
+    `Emulation.setEmulatedMedia` for reduced motion). All of the above was verified
+    that way.
 
 - `index.html` loads question data at runtime from `questions.json` via `fetch`
   (so the app must be served over http/https, not opened via `file://`).

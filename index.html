@@ -103,7 +103,8 @@
                plates went neutral and took their only consumer with them.)
                LIGHT IS UNTOUCHED: its palette is the mockup's own and measures clean.
                Still true and still the reference's: every level of containment steps
-               LIGHTER, no drop shadows, text tiers solid values and never opacity. */
+               LIGHTER, text tiers solid values and never opacity. (A tile's shadow adds
+               depth under its hairline since 2026-09-23; it separates nothing.) */
             color-scheme: dark;
 
             --canvas:    #1A1A1A;
@@ -153,6 +154,10 @@
             /* The landing page's why and CTA panels: the tile's shade in dark (--tile's
                value), --band's recess in light. A token, not an html.light override. */
             --panel:           #202020;
+            /* A tile's shadow (2026-09-23, on request). Dark needs real black to read on
+               charcoal at all; the hairline still does the separating, this adds depth. */
+            --shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.18);
+            --shadow-lift: 0 4px 10px rgba(0, 0, 0, 0.35), 0 16px 32px rgba(0, 0, 0, 0.3);
 
             /* The hairline carries dark mode, because the FILLS cannot.
                theme-dark.md §5: "below ~1.20 between two touching surfaces, stop pushing
@@ -368,6 +373,8 @@
 
             --ease:        cubic-bezier(0.4, 0, 0.2, 1);
             --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Fast start, long settle: lifts, entrances and reveals. */
+            --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
 
             --maxw: 1100px;
             --header-h: 56px;   /* a fallback; syncHeaderHeight() measures the real one */
@@ -408,6 +415,9 @@
             --tile-hover:      #EEF3FA;
             --tile-edge-hover: #C8D2E2;
             --panel:           #F5F8FC;   /* --band's value */
+            /* Ink-tinted (#0F1929) and faint: on white a grey shadow reads as dirt. */
+            --shadow-rest: 0 1px 2px rgba(15, 25, 41, 0.04), 0 2px 8px rgba(15, 25, 41, 0.04);
+            --shadow-lift: 0 4px 10px rgba(15, 25, 41, 0.06), 0 14px 30px rgba(15, 25, 41, 0.09);
 
             --border:       #E0E7F1;   /* 1.245 on a tile AND on the page */
             --border-soft:  #EDF1F8;
@@ -539,10 +549,33 @@
 
         /* ============================================================
            TILE — the bento primitive.
-           A tile is a fill plus a hairline. Elevation is not a shadow and
-           hover is not a lift: light steps the fill DOWN into grey, dark
-           steps it UP. Both stay inside the 1.10-1.25 band.
+           A tile is a fill plus a hairline plus a soft --shadow-rest; a
+           pressable tile LIFTS 2px onto --shadow-lift on hover (2026-09-23,
+           on request) on top of its fill step - light steps DOWN, dark UP.
            ============================================================ */
+        .quiz-sidebar, .review-item, .hist-list, .glossary-wrap, .dash,
+        .why-grid, .cta-band, .mode-card, .topic-chip { box-shadow: var(--shadow-rest); }
+        @media (hover: hover) {
+            .mode-card:hover, .topic-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+        }
+        /* The press is quick and the release is slow: :active shortens the duration only
+           while it holds. */
+        .mode-card:active, .topic-chip:active { transform: scale(0.985); box-shadow: var(--shadow-rest); transition-duration: 0.08s; }
+
+        /* Cards arrive one after another whenever they are drawn or shown - the Practise
+           screen, the topic reveal, a repaint. `backwards`, never `both`: a filled end
+           state would pin transform and kill the hover lift. */
+        @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } }
+        :is(.modes-grid, .topic-grid, .dash-grid) > * { animation: riseIn 0.5s var(--ease-out) calc(var(--i, 0) * 60ms) backwards; }
+        :is(.modes-grid, .topic-grid, .dash-grid) > :nth-child(2) { --i: 1; }
+        :is(.modes-grid, .topic-grid, .dash-grid) > :nth-child(3) { --i: 2; }
+        :is(.modes-grid, .topic-grid, .dash-grid) > :nth-child(4) { --i: 3; }
+        :is(.modes-grid, .topic-grid, .dash-grid) > :nth-child(n + 5) { --i: 4; }
+
+        /* Landing bands rise in as they scroll into view. initReveal() adds .reveal, so
+           without JS or under reduced motion nothing is ever hidden. */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+        .reveal.in { opacity: 1; transform: none; }
         .quiz-sidebar, .review-item {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -558,7 +591,7 @@
             border: 1px solid var(--tile-edge);
             border-radius: var(--radius);
         }
-        .topic-chip { transition: background 0.18s var(--ease), border-color 0.18s var(--ease); }
+        .topic-chip { transition: background 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out); }
         @media (hover: hover) {
             .topic-chip:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
         }
@@ -675,7 +708,8 @@
            are reading in, not what you would get.
            THE APP'S ONE SHADOW WENT WITH IT. The argument is in git and still holds if
            anything floats again: an overlay above unrelated content on a white canvas
-           cannot be held off the page by a hairline alone. Nothing floats today. */
+           cannot be held off the page by a hairline alone. Nothing floats today;
+           tiles carry their own --shadow-rest since 2026-09-23. */
         /* THE TWO CONTROLS FOLLOW THE USER'S REFERENCE (2026-09-23): two hairline
            boxes, no fill, no chip, 8px corners (the buttons' --radius-ctl; the
            reference measures ~0.17 of its height, the logo kit's own proportion). EN is
@@ -1721,7 +1755,7 @@
             cursor: pointer;
             display: flex; flex-direction: column;
             text-align: center;
-            transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
+            transition: background 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
         }
         @media (hover: hover) {
             .mode-card:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
@@ -1927,8 +1961,13 @@
             /* Never stretched to fill a row, never squeezed under its label: a row
                that runs out of room WRAPS its buttons instead. */
             flex: none; white-space: nowrap;
-            transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease);
+            transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
         }
+        /* A button rises a pixel onto the tile's resting shadow and settles on press. */
+        @media (hover: hover) {
+            .btn-primary:hover:not(:disabled), .btn-secondary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-rest); }
+        }
+        .btn-primary:active:not(:disabled), .btn-secondary:active:not(:disabled) { transform: none; box-shadow: none; transition-duration: 0.06s; }
         /* --btn-fill, not --accent-fill: on the mockup a CTA is near-black navy and
            the accent blue is reserved for tints, links and small discs. In dark the two
            tokens hold the same value. */
@@ -2199,8 +2238,12 @@
                therefore the washed-out look. On a WHITE canvas that argument inverts:
                --surface IS the page, and --surface2 is a clear 1.15 step above it. */
             background: var(--surface2); color: var(--text);
-            transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
+            transition: border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
         }
+        @media (hover: hover) {
+            .options .option-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+        }
+        .options .option-btn:active:not(:disabled) { transform: scale(0.99); box-shadow: none; transition-duration: 0.08s; }
 
         @media (hover: hover) {
             /* --surface3, not --hover, in BOTH themes now that the option is --surface2.
@@ -2249,6 +2292,16 @@
         html:not(.light) .option-btn.incorrect .opt-letter { color: #3A0A0A; }
         .option-btn.just-picked { animation: pickPop 0.28s var(--ease); }
         @keyframes pickPop { 0% { transform: scale(1); } 45% { transform: scale(1.015); } 100% { transform: scale(1); } }
+        /* Practice rounds answer back: a right pick glows out in green, a wrong one
+           shakes. The exam keeps the neutral pop above - it must not say which. */
+        .option-btn.correct.just-picked { animation: correctGlow 0.7s var(--ease-out); }
+        .option-btn.incorrect.just-picked { animation: wrongShake 0.4s var(--ease); }
+        @keyframes correctGlow {
+            0%   { transform: scale(1);    box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 50%, transparent); }
+            35%  { transform: scale(1.02); }
+            100% { transform: scale(1);    box-shadow: 0 0 0 12px color-mix(in srgb, var(--green) 0%, transparent); }
+        }
+        @keyframes wrongShake { 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); } }
 
         /* margin-inline: auto — the grid is capped at 70% of the column, and without it
            that 30% all fell on the right, so a four-image question sat off-centre under
@@ -2543,7 +2596,10 @@
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
                 animation-iteration-count: 1 !important;
+                /* Or a staggered card sits invisible through its delay, then pops. */
+                animation-delay: 0s !important;
                 transition-duration: 0.001ms !important;
+                transition-delay: 0s !important;
                 scroll-behavior: auto !important;
             }
         }
@@ -4052,6 +4108,25 @@
             el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
         }
 
+        // The landing bands rise in once, as they first scroll into view, and the four
+        // headline numbers count up with them. The markup keeps the real figures, so no
+        // JS, no IntersectionObserver or reduced motion simply shows the page as written.
+        function initReveal() {
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduce || !('IntersectionObserver' in window)) return;
+            const io = new IntersectionObserver(entries => entries.forEach(e => {
+                if (!e.isIntersecting) return;
+                io.unobserve(e.target);
+                e.target.classList.add('in');
+                e.target.querySelectorAll('.stats-num').forEach(n => countUp(n, +n.dataset.n, 1100, ''));
+            }), { threshold: 0.15 });
+            document.querySelectorAll('#whyBand, .stats-grid, .cta-band').forEach(el => {
+                el.querySelectorAll('.stats-num').forEach(n => { n.dataset.n = n.textContent; });
+                el.classList.add('reveal');
+                io.observe(el);
+            });
+        }
+
         // ============================================================
         // HOME SCREEN
         // ============================================================
@@ -4382,8 +4457,9 @@
             }));
         }
 
-        // Counts el up to `target`% with an ease-out cubic. Both rings use it.
-        function countUp(el, target, dur) {
+        // Counts el up to `target`% with an ease-out cubic. Both rings use it, and the
+        // landing numbers with an empty suffix.
+        function countUp(el, target, dur, suffix = '%') {
             // t0 is the FIRST frame's timestamp, not performance.now(): a frame's
             // timestamp can precede a now() read earlier, and k < 0 painted a
             // negative percentage on the first frame.
@@ -4391,7 +4467,7 @@
             const tick = now => {
                 if (t0 === undefined) t0 = now;
                 const k = Math.min(1, (now - t0) / dur);
-                el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + '%';
+                el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + suffix;
                 if (k < 1) requestAnimationFrame(tick);
             };
             requestAnimationFrame(tick);
@@ -5515,6 +5591,7 @@
         loadProgress();
         loadHistory();
         initLang();
+        initReveal();
 
         async function loadQuestions() {
             try {
