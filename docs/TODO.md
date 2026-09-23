@@ -2764,3 +2764,12 @@ and dark.
   generator's output.
 - The reference's blue moon was not copied. On its light page with System chosen, it is
   not the resolved theme and is most likely a hover.
+
+## Session close (2026-09-23, buttons, header toggles, Where-you-stand ring)
+
+This work was substantial, so it ended with a PR: **thelivinsine/eib-quiz#103** from
+`header-toggles-buttons`, which is **not merged**. `main` is still `ed50648` and the live site
+is unchanged until the PR merges. The PR body lists what was verified and what was not. The
+open items are: dark-mode buttons were not seen rendered, no hover state was seen hovered,
+only Chromium was tested (Safari's SVG `transform-origin` on the ring's knob in particular),
+and the scheme icons were drawn by eye because the reference screenshot never reached disk.
