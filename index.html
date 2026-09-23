@@ -607,7 +607,9 @@
         html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
         .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
-        .brand-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); }
+        /* The margin drops the tagline a step off the name (2026-09-23, on request); the
+           lockup stays centred on the mark, so the name rises by half of it. */
+        .brand-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); margin-top: var(--space-2xs); }
 
         /* Inside a session the logo is a link that loses your round, dressed as a
            logo. Body.in-session swaps the two; nothing branches in JS. */
@@ -1006,6 +1008,26 @@
             padding: var(--space-lg) 0 var(--space-3xl);
         }
         .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+        /* THE NUMBERS BAND STARTS AT THE FOLD ON A DESKTOP (2026-09-23, on request: its
+           numerals peeked, cut off, under the why band at ~1140x760). Hero + why band
+           are one block at least as tall as the screen below the header (main's
+           --space-xl top padding is the other subtraction), the hero takes the slack
+           with its content centred in it (.hero-landing's align-items), and the why
+           band sits at the bottom. The block is a .home-section, so it carries the
+           section gap under it (the why band inside is now a :last-child, which
+           zeroes its own); that gap is subtracted here too, so the band ends
+           --space-3xl above the fold and the numbers begin exactly at it.
+           A viewport shorter than the content just lets the block grow, and the
+           numbers still come after the fold. Stacked layouts (940 and below) scroll
+           as a normal page. */
+        @media (min-width: 941px) {
+            .landing-fold {
+                display: flex; flex-direction: column;
+                min-height: calc(100vh - var(--header-h) - var(--space-xl) - var(--space-3xl));
+                min-height: calc(100svh - var(--header-h) - var(--space-xl) - var(--space-3xl));
+            }
+            .landing-fold .hero-landing { flex: 1; }
+        }
 
         .hero-headline {
             font: var(--type-display);
@@ -1263,6 +1285,18 @@
            is the readout row, whose top sits below the glyph's 6 + 44 = 50px. */
         /* "Small steps make big progress." is GONE (2026-09-23, on request), and with
            it .dash-pill, dash.pill and the leaf glyph, whose only reader it was. */
+        /* The card's first line says what its numbers COUNT (2026-09-23, on request):
+           every answer ever given, not the round the resume banner offers — the two
+           both say "answered" and read as a contradiction without it. The inline
+           padding keeps a wrapped line clear of .progress-reset in the corner (it
+           reaches 50px in from the card's edge) while staying centred. */
+        .dash-note {
+            font: var(--type-small);
+            color: var(--muted);
+            text-align: center;
+            padding-inline: var(--space-2xl);
+            margin-bottom: var(--space-xl);
+        }
 
         /* The summary block is the widest column because it carries a sentence; the
            three readouts are equal. Spelled out rather than auto-fit: the verdict must
@@ -1977,7 +2011,7 @@
             font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base);
             letter-spacing: var(--ls-display); color: var(--text);
         }
-        .footer-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); }
+        .footer-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); margin-top: var(--space-2xs); }
 
         /* Visually hidden, still read out. */
         .sr-only {
@@ -2698,8 +2732,11 @@
                    than one run of text. It costs the 320px case: 284.3 of content and
                    gap in a 256px card, so down there the third wraps to its own line
                    (flex-wrap, which is exactly what it is for). At 375 all three hold
-                   one row in both languages. */
-                gap: var(--space-lg) var(--space-xl);
+                   one row in both languages.
+                   BACK TO --space-lg (2026-09-23): "Answered overall" is 106px against
+                   "Answered"'s 57, and at 28 the English row needed 309.3 in a 309px
+                   card — the third readout wrapped at 375. At 20 it is 293.3. */
+                gap: var(--space-lg);
             }
             /* CENTRED, AND THE RING STACKS OVER ITS SENTENCE (2026-09-22, on request).
                Side by side the pair measured 104 + 16 + 189 = 309 in a 311px card, so
@@ -2964,6 +3001,9 @@
                  switch retired when the app moved to #practiseScreen: one page each,
                  nothing to keep in sync. -->
 
+            <!-- The first screen: hero + why band, which on a desktop fill the viewport
+                 so the numbers band starts at the fold (see .landing-fold). -->
+            <div class="home-section landing-fold">
             <!-- Landing hero: the pitch on the left, the building on the right. -->
             <div class="hero-landing">
                 <div class="hero-text">
@@ -3008,6 +3048,7 @@
                     <li class="why-item" data-hue="amber"><span class="why-icon" data-icon="star" aria-hidden="true"></span><div><h3 data-i18n="why.4.title"></h3><p data-i18n="why.4.body"></p></div></li>
                 </ul>
             </section>
+            </div>
 
             <!-- 3c · The four headline numbers, straight on the page since 2026-09-22.
                  They are READOUTS: --fs-3xl is a display-numeral step, not a heading. -->
@@ -3554,7 +3595,12 @@
             // wrapper's title/aria-label, where its length costs nothing.
             'dash.passMark':       { en: 'Pass mark {n}%',          de: 'Bestehensgrenze {n} %' },
             'dash.accuracyShort':  { en: 'Accuracy',                de: 'Quote' },
-            'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
+            'dash.note':           { en: "Totals across every round you've played, until you reset.",
+                                     de: 'Gesamtwerte aus all deinen Runden, bis du zurücksetzt.' },
+            // "overall" because the resume banner's round also says "answered" (2026-09-23).
+            // The German is not "Insgesamt beantwortet": that sets 141px in a 112px column,
+            // wraps, and lifts its figure out of line with the other two.
+            'dash.answered':       { en: 'Answered overall',        de: 'Fragen gesamt' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
             // German drops the "Zur": at the 12px floor "ZUR WIEDERHOLUNG" sets 137.5px
             // in a 131px column and wraps, which drops that readout's sub-line out of
@@ -4282,6 +4328,7 @@
                 </div>`;
 
             el.innerHTML = `
+                <p class="dash-note">${t('dash.note')}</p>
                 <div class="dash-grid">
                     <div class="dash-summary">
                         <div class="ready-ring-wrap" role="img" title="${ring}% ${t('dash.accuracy')}" aria-label="${ring}% ${t('dash.accuracy')}">

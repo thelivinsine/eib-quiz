@@ -537,12 +537,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   was 11px uppercase) and the card's 311px holds all three with room over — **at 320px
   too**, measured. **They are CENTRED rather than `space-between`** (2026-09-22, on
   request): pinned to the edges they read as a table rule across the card, and centred
-  they keep room either side — 22px in English, 12.3 in German, with a `--space-xl`
-  column gap between them (2026-09-22, raised from `--space-lg` on request, so they read
-  as three separated figures rather than one run of text). **That gap costs the 320px
-  case**: 284.3px of content and gap in a 256px card, so down there the third wraps to
-  its own line, which is what `flex-wrap` is for. At 375 all three hold one row in both
-  languages. **And the summary STACKS**: side by side the ring and its
+  they keep room either side, with a `--space-lg` column gap between them (it was
+  `--space-xl` from 2026-09-22 on request, and came back down on 2026-09-23 when the
+  first label became "Answered overall": 106px against "Answered"'s 57, so at 28 the
+  English row needed 309.3 in a 309px card and wrapped at 375). Down at 320 the third
+  still wraps to its own line, which is what `flex-wrap` is for. At 375 and 360 all
+  three hold one row in both languages, measured. **And the summary STACKS**: side by side the ring and its
   sentence measured 104 + 16 + 189 = 309 inside a 311px card, which is not centred in any
   meaningful sense, it is edge to edge. Stacked and centred, both sit on the card's axis
   and the sentence gets the full width, which puts it on ONE line in both languages.
@@ -807,6 +807,23 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     too. A heading states its section; an uppercase line over it restated the page.
   - **The hero is two columns**: headline / lead / two buttons on the left,
     the Reichstag on the right. Below 940px it stacks with the **photo first**.
+  - **ON A DESKTOP THE NUMBERS BAND STARTS AT THE FOLD** (2026-09-23, on request: its
+    numerals peeked, cut off, under the why band at ~1140x760). Hero + why band are one
+    `.home-section.landing-fold`, which above 940px is a flex column with
+    `min-height: calc(100svh - --header-h - --space-xl - --space-3xl)`: the hero takes
+    the slack (`flex: 1`, content still centred by its own `align-items`), the why band
+    sits at the bottom, and the wrapper's section gap puts the numbers exactly at the
+    fold. **The wrapper, not the why band, is the `.home-section` that carries the gap**
+    — inside it the why band is a `:last-child`, which zeroes its own margin, and that
+    silently took the gap away at every width the first time. Measured at 941x900,
+    1143x763, 1280x620 and 1440x1300: numbers at or below the fold every time; a
+    viewport shorter than the content just lets the block grow.
+  - **The overview card opens with `.dash-note`** ("Totals across every round you've
+    played, until you reset.") and its first readout is **"Answered overall"** /
+    **"Fragen gesamt"** (2026-09-23, on request): the resume banner's round also says
+    "answered", and without both the two counts read as a contradiction. The note's
+    `--space-2xl` inline padding keeps it clear of `.progress-reset`. The German is not
+    "Insgesamt beantwortet": that sets 141px in the 112px desktop column and wraps.
   - **THE FOUR FACT CHIPS ARE GONE** (2026-09-21, on request). `.hero-chips` /
     `.hero-chip*` and `hero.chip1`-`4` — 300 official questions, All 16 federal states,
     German & English, 60-minute test — were four tinted discs restating what
