@@ -206,6 +206,9 @@
                keeps the accent blue. */
             --btn-fill:  #2563EB;
             --on-btn:    #FFFFFF;
+            /* The secondary button's edge: the tile hairline here, already 2.16 on the page. */
+            --btn-edge:       var(--border);
+            --btn-edge-hover: var(--border-hover);
 
             --text:     #FFFFFF;   /* 12.82 on a tile, 17.40 on the page */
             --sub-text: #D1D1D1;   /*  8.40 */
@@ -388,6 +391,9 @@
                icons and small discs with; it never fills a button. */
             --btn-fill:  #132338;
             --on-btn:    #FFFFFF;
+            /* A white button on a white page has only its edge: slate, not the 1.245 hairline. */
+            --btn-edge:       var(--faint);
+            --btn-edge-hover: var(--muted);
 
             --apricot:      #D97706;
             --apricot-deep: #B45309;
@@ -590,10 +596,8 @@
      margin takes it 4px further, into the strip's own bottom padding. It cannot
      change the header's height: 36 - 4 = 32 is still under the brand's 44, so the
      flex line is sized by the brand either way, and --header-h with it. */
-        .header-nav {
-            display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto;
-            align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs));
-        }
+        .header-nav, .header-controls { align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs)); }
+        .header-nav { display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto; }
         .nav-link {
             display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-sm);
@@ -603,8 +607,9 @@
         }
         /* BOTH LINKS ARE --text (2026-09-23, on request: Practise "should also be in
            black"). The underline alone says which page you are on, so hover can only
-           step the colour back a tier. */
-        .nav-link:hover { color: var(--sub-text); }
+           step the colour back a tier - and only where hover exists: a tap leaves :hover
+           stuck on the link you just made active, which would grey the current page. */
+        @media (hover: hover) { .nav-link:hover { color: var(--sub-text); } }
         /* The mockup underlines the current section, and the underline belongs to the
            WORD, not to the control's box (2026-09-22, on request: "closer to the text").
            It was `box-shadow: inset 0 -2px 0`, which draws along the bottom of a 36px
@@ -628,14 +633,11 @@
            with a data-screen and a real screen behind it. */
 
         /* The controls share the nav's LINE (2026-09-23, on request: "horizontally
-           aligning with page names"). Same 36px box, same flex-end, same negative
-           margin as .header-nav, so the two centres are one number at every width
-           rather than the controls riding 8px above the links on the strip's centre.
+           aligning with page names"): the same 36px box as a nav link, and the
+           flex-end + negative margin come from the shared rule above, so the two
+           centres are one number at every width.
            --space-md between the two boxes is the reference's gap (0.46 of the box). */
-        .header-controls {
-            display: flex; align-items: center; gap: var(--space-md);
-            min-height: var(--ctl-sm); align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs));
-        }
+        .header-controls { display: flex; align-items: center; gap: var(--space-md); min-height: var(--ctl-sm); }
 
         /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
@@ -691,8 +693,8 @@
         /* The selected segment steps back UP to the tile fill and gets a
            hairline — colour alone is too close to carry the state. */
         .seg-btn.active { color: var(--text); background: var(--surface); border-color: var(--border); }
-        /* The header's scheme seg: the same box as EN, three SQUARE cells, 14px glyphs,
-           and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
+        /* The header's scheme seg: the same 36px box as EN, three 36px-wide cells (34
+           tall inside the seg's hairline), 14px glyphs, and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
            2-unit round stroke, and the chosen mode's body - its FIRST shape: the disc,
            the screen, the crescent - filled, in the accent. The other two are --muted
            lines. (The reference also shows its moon blue; it is a light page with
@@ -1197,8 +1199,8 @@
            The three hued icon plates that made this the one place icons carried the
            mockup's hues went on 2026-09-22 with the readouts' plates: NO icon in the app
            is painted in an accent or a semantic hue now. The card keeps the mockup's
-           colour in two places that are text or a fill rather than a plate — the
-           encouragement chip's green and the resume banner's --accent-text book. */
+           colour in two places that are not a plate — the ring's --accent arc and the
+           resume banner's --accent-text book. */
         .dash {
             position: relative;
             background: var(--tile);
@@ -1217,7 +1219,7 @@
         html.light .hist-exam { background: var(--surface); }
         /* .dash-head is GONE (2026-09-22): it existed to hold a heading and the
            encouragement line on one row inside the card, and neither is there now — the
-           heading moved out and above, the line moved to the foot. .progress-reset is
+           heading moved out and above, and the line is gone. .progress-reset is
            still absolutely positioned into the card's top-right corner, and with the
            head gone nothing needs to reserve room for it: the first thing in the card
            is the readout row, whose top sits below the glyph's 6 + 44 = 50px. */
@@ -1228,8 +1230,8 @@
            three readouts are equal. Spelled out rather than auto-fit: the verdict must
            not be squeezed to a readout's width.
            align-items: center is what makes four bare blocks read as one row — the
-           ring is 104px tall and a readout is 68, so stretched (the default) the
-           readouts hang from the top with 36px of nothing under them. Centred, all
+           ring is 152px tall and a readout ~42, so stretched (the default) the
+           readouts hang from the top with ~110px of nothing under them. Centred, all
            four share an axis. */
         .dash-grid {
             display: grid;
@@ -1239,7 +1241,7 @@
                from 211.6px apart to 181 (2026-09-22, on request: "bring them a bit
                closer"). The verdict gains the width rather than losing it, so its
                headline stays on one line with more room than before, and the ring is
-               fixed at 104 and does not stretch. */
+               fixed at 152 and does not stretch. */
             grid-template-columns: 3fr 1fr 1fr 1fr;
             align-items: center;
             gap: var(--space-xl);
@@ -1311,7 +1313,7 @@
            Below 620px that box is 189 and the same string sets 188 — one pixel, which
            is not clearance — so the 620px block takes it down a rung. Every headline
            is ONE line, measured at four tiers x two languages x both widths, and that
-           is what keeps this block shorter than the 104px ring beside it. */
+           is what keeps this block shorter than the 152px ring beside it. */
         .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
         .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
         /* The key to the tick on the ring: the same --text bar, beside its name. */
@@ -1387,13 +1389,15 @@
         /* THE RING IS THE CARD'S HEADLINE (2026-09-23, on request: "make the ring graph
            bigger and with more engaging UI" — the card read bland and empty without the
            resume banner). 152px at every width, up from the mockup's 104, and it now
-           carries three things beyond the arc:
-           - a GRADIENT arc, --accent-fill into --teal, drawn by #readyRingGrad;
+           carries two things beyond the arc:
            - a KNOB riding the arc's leading end — a group rotated about the centre on
              the same transition as the dash, so the two stay in step;
            - the PASS MARK as a tick across the track at 52% (the exam's 17 of 33), so
              the ring says where you are AND where you need to be. The verdict's legend
              names it.
+           The arc is plain --accent, NOT a gradient: a linear gradient cannot follow a
+           circle (the colour ran back the way it came past half way), light's two blues
+           were near-identical, and dark's --accent-fill end sat ~1.9:1 on the track.
            r stays 50 and the dasharray 314, which the JS counts on. The viewBox is
            "1 1 118 118" rather than cropped to the stroke, because the tick and the
            knob reach r = 58. */
@@ -1401,17 +1405,15 @@
         .ready-ring { width: 100%; height: 100%; display: block; overflow: visible; }
         .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 10; }
         .ready-ring-bar {
-            fill: none; stroke: url(#readyRingGrad); stroke-width: 10; stroke-linecap: round;
+            fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round;
             stroke-dasharray: 314; stroke-dashoffset: 314;
             transition: stroke-dashoffset 0.95s var(--ease-spring);
         }
-        .ready-ring-grad-a { stop-color: var(--accent-fill); }
-        .ready-ring-grad-b { stop-color: var(--teal); }
         .ready-ring-knob {
             transform-origin: 60px 60px;
             transition: transform 0.95s var(--ease-spring);
         }
-        .ready-ring-knob circle { fill: var(--tile); stroke: var(--accent-fill); stroke-width: 3.5; }
+        .ready-ring-knob circle { fill: var(--tile); stroke: var(--accent); stroke-width: 3.5; }
         .ready-ring-pass { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         /* --fs-xl, the card's one large figure: still a rung under the --fs-2xl
@@ -1844,14 +1846,10 @@
         .btn-primary { color: var(--on-btn); background: var(--btn-fill); }
         .btn-primary:hover { filter: brightness(1.08); }
         .btn-primary:active { filter: brightness(0.94); }
-        /* The logo kit's Learn More: near-black label, and in light a SLATE edge rather
-           than the 1.245 hairline a tile uses - a white button on a white page has only
-           its edge to be a button with. Dark keeps --border, which is already 2.16 on
-           the page. */
-        .btn-secondary { color: var(--text); background: var(--surface); border-color: var(--border); }
-        .btn-secondary:hover { background: var(--hover); border-color: var(--border-hover); }
-        html.light .btn-secondary { border-color: var(--faint); }
-        html.light .btn-secondary:hover { border-color: var(--muted); }
+        /* The logo kit's Learn More: near-black label on --btn-edge, which is a SLATE
+           edge in light and the tile hairline in dark (see the token blocks). */
+        .btn-secondary { color: var(--text); background: var(--surface); border-color: var(--btn-edge); }
+        .btn-secondary:hover { background: var(--hover); border-color: var(--btn-edge-hover); }
         .btn-primary svg, .btn-secondary svg { flex: none; width: var(--icon-sm); height: var(--icon-sm); }
         /* Inside a round the header is a back button and a preferences menu; a section
            nav there points at a page you are not on. */
@@ -2659,16 +2657,6 @@
                wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
                keeps --fs-base; measured in both languages at every verdict tier. */
             .dash-verdict strong { font-size: var(--fs-sm); }
-            /* A touch lower on a phone (2026-09-22, on request), and ONLY here: the
-               practise heading follows a card that ends in a centred green line, and the
-               section gap alone left it sitting close to that line. Scoped to this
-               section rather than raising every .home-section, so nothing else moves.
-               PADDING, NOT MARGIN, and that is the whole trick: margin-top on the head
-               collapses through its parent — the section has no top padding or border to
-               stop it — and merges with the previous section's margin-bottom, so the gap
-               stays max(28, 8) = 28 and the rule paints nothing. Measured: 28 before,
-               36 after. */
-            .modes-band { padding-top: var(--space-sm); }
             /* NO PHONE OVERRIDE (2026-09-22, on request). It used to go full width
                with the label hard left and the pill hard right — and `flex: 1` on the
                pill is what stretched it, so "Berlin" sat in a 250px capsule with a
@@ -2702,9 +2690,8 @@
             /* The .header-controls .seg-btn shrink to --ctl-xs that used to sit here
                is GONE. It was written for two segmented controls standing in the
                header strip; the one that is left is three ICONS wide, and shrinking it
-               here would undo the coarse-pointer floor above it (it is stated later in
-               the sheet, so source order gives it the win) and hand a phone three 28px
-               targets. */
+               here would hand a phone three 28px targets (the nested 360px block is the
+               one place that does, where the alternative is a clipped button). */
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
@@ -3247,6 +3234,10 @@
         };
         // Topic chips cover the general themes only (state questions live under Bundesland mode).
         const TOPIC_KEYS = ['rights', 'politics', 'history', 'society', 'symbols'];
+        // The exam: 30 general + 3 state questions (startMode), passed at 17. The results
+        // screen, the history and the overview ring's pass tick all read these.
+        const EXAM_SIZE = 33, EXAM_PASS = 17;
+        const PASS_PCT = Math.round(EXAM_PASS / EXAM_SIZE * 100); // 52
 
         // Inline solid icons (24x24, currentColor) — filled silhouettes whose detail is
         // knocked out with fill-rule="evenodd", so a glyph still takes the colour of the
@@ -3283,17 +3274,13 @@
             topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
             /* The header's three scheme modes. `globe` stood here until 2026-09-22
                and went with the menu that was its only reader — ICONS.symbols is the
-               same drawing if it is ever wanted back. Same solid family: a disc plus
-               eight detached rays, a screen on a stand, and a crescent cut from one
-               disc by another. */
+               same drawing if it is ever wanted back. */
             // LINE icons, the one set that is (2026-09-23, from the user's reference).
             // Copied from tools/icon-packs.mjs's `line` pack; the header seg's CSS strokes
             // them, and fills the first shape of the chosen one.
             sun: _svg('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(315 12 12)"/>'),
             monitor: _svg('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/>'),
             moon: _svg('<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>'),
-            // The overview card's encouragement chip. Same drawing as
-            // tools/icon-packs.mjs's solid pack — keep the two in step.
         };
         // A group IS the society glyph, so the why band's third mark gets the name
         // that says what it means there. (`clock`, the same move for the history
@@ -3475,7 +3462,7 @@
             // floor and collides with a 104px ring's stroke — measured, and the whole
             // reason the caption was dropped in September. The full word stays on the
             // wrapper's title/aria-label, where its length costs nothing.
-            'dash.passMark':       { en: 'Pass mark {n}%',          de: 'Bestehensgrenze {n}%' },
+            'dash.passMark':       { en: 'Pass mark {n}%',          de: 'Bestehensgrenze {n} %' },
             'dash.accuracyShort':  { en: 'Accuracy',                de: 'Quote' },
             'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
@@ -3592,7 +3579,7 @@
             'end.fail':            { en: '✗ Not passed',            de: '✗ Nicht bestanden' },
             'end.correctCount':    { en: 'Correct',                 de: 'Richtig' },
             'end.wrongCount':      { en: 'Wrong',                   de: 'Falsch' },
-            'end.threshold':       { en: 'Pass mark: 17 of 33 questions (52%)', de: 'Bestehensgrenze: 17 von 33 Fragen (52 %)' },
+            'end.threshold':       { en: 'Pass mark: {pass} of {total} questions ({n}%)', de: 'Bestehensgrenze: {pass} von {total} Fragen ({n} %)' },
             'end.general':         { en: 'General (of 30)',         de: 'Allgemein (von 30)' },
             'end.stateOf3':        { en: '{state} (of 3)',          de: '{state} (von 3)' },
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
@@ -4160,7 +4147,6 @@
             // The verdict beside the ring. PASS_PCT is the exam's own pass mark
             // (17 of 33), so "on track" means something the app can point at - and the
             // ring draws it as a tick.
-            const PASS_PCT = 52;
             const vk = answeredInPool === 0 ? 'start'
                 : ring >= 80 ? 'strong'
                 : ring >= PASS_PCT ? 'onTrack'
@@ -4206,7 +4192,6 @@
                     <div class="dash-summary">
                         <div class="ready-ring-wrap" role="img" title="${ring}% ${t('dash.accuracy')}" aria-label="${ring}% ${t('dash.accuracy')}">
                             <svg class="ready-ring" viewBox="1 1 118 118" aria-hidden="true">
-                                <defs><linearGradient id="readyRingGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="ready-ring-grad-a"/><stop offset="1" class="ready-ring-grad-b"/></linearGradient></defs>
                                 <circle class="ready-ring-track" cx="60" cy="60" r="50"></circle>
                                 <circle class="ready-ring-bar" id="readyRingBar" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle>
                                 <line class="ready-ring-pass" x1="60" y1="3" x2="60" y2="17" transform="rotate(${PASS_PCT * 3.6} 60 60)"></line>
@@ -4252,18 +4237,23 @@
                 // The knob rides the arc's end, on the same transition as the dash.
                 if (knob) knob.style.transform = 'rotate(' + (arc / C * 360) + 'deg)';
                 if (reduce) { lbl.textContent = pct + '%'; return; }
-                // t0 is the FIRST frame's timestamp, not performance.now(): a frame's
-                // timestamp can precede a now() read earlier, and k < 0 painted a
-                // negative percentage on the first frame.
-                let t0; const dur = 900;
-                const tick = now => {
-                    if (t0 === undefined) t0 = now;
-                    const k = Math.min(1, (now - t0) / dur);
-                    lbl.textContent = Math.round(pct * (1 - Math.pow(1 - k, 3))) + '%';
-                    if (k < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
+                countUp(lbl, pct, 900);
             }));
+        }
+
+        // Counts el up to `target`% with an ease-out cubic. Both rings use it.
+        function countUp(el, target, dur) {
+            // t0 is the FIRST frame's timestamp, not performance.now(): a frame's
+            // timestamp can precede a now() read earlier, and k < 0 painted a
+            // negative percentage on the first frame.
+            let t0;
+            const tick = now => {
+                if (t0 === undefined) t0 = now;
+                const k = Math.min(1, (now - t0) / dur);
+                el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + '%';
+                if (k < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
         }
 
         function resumeSession() {
@@ -4991,16 +4981,7 @@
             setTimeout(() => {
                 bar.style.strokeDashoffset = String(C * (1 - percent / 100));
                 if (reduce) { pctEl.textContent = percent + '%'; return; }
-                // t0 is the first frame's own timestamp - see animateReadyRing.
-                let t0; const dur = 1000;
-                const tick = now => {
-                    if (t0 === undefined) t0 = now;
-                    const k = Math.min(1, (now - t0) / dur);
-                    const eased = 1 - Math.pow(1 - k, 3);
-                    pctEl.textContent = Math.round(percent * eased) + '%';
-                    if (k < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
+                countUp(pctEl, percent, 1000);
             }, 80);
         }
 
@@ -5027,7 +5008,7 @@
                 correct: state.correct,
                 total,
                 percent,
-                passed: isExam ? state.correct >= 17 : null
+                passed: isExam ? state.correct >= EXAM_PASS : null
             });
 
             renderEndScreen();
@@ -5099,7 +5080,7 @@
             const passFail = document.getElementById('passFail');
             passFail.textContent = '';
             passFail.className = 'pass-fail';
-            const passed = isExam ? state.correct >= 17 : null;
+            const passed = isExam ? state.correct >= EXAM_PASS : null;
             if (isExam) {
                 passFail.textContent = passed ? t('end.pass') : t('end.fail');
                 passFail.classList.add(passed ? 'pass' : 'fail');
@@ -5122,7 +5103,7 @@
                 cells += stat(t('end.general'), state.generalCorrect, 'var(--gold)')
                        + stat(t('end.stateOf3', { state: STATES[state.stateCode] || t('mode.state.title') }), state.stateCorrect, 'var(--gold)')
                        + stat(t('end.elapsed'), elapsedStr, 'var(--blue)');
-                threshold.textContent = t('end.threshold');
+                threshold.textContent = t('end.threshold', { pass: EXAM_PASS, total: EXAM_SIZE, n: PASS_PCT });
                 threshold.hidden = false;
             } else {
                 threshold.hidden = true;

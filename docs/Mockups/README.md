@@ -35,7 +35,7 @@ the four bordered tiles are **dissolved** (the card is one ground and the four
 blocks sit bare on it), there is **no rule between the ring and the verdict**,
 the encouragement line ("Small steps make big progress.") is **gone** (2026-09-23,
 on request; the mockup draws it in a green pill), the **ring is 152px** where the
-mockup's is ~104, with a gradient arc, a knob on its leading end and a tick at the
+mockup's is ~104, with an `--accent` arc, a knob on its leading end and a tick at the
 52% pass mark (2026-09-23, on request: "bigger and with more engaging UI"),
 the mountains are **stepped in size and sit lower in the banner** than the
 traced silhouette, **each readout is a figure over its name with no icon plate

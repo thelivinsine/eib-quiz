@@ -280,6 +280,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     **A SECONDARY button is the logo kit's Learn More** (2026-09-23): `--text` label, and
     in light a `--faint` slate edge (`--muted` on hover) rather than the 1.245 tile
     hairline — a white button on a white page has only its edge. Dark keeps `--border`.
+    Both are the `--btn-edge` / `--btn-edge-hover` tokens, not `html.light` overrides.
     **The resume banner is the ONE exception** (2026-09-22, measured): its mockup paints
     Resume in accent blue (`#3474F8`, against light's `#2563EB`), because the banner is
     already an `--accent-soft` tint and a near-black slab in the middle of it reads as a
@@ -476,9 +477,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (28px) rather than `--space-lg`, because the question is the only thing on screen and
   should not run to the edges. Below 620px it drops back to `--space-md`.
 - **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
-  **on a coarse pointer** (`.btn-*` are 44 on every pointer since 2026-09-23, the header `.seg-btn` switches, `.state-picker` — which
+  **on a coarse pointer** (`.btn-*` are 44 on every pointer since 2026-09-23, `.state-picker` — which
   is `--ctl-sm` with a mouse since 2026-09-22 and `--ctl-md` under
-  `@media (pointer: coarse)`); `#stateSelect` is `font-size: 16px` so iOS Safari
+  `@media (pointer: coarse)`; the header's two toggles are the `--ctl-sm` exception, see
+  below); `#stateSelect` is `font-size: 16px` so iOS Safari
   does not zoom on focus, and that is NOT a visual choice to be scaled down with the rest
   of the pill; the keyboard hint is hidden under `@media (hover: none)`; `main` and the
   header respect `env(safe-area-inset-*)`. Under 620px the mode cards become a single-column list
@@ -532,7 +534,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     **gone** — the accent, its `brightness()` hovers and the active override with it. It
     had drawn Practise louder than Home in `--accent-text` since 2026-09-21. Hover steps
     the label back to `--sub-text`; with both links already the darkest tier there is no
-    darker state to step to. **The old `brightness()` lesson still holds anywhere it is
+    darker state to step to. It is inside `@media (hover: hover)`: on a touch screen a tap
+    leaves `:hover` stuck on the link just made active, which would grey the current page. **The old `brightness()` lesson still holds anywhere it is
     tried again**: a filter on TEXT is a contrast change `contrast.test.mjs` cannot see
     (`brightness(1.12)` put `#2563EB` at 4.36 on white) — change a token instead.
     `accent-text / canvas` is still asserted, for any accent word straight on the page.
@@ -560,7 +563,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     misread "remove the colour" as removing the ACCENT, and it meant the FILLS:
     - two hairline boxes (`--border`), **no background and no chip**, `--radius-ctl`
       corners, both 36px tall (`--ctl-sm`): EN is a SQUARE box, the seg is three
-      SQUARE 36px cells with no padding, `--space-md` between the two (the reference's
+      36px-wide cells with no padding (34 tall inside the seg's own hairline),
+      `--space-md` between the two (the reference's
       gap, ~0.46 of the box). The coarse-pointer rule for the seg is gone — the base is
       already 36 — and the nested 360px block still narrows the cells to 28.
     - **the ACCENT STAYS**: EN is `--accent-text` at 700, and the chosen mode is in the
@@ -582,7 +586,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - 14px glyphs (`--icon-xs`) and a 12px code, about the reference's 0.37 and 0.33 of
       the box.
     - **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
-      `min-height`, `align-self: flex-end` and `-4px` margin, so the centres are one
+      `min-height`, and shares one `.header-nav, .header-controls` rule for
+      `align-self: flex-end` and the `-4px` margin, so the centres are one
       number — 38 at 1280 and at 375, measured — and `body.in-session .header-controls`
       goes back to `align-self: center`, the back button's line, where there is no nav.
       Measured row fit: 15px of slack at 375, 8 at 361, 7.5 at 320, both languages.
@@ -1087,16 +1092,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **THE RING IS THE CARD'S HEADLINE** (2026-09-23, on request: the section "looks
       bland and empty without the continue-where-you-left-off box"; make the ring
       "bigger and with more engaging UI"). **152px at every width**, up from 104, with:
-      - a **gradient arc**, `--accent-fill` into `--teal` (`#readyRingGrad`, stops
-        coloured by class so the theme reaches them);
+      - a plain **`--accent` arc** — a gradient (`--accent-fill` into `--teal`) shipped
+        for one commit and went in review: a linear gradient cannot follow a circle, light's
+        two blues were near-identical, and dark's `--accent-fill` end was ~1.9:1 on the
+        track. A real along-the-arc gradient needs a conic gradient, which SVG lacks;
       - a **knob** on the arc's leading end — `#readyRingKnob`, a group rotated about the
         centre on the SAME transition as the dash, so the two stay in step. At 0% it sits
         at 12 o'clock and is the start mark, which retired the old 10-unit stub floor
         (`MIN_ARC`): stub plus knob read as a toggle switch;
       - the **pass mark as a tick** across the track at `PASS_PCT` (52, the exam's 17 of
         33), in `--text`, so the ring shows where you are AND where you need to be.
-        `PASS_PCT` is one const in `renderHomeStatus()` and the verdict tiers read it
-        too. `.dash-pass` under the verdict is its key: the same bar, "Pass mark 52%"
+        `PASS_PCT` is derived from the top-level `EXAM_PASS` / `EXAM_SIZE`, which the
+        results screen's pass check and `end.threshold` read too, and the verdict tiers
+        read it. `.dash-pass` under the verdict is its key: the same bar, "Pass mark 52%"
         (`dash.passMark`);
       - the percentage at **`--fs-xl`/700**, the card's one large figure and still a rung
         under the section heading's `--fs-2xl`.
@@ -1182,8 +1190,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       The only fill left inside the card is the resume banner's tint.
     - **THE THREE READOUT PLATES ARE GONE, and with them the app's last hued icons**
       (2026-09-22, on request — they lasted one day). The card still carries the
-      mockup's hue in two places, both of them text or a fill rather than a plate: the
-      ring's gradient arc and the resume banner's `--accent-text` book.
+      mockup's hue in two places, both of them text or a stroke rather than a plate: the
+      ring's `--accent` arc and the resume banner's `--accent-text` book.
       **If the plates ever come back it is three `--hue-tint` / `--hue-ink`
       declarations here**, scoped to this card — never by re-tinting `[data-hue]`,
       which stays neutral for the mode cards and the why marks.
@@ -1289,7 +1297,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       a new learner spends the whole of their first visit looking at: an empty dial reads
       as a broken one.
     - **Both count-ups (this ring and the results screen's score ring) time from the
-      FIRST FRAME's own timestamp**, not `performance.now()` (2026-09-23). A frame's
+      FIRST FRAME's own timestamp**, not `performance.now()` (2026-09-23), through one
+      `countUp()` helper. A frame's
       timestamp can precede a `now()` read just before it, so `k` started below 0 and
       the first frame painted a negative percentage — a one-frame "-1%" in a browser, and
       "-11087%" frozen in headless Chrome's virtual time, which is how it was found.
@@ -1775,8 +1784,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   history rather than current state: the ready ring is 152px (104 was re-derived from
   `ui/where-you-stand.png`), and `.ds-num` is `--fs-md`.
   - **The header's two toggles are glance-only chrome**, in a strip with the nav, which is
-    what the `--ctl-sm` exception is for: 36px square cells at EVERY pointer since
-    2026-09-23, so no coarse rule is needed. **The `>` in `.header-controls > .seg` is
+    what the `--ctl-sm` exception is for: 36px-wide cells (34 tall inside the seg's
+    hairline) at EVERY pointer since 2026-09-23, so no coarse rule is needed. **The `>` in `.header-controls > .seg` is
     load-bearing**: it keeps those rules off the navigator's `.qnav-seg`, which has its own.
     The 620px rule that used to pin every header seg to 28px is **deleted**: stated later
     in the sheet it won on source order and silently undid the thumb floor. The ONE place
@@ -2098,9 +2107,10 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   through the parent — which has no top padding or border to stop it — and then adjoins the
   previous section's `margin-bottom`, so the gap is `max(28, 8)`, not 28 + 8. Nudging the
   practise heading down on a phone was written as `.modes-band .section-head { margin-top }`
-  first and measured at exactly the 28px it started from; it is `padding-top` on
-  `.modes-band` now (28 -> 36, measured). **Measure a spacing change, or a collapsed margin
-  will read as "the rule didn't apply".**
+  first and measured at exactly the 28px it started from; `padding-top` on `.modes-band`
+  did it (28 -> 36, measured), and was deleted on 2026-09-23 with the green line it was
+  clearing. **Measure a spacing change, or a collapsed margin will read as "the rule didn't
+  apply".**
 - **Tag the language of any text that is not the chrome's.** `<html lang>` now follows the UI
   language switch, so it may be `en` or `de` and neither direction can be inherited safely:
   English strings carry `lang="en"` and the German exam text — question, options,

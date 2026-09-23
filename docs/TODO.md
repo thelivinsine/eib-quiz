@@ -2740,12 +2740,12 @@ with the back button.
 
 ## Session developments (2026-09-23, the Where-you-stand ring)
 
-- The overview ring is **152px** (was 104). It has a gradient arc, a knob on the arc's
+- The overview ring is **152px** (was 104). It has an `--accent` arc (a gradient went in review), a knob on the arc's
   leading end, and a tick at the 52% pass mark, with a "Pass mark 52%" key under the verdict.
   The percentage is `--fs-xl`/700.
 - "Small steps make big progress." is removed, with `.dash-pill`, `dash.pill`, the leaf glyph
   (from `ICONS` and `tools/icon-packs.mjs`) and the `green / tile` contrast pair.
-- Both count-ups now time from the first frame's timestamp. The first frame could paint a
+- Both count-ups now time from the first frame's timestamp, through one `countUp()` helper. The first frame could paint a
   negative percentage.
 
 ### Verified
@@ -2773,3 +2773,42 @@ is unchanged until the PR merges. The PR body lists what was verified and what w
 open items are: dark-mode buttons were not seen rendered, no hover state was seen hovered,
 only Chromium was tested (Safari's SVG `transform-origin` on the ring's knob in particular),
 and the scheme icons were drawn by eye because the reference screenshot never reached disk.
+
+## Session developments (2026-09-23, review of #103)
+
+`/code-review` at xhigh on #103 found thirteen things, and all thirteen are fixed on
+`header-toggles-buttons`. **The same session wrote the fixes it reviewed**, so no second
+reader has seen them.
+
+- The ring's arc is plain `--accent`, and so is the knob's ring. The gradient could not
+  follow a circle, light's two blues were near-identical, and dark's `--accent-fill` end
+  measured ~1.9:1 on the track.
+- `.nav-link:hover` is inside `@media (hover: hover)`. A tap left it stuck on the link just
+  made active, which greyed the current page.
+- The exam's pass mark is the top-level `EXAM_PASS` / `EXAM_SIZE`, and `PASS_PCT` is derived
+  from them. The results pass check, `end.threshold` and the ring's tick all read it.
+- One `countUp()` helper serves both rings.
+- The secondary button's edge is the `--btn-edge` / `--btn-edge-hover` tokens, not two
+  `html.light` overrides.
+- `.header-nav, .header-controls` share one rule for their drop onto the nav's line.
+- The phone-only `.modes-band { padding-top }` is deleted. It cleared the green line, which
+  is gone.
+- German writes "52 %" in `dash.passMark` too.
+- `contrast.test.mjs` lost `accent-text / hover`, which had no consumer, and two pair
+  descriptions were corrected. Stale comments in `ICONS` and on the overview card were fixed.
+
+### Verified
+Contrast and scale (22 tests), `validate.js` and `node --check` on the main script pass. In
+the pane: the arc is #2563EB in light and #70ADFA in dark with no gradient element left, the
+secondary button's edge is `--faint` in light and `--border` in dark, the German key reads
+"Bestehensgrenze 52 %", and `end.threshold` renders from the constants in both languages.
+`countUp()` was run in Node under a stubbed `requestAnimationFrame`: 0% to 67%, no negative
+frame.
+
+### Not verified
+- **No geometry from this session counts.** The pane reported `innerWidth` 0, so the shared
+  nav/toggle centre (38) is not a measurement, and no phone width was checked.
+- The count-up was not seen animating in a browser: the pane does not run
+  `requestAnimationFrame`.
+- No hover state was seen hovered, and nothing was tried on a touch device.
+- Chromium only.
