@@ -103,7 +103,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   against `claude-context-kit/docs/reference/theme-{light,dark}.md`). One cohesive `<style>` block
   in `index.html` (no layered overrides — the whole block IS the system). POV: white/charcoal tiles
   on a flat canvas, **rounded-[16px]** (`--radius`), **8px** buttons (`--radius-ctl`, the logo
-  kit's), **pill** chips, and a
+  kit's), **pill** chips and header toggles, and a
   **DISCIPLINED accent duo**: one **blue** primary + one warm **amber** pop. Two themes
   share the palette — DEFAULT = **light**, canvas **`#FFFFFF`** (ink `#0F1929`);
   `.light` is the default look; dark = **neutral charcoal** (canvas `#1A1A1A`).
@@ -173,17 +173,19 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     top-of-ramp fill + `--border`: `--surface` everywhere, `--band` on the practise
     page since 2026-09-21. Never `--surface2`.
   - **Rounding is a three-step scale, one BUTTON value, and a pill — and nothing else.**
-    `--radius-xs: 4px` (bars, tracks, swatches, the image inside an image option, the
-    header's two toggles), `--radius-sm: 10px` (wells, nav cells, letter chips, thumbnails,
-    `kbd`), `--radius: 16px` (every tile and card), `--radius-pill` (chips, badges, discs,
-    the state picker).
+    `--radius-xs: 4px` (bars, tracks, swatches, the image inside an image option),
+    `--radius-sm: 10px` (wells, nav cells, letter chips, thumbnails, `kbd`), `--radius: 16px`
+    (every tile and card), `--radius-pill` (chips, badges, discs, the header toggles, the
+    state picker).
     **`--radius-ctl: 8px` is the fourth value, minted 2026-09-23 on request against
     `docs/Mockups/ui/logo-kit.png`**: its Start Now / Learn More measure **7.8px on a 48px
     body** (anti-aliased coverage, all four corners). `.btn-primary`, `.btn-secondary` and
     `.session-back` read it; buttons were full pills before that. It sits between two
     steps on purpose — snapping 7.2 (the 44px equivalent) to 10 would be 39% rounder than
-    the mockup. The same PROPORTION on a 28px box is 4.6, which is why the header toggles
-    take `--radius-xs` rather than this. `--radius-lg` and `--radius-xl` were deleted, and
+    the mockup. **The header's EN pill and scheme seg were restyled in the same pass and
+    REVERTED on request** — the user did not like the result and said the brief had been
+    misread (4px hairline boxes, no colour, selection by weight, moved onto the nav's
+    line). Ask what was meant before touching them again. `--radius-lg` and `--radius-xl` were deleted, and
     eight radii — five of them literals a token search never finds — collapsed into these.
     Nested corners follow **inner = outer − padding, snapped to the nearest step**: a 16px card
     with 14px of padding holds a 10px option, a 10px option with 10px of padding holds its
@@ -560,35 +562,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     at 1280) and the underline about 12. **It cannot change `--header-h`**: the margin box
     is 36 − 4 = 32, still under the brand's 44, so the line is sized by the brand either
     way — which is the only reason a negative margin is safe here.
-  - **THE TWO CONTROLS ARE ONE COMPONENT, AND IT HAS NO COLOUR** (2026-09-23, on
-    request). The EN code sits in a one-button `.seg` beside the sun/monitor/moon
-    `.seg`, so the two boxes are the same height on every pointer by construction (the
-    `.lang-toggle` rule is gone). Both are a `--border` hairline with `--radius-xs`
-    corners — the logo kit's button proportion, 7.8px on a 48px body, taken to a 28px
-    box — no fill, no accent, and **no chip under the chosen segment**. **Selection is
-    DARKER AND BOLDER**: `--text` against `--muted`, the code at 700, and the chosen
-    glyph thickened by its own outline (`stroke: currentColor; stroke-width: 1.6` in
-    CSS — a solid glyph emboldened, not a stroked icon, so the `stroke="currentColor"`
-    grep still comes back empty). 28px tall with `--icon-xs` glyphs and a 12px code, so
-    they read at the nav labels' scale.
-    **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
-    `min-height: --ctl-sm`, `align-self: flex-end` and `-4px` margin, so the two centres
-    are one number at every width (38 at 1280 and at 375, measured) instead of the
-    controls riding 8px above the links. In a session there is no nav, so
-    `body.in-session .header-controls` goes back to `align-self: center`, the back
-    button's line. On a coarse pointer the HEIGHT goes on the seg (`--ctl-sm`) and the
-    buttons stretch into it — sizing the buttons instead made the box 38 and put it a
-    pixel off the nav.
-  - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN code and a sun/monitor/moon
+  - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN pill and a sun/monitor/moon
     seg** (2026-09-22, on request, against a reference UI). The globe `<details>` that
     held the language — and, on a phone, the theme seg as well — is **gone**, and with it
     `.hmenu-*`, `#langBadge`, `#schemeLabel`, `syncThemeControlPlacement()`, the two
     listeners that closed it on an outside click or Escape, the app's one shadow, and the
     `nav.language` / `nav.preferences` strings.
-    - **A disclosure to choose between TWO things spends a click.** `#langToggle`
-      shows the current code and flips on press (`toggleLang()`). It was
-      `--accent-text` until 2026-09-23; it is `--text` at 700 now, like every selection
-      in the header.
+    - **A disclosure to choose between TWO things spends a click.** `#langToggle` is a
+      pill that shows the current code and flips on press (`toggleLang()`); it is in
+      `--accent-text` because it is a readout of what you are reading IN, not an offer.
       `paintLangControls()` still owns its face — a language CODE is identical in both
       languages, so `applyStaticStrings()` must not — and it also writes the
       `aria-label`, which DOES translate ("EN – Switch to German" / "DE – Auf Englisch
@@ -615,9 +597,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `prefers-color-scheme` to prove the body of it.
     - **Icon-only buttons carry their names in `aria-label`** (`nav.light` /
       `nav.system` / `nav.dark`), and `.seg-btn--icon` is SQUARE — `--ctl-xs` wide, no
-      side padding — so the three cost 86px (110 on a coarse pointer). That, plus the
-      EN seg being 38px on a phone where the globe summary was 92, is what buys the
-      phone's two nav links.
+      side padding — so the three cost ~92px against the two-word toggle's ~120. That,
+      plus the pill being 46px where the globe summary was 92, is what buys the phone's
+      two nav links.
   **Its rules sit AFTER `.btn-primary` in the sheet**; both are single classes, so above it
   the rule lost every declaration to the base below and the button rendered at 44px.
   The **brand mark is the logo kit's E** (2026-09-23; it was the flat German flag in a
@@ -683,9 +665,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     2. ONE item — the page you are NOT on, via
        `.header-nav .nav-link--active { display: none }` — once the seg moved into the
        menu;
-    3. both, now that the menu is an EN code and the seg is three icons.
+    3. both, now that the menu is a 46px EN pill and the seg is three icons.
     **WHAT PAYS FOR IT, measured at 375px**: the globe summary (92) became the EN pill
-    (46; a 38px seg since 2026-09-23), the theme seg came back into the row (+92 against the menu it was hidden in),
+    (46), the theme seg came back into the row (+92 against the menu it was hidden in),
     the nav's own gaps and padding tightened, and **the BRAND NAME went the way of the
     tagline** (-62) — the mark alone is still the way home from anywhere. The row
     ends at 359 in a 359px box with 14.8px of slack between the nav and the pill, and
@@ -693,10 +675,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     **Below 360px it needs three more trims** and gets them in a nested
     `@media (max-width: 360px)`: half the side gutter, a tighter gap between the three
     groups, and `--ctl-xs`-wide scheme buttons (28x36, still over the 24px WCAG 2.5.8
-    floor). The row needed 361.5px when that number was set, which is where it comes
-    from. **The EN seg (38px, 2026-09-23) is 8px narrower than the pill it replaced**,
-    so the row now has 14px of slack at 375, 8 at 361 and 10.5 at 320 — measured in
-    both languages, nothing clipped.
+    floor). The row needs 361.5px as it stands, which is where that number comes from —
+    at 320 it then ends at 296.7 in a 304px box. Measured at 320 / 360 / 375 in both
+    languages, with nothing clipped at any of them.
     **Do not add a fourth item to this row without taking one out.**
     `body.in-session .header-nav { display: none }` still wins in a round.
 - **The LANDING PAGE is a hero, why, four numbers and one last call.** (The mode band left
@@ -1755,11 +1736,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   and `.btn-lg` (both `--ctl-md` today) and the glossary rows. Two of those numbers are
   history rather than current state: the ready ring is 104px, re-derived from
   `ui/where-you-stand.png`, and `.ds-num` is `--fs-md`.
-  - **The header's two segs are glance-only chrome** (the EN code is a one-button seg
-    since 2026-09-23), in a strip with the nav, which is what the `--ctl-sm` exception
-    is for: `.header-controls > .seg` takes the height under `@media (pointer: coarse)`
-    and `.header-controls > .seg .seg-btn` the **WIDTH** — `.seg-btn--icon` is square,
-    and without it a thumb gets a 28x36 target. **The `>` is load-bearing**: it keeps the rule off the
+  - **There is ONE header seg and it is glance-only chrome**, in a strip with two other
+    things, which is what the `--ctl-sm` exception is for:
+    `.header-controls > .seg .seg-btn` under `@media (pointer: coarse)`, and it sets
+    **WIDTH as well as height** because `.seg-btn--icon` is square — without it a thumb
+    gets a 28x36 target. **The `>` is load-bearing**: it keeps the rule off the
     navigator's `.qnav-seg`, which has its own. (It also used to keep it off the globe
     panel's seg, which took the full `--ctl-md`; both the panel and its seg are gone.)
     The 620px rule that used to pin every header seg to 28px is **deleted**: stated later
