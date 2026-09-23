@@ -2882,6 +2882,10 @@ No PR was open, so `/code-review` at xhigh ran over #103 plus `9f6044b`, `a2203f
 `e0e058c`. It found ten things and all ten are fixed. **The same session wrote the fixes it
 reviewed**, so no second reader has seen them.
 
+Live commit: **[`b1328ff`](https://github.com/thelivinsine/eib-quiz/commit/b1328ff)**,
+squash-merged straight to `main` from `review-103-fixes` on the user's go-ahead ("no new PR
+needed"). The branch was never pushed and is deleted.
+
 - **The scheme seg's chosen cell is `order: 1` (last).** The seg opens leftward from a
   right-aligned column. With the sun first, opening it slid the sun 72px away and put the
   moon under the cursor. EN still slides left on open, and the open order no longer matches
