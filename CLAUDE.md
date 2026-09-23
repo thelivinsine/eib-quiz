@@ -229,7 +229,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **Who gets `--shadow-rest`**: one list in the TILE block — the mode cards, topic
       chips, the overview card, the why and CTA panels, history, glossary, the quiz
       sidebar and review items. It is not for wells inside a tile (`.hist-exam`,
-      `.resume-banner`) and not for the footer band.
+      `.hist-list`, `.resume-banner`) and not for the footer band. `.hist-list` was on
+      the list for one PR: it only ever renders inside the history tile.
     - **Who lifts**: `.mode-card`, `.topic-chip` and `.options .option-btn` move
       `translateY(-2px)` onto `--shadow-lift`; text buttons move 1px onto
       `--shadow-rest`. Every lift sits inside `@media (hover: hover)`, and every press
@@ -1250,8 +1251,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
         track. A real along-the-arc gradient needs a conic gradient, which SVG lacks;
       - a **knob** on the arc's leading end — `#readyRingKnob`, a group rotated about the
         centre on the SAME transition as the dash, so the two stay in step. At 0% it sits
-        at 12 o'clock and is the start mark, which retired the old 10-unit stub floor
-        (`MIN_ARC`): stub plus knob read as a toggle switch;
+        at **6 o'clock** and is the start mark, which retired the old 10-unit stub floor
+        (`MIN_ARC`): stub plus knob read as a toggle switch. **The ring STARTS AT THE
+        BOTTOM and runs clockwise** (2026-09-23, on request; it started at 12): the bar
+        is `rotate(90 60 60)`, the knob's circle `cy="110"` and the pass tick
+        `y1="103" y2="117"`, all rotated the same way from there. Measured: 0% bottom,
+        25% at 9 o'clock, the 52% tick just right of the top;
       - the **pass mark as a tick** across the track at `PASS_PCT` (52, the exam's 17 of
         33), in `--text`, so the ring shows where you are AND where you need to be.
         `PASS_PCT` is derived from the top-level `EXAM_PASS` / `EXAM_SIZE`, which the
@@ -1717,8 +1722,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.quiz-nav` sat at 485px, clipped away by `main`'s `overflow: hidden` with no way to
     scroll to it. Readable content wins over the no-scroll rule, and only where the rule
     cannot be kept.
-  - **Both scrollers keep a gutter**: `padding-right: var(--spacing-sm)` with a matching
-    negative `margin-right`, so the bar sits in the container's own padding instead of
+  - **Both scrollers keep a gutter**: `padding-right: var(--space-sm)` with a matching
+    negative `margin-right` (`.question-body` has it on BOTH sides at `--space-ms` since
+    2026-09-23, for the answer glow — see the motion system), so the bar sits in the container's own padding instead of
     against the last word of the question or the last nav cell. `padding-right` alone just
     narrows the content and leaves the bar where it was.
   - **The results screen's bar sits at the WINDOW's edge** (2026-09-20). `#endScreen` is the
@@ -2196,23 +2202,37 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   entrance transitions. All motion respects `prefers-reduced-motion`.
 - **Motion system** (2026-09-23, on request). `--ease-out` (`cubic-bezier(0.22, 1, 0.36, 1)`)
   drives the lifts, entrances and reveals; `--ease` and `--ease-spring` are unchanged.
-  - **Staggered entrance**: the children of `.modes-grid`, `.topic-grid` and `.dash-grid`
-    `riseIn`, each 60ms after the one before (`--i`, set by `nth-child`, capped at 4). It
-    plays whenever they are drawn or shown, so it replays on a repaint such as a language
-    switch. **The fill mode is `backwards`, never `both`**: a filled end state pins
-    `transform` and silently kills the hover lift.
+  - **Staggered entrance**: `riseIn(...grids)` in the script animates the children of
+    `.dash-grid`, `.modes-grid` and `.topic-grid`, each 60ms after the one before
+    (capped at 4), through the Web Animations API. **It runs when the Practise page is
+    SHOWN (`showScreen`, only when arriving from another screen) and when the topics
+    are opened (`toggleTopics`), and never on a repaint.** It was a CSS animation on the
+    grids' children for one PR, and that replayed on every `innerHTML` rebuild: a state
+    pick blanked and re-rose the whole page (review of #106). **It animates `translate`,
+    not `transform`**, so the hover lift and the press (both `transform`) keep working
+    while a card is still rising; `fill: 'backwards'` so nothing is pinned after.
+    `reducedMotion()` gates it: the CSS reduced-motion block does not reach WAAPI.
+  - **`reducedMotion()` is the one reduced-motion check in the script**; the five inline
+    `matchMedia` copies it replaced should not come back.
   - **Landing scroll reveal**: `initReveal()` puts `.reveal` on `#whyBand`, `.stats-grid`
     and `.cta-band`, and one IntersectionObserver adds `.in` once. The four
     `.stats-num` figures count up at the same moment, through `countUp(el, n, dur, '')`,
     which takes a `suffix` (default `'%'`). **The JS adds the hiding class**, so with no
     JS, no IntersectionObserver or reduced motion, the page shows as written, real
-    figures included.
+    figures included — and `@media print` shows every band, scrolled to or not.
+    **`scrollToId()` finishes a target's reveal before scrolling**: `scrollIntoView`
+    aims at the band's box as it is NOW, 24px low, so "Learn more" landed 24px short
+    and the band then rose under the sticky header (measured 61 against 85 at 375x520).
   - **Answer feedback**: in practice rounds `.correct.just-picked` plays `correctGlow`
     (a green ring pulsing out, through `color-mix`, plus a 1.02 pop) and
     `.incorrect.just-picked` plays `wrongShake` (±3px). The exam's `.picked` keeps
     `pickPop`, because it must not say which.
-  - **The reduced-motion block zeroes `animation-delay` and `transition-delay` too.**
-    Without that, a staggered card sits invisible through its delay and then pops.
+  - **The reduced-motion block zeroes `animation-delay` and `transition-delay` too**, so
+    no CSS animation sits invisible through a delay and then pops.
+  - **The answer glow needs the scroller's gutter**: `.question-body` clips its content,
+    and the options sit on its left edge, so it carries `--space-ms` of padding on BOTH
+    sides with matching negative margins — the 12px ring and the hover lift's shadow
+    were cut off down the option's left side without it.
   - **A hidden preview pane can verify none of this**: it does not paint, does not run
     IntersectionObserver, and leaves transitions at their start value. Drive headless
     Chrome over CDP instead (`Input.dispatchMouseEvent` for hover,
