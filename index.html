@@ -206,6 +206,9 @@
                keeps the accent blue. */
             --btn-fill:  #2563EB;
             --on-btn:    #FFFFFF;
+            /* The secondary button's edge: the tile hairline here, already 2.16 on the page. */
+            --btn-edge:       var(--border);
+            --btn-edge-hover: var(--border-hover);
 
             --text:     #FFFFFF;   /* 12.82 on a tile, 17.40 on the page */
             --sub-text: #D1D1D1;   /*  8.40 */
@@ -217,7 +220,8 @@
             --radius-xs:    4px;   /* bars, tracks, swatches, an image inside an option */
             --radius-sm:   10px;   /* wells, nav cells, letter chips, thumbnails, kbd */
             --radius:      16px;   /* every tile and card */
-            --radius-pill: 999px;  /* anything that is a control */
+            --radius-ctl:   8px;   /* a button: the logo kit's, 7.8 measured on a 48px body */
+            --radius-pill: 999px;  /* chips, badges, discs, toggles, the state picker */
 
             /* ---- SPACE ----------------------------------------------------------
                The scale was missing its bottom and middle rungs (it jumped 6 -> 8 -> 16),
@@ -387,6 +391,9 @@
                icons and small discs with; it never fills a button. */
             --btn-fill:  #132338;
             --on-btn:    #FFFFFF;
+            /* A white button on a white page has only its edge: slate, not the 1.245 hairline. */
+            --btn-edge:       var(--faint);
+            --btn-edge-hover: var(--muted);
 
             --apricot:      #D97706;
             --apricot-deep: #B45309;
@@ -479,8 +486,8 @@
            ============================================================ */
         [data-hue] { --hue-tint: var(--surface2); --hue-ink: var(--sub-text); }
 
-        /* Shared eyebrow micro-label */
-        .eyebrow, .stat-label, .breakdown-label, .review-q-num,
+        /* Shared uppercase micro-label */
+        .stat-label, .breakdown-label, .review-q-num,
         .timer-label,
         .sidebar-title, .question-num {
             font-family: var(--font-body);
@@ -567,7 +574,7 @@
             align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm);
             background: var(--surface2); border: 1px solid var(--border);
-            border-radius: var(--radius-pill);
+            border-radius: var(--radius-ctl);
             color: var(--sub-text); font-size: var(--fs-sm); font-weight: 600;
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease);
         }
@@ -589,18 +596,20 @@
      margin takes it 4px further, into the strip's own bottom padding. It cannot
      change the header's height: 36 - 4 = 32 is still under the brand's 44, so the
      flex line is sized by the brand either way, and --header-h with it. */
-        .header-nav {
-            display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto;
-            align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs));
-        }
+        .header-nav, .header-controls { align-self: flex-end; margin-bottom: calc(-1 * var(--space-2xs)); }
+        .header-nav { display: flex; align-items: center; gap: var(--space-sm); margin-inline: auto; }
         .nav-link {
             display: inline-flex; align-items: center; gap: var(--space-sm);
             min-height: var(--ctl-sm); padding: 0 var(--space-sm);
             background: none; border: none; border-radius: var(--radius-sm);
-            font-size: var(--fs-sm); font-weight: 600; color: var(--muted);
+            font-size: var(--fs-sm); font-weight: 600; color: var(--text);
             transition: color 0.18s var(--ease);
         }
-        .nav-link:hover { color: var(--text); }
+        /* BOTH LINKS ARE --text (2026-09-23, on request: Practise "should also be in
+           black"). The underline alone says which page you are on, so hover can only
+           step the colour back a tier - and only where hover exists: a tap leaves :hover
+           stuck on the link you just made active, which would grey the current page. */
+        @media (hover: hover) { .nav-link:hover { color: var(--sub-text); } }
         /* The mockup underlines the current section, and the underline belongs to the
            WORD, not to the control's box (2026-09-22, on request: "closer to the text").
            It was `box-shadow: inset 0 -2px 0`, which draws along the bottom of a 36px
@@ -615,31 +624,6 @@
             color: var(--text);
             text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px;
         }
-        /* PRACTISE is the way in, so it is DRAWN LOUDER than Home - but it is still a
-           LINK, not a button (2026-09-21, on request; it wore --btn-fill in a pill for
-           a few hours before that). Same shape as .nav-link, one size up and in the
-           accent (the SIZE step went on 2026-09-21, on request; the nav took a size
-           of its own back on 2026-09-22, also on request, but BOTH links took it, so
-           Practise is still drawn louder by colour alone):
-           two items in a two-item nav should read as the same kind of thing,
-           and a solid pill beside a bare word reads as a control that does something
-           rather than a page you go to. The hero's Start and the CTA band still carry
-           the button, so nothing lost the primary voice.
-           Its :hover and :active rules stay because .nav-link:hover is (0,2,0) and
-           would otherwise repaint it --text; same reason the active rule re-states the
-           accent, or the underline and the label come back in --text. */
-        .nav-link--cta { color: var(--accent-text); }
-        .nav-link--cta:hover { color: var(--accent-text); filter: brightness(1.12); }
-        /* The hover STEPS DOWN in light and up in dark, like every other state in this
-           sheet — and here it is not only house style. Brightening #2563EB by 1.12 puts
-           the label at #296FFF, which is 4.36 on the white canvas: under the AA floor
-           that the accent-text/canvas pair in contrast.test.mjs exists to hold. A filter
-           is invisible to that test, so the ratchet cannot catch this one. 0.88 is 6.31. */
-        html.light .nav-link--cta:hover { filter: brightness(0.88); }
-        .nav-link--cta:active { filter: brightness(0.9); }
-        /* The underline is text-decoration now, so it takes currentColor and this
-           override is down to the colour it always was. */
-        .nav-link--cta.nav-link--active { color: var(--accent-text); }
 
         /* About and FAQs were here as aria-disabled buttons wearing a "Soon" chip,
            and both are GONE (2026-09-21, on request) along with .nav-soon, the
@@ -648,7 +632,12 @@
            exist; if either is ever built, it comes back as an ordinary .nav-link
            with a data-screen and a real screen behind it. */
 
-        .header-controls { display: flex; align-items: center; gap: var(--space-sm); }
+        /* The controls share the nav's LINE (2026-09-23, on request: "horizontally
+           aligning with page names"): the same 36px box as a nav link, and the
+           flex-end + negative margin come from the shared rule above, so the two
+           centres are one number at every width.
+           --space-md between the two boxes is the reference's gap (0.46 of the box). */
+        .header-controls { display: flex; align-items: center; gap: var(--space-md); min-height: var(--ctl-sm); }
 
         /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
@@ -661,15 +650,20 @@
            THE APP'S ONE SHADOW WENT WITH IT. The argument is in git and still holds if
            anything floats again: an overlay above unrelated content on a white canvas
            cannot be held off the page by a hairline alone. Nothing floats today. */
+        /* THE TWO CONTROLS FOLLOW THE USER'S REFERENCE (2026-09-23): two hairline
+           boxes, no fill, no chip, 8px corners (the buttons' --radius-ctl; the
+           reference measures ~0.17 of its height, the logo kit's own proportion). EN is
+           a SQUARE box. The accent stays - it is the reference's - and what the fills
+           used to say, WEIGHT says now: see the scheme seg below. */
         .lang-toggle {
             display: inline-flex; align-items: center; justify-content: center;
-            min-height: var(--ctl-sm); padding: 0 var(--space-ms);
-            border-radius: var(--radius-pill);
-            border: 1px solid var(--border); background: var(--surface);
+            min-height: var(--ctl-sm); min-width: var(--ctl-sm); padding: 0 var(--space-xs);
+            border-radius: var(--radius-ctl);
+            border: 1px solid var(--border); background: none;
             font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-text);
-            transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+            transition: border-color 0.18s var(--ease);
         }
-        .lang-toggle:hover { border-color: var(--border-hover); background: var(--hover); }
+        .lang-toggle:hover { border-color: var(--border-hover); }
         .seg {
             display: inline-flex;
             padding: var(--space-3xs); gap: var(--space-2xs);
@@ -699,6 +693,20 @@
         /* The selected segment steps back UP to the tile fill and gets a
            hairline — colour alone is too close to carry the state. */
         .seg-btn.active { color: var(--text); background: var(--surface); border-color: var(--border); }
+        /* The header's scheme seg: the same 36px box as EN, three 36px-wide cells (34
+           tall inside the seg's hairline), 14px glyphs, and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
+           2-unit round stroke, and the chosen mode's body - its FIRST shape: the disc,
+           the screen, the crescent - filled, in the accent. The other two are --muted
+           lines. (The reference also shows its moon blue; it is a light page with
+           System chosen, so that is not the resolved theme - most likely a hover. Not
+           reproduced.) */
+        .header-controls > .seg { min-height: var(--ctl-sm); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
+        .header-controls > .seg .seg-btn { width: var(--ctl-sm); min-height: 0; border: none; background: none; border-radius: var(--radius-ctl); }
+        .header-controls > .seg .seg-btn svg {
+            width: var(--icon-xs); height: var(--icon-xs);
+            fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .header-controls > .seg .seg-btn.active svg > :first-child { fill: currentColor; }
 
         /* ============================================================
            LAYOUT / SCREENS
@@ -929,13 +937,6 @@
             gap: var(--space-sm); flex-wrap: wrap;
             margin-top: var(--space-xl);
         }
-        /* Smaller than a page-level action: the ring above is the result, these are what
-           you do next. */
-        .end-actions .btn-primary, .end-actions .btn-secondary {
-            min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs);
-        }
-        .end-more { display: inline-flex; align-items: center; gap: var(--space-sm); }
-        .end-more svg { width: var(--icon-xs); height: var(--icon-xs); }
         /* Visible but inert when there is nothing below — a control that silently does
            nothing is worse than one that says so. */
         .end-more:disabled { opacity: 0.45; cursor: default; }
@@ -961,7 +962,6 @@
             padding: var(--space-lg) 0 var(--space-2xl);
         }
         .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
-        .hero-text > .eyebrow { margin-bottom: var(--space-ms); }
 
         .hero-headline {
             font-family: var(--font-head);
@@ -984,15 +984,6 @@
             display: flex; flex-wrap: wrap; gap: var(--space-ms);
             margin-top: var(--space-lg);
         }
-        /* One rung down each, on request: --ctl-md (44px) rather than --ctl-lg (52),
-           --space-lg of side padding rather than --space-xl, --fs-base rather than
-           --fs-md, and --icon-sm for the arrow. 44px is still the app's touch floor,
-           so nothing here drops below what everything else holds to. This lands the pair
-           on exactly .btn-lg's metrics, which is what the CTA band's button has always
-           rendered at (see .cta-btn) — so the page's three primary actions now agree
-           rather than the hero's being a rung larger. */
-        .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-2xs); }
-        .hero-cta-row .btn-primary svg { width: var(--icon-sm); height: var(--icon-sm); }
 
         .hero-visual { position: relative; min-width: 0; }
         .hero-photo {
@@ -1029,7 +1020,6 @@
            numbers band's note and the CTA band's), so .script-note stays. */
 
         .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
-        .section-head--centred .eyebrow { display: block; margin-bottom: var(--space-2xs); }
 
         /* THE TWO BANDS SWAPPED TREATMENTS ON 2026-09-22, on request, against a
            screenshot ("invert the ... formatting for the sections"). Read this before
@@ -1126,22 +1116,13 @@
             overflow: hidden;
         }
         .cta-copy { flex: 1 1 280px; min-width: 0; }
-        .cta-copy .eyebrow { display: block; margin-bottom: var(--space-2xs); }
         .cta-copy h2 {
             font-family: var(--font-head); font-weight: 600;
             font-size: var(--fs-2xl); letter-spacing: var(--ls-display);
             color: var(--text);
         }
         .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
-        /* flex: none, and nothing else. This rule also set min-height: --ctl-lg,
-           --space-xl of padding and --fs-md, and ALL THREE were dead: the markup is
-           `btn-primary btn-lg cta-btn`, and .btn-lg sits ~440 lines later in the
-           sheet at the same single-class specificity, so it won every one of them.
-           The button has always rendered at .btn-lg's 44px/--space-lg/--fs-base;
-           measuring it is what found this. Size it through .btn-lg, or drop that
-           class from the markup — do not re-add declarations here. */
         .cta-btn { flex: none; }
-        .cta-btn svg { width: var(--icon-md); height: var(--icon-md); }
         /* An ornament. Take it out and the band is still heading, lead and button. */
         .cta-art { flex: none; display: block; color: var(--border-hover); }
         .cta-art svg { width: 120px; height: auto; display: block; }
@@ -1218,8 +1199,8 @@
            The three hued icon plates that made this the one place icons carried the
            mockup's hues went on 2026-09-22 with the readouts' plates: NO icon in the app
            is painted in an accent or a semantic hue now. The card keeps the mockup's
-           colour in two places that are text or a fill rather than a plate — the
-           encouragement chip's green and the resume banner's --accent-text book. */
+           colour in two places that are not a plate — the ring's --accent arc and the
+           resume banner's --accent-text book. */
         .dash {
             position: relative;
             background: var(--tile);
@@ -1229,13 +1210,6 @@
                their own padding; bare blocks sit right on this inset, so 20px put the
                ring's stroke that far from the card's border and read as a crop. */
             padding: var(--space-xl);
-            /* The closing line is a single centred sentence, not a block, so it does
-               not need the full inset under it — and the card's last row is that line
-               rather than a readout. .dash-pill's margin-top matches, so the line sits
-               in an even --space-md band (2026-09-22, on request: less air above and
-               below it). It is unconditional because .dash-pill is static markup: the
-               card always ends with it. */
-            padding-bottom: var(--space-md);
         }
         /* ONE TILE SHADE ON THIS PAGE (2026-09-22, on request), and since 2026-09-23 it
            is a TOKEN rather than a light-only override: every tile here reads --tile and
@@ -1245,40 +1219,19 @@
         html.light .hist-exam { background: var(--surface); }
         /* .dash-head is GONE (2026-09-22): it existed to hold a heading and the
            encouragement line on one row inside the card, and neither is there now — the
-           heading moved out and above, the line moved to the foot. .progress-reset is
+           heading moved out and above, and the line is gone. .progress-reset is
            still absolutely positioned into the card's top-right corner, and with the
            head gone nothing needs to reserve room for it: the first thing in the card
            is the readout row, whose top sits below the glyph's 6 + 44 = 50px. */
-        /* NO CHIP, AND IT CLOSES THE CARD (2026-09-22, both on request). The mockup
-           draws a --green-dim pill beside the title; the fill went first — the card is
-           one ground with bare blocks on it since the readouts' tiles dissolved, so a
-           tinted capsule was the only enclosure left inside it — and then the line
-           itself moved to the foot, centred, because it is a remark ON the numbers
-           rather than a badge on the heading. The colour and the leaf carry it.
-           Losing the fill moved a colour onto a new ground: --green sits on the CARD
-           now, so green/surface (already asserted) and green/band (added) both hold it
-           in contrast.test.mjs.
-           display: flex, not inline-flex: as a block-level row it spans the card and
-           justify-content centres the pair, which is what "centred in the box" needs.
-           The old lift onto the reset glyph's line went with the move — there is
-           nothing beside it down here. */
-        .dash-pill {
-            margin-top: var(--space-md);
-            display: flex; align-items: center; justify-content: center;
-            gap: var(--space-2xs);
-            color: var(--green);
-            font-size: var(--fs-2xs); font-weight: 600;
-        }
-        /* currentColor: the mockup's leaf is the same green as the words beside it. */
-        .dash-pill-icon { display: grid; place-items: center; }
-        .dash-pill-icon svg { width: var(--icon-xs); height: var(--icon-xs); }
+        /* "Small steps make big progress." is GONE (2026-09-23, on request), and with
+           it .dash-pill, dash.pill and the leaf glyph, whose only reader it was. */
 
         /* The summary block is the widest column because it carries a sentence; the
            three readouts are equal. Spelled out rather than auto-fit: the verdict must
            not be squeezed to a readout's width.
            align-items: center is what makes four bare blocks read as one row — the
-           ring is 104px tall and a readout is 68, so stretched (the default) the
-           readouts hang from the top with 36px of nothing under them. Centred, all
+           ring is 152px tall and a readout ~42, so stretched (the default) the
+           readouts hang from the top with ~110px of nothing under them. Centred, all
            four share an axis. */
         .dash-grid {
             display: grid;
@@ -1288,7 +1241,7 @@
                from 211.6px apart to 181 (2026-09-22, on request: "bring them a bit
                closer"). The verdict gains the width rather than losing it, so its
                headline stays on one line with more room than before, and the ring is
-               fixed at 104 and does not stretch. */
+               fixed at 152 and does not stretch. */
             grid-template-columns: 3fr 1fr 1fr 1fr;
             align-items: center;
             gap: var(--space-xl);
@@ -1309,8 +1262,8 @@
                BELOW the base .dash-summary rule, because that base sits after this one
                in the sheet and both are single-class selectors, so anything stated here
                that the base also states is lost to source order. grid-column survives
-               only because the base does not set it. Same trap as .cta-btn's dead
-               sizing under .btn-lg. */
+               only because the base does not set it. Same trap that once
+               left .cta-btn with three dead declarations. */
             .dash-summary { grid-column: 1 / -1; }
         }
         /* .dash-tile is GONE with the borders (2026-09-22): with no fill, no edge, no
@@ -1360,9 +1313,16 @@
            Below 620px that box is 189 and the same string sets 188 — one pixel, which
            is not clearance — so the 620px block takes it down a rung. Every headline
            is ONE line, measured at four tiers x two languages x both widths, and that
-           is what keeps this block shorter than the 104px ring beside it. */
+           is what keeps this block shorter than the 152px ring beside it. */
         .dash-verdict strong { display: block; color: var(--text); font-size: var(--fs-base); font-weight: 600; }
         .dash-verdict p { margin-top: var(--space-2xs); color: var(--muted); font-size: var(--fs-xs); line-height: var(--lh-prose); }
+        /* The key to the tick on the ring: the same --text bar, beside its name. */
+        .dash-pass {
+            display: inline-flex; align-items: center; gap: var(--space-sm);
+            margin-top: var(--space-sm);
+            font-size: var(--fs-2xs); font-weight: 600; color: var(--sub-text);
+        }
+        .dash-pass::before { content: ''; width: 3px; height: 12px; border-radius: var(--radius-xs); background: var(--text); }
 
         /* A RUNG DOWN THE CONTROL LADDER (2026-09-22, on request: "the size of Your
            state and the dropdown should be scaled down"). --ctl-sm with a --fs-sm value,
@@ -1426,21 +1386,39 @@
             transform: rotate(45deg); pointer-events: none;
         }
 
-        /* 104px of BOX, and the viewBox is cropped to "5 5 110 110" so the drawn
-           circle actually fills it: at the old "0 0 120 120" the stroke only ever
-           reached 108 of 120 units, so a 104px wrap rendered a 94px ring — 11% short
-           of the mockup's 104. r stays 50 and the dasharray stays 314, which is what
-           the JS animation counts on; only the window onto them moved. */
-        .ready-ring-wrap { position: relative; width: 104px; height: 104px; flex-shrink: 0; }
-        .ready-ring { width: 100%; height: 100%; display: block; }
-        .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 9; }
+        /* THE RING IS THE CARD'S HEADLINE (2026-09-23, on request: "make the ring graph
+           bigger and with more engaging UI" — the card read bland and empty without the
+           resume banner). 152px at every width, up from the mockup's 104, and it now
+           carries two things beyond the arc:
+           - a KNOB riding the arc's leading end — a group rotated about the centre on
+             the same transition as the dash, so the two stay in step;
+           - the PASS MARK as a tick across the track at 52% (the exam's 17 of 33), so
+             the ring says where you are AND where you need to be. The verdict's legend
+             names it.
+           The arc is plain --accent, NOT a gradient: a linear gradient cannot follow a
+           circle (the colour ran back the way it came past half way), light's two blues
+           were near-identical, and dark's --accent-fill end sat ~1.9:1 on the track.
+           r stays 50 and the dasharray 314, which the JS counts on. The viewBox is
+           "1 1 118 118" rather than cropped to the stroke, because the tick and the
+           knob reach r = 58. */
+        .ready-ring-wrap { position: relative; width: 152px; height: 152px; flex-shrink: 0; }
+        .ready-ring { width: 100%; height: 100%; display: block; overflow: visible; }
+        .ready-ring-track { fill: none; stroke: var(--surface3); stroke-width: 10; }
         .ready-ring-bar {
-            fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round;
+            fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round;
             stroke-dasharray: 314; stroke-dashoffset: 314;
             transition: stroke-dashoffset 0.95s var(--ease-spring);
         }
+        .ready-ring-knob {
+            transform-origin: 60px 60px;
+            transition: transform 0.95s var(--ease-spring);
+        }
+        .ready-ring-knob circle { fill: var(--tile); stroke: var(--accent); stroke-width: 3.5; }
+        .ready-ring-pass { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
         .ready-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: var(--fs-md); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
+        /* --fs-xl, the card's one large figure: still a rung under the --fs-2xl
+           section heading above it, so the heading keeps the section. */
+        .ready-ring-pct { color: var(--text); font-family: var(--font-head); font-weight: 700; font-size: var(--fs-xl); line-height: 1; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
         /* The caption the mockup puts under the percentage, and it IS the three
            readouts' label — the rule below carries both, so the card's four blocks
            share one label treatment and one figure treatment.
@@ -1464,7 +1442,7 @@
            It also buys WIDTH, which is what the phone row lives on: uppercase + 0.06em
            is wide, so the widest German name went 97.4 -> ~80 while gaining 2px of
            size.
-           They stay out of the shared eyebrow rule: a quiz readout's label, a tile
+           They stay out of the shared micro-label rule: a quiz readout's label, a tile
            eyebrow and a review number are all still --fs-2xs uppercase at 600. */
         .ds-label, .ready-ring-sub {
             font-family: var(--font-body);
@@ -1576,10 +1554,8 @@
         /* THE ACCENT, NOT --btn-fill. Everywhere else in this app a primary button is
            the mockups' near-black navy; on THIS banner the mockup paints it accent blue
            (#3474F8 measured against light's #2563EB), because the banner is already a
-           blue tint and a navy slab in the middle of it reads as a hole. --ctl-md, not
-           .btn-sm's 36px: the mockup's is 41px tall. */
+           blue tint and a navy slab in the middle of it reads as a hole. */
         .resume-banner .btn-primary { background: var(--accent-fill); color: var(--on-accent); }
-        .resume-banner .btn-primary, .resume-banner .btn-secondary { min-height: var(--ctl-md); }
         .resume-main { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-ms); min-width: 0; }
         .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); font-size: var(--fs-sm); color: var(--muted); min-width: 0; }
         .resume-text strong { color: var(--text); font-size: var(--fs-base); }
@@ -1785,7 +1761,6 @@
             padding: var(--space-md);
             margin-bottom: var(--space-sm);
         }
-        .sub-card > .eyebrow { display: block; margin-bottom: var(--space-md); }
         #historySection:empty, #topicSection:empty, #glossarySection:empty { display: none; }
         /* The Topic card's reveal. Below the grid, so opening it never reflows the cards. */
         #topicSection { margin-top: var(--space-md); }
@@ -1839,14 +1814,28 @@
         .gloss-en { color: var(--muted); font-style: italic; }
 
         /* ============================================================
-           BUTTONS
-           ============================================================ */
+           BUTTONS — ONE SIZE, everywhere (2026-09-23, on request)
+           44px tall (--ctl-md), a 15px/600 label (--fs-base), --space-xl a side, a
+           16px glyph (--icon-sm), 8px corners (--radius-ctl). There is no -sm or -lg.
+           Why these, reconciled:
+           - Both mockups draw every button 48px tall with a 15px label (11px cap
+             height, measured on landing-page.png and logo-kit.png) and ~33px a side.
+           - The references (type-and-space.md) put the chrome tier at 13-15px and a
+             named 44px touch target in two of four systems; Khan, the one learning
+             app among them, renders its buttons at 40/44 with a 16px label.
+           - 44 is this app's touch floor, so one size means no coarse-pointer bump
+             and no control that is 36px under a thumb. 15px sits under the 16px
+             answer options and the 18px question, so a button never outranks the
+             content it acts on. The mockup's 33px of padding at 48px is 30 at 44;
+             --space-xl is the rung under it.
+           Below 620px the side padding drops to --space-md and paired buttons
+           share their row (see the 620px block): side by side, not stacked. */
         .btn-primary, .btn-secondary {
             font-family: var(--font-body);
             font-weight: 600; font-size: var(--fs-base);
             min-height: var(--ctl-md);
-            padding: var(--space-ms) var(--space-lg);
-            border-radius: var(--radius-pill);
+            padding: var(--space-xs) var(--space-xl);
+            border-radius: var(--radius-ctl);
             border: 1px solid transparent;
             display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease);
@@ -1857,13 +1846,16 @@
         .btn-primary { color: var(--on-btn); background: var(--btn-fill); }
         .btn-primary:hover { filter: brightness(1.08); }
         .btn-primary:active { filter: brightness(0.94); }
-        .btn-secondary { color: var(--sub-text); background: var(--surface); border-color: var(--border); }
-        .btn-secondary:hover { color: var(--text); background: var(--hover); border-color: var(--border-hover); }
-        .btn-lg { min-height: var(--ctl-md); padding: var(--space-ms) var(--space-lg); font-size: var(--fs-base); }
-        .btn-sm { min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); }
+        /* The logo kit's Learn More: near-black label on --btn-edge, which is a SLATE
+           edge in light and the tile hairline in dark (see the token blocks). */
+        .btn-secondary { color: var(--text); background: var(--surface); border-color: var(--btn-edge); }
+        .btn-secondary:hover { background: var(--hover); border-color: var(--btn-edge-hover); }
+        .btn-primary svg, .btn-secondary svg { flex: none; width: var(--icon-sm); height: var(--icon-sm); }
         /* Inside a round the header is a back button and a preferences menu; a section
            nav there points at a page you are not on. */
         body.in-session .header-nav { display: none; }
+        /* With no nav to line up with, the controls go back to the back button's centre. */
+        body.in-session .header-controls { align-self: center; margin-bottom: 0; }
 
         /* ============================================================
            FOOTER — the page's last band, and the small print's home
@@ -1931,15 +1923,12 @@
             padding: 0; margin: calc(1px * -1); overflow: hidden;
             clip: rect(0 0 0 0); white-space: nowrap; border: 0;
         }
-        .btn-group { display: flex; gap: var(--space-md); margin-top: var(--space-lg); flex-wrap: wrap; }
 
         /* The card's pinned footer. Previous on the left, Next on the right -
            the row maps to the direction each button moves you. Neither is ever
            allowed to change the row's height: a row that reflows as you answer
            cannot be pinned under your thumb. */
-        .quiz-nav .btn-primary, .quiz-nav .btn-secondary {
-            min-height: var(--ctl-sm); padding: 0 var(--space-md); font-size: var(--fs-xs); flex-shrink: 0;
-        }
+        .quiz-nav .btn-primary, .quiz-nav .btn-secondary { flex-shrink: 0; }
         .quiz-nav {
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--space-sm);
@@ -2074,23 +2063,8 @@
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
-            /* The theme seg is glance-only chrome in a strip with two other things,
-               which is the exception --ctl-sm is for (36px, over the 24px WCAG 2.5.8
-               floor). WIDTH as well as height: .seg-btn--icon is square, so without it
-               a thumb gets a 28x36 target. The `>` keeps this off the navigator's
-               .qnav-seg, which has a rule of its own. */
-            .header-controls > .seg .seg-btn { min-height: var(--ctl-sm); width: var(--ctl-sm); }
             .speak-btn { min-width: 44px; }
             .q-nav-btn { min-height: var(--ctl-md); }
-            /* Previous/Next and the results screen's three actions are sized DOWN on
-               purpose (--ctl-sm, --fs-xs) so they do not weigh as much as the question
-               or the score ring beside them. That is a visual-weight decision and it
-               holds for a mouse; on a thumb it left the app's most-pressed control at
-               36px, under the 44px floor everything else that is CONTENT keeps. Same
-               move .option-btn already makes here: the height comes back on touch and
-               the desktop look is untouched. */
-            .quiz-nav .btn-primary, .quiz-nav .btn-secondary { min-height: var(--ctl-md); }
-            .end-actions .btn-primary, .end-actions .btn-secondary { min-height: var(--ctl-md); }
             /* The footer's links are 17px of text with 8px between them, i.e. a 25px
                pitch. That scrapes past WCAG 2.5.8 on spacing alone, and four of these
                START A ROUND, so they get a real target rather than a technicality.
@@ -2576,8 +2550,12 @@
 
             /* Hero: introduce, then get out of the way. */
             .hero-landing { padding: var(--space-ms) 0 var(--space-lg); gap: var(--space-lg); }
-            .hero-cta-row { width: 100%; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-ms); }
-            .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { width: 100%; }
+            /* Buttons stay SIDE BY SIDE on a phone (2026-09-23, on request). The pair
+               splits the row evenly rather than stacking full width, and the side
+               padding comes down a rung so both German labels fit at 375. */
+            .btn-primary, .btn-secondary { padding-inline: var(--space-md); }
+            .hero-cta-row { width: 100%; gap: var(--space-sm); margin-top: var(--space-ms); }
+            .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { flex: 1 1 0; min-width: 0; }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
             .stats-item--note, .cta-note, .cta-art, .resume-art { display: none; }
@@ -2679,17 +2657,6 @@
                wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
                keeps --fs-base; measured in both languages at every verdict tier. */
             .dash-verdict strong { font-size: var(--fs-sm); }
-            /* A touch lower on a phone (2026-09-22, on request), and ONLY here: the
-               practise heading follows a card that ends in a centred green line, and the
-               section gap alone left it sitting close to that line. Scoped to this
-               section rather than raising every .home-section, so nothing else moves.
-               PADDING, NOT MARGIN, and that is the whole trick: margin-top on the head
-               collapses through its parent — the section has no top padding or border to
-               stop it — and merges with the previous section's margin-bottom, so the gap
-               stays max(28, 8) = 28 and the rule paints nothing. Measured: 28 before,
-               36 after. */
-            .modes-band { padding-top: var(--space-sm); }
-            .ready-ring-wrap { width: 104px; height: 104px; }
             /* NO PHONE OVERRIDE (2026-09-22, on request). It used to go full width
                with the label hard left and the pill hard right — and `flex: 1` on the
                pill is what stretched it, so "Berlin" sat in a 250px capsule with a
@@ -2718,16 +2685,13 @@
             .header-content { padding: var(--space-xs) var(--space-md); gap: var(--space-sm); }
             .header-controls { gap: var(--space-2xs); }
             .seg { padding: 1px; }
-            .header-controls > .seg { gap: 0; }
             .nav-link { padding: 0 var(--space-2xs); }
             .header-nav { gap: var(--space-2xs); }
-            .lang-toggle { padding: 0 var(--space-sm); }
             /* The .header-controls .seg-btn shrink to --ctl-xs that used to sit here
                is GONE. It was written for two segmented controls standing in the
                header strip; the one that is left is three ICONS wide, and shrinking it
-               here would undo the coarse-pointer floor above it (it is stated later in
-               the sheet, so source order gives it the win) and hand a phone three 28px
-               targets. */
+               here would hand a phone three 28px targets (the nested 360px block is the
+               one place that does, where the alternative is a clipped button). */
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); font-size: var(--fs-2xs); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
@@ -2763,6 +2727,9 @@
             @media (max-width: 360px) {
                 .header-content { padding-inline: var(--space-sm); gap: var(--space-2xs); }
                 .header-controls > .seg .seg-btn { width: var(--ctl-xs); }
+                /* The label and the height never shrink; only the side padding does. At
+                   320 "Jetzt starten" + its arrow is 118px in a 108px box at --space-md. */
+                .btn-primary, .btn-secondary { padding-inline: var(--space-sm); }
             }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
@@ -2836,8 +2803,6 @@
             /* One step down with the dial (190 -> 160px). It re-stated --fs-3xl, the value
                its base already carried, so the ring shrank and the numeral did not. */
             .score-ring-pct { font-size: var(--fs-2xl); }
-            .btn-group { flex-direction: column; }
-            .btn-group .btn-primary, .btn-group .btn-secondary { width: 100%; justify-content: center; }
             .hist-row { font-size: var(--fs-xs); gap: var(--space-sm); }
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the
@@ -2879,7 +2844,7 @@
                  2026-09-21 and are gone. -->
             <nav class="header-nav" data-i18n-aria="nav.sections">
                 <button class="nav-link nav-link--active" type="button" data-screen="home" aria-current="page" onclick="showScreen('home')" data-i18n="nav.navHome"></button>
-                <button class="nav-link nav-link--cta" type="button" data-screen="practise" onclick="showScreen('practise')" data-i18n="nav.navPractise"></button>
+                <button class="nav-link" type="button" data-screen="practise" onclick="showScreen('practise')" data-i18n="nav.navPractise"></button>
             </nav>
             <div class="header-controls">
                 <!-- Two controls, both in the ROW at every width, per the reference:
@@ -2919,15 +2884,14 @@
             <!-- Landing hero: the pitch on the left, the building on the right. -->
             <div class="hero-landing">
                 <div class="hero-text">
-                    <p class="eyebrow" data-i18n="hero.eyebrow"></p>
                     <h1 class="hero-headline" data-i18n="hero.headline"></h1>
                     <p class="hero-lead" data-i18n="hero.lead"></p>
                     <div class="hero-cta-row">
-                        <button class="btn-primary btn-lg" onclick="showScreen('practise')">
+                        <button class="btn-primary" onclick="showScreen('practise')">
                             <span data-i18n="hero.cta"></span>
                             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                         </button>
-                        <button class="btn-secondary btn-lg" onclick="scrollToId('whyBand')" data-i18n="hero.cta2"></button>
+                        <button class="btn-secondary" onclick="scrollToId('whyBand')" data-i18n="hero.cta2"></button>
                     </div>
                 </div>
 
@@ -2952,7 +2916,6 @@
                  hairlines between them. -->
             <section class="home-section" id="whyBand">
                 <div class="section-head section-head--centred">
-                    <p class="eyebrow" data-i18n="why.eyebrow"></p>
                     <h2 data-i18n="why.title"></h2>
                 </div>
                 <ul class="why-grid">
@@ -2979,7 +2942,6 @@
                  still heading, lead and button. -->
             <section class="home-section cta-band">
                 <div class="cta-copy">
-                    <p class="eyebrow" data-i18n="cta.eyebrow"></p>
                     <h2 data-i18n="cta.title"></h2>
                     <p class="cta-lead" data-i18n="cta.lead"></p>
                 </div>
@@ -2990,7 +2952,7 @@
                      screen. -->
                 <p class="script-note cta-note" data-i18n="cta.annotation"></p>
                 <span class="cta-art" id="ctaArt" aria-hidden="true"></span>
-                <button class="btn-primary btn-lg cta-btn" onclick="showScreen('practise')">
+                <button class="btn-primary cta-btn" onclick="showScreen('practise')">
                     <span data-i18n="cta.button"></span>
                     <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13.2 5.1 20.1 12l-6.9 6.9-1.8-1.8 3.8-3.8H4.4v-2.6h10.8l-3.8-3.8Z"/></svg>
                 </button>
@@ -3021,12 +2983,6 @@
                 </div>
                 <div class="dash">
                     <div id="homeStatus"></div>
-                    <!-- Last thing in the card, centred: it is a closing remark on the
-                         numbers above it, not a badge on the title. -->
-                    <span class="dash-pill">
-                        <span class="dash-pill-icon" data-icon="leaf" aria-hidden="true"></span>
-                        <span data-i18n="dash.pill"></span>
-                    </span>
                 </div>
             </section>
 
@@ -3278,6 +3234,10 @@
         };
         // Topic chips cover the general themes only (state questions live under Bundesland mode).
         const TOPIC_KEYS = ['rights', 'politics', 'history', 'society', 'symbols'];
+        // The exam: 30 general + 3 state questions (startMode), passed at 17. The results
+        // screen, the history and the overview ring's pass tick all read these.
+        const EXAM_SIZE = 33, EXAM_PASS = 17;
+        const PASS_PCT = Math.round(EXAM_PASS / EXAM_SIZE * 100); // 52
 
         // Inline solid icons (24x24, currentColor) — filled silhouettes whose detail is
         // knocked out with fill-rule="evenodd", so a glyph still takes the colour of the
@@ -3314,15 +3274,13 @@
             topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
             /* The header's three scheme modes. `globe` stood here until 2026-09-22
                and went with the menu that was its only reader — ICONS.symbols is the
-               same drawing if it is ever wanted back. Same solid family: a disc plus
-               eight detached rays, a screen on a stand, and a crescent cut from one
-               disc by another. */
-            sun: _svg('<circle cx="12" cy="12" r="4.2"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(45 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(90 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(135 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(180 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(225 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(270 12 12)"/><rect x="11.1" y="1.8" width="1.8" height="3.6" rx="0.9" transform="rotate(315 12 12)"/>'),
-            monitor: _svg('<rect x="2.8" y="4.2" width="18.4" height="12.6" rx="2.2"/><rect x="10.9" y="16.8" width="2.2" height="2.8"/><rect x="7.4" y="19.4" width="9.2" height="2" rx="1"/>'),
+               same drawing if it is ever wanted back. */
+            // LINE icons, the one set that is (2026-09-23, from the user's reference).
+            // Copied from tools/icon-packs.mjs's `line` pack; the header seg's CSS strokes
+            // them, and fills the first shape of the chosen one.
+            sun: _svg('<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(45 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(90 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(135 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(180 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(225 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(270 12 12)"/><line x1="12" y1="2" x2="12" y2="4.5" transform="rotate(315 12 12)"/>'),
+            monitor: _svg('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/>'),
             moon: _svg('<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>'),
-            // The overview card's encouragement chip. Same drawing as
-            // tools/icon-packs.mjs's solid pack — keep the two in step.
-            leaf: _svg('<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>'),
         };
         // A group IS the society glyph, so the why band's third mark gets the name
         // that says what it means there. (`clock`, the same move for the history
@@ -3449,7 +3407,6 @@
             'nav.navHome':         { en: 'Home',                    de: 'Start' },
 
             // hero
-            'hero.eyebrow':        { en: 'Your step towards a brighter tomorrow', de: 'Dein Schritt in eine bessere Zukunft' },
             'hero.headline':       { en: 'German Naturalization Test', de: 'Der deutsche Einbürgerungstest' },
             'hero.lead':           { en: 'Practise with all 300 official questions — for all 16 federal states. In German or English. Anytime, anywhere.', de: 'Übe mit allen 300 amtlichen Fragen — für alle 16 Bundesländer. Auf Deutsch oder Englisch. Jederzeit, überall.' },
             'hero.cta':            { en: 'Start now',                de: 'Jetzt starten' },
@@ -3468,7 +3425,6 @@
             'footer.copyright':    { en: '© 2026 EIB Quiz. All rights reserved.', de: '© 2026 EIB Quiz. Alle Rechte vorbehalten.' },
             'footer.legal':        { en: 'Questions are the official BAMF catalogue. Photo by Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>. Not an official BAMF service.', de: 'Die Fragen stammen aus dem amtlichen BAMF-Katalog. Foto von Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>. Kein offizielles Angebot des BAMF.' },
 
-            'why.eyebrow':         { en: 'Why EIB Quiz?',            de: 'Warum EIB Quiz?' },
             'why.title':           { en: 'Simple. Effective. Reliable.', de: 'Einfach. Wirksam. Verlässlich.' },
             'why.1.title':         { en: 'Official content',         de: 'Amtliche Inhalte' },
             'why.1.body':          { en: 'All 300 questions from the official catalogue.', de: 'Alle 300 Fragen aus dem amtlichen Fragenkatalog.' },
@@ -3488,7 +3444,6 @@
             // so read the value, not the name, when looking for one of these lines.
             'stats.annotation':    { en: 'Citizenship opens new paths.', de: 'Einbürgerung öffnet neue Wege.' },
 
-            'cta.eyebrow':         { en: 'Ready to get started?',    de: 'Bereit loszulegen?' },
             'cta.title':           { en: 'Take the next step today.', de: 'Geh heute den nächsten Schritt.' },
             'cta.lead':            { en: 'Practise, build your confidence and reach your goal.', de: 'Übe, gewinne Sicherheit und erreiche dein Ziel.' },
             'cta.button':          { en: 'Start practising',         de: 'Jetzt üben' },
@@ -3507,6 +3462,7 @@
             // floor and collides with a 104px ring's stroke — measured, and the whole
             // reason the caption was dropped in September. The full word stays on the
             // wrapper's title/aria-label, where its length costs nothing.
+            'dash.passMark':       { en: 'Pass mark {n}%',          de: 'Bestehensgrenze {n} %' },
             'dash.accuracyShort':  { en: 'Accuracy',                de: 'Quote' },
             'dash.answered':       { en: 'Answered',                de: 'Beantwortet' },
             'dash.mastered':       { en: 'Mastered',                de: 'Gemeistert' },
@@ -3522,7 +3478,6 @@
             'dash.resumeMeta':     { en: '{n} of {total} answered', de: '{n} von {total} beantwortet' },
             'dash.resumeGo':       { en: 'Resume',                  de: 'Fortsetzen' },
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
-            'dash.pill':           { en: 'Small steps make big progress.', de: 'Kleine Schritte, großer Fortschritt.' },
             // The verdict beside the ring. Four tiers, picked in renderHomeStatus():
             // nothing answered, then below / above the exam's 17-of-33 pass mark
             // (52%), then comfortably above it.
@@ -3624,7 +3579,7 @@
             'end.fail':            { en: '✗ Not passed',            de: '✗ Nicht bestanden' },
             'end.correctCount':    { en: 'Correct',                 de: 'Richtig' },
             'end.wrongCount':      { en: 'Wrong',                   de: 'Falsch' },
-            'end.threshold':       { en: 'Pass mark: 17 of 33 questions (52%)', de: 'Bestehensgrenze: 17 von 33 Fragen (52 %)' },
+            'end.threshold':       { en: 'Pass mark: {pass} of {total} questions ({n}%)', de: 'Bestehensgrenze: {pass} von {total} Fragen ({n} %)' },
             'end.general':         { en: 'General (of 30)',         de: 'Allgemein (von 30)' },
             'end.stateOf3':        { en: '{state} (of 3)',          de: '{state} (von 3)' },
             'end.elapsed':         { en: 'Time taken',              de: 'Zeit' },
@@ -4189,11 +4144,12 @@
             const ring = overallAccuracy();
             const answeredInPool = pool.filter(q => progress[q.id]).length;
 
-            // The verdict beside the ring. The 52% step is the exam's own pass mark
-            // (17 of 33), so "on track" means something the app can point at.
+            // The verdict beside the ring. PASS_PCT is the exam's own pass mark
+            // (17 of 33), so "on track" means something the app can point at - and the
+            // ring draws it as a tick.
             const vk = answeredInPool === 0 ? 'start'
                 : ring >= 80 ? 'strong'
-                : ring >= 52 ? 'onTrack'
+                : ring >= PASS_PCT ? 'onTrack'
                 : 'building';
 
             // Resume banner — only when a saved in-progress session exists.
@@ -4217,8 +4173,8 @@
                             </div>
                         </div>
                         <div class="resume-actions">
-                            <button class="btn-primary btn-sm" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
-                            <button class="btn-secondary btn-sm" onclick="clearSession(); initHomeScreen();">${t('dash.resumeDrop')}</button>
+                            <button class="btn-primary" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
+                            <button class="btn-secondary" onclick="clearSession(); initHomeScreen();">${t('dash.resumeDrop')}</button>
                         </div>
                     </div>`;
             }
@@ -4235,9 +4191,11 @@
                 <div class="dash-grid">
                     <div class="dash-summary">
                         <div class="ready-ring-wrap" role="img" title="${ring}% ${t('dash.accuracy')}" aria-label="${ring}% ${t('dash.accuracy')}">
-                            <svg class="ready-ring" viewBox="5 5 110 110" aria-hidden="true">
+                            <svg class="ready-ring" viewBox="1 1 118 118" aria-hidden="true">
                                 <circle class="ready-ring-track" cx="60" cy="60" r="50"></circle>
                                 <circle class="ready-ring-bar" id="readyRingBar" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle>
+                                <line class="ready-ring-pass" x1="60" y1="3" x2="60" y2="17" transform="rotate(${PASS_PCT * 3.6} 60 60)"></line>
+                                <g class="ready-ring-knob" id="readyRingKnob"><circle cx="60" cy="10" r="6"></circle></g>
                             </svg>
                             <div class="ready-ring-center">
                                 <span class="ready-ring-pct" id="readyRingPct">0%</span>
@@ -4247,6 +4205,7 @@
                         <div class="dash-verdict">
                             <strong>${t('dash.verdict.' + vk)}</strong>
                             <p>${t('dash.verdict.' + vk + 'Sub')}</p>
+                            <span class="dash-pass">${t('dash.passMark', { n: PASS_PCT })}</span>
                         </div>
                     </div>
                     ${stat(`${answeredInPool}<span class="ds-of"> / ${totalPool}</span>`, t('dash.answered'))}
@@ -4261,30 +4220,40 @@
 
         function animateReadyRing(pct) {
             const bar = document.getElementById('readyRingBar');
+            const knob = document.getElementById('readyRingKnob');
             const lbl = document.getElementById('readyRingPct');
             if (!bar || !lbl) return;
             const C = 314; // 2*PI*r(50)
-            // THE CAP SHOWS AT 0%, because the mockup draws it: an empty dial reads as
-            // a broken one, and the stub is where the ring starts from. A round linecap
-            // renders nothing on a zero-length dash, so the arc has a floor — 10 of 314
-            // units, which is the ~16px stub the mockup measures. This replaces the old
-            // `opacity = pct >= 2 ? 1 : 0`, which hid exactly the state a new learner
-            // spends all of their first visit looking at.
-            const MIN_ARC = 10;
+            // AT 0% THE KNOB IS THE START MARK: an empty dial reads as a broken one, and
+            // the knob sits at 12 o'clock where the arc will grow from. It replaced a
+            // 10-unit stub floor (2026-09-23), which beside the knob read as a switch.
             bar.style.strokeDashoffset = C;
+            if (knob) knob.style.transform = 'rotate(0deg)';
             lbl.textContent = '0%';
             const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             requestAnimationFrame(() => requestAnimationFrame(() => {
-                bar.style.strokeDashoffset = String(C - Math.max(MIN_ARC, C * pct / 100));
+                const arc = C * pct / 100;
+                bar.style.strokeDashoffset = String(C - arc);
+                // The knob rides the arc's end, on the same transition as the dash.
+                if (knob) knob.style.transform = 'rotate(' + (arc / C * 360) + 'deg)';
                 if (reduce) { lbl.textContent = pct + '%'; return; }
-                const t0 = performance.now(), dur = 900;
-                const tick = now => {
-                    const k = Math.min(1, (now - t0) / dur);
-                    lbl.textContent = Math.round(pct * (1 - Math.pow(1 - k, 3))) + '%';
-                    if (k < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
+                countUp(lbl, pct, 900);
             }));
+        }
+
+        // Counts el up to `target`% with an ease-out cubic. Both rings use it.
+        function countUp(el, target, dur) {
+            // t0 is the FIRST frame's timestamp, not performance.now(): a frame's
+            // timestamp can precede a now() read earlier, and k < 0 painted a
+            // negative percentage on the first frame.
+            let t0;
+            const tick = now => {
+                if (t0 === undefined) t0 = now;
+                const k = Math.min(1, (now - t0) / dur);
+                el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + '%';
+                if (k < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
         }
 
         function resumeSession() {
@@ -5012,14 +4981,7 @@
             setTimeout(() => {
                 bar.style.strokeDashoffset = String(C * (1 - percent / 100));
                 if (reduce) { pctEl.textContent = percent + '%'; return; }
-                const t0 = performance.now(), dur = 1000;
-                const tick = now => {
-                    const k = Math.min(1, (now - t0) / dur);
-                    const eased = 1 - Math.pow(1 - k, 3);
-                    pctEl.textContent = Math.round(percent * eased) + '%';
-                    if (k < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
+                countUp(pctEl, percent, 1000);
             }, 80);
         }
 
@@ -5046,7 +5008,7 @@
                 correct: state.correct,
                 total,
                 percent,
-                passed: isExam ? state.correct >= 17 : null
+                passed: isExam ? state.correct >= EXAM_PASS : null
             });
 
             renderEndScreen();
@@ -5118,7 +5080,7 @@
             const passFail = document.getElementById('passFail');
             passFail.textContent = '';
             passFail.className = 'pass-fail';
-            const passed = isExam ? state.correct >= 17 : null;
+            const passed = isExam ? state.correct >= EXAM_PASS : null;
             if (isExam) {
                 passFail.textContent = passed ? t('end.pass') : t('end.fail');
                 passFail.classList.add(passed ? 'pass' : 'fail');
@@ -5141,7 +5103,7 @@
                 cells += stat(t('end.general'), state.generalCorrect, 'var(--gold)')
                        + stat(t('end.stateOf3', { state: STATES[state.stateCode] || t('mode.state.title') }), state.stateCorrect, 'var(--gold)')
                        + stat(t('end.elapsed'), elapsedStr, 'var(--blue)');
-                threshold.textContent = t('end.threshold');
+                threshold.textContent = t('end.threshold', { pass: EXAM_PASS, total: EXAM_SIZE, n: PASS_PCT });
                 threshold.hidden = false;
             } else {
                 threshold.hidden = true;

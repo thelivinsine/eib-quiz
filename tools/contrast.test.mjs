@@ -114,7 +114,7 @@ const PAIRS = [
   ["text", "surface", AA, "question text and headings in a tile"],
   ["text", "canvas", AA, "anything painted straight onto the page, the four headline numbers included"],
   ["sub-text", "surface", AA, "lead paragraphs, explanation bodies, mode-card descriptions"],
-  ["muted", "surface", AA, "eyebrows, the nav legend, the quiz readouts' labels"],
+  ["muted", "surface", AA, "the nav legend, the quiz readouts' labels"],
   ["muted", "surface2", AA, "the dimmed options after an answer, hint rows"],
   ["sub-text", "surface2", AA, "the glyph in a why mark's plate"],
   ["faint", "surface", AA, "the /310 denominator in light, where a practise tile IS --surface"],
@@ -140,11 +140,10 @@ const PAIRS = [
   ["muted", "canvas", AA, "the four headline numbers' labels, straight on the page"],
   ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
-  ["accent-text", "surface", AA, "Starten links, FRAGE n, the language pill and the chosen scheme icon"],
-  ["accent-text", "hover", AA, "the language pill under the pointer"],
-  // The header sits on --canvas, which in dark is a rung below --surface, so the
-  // pair above did not cover the Practise link once it stopped being a filled pill.
-  ["accent-text", "canvas", AA, "the header's Practise link, and any accent word on the page"],
+  ["accent-text", "surface", AA, "Starten links, FRAGE n"],
+  // The header sits on --canvas, which in dark is a rung below --surface. Its EN pill
+  // and the chosen scheme icon have no fill of their own since 2026-09-23.
+  ["accent-text", "canvas", AA, "the header's EN pill and chosen scheme icon, and any accent word straight on the page"],
   ["accent-text", "accent-soft", AA, "the current question in the navigator grid"],
   ["teal-deep", "teal-tint", AA, "the Bundesland tile label and the Bestanden pill"],
   ["gold", "gold-dim", AA, "the DUE chip on the Smart Review card"],
@@ -152,8 +151,7 @@ const PAIRS = [
   ["green", "green-dim", AA, "the correct answer and its review row"],
   ["red-text", "red-dim", AA, "the wrong answer, its explanation and review row"],
   ["blue", "blue-dim", AA, "the elapsed-time subscore"],
-  ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar, and the overview card's encouragement line"],
-  ["green", "tile", AA, "the overview card's encouragement line"],
+  ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar"],
   ["gold", "tile", AA, "the due-for-review counter on the overview card"],
   ["red-text", "surface", AA, "the FALSCH counter in the quiz stats bar"],
 

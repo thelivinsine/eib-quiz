@@ -2706,3 +2706,109 @@ In the preview pane:
 - **The narrow navigator seg's restored gap** was confirmed only as a parsed rule. No
   phone round was opened to look at it.
 - Chromium only. The live site was not opened.
+
+## Session developments (2026-09-23, one button size, header toggles, eyebrows)
+
+- **Every text button is one size**: 44px (`--ctl-md`), a 15px/600 label (`--fs-base`),
+  `--space-xl` a side (`--space-md` below 620px, `--space-sm` below 360px), a 16px glyph,
+  8px corners (`--radius-ctl`, new, measured off `logo-kit.png`). `.btn-sm`, `.btn-lg`,
+  `.btn-group` and every per-context size override are deleted. The rationale is in the
+  BUTTONS comment in `index.html` and in `CLAUDE.md`.
+- The secondary button is the logo kit's Learn More: `--text` label, a `--faint` edge in light.
+- On a phone the hero's two buttons stay **side by side** (one line, 44px, both languages,
+  at 375 and 320).
+- The three grey eyebrows above the landing page's headings are gone, and `.eyebrow` with them.
+- Both nav links are `--text`; `.nav-link--cta` is gone.
+- The header toggles follow the user's screenshot. A first attempt was reverted because it
+  removed the accent, and "remove the colour" meant the fills. They are now hairline boxes
+  with 8px corners, 36px tall, and no fill or chip. EN is in the accent. The chosen mode is
+  a solid accent glyph and the other two are `--muted` outlines drawn in CSS. They sit on
+  the nav's centre line.
+
+### Verified
+Contrast (10), scale (12), `validate.js` and `node --check` pass. In the pane: every button
+measures 44 / 15px / 8px on Home, Practise (resume banner), quiz and results, at 1280 and
+375. Quiz and results stay height-locked at 393 / 620 / 940 / 1280 / 1400 on a four-image
+question with the explanation open. The header row fits at 375 / 361 / 320 in both
+languages. Nav and toggles share one centre (38px), and in a session the toggles line up
+with the back button.
+
+### Not verified
+- Dark mode was not seen rendered. The pane would not repaint it; every colour involved is
+  an asserted token.
+- The results screen's three actions wrap to 2 + 1 on a phone. Three cannot share 343px at 15px.
+
+## Session developments (2026-09-23, the Where-you-stand ring)
+
+- The overview ring is **152px** (was 104). It has an `--accent` arc (a gradient went in review), a knob on the arc's
+  leading end, and a tick at the 52% pass mark, with a "Pass mark 52%" key under the verdict.
+  The percentage is `--fs-xl`/700.
+- "Small steps make big progress." is removed, with `.dash-pill`, `dash.pill`, the leaf glyph
+  (from `ICONS` and `tools/icon-packs.mjs`) and the `green / tile` contrast pair.
+- Both count-ups now time from the first frame's timestamp, through one `countUp()` helper. The first frame could paint a
+  negative percentage.
+
+### Verified
+Contrast (10), scale (12), `validate.js`, `node --check` and the icon-pack generator all
+pass. In the pane: the arc and knob land exactly (67% gives dashoffset 103.6 and 241.2deg),
+the count-up settles on 67%, the layout is centred with no overflow at 1000 / 375 / 320 in
+both languages, and the reset glyph clears the bigger ring. Screenshots were taken in light
+and dark.
+
+## Session developments (2026-09-23, scheme icons from the reference)
+
+- The header's sun / monitor / moon are now **line icons** taken from the user's reference:
+  a ring with eight short rays, a rounded screen on a neck and base, and a crescent. The
+  header seg's CSS strokes them, and the chosen mode's body is filled in the accent. They
+  moved to `tools/icon-packs.mjs`'s `line` pack, and the shipped strings match the
+  generator's output.
+- The reference's blue moon was not copied. On its light page with System chosen, it is
+  not the resolved theme and is most likely a hover.
+
+## Session close (2026-09-23, buttons, header toggles, Where-you-stand ring)
+
+This work was substantial, so it ended with a PR: **thelivinsine/eib-quiz#103** from
+`header-toggles-buttons`, which is **not merged**. `main` is still `ed50648` and the live site
+is unchanged until the PR merges. The PR body lists what was verified and what was not. The
+open items are: dark-mode buttons were not seen rendered, no hover state was seen hovered,
+only Chromium was tested (Safari's SVG `transform-origin` on the ring's knob in particular),
+and the scheme icons were drawn by eye because the reference screenshot never reached disk.
+
+## Session developments (2026-09-23, review of #103)
+
+`/code-review` at xhigh on #103 found thirteen things, and all thirteen are fixed on
+`header-toggles-buttons`. **The same session wrote the fixes it reviewed**, so no second
+reader has seen them.
+
+- The ring's arc is plain `--accent`, and so is the knob's ring. The gradient could not
+  follow a circle, light's two blues were near-identical, and dark's `--accent-fill` end
+  measured ~1.9:1 on the track.
+- `.nav-link:hover` is inside `@media (hover: hover)`. A tap left it stuck on the link just
+  made active, which greyed the current page.
+- The exam's pass mark is the top-level `EXAM_PASS` / `EXAM_SIZE`, and `PASS_PCT` is derived
+  from them. The results pass check, `end.threshold` and the ring's tick all read it.
+- One `countUp()` helper serves both rings.
+- The secondary button's edge is the `--btn-edge` / `--btn-edge-hover` tokens, not two
+  `html.light` overrides.
+- `.header-nav, .header-controls` share one rule for their drop onto the nav's line.
+- The phone-only `.modes-band { padding-top }` is deleted. It cleared the green line, which
+  is gone.
+- German writes "52 %" in `dash.passMark` too.
+- `contrast.test.mjs` lost `accent-text / hover`, which had no consumer, and two pair
+  descriptions were corrected. Stale comments in `ICONS` and on the overview card were fixed.
+
+### Verified
+Contrast and scale (22 tests), `validate.js` and `node --check` on the main script pass. In
+the pane: the arc is #2563EB in light and #70ADFA in dark with no gradient element left, the
+secondary button's edge is `--faint` in light and `--border` in dark, the German key reads
+"Bestehensgrenze 52 %", and `end.threshold` renders from the constants in both languages.
+`countUp()` was run in Node under a stubbed `requestAnimationFrame`: 0% to 67%, no negative
+frame.
+
+### Not verified
+- **No geometry from this session counts.** The pane reported `innerWidth` 0, so the shared
+  nav/toggle centre (38) is not a measurement, and no phone width was checked.
+- The count-up was not seen animating in a browser: the pane does not run
+  `requestAnimationFrame`.
+- No hover state was seen hovered, and nothing was tried on a touch device.
+- Chromium only.
