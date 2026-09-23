@@ -1274,8 +1274,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       (ends 264); no overflow at 375 or 320 in either language.
     - **"Small steps make big progress." is GONE** (2026-09-23, on request), with
       `.dash-pill`, `dash.pill`, the leaf glyph (its only reader — deleted from
-      `ICONS` and from `tools/icon-packs.mjs`), the card's short 16px foot (the inset is
-      `--space-xl` on all four sides again) and `green / tile` in `contrast.test.mjs`.
+      `ICONS` and from `tools/icon-packs.mjs`), the card's short 16px foot (the inset went
+      back to `--space-xl` all round, and later that day the TOP came down to
+      `--space-md` — see the padding note below) and `green / tile` in `contrast.test.mjs`.
       `.progress-reset` still sits absolutely in the card's top-right corner and needs
       no room reserved for it.
     - **FOUR ACROSS IS A WIDE-SCREEN LAYOUT, and it breaks at 1160 — the mode grid's own
@@ -1302,7 +1303,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **WHAT REPLACES THE BORDERS IS AIR AND ALIGNMENT, and both had to GROW.** The
       card's inset went `--space-lg` -> `--space-xl` and the grid's gap `--space-md` ->
       `--space-xl`, so the card now runs on one rhythm: 28px inset, 28 between the head
-      and the row, 28 between the row and the resume banner, 28 between columns. A
+      and the row, 28 between the row and the resume banner, 28 between columns — bar
+      the TOP, which is 16 above the note and 16 under it since 2026-09-23. A
       tile's own padding used to do the separating; with the tiles gone the gap is all
       there is, so it has to be BIGGER than the padding it replaced, not the same.
       `--space-2xl` (40) is not available — it is not a gap rung anywhere in this sheet

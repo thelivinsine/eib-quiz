@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-23_
+_Last updated: 2026-09-23 (live commit `5bcbbd5`)_
 
 ## Project status
 
@@ -28,7 +28,8 @@ home screen (`hasProgress()` + `data-tier`) is retired.
   `lang="en"` on English text and `lang="de"` on the German exam text, WCAG AA contrast in
   both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets on content
   controls (text buttons draw 36px and reach 44 on touch through an invisible `::after`;
-  the header strip is a deliberate 36px exception — see Touch targets below).
+  the header strip is a deliberate exception, its two toggles 28px with a mouse and 36 on
+  touch — see Touch targets below).
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 - Motion and depth (2026-09-23): soft per-theme tile shadows, a hover lift on cards and
@@ -75,8 +76,9 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
   every CONTENT control (options, nav cells, the card's buttons, the progress-reset link)
   holds 44px via `--ctl-md`, and a `@media (pointer: coarse)` block raises the touch cases
   a rung. The header strip is a **deliberate exception** — the EN box and the scheme seg's
-  cells are 36px (the cells 28px wide below 360px) and `.brand`/`.session-back` 36px, all
-  clearing WCAG 2.5.8's 24px. The original claim here
+  cells are 28px with a mouse and 36px on a coarse pointer since 2026-09-23 (the cells
+  28px wide below 360px either way), and `.brand`/`.session-back` 36px, all clearing
+  WCAG 2.5.8's 24px. The original claim here
   ("every button, select and summary measures ≥44px") has not been true since that
   exception was introduced; see the App Shape section of `CLAUDE.md`.
 
@@ -3064,5 +3066,63 @@ themes, a **2px lift** on hover, **all four** extras, **PR + squash-merge**.
 - The answer-option hover was measured in light only, not in dark.
 - The stagger replays on every repaint of the Practise page (a language switch, a state
   change, a progress reset). That is by design, but no user has judged whether it is
-  distracting.
+  distracting. _(Resolved by #108: the review of #106 judged it a bug, and the entrance
+  now plays only on showing the page or opening the topics.)_
 - Nobody measured the live site's rendering; only the served bytes were checked.
+
+## Session close (2026-09-23, review of #106, the quiz navigator aligned, ring from the bottom)
+
+Live commit: **[`5bcbbd5`](https://github.com/thelivinsine/eib-quiz/commit/5bcbbd5)** (#108),
+over [`f6498c0`](https://github.com/thelivinsine/eib-quiz/commit/f6498c0) (#107). Both
+squash-merged; the Pages build for `5bcbbd5` reports `built`.
+- **Review of #106** (xhigh, eight findings, all fixed in #108):
+  - the Practise entrance replayed on every repaint, so a state pick blanked and re-rose
+    the page;
+  - the hover lift was dead while a card was rising in;
+  - `.question-body` clipped the answer glow and the lift shadow on the left;
+  - "Learn more" landed 24px short of an unrevealed `#whyBand` (61 against 85 at 375x520,
+    measured before and after);
+  - `.hist-list` carried a shadow inside the history tile;
+  - unrevealed bands printed blank;
+  - five inline reduced-motion checks;
+  - a `data-n` stash.
+  - The entrance is now `riseIn()` (Web Animations, animating `translate`), run from
+    `showScreen('practise')` and `toggleTopics()` only.
+- **#107, on request**:
+  - The quiz navigator's top edge sits on the first answer's line, with the readouts
+    straight above it: four across, 14/12, inset to the navigator's content edge.
+    `syncQuizAside()` writes the options' `offsetTop` into `--opts-top`, and a
+    ResizeObserver on the question column re-runs it.
+  - The overview card's top padding and the gap under its note went to `--space-md`
+    (78 -> 54px above the ring).
+  - The readout glyphs wear the mode cards' disc.
+  - The header toggles are 28px with a mouse (36 on touch), with 14px glyphs.
+  - The brand mark is 28px and the name 14px.
+- **#108, on request**: the Where-you-stand ring starts at 6 o'clock and runs clockwise
+  (bar `rotate(90)`, knob `cy 110`, pass tick from the bottom).
+- **Verified in headless Chrome over CDP** (the pane was hidden):
+  - navigator vs first option within 1px across fresh, answered, navigator-open, image,
+    prompt-image, translated and exam questions, at 1600x1000 / 1280x900 / 1024x768 /
+    980x700 / 1280x600;
+  - locked 900/900 and 768/768;
+  - 375 and 320 with touch emulation in both languages: no overflow, toggles 36px;
+  - light and dark screenshots read;
+  - entrance: one animation per card on show, none after a state pick, and the hover
+    lift measured at -2px mid-entrance;
+  - ring knob at 0% / 25% / 67% and the pass tick;
+  - the print media check.
+- **Tests**: `contrast` + `scale` 28/28, `validate.js` OK, and `node --check` on the inline
+  script, in both PRs.
+
+### Not verified
+- The live site itself. Only the Pages build status was read; no origin or edge fetch,
+  and no rendering.
+- #108's fixes were written and reviewed by the same session; nobody else has read them.
+  #108 was merged by that session under `CLAUDE.md`'s PR + merge rule. #107 was merged on
+  the user's instruction.
+- No real touch device, Safari or Firefox. The WAAPI `translate` keyframe is argued to
+  degrade to an opacity-only fade where `translate` is unsupported; that was not tested.
+- Reduced motion for the new `riseIn()` was checked by reading the guard, not by
+  emulating the media query.
+- The navigator alignment was measured with the navigator's own content in its default
+  state. A shuffled or grouped view was not measured, but none of them changes the offset.
