@@ -980,20 +980,16 @@
         .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 
         .hero-headline {
-            font-family: var(--font-head);
-            font-weight: 700;
-            font-size: var(--fs-hero);
-            line-height: var(--lh-tight);
+            font: var(--type-display);
             letter-spacing: var(--ls-display);
             color: var(--text);
             text-wrap: balance;
         }
         .hero-lead {
+            font: var(--type-body);
             max-width: 46ch;
             margin-top: var(--space-ms);
             color: var(--sub-text);
-            font-size: var(--fs-md);
-            line-height: var(--lh-prose);
             text-wrap: pretty;
         }
         .hero-cta-row {
@@ -1021,9 +1017,7 @@
         /* The handwritten margin notes — the mockup's signature, and the only place
            --font-hand is allowed. Never inherited by body copy. */
         .script-note {
-            font-family: var(--font-hand);
-            font-size: var(--fs-xl);
-            line-height: var(--lh-ui);
+            font: var(--type-script);
             color: var(--muted);
         }
         /* .hero-note is GONE, and it was the crop that killed it. It needed a patch of
@@ -1105,8 +1099,8 @@
             background: var(--hue-tint); color: var(--hue-ink);
         }
         .why-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
-        .why-item h3 { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
-        .why-item p { margin-top: var(--space-xs); font-size: var(--fs-xs); line-height: var(--lh-prose); color: var(--muted); }
+        .why-item h3 { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .why-item p { font: var(--type-small); margin-top: var(--space-xs); color: var(--muted); }
 
         /* Bare on the page: no fill to inset, so the padding is vertical air only -
            the same shape .why-item carried while IT was the one sitting on the page. */
@@ -1119,12 +1113,12 @@
         /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
            counters take, and it does not outrank an --fs-xl section heading. */
         .stats-num {
-            font-family: var(--font-head); font-weight: 700;
-            font-size: var(--fs-3xl); line-height: var(--lh-tight);
+            font: var(--type-figure-lg);
+            font-variant-numeric: tabular-nums;
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
-        .stats-label { font-size: var(--fs-2xs); line-height: var(--lh-ui); color: var(--muted); }
+        .stats-label { font: var(--type-label); color: var(--muted); }
         .stats-item--note { flex: 1 1 170px; justify-content: center; }
 
         .cta-band {
@@ -1139,11 +1133,11 @@
         }
         .cta-copy { flex: 1 1 280px; min-width: 0; }
         .cta-copy h2 {
-            font-family: var(--font-head); font-weight: 600;
-            font-size: var(--fs-2xl); letter-spacing: var(--ls-display);
+            font: var(--type-heading);
+            letter-spacing: var(--ls-display);
             color: var(--text);
         }
-        .cta-lead { margin-top: var(--space-2xs); font-size: var(--fs-base); line-height: var(--lh-prose); color: var(--muted); }
+        .cta-lead { font: var(--type-body); margin-top: var(--space-2xs); color: var(--muted); }
         .cta-btn { flex: none; }
         /* An ornament. Take it out and the band is still heading, lead and button. */
         .cta-art { flex: none; display: block; color: var(--border-hover); }
@@ -1177,20 +1171,17 @@
             margin-bottom: var(--space-md);
         }
         .section-head h2 {
-            font-family: var(--font-head);
-            font-weight: 600;
-            font-size: var(--fs-2xl);
+            font: var(--type-heading);
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
         .section-head p {
+            font: var(--type-body);
             margin-top: var(--space-2xs);
-            font-size: var(--fs-base);
-            line-height: var(--lh-prose);
             color: var(--muted);
         }
         /* The tail is reference material, not something to act on. */
-        .home-section--quiet .section-head h2 { font-size: var(--fs-lg); }
+        .home-section--quiet .section-head h2 { font: var(--type-subheading); }
 
         /* The one scrollToId() target left: "Learn more" lands on #whyBand,
            and without this the sticky header sits on top of the heading it scrolled to.
@@ -2479,6 +2470,11 @@
             .hero-visual { order: -1; max-width: 460px; width: 100%; margin-inline: auto; }
             .hero-text { align-items: center; text-align: center; }
             .hero-lead { margin-inline: auto; }
+            /* The two script notes and the gate are decorative, and at tablet width they
+               have nowhere good to go: the numbers band's note wrapped onto a line of its
+               own under the four figures, and the CTA band's pushed its button under the
+               copy. Hidden here, the CTA band's copy and button share one row. */
+            .stats-item--note, .cta-note, .cta-art { display: none; }
 
             /* body.in-session-prefixed, or the desktop two-column rule outranks this one
                and the areas fight: "main stats" against a single column collapsed the
@@ -2586,7 +2582,7 @@
             .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { flex: 1 1 0; min-width: 0; }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
-            .stats-item--note, .cta-note, .cta-art, .resume-art { display: none; }
+            .resume-art { display: none; }
 
             .why-item { flex-basis: 100%; }
             /* Stacked, the small print has nothing to sit opposite, so it stops
@@ -2608,8 +2604,6 @@
                while the headings above them already name the section. The heading stays;
                the gloss goes. */
             .section-head p { display: none; }
-            .section-head h2, .cta-copy h2 { font-size: var(--fs-lg); }
-            .section-head p { font-size: var(--fs-sm); }
             .dash { padding: var(--space-md); }
             /* ONE column on a phone, and this reverses the old rule that "the three
                overview stats stay three columns". They cannot any more: at 375px three
