@@ -31,6 +31,10 @@ home screen (`hasProgress()` + `data-tier`) is retired.
   the header strip is a deliberate 36px exception — see Touch targets below).
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
+- Motion and depth (2026-09-23): soft per-theme tile shadows, a hover lift on cards and
+  answer options, staggered card entrances, a landing scroll reveal with counting
+  numbers, and a correct-answer glow / wrong-answer shake outside the exam. All of it
+  is off under `prefers-reduced-motion` (see CLAUDE.md, "Motion system").
 
 **Quiz pool:** 300 general + 16 Bundesländer × 10 = **460** questions, all **bilingual (DE/EN)**.
 The user picks a state on the **Practise** page — under the mode band's heading, beside the
