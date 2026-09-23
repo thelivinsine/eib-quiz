@@ -1,6 +1,6 @@
 # Typography roles and tablet/phone layout — design
 
-Status: **design approved in chat 2026-09-23; spec awaiting review.** Branch
+Status: **implemented on branch typography-responsive; PR open.** Branch
 `typography-responsive` (worktree `../EIB-typography`). Ships as a PR, not a direct merge.
 
 ## Intent

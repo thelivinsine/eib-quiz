@@ -2875,3 +2875,46 @@ looked at, and every glyph stays inside its 24-unit box at 2.75.
 ### Not verified
 - Dark theme was not screenshotted; the rule is theme-independent (`currentColor`).
 - **Merged directly to `main` as `e0e058c`** (on request, no PR). Pages publishes it from there.
+
+## Session developments (2026-09-23, type roles and tablet/phone layout)
+
+Branch `typography-responsive` (PR, left for the user to merge). Spec and plan:
+`docs/plans/2026-09-23-typography-and-responsive-{design,plan}.md`.
+
+- **Every piece of text reads one of 16 `--type-*` roles** (`font: var(--type-*)`), each
+  a `font` shorthand of `--fs-*` / `--lh-*` / `--font-*`. Phone type is two token
+  overrides in the 620px block (heading 22, figure-lg 28). `scale.test.mjs` gained the
+  `typeOutsideRoles` ratchet (160 -> 0), a role-format test, a 12px floor test for the
+  roles and a hierarchy test at both widths.
+- **Labels are sentence case** everywhere (quiz readouts, results figures, footer column
+  titles, the history badge); nothing is uppercase but the two taglines.
+- **No nav underline**: the current page is `--text`, the other link `--muted`.
+- **Phone hierarchy fixed**: headline 32 > numbers 28 > headings 22 (numbers were 36,
+  headings 18); the question is 18 over 16px answers (both were 16).
+- **Tablet (621-940)**: the quiz keeps Previous/Next under the answers (gap 16px at
+  768x1024, was ~430); the mode grid is six half-tracks so the last two cards centre under
+  the first three, all five one height; the script notes and the gate hide below 940, so
+  the CTA band is one row (122px tall at 768, was 209).
+- **Found and fixed**: the phone readout gap (`--space-sm`) had never applied — the
+  in-session rule's `--space-md` outranked it — and the image credit was an inline 10.9px.
+- The dark-mode why/CTA panels (practise tile shade) ride on the branch as its first commit.
+
+### Verified
+Contrast + scale (27 tests), `validate.js` (460 questions), `node --check` on `sw.js` and
+the main script, `manifest.json` parses. In the pane with `innerWidth` read first: a role
+audit (every visible text element's computed font matched against the 16 roles) is empty on
+Home, Practise (details open), the quiz (image question, explanation open, exam) and results
+at 375 / 768 / 1024 / 1280 in EN and DE. No horizontal overflow at 320 / 375 / 768 / 1024;
+`scrollHeight == innerHeight` on the quiz at 360 / 375 / 620 / 768 / 940 / 1400 with the
+navigator closed and open, and on results at 375 / 768 / 1280. Quiz readouts one line at 360
+in both languages even at 150 / 150 / 50% / 300. All figures compute `tabular-nums`. Mode
+grid measured one height and centred (offset 0.0) at 768 and 1024 in both languages. All
+four verdict headlines one line at 320. The language switch leaves no stale `data-i18n`
+string; the three scheme modes survive a reload.
+
+### Not verified
+- The role audit matches computed signatures, so two roles with the same signature as an
+  unrelated style (e.g. Inter 15/600 = control) can pass a wrong-role element; the declared
+  CSS ratchet is the backstop.
+- No real touch device, no Safari/Firefox; the pane cannot show a hover.
+- 900x600 scrolls, by the existing max-height 640 release, not locked.

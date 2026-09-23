@@ -2508,7 +2508,9 @@
             body.in-session .quiz-sidebar { z-index: 30; }
             /* Collapsed, this is a strip with one line of text in it — the card's
                padding made it a 76px box holding a 20px label. */
-            /* The card stretches again here, which parks .quiz-nav at the bottom of
+            /* (PHONES ONLY since 2026-09-23: the 621-940 tablet block after this one
+               puts the buttons back under the answers.)
+               The card stretches again here, which parks .quiz-nav at the bottom of
                the column — the two buttons then sit in the same place on every
                question, directly above the overview strip, where a thumb can learn
                them. The question itself stays top-aligned inside .question-body.
