@@ -21,7 +21,7 @@ the kit's PNG for the raster - so re-run tools/make-logo-kit.mjs first if the
 mark changes. It replaced the flat German flag on 2026-09-23, which had itself
 replaced a drawn tick.
 
-The copy stays descriptive rather than the "EIB Quiz / Learn · Practise · Pass"
+The copy stays descriptive rather than the "EIB Quiz / Learn. Practise. Pass."
 lockup: a link preview is read beside its own URL, so the space is better spent
 saying what the thing IS. 300 is the number the app's own hero and stats band
 give (the 460 in the repo counts all sixteen states' sets, of which a reader

@@ -305,10 +305,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (Stripe Sail, GitHub Primer, Linear, Khan Wonder Blocks) read out of their live DOM, token
     layer and rendered layer both. `node --test tools/scale.test.mjs` enforces it as a ratchet.
     `docs/plans/sizing-system.md` is the phased plan; **all six phases are done**.
-    - **EVERY PIECE OF TEXT IS ON ONE OF 16 TYPE ROLES** (2026-09-23, on request: "set a
+    - **EVERY PIECE OF TEXT IS ON ONE OF 15 TYPE ROLES** (2026-09-23, on request: "set a
       clear typography"). `--type-display` / `-heading` / `-subheading` / `-title` /
       `-option` / `-body` / `-small` / `-label` / `-caption` / `-figure-lg` / `-figure-md`
-      / `-figure-sm` / `-script` / `-control` / `-control-sm` / `-chip`, each a `font`
+      / `-figure-sm` / `-script` / `-control-sm` / `-chip`, each a `font`
       shorthand of `--fs-*` / `--lh-*` / `--font-*` in `:root`, read as
       `font: var(--type-*)`. **`font:` goes FIRST in its rule** — it resets
       `font-variant-numeric` and `line-height`, so a figure re-declares `tabular-nums`
@@ -439,11 +439,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       hero at 38px against 59, the three section headings at 22 against 30, the four
       headline numbers at 28 against 39. So `--fs-hero` was `clamp(2rem, 5.2vw, 3.5rem)`
       (56px desktop, 32 on a phone — **the ceiling came down to 2.75rem, 44px, on
-      2026-09-23 on request**; only the ceiling can move, since 5.2vw and the 32 floor are
-      what keep it over the 36/28 figures), `.section-head h2` and `.cta-copy h2` took `--fs-2xl`
-      (`--type-heading`, 24/20 since 2026-09-23),
+      2026-09-23 on request, and later that day to `clamp(1.875rem, 5.2vw, 2.5rem)`, 40px
+      desktop / 30 phone** ("further decrease"); 5.2vw cannot move, since it is what keeps
+      the headline over the 36px figures just above 700px, and each end must stay a rung
+      over its 36/28 figure), `.section-head h2` took `--fs-2xl`
+      (`--type-heading`, 24/20 since 2026-09-23) — and so did `.cta-copy h2` until it
+      dropped to `--type-subheading` (18px) later on 2026-09-23, on request: the CTA band
+      is a last call beside a button, not a section of its own —
       and `.stats-num` takes `--fs-3xl` (`--type-figure-lg` since 2026-09-23 — weight 600, and
-      **28 on a phone**, so the 32px headline outranks it). The BODY tier did not move — phases 1-5 were about
+      **28 on a phone**, so the 30px headline outranks it). The BODY tier did not move — phases 1-5 were about
       line boxes and padding, and none of that was reopened. The page grew 1564 -> 1753px
       desktop (+12%) and 3.31 screens at 375px **as measured that day**. It has moved
       several times since (the why band's air, the footer, the hero crop); the landing
@@ -482,46 +486,43 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the viewBox is cropped to the ink so the drawn circle fills its box. It is
     `1 1 118 118` since 2026-09-23, because the pass-mark tick and the knob reach r = 58;
     r, C and the dasharray are untouched.
-- **EVERY TEXT BUTTON IS ONE SIZE: 44px tall, a 15px/600 label, 28px a side, a 16px
-  glyph, 8px corners** (2026-09-23, on request: "determine an ideal text size and button
-  size ... set a standard rule ... apply it across the app"). That is `--ctl-md`,
-  `--fs-base`, `--space-xl`, `--icon-sm`, `--radius-ctl`, all on the base
-  `.btn-primary, .btn-secondary` rule. **There is no `.btn-sm` and no `.btn-lg` any more**,
-  and every per-context size override went with them: the hero pair's 12px label, the
-  quiz nav's and the results actions' 36px/13px, the resume banner's 13px, the CTA
-  button's 18px glyph, and the two coarse-pointer bumps that existed only to undo those.
-  **The reasoning, reconciled rather than picked:**
-  - both mockups (`landing-page.png`, `logo-kit.png`) draw every button 48px tall with
-    a label whose cap height is 11px — **15px** — and ~33px of side padding (0.69 of the
-    height; 30 at 44, and `--space-xl` is the rung under it);
-  - `type-and-space.md` puts the chrome tier at 13-15px, names 44px as the touch target
-    in two of four systems, and Khan — the one learning app among them — renders its
-    buttons at 40/44 with a 16px label;
-  - 44 is this app's touch floor, so ONE size needs no coarse bump and puts nothing a
-    thumb presses at 36px, and 15px stays under the 16px answer options and the 18px
-    question, so a button never outranks the content it acts on.
-  **Only the side padding responds to width**: `--space-md` below 620px and
-  `--space-sm` below 360px (the nested block), because "Jetzt starten" and its arrow
-  are 118px against 108 of room at 320. The height and the label never shrink.
-  **The header's `.session-back` is NOT a text button in this sense** — it is header
-  chrome at `--ctl-sm` beside the brand and the toggles, and it kept its size.
-  - **Buttons stay SIDE BY SIDE on a phone** (2026-09-23, on request). The hero pair
-    used to go `flex-direction: column` at full width below 620px; it is one row now,
-    split evenly with `flex: 1 1 0`. Measured one line, 44px each, in both languages at
-    375 and 320. The results screen's three actions put two on the first line and wrap
-    the third — three cannot share 343px at 15px, and that is what `flex-wrap` is for.
-    **`.btn-group` is deleted**: its phone rule stacked buttons full width, and nothing
-    in the markup used it.
-  - **`.cta-btn` carries only `flex: none`** (and its 620px `width: 100%`, which is a
-    single button, not a pair). Its dead `min-height` / `padding` / `font-size` were
-    found by MEASURING — they lost to `.btn-lg` on source order at equal specificity,
-    and `scale.test.mjs` cannot see a cross-scope duplicate. With `.btn-lg` gone the
-    lesson stands: size a button on the base rule, never on a context selector.
+- **EVERY TEXT BUTTON IS ONE SIZE: 36px tall, a 14px/600 label, 20px a side, a 14px
+  glyph, 8px corners** (2026-09-23, on request: the 44px buttons "seem to be zoomed in
+  ... scale them down by keeping their respective aspect ratios intact to make them look
+  premium"). That is `--ctl-sm`, `--type-control-sm`, `--space-lg`, `--icon-xs`,
+  `--radius-ctl`, all on the base `.btn-primary, .btn-secondary` rule. It is the earlier
+  44 / 15 / 28 / 16 button scaled by 36/44, each value snapped to its nearest rung —
+  measured, every button's width:height is within ~4% of what it was (Start now 3.45 ->
+  3.59, Learn more 3.19 -> 3.30, Discard 2.58 -> 2.61). **It is the header chrome's own
+  size** — `.session-back` has been 36px at 14px all along — so a button and the strip
+  above it are one family. `--type-control` (15px) had no other reader and is **deleted**;
+  there are 15 type roles now.
+  **There is no `.btn-sm` and no `.btn-lg`**, and no per-context size override: size a
+  button on the base rule, never on a context selector (`.cta-btn`'s dead sizing under
+  the old `.btn-lg` is the lesson — `scale.test.mjs` cannot see a cross-scope duplicate).
+  - **The touch floor is kept WITHOUT changing the shape.** Under `@media (pointer:
+    coarse)` the button takes `position: relative` and an invisible `::after` reaching
+    `(--ctl-sm - --ctl-md) / 2` above and below it: a 44px target on a 36px button. A
+    coarse `min-height` bump would have made every phone button taller than it is wide
+    in proportion — the exact "zoomed in" look this removed. No button is positioned
+    otherwise, so the `position: relative` overrides nothing; if one ever is, scope it.
+  - **A button is NEVER stretched and NEVER squeezed** (2026-09-23, on request: "not
+    letting them stretch when the screen narrows"). The base rule carries `flex: none;
+    white-space: nowrap`, so it is as wide as its label at every width, and a row that
+    runs out of room WRAPS its buttons instead. Gone with it: the hero pair's
+    `flex: 1 1 0` split (two 170px slabs at 375), `.cta-btn`'s 620px `width: 100%`,
+    `.cta-btn { flex: none }` and `.quiz-nav`'s `flex-shrink: 0` (both now the base's),
+    and the 620 / 360px side-padding cuts — shrinking the padding was changing the
+    shape too. `.resume-actions` gained `flex-wrap: wrap` and, below 940px,
+    `.hero-cta-row` centres, so a wrapped pair centres each line under the centred text.
+    Measured: one row in both languages at 375; at 320 English holds one row and German
+    ("Jetzt starten" 150 + "Mehr erfahren" 139 in 288) wraps both pairs, centred, with
+    nothing clipped. The results screen's actions wrap the same way.
 - **In a session the page keeps wider side gutters** than Home or Practise: `--space-xl`
   (28px) rather than `--space-lg`, because the question is the only thing on screen and
   should not run to the edges. Below 620px it drops back to `--space-md`.
 - **Mobile is a first-class layout, not a fallback.** Every control is at least 44px tall
-  **on a coarse pointer** (`.btn-*` are 44 on every pointer since 2026-09-23, `.state-picker` — which
+  **on a coarse pointer** (`.btn-*` are 36px with a 44px `::after` hit area under a coarse pointer since 2026-09-23 — see the button rule — `.state-picker` — which
   is `--ctl-sm` with a mouse since 2026-09-22 and `--ctl-md` under
   `@media (pointer: coarse)`; the header's two toggles are the `--ctl-sm` exception, see
   below); `#stateSelect` is `font-size: 16px` so iOS Safari
@@ -1186,7 +1187,16 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       one-column reasoning, and that override went with the one-column layout
       (2026-09-22, on request). **The summary block is the exception and stays LEFT**:
       it is a ring followed by a sentence, and a sentence is read from a left edge.
-    - **A READOUT IS A FIGURE OVER ITS NAME, and nothing else** (2026-09-22, on
+    - **A READOUT IS A GLYPH OVER A FIGURE OVER ITS NAME** (2026-09-23, on request:
+      "add the icon right above the text center aligned within their respective
+      blocks"). `.ds-icon` is a BARE `--icon-lg` glyph in `--sub-text` — no plate, no
+      hue; the due numeral stays the one thing in colour — centred over the figure,
+      8px above it (a `--space-2xs` margin on top of the column's 4px gap). The glyphs
+      are `ICONS.file` (answered), `ICONS.checkCircle` (mastered) and `ICONS.clock`
+      (due), the three drawn for the plated version on 2026-09-21, restored to
+      `index.html` and `tools/icon-packs.mjs` from `bc261c6^` and re-diffed against the
+      generator. Measured at 1280: each glyph's centre equals its figure's.
+      **Before that it was a figure over its name, and nothing else** (2026-09-22, on
       request). The hued plate and the `.ds-sub` line under the name both went, one
       day after the mockup put them there. The sub-line said what the name already
       said — "Answered" over "Questions you've attempted", "Mastered" over "Questions
@@ -1195,8 +1205,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `.dash-stat-fig`, `.ds-sub`, the three `dash.*Sub` strings and the three
       `.dash-stat--*` hue rules are all deleted; `.dash-stat` IS what
       `.dash-stat-fig` was, a `--space-2xs` column of `.ds-num` over `.ds-label`.
-      `ICONS.file` and `ICONS.checkCircle` lost their only reader and went with it,
-      from `tools/icon-packs.mjs` as well as from `index.html`. `--accent-soft`,
+      `ICONS.file` and `ICONS.checkCircle` lost their only reader and went with it
+      (they came back on 2026-09-23 as the bare glyphs above). `--accent-soft`,
       `--green-dim` and `--gold-dim` all keep other consumers, so the palette and
       `contrast.test.mjs` are untouched.
     - **THE RING IS THE CARD'S HEADLINE** (2026-09-23, on request: the section "looks
@@ -1305,7 +1315,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **THE THREE READOUT PLATES ARE GONE, and with them the app's last hued icons**
       (2026-09-22, on request — they lasted one day). The card still carries the
       mockup's hue in two places, both of them text or a stroke rather than a plate: the
-      ring's `--accent` arc and the resume banner's `--accent-text` book.
+      ring's `--accent` arc and the resume banner's `--accent-text` mode glyph.
       **If the plates ever come back it is three `--hue-tint` / `--hue-ink`
       declarations here**, scoped to this card — never by re-tinting `[data-hue]`,
       which stays neutral for the mode cards and the why marks.
@@ -1402,11 +1412,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       belong to. `.resume-actions` takes `width: 100%` in the 620px block so
       `justify-content: center` has a line to centre them in (measured: the pair's
       centre and the banner's are both 187.5 at 375px).
-    - **The banner has NO HAIRLINE, and its buttons are `--ctl-md`** (2026-09-22). The
+    - **THE BANNER NAMES THE PRACTISE CARD IT RESUMES, AND WEARS ITS GLYPH** (2026-09-23,
+      on request). The bold line is the card's title (`mode.all.title` /
+      `mode.state.title` / `mode.review.title` / `mode.topic.title`) in place of "Pick up
+      where you left off" — `dash.resume` is deleted — and the plate holds
+      `ICONS[sess.mode]`, because a mode key IS its card's `ICONS` key. The line under it
+      keeps the count ("3 of 10 answered"), prefixed by WHICH topic or state for those two
+      rounds ("History · 3 of 10 answered"), since the title alone no longer says it.
+      **Only those four modes ever save a session** — `saveSession()` skips the exam and
+      mistakes — so there is no exam or mistakes case; the `hist.mode.*` title and
+      `ICONS.book` fallbacks exist only for a hand-edited store.
+    - **The banner has NO HAIRLINE** (2026-09-22). The
       mockup draws it as a tint edge to edge with no border anywhere on it, and an
       `--accent-line` rule round a fill already 1.09 off the card reads as a box inside
-      a box. `--space-md var(--space-lg)` of padding, and the two buttons keep
-      the standard button (44px, 15px) since 2026-09-23.
+      a box. `--space-md var(--space-lg)` of padding, and the two buttons are the
+      standard button (36px, 14px since 2026-09-23). They WRAP (`flex-wrap`) rather
+      than squeeze: German stacks the pair at 320.
     - **THE RING SHOWS A START MARK AT 0%** — the knob, since 2026-09-23 (a 10-unit stub
       before that). It once set `opacity = pct >= 2 ? 1 : 0`, which hid exactly the state
       a new learner spends the whole of their first visit looking at: an empty dial reads
@@ -1814,7 +1835,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.question-card { flex: 1 }`) lives in the 620px block, so 621-940 simply keeps the
     base rules.
   - **There is no rule above Previous and Next**, and the buttons are the one standard
-    button (44px, 15px — they were 36px / 13px until 2026-09-23); 15px is still under the
+    button (36px, 14px — the same height they had before 2026-09-23's 44px detour, with a
+    44px coarse hit area); 14px is under the
     18px question and the 16px options, so they do not outweigh what they move you through. **The keyboard hint rides between them**, inside
     `.quiz-nav`: out of the reading path, on a row that already exists, costing the question no
     height. It is still hidden below 940px and under `@media (hover: none)`.
@@ -2088,7 +2110,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 26 glyphs — 25 drawings plus one alias — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 29 glyphs — 27 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -2101,7 +2123,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   pack's `solid` object first, then copy it across, so the contact sheet keeps documenting
   production — **and a glyph that loses its last reader is DELETED from both**, which is
   what `file` and `checkCircle` did on 2026-09-22 when the overview card's readouts
-  dropped their plates one day after those two were drawn for them — and what `globe`
+  dropped their plates one day after those two were drawn for them (both came back on
+  2026-09-23, bare, above the readouts) — and what `globe`
   did the same day, when the menu that was its only reader became a text pill
   (`ICONS.symbols` is the same drawing if it is ever wanted back). `sun`, `monitor` and
   `moon` were drawn in that commit for the header's three scheme modes and REDRAWN as line
@@ -2111,11 +2134,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the overview card's closing line (2026-09-23). The `line` and `duotone` objects do
   NOT carry every glyph, which is true of
   `book`, `shield`, `star` and `topic`: only `solid` ships, bar the three scheme glyphs in `line`.
-  **One of them is an ALIAS, not a drawing**: `ICONS.community = ICONS.society` — a group
-  IS the society glyph, so there is one definition to maintain rather than two.
-  `ICONS.clock = ICONS.history` was the second, and has now been deleted TWICE: once with
-  the hero's fact chips (2026-09-21), and again on 2026-09-23 with the mode cards' clock,
-  after coming back for it in between.
+  **Two of them are ALIASES, not drawings**: `ICONS.community = ICONS.society` — a group
+  IS the society glyph, so there is one definition to maintain rather than two — and
+  `ICONS.clock = ICONS.history`, which has been deleted TWICE (with the hero's fact chips
+  on 2026-09-21, with the mode cards' clock on 2026-09-23) and minted a third time the
+  same day for the overview card's due readout.
   **An alias with no reader is dead code** — delete it with its last consumer, and mint
   it again the moment something needs the name. `GATE_ART` sits
   beside `ICONS`: a Brandenburg Gate ornament for the landing page's CTA band, filled shapes
@@ -2309,7 +2332,7 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   falls without the budget being lowered in the same commit. The hard checks, not budgeted:
   no property declared twice for one selector in one scope (the `.stat { gap }` bug class,
   which shipped three times), no literal `border-radius`, and — since 2026-09-23 — the type
-  roles: 16 `--type-*` tokens built only from `--fs-*` / `--lh-*` / `--font-*`, none under
+  roles: 15 `--type-*` tokens built only from `--fs-*` / `--lh-*` / `--font-*`, none under
   12px, every `font:` naming a role that exists, and the hierarchy holding at every width
   from 320 to 1600. The `vh`-then-`svh` fallback is the one allowed duplicate. **Two named
   exemptions**: `ICON_EXEMPT` (selectors) and `ROLE_EXEMPT` (a selector-to-PROPERTY map

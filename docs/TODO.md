@@ -27,7 +27,8 @@ home screen (`hasProgress()` + `data-tier`) is retired.
 - Accessibility: `:focus-visible`, `prefers-reduced-motion`, `aria-live` results,
   `lang="en"` on English text and `lang="de"` on the German exam text, WCAG AA contrast in
   both themes (asserted by `tools/contrast.test.mjs`), ≥44px touch targets on content
-  controls (the header strip is a deliberate 36px exception — see Touch targets below).
+  controls (text buttons draw 36px and reach 44 on touch through an invisible `::after`;
+  the header strip is a deliberate 36px exception — see Touch targets below).
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
 
@@ -2992,3 +2993,29 @@ string; the three scheme modes survive a reload.
   file. **The review's fixes were written by the session that reviewed them**, so no second
   reader has seen `e867ec9`. After `e867ec9` the full role audit was not re-run; it would flag
   the three list rows and the inactive nav link by design (14/400 at `--lh-ui` matches no role).
+
+## Session developments (2026-09-23, compact buttons, readout glyphs, resume title)
+
+On request, on branch `ui/compact-buttons-readout-icons` (worktree `../EIB-compact`):
+- **Hero headline** `--fs-hero` 44 -> **40** desktop, 32 -> **30** phone
+  (`clamp(1.875rem, 5.2vw, 2.5rem)`); both ends still clear the 36/28 figures.
+- **CTA band heading** ("Take the next step today.") `--type-heading` -> `--type-subheading`,
+  24 -> 18.
+- **Every text button** 44 / 15px / 28px / 16px glyph -> **36 / 14px / 20px / 14px**, the old
+  shape scaled by 36/44 (width:height within ~4%: Start now 3.45 -> 3.59, Discard 2.58 -> 2.61).
+  `--type-control` deleted (15 roles). Buttons are `flex: none; white-space: nowrap` — never
+  stretched or squeezed on a phone; the hero pair's `flex: 1 1 0`, `.cta-btn`'s phone
+  `width: 100%` and the 620/360px padding cuts are gone, and rows wrap instead (German at
+  320 wraps both the hero and the resume pair, centred). Touch: a coarse-pointer `::after`
+  makes a 44px target without changing the drawn shape.
+- **Overview readouts** each carry a bare `--icon-lg` glyph centred above the figure:
+  `ICONS.file` / `checkCircle` (restored from `bc261c6^` to the pack and to `index.html`, and
+  diffed against the generator) / `clock` (alias re-minted).
+- **Resume banner**: the title is the practise card's name instead of "Pick up where you left
+  off" (`dash.resume` deleted), the plate is that card's glyph, and the line under it keeps
+  the count, prefixed by the topic or state for those two round types.
+- **Tagline** "Learn · Practise · Pass" -> **"Learn. Practise. Pass."** (DE "Lernen. Üben.
+  Bestehen."); logo kit re-run. Only the lockups changed; the favicon and app icons are
+  identical after line-ending normalisation, so no `CACHE` bump.
+- Verified in the pane at 1280 / 375 / 320, both languages, light and dark: no horizontal
+  overflow on Home or Practise; quiz and results screens still 812/812 at 375.

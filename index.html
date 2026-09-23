@@ -281,7 +281,10 @@
                the hero heading"). Only the CEILING could move: 5.2vw is what keeps the
                headline over the 36px figures just above the 700px step, and the 32px
                floor is what keeps it over the phone's 28px ones. */
-            --fs-hero: clamp(2rem, 5.2vw, 2.75rem);
+            /* 2026-09-23, again on request ("further decrease"): 44 -> 40 on a desktop,
+               32 -> 30 on a phone. Both ends are still a rung clear of the figure they
+               must outrank (36 above 700px, 28 below); 5.2vw could not move. */
+            --fs-hero: clamp(1.875rem, 5.2vw, 2.5rem);
             /* 2026-09-23, on request ("reduce the headings a bit"): 28 -> 24 on a desktop,
                22 -> 20 on a phone, fluid between. A clamp rather than a phone override,
                so the 700px block only has the figures left to step. */
@@ -358,7 +361,8 @@
             --type-figure-md:  600 var(--fs-xl)/var(--lh-tight) var(--font-head);
             --type-figure-sm:  600 var(--fs-md)/var(--lh-tight) var(--font-head);
             --type-script:     400 var(--fs-xl)/var(--lh-ui) var(--font-hand);
-            --type-control:    600 var(--fs-base)/var(--lh-ui) var(--font-body);
+            /* The one control label: every text button AND the header chrome. The 15px
+               --type-control went with the 44px button (2026-09-23). */
             --type-control-sm: 600 var(--fs-sm)/var(--lh-ui) var(--font-body);
             --type-chip:       600 var(--fs-2xs)/var(--lh-ui) var(--font-body);
 
@@ -1147,13 +1151,15 @@
             overflow: hidden;
         }
         .cta-copy { flex: 1 1 280px; min-width: 0; }
+        /* --type-subheading, a rung under the section headings (2026-09-23, on
+           request: 24 -> 18). The band is a last call beside a button, not a section
+           of its own, so it no longer states itself at a section heading's size. */
         .cta-copy h2 {
-            font: var(--type-heading);
+            font: var(--type-subheading);
             letter-spacing: var(--ls-display);
             color: var(--text);
         }
         .cta-lead { font: var(--type-body); margin-top: var(--space-2xs); color: var(--muted); }
-        .cta-btn { flex: none; }
         /* An ornament. Take it out and the band is still heading, lead and button. */
         .cta-art { flex: none; display: block; color: var(--border-hover); }
         .cta-art svg { width: 120px; height: auto; display: block; }
@@ -1515,6 +1521,11 @@
         /* German sets these names as one long word; the backstop keeps a label that
            outgrows its tile inside it rather than across its border. */
         .dash-stat .ds-label { overflow-wrap: anywhere; }
+        /* A bare glyph centred over the figure (2026-09-23, on request). No plate, and
+           neutral like every icon here: the due numeral stays the one thing in colour.
+           The margin makes the glyph-to-figure step 8px against the figure-to-name 4. */
+        .ds-icon { display: flex; justify-content: center; margin-bottom: var(--space-2xs); color: var(--sub-text); }
+        .ds-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         /* Something to do today is the one counter allowed to raise its hand,
            and a coloured numeral is the whole of it — a tinted slab behind it
            reads as brown mud on charcoal and buys no more attention. */
@@ -1594,7 +1605,7 @@
         .resume-text { display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--muted); min-width: 0; }
         .resume-text strong { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
         .resume-text > span { font: var(--type-label); }
-        .resume-actions { position: relative; z-index: 1; display: flex; gap: var(--space-sm); }
+        .resume-actions { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: var(--space-sm); }
 
         /* The escape hatch is a corner glyph, not a row. A whole footer rule and a
            44px band for something you press once a year cost more height than the
@@ -1858,29 +1869,30 @@
         .gloss-en { color: var(--muted); font-style: italic; }
 
         /* ============================================================
-           BUTTONS — ONE SIZE, everywhere (2026-09-23, on request)
-           44px tall (--ctl-md), a 15px/600 label (--fs-base), --space-xl a side, a
-           16px glyph (--icon-sm), 8px corners (--radius-ctl). There is no -sm or -lg.
-           Why these, reconciled:
-           - Both mockups draw every button 48px tall with a 15px label (11px cap
-             height, measured on landing-page.png and logo-kit.png) and ~33px a side.
-           - The references (type-and-space.md) put the chrome tier at 13-15px and a
-             named 44px touch target in two of four systems; Khan, the one learning
-             app among them, renders its buttons at 40/44 with a 16px label.
-           - 44 is this app's touch floor, so one size means no coarse-pointer bump
-             and no control that is 36px under a thumb. 15px sits under the 16px
-             answer options and the 18px question, so a button never outranks the
-             content it acts on. The mockup's 33px of padding at 48px is 30 at 44;
-             --space-xl is the rung under it.
-           Below 620px the side padding drops to --space-md and paired buttons
-           share their row (see the 620px block): side by side, not stacked. */
+           BUTTONS — ONE SIZE, everywhere, at every width
+           36px tall (--ctl-sm), a 14px/600 label (--type-control-sm), --space-lg a
+           side, a 14px glyph (--icon-xs), 8px corners (--radius-ctl). No -sm or -lg.
+           2026-09-23, on request ("zoomed in ... scale them down by keeping their
+           aspect ratios intact to make them look premium"): the 44px / 15px / 28px
+           button scaled by 36/44. Label and padding land on the nearest rungs, which
+           keeps every button's width:height within ~4% of what it was. It is the
+           header chrome's own size (.session-back is 36px at 14px), so a button and
+           the strip above it are one family.
+           A button is never stretched and never loses padding on a narrow screen:
+           it is as wide as its label at every width (see the 620px block).
+           The touch floor is kept WITHOUT changing the shape: under a coarse pointer
+           an invisible ::after adds 4px above and below, a 44px target on a 36px
+           button. */
         .btn-primary, .btn-secondary {
-            font: var(--type-control);
-            min-height: var(--ctl-md);
-            padding: var(--space-xs) var(--space-xl);
+            font: var(--type-control-sm);
+            min-height: var(--ctl-sm);
+            padding: var(--space-2xs) var(--space-lg);
             border-radius: var(--radius-ctl);
             border: 1px solid transparent;
             display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
+            /* Never stretched to fill a row, never squeezed under its label: a row
+               that runs out of room WRAPS its buttons instead. */
+            flex: none; white-space: nowrap;
             transition: background 0.16s var(--ease), border-color 0.16s var(--ease), color 0.16s var(--ease), filter 0.16s var(--ease);
         }
         /* --btn-fill, not --accent-fill: on the mockup a CTA is near-black navy and
@@ -1893,7 +1905,14 @@
            edge in light and the tile hairline in dark (see the token blocks). */
         .btn-secondary { color: var(--text); background: var(--surface); border-color: var(--btn-edge); }
         .btn-secondary:hover { background: var(--hover); border-color: var(--btn-edge-hover); }
-        .btn-primary svg, .btn-secondary svg { flex: none; width: var(--icon-sm); height: var(--icon-sm); }
+        .btn-primary svg, .btn-secondary svg { flex: none; width: var(--icon-xs); height: var(--icon-xs); }
+        @media (pointer: coarse) {
+            .btn-primary, .btn-secondary { position: relative; }
+            .btn-primary::after, .btn-secondary::after {
+                content: ''; position: absolute; left: 0; right: 0;
+                top: calc((var(--ctl-sm) - var(--ctl-md)) / 2); bottom: calc((var(--ctl-sm) - var(--ctl-md)) / 2);
+            }
+        }
         /* Inside a round the header is a back button and a preferences menu; a section
            nav there points at a page you are not on. */
         body.in-session .header-nav { display: none; }
@@ -1971,7 +1990,6 @@
            the row maps to the direction each button moves you. Neither is ever
            allowed to change the row's height: a row that reflows as you answer
            cannot be pinned under your thumb. */
-        .quiz-nav .btn-primary, .quiz-nav .btn-secondary { flex-shrink: 0; }
         .quiz-nav {
             display: flex; align-items: center; justify-content: space-between;
             gap: var(--space-sm);
@@ -2505,6 +2523,8 @@
             .hero-landing { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
             .hero-visual { order: -1; max-width: 460px; width: 100%; margin-inline: auto; }
             .hero-text { align-items: center; text-align: center; }
+            /* So a pair that wraps (German at 320) centres each line under the text. */
+            .hero-cta-row { justify-content: center; }
             .hero-lead { margin-inline: auto; }
             /* The two script notes and the gate are decorative, and at tablet width they
                have nowhere good to go: the numbers band's note wrapped onto a line of its
@@ -2607,12 +2627,11 @@
 
             /* Hero: introduce, then get out of the way. */
             .hero-landing { padding: var(--space-ms) 0 var(--space-2xl); gap: var(--space-lg); }
-            /* Buttons stay SIDE BY SIDE on a phone (2026-09-23, on request). The pair
-               splits the row evenly rather than stacking full width, and the side
-               padding comes down a rung so both German labels fit at 375. */
-            .btn-primary, .btn-secondary { padding-inline: var(--space-md); }
-            .hero-cta-row { width: 100%; gap: var(--space-sm); margin-top: var(--space-ms); }
-            .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { flex: 1 1 0; min-width: 0; }
+            /* Buttons stay SIDE BY SIDE on a phone, each as wide as its own label
+               (2026-09-23, on request: "not letting them stretch"). The pair used to
+               split the row with flex: 1 1 0, which stretched two 36px buttons into
+               170px slabs. */
+            .hero-cta-row { gap: var(--space-sm); margin-top: var(--space-ms); }
             /* The margin notes are decorative, and down here they have nowhere to sit
                that is not on top of the building. */
             .resume-art { display: none; }
@@ -2625,7 +2644,6 @@
             .footer-inner { gap: var(--space-xl); }
             .footer-col--brand { flex-basis: 100%; max-width: none; }
             .cta-band { padding: var(--space-lg); gap: var(--space-ms); }
-            .cta-btn { width: 100%; }
 
             /* --space-xl, up from --space-lg (2026-09-22, on request). The desktop gap
                went 28 -> 40 and this one stayed at 20, which on a phone — where every
@@ -2776,9 +2794,6 @@
             @media (max-width: 360px) {
                 .header-content { padding-inline: var(--space-sm); gap: var(--space-2xs); }
                 .header-controls > .seg .seg-btn { width: var(--ctl-xs); }
-                /* The label and the height never shrink; only the side padding does. At
-                   320 "Jetzt starten" + its arrow is 118px in a 108px box at --space-md. */
-                .btn-primary, .btn-secondary { padding-inline: var(--space-sm); }
             }
             /* The number and the topic stack instead of sharing a line. Side by side in a
                375px row the topic was the one that lost, ellipsised to "Fundame..." —
@@ -3343,6 +3358,9 @@
             shield: _svg('<path fill-rule="evenodd" d="M12 2.2 20.2 5v6.2c0 4.9-3.4 9.4-8.2 10.6C7.2 20.6 3.8 16.1 3.8 11.2V5ZM10.9 16.1 6.9 12.1l1.8-1.8 2.2 2.2 4.4-4.4 1.8 1.8Z"/>'),
             star: _svg('<path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9Z"/>'),
             topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
+            // The overview card's readouts (answered, mastered; due is ICONS.clock).
+            file: _svg('<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>'),
+            checkCircle: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.6a7.4 7.4 0 1 0 0 14.8a7.4 7.4 0 1 0 0 -14.8Z"/><path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>'),
             /* The header's three scheme modes. `globe` stood here until 2026-09-22
                and went with the menu that was its only reader — ICONS.symbols is the
                same drawing if it is ever wanted back. */
@@ -3354,9 +3372,10 @@
             moon: _line('<path d="M12 3A6.36 6.36 0 0 0 21 12A9 9 0 1 1 12 3Z"/>'),
         };
         // A group IS the society glyph, so the why band's third mark gets the name
-        // that says what it means there. (`clock`, the same move for the history
-        // glyph, went on 2026-09-23 with the mode cards' clock - its only reader.)
+        // that says what it means there. `clock` is the same move for the history
+        // glyph, for the overview card's "due for review" readout.
         ICONS.community = ICONS.society;
+        ICONS.clock = ICONS.history;
 
         // Ornament for the CTA band. Solid shapes, never strokes, and purely
         // decorative: the band must lay out correctly without it.
@@ -3462,7 +3481,7 @@
             // Distinct from quiz.back, which is the previous QUESTION. Both buttons
             // are on screen at once and one of them abandons the round.
             'nav.backAria':        { en: 'Back to the start page',  de: 'Zurück zur Startseite' },
-            'nav.tagline':         { en: 'Learn · Practise · Pass',  de: 'Lernen · Üben · Bestehen' },
+            'nav.tagline':         { en: 'Learn. Practise. Pass.',  de: 'Lernen. Üben. Bestehen.' },
             // The three scheme buttons are icon-only, so these are their aria-labels
             // rather than their faces. nav.language / nav.preferences went with the
             // menu that read them; the toggle names the ACTION instead, because a pill
@@ -3545,7 +3564,6 @@
             'dash.statePick':      { en: 'Choose your state',       de: 'Bundesland wählen' },
             'dash.reset':          { en: 'Reset progress',          de: 'Fortschritt zurücksetzen' },
             'dash.resetConfirm':   { en: 'Reset all learning progress?', de: 'Gesamten Lernfortschritt zurücksetzen?' },
-            'dash.resume':         { en: 'Pick up where you left off', de: 'Sitzung fortsetzen' },
             'dash.resumeMeta':     { en: '{n} of {total} answered', de: '{n} von {total} beantwortet' },
             'dash.resumeGo':       { en: 'Resume',                  de: 'Fortsetzen' },
             'dash.resumeDrop':     { en: 'Discard',                 de: 'Verwerfen' },
@@ -4227,20 +4245,24 @@
             const sess = getSavedSession();
             let resumeHtml = '';
             if (sess && Array.isArray(sess.ids) && sess.ids.length) {
-                const sessLabel = sess.mode === 'topic'
-                    ? catLabel(sess.topic)
-                    : sess.mode === 'bundesland'
-                        ? (STATES[sess.stateCode] || t('mode.state.title'))
-                        : t('hist.mode.' + sess.mode);
+                // The banner names the practise card the round came from and wears its
+                // glyph: a mode key IS its card's ICONS key. Only these four save a
+                // session (saveSession() skips the exam and mistakes); the fallbacks
+                // are for a hand-edited store.
+                const title = t({ allQuestions: 'mode.all.title', bundesland: 'mode.state.title',
+                    review: 'mode.review.title', topic: 'mode.topic.title' }[sess.mode] || 'hist.mode.' + sess.mode);
+                // A topic or state round keeps WHICH one beside the count.
+                const detail = sess.mode === 'topic' ? catLabel(sess.topic)
+                    : sess.mode === 'bundesland' ? STATES[sess.stateCode] : '';
                 const answered = sess.answered ? Object.keys(sess.answered).length : 0;
                 resumeHtml = `
                     <div class="resume-banner">
                         <span class="resume-art" aria-hidden="true">${MOUNTAIN_ART}</span>
                         <div class="resume-main">
-                            <span class="resume-icon" aria-hidden="true">${ICONS.book}</span>
+                            <span class="resume-icon" aria-hidden="true">${ICONS[sess.mode] || ICONS.book}</span>
                             <div class="resume-text">
-                                <strong>${t('dash.resume')}</strong>
-                                <span>${sessLabel} · ${t('dash.resumeMeta', { n: answered, total: sess.ids.length })}</span>
+                                <strong>${title}</strong>
+                                <span>${detail ? detail + ' · ' : ''}${t('dash.resumeMeta', { n: answered, total: sess.ids.length })}</span>
                             </div>
                         </div>
                         <div class="resume-actions">
@@ -4250,10 +4272,11 @@
                     </div>`;
             }
 
-            // One readout: the figure over its name. No plate, no sub-line — see
-            // .dash-stat in the sheet.
-            const stat = (num, label, extra = '') => `
+            // One readout: a bare glyph over the figure over its name. No plate, no
+            // sub-line — see .dash-stat in the sheet.
+            const stat = (icon, num, label, extra = '') => `
                 <div class="dash-stat${extra}">
+                    <span class="ds-icon" aria-hidden="true">${icon}</span>
                     <span class="ds-num">${num}</span>
                     <span class="ds-label">${label}</span>
                 </div>`;
@@ -4279,9 +4302,9 @@
                             <span class="dash-pass">${t('dash.passMark', { n: PASS_PCT })}</span>
                         </div>
                     </div>
-                    ${stat(`${answeredInPool}<span class="ds-of"> / ${totalPool}</span>`, t('dash.answered'))}
-                    ${stat(mastered, t('dash.mastered'))}
-                    ${stat(due, t('dash.due'), due ? ' dash-stat--due' : '')}
+                    ${stat(ICONS.file, `${answeredInPool}<span class="ds-of"> / ${totalPool}</span>`, t('dash.answered'))}
+                    ${stat(ICONS.checkCircle, mastered, t('dash.mastered'))}
+                    ${stat(ICONS.clock, due, t('dash.due'), due ? ' dash-stat--due' : '')}
                 </div>
                 ${resumeHtml}
                 ${answeredInPool > 0 ? `<button class="progress-reset" title="${t('dash.reset')}" aria-label="${t('dash.reset')}" onclick="if(confirm(t('dash.resetConfirm'))){clearProgress();initHomeScreen();}">${ICONS.reset}</button>` : ''}`;
