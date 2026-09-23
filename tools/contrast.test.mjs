@@ -152,8 +152,7 @@ const PAIRS = [
   ["green", "green-dim", AA, "the correct answer and its review row"],
   ["red-text", "red-dim", AA, "the wrong answer, its explanation and review row"],
   ["blue", "blue-dim", AA, "the elapsed-time subscore"],
-  ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar, and the overview card's encouragement line"],
-  ["green", "tile", AA, "the overview card's encouragement line"],
+  ["green", "surface", AA, "the RICHTIG counter in the quiz stats bar"],
   ["gold", "tile", AA, "the due-for-review counter on the overview card"],
   ["red-text", "surface", AA, "the FALSCH counter in the quiz stats bar"],
 

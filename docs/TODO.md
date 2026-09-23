@@ -2737,3 +2737,20 @@ with the back button.
 - Dark mode was not seen rendered. The pane would not repaint it; every colour involved is
   an asserted token.
 - The results screen's three actions wrap to 2 + 1 on a phone. Three cannot share 343px at 15px.
+
+## Session developments (2026-09-23, the Where-you-stand ring)
+
+- The overview ring is **152px** (was 104). It has a gradient arc, a knob on the arc's
+  leading end, and a tick at the 52% pass mark, with a "Pass mark 52%" key under the verdict.
+  The percentage is `--fs-xl`/700.
+- "Small steps make big progress." is removed, with `.dash-pill`, `dash.pill`, the leaf glyph
+  (from `ICONS` and `tools/icon-packs.mjs`) and the `green / tile` contrast pair.
+- Both count-ups now time from the first frame's timestamp. The first frame could paint a
+  negative percentage.
+
+### Verified
+Contrast (10), scale (12), `validate.js`, `node --check` and the icon-pack generator all
+pass. In the pane: the arc and knob land exactly (67% gives dashoffset 103.6 and 241.2deg),
+the count-up settles on 67%, the layout is centred with no overflow at 1000 / 375 / 320 in
+both languages, and the reset glyph clears the bigger ring. Screenshots were taken in light
+and dark.

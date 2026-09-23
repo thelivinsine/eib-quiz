@@ -209,11 +209,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     READOUT: it reports on its section and does not outrank the heading above it or the
     card you are meant to press — the same move `.stat-value` made on the quiz screen.
     **`.ds-num` went BACK UP to `--fs-xl` on 2026-09-22 and came down twice the same
-    day, on request** — it is `--fs-md`, and so is the ring's percentage beside it. The
+    day, on request** — it is `--fs-md`. (The ring's percentage went to `--fs-xl` with the
+    bigger ring on 2026-09-23 — see THE RING IS THE CARD'S HEADLINE.) The
     mockup measures a 23px digit, but the mockup's figure is one of three things inside
     a bordered tile with a plate and a sub-line to balance it; bare on the card the same
-    22px read as heavy rather than as a readout ("cheap" was the word). Nothing on the
-    Practise page sits at `--fs-xl` now, which is the cleanest the rule has ever been.
+    22px read as heavy rather than as a readout ("cheap" was the word).
     The featured card kept its emphasis in hue, width and a solid Start pill, never size —
     and is retired; the five mode cards are peers.
   - **No drop shadows on a TILE, in either theme.** A tile is a fill plus a hairline, and
@@ -433,10 +433,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - NOTE: ring/score geometry (`.ready-ring*` r=50→C=314, `.score-ring*` r=60→C=377) is preserved
     so the JS ring animations still work — keep the `stroke-dasharray` values.
     **The WINDOW onto that geometry is what you move, not the geometry** (2026-09-22):
-    `.ready-ring`'s viewBox is `5 5 110 110`, not `0 0 120 120`, because at r=50 with a
-    9-unit stroke the ink only ever reaches 109 of 120 units — so a 104px wrap drew a 94px
-    ring, 11% under the mockup's. Cropping the viewBox to the ink makes the drawn circle
-    fill its box; r, C and the dasharray are untouched.
+    the viewBox is cropped to the ink so the drawn circle fills its box. It is
+    `1 1 118 118` since 2026-09-23, because the pass-mark tick and the knob reach r = 58;
+    r, C and the dasharray are untouched.
 - **EVERY TEXT BUTTON IS ONE SIZE: 44px tall, a 15px/600 label, 28px a side, a 16px
   glyph, 8px corners** (2026-09-23, on request: "determine an ideal text size and button
   size ... set a standard rule ... apply it across the app"). That is `--ctl-md`,
@@ -1077,25 +1076,31 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       from `tools/icon-packs.mjs` as well as from `index.html`. `--accent-soft`,
       `--green-dim` and `--gold-dim` all keep other consumers, so the palette and
       `contrast.test.mjs` are untouched.
-    - **THE ENCOURAGEMENT LINE CLOSES THE CARD, centred, with no chip** (2026-09-22,
-      both on request). It is the LAST child of `.dash` — a remark on the numbers above
-      it rather than a badge on the heading — and `display: flex` + `justify-content:
-      center` is what centres it, because an `inline-flex` pill has nothing to centre in.
-      The band around it is `--space-md` on both sides: `margin-top` on the line and
-      `padding-bottom` on the card, which is why the card's inset is `--space-xl` on
-      three sides and 16 at the foot. Unconditional, because `.dash-pill` is static
-      markup and the card always ends with it.
-      The chip went first, and the reset-glyph alignment below went with the move: The mockup draws a `--green-dim` pill here and it
-      went anyway: since the readouts' tiles dissolved the card is one ground with bare
-      blocks on it, and a tinted capsule was the only enclosure left inside it. The
-      green and the leaf say "encouragement" without a box. `--green` therefore sits on
-      the CARD now — `green / surface` was already asserted in `contrast.test.mjs` and
-      **`green / band` was added for dark**.
-      there is nothing beside the line to align it to any more, so the lift is gone with
-      the head. `.progress-reset` still sits absolutely in the card's top-right corner
-      (`top: 6px` in a `--ctl-md` box) and needs no room reserved for it now: measured at
-      375px it spans 308-352 against a ring that ends at 239.5, and at 1280 it clears the
-      third readout's ink by 25px.
+    - **THE RING IS THE CARD'S HEADLINE** (2026-09-23, on request: the section "looks
+      bland and empty without the continue-where-you-left-off box"; make the ring
+      "bigger and with more engaging UI"). **152px at every width**, up from 104, with:
+      - a **gradient arc**, `--accent-fill` into `--teal` (`#readyRingGrad`, stops
+        coloured by class so the theme reaches them);
+      - a **knob** on the arc's leading end — `#readyRingKnob`, a group rotated about the
+        centre on the SAME transition as the dash, so the two stay in step. At 0% it sits
+        at 12 o'clock and is the start mark, which retired the old 10-unit stub floor
+        (`MIN_ARC`): stub plus knob read as a toggle switch;
+      - the **pass mark as a tick** across the track at `PASS_PCT` (52, the exam's 17 of
+        33), in `--text`, so the ring shows where you are AND where you need to be.
+        `PASS_PCT` is one const in `renderHomeStatus()` and the verdict tiers read it
+        too. `.dash-pass` under the verdict is its key: the same bar, "Pass mark 52%"
+        (`dash.passMark`);
+      - the percentage at **`--fs-xl`/700**, the card's one large figure and still a rung
+        under the section heading's `--fs-2xl`.
+      Measured: arc and knob land exactly (67% -> dashoffset 103.6, knob 241.2deg); the
+      summary pair centres at 1000px; at 375 the reset glyph (308-352) clears the ring
+      (ends 264); no overflow at 375 or 320 in either language.
+    - **"Small steps make big progress." is GONE** (2026-09-23, on request), with
+      `.dash-pill`, `dash.pill`, the leaf glyph (its only reader — deleted from
+      `ICONS` and from `tools/icon-packs.mjs`), the card's short 16px foot (the inset is
+      `--space-xl` on all four sides again) and `green / tile` in `contrast.test.mjs`.
+      `.progress-reset` still sits absolutely in the card's top-right corner and needs
+      no room reserved for it.
     - **FOUR ACROSS IS A WIDE-SCREEN LAYOUT, and it breaks at 1160 — the mode grid's own
       number** (2026-09-22). It was the LABEL that set this break: a ~150px column less
       the 44px plate and its 20px gap left 86px for `Due for review` (111.7) and
@@ -1155,10 +1160,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       is a `.section-head.section-head--centred` now, so it matches the practise heading
       below it and inherits the 620px rule that hides a section's lead. `.dash-head` is
       **deleted** — it existed to put the heading and the encouragement line on one row,
-      and neither is there any more. `#homeStatus` still holds only what
-      `renderHomeStatus()` paints; `.dash-pill` (`dash.pill`, the `leaf` glyph — the
-      class name is older than the chip's removal and is kept rather than churned) is
-      static markup at the card's foot.
+      and neither is there any more. `#homeStatus` holds everything the card shows, all of it painted by
+      `renderHomeStatus()`.
     - **THE CARD IS ONE GROUND: `--surface` in light, `--band` in dark.** It used to
       hold tiles at a second shade — the mockup's near-white card (#FBFCFE) with a
       `--band` summary tile (#F5F8FD) and white readouts (#FEFEFE) in light, and the
@@ -1172,7 +1175,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **THE THREE READOUT PLATES ARE GONE, and with them the app's last hued icons**
       (2026-09-22, on request — they lasted one day). The card still carries the
       mockup's hue in two places, both of them text or a fill rather than a plate: the
-      encouragement line is green text and the resume banner's book is `--accent-text`.
+      ring's gradient arc and the resume banner's `--accent-text` book.
       **If the plates ever come back it is three `--hue-tint` / `--hue-ink`
       declarations here**, scoped to this card — never by re-tinting `[data-hue]`,
       which stays neutral for the mode cards and the why marks.
@@ -1273,10 +1276,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--accent-line` rule round a fill already 1.09 off the card reads as a box inside
       a box. `--space-md var(--space-lg)` of padding, and the two buttons keep
       the standard button (44px, 15px) since 2026-09-23.
-    - **THE RING SHOWS ITS CAP AT 0%.** `animateReadyRing` floors the arc at 10 of 314
-      units, which is the ~16px stub the mockup draws. It used to set
-      `opacity = pct >= 2 ? 1 : 0` — it hid exactly the state a new learner spends the
-      whole of their first visit looking at, and an empty dial reads as a broken one.
+    - **THE RING SHOWS A START MARK AT 0%** — the knob, since 2026-09-23 (a 10-unit stub
+      before that). It once set `opacity = pct >= 2 ? 1 : 0`, which hid exactly the state
+      a new learner spends the whole of their first visit looking at: an empty dial reads
+      as a broken one.
+    - **Both count-ups (this ring and the results screen's score ring) time from the
+      FIRST FRAME's own timestamp**, not `performance.now()` (2026-09-23). A frame's
+      timestamp can precede a `now()` read just before it, so `k` started below 0 and
+      the first frame painted a negative percentage — a one-frame "-1%" in a browser, and
+      "-11087%" frozen in headless Chrome's virtual time, which is how it was found.
     - **THE FIGURE-TO-NAME GAP IS `--space-2xs`**, which is what `.dash-stat-fig`
       already used inside the plate's row. Not `--space-3xs`: 2px is not a gap rung in
       this sheet and minting one busts the ratchet's `gapRungs` budget. (The
@@ -1755,8 +1763,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer
   1.7 -> 1.45, score ring 2.7 -> 2.3, breakdown 1.8 -> 1.5), as did `.option-btn`
   and the page-level button (both `--ctl-md` today) and the glossary rows. Two of those numbers are
-  history rather than current state: the ready ring is 104px, re-derived from
-  `ui/where-you-stand.png`, and `.ds-num` is `--fs-md`.
+  history rather than current state: the ready ring is 152px (104 was re-derived from
+  `ui/where-you-stand.png`), and `.ds-num` is `--fs-md`.
   - **The header's two toggles are glance-only chrome**, in a strip with the nav, which is
     what the `--ctl-sm` exception is for: 36px square cells at EVERY pointer since
     2026-09-23, so no coarse rule is needed. **The `>` in `.header-controls > .seg` is
@@ -1950,9 +1958,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   (`ICONS.symbols` is the same drawing if it is ever wanted back). `sun`, `monitor` and
   `moon` were drawn in that commit for the header's three scheme modes; the sun's eight
   rays are ONE rect rotated about the centre in the generator, and the shipped string was
-  diffed against the generator's output, which is the check that pack exists for. `leaf` stays: it is
-  the encouragement chip's. The `line` and `duotone` objects do NOT carry it, which is
-  already true of
+  diffed against the generator's output, which is the check that pack exists for. `leaf` is GONE with
+  the overview card's closing line (2026-09-23). The `line` and `duotone` objects do
+  NOT carry every glyph, which is true of
   `book`, `shield`, `star`, `topic`, `sun`, `monitor` and `moon`: only `solid` ships.
   **One of them is an ALIAS, not a drawing**: `ICONS.community = ICONS.society` — a group
   IS the society glyph, so there is one definition to maintain rather than two.

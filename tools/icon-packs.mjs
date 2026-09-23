@@ -163,10 +163,8 @@ const solid = {
     // up and to the right) taken out of it: the outer arc is the long way round,
     // the inner one the short way back.
     moon: '<path d="M19.62 16.4A8.8 8.8 0 1 1 7.6 4.38A10 10 0 0 0 19.62 16.4Z"/>',
-    // The overview card's encouragement chip. Blade plus midrib, both solid.
-    // (file and checkCircle were drawn here for that card's readouts on 2026-09-21
-    // and deleted on 2026-09-22 with the plates that held them.)
-    leaf: '<path d="M20.8 3.2c.6 6.6-1.2 11.3-5.3 14-2.9 1.9-6.3 2.4-10.1 1.4C5 10.2 9.3 5.5 17.6 4.3c1.1-.2 2.2-.5 3.2-1.1Z"/><path d="M19 5 4.3 19.7l1.5 1.5L20.5 6.5Z"/>',
+    // (file and checkCircle, then leaf, were drawn for the overview card and deleted
+    // with the things that held them: the plates on 2026-09-22, the closing line on 2026-09-23.)
     // index.html aliases these rather than redrawing them.
     clock: ev(donut(12, 12, 9.2, 7.1)) + CLOCK_HANDS,
     community: PERSON_B + PERSON_A,
