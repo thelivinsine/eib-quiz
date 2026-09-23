@@ -137,7 +137,7 @@ const PAIRS = [
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
   // dark they do not, because --surface is a rung above the canvas there.
-  ["muted", "canvas", AA, "the four headline numbers' labels, straight on the page"],
+  ["muted", "canvas", AA, "the four headline numbers' labels, and the inactive header nav link, straight on the page"],
   ["sub-text", "canvas", AA, "any secondary line with no tile behind it"],
 
   ["accent-text", "surface", AA, "Starten links, FRAGE n"],
