@@ -2860,3 +2860,4 @@ header is on one centre line and holds 734/734.
 - No real hover: the pane does not synthesise one. The parsed hover rule was read instead.
 - Keyboard focus-visible opening was not driven; the rule is present.
 - Nothing was tried on a real touch device. Chromium only.
+- **Merged directly to `main` as `a2203fe`** (on request, no PR). Pages publishes it from there.
