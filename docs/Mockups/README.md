@@ -66,7 +66,7 @@ facts in a card's foot STACK, because the mockup's ~10px facts are under this ap
 **The other four do not match the shipped app.** They show a white-and-blue design with
 a top nav (`Home / About / FAQs`), pages that do not exist, and a different
 component language from the quiet-bento system described in `CLAUDE.md`
-(teal + apricot, pill controls, no drop shadows). Treat them as a proposed
+(blue + amber, 8px buttons, pill chips, soft tile shadows). Treat them as a proposed
 redesign to accept or reject deliberately — not as documentation of what is
 live.
 

@@ -223,6 +223,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     dark is real black at 18-35%, because a faint shadow is invisible on charcoal. **The
     hairline still separates a tile; the shadow only adds depth**, so no contrast pair
     changed. A shadow carries no text, so `contrast.test.mjs` asserts nothing about it.
+    **Dark's shadow departs from `theme-dark.md` §5** ("Neither app uses a drop shadow.
+    Anywhere."). This was deliberate, on request. Do not "fix" it by citing the
+    reference; the user chose both themes over light-only.
     - **Who gets `--shadow-rest`**: one list in the TILE block — the mode cards, topic
       chips, the overview card, the why and CTA panels, history, glossary, the quiz
       sidebar and review items. It is not for wells inside a tile (`.hist-exam`,

@@ -3023,3 +3023,46 @@ On request, on branch `ui/compact-buttons-readout-icons` (worktree `../EIB-compa
   identical after line-ending normalisation, so no `CACHE` bump.
 - Verified in the pane at 1280 / 375 / 320, both languages, light and dark: no horizontal
   overflow on Home or Practise; quiz and results screens still 812/812 at 375.
+- Squash-merged as **[`a9c06ae`](https://github.com/thelivinsine/eib-quiz/commit/a9c06ae)**
+  (#105); `a85dbc6` (overview note and label, lower tagline, numbers band at the fold)
+  followed it straight onto `main`.
+
+## Session developments (2026-09-23, tile shadows and motion)
+
+On request ("modern, satisfying and engaging animations, transitions, subtle shadow effects
+for tile components"). The four forks were asked up front and answered: shadows in **both**
+themes, a **2px lift** on hover, **all four** extras, **PR + squash-merge**.
+- **Shadows**: `--shadow-rest` / `--shadow-lift` per theme, on every page and session tile.
+  This reverses `CLAUDE.md`'s "no shadow anywhere" and "hover is never a lift", both
+  rewritten in the same commit. Dark's shadow also departs from `theme-dark.md` §5 on
+  purpose.
+- **Hover lift** on mode cards, topic chips and answer options (2px); text buttons rise 1px.
+  Presses settle quickly.
+- **Staggered entrance** for the mode cards, topic chips and overview readouts; a **landing
+  scroll reveal** (why / numbers / CTA) with the four numbers counting up (`countUp` gained
+  a `suffix`); a **green glow on a right answer and a shake on a wrong one** in practice
+  rounds, with the exam unchanged.
+- **Reduced motion** now zeroes delays as well; the reveal's hiding class is added by JS.
+- **Verified in headless Chrome over CDP** (the preview pane was hidden, so it could not
+  paint or run IntersectionObserver):
+  - the reveal and the count-up (caught mid-way at 162 on its way to 300);
+  - the stagger, caught mid-flight;
+  - the hover lift and its reset, in both themes, with screenshots read;
+  - glow, shake, and the exam's `pickPop`;
+  - 375/375 on Home and Practise, and the quiz locked 900/900;
+  - reduced motion hides nothing.
+- **Tests**: `contrast` + `scale` 28/28, `validate.js` OK, and `node --check` on both the
+  script and `sw.js`.
+- Squash-merged as **[`d0691fd`](https://github.com/thelivinsine/eib-quiz/commit/d0691fd)**
+  (#106). The Pages build reported `built`, and a cache-busted fetch returned the new
+  build. The bare URL was still on the old copy (the edge's `max-age=600`) when last
+  checked.
+
+### Not verified
+- No real touch device, Safari or Firefox. `:is()` and `color-mix()` degrade by dropping
+  the rule (no stagger, or no green ring); that was argued, not tested.
+- The answer-option hover was measured in light only, not in dark.
+- The stagger replays on every repaint of the Practise page (a language switch, a state
+  change, a progress reset). That is by design, but no user has judged whether it is
+  distracting.
+- Nobody measured the live site's rendering; only the served bytes were checked.
