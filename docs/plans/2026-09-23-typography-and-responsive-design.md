@@ -84,7 +84,7 @@ Rules that come with them:
   The two taglines keep `--ls-caps`: they are a wordmark's line, not a label.
 - **The `font` shorthand resets `font-variant-numeric`.** Every figure rule re-declares
   `tabular-nums` AFTER `font:`.
-- **Phone type is two token overrides in the 620px block**: `--type-heading` to
+- **Phone type is two token overrides in a `max-width: 700px` block** (620 in the approved design; moved in the final review because the 5.2vw headline was under the 36px figure at 621-692): `--type-heading` to
   `--fs-xl` and `--type-figure-lg` to `--fs-2xl`. No component states a phone font size.
 - **The stray 1.4 leading goes.** Question, options and review question take `--lh-ui`.
 

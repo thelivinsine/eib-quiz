@@ -332,7 +332,7 @@
                `font: var(--type-*)` — and `font:` goes FIRST in its rule, because the
                shorthand resets font-variant-numeric and line-height. It carries no
                tracking, so a head-family role keeps --ls-display on the component.
-               Phone sizes are two overrides in the 620px block; no component states a
+               Phone sizes are two overrides in the max-width 700px block; no component states a
                font size. Spec: docs/plans/2026-09-23-typography-and-responsive-design.md */
             --type-display:    700 var(--fs-hero)/var(--lh-tight) var(--font-head);
             --type-heading:    600 var(--fs-2xl)/var(--lh-ui) var(--font-head);
@@ -510,7 +510,8 @@
            ============================================================ */
         [data-hue] { --hue-tint: var(--surface2); --hue-ink: var(--sub-text); }
 
-        /* Shared uppercase micro-label */
+        /* Shared micro-label: --type-label, sentence case since 2026-09-23 (it was
+           uppercase 12/600 with --ls-caps). */
         .stat-label, .breakdown-label, .review-q-num,
         .timer-label,
         .sidebar-title, .question-num {
@@ -1110,8 +1111,8 @@
             padding-block: var(--space-sm);
             text-align: center;
         }
-        /* A readout, not a heading: --fs-2xl is the display-numeral step the rings and
-           counters take, and it does not outrank an --fs-xl section heading. */
+        /* --type-figure-lg: it outranks a section heading and sits under the display
+           headline at every width (36 over 28 on a desktop, 28 over 22 below 700px). */
         .stats-num {
             font: var(--type-figure-lg);
             font-variant-numeric: tabular-nums;
@@ -1315,7 +1316,10 @@
         .dash-verdict {
             min-width: 0;
         }
-        /* 15/13, AND 14/13 ON A PHONE (2026-09-22, on request). The mockup sets both
+        /* --type-title OVER --type-small (16/14 since 2026-09-23, with NO phone step: the
+           summary stacks on a phone, so the headline has the card's full width and all
+           four tiers measure one line at 320). The history below is the 15/13 version's.
+           15/13, AND 14/13 ON A PHONE (2026-09-22, on request). The mockup sets both
            lines at ~12 and separates them by weight and colour alone; this card went
            there for an hour and it was wrong in the room — at 12/12 the verdict was the
            smallest thing in the card and read as a caption on the ring rather than as
@@ -1456,8 +1460,9 @@
            It also buys WIDTH, which is what the phone row lives on: uppercase + 0.06em
            is wide, so the widest German name went 97.4 -> ~80 while gaining 2px of
            size.
-           They stay out of the shared micro-label rule: a quiz readout's label, a tile
-           eyebrow and a review number are all still --fs-2xs uppercase at 600. */
+           They read the same --type-label as the shared micro-label rule since
+           2026-09-23 and could join its list; they were kept apart while that rule
+           was uppercase. */
         .ds-label, .ready-ring-sub {
             font: var(--type-label);
             color: var(--muted);
@@ -2580,14 +2585,19 @@
             body.in-session .question-card { flex: 0 1 auto; }
         }
 
-        @media (max-width: 620px) {
-            /* The phone's two type steps, and the ONLY place a phone font size lives:
-               a heading drops to 22 and a big figure to 28, so the 32px display
-               headline still outranks both. */
+        /* The phone's two type steps, and the ONLY place a phone font size lives: a
+           heading drops to 22 and a big figure to 28, so the display headline still
+           outranks both. 700, NOT the 620 layout breakpoint: --fs-hero is 5.2vw, so the
+           headline only clears the 36px figure above 692px — at 621-692 it was 32-36
+           against 36 (final review, 2026-09-23). scale.test.mjs checks every width. */
+        @media (max-width: 700px) {
             :root {
                 --type-heading:   600 var(--fs-xl)/var(--lh-ui) var(--font-head);
                 --type-figure-lg: 600 var(--fs-2xl)/var(--lh-tight) var(--font-head);
             }
+        }
+
+        @media (max-width: 620px) {
             main { padding: var(--space-lg) var(--space-md); padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom)); }
             /* body.in-session main outranks the rule above it on specificity alone,
                media query or not, so the 16px gutter has to be restated here. */
@@ -2697,11 +2707,6 @@
                makes them their own line's whole width so justify-content has
                something to centre them in. */
             .resume-actions { width: 100%; justify-content: center; }
-            /* A RUNG DOWN, BECAUSE THE PHONE'S VERDICT BOX IS 189px. The desktop
-               --fs-base headline clears it by ONE pixel — "You're just getting started"
-               sets 188.0 — and a pixel is not clearance: a font that loads a hair wider
-               wraps it. At --fs-sm the worst case is ~175 in the same box. The desktop
-               keeps --fs-base; measured in both languages at every verdict tier. */
             /* NO PHONE OVERRIDE (2026-09-22, on request). It used to go full width
                with the label hard left and the pill hard right — and `flex: 1` on the
                pill is what stretched it, so "Berlin" sat in a 250px capsule with a
@@ -2822,8 +2827,6 @@
             /* ...and the progress bar drops clear of that row instead of sitting tight
                under the hairline. */
             body.in-session .quiz-progress { margin-top: var(--space-sm); margin-bottom: var(--space-lg); }
-            /* One step down: the tally is a glance, and at the bottom of the column it
-               no longer has to carry the row the way it did at the top. */
             /* body.in-session .quiz-topbar-prefixed, or the in-session rule's --space-md
                outranks it on specificity: this 8px never applied until 2026-09-23, when
                the readouts went to figure-sm 16 + label 13 and three-digit counts in
@@ -2846,8 +2849,6 @@
             /* Wraps to two rows rather than squeezing five figures into 390px. */
             .result-stat { min-width: 30%; }
             .score-ring-wrap { width: 160px; height: 160px; }
-            /* One step down with the dial (190 -> 160px). It re-stated --fs-3xl, the value
-               its base already carried, so the ring shrank and the numeral did not. */
             .hist-row { gap: var(--space-sm); }
             /* Back to 2x2 on a phone. Four across a 375px row is an 80px frame under a
                three-line label — the comparison the single row buys you needs the

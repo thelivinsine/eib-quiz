@@ -22,7 +22,10 @@
 // target for every one of them is in the trailing comment.
 // ---------------------------------------------------------------------------------------
 //
-// What it cannot do: it reads *declared* CSS, not painted pixels. It cannot see what a rule
+// What it cannot do: it reads *declared* CSS, not painted pixels. Nor can it see a NEW text
+// element whose rule sets no font at all — a <button> like that renders at the UA's 13.33px;
+// only the browser role audit in docs/plans/2026-09-23-typography-and-responsive-plan.md
+// catches that. It cannot see what a rule
 // actually wins on screen, and it does not evaluate calc() or var() indirection. Browser
 // measurement is still the last word — see the plan's acceptance criteria.
 //
@@ -152,8 +155,9 @@ const valuesOf = (...props) =>
 const customProps = (body) =>
   Object.fromEntries([...body.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;]+);/gi)].map(([, k, v]) => [k, v.trim()]));
 const ROOT = customProps(RULES.filter((r) => r.scope === "" && r.selector === ":root").map((r) => r.body).join(";"));
+/** The phone type overrides: the one :root inside a media query that redefines roles. */
 const PHONE_ROOT = customProps(
-  RULES.filter((r) => r.selector === ":root" && /max-width:\s*620px/.test(r.scope)).map((r) => r.body).join(";"),
+  RULES.filter((r) => r.selector === ":root" && r.scope && /--type-/.test(r.body)).map((r) => r.body).join(";"),
 );
 const ROLE_NAMES = Object.keys(ROOT).filter((k) => k.startsWith("--type-"));
 
@@ -300,9 +304,24 @@ const globalLineHeights = new Set(valuesOf("line-height").map((d) => d.value)).s
  * used as icons, the EN code's requested 700, and three inline emphasis spans that set a
  * weight inside a parent's role. A selector, never a budget: it says which and why.
  */
-const ROLE_EXEMPT = /^(body|button|select|\.state-picker select|\.brand-name|\.footer-name|\.glossary-summary::after|\.keyboard-hint-close|\.lang-toggle|\.hist-mode|\.hist-score|\.qnav-group-count)$/;
+const ROLE_EXEMPT = {
+  "body": ["font-family", "font-size"],
+  "button": ["font-family"],
+  "select": ["font-family"],
+  ".state-picker select": ["font-size"],
+  ".brand-name": ["font-family", "font-size", "font-weight"],
+  ".footer-name": ["font-family", "font-size", "font-weight"],
+  ".glossary-summary::after": ["font-size"],
+  ".keyboard-hint-close": ["font-size"],
+  ".lang-toggle": ["font-weight"],
+  ".hist-mode": ["font-weight"],
+  ".hist-score": ["font-weight"],
+  ".qnav-group-count": ["font-weight"],
+};
+// Per PROPERTY, not per selector: an exempt rule that grows a font-size it was never
+// granted counts like any other.
 const typeOutsideRoles = valuesOf("font-size", "font-family", "font-weight")
-  .filter((d) => !ROLE_EXEMPT.test(d.rule.selector.trim())).length;
+  .filter((d) => !(ROLE_EXEMPT[d.rule.selector.trim()] ?? []).includes(d.prop)).length;
 
 const MEASURED = {
   typeOutsideRoles,
@@ -392,7 +411,7 @@ test("every type role is built only from --fs-*, --lh-* and --font-*", () => {
   assert.equal(ROLE_NAMES.length, 16, `expected 16 --type-* roles, found ${ROLE_NAMES.length}: ${ROLE_NAMES.join(", ")}`);
   for (const name of ROLE_NAMES) { role(name); role(name, true); }
   for (const name of Object.keys(PHONE_ROOT))
-    assert.ok(ROLE_NAMES.includes(name), `the 620px :root overrides ${name}, which is not a role`);
+    assert.ok(ROLE_NAMES.includes(name), `the phone :root overrides ${name}, which is not a role`);
 });
 
 test("no type role renders below the 12px floor, at either width", () => {
@@ -413,9 +432,40 @@ test("the type hierarchy is the right way up at both widths", () => {
   }
 });
 
+// The two-width test above reads the clamp's floor and ceiling only, and --fs-hero is
+// fluid (5.2vw) in between: at 621-692px the headline was 32-36px while figure-lg was
+// still 36 (final review, 2026-09-23). This one resolves every role at EVERY width.
+const PHONE_TYPE_MAX = (() => {
+  const scopes = RULES.filter((r) => r.selector === ":root" && r.scope && /--type-/.test(r.body)).map((r) => r.scope);
+  const m = scopes.map((s) => /max-width:\s*(\d+)px/.exec(s)).filter(Boolean);
+  assert.equal(m.length, 1, `expected exactly one media query overriding --type-* in :root, found ${m.length}`);
+  return +m[0][1];
+})();
+function sizeAt(name, w) {
+  const v = (w <= PHONE_TYPE_MAX && PHONE_ROOT[name]) || ROOT[name];
+  const token = ROLE_RE.exec(v)[2];
+  const clamp = /^clamp\(([\d.]+)rem,\s*([\d.]+)vw,\s*([\d.]+)rem\)$/.exec(ROOT[token]);
+  if (clamp) return Math.min(Math.max(+clamp[1] * ROOT_PX, (+clamp[2] * w) / 100), +clamp[3] * ROOT_PX);
+  return fsPx(token, false);
+}
+test("the type hierarchy holds at every width from 320 to 1600", () => {
+  const chain = ["display", "figure-lg", "heading", "subheading", "title"];
+  for (let w = 320; w <= 1600; w++) {
+    const s = (n) => sizeAt(`--type-${n}`, w);
+    for (let i = 1; i < chain.length; i++)
+      assert.ok(s(chain[i - 1]) > s(chain[i]), `${chain[i - 1]} (${s(chain[i - 1]).toFixed(1)}) must outrank ${chain[i]} (${s(chain[i]).toFixed(1)}) at ${w}px`);
+    assert.ok(s("subheading") > s("option"), `the question must outrank its answers at ${w}px`);
+  }
+});
+
 test("every font shorthand outside :root reads a type role", () => {
   const bad = valuesOf("font")
-    .filter((d) => d.value !== "inherit" && !/^var\(--type-[a-z0-9-]+\)$/.test(d.value))
+    .filter((d) => {
+      if (d.value === "inherit") return false;
+      const m = /^var\((--type-[a-z0-9-]+)\)$/.exec(d.value);
+      // A misspelt role is invalid at computed time, so the element silently inherits.
+      return !m || !ROLE_NAMES.includes(m[1]);
+    })
     .map((d) => `${d.rule.selector} { font: ${d.value} }`);
   assert.deepEqual(bad, [], "a font shorthand that is not a --type-* role");
 });

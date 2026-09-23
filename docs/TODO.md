@@ -2883,7 +2883,7 @@ Branch `typography-responsive` (PR, left for the user to merge). Spec and plan:
 
 - **Every piece of text reads one of 16 `--type-*` roles** (`font: var(--type-*)`), each
   a `font` shorthand of `--fs-*` / `--lh-*` / `--font-*`. Phone type is two token
-  overrides in the 620px block (heading 22, figure-lg 28). `scale.test.mjs` gained the
+  overrides in a max-width 700px block (heading 22, figure-lg 28; 700 because the 5.2vw headline only clears 36px above 692). `scale.test.mjs` gained the
   `typeOutsideRoles` ratchet (160 -> 0), a role-format test, a 12px floor test for the
   roles and a hierarchy test at both widths.
 - **Labels are sentence case** everywhere (quiz readouts, results figures, footer column

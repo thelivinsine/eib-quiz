@@ -313,12 +313,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `font: var(--type-*)`. **`font:` goes FIRST in its rule** — it resets
       `font-variant-numeric` and `line-height`, so a figure re-declares `tabular-nums`
       after it; it carries no tracking, so a head-family role keeps `--ls-display` on the
-      component. Phone type is TWO token overrides in the 620px block (heading 22,
+      component. Phone type is TWO token overrides in a `max-width: 700px` block (heading 22,
       figure-lg 28); no component states a font size. `scale.test.mjs` holds it:
       `typeOutsideRoles` is 0, `ROLE_EXEMPT` names the only exceptions (body, the UA
       resets, the iOS `<select>`, the wordmark, two glyphs, EN's 700, three inline
       emphasis spans), and a hierarchy test keeps display > figure-lg > heading >
-      subheading > title and the question > its answers at BOTH widths — the phone had
+      subheading > title and the question > its answers at EVERY width, 320 to 1600 — the phone had
       all three inverted (numbers 36 over a 32 headline, headings 18 over 16 titles, the
       question 16 = its answers). **Labels are sentence case** — nothing is uppercase but
       the two taglines. Spec and plan: `docs/plans/2026-09-23-typography-*`.
