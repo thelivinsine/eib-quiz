@@ -2835,3 +2835,28 @@ light, System and dark were looked at.
 - Hover was not seen hovered.
 - **Merged directly to `main` as `9f6044b`** (on request, no PR; the diff is one colour, one
   icon size and three drawings). Pages publishes it from there.
+
+## Session developments (2026-09-23, header centre line and collapsing scheme seg)
+
+- The nav and the two toggles sit on the header's **centre line** (on request: "quite close
+  to the border"). The `flex-end` + `-4px` drop from 2026-09-22 is gone, and so is the
+  in-session override it needed. The nav box ends 12px above the hairline, not 4.
+- `.header-content` is a `1fr auto 1fr` grid, so the nav is centred on the page and the
+  seg opening in the right column does not move it on desktop.
+- The scheme seg shows **only the chosen mode** and slides open: on hover, on keyboard
+  focus (`:has(:focus-visible)`), and on a tap where there is no hover (`.open`). A choice
+  closes it (`.picked`, cleared on `mouseleave` / `focusout`). A `pointerdown` outside
+  closes a tapped-open seg.
+
+### Verified
+Contrast and scale (22 tests) and `node --check` on the main script pass. In the pane, with
+`innerWidth` read first: at 1280 the brand, nav and controls share centre 30 and the nav
+stays at 565-700 open and closed. At 375 and 320, in both languages, open and closed, there
+is no overflow and the open nav clears the brand by 10.9 at 320. The touch sequence works
+(tap opens, pick closes and applies dark, pointerdown outside closes). The in-session
+header is on one centre line and holds 734/734.
+
+### Not verified
+- No real hover: the pane does not synthesise one. The parsed hover rule was read instead.
+- Keyboard focus-visible opening was not driven; the rule is present.
+- Nothing was tried on a real touch device. Chromium only.

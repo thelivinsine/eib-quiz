@@ -519,11 +519,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   is not its return: it goes to another PAGE rather than restating a button on this one.
   - **The header nav is TWO REAL LINKS: Home and Practise** (2026-09-21). They are the
     app's two pages, they carry `data-screen`, and `showScreen()` calls `syncNav()`, which
-    moves `.nav-link--active` and `aria-current="page"` between them. The nav is centred by
-    `margin-inline: auto` and NOT by being the middle of a `space-between` row:
-    `.session-back` is `display: none` most of the time, so the number of flex children
-    changes and `space-between` would move the nav with it. It is hidden by
-    `body.in-session` and below 620px.
+    moves `.nav-link--active` and `aria-current="page"` between them. **`.header-content`
+    is a `1fr auto 1fr` GRID** (2026-09-23): brand / back button in column 1, the nav in
+    column 2, the controls in column 3 (`justify-self: end`), so the nav is centred on
+    the PAGE and the scheme seg sliding open cannot push it (measured: 565-700 closed and
+    open at 1280). It replaced `margin-inline: auto` in a flex row, which centred the nav
+    between its neighbours and would have walked it 36px on every hover. On a phone the
+    `1fr` columns are too narrow for the open seg, so there the controls column grows and
+    the nav slides over with it — tap-triggered, and animated by the same transition. It
+    is hidden by `body.in-session`.
   - **About and FAQs are GONE** (2026-09-21, on request), and with them `.nav-soon`, the
     `.nav-link[aria-disabled="true"]` state rule and `nav.navAbout` / `nav.navFaqs` /
     `nav.soon` / `nav.soonTitle`. They were `aria-disabled` buttons wearing a "Soon" chip
@@ -549,15 +553,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `text-underline-offset: 5px`: native, it tracks the text at any size, it skips
     descenders, and — the reason the box-shadow was chosen in the first place — it still
     adds nothing to the control's height. It takes `currentColor`.
-  - **The nav sits LOW in the strip, not on its centre line** (2026-09-22, on request:
-    "a bit closer to the header border line downwards"). `align-self: flex-end` does the
-    first 4px structurally — the links land their box bottom on the BRAND's, which is the
-    tallest thing in the row and what sizes the flex line — and a `margin-bottom` of
-    `calc(-1 * var(--space-2xs))` takes it 4px further, into the strip's own bottom
-    padding. 8px in all: the nav box now ends 4px above the header's hairline (measured
-    at 1280) and the underline about 12. **It cannot change `--header-h`**: the margin box
-    is 36 − 4 = 32, still under the brand's 44, so the line is sized by the brand either
-    way — which is the only reason a negative margin is safe here.
+  - **The nav and the toggles sit on the strip's CENTRE line** (2026-09-23, on request:
+    "quite close to the border"). This reverses 2026-09-22's "a bit closer to the header
+    border line downwards", which put them 8px low with `align-self: flex-end` plus a
+    `-4px` margin and left the nav box 4px off the hairline. Plain `align-items: center`
+    now: brand, nav and controls share one centre (30 at 1280, 34 at 375, measured) and
+    the nav box ends 12px above the hairline.
   - **THE TWO TOGGLES ARE THE USER'S REFERENCE** (2026-09-23, from a screenshot, after a
     first attempt was reverted). Read this before touching them — the first attempt
     misread "remove the colour" as removing the ACCENT, and it meant the FILLS:
@@ -593,11 +594,21 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - 16px glyphs (`--icon-sm`) and a 12px code: the sun draws 20 of its 24 units, so
       it is 13.3px in the 36px box — the reference's 0.37 — and the code is its 0.33.
     - **They sit ON THE NAV'S LINE**: `.header-controls` carries the nav's own
-      `min-height`, and shares one `.header-nav, .header-controls` rule for
-      `align-self: flex-end` and the `-4px` margin, so the centres are one
-      number — 38 at 1280 and at 375, measured — and `body.in-session .header-controls`
-      goes back to `align-self: center`, the back button's line, where there is no nav.
-      Measured row fit: 15px of slack at 375, 8 at 361, 7.5 at 320, both languages.
+      `min-height` and both are centred in the row, so in a session (no nav) they are
+      on the back button's line with no override.
+    - **THE SEG SHOWS ONLY THE CHOSEN MODE, and slides open** (2026-09-23, on request).
+      The other two cells are `max-width: 0; opacity: 0` and transition to
+      `--ctl-sm` (max-width, not width, so the 360px block's 28px cells still win).
+      It opens on `:hover` (inside `@media (hover: hover)`), on keyboard focus
+      (`:has(:focus-visible)` — the hidden cells stay in the tab order, and focusing one
+      is what opens it), and on a TAP where there is no hover: the first tap on the
+      collapsed seg adds `.open` (the button's own listener just re-applies the same
+      mode), a second tap chooses and closes, and a `pointerdown` outside closes it.
+      **`.picked` closes it straight after a choice** while the pointer or focus is still
+      on it; `mouseleave` and `focusout` clear it. Not `:focus-within` — Chrome focuses a
+      clicked button, so the seg would stay open after the mouse left.
+      Measured fit, open: 375 and 320 in both languages with no overflow (the nav clears
+      the brand by 10.9 at 320 in English).
   - **TWO CONTROLS, BOTH IN THE ROW AT EVERY WIDTH: an EN code and a sun/monitor/moon
     seg** (2026-09-22, on request, against a reference UI). The globe `<details>` that
     held the language — and, on a phone, the theme seg as well — is **gone**, and with it
