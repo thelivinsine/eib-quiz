@@ -631,15 +631,17 @@
            0.75 units smaller over a slate rim, so it does not vanish into a dark canvas);
            on top, .brand-mark-top, the light variant's full navy bar, which covers the rim
            and is shown in light only. Base is dark here, as everywhere in this sheet. */
+        /* --ctl-xs at every width (2026-09-23, on request: "scale down ... the logo
+           block"), with the name a rung down to --fs-sm. The phone already had 28. */
         .brand-mark {
-            width: var(--ctl-sm); height: var(--ctl-sm);
+            width: var(--ctl-xs); height: var(--ctl-xs);
             display: grid; place-items: center;
         }
         .brand-mark svg { width: 100%; height: 100%; display: block; }
         .brand-mark-top { display: none; }
         html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
-        .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base); letter-spacing: var(--ls-display); color: var(--text); }
+        .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-sm); letter-spacing: var(--ls-display); color: var(--text); }
         /* The margin drops the tagline a step off the name (2026-09-23, on request); the
            lockup stays centred on the mark, so the name rises by half of it. */
         .brand-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); margin-top: var(--space-2xs); }
@@ -695,9 +697,11 @@
            exist; if either is ever built, it comes back as an ordinary .nav-link
            with a data-screen and a real screen behind it. */
 
-        /* The controls share the nav's LINE: the same 36px box as a nav link, both
-           centred in the row. --space-md between the two boxes is the reference's gap. */
-        .header-controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: var(--space-md); min-height: var(--ctl-sm); }
+        /* The controls share the nav's LINE: a 36px row like a nav link, both centred in
+           it. The two boxes inside are 28px since 2026-09-23 (on request: "scale down the
+           header toggles"), 36 again on a coarse pointer, and --space-ms apart - the
+           reference's ~0.46 of the box, scaled with it. */
+        .header-controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: var(--space-ms); min-height: var(--ctl-sm); }
 
         /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
@@ -719,7 +723,7 @@
         .lang-toggle {
             font: var(--type-chip);
             display: inline-flex; align-items: center; justify-content: center;
-            min-height: var(--ctl-sm); min-width: var(--ctl-sm); padding: 0 var(--space-xs);
+            min-height: var(--ctl-xs); min-width: var(--ctl-xs); padding: 0 var(--space-2xs);
             border-radius: var(--radius-ctl);
             border: 1px solid var(--border); background: none;
             font-weight: 700; color: var(--text);
@@ -748,9 +752,9 @@
         /* The stroke for _line()'s icons, wherever they are used - so a line glyph
            outside the header seg still draws, instead of rendering as a solid blob. */
         .icon-line { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        /* The header's scheme seg: the same 36px box as EN, three 36px-wide cells (34
-           tall inside the seg's hairline), 16px glyphs (the reference's 0.37 of the box: the
-           sun draws 20 of its 24 units), and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
+        /* The header's scheme seg: the same 28px box as EN, 28px-wide cells (36 on a
+           coarse pointer), 14px glyphs (the sun draws 20 of its 24 units, so ~0.42 of the
+           box), and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
            2-unit round stroke. The chosen mode is --text and a BOLDER 2.75-unit line;
            only the sun also fills its disc (2026-09-23, on request), because an r 4 ring
            is too small to read as bold - a filled screen or crescent read as a blob.
@@ -761,15 +765,15 @@
            so the 360px block's 28px cells still win. .picked closes it straight after
            a choice while the pointer or focus is still on it; mouseleave / focusout
            clear it. They stay in the tab order: focusing one is what opens the seg. */
-        .header-controls > .seg { min-height: var(--ctl-sm); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
+        .header-controls > .seg { min-height: var(--ctl-xs); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
         .header-controls > .seg .seg-btn {
-            width: var(--ctl-sm); min-height: 0; padding: 0;
+            width: var(--ctl-xs); min-height: 0; padding: 0;
             display: grid; place-items: center;
             border: none; background: none; border-radius: var(--radius-ctl);
             overflow: hidden;
             transition: color 0.2s var(--ease), max-width 0.3s var(--ease), opacity 0.2s var(--ease);
         }
-        .header-controls > .seg .seg-btn svg { width: var(--icon-sm); height: var(--icon-sm); }
+        .header-controls > .seg .seg-btn svg { width: var(--icon-xs); height: var(--icon-xs); }
         .header-controls > .seg .seg-btn.active svg { stroke-width: 2.75; }
         #lightBtn.active svg > :first-child { fill: currentColor; }
         /* The seg opens LEFTWARD (the controls are right-aligned), so the chosen cell
@@ -854,22 +858,40 @@
            and the pair sits where it always did. minmax(0, auto) on the nav row keeps
            the sidebar shrinkable — an auto row would refuse to go below the pane's own
            height and push it out of a locked screen. */
+        /* THE NAVIGATOR'S TOP EDGE IS THE FIRST ANSWER'S (2026-09-23, on request), and
+           the readouts sit straight above it, beside the question. This replaces the
+           pair being centred against the question with a spacer row either side.
+           --opts-top is the first option's offset from the top of the layout, written
+           by syncQuizAside(); the first row is at least that tall and the readouts sit
+           at its FOOT, so the navigator starts on the options' line (or lower, if the
+           readouts need more room than a short question leaves them). The last row is
+           the only flexible one, so the question's height all goes there and never
+           into the first. minmax(0, auto) on the nav row keeps the sidebar
+           shrinkable - an auto row would refuse to go below the pane's own height and
+           push it out of a locked screen. */
         body.in-session .quiz-layout {
-            /* flex lives on the later rule below, beside the auto margins it belongs to. */
-            min-height: 0; align-items: start;
+            /* flex lives on the later rule below, beside the auto margins it belongs to.
+               relative: syncQuizAside() measures up the offsetParent chain to here. */
+            position: relative; min-height: 0; align-items: start;
             grid-template-columns: minmax(0, 1fr) auto;
-            grid-template-rows: minmax(0, 1fr) auto minmax(0, auto) minmax(0, 1fr);
-            grid-template-areas: "main ." "main stats" "main nav" "main .";
+            grid-template-rows: minmax(var(--opts-top, 0px), auto) minmax(0, auto) minmax(0, 1fr);
+            grid-template-areas: "main stats" "main nav" "main .";
         }
         body.in-session .quiz-main { grid-area: main; }
         body.in-session .quiz-topbar { grid-area: stats; }
         body.in-session .quiz-sidebar { grid-area: nav; }
-        /* 2x2 over the panel's width rather than four across: the column is 248px, and
-           four figures on one line there would set in two anyway, raggedly. */
         body.in-session .quiz-topbar { display: block; margin-bottom: var(--space-md); }
-        body.in-session .quiz-topbar .stats-bar {
-            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-            column-gap: var(--space-md); row-gap: var(--space-sm); justify-items: start;
+        /* Four across, each a figure over its name, a rung smaller than the phone's
+           inline row and inset to the navigator's own content edge (--space-ms), so the
+           block reads as one column rather than a wider band on top of a narrower
+           panel. German's widest name, "Beantwortet", sets ~68px at 12px, and the four
+           fit the ~224px inset with room over. */
+        @media (min-width: 941px) {
+            body.in-session .quiz-topbar { align-self: end; padding-inline: var(--space-ms); }
+            body.in-session .quiz-topbar .stats-bar { justify-content: space-between; column-gap: var(--space-sm); }
+            body.in-session .quiz-topbar .stat { flex-direction: column; align-items: center; gap: var(--space-2xs); }
+            body.in-session .quiz-topbar .stat-value { font: var(--type-control-sm); font-variant-numeric: tabular-nums; }
+            body.in-session .quiz-topbar .stat-label { font: var(--type-caption); }
         }
         /* The block sits low on the screen, and the room above and below it BOTH give way
            to content before anything scrolls. Auto margins are what buy that: the block
@@ -897,12 +919,13 @@
            to a 36px line it is close enough to practice that the auto margins above
            balance both. `body.in-exam` is still set — the class is cheap and the next
            exam-only rule will want it — but nothing in the layout reads it. */
-        /* align-self: center, so the two columns centre on EACH OTHER rather than the
-           question always winning. The spacer rows centre the readouts-and-navigator
-           pair against the question while the question is the taller of the two; open
-           the navigator and the pair becomes the taller, and without this the question
-           stayed pinned to the top and the centres drifted apart again. */
+        /* align-self: center is what centres the column in its row on a tablet
+           (621-940px). Beside the navigator it is START: the navigator is placed from
+           the options' offset in this column, so the column must not move when the
+           navigator grows - centred, opening the overview would shift the question,
+           which moves the options, which moves the navigator. */
         body.in-session .quiz-main { display: flex; flex-direction: column; min-height: 0; max-height: 100%; align-self: center; }
+        @media (min-width: 941px) { body.in-session .quiz-main { align-self: start; } }
         /* 0 1 auto, not 1: the card takes the height it needs and no more, so a
            four-option question sits at the top of the column instead of being
            stretched down the screen with its buttons pinned to the bottom. It can
@@ -1000,7 +1023,7 @@
             /* No lock here, so there is no slack to spend and no resting position to
                move — and the capped expression would go NEGATIVE below 520px tall,
                pulling the question up under the progress bar. */
-            body.in-session .quiz-layout { grid-template-rows: auto auto auto; flex: 0 0 auto; margin-block: 0; }
+            body.in-session .quiz-layout { flex: 0 0 auto; margin-block: 0; }
             body.in-session .quiz-headspace, body.in-session .quiz-tailspace { display: none; }
             body.in-session .question-card { flex: 0 0 auto; }
             body.in-session #endScreen.active { overflow: visible; }
@@ -1302,8 +1325,11 @@
             border-radius: var(--radius);
             /* --space-xl. The mockup measures ~20 here, but its content is tiles with
                their own padding; bare blocks sit right on this inset, so 20px put the
-               ring's stroke that far from the card's border and read as a crop. */
-            padding: var(--space-xl);
+               ring's stroke that far from the card's border and read as a crop.
+               The TOP is --space-md (2026-09-23, on request: "too much empty space on
+               the top"): above the ring sat 28 + the note + 28, three times the 28
+               under it, for one line of small print. */
+            padding: var(--space-md) var(--space-xl) var(--space-xl);
         }
         /* ONE TILE SHADE ON THIS PAGE (2026-09-22, on request), and since 2026-09-23 it
            is a TOKEN rather than a light-only override: every tile here reads --tile and
@@ -1329,7 +1355,7 @@
             color: var(--muted);
             text-align: center;
             padding-inline: var(--space-2xl);
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-md);
         }
 
         /* The summary block is the widest column because it carries a sentence; the
@@ -1589,11 +1615,12 @@
         /* German sets these names as one long word; the backstop keeps a label that
            outgrows its tile inside it rather than across its border. */
         .dash-stat .ds-label { overflow-wrap: anywhere; }
-        /* A bare glyph centred over the figure (2026-09-23, on request). No plate, and
-           neutral like every icon here: the due numeral stays the one thing in colour.
-           The margin makes the glyph-to-figure step 8px against the figure-to-name 4. */
-        .ds-icon { display: flex; justify-content: center; margin-bottom: var(--space-2xs); color: var(--sub-text); }
-        .ds-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        /* The practise cards' disc, centred over the figure (2026-09-23, on request:
+           "the icon style of where you stand should match ... choose your practise
+           mode"). The disc itself is .mode-icon's rule; neutral like every icon here, so
+           the due numeral stays the one thing in colour. The margin makes the
+           disc-to-figure step 8px against the figure-to-name 4. */
+        .ds-icon { align-self: center; margin-bottom: var(--space-2xs); }
         /* Something to do today is the one counter allowed to raise its hand,
            and a coloured numeral is the whole of it — a tinted slab behind it
            reads as brown mud on charcoal and buys no more attention. */
@@ -1766,14 +1793,15 @@
         /* A CIRCLE one rung above the tile, glyph in --text: the mockup's disc measures
            1.294 on its tile, --surface is 1.271 on --tile. Light has no rung above a
            white tile, so its disc steps DOWN to --surface2, as every light well does. */
-        .mode-icon {
+        /* .ds-icon shares it: the overview card's readouts wear the same disc. */
+        .mode-icon, .ds-icon {
             display: grid; place-items: center;
             width: var(--ctl-md); height: var(--ctl-md); flex-shrink: 0;
             border-radius: var(--radius-pill);
             background: var(--surface); color: var(--text);
         }
-        html.light .mode-icon { background: var(--surface2); }
-        .mode-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
+        html.light .mode-icon, html.light .ds-icon { background: var(--surface2); }
+        .mode-icon svg, .ds-icon svg { width: var(--icon-lg); height: var(--icon-lg); }
         .mode-head { display: flex; flex-direction: column; align-items: center; gap: var(--space-ms); margin-bottom: var(--space-2xs); }
         .mode-head .mode-title { min-width: 0; }
         /* German compounds are one long word, and five cards a row is a ~163px title
@@ -2196,6 +2224,10 @@
         /* On a touch screen every one of these is a finger target, not a cursor target. */
         @media (pointer: coarse) {
             .speak-btn, .bilingual-toggle, .session-back, .brand { min-height: var(--ctl-md); }
+            /* The header toggles went to 28px for a mouse; a thumb keeps the 36 they had. */
+            .lang-toggle { min-height: var(--ctl-sm); min-width: var(--ctl-sm); }
+            .header-controls > .seg { min-height: var(--ctl-sm); }
+            .header-controls > .seg .seg-btn { width: var(--ctl-sm); }
             /* The next rung UP, or this rule sets the height it already had: an answer
                row is the thing you reach for most, and a thumb gets the height back. */
             .option-btn { min-height: var(--ctl-lg); }
@@ -2634,7 +2666,6 @@
                phone the strip was the first thing on the screen, competing with the
                question for the reader's first look. The card takes the flexible row,
                the strip takes what it needs. */
-            body.in-session .quiz-layout { position: relative; }
             /* Expanded, the panel takes a share of the screen and no more: it grows
                up from the bottom to 42% of the viewport and the numbers scroll INSIDE
                it, so the question stays on screen above. It used to cover the card
@@ -2668,9 +2699,6 @@
                question, the tally and the overview strip below do not, and that
                distance is what says so. */
             body.in-session .quiz-topbar { margin-top: var(--space-2xl); margin-bottom: 0; }
-            /* Back to one line down here: the panel's 248px column is what asked for a
-               2x2, and on a phone the row is the full width. */
-            body.in-session .quiz-topbar .stats-bar { display: flex; }
             .quiz-sidebar { width: auto; position: static; padding: var(--space-xs) var(--space-md); margin-top: var(--space-sm); }
             .sidebar-header { cursor: pointer; min-height: var(--ctl-md); display: flex; flex-direction: column; justify-content: center; }
             /* Below this the hint costs the card a row for a tip that is only ever
@@ -2856,7 +2884,6 @@
             .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
-            .brand-mark { width: var(--ctl-xs); height: var(--ctl-xs); }
             /* BOTH PAGES ARE IN THE PHONE'S NAV (2026-09-22, on request: "in mobile
                view the header should show both the pages similar to the desktop
                view"). This is the third answer here and each one was a width problem:
@@ -5587,6 +5614,26 @@
         initTheme();
         syncHeaderHeight();
         new ResizeObserver(syncHeaderHeight).observe(_headerEl);
+
+        // Beside the question, the navigator's top edge is the first answer's: this
+        // writes that answer's offset from the top of the layout into --opts-top, and
+        // the grid's first row is at least that tall. offsetTop, not a client rect: it
+        // ignores the question's entrance transform (a rect taken mid-animation came
+        // out 10px low, and nothing resizes when the animation ends) and the question's
+        // own scroll. .quiz-layout is position: relative so the offsetParent chain ends
+        // on it. Everything that can move the options is in the question column - the
+        // clock, the question, its translation, a prompt image, the options themselves
+        // and the explanation that re-centres them - so observing those catches every
+        // change, a resize included.
+        const _quizLayout = document.querySelector('.quiz-layout');
+        function syncQuizAside() {
+            let top = 0;
+            for (let el = document.getElementById('optionsContainer'); el && el !== _quizLayout; el = el.offsetParent) top += el.offsetTop;
+            _quizLayout.style.setProperty('--opts-top', Math.max(0, top) + 'px');
+        }
+        const _asideObserver = new ResizeObserver(syncQuizAside);
+        [document.getElementById('timer'), document.getElementById('questionBody'),
+            ...document.getElementById('questionBody').children].forEach(el => _asideObserver.observe(el));
 
         loadProgress();
         loadHistory();
