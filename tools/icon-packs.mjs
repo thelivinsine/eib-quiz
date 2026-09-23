@@ -170,8 +170,8 @@ const solid = {
     // sun / monitor / moon moved to `line` on 2026-09-23 - see there.
     // (file and checkCircle, then leaf, were drawn for the overview card and deleted
     // with the things that held them: the plates on 2026-09-22, the closing line on 2026-09-23.)
-    // index.html aliases these rather than redrawing them.
-    clock: ev(donut(12, 12, 9.2, 7.1)) + CLOCK_HANDS,
+    // (clock went on 2026-09-23 with the mode cards' clock, its last reader.)
+    // index.html aliases this rather than redrawing it (ICONS.community = ICONS.society).
     community: PERSON_B + PERSON_A,
 };
 
