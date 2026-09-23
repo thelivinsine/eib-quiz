@@ -2861,3 +2861,16 @@ header is on one centre line and holds 734/734.
 - Keyboard focus-visible opening was not driven; the rule is present.
 - Nothing was tried on a real touch device. Chromium only.
 - **Merged directly to `main` as `a2203fe`** (on request, no PR). Pages publishes it from there.
+
+## Session developments (2026-09-23, scheme icons bolded, not filled)
+
+- The chosen scheme glyph is **bolded** (`stroke-width: 2.75` against 2), not filled. Only
+  the sun also fills its r 4 disc, which is too small to read as bold. Monitor and moon stay
+  outlines (on request).
+
+### Verified
+Contrast and scale (22 tests) pass. Headless screenshots of all three selected states were
+looked at, and every glyph stays inside its 24-unit box at 2.75.
+
+### Not verified
+- Dark theme was not screenshotted; the rule is theme-independent (`currentColor`).

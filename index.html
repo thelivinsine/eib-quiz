@@ -684,16 +684,18 @@
         /* The header's scheme seg: the same 36px box as EN, three 36px-wide cells (34
            tall inside the seg's hairline), 16px glyphs (the reference's 0.37 of the box: the
            sun draws 20 of its 24 units), and no chip. THE GLYPHS ARE THE USER'S REFERENCE (2026-09-23): LINE icons, a
-           2-unit round stroke, and the chosen mode's body - its FIRST shape: the disc,
-           the screen, the crescent - filled, in --text. The other two are --muted
-           lines. Grey only: the chosen mode is DARKER and BOLDER, never blue. */
+           2-unit round stroke. The chosen mode is --text and a BOLDER 2.75-unit line;
+           only the sun also fills its disc (2026-09-23, on request), because an r 4 ring
+           is too small to read as bold - a filled screen or crescent read as a blob.
+           The other two are --muted lines. Grey only, never blue. */
         .header-controls > .seg { min-height: var(--ctl-sm); padding: 0; gap: 0; background: none; border-radius: var(--radius-ctl); }
         .header-controls > .seg .seg-btn { width: var(--ctl-sm); min-height: 0; border: none; background: none; border-radius: var(--radius-ctl); }
         .header-controls > .seg .seg-btn svg {
             width: var(--icon-sm); height: var(--icon-sm);
             fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
         }
-        .header-controls > .seg .seg-btn.active svg > :first-child { fill: currentColor; }
+        .header-controls > .seg .seg-btn.active svg { stroke-width: 2.75; }
+        #lightBtn.active svg > :first-child { fill: currentColor; }
         /* COLLAPSED TO THE CHOSEN MODE (2026-09-23, on request). The other two slide
            to zero width and open on hover, on a tap where there is no hover (.open,
            set in JS), or on keyboard focus. max-width, not width, so the 360px

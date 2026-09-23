@@ -570,8 +570,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       already 36 — and the nested 360px block still narrows the cells to 28.
     - **GREY ONLY — NO BLUE ON EITHER TOGGLE** (2026-09-23, on request: "the toggle icons
       should not have any blue accent colors, just grey"). EN is `--text` at 700, and
-      the chosen mode is `--text` with its body FILLED; **the other two are `--muted`
-      LINES**. Darker, filled and bold against lighter and thin is the whole selection
+      the chosen mode is `--text` in a BOLDER line; **the other two are `--muted`
+      LINES**. Darker and bolder against lighter and thin is the whole selection
       signal — the same answer to "darker and bolder" the brief asked for at the start.
       (The accent was on both for part of the day; `#schemeSeg .seg-btn.active`'s accent
       rule is deleted.)
@@ -581,8 +581,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       drawn as geometry only, and stroked by the header seg's CSS (`fill: none; stroke:
       currentColor; stroke-width: 2`, round caps and joins), so no markup carries
       `stroke="currentColor"` and that grep still comes back empty.
-      `.active svg > :first-child` fills the chosen glyph's BODY — the disc, the screen,
-      the crescent — which is why **each keeps its body as its first shape**. They live
+      **The chosen glyph is BOLDED, not filled** (2026-09-23, on request): `.active svg`
+      takes `stroke-width: 2.75` against the resting 2. **Only the SUN also fills** —
+      `#lightBtn.active svg > :first-child`, its r 4 disc, which is too small to read
+      as bold. A filled screen or crescent read as a solid blob, and the user asked for
+      an outline there; do not restore the fill for those two. They live
       in `tools/icon-packs.mjs`'s `line` pack now, and the shipped strings were
       checked against the generator's output.
       **Redrawn to the reference's proportions the same day** ("replicate exactly as I
