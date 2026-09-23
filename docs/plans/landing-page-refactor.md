@@ -8,6 +8,11 @@
 > and every `data-tier` are gone. Everything else here — the components, the palette, the
 > per-phase decisions — still stands; read CLAUDE.md's "HOME AND PRACTISE ARE TWO SCREENS"
 > before touching either page.
+>
+> **Also reversed (2026-09-23, on request):** the three eyebrows this plan adds —
+> `hero.eyebrow`, `why.eyebrow`, `cta.eyebrow` — are removed, with the `.eyebrow` class;
+> and its buttons are one 44px / 15px / 8px-corner size (see CLAUDE.md's "EVERY TEXT BUTTON
+> IS ONE SIZE"). Do not restore either from the phases below.
 
 Status: **Complete, 2026-09-21** — all eight phases, including 7.7. The one thing not
 done is a check on the live site; every measurement here was against `python -m http.server`.

@@ -423,7 +423,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **`.dash`'s height IS the accuracy ring plus padding** — nothing else in the band is
       taller — so the ring is the only thing that can shorten it (112 -> 88px; on a phone it
       was 128px, *larger* than the desktop's, and is now 96). **Superseded 2026-09-21**: the
-      card is four tiles with its own heading now, the ring is 104px at every width, and
+      card is four tiles with its own heading now, the ring is 104px at every width (152
+      since 2026-09-23), and
       the verdict beside it is as tall as the ring.
     - **A topic chip is a chip, not a row.** `.topic-grid` is
       `repeat(auto-fit, minmax(230px, 1fr))`: five topics took three rows of 526px-wide
@@ -1138,9 +1139,9 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `--space-2xl` (40) is not available — it is not a gap rung anywhere in this sheet
       and using it would take `gapRungs` from 7 to 8.
     - **`align-items: center` on the grid is what makes four bare blocks read as a
-      row.** The ring block is 104px tall and a readout is **41.6** (it was 68 while
-      each carried a plate and a sub-line), so stretched — the default — the readouts
-      hang from the top with 62px of nothing under them.
+      row.** The ring block is 152px tall (104 until 2026-09-23) and a readout is
+      **41.6** (it was 68 while each carried a plate and a sub-line), so stretched — the
+      default — the readouts hang from the top with ~110px of nothing under them.
     - **The plate-vs-ring-axis question is CLOSED, because the plate is gone**
       (2026-09-22). It was real while a readout was a plate with a sub-line hanging
       below it: the block was not symmetric about its own plate, so centring it left
@@ -1307,7 +1308,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       **On a phone that box is 189px and the same string sets 188**, one pixel, which is
       not clearance — hence the rung down to `--fs-sm` (175.4 in 189) in the 620px block.
       All four tiers measured in both languages at both widths: every headline is ONE
-      line, which is what keeps this block shorter than the 104px ring beside it.
+      line, which is what keeps this block shorter than the ring beside it (152px since
+      2026-09-23; the verdict with its pass-mark key measures 70 at 1280).
     - **The card's padding and every gap inside it are `--space-xl`** (2026-09-22). The
       mockup measures ~20 and ~14, but its content is tiles with their own padding; bare
       blocks sit right on the card's inset, so 20px put the ring's stroke that far from
@@ -1949,7 +1951,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 27 glyphs — 26 drawings plus one alias — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 26 glyphs — 25 drawings plus one alias — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
