@@ -95,6 +95,8 @@ Rules that come with them:
 - `.brand-name`, `.footer-name` — the wordmark, part of the logo lockup.
 - `.glossary-summary::after`, `.keyboard-hint-close` — a `+` and a `×` used as icons.
 - `.lang-toggle` — `--type-chip` plus `font-weight: 700`, which the user asked for on the EN code.
+- `.hist-mode`, `.hist-score`, `.qnav-group-count` — inline emphasis: a weight on a span
+  inside a parent that already reads a role. They set no size or family.
 
 ## 2. Mapping
 
@@ -108,14 +110,16 @@ Rules that come with them:
 | body | `.hero-lead` (16 → 15), `.section-head p`, `.cta-lead`, `.explanation-text` (14 → 15) |
 | small | `.mode-description`, `.why-item p`, `.dash-verdict p`, `.resume-text`, `.hist-row`, `.hist-exam-stats`, `.gloss-def`, `.footer-blurb`, `.question-english`, `.explanation-english`, `.review-answer`, `.review-explanation` |
 | label | the shared micro-label list — `.stat-label`, `.breakdown-label`, `.review-q-num`, `.timer-label`, `.sidebar-title`, `.question-num` — with its uppercase and `--ls-caps` removed, `.ds-label`, `.ready-ring-sub`, `.dash-pass`, `.resume-text > span`, `.stats-label`, `.question-category`, `.rs-label`, `.score-number`, `.pass-threshold-note`, `.review-count`, `.img-zoom-caption`, `.opt-num`, `.footer-col-title`, `.footer-link`, `#timer .timer-label`, `#timer .pacing-info` |
-| caption | `.brand-tagline`, `.footer-tagline`, `.mode-meta`, `.topic-chip-meta`, `.hist-date`, `.ds-of`, `.stat-of`, `.option-en-text`, `.opt-img-hover`, `.img-zoom-hint`, the missing-image `::after`, `.keyboard-hint`, `.footer-bar` |
+| caption | `.brand-tagline`, `.footer-tagline`, `.mode-meta`, `.topic-chip-meta`, `.hist-date`, `.ds-of`, `.stat-of`, `.option-en-text`, `.img-zoom-hint`, the missing-image `::after`, `.keyboard-hint`, `.footer-bar` |
 | figure-lg | `.stats-num` (700 → 600), `.score-ring-pct` |
 | figure-md | `.ready-ring-pct` (700 → 600), `.rs-num` |
 | figure-sm | `.ds-num`, `.stat-value`, `#timer .timer-display` |
 | script | `.script-note` |
 | control | `.btn-primary, .btn-secondary` |
 | control-sm | `.nav-link`, `.session-back`, `.state-picker-value`, `.gloss-item > summary` |
-| chip | `.seg-btn`, `.qnav-seg .seg-btn`, `.q-nav-btn`, `.qnav-group-head`, `.opt-letter`, `.speak-btn`, `.bilingual-toggle`, `.hist-badge`, `.mode-flag`, `kbd` (drops the system monospace), `.lang-toggle` |
+| chip | `.seg-btn`, `.qnav-seg .seg-btn`, `.q-nav-btn`, `.qnav-group-head`, `.opt-letter`, `.speak-btn`, `.bilingual-toggle`, `.hist-badge`, `.mode-flag`, `kbd` (drops the system monospace), `.lang-toggle`, `.opt-img-hover` |
+
+`.opt-img-hover` is chip, not caption: the same 12px, at the 600 the zoom veil's label needs over a photograph.
 
 **Deleted component overrides** in the 620px block: `.section-head h2, .cta-copy h2`,
 `.section-head p` (already hidden there), `.dash-verdict strong`,
