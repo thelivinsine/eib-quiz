@@ -313,8 +313,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `font: var(--type-*)`. **`font:` goes FIRST in its rule** — it resets
       `font-variant-numeric` and `line-height`, so a figure re-declares `tabular-nums`
       after it; it carries no tracking, so a head-family role keeps `--ls-display` on the
-      component. Phone type is TWO token overrides in a `max-width: 700px` block (heading 22,
-      figure-lg 28); no component states a font size. `scale.test.mjs` holds it:
+      component. Phone type is ONE token override in a `max-width: 700px` block (figure-lg 28);
+      the heading is fluid instead (`--fs-heading`, `clamp(1.25rem, 3.4vw, 1.5rem)`:
+      24 desktop, 20 phone, since 2026-09-23 on request — it was a 28/22 step). No
+      component states a font size. `scale.test.mjs` holds it:
       `typeOutsideRoles` is 0, `ROLE_EXEMPT` names the only exceptions (body, the iOS
       `<select>`, the wordmark, two glyphs, EN's 700, the inactive nav link's 400, three
       inline emphasis spans). `button` and `select` reset with `font: inherit`, not just
@@ -361,6 +363,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       **The end of the page is a BIGGER break than the one between two sections**: at 40/40
       the last card sat as close to the footer as the sections sat to each other, which
       reads as one more section rather than as the end.
+      **Both went up a rung on 2026-09-23, on request** ("breathing space between them"):
+      the section gap is `--space-3xl` (56) and the run-out `calc(var(--space-2xl) * 2)`
+      (80); the hero's own bottom padding is 56 too, so it ends like a section. On a phone
+      40 / 56 / 40. Every `.section-head` takes `--space-lg` (20) under it, up from 12 —
+      the why and practise bands' two overrides went, being the same value.
     - **`--ctl-md: 44px` is a token, not just a media query.** Primer and Linear both publish
       their touch target as one. Four heights: 28 / 36 / 44 / 52.
     - **An icon size is `--icon-*`, a hit target is `--ctl-*`, and neither is a literal**
@@ -430,8 +437,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       the mockup.** Measured at 1.14x (the mockup's 928px column against this app's 1060px)
       the landing page came back 1.3-1.5x short of it everywhere above the body tier: the
       hero at 38px against 59, the three section headings at 22 against 30, the four
-      headline numbers at 28 against 39. So `--fs-hero` is `clamp(2rem, 5.2vw, 3.5rem)`
-      (56px desktop, 32 on a phone), `.section-head h2` and `.cta-copy h2` take `--fs-2xl`,
+      headline numbers at 28 against 39. So `--fs-hero` was `clamp(2rem, 5.2vw, 3.5rem)`
+      (56px desktop, 32 on a phone — **the ceiling came down to 2.75rem, 44px, on
+      2026-09-23 on request**; only the ceiling can move, since 5.2vw and the 32 floor are
+      what keep it over the 36/28 figures), `.section-head h2` and `.cta-copy h2` took `--fs-2xl`
+      (`--type-heading`, 24/20 since 2026-09-23),
       and `.stats-num` takes `--fs-3xl` (`--type-figure-lg` since 2026-09-23 — weight 600, and
       **28 on a phone**, so the 32px headline outranks it). The BODY tier did not move — phases 1-5 were about
       line boxes and padding, and none of that was reopened. The page grew 1564 -> 1753px
@@ -1052,7 +1062,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `--space-xl`/`--space-md` of padding — and it is gone; the cards sit straight on the
     canvas, as the why band's four items do. Five bordered tiles are already five boxes,
     and a sixth around them is the containers-inside-containers look this sheet keeps
-    taking out. The class survives ONLY as the hook for `.modes-band .section-head`.
+    taking out. The class itself went on 2026-09-23 with its last hook, the section-head margin.
     - **The cards separate BETTER without it.** In dark a `#323232` tile is **1.36** off
       the `#1A1A1A` page against 1.18 off the panel; in light the hairline carries a
       white tile on white either way (1.245). Removing the plate cost the ladder nothing
@@ -1103,9 +1113,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       ways in — one goal: passing.") strings are gone: both restated what "Choose
       your practice mode" plus five visibly different cards already say, and three
       stacked lines of chrome pushed the cards down for nothing. The head takes
-      `--space-lg` beneath it (`.modes-band .section-head`) rather than the global
-      `--space-ms`, because one line needs to read as a heading. That rule is now the
-      only reason the class exists.
+      `--space-lg` beneath it, which since 2026-09-23 is every section head's value.
   - **The mode cards' discs are CIRCLES, one rung off the tile, and NEUTRAL** (2026-09-23;
     neutral since 2026-09-21, on request — **no icon in this app is painted in an accent
     or a semantic hue**). The icon disc is `--surface` in dark (1.271 on `--tile`, the
@@ -1149,7 +1157,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     does not. Five boxes to say one thing is the containers-inside-containers look this
     sheet keeps taking out, and each readout already has a coloured plate anchoring it,
     so the frame was saying nothing the plate did not.
-    `.dash-grid` is `3fr 1fr 1fr 1fr` (1.7, then 2, then 3 across 2026-09-22 — the
+    **`.dash-grid` is `minmax(0, 1fr) repeat(3, 112px)` with `--space-lg` of right
+    padding** (2026-09-23, on request: lock the rightmost readout, bring the other two
+    to it). The card is always 1060 when the row is four across, so fixed tracks are
+    safe; centres 140 apart, the last 76px in from the content edge where the old 1fr
+    track had it at 76.5. `.dash-summary` takes `--space-xl` of left padding to sit the
+    ring off the edge; both paddings are reset in the 1160 blocks. Before that it was
+    `3fr 1fr 1fr 1fr` (1.7, then 2, then 3 across 2026-09-22 — the
     verdict's type went back up and needed the width, then the readouts were asked to
     sit closer. **The COLUMN WIDTH is what sets the distance between them**, because
     each is centred in its own column and the 28px gap barely registers: 3fr pulled
@@ -1887,7 +1901,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   56px -> 40px. **The section gap went back UP on 2026-09-22, on request**: `--space-2xl`
   (40) on desktop and `--space-xl` (28) under 620px, with the run-out to the footer at
   `--space-3xl` (56) and `--space-2xl` (40) — the phone keeps the same ratio between the
-  two that the desktop has. The steps were set when the home screen was a wall of bento tiles. `--space-xs`
+  two that the desktop has. **And again on 2026-09-23**: 56 / 40 for the gap, 80 / 56 for
+  the run-out. The steps were set when the home screen was a wall of bento tiles. `--space-xs`
   / `-sm` / `-md` are the rhythm INSIDE a control and did not move. (The `--spacing-*` names
   are gone — everything reads `--space-*`.) Display numbers came down
   one step each (ready ring 1.9 -> 1.6rem and 132 -> 112px, `.ds-num` 1.75 -> 1.5, timer

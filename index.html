@@ -277,7 +277,15 @@
                notch each. This DOES reopen sizing phase 5's headline cut, deliberately
                and on request; the note in CLAUDE.md about never minting a token larger
                than the value it replaces still holds for a token minted in silence. */
-            --fs-hero: clamp(2rem, 5.2vw, 3.5rem);   /* the one clamp left */
+            /* 2026-09-23, on request: the ceiling came down 56 -> 44 ("reduce the size of
+               the hero heading"). Only the CEILING could move: 5.2vw is what keeps the
+               headline over the 36px figures just above the 700px step, and the 32px
+               floor is what keeps it over the phone's 28px ones. */
+            --fs-hero: clamp(2rem, 5.2vw, 2.75rem);
+            /* 2026-09-23, on request ("reduce the headings a bit"): 28 -> 24 on a desktop,
+               22 -> 20 on a phone, fluid between. A clamp rather than a phone override,
+               so the 700px block only has the figures left to step. */
+            --fs-heading: clamp(1.25rem, 3.4vw, 1.5rem);
 
             /* ---- LEADING --------------------------------------------------------
                Compare the LINE BOX, not the ratio. All four reference systems land their
@@ -338,7 +346,7 @@
                Phone sizes are two overrides in the max-width 700px block; no component states a
                font size. Spec: docs/plans/2026-09-23-typography-and-responsive-design.md */
             --type-display:    700 var(--fs-hero)/var(--lh-tight) var(--font-head);
-            --type-heading:    600 var(--fs-2xl)/var(--lh-ui) var(--font-head);
+            --type-heading:    600 var(--fs-heading)/var(--lh-ui) var(--font-head);
             --type-subheading: 600 var(--fs-lg)/var(--lh-ui) var(--font-head);
             --type-title:      600 var(--fs-md)/var(--lh-ui) var(--font-head);
             --type-option:     400 var(--fs-md)/var(--lh-ui) var(--font-body);
@@ -750,7 +758,9 @@
                closer to the footer than the sections are to each other, which is the
                wrong way round — the end of the content is a bigger break than the one
                between two sections. 56 is one rung above the section gap. */
-            padding-bottom: calc(var(--space-3xl) + env(safe-area-inset-bottom));
+            /* 80 since 2026-09-23: the section gap went to 56, and the run-out has to
+               stay the bigger break. */
+            padding-bottom: calc(var(--space-2xl) * 2 + env(safe-area-inset-bottom));
         }
         .screen { display: none; animation: fadeUp 0.32s var(--ease) both; }
         .screen.active { display: block; }
@@ -988,7 +998,8 @@
                sheet, and a ninth rung is the flat histogram the scale test watches for. */
             gap: var(--space-xl);
             align-items: center;
-            padding: var(--space-lg) 0 var(--space-2xl);
+            /* --space-3xl, the section gap: the hero ends like a section does. */
+            padding: var(--space-lg) 0 var(--space-3xl);
         }
         .hero-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 
@@ -1085,14 +1096,6 @@
            and the numbers under it against 40px everywhere else on the page, which is
            the doubling the screenshot was pointing at. The gap is uniform now and
            .home-section is the one place it is set. */
-        /* --space-lg under the heading rather than the global 12px, and down from 40 in
-           the same pass: a centred heading over a panel still has to read as a heading,
-           but the panel's own edge does half the separating that 40px of whitespace
-           used to do alone. Same value as .modes-band's, which is the same shape. */
-        #whyBand .section-head { margin-bottom: var(--space-lg); }
-        /* Same reasoning in the practise band, which is now a single centred line
-           over the picker and the five cards. */
-        .modes-band .section-head { margin-bottom: var(--space-lg); }
         .why-item {
             flex: 1 1 210px; min-width: 0;
             /* --space-md, up from --space-ms: a 44px disc needs more than 12px before
@@ -1165,10 +1168,14 @@
         /* --space-2xl, up from --space-xl (2026-09-22, on request). Each of these is a
            titled section with a card or a band under it, and 28px between one section's
            last card and the next section's heading read as one continuous column. */
-        .home-section { margin-bottom: var(--space-2xl); }
+        /* --space-3xl, up again from --space-2xl (2026-09-23, on request: "add more
+           space ... breathing space between them"). */
+        .home-section { margin-bottom: var(--space-3xl); }
         .home-section:last-child { margin-bottom: 0; }
 
-        .section-head { margin-bottom: var(--space-ms); max-width: 62ch; }
+        /* --space-lg for every section (2026-09-23): 12px under a heading and its lead
+           ran them into the card below. The why and practise bands already had 20. */
+        .section-head { margin-bottom: var(--space-lg); max-width: 62ch; }
         /* The picker centres under the practise band's heading, and it is the PILL
            ALONE (2026-09-23): the practise-mode mockup draws no "Your state" label
            beside it — the pin glyph and the state's name say what it is. The <select>
@@ -1260,16 +1267,19 @@
            four share an axis. */
         .dash-grid {
             display: grid;
-            /* 3fr, not 2: the readouts are centred in their own columns, so the
-               COLUMN WIDTH is what sets the distance between them and the gap barely
-               matters. Widening the summary narrows all three and pulls their centres
-               from 211.6px apart to 181 (2026-09-22, on request: "bring them a bit
-               closer"). The verdict gains the width rather than losing it, so its
-               headline stays on one line with more room than before, and the ring is
-               fixed at 152 and does not stretch. */
-            grid-template-columns: 3fr 1fr 1fr 1fr;
+            /* The readouts are centred in their own columns, so the COLUMN WIDTH is what
+               sets the distance between them and the gap barely matters. 211.6px apart
+               under 2fr, 181 under 3fr (2026-09-22), 140 now (2026-09-23, on request:
+               the RIGHTMOST readout stays put and the other two close up on it). The
+               card is capped at 1060 whenever this row is four across, so the tracks can
+               be fixed: 112px readouts, and the --space-lg inset holds the last centre
+               where the old 153px 1fr track had it (76.5 in from the edge, 76 now). The
+               summary takes the freed width; the ring is fixed at 152 and does not
+               stretch. */
+            grid-template-columns: minmax(0, 1fr) repeat(3, 112px);
             align-items: center;
             gap: var(--space-xl);
+            padding-right: var(--space-lg);
         }
         /* FOUR ACROSS IS A WIDE-SCREEN LAYOUT ONLY, and 1160 is the same width the
            mode grid breaks at. It was the LABEL that set this break: a ~150px column
@@ -1282,7 +1292,7 @@
            (244px each at a 900px viewport). Measured, both languages,
            1400 / 1200 / 1159 / 1024 / 900 / 760 / 640. */
         @media (max-width: 1160px) {
-            .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-right: 0; }
             /* Only grid-column here — the CENTRING lives in a second 1160 block
                BELOW the base .dash-summary rule, because that base sits after this one
                in the sheet and both are single-class selectors, so anything stated here
@@ -1298,6 +1308,8 @@
             min-width: 0;
             display: grid; grid-template-columns: auto 1fr;
             align-items: center; gap: var(--space-md);
+            /* Nudged in off the card's edge (2026-09-23, on request), four across only. */
+            padding-left: var(--space-xl);
         }
         /* THE PAIR CENTRES ONCE THE SUMMARY OWNS THE ROW (2026-09-22, on request: "the
            ring graph and the text aren't centred at this screen width"). Below 1160 the
@@ -1312,7 +1324,7 @@
            phone's stacked-and-centred treatment is for a column too narrow to hold the
            two side by side, which this is not. */
         @media (max-width: 1160px) {
-            .dash-summary { grid-template-columns: auto auto; justify-content: center; }
+            .dash-summary { grid-template-columns: auto auto; justify-content: center; padding-left: 0; }
         }
         /* NO RULE BETWEEN THE RING AND THE VERDICT (2026-09-22, on request). The
            mockup draws one; it was removed anyway, because the ring is already a shape
@@ -1622,8 +1634,8 @@
            against 1.18 off the panel, and in light the hairline carries it either way.
            What went with it: the 620px padding override, and the two html.light
            .modes-band state rules that only existed because a white card could not step
-           down far enough on a panel 1.20 beneath it. .modes-band survives as the hook
-           for the section head's margin. */
+           down far enough on a panel 1.20 beneath it. .modes-band went on 2026-09-23 with
+           the section-head margin it was the last hook for. */
         /* --space-sm, not --space-md: at five columns every pixel of gap comes off the
            card, and the meta row has to hold the count and the estimate on ONE line. */
         .modes-grid {
@@ -2569,14 +2581,13 @@
             .sidebar-body.expanded { display: flex; max-height: 26vh; max-height: 26svh; }
         }
 
-        /* The phone's two type steps, and the ONLY place a phone font size lives: a
-           heading drops to 22 and a big figure to 28, so the display headline still
-           outranks both. 700, NOT the 620 layout breakpoint: --fs-hero is 5.2vw, so the
+        /* The phone's type step, and the ONLY place a phone font size lives: a big
+           figure drops to 28, so the display headline still outranks it (the heading
+           is fluid now, --fs-heading, and needs no step). 700, NOT the 620 layout breakpoint: --fs-hero is 5.2vw, so the
            headline only clears the 36px figure above 692px — at 621-692 it was 32-36
            against 36 (final review, 2026-09-23). scale.test.mjs checks every width. */
         @media (max-width: 700px) {
             :root {
-                --type-heading:   600 var(--fs-xl)/var(--lh-ui) var(--font-head);
                 --type-figure-lg: 600 var(--fs-2xl)/var(--lh-tight) var(--font-head);
             }
             /* The results ring steps down WITH its numeral (190 -> 160px): at 620 the
@@ -2586,7 +2597,7 @@
         }
 
         @media (max-width: 620px) {
-            main { padding: var(--space-lg) var(--space-md); padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom)); }
+            main { padding: var(--space-lg) var(--space-md); padding-bottom: calc(var(--space-3xl) + env(safe-area-inset-bottom)); }
             /* body.in-session main outranks the rule above it on specificity alone,
                media query or not, so the 16px gutter has to be restated here. */
             body.in-session main {
@@ -2595,7 +2606,7 @@
             }
 
             /* Hero: introduce, then get out of the way. */
-            .hero-landing { padding: var(--space-ms) 0 var(--space-lg); gap: var(--space-lg); }
+            .hero-landing { padding: var(--space-ms) 0 var(--space-2xl); gap: var(--space-lg); }
             /* Buttons stay SIDE BY SIDE on a phone (2026-09-23, on request). The pair
                splits the row evenly rather than stacking full width, and the side
                padding comes down a rung so both German labels fit at 375. */
@@ -2620,7 +2631,7 @@
                went 28 -> 40 and this one stayed at 20, which on a phone — where every
                section is a full-width stack — read as one continuous column. 28 keeps the
                same ratio to the page's 40px run-out that the desktop's 40 has to its 56. */
-            .home-section { margin-bottom: var(--space-xl); }
+            .home-section { margin-bottom: var(--space-2xl); }
             /* A section's one-line description is a desktop affordance. Down here each
                wraps to two lines and the four of them cost ~150px — 7% of the page —
                while the headings above them already name the section. The heading stays;
@@ -3045,7 +3056,7 @@
 
             <!-- 2 · Practise — the main event. It carried #homeMain while the hero's
                  CTA scrolled to it; the CTA navigates here now, so the anchor is gone. -->
-            <section class="home-section modes-band">
+            <section class="home-section">
                 <!-- The heading alone. "Practise your way" and "Five ways in - one
                      goal: passing." both said what "Choose your practice mode" plus
                      five visibly different cards already say, and three stacked lines
