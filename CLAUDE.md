@@ -745,12 +745,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `reducedMotion()`) runs `top` 2px -> -2px -> 0. **It animates `top`, NEVER a
   transform**: a composited `scale()` is drawn from a cached raster, and the text blurred
   and then snapped sharp as the animation ended. Both a rotating spring on the mark and a
-  whole-block scale spring shipped first and were rejected. **In dark ONE soft `--text` halo
-  sits behind the whole mark** (2026-09-24, on request) because its navy top bar all but
-  vanished into the charcoal: `.brand-mark::before`, a `radial-gradient` at 22% to 40%
-  that fades out `--space-ms` beyond the box, behind the SVG via `isolation: isolate`;
-  light hides it. **Not a `drop-shadow`**: an outline glow shipped first and lit the notch
-  beside the red bar, so the three bars read as separate pieces. The logo is one mark. **The footer's block takes the same treatment** (same day, on request):
+  whole-block scale spring shipped first and were rejected. **In dark the E carries a TIGHT
+  `--text` glow that follows its whole outline evenly** (2026-09-24, on request) because
+  its navy top bar all but vanished into the charcoal: two `drop-shadow`s on the SVG,
+  1.5px @ 50% and 3px @ 18% (via `color-mix`); light has `filter: none`. The size is the
+  point, and two others were rejected the same day: a **6px** spread filled the notch
+  beside the red bar and split the three bars apart, and a round **halo** behind the mark
+  (`::before`, radial gradient) read as a spotlight rather than as the E's own glow. **The footer's block takes the same treatment** (same day, on request):
   it shares `.brand-mark` (so the glow) and the tagline rule, and was already centred.
   It is NOT a button, so it has no click animation. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
