@@ -327,7 +327,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       24 desktop, 20 phone, since 2026-09-23 on request — it was a 28/22 step). No
       component states a font size. `scale.test.mjs` holds it:
       `typeOutsideRoles` is 0, `ROLE_EXEMPT` names the only exceptions (body, the iOS
-      `<select>`, the wordmark, the header tagline's 11px, two glyphs, EN's 700, the inactive nav link's 400, three
+      `<select>`, the wordmark, the header tagline's 10px, two glyphs, EN's 700, the inactive nav link's 400, three
       inline emphasis spans). `button` and `select` reset with `font: inherit`, not just
       the family, so a button that forgets its role inherits rather than taking the UA's
       13.33px, and a hierarchy test keeps display > figure-lg > heading >
@@ -346,8 +346,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       running text.
       Unitless on purpose: a length would be inherited verbatim by a 12px label.
     - **`--fs-2xs` (12px) is the FLOOR, and ONE thing is exempt: the header's `.brand-tagline`
-      at 11px** (2026-09-24, on request: "reduce the tagline's size"; a named `ROLE_EXEMPT`,
-      written `calc(var(--fs-2xs) - 1px)`, which `fontSizesBelowFloor` cannot see — the
+      at 10px** (2026-09-24, on request: "reduce the tagline's size", twice; a named `ROLE_EXEMPT`,
+      written `calc(var(--fs-2xs) - 2px)`, which `fontSizesBelowFloor` cannot see — the
       name is the record; the footer's tagline stays 12). Of the four references
       three render nothing below 12px and the fourth stops at 13; the 11px tokens that exist
       went unused on every page measured. `TYPE_EXEMPT` existed twice in one day, both times
@@ -736,11 +736,17 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   The **brand mark is the logo kit's E** (2026-09-23; it was the flat German flag in a
   rounded square before that) in a `--ctl-xs` box (36 until 2026-09-23, on request:
   "scale down ... the logo block"; the footer's mark shares the rule), beside a
-  `.brand-lockup` of `EIB Quiz` (`--fs-sm`, down from `--fs-base`) over the `nav.tagline` line (11px — see the floor note). The lockup sits
-  `translate: 0 var(--space-2xs)` LOW of the mark's centre (2026-09-24, on request); a
-  translate, because a margin grows the button and the strip. **Clicking the logo springs
-  the mark**: `.brand:active .brand-mark` squashes it and `brandPop()` (WAAPI, gated on
-  `reducedMotion()`) bounces it back with a small wobble. The name is markup, not `I18N`:
+  `.brand-lockup` of `EIB Quiz` (`--fs-sm`, down from `--fs-base`) over the `nav.tagline` line (10px, no tracking, no margin — see the floor note).
+  **The tagline's BASELINE sits on the mark's bottom edge** (2026-09-24, on request):
+  `.brand` is an `inline-grid` with `align-items: last baseline` (the mark has no text, so
+  its baseline is its bottom) and `align-content: center`, which is why it is a grid — a
+  single-line flex row cannot centre the pair in a coarse `min-height`'s slack. Measured
+  40 / 40 at 1280 in both languages, and 42.5 / 42.5 at a 44px min-height. The desktop
+  header is 56px with it (59.7 before), and the mark sits 1.5px above the nav's centre —
+  the tagline's room below its baseline. **Clicking presses the WHOLE block**:
+  `.brand:active` scales it to 0.96 and `brandPop()` (WAAPI, gated on `reducedMotion()`)
+  springs it back through one soft 1.025 overshoot. A rotating spring on the mark alone
+  shipped first and was rejected. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
   **so is the NAME** — the mark alone stands for the brand on a phone, and the 62px
   that frees is part of what pays for two nav links down there. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
