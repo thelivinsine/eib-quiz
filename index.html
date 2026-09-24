@@ -653,7 +653,11 @@
         html.light .brand-glow { display: none; }
         .brand-mark-top { display: none; }
         html.light .brand-mark-top { display: inline; }
-        .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
+        /* An OPTICAL 1px nudge down (2026-09-24, picked from two renders): the ink is
+           centred on the mark to 0.15px, but the thin grey tagline reads as a weak
+           bottom edge and the mark's bright yellow bar and its glow pull its optical
+           centre low, so centred text looked high. A translate, so nothing reflows. */
+        .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); translate: 0 1px; }
         .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-sm); letter-spacing: var(--ls-display); color: var(--text); }
         /* No margin and no tracking (2026-09-24, on request: the name sits right on the
            tagline, and "match the other text"). 10px is the ONE size under the 12px

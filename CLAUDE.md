@@ -740,7 +740,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   **The mark and the name + tagline GROUP share one centre line** (2026-09-24, on request,
   after a day of the tagline's baseline sitting on the mark's bottom edge was rejected):
   plain `align-items: center`, measured with the nav at 26.55 in both languages at 1280;
-  the desktop header is 54px. **Clicking dips the WHOLE block and bounces it back**:
+  the desktop header is 54px. **The header lockup then takes an OPTICAL `translate: 0 1px`**
+  (2026-09-24, picked from two renders): the ink was centred on the mark to 0.15px, but
+  the thin grey tagline reads as a weak bottom edge and the mark's yellow bar and its
+  70% glow pull its optical centre low, so centred text looked high. Both baselines
+  move exactly 1px (the tagline's is 1.45px off the mark's bottom now); nothing
+  reflows. The footer lockup is NOT nudged — it measured exactly centred (1.78 / 1.78)
+  and was not the one asked about. **To measure a lockup's ink, do not scale the text
+  up on a canvas**: Bricolage has an `opsz` axis, so a 10x copy draws different glyphs,
+  and the name's ink top came out 0.5px apart between two runs of the same build. **Clicking dips the WHOLE block and bounces it back**:
   `.brand:active { top: var(--space-3xs) }` and `brandPop()` (WAAPI, gated on
   `reducedMotion()`) runs `top` 2px -> -2px -> 0. **It animates `top`, NEVER a
   transform**: a composited `scale()` is drawn from a cached raster, and the text blurred
