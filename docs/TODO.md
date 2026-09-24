@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-24 (live commit `a3e1c5b`)_
+_Last updated: 2026-09-24 (live commit `ea404ec`)_
 
 ## Project status
 
@@ -3129,12 +3129,13 @@ squash-merged; the Pages build for `5bcbbd5` reports `built`.
 
 ## Session close (2026-09-24, the logo block)
 
-Live commit: **[`a3e1c5b`](https://github.com/thelivinsine/eib-quiz/commit/a3e1c5b)**, over
+Live commit: **[`ea404ec`](https://github.com/thelivinsine/eib-quiz/commit/ea404ec)**, over
+[`a3e1c5b`](https://github.com/thelivinsine/eib-quiz/commit/a3e1c5b),
 [`5bc0578`](https://github.com/thelivinsine/eib-quiz/commit/5bc0578),
 [`06d71bc`](https://github.com/thelivinsine/eib-quiz/commit/06d71bc),
 [`572b820`](https://github.com/thelivinsine/eib-quiz/commit/572b820),
 [`bddff1c`](https://github.com/thelivinsine/eib-quiz/commit/bddff1c) and
-[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All six were
+[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All seven were
 committed straight to `main` on request — no PRs: small tweaks, iterated live.
 - **The header lockup**, on request, in four passes:
   - "EIB Quiz" and the tagline are one group (no gap between them) centred on the mark,
@@ -3149,11 +3150,13 @@ committed straight to `main` on request — no PRs: small tweaks, iterated live.
     spring on the mark alone, and a whole-block `scale()`, whose text blurred and then
     snapped sharp at the end because a composited transform is drawn from a cached raster.
 - **Dark-mode glow** on the E, on request: the navy top bar all but vanished into the
-  charcoal canvas. A TIGHT `--text` `drop-shadow` (1.5px @ 50% + 3px @ 18%) follows the
-  whole outline evenly; light has `filter: none`. Header and footer share it. Two
-  versions were replaced on the way: a 6px outline glow (`06d71bc`) filled the notch
-  beside the red bar and split the bars apart, and a round halo behind the mark
-  (`5bc0578`) was too wide and read as a spotlight.
+  charcoal canvas. A tight `--text` glow RAMPS down the mark, black 30% / red 50% /
+  yellow 70% (variant A of three rendered as PNGs for the user to pick): `.brand-glow`,
+  a blurred copy of each bar behind the real ones through an SVG `<filter>`, in both
+  marks; light hides it. Three versions were replaced on the way: a 6px outline glow
+  (`06d71bc`) filled the notch and split the bars apart, a round halo (`5bc0578`) read as
+  a spotlight, and an even 1.5px + 3px `drop-shadow` (`a3e1c5b`) read strongest on the
+  black bar.
 - **The footer lockup** shares the header's tagline rule (10px, no tracking, no gap); it
   was already centred. It is not a button, so there is no click animation there.
 - `--ls-caps` lost its last readers and is **deleted**; `distinctTracking` 2 -> 1.
