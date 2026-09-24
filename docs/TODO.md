@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-24 (live commit `ea404ec`)_
+_Last updated: 2026-09-24 (live commit `cde9dc9`)_
 
 ## Project status
 
@@ -3129,13 +3129,14 @@ squash-merged; the Pages build for `5bcbbd5` reports `built`.
 
 ## Session close (2026-09-24, the logo block)
 
-Live commit: **[`ea404ec`](https://github.com/thelivinsine/eib-quiz/commit/ea404ec)**, over
+Live commit: **[`cde9dc9`](https://github.com/thelivinsine/eib-quiz/commit/cde9dc9)**, over
+[`ea404ec`](https://github.com/thelivinsine/eib-quiz/commit/ea404ec),
 [`a3e1c5b`](https://github.com/thelivinsine/eib-quiz/commit/a3e1c5b),
 [`5bc0578`](https://github.com/thelivinsine/eib-quiz/commit/5bc0578),
 [`06d71bc`](https://github.com/thelivinsine/eib-quiz/commit/06d71bc),
 [`572b820`](https://github.com/thelivinsine/eib-quiz/commit/572b820),
 [`bddff1c`](https://github.com/thelivinsine/eib-quiz/commit/bddff1c) and
-[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All seven were
+[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All eight were
 committed straight to `main` on request — no PRs: small tweaks, iterated live.
 - **The header lockup**, on request, in four passes:
   - "EIB Quiz" and the tagline are one group (no gap between them) centred on the mark,
@@ -3143,6 +3144,10 @@ committed straight to `main` on request — no PRs: small tweaks, iterated live.
     desktop header is 54px (59.7 before). Two earlier answers were rejected on the
     way: a 4px `translate` on the lockup (it moved the tagline too), then the tagline's
     baseline on the mark's bottom edge.
+  - **An optical 1px nudge down** on the header lockup (`translate: 0 1px`), picked from two
+    renders: measured, the text was centred on the mark to 0.15px, but it LOOKED high —
+    the grey tagline is a weak bottom edge and the yellow bar's 70% glow pulls the mark's
+    optical centre low. The footer lockup measured exactly centred and was left alone.
   - The tagline is **10px with no tracking**: the one size under the 12px floor, a named
     `ROLE_EXEMPT` in `tools/scale.test.mjs`.
   - **Clicking the logo** dips the whole block 2px and bounces it through -2px
