@@ -67,7 +67,7 @@ const BUDGETS = {
   // The one left is the 120px floor under a MISSING option image — a placeholder
   // box, not a control, so it has no business on the control ladder.
   distinctControlH:     [1, "reached 2026-09-20 (phase 3)."],
-  distinctTracking:     [2, "reached 2026-09-20 (phase 3): --ls-caps and --ls-display."],
+  distinctTracking:     [1, "--ls-display alone since 2026-09-24, when the two taglines lost --ls-caps (on request) and the token went."],
   literalIconSizes:     [0, "reached 2026-09-20. An icon size is --icon-*, a hit target --ctl-*."],
   gapRungs:             [7, "target ~5 — two rungs should carry the page; 2px and 6px merged away."],
   globalLineHeights:    [3, "leading lives in the --type-* roles since 2026-09-23; what is left is glyph boxes and the lockups"],
@@ -210,7 +210,7 @@ const SPACING_PROPS = [
 // --- the metrics ---------------------------------------------------------------------------
 
 /**
- * THERE IS ONE TYPE EXEMPTION: .brand-tagline at 10px (2026-09-24, on request), named in
+ * THERE IS ONE TYPE EXEMPTION: the brand tagline at 10px, header and footer (2026-09-24, on request), named in
  * ROLE_EXEMPT. It is a calc(), so fontSizesBelowFloor cannot see it — the name is the record.
  * The way the earlier ones were retired is still the useful part.
  *
@@ -311,8 +311,8 @@ const ROLE_EXEMPT = {
   "body": ["font-family", "font-size"],
   ".state-picker select": ["font-size"],
   ".brand-name": ["font-family", "font-size", "font-weight"],
-  // The one size under the 12px floor: the header tagline at 10px (2026-09-24, on request).
-  ".brand-tagline": ["font-size"],
+  // The one size under the 12px floor: the header and footer tagline at 10px (2026-09-24, on request).
+  ".brand-tagline, .footer-tagline": ["font-size"],
   ".footer-name": ["font-family", "font-size", "font-weight"],
   ".glossary-summary::after": ["font-size"],
   ".keyboard-hint-close": ["font-size"],

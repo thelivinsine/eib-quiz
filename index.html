@@ -333,9 +333,9 @@
 
             /* ---- TRACKING -------------------------------------------------------
                Assigned by TIER, never per component — per-component is how this reached
-               eleven values. Positive at the smallest sizes, zero through the middle,
-               negative at display, which is what Linear and Primer both do. */
-            --ls-caps:     0.06em;
+               eleven values. Zero up to the display sizes, negative at display. The
+               positive --ls-caps tier went on 2026-09-24 with its last readers, the
+               two taglines. */
             --ls-normal:   0;
             --ls-display: -0.02em;
 
@@ -639,16 +639,24 @@
             width: var(--ctl-xs); height: var(--ctl-xs);
             display: grid; place-items: center;
         }
-        .brand-mark svg { width: 100%; height: 100%; display: block; }
+        /* In dark the navy top bar all but vanishes into the charcoal canvas, so the mark
+           carries a soft --text glow round its outline (2026-09-24, on request). No text,
+           so no contrast pair; light needs none, its white page shows the bar outright. */
+        .brand-mark svg {
+            width: 100%; height: 100%; display: block;
+            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--text) 45%, transparent))
+                    drop-shadow(0 0 6px color-mix(in srgb, var(--text) 15%, transparent));
+        }
+        html.light .brand-mark svg { filter: none; }
         .brand-mark-top { display: none; }
         html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
         .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-sm); letter-spacing: var(--ls-display); color: var(--text); }
         /* No margin and no tracking (2026-09-24, on request: the name sits right on the
-           tagline, and "match the other text"). 10px is the ONE thing under
-           the 12px floor, on request: brand decoration, hidden on a phone, and repeated
-           in the footer at 12. A named ROLE_EXEMPT in tools/scale.test.mjs, not a budget. */
-        .brand-tagline { font: var(--type-caption); font-size: calc(var(--fs-2xs) - 2px); color: var(--muted); }
+           tagline, and "match the other text"). 10px is the ONE size under the 12px
+           floor, on request: brand decoration, hidden on a phone. The footer's lockup
+           shares it (same day, on request). A named ROLE_EXEMPT in tools/scale.test.mjs. */
+        .brand-tagline, .footer-tagline { font: var(--type-caption); font-size: calc(var(--fs-2xs) - 2px); color: var(--muted); }
 
         /* Inside a session the logo is a link that loses your round, dressed as a
            logo. Body.in-session swaps the two; nothing branches in JS. */
@@ -2087,7 +2095,6 @@
             font-family: var(--font-head); font-weight: 700; font-size: var(--fs-base);
             letter-spacing: var(--ls-display); color: var(--text);
         }
-        .footer-tagline { font: var(--type-caption); color: var(--muted); letter-spacing: var(--ls-caps); margin-top: var(--space-2xs); }
 
         /* Visually hidden, still read out. */
         .sr-only {

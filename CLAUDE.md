@@ -307,8 +307,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `<link>`; keep it one request when adding a face. Display
     weights top out at 700. Micro-labels are SENTENCE CASE since 2026-09-23 (`--type-label`,
     no uppercase, no `--ls-caps`) and still share one rule (`.stat-label` and its list;
-    `.eyebrow` is GONE — see the landing page + shared list). `--ls-caps` survives on the
-    two taglines alone.
+    `.eyebrow` is GONE — see the landing page + shared list). `--ls-caps` is GONE too
+    (2026-09-24): its last readers were the two taglines, which lost it on request.
   - **There is a SIZE system now, and it is measured** (2026-09-20), against
     `claude-context-kit/docs/reference/type-and-space.md` — four shipping design systems
     (Stripe Sail, GitHub Primer, Linear, Khan Wonder Blocks) read out of their live DOM, token
@@ -334,7 +334,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       subheading > title and the question > its answers at EVERY width, 320 to 1600 — the phone had
       all three inverted (numbers 36 over a 32 headline, headings 18 over 16 titles, the
       question 16 = its answers). **Labels are sentence case** — nothing in the sheet is
-      uppercase; the two taglines are sentence case too and only keep `--ls-caps` tracking. Spec and plan: `docs/plans/2026-09-23-typography-*`.
+      uppercase, and nothing is tracked positive (the taglines' `--ls-caps` went 2026-09-24). Spec and plan: `docs/plans/2026-09-23-typography-*`.
     - **Compare the LINE BOX, not the ratio.** All four references land their dominant UI line
       at 19.5-21px whatever ratio gets them there. This app was `16px x 1.6 = 25.6px`, ~25%
       taller than any of them, paid once per line everywhere. `body` is `--lh-ui` (1.3) = 20.8px.
@@ -345,10 +345,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       `.review-answer`) puts `line-height: var(--lh-ui)` back after the role: a row is not
       running text.
       Unitless on purpose: a length would be inherited verbatim by a 12px label.
-    - **`--fs-2xs` (12px) is the FLOOR, and ONE thing is exempt: the header's `.brand-tagline`
-      at 10px** (2026-09-24, on request: "reduce the tagline's size", twice; a named `ROLE_EXEMPT`,
-      written `calc(var(--fs-2xs) - 2px)`, which `fontSizesBelowFloor` cannot see — the
-      name is the record; the footer's tagline stays 12). Of the four references
+    - **`--fs-2xs` (12px) is the FLOOR, and ONE thing is exempt: the brand tagline,
+      header and footer, at 10px** (2026-09-24, on request: "reduce the tagline's size", twice; a named `ROLE_EXEMPT`,
+      written `calc(var(--fs-2xs) - 2px)` in one `.brand-tagline, .footer-tagline` rule, which
+      `fontSizesBelowFloor` cannot see — the name is the record). Of the four references
       three render nothing below 12px and the fourth stops at 13; the 11px tokens that exist
       went unused on every page measured. `TYPE_EXEMPT` existed twice in one day, both times
       for the overview card's names (`.ready-ring-sub` at 9px, then it plus `.ds-label` at
@@ -399,7 +399,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
       the reference's 88% counts elements, and an early attempt to score it off the
       stylesheet was measuring something else entirely.
     - **Tracking is assigned by TIER, never per component** — per-component is how this
-      reached eleven values. `--ls-caps` / `--ls-normal` / `--ls-display`.
+      reached eleven values. `--ls-normal` / `--ls-display` (`--ls-caps` went 2026-09-24).
     - **Phase 1's leading fix bought only 3% of the page height** (2.46 -> 2.38 screens
       desktop). Height here is dominated by explicit padding, margins and fixed heights, not
       inherited leading — `.dash` and `.topic-chip` did not move a pixel. The density work was
@@ -745,7 +745,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `reducedMotion()`) runs `top` 2px -> -2px -> 0. **It animates `top`, NEVER a
   transform**: a composited `scale()` is drawn from a cached raster, and the text blurred
   and then snapped sharp as the animation ended. Both a rotating spring on the mark and a
-  whole-block scale spring shipped first and were rejected. The name is markup, not `I18N`:
+  whole-block scale spring shipped first and were rejected. **In dark the mark carries a
+  soft `--text` glow** (`drop-shadow` 2px @ 45% + 6px @ 15%, via `color-mix`; 2026-09-24,
+  on request) because its navy top bar all but vanished into the charcoal; light has
+  `filter: none`. **The footer's block takes the same treatment** (same day, on request):
+  it shares `.brand-mark` (so the glow) and the tagline rule, and was already centred.
+  It is NOT a button, so it has no click animation. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
   **so is the NAME** — the mark alone stands for the brand on a phone, and the 62px
   that frees is part of what pays for two nav links down there. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
