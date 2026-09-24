@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-24 (live commit `06d71bc`)_
+_Last updated: 2026-09-24 (live commit `5bc0578`)_
 
 ## Project status
 
@@ -3129,10 +3129,11 @@ squash-merged; the Pages build for `5bcbbd5` reports `built`.
 
 ## Session close (2026-09-24, the logo block)
 
-Live commit: **[`06d71bc`](https://github.com/thelivinsine/eib-quiz/commit/06d71bc)**, over
+Live commit: **[`5bc0578`](https://github.com/thelivinsine/eib-quiz/commit/5bc0578)**, over
+[`06d71bc`](https://github.com/thelivinsine/eib-quiz/commit/06d71bc),
 [`572b820`](https://github.com/thelivinsine/eib-quiz/commit/572b820),
 [`bddff1c`](https://github.com/thelivinsine/eib-quiz/commit/bddff1c) and
-[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All four were
+[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All five were
 committed straight to `main` on request — no PRs: small tweaks, iterated live.
 - **The header lockup**, on request, in four passes:
   - "EIB Quiz" and the tagline are one group (no gap between them) centred on the mark,
@@ -3146,9 +3147,11 @@ committed straight to `main` on request — no PRs: small tweaks, iterated live.
     (`brandPop()`, animating `top`). Two versions were rejected first: a rotating
     spring on the mark alone, and a whole-block `scale()`, whose text blurred and then
     snapped sharp at the end because a composited transform is drawn from a cached raster.
-- **Dark-mode glow** on `.brand-mark`, on request: the navy top bar all but vanished into
-  the charcoal canvas, so the mark carries a soft `--text` `drop-shadow` in dark;
-  light has `filter: none`. Header and footer share it.
+- **Dark-mode halo** behind `.brand-mark`, on request: the navy top bar all but vanished
+  into the charcoal canvas. One soft `--text` radial gradient sits behind the WHOLE mark
+  (`::before`); light hides it. Header and footer share it. An outline `drop-shadow`
+  shipped first (`06d71bc`) and was replaced: it lit the notch beside the red bar, so the
+  three bars read as separate pieces.
 - **The footer lockup** shares the header's tagline rule (10px, no tracking, no gap); it
   was already centred. It is not a button, so there is no click animation there.
 - `--ls-caps` lost its last readers and is **deleted**; `distinctTracking` 2 -> 1.
@@ -3168,8 +3171,8 @@ build within 1-2 minutes.
 **Not verified:**
 - Nobody has watched the bounce or the glow play: the pane does not paint animation
   frames, so "no blur" is argued from how it works, not seen.
-- The dark header's glow was seen only in a small pane screenshot and a 5x zoomed probe;
-  the footer's glow was checked through its computed filter, never seen on screen.
+- The dark header's halo was seen only in a small pane screenshot and a 5x zoomed probe;
+  the footer's was checked through its computed `::before`, never seen on screen.
 - The `:active` dip on iOS Safari (it applies no `:active` without a touch listener) was
   not tested on a device.
 - The rendered live site was not measured: only the served bytes were checked. The pane
