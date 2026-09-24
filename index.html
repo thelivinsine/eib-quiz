@@ -640,16 +640,17 @@
             display: grid; place-items: center;
         }
         /* In dark the navy top bar all but vanishes into the charcoal canvas, so the E
-           carries a TIGHT --text glow that follows its whole outline evenly (2026-09-24,
-           on request). Kept to 1.5px + 3px so it hugs the shape: a 6px spread filled the
-           notch beside the red bar and split the bars apart, and a round halo behind the
-           mark read as a spotlight. No text, so no contrast pair; light needs none. */
-        .brand-mark svg {
-            width: 100%; height: 100%; display: block;
-            filter: drop-shadow(0 0 1.5px color-mix(in srgb, var(--text) 50%, transparent))
-                    drop-shadow(0 0 3px color-mix(in srgb, var(--text) 18%, transparent));
-        }
-        html.light .brand-mark svg { filter: none; }
+           carries a tight --text glow round its outline (2026-09-24, on request). It is
+           .brand-glow INSIDE the SVG: a blurred copy of each bar drawn behind the real
+           bars, so a glow shows only round the outside of the E and never on a
+           neighbour. Its strength RAMPS down the mark, black 30% / red 50% / yellow 70%
+           (variant A of three, picked by the user): an even glow read strongest on the
+           black bar, where white on navy has the most contrast. The spread is 1.5px +
+           3px, tight enough to leave the notch beside the red bar dark. App-only: the
+           logo kit's geometry carries no glow. No text, so no contrast pair. */
+        .brand-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .brand-glow { fill: var(--text); }
+        html.light .brand-glow { display: none; }
         .brand-mark-top { display: none; }
         html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
@@ -3047,7 +3048,7 @@
     <header>
         <div class="header-content">
             <button class="brand" onclick="brandPop(this); showScreen('home')" data-i18n-aria="nav.home">
-                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 60 63" aria-hidden="true"><path fill="#64748B" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0.75H50A9.25 9.25 0 0 1 59.25 10V11A9.25 9.25 0 0 1 50 20.25H0.75V8A7.25 7.25 0 0 1 8 0.75Z"/><path class="brand-mark-top" fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></svg></span>
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 60 63" aria-hidden="true"><defs><filter id="brandGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur in="SourceGraphic" stdDeviation="1.69" result="a"/><feGaussianBlur in="SourceGraphic" stdDeviation="3.4" result="b"/><feComponentTransfer in="b" result="b2"><feFuncA type="linear" slope="0.36"/></feComponentTransfer><feMerge><feMergeNode in="b2"/><feMergeNode in="a"/></feMerge></filter></defs><g class="brand-glow" filter="url(#brandGlow)"><path fill-opacity=".3" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill-opacity=".5" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill-opacity=".7" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/></g><path fill="#64748B" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0.75H50A9.25 9.25 0 0 1 59.25 10V11A9.25 9.25 0 0 1 50 20.25H0.75V8A7.25 7.25 0 0 1 8 0.75Z"/><path class="brand-mark-top" fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></svg></span>
                 <span class="brand-lockup">
                     <span class="brand-name">EIB Quiz</span>
                     <span class="brand-tagline" data-i18n="nav.tagline"></span>
@@ -3386,7 +3387,7 @@
                     <!-- The header's mark, repeated. Its colours are the logo kit's and live
                          in the SVG rather than in a rule, so there is no token to share;
                          one duplicated line beats a JS filler for it. -->
-                    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 60 63" aria-hidden="true"><path fill="#64748B" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0.75H50A9.25 9.25 0 0 1 59.25 10V11A9.25 9.25 0 0 1 50 20.25H0.75V8A7.25 7.25 0 0 1 8 0.75Z"/><path class="brand-mark-top" fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></svg></span>
+                    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 60 63" aria-hidden="true"><defs><filter id="brandGlowFoot" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur in="SourceGraphic" stdDeviation="1.69" result="a"/><feGaussianBlur in="SourceGraphic" stdDeviation="3.4" result="b"/><feComponentTransfer in="b" result="b2"><feFuncA type="linear" slope="0.36"/></feComponentTransfer><feMerge><feMergeNode in="b2"/><feMergeNode in="a"/></feMerge></filter></defs><g class="brand-glow" filter="url(#brandGlowFoot)"><path fill-opacity=".3" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill-opacity=".5" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill-opacity=".7" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/></g><path fill="#64748B" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/><path fill="#FFCC00" d="M0 42H50A10 10 0 0 1 60 52V53A10 10 0 0 1 50 63H8A8 8 0 0 1 0 55Z M0 41H35V42H0Z"/><path fill="#E10600" d="M0 21H35A10 10 0 0 1 45 31V32A10 10 0 0 1 35 42H0Z M0 20H35V21H0Z"/><path fill="#0F172A" d="M8 0.75H50A9.25 9.25 0 0 1 59.25 10V11A9.25 9.25 0 0 1 50 20.25H0.75V8A7.25 7.25 0 0 1 8 0.75Z"/><path class="brand-mark-top" fill="#0F172A" d="M8 0H50A10 10 0 0 1 60 10V11A10 10 0 0 1 50 21H0V8A8 8 0 0 1 8 0Z"/></svg></span>
                     <span class="footer-lockup">
                         <span class="footer-name">EIB Quiz</span>
                         <span class="footer-tagline" data-i18n="nav.tagline"></span>
