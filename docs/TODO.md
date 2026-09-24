@@ -3167,17 +3167,20 @@ committed straight to `main` on request — no PRs: small tweaks, iterated live.
 
 **Verified:** `scale.test.mjs` 18/18 and `contrast.test.mjs` 10/10 on every commit, and
 `node --check` on the script. In the pane at 1280 and 375: the centres and gaps above,
-the computed tagline size and tracking, the glow filter in dark and `none` in light on
-both marks, a 44px coarse `min-height` still centring the pair, and `scrollWidth` 375 on
+the computed tagline size and tracking, `.brand-glow` shown in dark (fill `--text`,
+opacities .3/.5/.7, each mark on its own filter id) and hidden in light on both marks, a 44px coarse `min-height` still centring the pair, and `scrollWidth` 375 on
 a phone. The click starts one animation on `.brand` and leaves `transform: none`. Each
 deploy: the Pages build reported `built`, and `curl` on both bare URLs found the new
-build within 1-2 minutes.
+build within 1-2 minutes. The three glow ramps were rendered as 4x PNGs in headless
+Chrome for the user to pick, and a 4x probe of the real header markup matched A.
 
 **Not verified:**
-- Nobody has watched the bounce or the glow play: the pane does not paint animation
+- Nobody has watched the bounce play: the pane does not paint animation
   frames, so "no blur" is argued from how it works, not seen.
-- The dark header's glow was seen only in a small pane screenshot and a 5x zoomed probe;
-  the footer's was checked through its computed filter, never seen on screen.
+- The dark header's glow was seen only in a small pane screenshot and a 4x zoomed probe;
+  the footer's was checked through its computed `.brand-glow` style, never seen on screen.
+  The glow is an SVG `<filter>` on an inline SVG; it was rendered in Chrome only, not in
+  Safari or Firefox.
 - The `:active` dip on iOS Safari (it applies no `:active` without a touch listener) was
   not tested on a device.
 - The rendered live site was not measured: only the served bytes were checked. The pane
