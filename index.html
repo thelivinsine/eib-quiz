@@ -618,12 +618,13 @@
             gap: var(--space-md);
         }
         .brand, .session-back { grid-column: 1; justify-self: start; }
-        /* The tagline's BASELINE sits on the mark's bottom edge (2026-09-24, on request):
-           the mark has no text, so its baseline is its bottom. Grid, not flex, so
-           align-content can still centre the pair when a coarse min-height leaves slack. */
-        .brand { display: inline-grid; grid-auto-flow: column; align-items: last baseline; align-content: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); transition: transform 0.12s var(--ease); }
-        /* The whole block presses in; brandPop() springs it back on release. */
-        .brand:active { transform: scale(0.96); }
+        /* The mark and the name + tagline group share one centre line (2026-09-24, on
+           request). The press moves the block with TOP, not a transform: a composited
+           scale is drawn from a cached raster, and the text blurred then snapped sharp as
+           the animation ended. top repaints every frame, so the text stays crisp. */
+        .brand { position: relative; top: 0; display: inline-flex; align-items: center; gap: var(--space-sm); min-height: var(--ctl-sm); background: none; border: none; padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm); transition: top 0.1s var(--ease); }
+        /* The whole block dips; brandPop() bounces it back on release. */
+        .brand:active { top: var(--space-3xs); }
         /* The mark is the logo kit's E (docs/brand/, drawn from docs/Mockups/ui/logo-kit.png;
            the geometry comes from tools/make-logo-kit.mjs, which is the place to change it).
            Its colours are literals INSIDE the SVG rather than in a rule: a graphic with no
@@ -643,8 +644,8 @@
         html.light .brand-mark-top { display: inline; }
         .brand-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: var(--lh-tight); }
         .brand-name { font-family: var(--font-head); font-weight: 700; font-size: var(--fs-sm); letter-spacing: var(--ls-display); color: var(--text); }
-        /* No margin and no tracking (2026-09-24, on request: "move EIB a bit lower" with
-           the tagline held still, and "match the other text"). 10px is the ONE thing under
+        /* No margin and no tracking (2026-09-24, on request: the name sits right on the
+           tagline, and "match the other text"). 10px is the ONE thing under
            the 12px floor, on request: brand decoration, hidden on a phone, and repeated
            in the footer at 12. A named ROLE_EXEMPT in tools/scale.test.mjs, not a budget. */
         .brand-tagline { font: var(--type-caption); font-size: calc(var(--fs-2xs) - 2px); color: var(--muted); }
@@ -4116,14 +4117,15 @@
                 { duration: 500, delay: Math.min(i, 4) * 60, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards' })));
         }
 
-        // The logo block springs back from its :active press: one soft overshoot.
+        // The logo block bounces back from its :active dip: one small hop past rest.
+        // top, not transform - see the .brand rule for why.
         function brandPop(btn) {
             if (reducedMotion()) return;
             btn.animate([
-                { transform: 'scale(0.96)' },
-                { transform: 'scale(1.025)', offset: 0.45 },
-                { transform: 'none' }
-            ], { duration: 420, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+                { top: '2px' },
+                { top: '-2px', offset: 0.4 },
+                { top: '0px' }
+            ], { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
         }
 
         function showScreen(screenName) {

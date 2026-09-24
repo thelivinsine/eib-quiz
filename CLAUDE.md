@@ -737,16 +737,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   rounded square before that) in a `--ctl-xs` box (36 until 2026-09-23, on request:
   "scale down ... the logo block"; the footer's mark shares the rule), beside a
   `.brand-lockup` of `EIB Quiz` (`--fs-sm`, down from `--fs-base`) over the `nav.tagline` line (10px, no tracking, no margin — see the floor note).
-  **The tagline's BASELINE sits on the mark's bottom edge** (2026-09-24, on request):
-  `.brand` is an `inline-grid` with `align-items: last baseline` (the mark has no text, so
-  its baseline is its bottom) and `align-content: center`, which is why it is a grid — a
-  single-line flex row cannot centre the pair in a coarse `min-height`'s slack. Measured
-  40 / 40 at 1280 in both languages, and 42.5 / 42.5 at a 44px min-height. The desktop
-  header is 56px with it (59.7 before), and the mark sits 1.5px above the nav's centre —
-  the tagline's room below its baseline. **Clicking presses the WHOLE block**:
-  `.brand:active` scales it to 0.96 and `brandPop()` (WAAPI, gated on `reducedMotion()`)
-  springs it back through one soft 1.025 overshoot. A rotating spring on the mark alone
-  shipped first and was rejected. The name is markup, not `I18N`:
+  **The mark and the name + tagline GROUP share one centre line** (2026-09-24, on request,
+  after a day of the tagline's baseline sitting on the mark's bottom edge was rejected):
+  plain `align-items: center`, measured with the nav at 26.55 in both languages at 1280;
+  the desktop header is 54px. **Clicking dips the WHOLE block and bounces it back**:
+  `.brand:active { top: var(--space-3xs) }` and `brandPop()` (WAAPI, gated on
+  `reducedMotion()`) runs `top` 2px -> -2px -> 0. **It animates `top`, NEVER a
+  transform**: a composited `scale()` is drawn from a cached raster, and the text blurred
+  and then snapped sharp as the animation ended. Both a rotating spring on the mark and a
+  whole-block scale spring shipped first and were rejected. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
   **so is the NAME** — the mark alone stands for the brand on a phone, and the 62px
   that frees is part of what pays for two nav links down there. `html { overflow-x: clip }` is the backstop, not the plan — check `scrollWidth` at
