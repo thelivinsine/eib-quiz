@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-23 (live commit `5bcbbd5`)_
+_Last updated: 2026-09-24 (live commit `06d71bc`)_
 
 ## Project status
 
@@ -3126,3 +3126,51 @@ squash-merged; the Pages build for `5bcbbd5` reports `built`.
   emulating the media query.
 - The navigator alignment was measured with the navigator's own content in its default
   state. A shuffled or grouped view was not measured, but none of them changes the offset.
+
+## Session close (2026-09-24, the logo block)
+
+Live commit: **[`06d71bc`](https://github.com/thelivinsine/eib-quiz/commit/06d71bc)**, over
+[`572b820`](https://github.com/thelivinsine/eib-quiz/commit/572b820),
+[`bddff1c`](https://github.com/thelivinsine/eib-quiz/commit/bddff1c) and
+[`875a88f`](https://github.com/thelivinsine/eib-quiz/commit/875a88f). All four were
+committed straight to `main` on request — no PRs: small tweaks, iterated live.
+- **The header lockup**, on request, in four passes:
+  - "EIB Quiz" and the tagline are one group (no gap between them) centred on the mark,
+    with the nav on the same line: 26.55 for all three at 1280, in both languages. The
+    desktop header is 54px (59.7 before). Two earlier answers were rejected on the
+    way: a 4px `translate` on the lockup (it moved the tagline too), then the tagline's
+    baseline on the mark's bottom edge.
+  - The tagline is **10px with no tracking**: the one size under the 12px floor, a named
+    `ROLE_EXEMPT` in `tools/scale.test.mjs`.
+  - **Clicking the logo** dips the whole block 2px and bounces it through -2px
+    (`brandPop()`, animating `top`). Two versions were rejected first: a rotating
+    spring on the mark alone, and a whole-block `scale()`, whose text blurred and then
+    snapped sharp at the end because a composited transform is drawn from a cached raster.
+- **Dark-mode glow** on `.brand-mark`, on request: the navy top bar all but vanished into
+  the charcoal canvas, so the mark carries a soft `--text` `drop-shadow` in dark;
+  light has `filter: none`. Header and footer share it.
+- **The footer lockup** shares the header's tagline rule (10px, no tracking, no gap); it
+  was already centred. It is not a button, so there is no click animation there.
+- `--ls-caps` lost its last readers and is **deleted**; `distinctTracking` 2 -> 1.
+- **The phone header did not change**: the name and tagline stay hidden. Measured at 375:
+  showing the pair wraps the tagline and grows the header 65 -> 92, and showing the name
+  alone pushes the controls 13px past the edge when the scheme seg opens. The user
+  declined adding them.
+
+**Verified:** `scale.test.mjs` 18/18 and `contrast.test.mjs` 10/10 on every commit, and
+`node --check` on the script. In the pane at 1280 and 375: the centres and gaps above,
+the computed tagline size and tracking, the glow filter in dark and `none` in light on
+both marks, a 44px coarse `min-height` still centring the pair, and `scrollWidth` 375 on
+a phone. The click starts one animation on `.brand` and leaves `transform: none`. Each
+deploy: the Pages build reported `built`, and `curl` on both bare URLs found the new
+build within 1-2 minutes.
+
+**Not verified:**
+- Nobody has watched the bounce or the glow play: the pane does not paint animation
+  frames, so "no blur" is argued from how it works, not seen.
+- The dark header's glow was seen only in a small pane screenshot and a 5x zoomed probe;
+  the footer's glow was checked through its computed filter, never seen on screen.
+- The `:active` dip on iOS Safari (it applies no `:active` without a touch listener) was
+  not tested on a device.
+- The rendered live site was not measured: only the served bytes were checked. The pane
+  kept rendering a cached build after the edge had the new one.

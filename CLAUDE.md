@@ -778,7 +778,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     is gone with them. **"Learn more" is the one `scrollToId()` left**, so the rule is
     `#whyBand { scroll-margin-top: var(--header-h) }` — the token, because
     `syncHeaderHeight()` measures the real strip and a phone's is 65px against the
-    desktop's 76. A new scroll target still has to join that selector or it lands behind
+    desktop's 54 (measured 2026-09-24; it was 76 when this was written). A new scroll target still has to join that selector or it lands behind
     the header.
   - **A load failure is not a tier either.** `initHomeScreen()` hides every
     `#practiseScreen [data-needs-data]` section when `loadFailed` and puts the error in
@@ -2336,7 +2336,7 @@ Rules that cost real bugs. Reasoning is in the 2026-09-19 session block of `docs
   an 812 viewport. It looks exactly like a broken height lock. Call `syncHeaderHeight()`
   by hand before measuring, or measure in a real browser over CDP: there the same build
   reads 812/812 at 375, and 900/900 at 620 / 940 / 1400, with `--header-h` correctly 65 on
-  a phone and 61 on the desktop.
+  a phone and 61 on the desktop (54 since the 2026-09-24 logo-block pass).
 - **Headless Chrome's `--window-size` is NOT a layout viewport, so never check a mobile
   width with it.** `--window-size=375,1900` renders a **511px** page into a 375px image, so
   the result is a correct desktop-ish layout with its right-hand side cropped off — which
@@ -2448,7 +2448,8 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   from 320 to 1600. The `vh`-then-`svh` fallback is the one allowed duplicate. **Two named
   exemptions**: `ICON_EXEMPT` (selectors) and `ROLE_EXEMPT` (a selector-to-PROPERTY map
   for the `typeOutsideRoles` ratchet, so an exempt rule cannot grow a property it was never
-  granted);
+  granted — since 2026-09-24 it also carries the ONE sub-floor size, the brand tagline's
+  10px, on request);
   `TYPE_EXEMPT` existed twice on 2026-09-22 (the overview card's names at 9px, then at
   11px) and both times FORMAT retired it — sentence case with no tracking is quieter and
   narrower than tracked capitals, on a scale step. An exemption is a selector rather than a

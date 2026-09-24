@@ -83,6 +83,8 @@ Rules that come with them:
   label list, `.stat .stat-label`, `.rs-label`, `.footer-col-title` and the history
   badge (`.hist-badge`, "Passed" / "Not passed") all drop `text-transform` and `--ls-caps`.
   The two taglines keep `--ls-caps`: they are a wordmark's line, not a label.
+  _(Reversed 2026-09-24, on request: both taglines dropped it to "match the other text",
+  went to 10px, and `--ls-caps` was deleted with its last readers — see CLAUDE.md.)_
 - **The `font` shorthand resets `font-variant-numeric`.** Every figure rule re-declares
   `tabular-nums` AFTER `font:`.
 - **Phone type is two token overrides in a `max-width: 700px` block** (620 in the approved design; moved in the final review because the 5.2vw headline was under the 36px figure at 621-692): `--type-heading` to
