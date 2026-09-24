@@ -745,10 +745,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   `reducedMotion()`) runs `top` 2px -> -2px -> 0. **It animates `top`, NEVER a
   transform**: a composited `scale()` is drawn from a cached raster, and the text blurred
   and then snapped sharp as the animation ended. Both a rotating spring on the mark and a
-  whole-block scale spring shipped first and were rejected. **In dark the mark carries a
-  soft `--text` glow** (`drop-shadow` 2px @ 45% + 6px @ 15%, via `color-mix`; 2026-09-24,
-  on request) because its navy top bar all but vanished into the charcoal; light has
-  `filter: none`. **The footer's block takes the same treatment** (same day, on request):
+  whole-block scale spring shipped first and were rejected. **In dark ONE soft `--text` halo
+  sits behind the whole mark** (2026-09-24, on request) because its navy top bar all but
+  vanished into the charcoal: `.brand-mark::before`, a `radial-gradient` at 22% to 40%
+  that fades out `--space-ms` beyond the box, behind the SVG via `isolation: isolate`;
+  light hides it. **Not a `drop-shadow`**: an outline glow shipped first and lit the notch
+  beside the red bar, so the three bars read as separate pieces. The logo is one mark. **The footer's block takes the same treatment** (same day, on request):
   it shares `.brand-mark` (so the glow) and the tagline rule, and was already centred.
   It is NOT a button, so it has no click animation. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
