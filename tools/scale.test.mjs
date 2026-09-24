@@ -210,7 +210,9 @@ const SPACING_PROPS = [
 // --- the metrics ---------------------------------------------------------------------------
 
 /**
- * THERE IS NO TYPE EXEMPTION, and the way it was retired is the useful part.
+ * THERE IS ONE TYPE EXEMPTION: .brand-tagline at 11px (2026-09-24, on request), named in
+ * ROLE_EXEMPT. It is a calc(), so fontSizesBelowFloor cannot see it — the name is the record.
+ * The way the earlier ones were retired is still the useful part.
  *
  * This constant held the overview card's labels twice in one day — .ready-ring-sub at 9px,
  * then it plus .ds-label at 11px — both times to make "not bold and reduced" fit inside a
@@ -309,6 +311,8 @@ const ROLE_EXEMPT = {
   "body": ["font-family", "font-size"],
   ".state-picker select": ["font-size"],
   ".brand-name": ["font-family", "font-size", "font-weight"],
+  // The one size under the 12px floor: the header tagline at 11px (2026-09-24, on request).
+  ".brand-tagline": ["font-size"],
   ".footer-name": ["font-family", "font-size", "font-weight"],
   ".glossary-summary::after": ["font-size"],
   ".keyboard-hint-close": ["font-size"],
