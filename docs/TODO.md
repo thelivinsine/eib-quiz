@@ -3177,7 +3177,9 @@ opacities .3/.5/.7, each mark on its own filter id) and hidden in light on both 
 a phone. The click starts one animation on `.brand` and leaves `transform: none`. Each
 deploy: the Pages build reported `built`, and `curl` on both bare URLs found the new
 build within 1-2 minutes. The three glow ramps were rendered as 4x PNGs in headless
-Chrome for the user to pick, and a 4x probe of the real header markup matched A.
+Chrome for the user to pick, and a 4x probe of the real header markup matched A. The
+1px nudge was picked from two more such renders, and toggling it off and on at 1280
+moves both baselines exactly 1px (the tagline's 2.45 -> 1.45px off the mark's bottom).
 
 **Not verified:**
 - Nobody has watched the bounce play: the pane does not paint animation
@@ -3186,6 +3188,9 @@ Chrome for the user to pick, and a 4x probe of the real header markup matched A.
   the footer's was checked through its computed `.brand-glow` style, never seen on screen.
   The glow is an SVG `<filter>` on an inline SVG; it was rendered in Chrome only, not in
   Safari or Firefox.
+- The lockup's ink gaps (2.05 / 2.35px before the nudge) came from scaling the text 10x
+  on a canvas, which Bricolage's `opsz` axis skews: the name's figure moved 0.5px
+  between two runs of the same build. The 1px shift itself is exact; the gaps are ±0.5.
 - The `:active` dip on iOS Safari (it applies no `:active` without a touch listener) was
   not tested on a device.
 - The rendered live site was not measured: only the served bytes were checked. The pane
