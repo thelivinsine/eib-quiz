@@ -554,7 +554,8 @@
            on request) on top of its fill step - light steps DOWN, dark UP.
            ============================================================ */
         .quiz-sidebar, .review-item, .glossary-wrap, .dash,
-        .why-grid, .cta-band, .mode-card, .topic-chip { box-shadow: var(--shadow-rest); }
+        .why-grid, .cta-band, .mode-card, .topic-chip,
+        .gloss-wrap > .glossary-summary, .gloss-card { box-shadow: var(--shadow-rest); }
         @media (hover: hover) {
             .mode-card:hover, .topic-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
         }
@@ -1970,23 +1971,32 @@
         /* Glossary */
         .glossary-section { margin-bottom: var(--space-lg); }
         .glossary-wrap { border-radius: var(--radius); overflow: hidden; }
-        details.glossary-wrap > summary, details.gloss-item > summary { cursor: pointer; list-style: none; }
-        details.glossary-wrap > summary::-webkit-details-marker, details.gloss-item > summary::-webkit-details-marker { display: none; }
+        details.glossary-wrap > summary, details.gloss-wrap > summary { cursor: pointer; list-style: none; }
+        details.glossary-wrap > summary::-webkit-details-marker, details.gloss-wrap > summary::-webkit-details-marker { display: none; }
         .glossary-summary { font: var(--type-title); letter-spacing: var(--ls-display); padding: var(--space-ms) var(--space-md); min-height: var(--ctl-md); display: flex; align-items: center; gap: var(--space-sm); transition: background 0.2s var(--ease); }
         /* --hover, not --tile-hover: this row has no edge to change, so the fill is the
            whole state and needs dark's 1.20 step (--tile-hover is 1.105 on a tile). */
         .glossary-summary:hover { background: var(--hover); }
         .glossary-summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: var(--fs-lg); line-height: 1; }
-        details.glossary-wrap[open] .glossary-summary::after { content: '−'; }
-        .gloss-list { border-top: 1px solid var(--border-soft); }
+        details.glossary-wrap[open] .glossary-summary::after, details.gloss-wrap[open] .glossary-summary::after { content: '−'; }
         .hist-body { padding: var(--space-md); border-top: 1px solid var(--border-soft); }
         .hist-body .hist-list { border: none; border-radius: 0; }
-        .gloss-item { border-bottom: 1px solid var(--border-soft); }
-        .gloss-item:last-child { border-bottom: none; }
-        .gloss-item > summary { font: var(--type-control-sm); padding: var(--space-ms) var(--space-md); color: var(--text); transition: color 0.2s var(--ease); }
-        .gloss-item > summary:hover { color: var(--accent-text); }
-        .gloss-def { font: var(--type-small); padding: 0 var(--space-md) var(--space-ms); display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--sub-text); }
-        .gloss-en { color: var(--muted); font-style: italic; }
+        /* The glossary opens into a GRID OF CARDS on the page (2026-10-09, on request,
+           from a reference): the summary row is its own tile and each term is a tile
+           below it, so no card sits inside another. Both read the practise tile. */
+        .gloss-wrap > .glossary-summary, .gloss-card {
+            background: var(--tile);
+            border: 1px solid var(--tile-edge);
+            border-radius: var(--radius);
+        }
+        @media (hover: hover) {
+            .gloss-wrap > .glossary-summary:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
+        }
+        .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+        .gloss-card { padding: var(--space-md) var(--space-lg); display: flex; flex-direction: column; gap: var(--space-2xs); }
+        .gloss-term { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
+        .gloss-de { font: var(--type-small); color: var(--sub-text); }
+        .gloss-en { font: var(--type-small); color: var(--muted); font-style: italic; }
 
         /* ============================================================
            BUTTONS — ONE SIZE, everywhere, at every width
@@ -4386,14 +4396,15 @@
             const el = document.getElementById('glossarySection');
             if (!el) return;
             const items = GLOSSARY.map(g => `
-                <details class="gloss-item">
-                    <summary lang="de">${g.term}</summary>
-                    <div class="gloss-def"><span lang="de">${g.de}</span><span class="gloss-en" lang="en">${g.en}</span></div>
-                </details>`).join('');
+                <div class="gloss-card">
+                    <h3 class="gloss-term" lang="de">${g.term}</h3>
+                    <p class="gloss-de" lang="de">${g.de}</p>
+                    <p class="gloss-en" lang="en">${g.en}</p>
+                </div>`).join('');
             el.innerHTML = `
-                <details class="glossary-wrap">
+                <details class="gloss-wrap">
                     <summary class="glossary-summary">${t('gloss.title', { n: GLOSSARY.length })}</summary>
-                    <div class="gloss-list">${items}</div>
+                    <div class="gloss-grid">${items}</div>
                 </details>`;
         }
 
