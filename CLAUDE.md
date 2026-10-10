@@ -766,7 +766,10 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   the same day: a 6px outline glow (filled the notch beside the red bar and split the
   bars apart), a round halo behind the mark (a spotlight), and the even 1.5px + 3px
   `drop-shadow`. **The glow repeats the three bar paths**: if the kit's geometry changes,
-  copy the new paths into `.brand-glow` in both marks too. **The footer's block takes the same treatment** (same day, on request):
+  copy the new paths into `.brand-glow` in both marks too. **The link-preview card is the
+  glow's THIRD copy**: `tools/make-og-image.py` reads the bar paths from the kit itself but
+  hard-codes the filter and the 30/50/70 ramp, so a change to either is made there as well
+  and the card re-run. **The footer's block takes the same treatment** (same day, on request):
   it shares `.brand-mark` (so the glow) and the tagline rule, and was already centred.
   It is NOT a button, so it has no click animation. The name is markup, not `I18N`:
   a product name is not translated. The tagline is hidden below 620px, and since 2026-09-22
@@ -2499,13 +2502,17 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   `icon-maskable-512.png`, `apple-touch-icon.png` - icons & social card. The favicon and all
   four icons are WRITTEN by `tools/make-logo-kit.mjs`; do not edit them by hand.
 - `tools/make-og-image.py` - emits `og-image.svg` AND `og-image.png` from one set of
-  constants. **Run for production 2026-09-21**, at the end of the landing-page refactor: the
-  card carries the logo kit's E in its dark variant (since 2026-09-23; the flat flag before
-  that, a drawn tick before that), READ from `docs/brand/` — so run
-  `tools/make-logo-kit.mjs` first when the mark changes — over
-  "Einbürgerungstest / Alle 16 Bundesländer / 300 FRAGEN · DE / EN · KOSTENLOS". Never
-  hand-edit one of the two files — that drift is why this script exists; change a constant,
-  re-run, commit both.
+  constants; the PNG is a headless-Chrome screenshot of the SVG, so it needs Chrome with
+  network (Google Fonts), like `make-logo-kit.mjs`. **Redrawn 2026-10-10 against the
+  current UI**: the DARK theme's tokens (`#1A1A1A` / `#70ADFA` / `#B3B3B3` — it had kept
+  the old slate `#10151D` / `#60A5FA`), Bricolage Grotesque over Inter, and the kit's
+  horizontal DARK lockup (mark + "EIB Quiz" + tagline, READ from `docs/brand/` — so run
+  `tools/make-logo-kit.mjs` first when the logo changes) with the header's per-bar glow,
+  over "Einbürgerungstest / Alle 16 Bundesländer / 300 Fragen · Deutsch & Englisch ·
+  kostenlos" in sentence case. **`og:image` / `twitter:image` carry `?v=<date>`**: bump it
+  whenever the card changes, or platforms keep showing their cached copy. Never hand-edit
+  one of the two files — that drift is why this script exists; change a constant, re-run,
+  commit both.
 - `docs/brand/` + `tools/make-logo-kit.mjs` - the logo kit (2026-09-23), drawn from
   `docs/Mockups/ui/logo-kit.png`: horizontal / stacked / mark lockups in four variants,
   app icon and favicon, as outlined SVG + PNG + `.ico`. **Generated — never hand-edit**;

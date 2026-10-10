@@ -92,8 +92,8 @@ the `#DD0000` / `#FFCE00` of the flat flag the header used before this kit.
 
 The same script writes the app's served copies: `/favicon.svg`, and `img/icons/icon-192.png`
 and `icon-512.png` (rounded tile, `any`), `icon-maskable-512.png` and `apple-touch-icon.png`
-(full-bleed square). `tools/make-og-image.py` reads `svg/eib-quiz-mark-dark.svg` and
-`png/eib-quiz-mark-dark.png` for the social card. The header and footer draw the same paths
+(full-bleed square). `tools/make-og-image.py` reads `svg/eib-quiz-logo-horizontal-dark.svg` for the
+social card and adds the header's dark-theme glow behind the mark. The header and footer draw the same paths
 inline in `index.html`, with both colour variants in one SVG and CSS showing one per theme.
 
 To change the mark:
