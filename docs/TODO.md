@@ -3196,14 +3196,43 @@ moves both baselines exactly 1px (the tagline's 2.45 -> 1.45px off the mark's bo
 - The rendered live site was not measured: only the served bytes were checked. The pane
   kept rendering a cached build after the edge had the new one.
 
+## Glossary as a grid of term cards (2026-10-09)
+
+Commit **[`b7d9f8d`](https://github.com/thelivinsine/eib-quiz/commit/b7d9f8d)**, straight
+to `main` with no PR, from another session that left no entry here. This one was
+written on 2026-10-10 from the commit itself.
+- **The glossary on the Practise page opens into a grid of cards**, on request, from a
+  reference. It used to be one tile holding a list of per-term `<details>` rows, each
+  opening to its definition. Now every term is its own card showing the term
+  (`.gloss-term`, `--type-title`), the German definition (`.gloss-de`, `--sub-text`) and
+  the English one in italics (`.gloss-en`, `--muted`), all visible at once.
+- **The disclosure stays, as a tile of its own.** `details.gloss-wrap`'s summary row
+  ("Glossary (n)") and each `.gloss-card` read the practise tile (`--tile` on
+  `--tile-edge`, `--radius`, `--shadow-rest`), and the grid sits below the summary
+  rather than inside it, so no card nests in another. The summary's hover is
+  `--tile-hover` + `--tile-edge-hover`, inside `@media (hover: hover)`.
+- `.gloss-grid` is `repeat(auto-fill, minmax(300px, 1fr))` with a `--space-md` gap. The
+  commit says three across on desktop and one on a phone, which is what that rule gives
+  in the 1060px column and at 375.
+- Gone: `.gloss-list`, `.gloss-item` and `.gloss-def`. **Past rounds still uses
+  `details.glossary-wrap`**, so that class and its rules stay. The glossary moved off
+  it to `.gloss-wrap`.
+- Each term is an `<h3 lang="de">`, and the definitions are `<p>` tagged `de` / `en`.
+
+**Verified (2026-10-10, on the tree that includes it):** `contrast.test.mjs` 10/10 and
+`scale.test.mjs` 18/18. The cards reuse token pairs the contrast test already asserts.
+
+**Not verified:** this entry was written from the diff. Nobody re-measured the column
+count in a browser or looked at the grid in either theme. The commit itself records
+no test runs.
+
 ## Session close (2026-10-10, the link-preview card)
 
 Live commit: **[`1120e75`](https://github.com/thelivinsine/eib-quiz/commit/1120e75)**,
 squash-merged from `og-card-current-ui` straight to `main` on request after a diff
 review, without a PR. It sits on
-[`b7d9f8d`](https://github.com/thelivinsine/eib-quiz/commit/b7d9f8d) (the glossary as
-a grid of term cards), which another session landed on 2026-10-09 and which has no
-entry in this file.
+[`b7d9f8d`](https://github.com/thelivinsine/eib-quiz/commit/b7d9f8d), the glossary
+grid recorded above.
 - **The favicon and app icons were already current**: `favicon.svg` matches the logo
   kit's file except for a trailing newline, the four `img/icons/*.png` files are
   byte-identical (md5) to their `docs/brand/png/` sources, and the paths match the
