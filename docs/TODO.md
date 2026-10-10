@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-09-24 (live commit `cde9dc9`)_
+_Last updated: 2026-10-10 (live commit `1120e75`)_
 
 ## Project status
 
@@ -3195,3 +3195,48 @@ moves both baselines exactly 1px (the tagline's 2.45 -> 1.45px off the mark's bo
   not tested on a device.
 - The rendered live site was not measured: only the served bytes were checked. The pane
   kept rendering a cached build after the edge had the new one.
+
+## Session close (2026-10-10, the link-preview card)
+
+Live commit: **[`1120e75`](https://github.com/thelivinsine/eib-quiz/commit/1120e75)**,
+squash-merged from `og-card-current-ui` straight to `main` on request after a diff
+review, without a PR. It sits on
+[`b7d9f8d`](https://github.com/thelivinsine/eib-quiz/commit/b7d9f8d) (the glossary as
+a grid of term cards), which another session landed on 2026-10-09 and which has no
+entry in this file.
+- **The favicon and app icons were already current**: `favicon.svg` matches the logo
+  kit's file except for a trailing newline, the four `img/icons/*.png` files are
+  byte-identical (md5) to their `docs/brand/png/` sources, and the paths match the
+  header mark's.
+- **The share card (`og-image.png` / `.svg`) was stale, and it was redrawn** against the
+  dark theme as it ships today. It had kept the old slate `#10151D` / `#60A5FA`, Segoe UI
+  and Courier New, an uppercase tracked strap and the bare E. It now has `#1A1A1A` /
+  `#70ADFA` / `#B3B3B3`, Bricolage Grotesque over Inter, the strap "300 Fragen · Deutsch
+  & Englisch · kostenlos" in sentence case, and the kit's horizontal dark lockup with
+  the header's per-bar glow.
+- **`tools/make-og-image.py` was rewritten.** The PNG is now a headless-Chrome
+  screenshot of the SVG, which replaced the PIL renderer, so the two cannot drift. It
+  refuses to write anything when the brand fonts do not load. It picks the glow's bars
+  by fill colour, not by their order in the file, and prints Chrome's errors.
+- **`og:image` and `twitter:image` carry `?v=2026-10-10`**, so a platform holding the
+  old card fetches the new one. Bump it with every redraw.
+- The diff review (an inline review plus the diff-hygiene agent) found no critical
+  issues. It found two warnings and six suggestions, all fixed. One finding was skipped:
+  the script's default Chrome path is Windows-only, as `make-logo-kit.mjs`'s is, and
+  `CHROME` overrides it.
+
+**Verified:** `validate.js` OK, `contrast.test.mjs` 10/10, `scale.test.mjs` 18/18,
+`node --check` on the script. The card was viewed at full size and at 600px. After
+the review fixes the PNG was pixel-identical to the one before (PIL `ImageChops`) and
+the SVG byte-identical. The font check returned `False` for a font that does not
+exist. The Pages build reported `built` for `1120e75`. On the live site, the origin's
+HTML carries the versioned `og:image`, and that image serves 1200x630 at 145,950 bytes
+(`age: 0`, last-modified at the build).
+
+**Not verified:**
+- How WhatsApp, LinkedIn, X and Facebook show the new card: each scrapes on its own
+  schedule. Facebook's Sharing Debugger forces a re-scrape.
+- The Windows temp-profile cleanup crash that the review flagged was fixed without
+  first being reproduced.
+- The script was run on Windows only. The `as_uri()` fix for macOS/Linux is reasoned,
+  not run there.
