@@ -8,7 +8,10 @@ menus and the question translations, with each language hidden until a native sp
 reviewed it.
 
 **Summary.** Stage 1 is live (2026-10-11, `ffcc90b`), all three languages hidden: tasks 1-12
-are done. Next are the reviews (task 13, the user's). The rest of this
+are done. Arabic, Turkish and Russian were then released unreviewed, on request
+(2026-10-12, #112). Tasks 15-16, the other seven languages, landed on `plan/languages` the
+same day, unreleased; task 17 (measure, sheets, ship) is next, and the reviews (task 13)
+are still the user's. The rest of this
 paragraph is the plan as written: Tasks 1-12 are stage 1: the machinery plus Arabic, Turkish and
 Russian, merged to `main` with all three still hidden. Tasks 13-14 release them as reviews
 come back. Tasks 15-17 do the other seven.
@@ -38,10 +41,10 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 11 | Review sheets | done | 2026-10-11 | Not opened in Excel or Google Sheets: proved instead by parsing each sheet back (BOM present, 6 columns on every row, no empty translation). |
 | 12 | Docs, full validation, ship stage 1 | done, live 2026-10-11 | 2026-10-11 | Merged as `ffcc90b` (thelivinsine/eib-quiz#109). Live check (Playwright): Pages build `built`, origin and edge both serve the new page, the picker offers only English/Deutsch, `?lang=ar` works and saves nothing. Not checked: Safari, Firefox, a real phone, a returning visitor whose old service worker updates. |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
-| 14 | Apply corrections and release ar, tr, ru | blocked by 13 | — | — |
+| 14 | Apply corrections and release ar, tr, ru | released unreviewed 2026-10-12 (#112, on request); corrections blocked by 13 | — | The release is done. What is left is applying each review's corrections when it comes back. |
 | 15 | Terminology lists: the other seven | done | 2026-10-12 | Every rendering is AI-written and unreviewed (unattended run). Checked by script: 58 rows each, German and English columns identical to the Turkish list, every glossary term present. Least settled: Kurmanji (several coined terms, e.g. Ordnungsamt), Albanian and `bs` (regional forms mixed by design). Q7, Q8, Q9 answered without you. |
-| 16 | Generate the other seven | blocked by 15 | — | — |
-| 17 | Measure, sheets and ship the seven hidden | blocked by 16 | — | — |
+| 16 | Generate the other seven | done | 2026-10-12 | Unreviewed translation, and **not run in a browser at all (unattended run)**: no language seen on screen, Persian right to left included. I read none of the seven natively. Checked by script: the completeness check passes with all ten files, and five core terms match each terms list in every question that uses them. Q10, Q11 answered without you. |
+| 17 | Measure, sheets and ship the seven hidden | blocked (unattended run): needs a browser to measure and a PR to `main` | — | Nothing done. The sheets need no browser and can be made with `tools/make-review-sheet.mjs <code>`, but the task ships as one piece. |
 
 ## Global constraints
 
@@ -52,7 +55,9 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 - **English and German behave exactly as today** for anyone who never picks a new language.
   Each task that touches shared code proves this with a before/after comparison.
 - **No unreviewed language is ever `released: true`.** Only tasks 14 and the release step
-  after 17 flip that flag, and only for a language whose review has come back.
+  after 17 flip that flag, and only for a language whose review has come back. **Broken once,
+  on request**: Arabic, Turkish and Russian were released unreviewed on 2026-10-12
+  (thelivinsine/eib-quiz#112). The seven of tasks 15-17 stay unreleased.
 - **Translations are text, never markup.** A translation may contain only the HTML tags its
   English string contains (the hero headline's `<span>`), and the check in task 2 enforces
   it. Everywhere else a translation is written with `textContent` or escaped.
@@ -487,6 +492,8 @@ time. `LANGS` names: `فارسی` (`dir: 'rtl'`), `Українська`, `Shqip
 **Done when** the check passes with all ten files present.
 
 **Blocked by** 15.
+
+**Landed 2026-10-12** (unattended). 35 batches, written by separate agents into the scratchpad and merged by a Node script: the interface, three blocks of 100 general questions, and the state list with its 160 state questions. The seven `LANGS` entries are `released: false`. Fixes after generation, all recorded in `i18n/README.md`: Ukrainian and Persian place names rewritten in their own script (Q10), German state names in the general questions replaced by each language's own list (Q11, with the Q25 giveaway it exposed), and Romanian counts rewritten. **Found in the source, not fixed here**: the German explanations of Q281 (says nationality, the question is about skin colour) and Q285 (explains wage tax, the answer is VAT) are wrong, so every language translates the error; it is flagged as a separate task.
 
 ### 17. Measure, sheets and ship the seven hidden
 

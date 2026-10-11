@@ -155,3 +155,46 @@ before the title. The older versions were still in the table.
 - **Leave it**: the plan opens with an unreadable line.
 
 **Taken: moved.** Nothing in the rows was reworded.
+
+## 10. Place names in a non-Latin language: keep the German spelling, or write them in the language's own script?
+
+**From task 16** (generating the other seven).
+
+My instructions to the translators said to keep place names as written. In Ukrainian that
+left district and party names such as "Neckar-Odenwald-Kreis" and "Bündnis 90/Die Grünen"
+in Latin letters. The completeness check then flagged 44 strings as mostly not in Cyrillic.
+Persian hit the same problem in 9 strings.
+
+- **Write them in the language's own script, as Arabic and Russian already do**
+  *(Recommended)*: "Неккар-Оденвальд-Крайс", "اتحاد 90/سبزها". The learner can read the
+  name, and all ten languages handle names the same way. Party abbreviations (CDU, SPD)
+  stay in Latin letters.
+- **Loosen the check for names**: the German spelling stays, but the check would stop
+  catching real untranslated text. Weakening a check to make it pass is not something this
+  run does.
+- **Keep the German spelling in brackets after a transliteration**: both spellings appear,
+  but long names push the string back under the script check's threshold.
+
+**Taken: the language's own script.** Ukrainian was redone by a fix pass that followed
+Russian's spellings. The nine Persian strings were fixed by hand, matching Arabic. Both files
+now pass with no problems.
+
+## 11. The general questions named the states differently from each language's state list. Harmonise them?
+
+**From task 16.**
+
+Each language's interface, general questions and state questions were translated in
+separate batches. In Albanian, Bosnian/Croatian/Serbian and Romanian, the general questions
+(mostly Q192-Q201, "which state was part of the GDR") kept German state names such as
+"Bayern", while the state list says "Bavaria" or "Bavarska". The picker and the state
+questions would then call a state one thing and the history questions another.
+
+- **Use the state list's name everywhere** *(Recommended)*: one name per state in each
+  language. Every replaced name was an answer option or a sentence's subject, so no
+  grammatical case had to change.
+- **Leave them**: German names in the history questions, local names everywhere else.
+
+**Taken: the state list's name everywhere.** 41 names were replaced by script. This
+exposed one giveaway, which I also fixed: Q25 asks which is *not* a German state, and its
+right answer, "Elsass-Lothringen", was now the only German name among the options in
+Romanian and Albanian. It is "Alsacia-Lorena" and "Alsaca-Lorena" now.
