@@ -1,7 +1,7 @@
 # Ten more languages — design
 
-Status: **design approved 2026-10-11, not started.** The task list will be written as
-`2026-10-11-languages-plan.md` once this spec is reviewed.
+Status: **approved 2026-10-11, not started.** The work is in
+[2026-10-11-languages-plan.md](2026-10-11-languages-plan.md).
 
 **Purpose.** Most people who take the citizenship test do not have English or German as their
 first language. Today the app can show each question in English and its menus in English or
@@ -304,6 +304,19 @@ then checked by a native speaker before release.
 - Per-language URLs, metadata or link-preview cards.
 - Machine translation in the browser.
 - Translating `docs/`, `CLAUDE.md` or anything not served.
+
+## Open questions
+
+These are unsettled. They stay unsettled here until the work answers them.
+
+- **Who reviews each language.** Nothing ships without a reviewer, and none is lined up yet.
+- **Whether Bricolage Grotesque has Cyrillic.** Task 9 checks it in a browser.
+- **Whether one `bs` text really serves Croatian and Serbian readers**, or reads as Bosnian
+  to them. A reviewer from each would settle it; the plan has only one.
+- **Whether Kurmanji alone is enough.** Kurds from Iraq mostly write Sorani, in Arabic
+  script and right to left. It is not in this plan.
+- **Whether Arabic needs more line height** than Inter's Latin text at the same size.
+  Task 9 will show it; the type roles may need a per-script leading.
 
 ## What this changes in the project's own rules
 
