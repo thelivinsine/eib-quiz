@@ -6,7 +6,7 @@
 // translation fails here rather than on someone's phone.
 //
 // It reads the reference data **out of index.html and questions.json**, not out of a copy:
-// I18N, CATEGORIES, STATES, GLOSSARY and LANGS are evaluated from the script as they stand.
+// I18N, CATEGORIES, STATES, GLOSSARY and LANGS are read by i18n-source.mjs as they stand.
 //
 // What it checks, per file:
 //   - every I18N key is translated, and no key is invented;
@@ -28,37 +28,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import vm from "node:vm";
+import { I18N, CATEGORIES, STATES, GLOSSARY, LANGS, QUESTIONS } from "./i18n-source.mjs";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
-const HTML = readFileSync(here("../index.html"), "utf8");
-const QUESTIONS = JSON.parse(readFileSync(here("../questions.json"), "utf8"));
-
-/** Evaluate `const NAME = <literal>;` out of the app's script. The literals are pure data. */
-function literal(name) {
-  const start = HTML.indexOf(`const ${name} = `);
-  if (start < 0) return undefined;
-  let i = HTML.indexOf("=", start) + 1;
-  while (/\s/.test(HTML[i])) i++;
-  const open = HTML[i], close = open === "{" ? "}" : "]";
-  let depth = 0, quote = null;
-  for (let j = i; j < HTML.length; j++) {
-    const c = HTML[j];
-    if (quote) { if (c === "\\") j++; else if (c === quote) quote = null; continue; }
-    if (c === "'" || c === '"' || c === "`") quote = c;
-    else if (c === "/" && HTML[j + 1] === "/") j = HTML.indexOf("\n", j);
-    else if (c === open) depth++;
-    // Through JSON so the result belongs to this realm: a vm-made array fails deepStrictEqual.
-    else if (c === close && --depth === 0) return JSON.parse(JSON.stringify(vm.runInNewContext("(" + HTML.slice(i, j + 1) + ")")));
-  }
-  throw new Error(`unterminated literal ${name}`);
-}
-
-const I18N = literal("I18N");
-const CATEGORIES = literal("CATEGORIES");
-const STATES = literal("STATES");
-const GLOSSARY = literal("GLOSSARY");
-const LANGS = literal("LANGS") ?? [{ code: "en" }, { code: "de" }];
 
 /** The script each language is written in. Everything not listed is Latin. */
 const SCRIPT = { ar: "Arabic", fa: "Arabic", ru: "Cyrillic", uk: "Cyrillic" };

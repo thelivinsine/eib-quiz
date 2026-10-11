@@ -33,7 +33,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 8 | Translations in the quiz, review and glossary | done | 2026-10-11 | **Not run in a browser (unattended run)**: none of the five sites, the fallback for a missing question, or the en/de byte-identical claim was seen on screen. Checked: the node checks and a read of the code. Q3 answered without you. |
 | 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
 | 10 | Measure every language at every width | **blocked**: needs a browser, which the unattended run may not open (Q4). Tasks 12, 13-17 wait on it. | — | Nothing measured. A text-length proxy found 14 likely overflows, listed in the entry below. |
-| 11 | Review sheets | blocked by 4, 5, 6 | — | — |
+| 11 | Review sheets | done | 2026-10-11 | Not opened in Excel or Google Sheets: proved instead by parsing each sheet back (BOM present, 6 columns on every row, no empty translation). |
 | 12 | Docs, full validation, ship stage 1 | blocked by 10, 11 | — | — |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
 | 14 | Apply corrections and release ar, tr, ru | blocked by 13 | — | — |
@@ -398,6 +398,11 @@ Cyrillic correctly.
 - the row count equals UI keys + 5 + 16 + glossary terms + 460 × 6 for each.
 
 **Blocked by** 4, 5, 6.
+
+**Landed 2026-10-11.** 2,966 rows per language (167 UI strings + 5 topics + 16 states + 18
+glossary entries + 460 × 6). The `key` column (`ui.nav.back`, `q21.option2`, `glossary.Grundgesetz`)
+is what task 14 uses to apply a correction. The data reader the check and this tool share moved
+into `tools/i18n-source.mjs`, so neither keeps its own copy.
 
 ### 12. Docs, full validation, ship stage 1
 
