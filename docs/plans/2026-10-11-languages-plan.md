@@ -7,8 +7,8 @@ _Written 2026-10-11. The argument for every choice below is in
 menus and the question translations, with each language hidden until a native speaker has
 reviewed it.
 
-**Summary.** In progress (2026-10-11, unattended run). Tasks 1-9 and 11 are merged into
-`plan/languages`; task 10 is blocked on a browser, which holds up 12-17. The rest of this
+**Summary.** Stage 1 is built, browser-checked and in a PR (2026-10-11): tasks 1-12 are done
+bar the post-merge live check. Next are the reviews (task 13, the user's). The rest of this
 paragraph is the plan as written: Tasks 1-12 are stage 1: the machinery plus Arabic, Turkish and
 Russian, merged to `main` with all three still hidden. Tasks 13-14 release them as reviews
 come back. Tasks 15-17 do the other seven.
