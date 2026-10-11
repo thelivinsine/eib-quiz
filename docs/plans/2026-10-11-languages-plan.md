@@ -23,7 +23,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 
 | # | Task | Status | Landed | Not verified |
 | --- | --- | --- | --- | --- |
-| 1 | RTL-ready stylesheet | not started | — | — |
+| 1 | RTL-ready stylesheet | done | 2026-10-11 | Screens never shot: the image lightbox, the navigator's Topics view, hover and press states, a coarse pointer, and widths other than 375 and 1280. Their changes are the same one-for-one swaps, which are identical in left-to-right, but no screenshot proves it. Checked in Playwright's Chromium only. |
 | 2 | The completeness check | not started | — | — |
 | 3 | Terminology lists: ar, tr, ru | not started | — | — |
 | 4 | Generate Arabic | blocked by 2, 3 | — | — |
@@ -113,6 +113,24 @@ styles the script writes, to its logical start/end form, with no visible change.
 - `node --test tools/scale.test.mjs` and `tools/contrast.test.mjs` pass.
 
 **Blocked by** nothing.
+
+**Landed 2026-10-11.**
+- **41 flagged declarations, not ~35.** 31 became their start/end form. The other 10
+  stay physical on purpose. Two were never left/right at all: a vertical `translate`,
+  and a radius on both top corners. Five need nothing in right to left, each with a
+  comment: the state picker's down caret, the mountain ornament's `left` +
+  `translateX` (a picture), and the wrong-answer shake's two `translateX` (symmetric).
+  **Three must be flipped by task 9**, also commented: the mode-card arrow's hover nudge
+  (`translateX(3px)`), the progress bar tip's `90deg` gradient, and the navigator group
+  caret, which points right when closed.
+- The script writes no left/right inline style, so nothing changed there.
+- **`tools/scale.test.mjs` was blind to the start/end longhands.** `SPACING_PROPS` listed
+  `padding-inline` but not `padding-inline-end`, so a literal written that way would have
+  passed. The eight longhands are in the list now; every budget held.
+- **Pixel check**: 40 screenshots (Home, Practise, a text question, Q21 answered, results;
+  375 and 1280; light and dark; EN and DE) taken before and after in Playwright with
+  reduced motion. Every difference also appears between two runs of the unchanged
+  build: 149px in the results ring's count-up and 1px on Home at 1280.
 
 ### 2. The completeness check
 
@@ -265,7 +283,9 @@ The design's "Right to left" and "Fonts" sections.
   the translation's `dir`.
 - One `[dir="rtl"]` rule mirrors the directional glyphs' SVGs: back chevron, mode-card
   arrow, scroll arrows, navigator chevron. Not their discs or buttons.
-- The progress bar's lit tip follows the fill's leading edge.
+- The progress bar's lit tip follows the fill's leading edge (its `90deg` gradient is
+  physical), the mode-card arrow's hover nudge goes the way the flipped arrow points, and
+  the navigator group caret points left when closed. Task 1 left all three physical.
 - Fonts: add `Noto Sans Arabic` (400, 600, 700) to the existing Google Fonts link, still
   one request; extend `--font-body` and `--font-head` as the design gives them.
 - Check whether Bricolage Grotesque has Cyrillic, from the pane: render a Russian heading
