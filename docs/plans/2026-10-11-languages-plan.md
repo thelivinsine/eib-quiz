@@ -30,7 +30,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 5 | Generate Turkish | done | 2026-10-11 | Unreviewed translation. I am not a native speaker; I spot-read 12 questions, every topic and two states. Nothing seen in the app yet. Q1, Q2 answered without you. |
 | 6 | Generate Russian | done | 2026-10-11 | Unreviewed translation. Spot-read by me (not a native speaker): 12 questions, every topic and two states. Nothing seen in the app yet (task 7 loads it). Q1, Q2 answered without you. |
 | 7 | Language list, loading and the picker | done | 2026-10-11 | **Not run in a browser at all (unattended run)**. Unverified: the picker lists only English/Deutsch; `?lang=ar` switches one tab without touching `eib_lang`; offline after one use; a blocked `i18n/ar.json` snaps the picker back with the alert; header row width at 320/375 in en/de/ar; picker box size against `main`; en/de screenshots against the baseline. Checked: all five node checks, and a read of the code. |
-| 8 | Translations in the quiz, review and glossary | blocked by 5, 6, 7 | — | — |
+| 8 | Translations in the quiz, review and glossary | done | 2026-10-11 | **Not run in a browser (unattended run)**: none of the five sites, the fallback for a missing question, or the en/de byte-identical claim was seen on screen. Checked: the node checks and a read of the code. Q3 answered without you. |
 | 9 | Right to left and fonts | blocked by 1, 8 | — | — |
 | 10 | Measure every language at every width | blocked by 5, 6, 9 | — | — |
 | 11 | Review sheets | blocked by 4, 5, 6 | — | — |
@@ -262,7 +262,7 @@ The machinery from the design's "Architecture" and "The language picker" section
 **Blocked by** 4. Tasks 5 and 6 can land before or after this one.
 
 **Landed 2026-10-11.** `paintLangControls()` also sets `<html dir>` from `LANGS` here rather
-in task 9: without it, switching away from a previewed Arabic left the page right to left until
+than in task 9: without it, switching away from a previewed Arabic left the page right to left until
 a reload. The `<select>` reads `--type-option` (16px) instead of a literal `font-size`, so it
 needs no exemption in the size test. `setLang()` is async and keeps only the last of two quick
 picks. New strings: `nav.language`, `err.langLoad`, `err.reviewEmpty`, written into all three
@@ -295,6 +295,13 @@ The design's "Which translation the toggle shows" section.
 - in English and German every site is byte-identical to `main`.
 
 **Blocked by** 5, 6, 7.
+
+**Landed 2026-10-11.** `translationOf(q)` falls back to the English for a whole question
+rather than field by field, so a block's `lang`/`dir` always match its text (the check makes
+a partial entry impossible anyway). Translations reach markup through `escapeHtml()`, and the
+question's own translation through `textContent`. `stateName()` serves the state picker, the
+mode cards, the resume banner, the results and the question meta. **The four landing-page
+lines that say "German or English" were left alone** (Q3): true until a language is released.
 
 ### 9. Right to left and fonts
 
