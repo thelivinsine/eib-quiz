@@ -14,7 +14,8 @@
 - On 2026-05-29 production was rolled back to the May 9 app version in commit `d2b1527`.
 - PWA is intentionally re-enabled (2026-06-20): `sw.js` is now a real offline cache (NOT
   the old kill switch) and `index.html` registers it and links `manifest.json`. The SW is
-  network-first for HTML + `questions.json` (so updates always win online) and cleans up all
+  network-first for HTML + `questions.json` + `i18n/*.json` (so updates always win online; a
+  language file with no cached copy offline gets `Response.error()`, never the page) and cleans up all
   old caches — including the May-28 `eib-quiz*` caches — on activate, which subsumes the old
   kill switch. Bump `CACHE` in `sw.js` to invalidate cached static assets.
 - **A network-first worker is only half of "the update arrives"; the REGISTRATION is the
@@ -2545,7 +2546,7 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   questions and extract/crop image assets.
 - `tools/wire-catalogue-images.py` - wires extracted images into `questions.json` (sets
   `option_images`, `image`, `image_credit` fields).
-- `sw.js` - production service worker (offline cache; network-first for HTML/questions.json).
+- `sw.js` - production service worker (offline cache; network-first for HTML/questions.json/i18n).
 - `manifest.json` - PWA manifest (name, icons, theme); linked from `index.html`.
 - `favicon.svg`, `og-image.png` + `og-image.svg`, `img/icons/icon-{192,512}.png`,
   `icon-maskable-512.png`, `apple-touch-icon.png` - icons & social card. The favicon and all

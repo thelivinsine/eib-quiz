@@ -1,6 +1,11 @@
 # Ten more languages — design
 
-Status: **approved 2026-10-11, not started.** The work is in
+Status: **stage 1 shipped 2026-10-11** (`ffcc90b`, PR #109): the picker, the file loading, right
+to left, and Arabic, Turkish and Russian, all three unreleased pending review. The design below
+is the record and is left as written; where the build departed from it, the plan's task entries
+say so. The largest departure: **Noto Sans Arabic is NOT in the shared fonts `<link>`** (see
+"Fonts" below). In it, Chrome fetched two of its files (37 KB) for every English and German
+reader, so its stylesheet is added only for a right-to-left language. The work is in
 [2026-10-11-languages-plan.md](2026-10-11-languages-plan.md).
 
 **Purpose.** Most people who take the citizenship test do not have English or German as their
