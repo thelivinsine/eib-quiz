@@ -93,10 +93,14 @@ unattended run answered without you).
   per-language files loaded on demand, right-to-left layout, and Arabic, Turkish and Russian
   translations of every string and all 460 questions, **all three unreleased**. Also a
   completeness check (`tools/i18n.test.mjs`) and review sheets (`docs/translations/*.csv`).
-- **Not verified in any browser.** The run could not open one: nothing of the picker, the
-  Arabic layout or the en/de "unchanged" claim has been seen on screen.
-- **Next:** task 10 (measure each language at 320-1400px in a browser), then task 12 (docs,
-  full validation, PR), then native-speaker reviews (yours), then release.
+- **Browser-checked 2026-10-11** (Playwright Chromium, user present): picker, preview link,
+  offline, the five translation sites, Arabic right to left, and every language at
+  320-1400px (task 10). Five problems found and fixed; English and German match the
+  pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
+- **Task 12 done**: `CLAUDE.md` updated and the PR opened. Merging it ships the work with
+  all three languages still hidden.
+- **Next:** native-speaker reviews (yours, task 13), then release one language at a time
+  (task 14), then the other seven (tasks 15-17).
 
 ### 4. Done
 - ~~Service worker / offline PWA~~ — done 2026-06-20: real caching SW (network-first for
