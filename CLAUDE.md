@@ -707,22 +707,26 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.hmenu-*`, `#langBadge`, `#schemeLabel`, `syncThemeControlPlacement()`, the two
     listeners that closed it on an outside click or Escape, the app's one shadow, and the
     `nav.language` / `nav.preferences` strings.
-    - **THE BOX IS NOW THE FACE OF A LANGUAGE LIST** (2026-10-11). It used to flip
-      between two languages on a click (`toggleLang()`, gone with `nav.switchToDe` /
-      `nav.switchToEn`); with more than two, it is `.lang-picker`: `#langToggle` is an
-      `aria-hidden` span showing the code, and a transparent native `<select id="langSelect">`
-      lies over it, as the state picker does. Same box, measured: 28px with a mouse, 36 on
-      touch, the same x as before. The `<select>` reads `--type-option` (16px) so iOS does
-      not zoom. It is `--text` at 700, a readout of what you are reading IN.
-      `paintLangControls()` owns the face, the option list (`offeredLangs()`, each name
-      tagged with its own `lang`) and the `aria-label`, "EN – Language".
+    - **THE BOX OPENS A LANGUAGE MENU** (2026-10-12, on request: the native list "looks
+      ugly and cheap"). It used to flip between two languages (`toggleLang()`, gone with
+      `nav.switchToDe` / `nav.switchToEn`), then for a day it was the face of a hidden
+      native `<select id="langSelect">` (gone). Now `#langToggle` is a real button with
+      `aria-expanded`, and `#langMenu` hangs from its end edge: a `--tile` panel with a
+      `--tile-edge` hairline, `--radius`, `--shadow-lift`, a "Language" label and one
+      44px row per language. Each row is the language's own name (tagged with its
+      `lang`), its name in the interface language under it from `Intl.DisplayNames`
+      (left out when the two match), and `ICONS.check` on the one in force, which also
+      wears `--surface2` and `aria-current="true"`. Hover is `--hover`, not
+      `--tile-hover`, for the glossary rows' reason. It is a disclosure of buttons, not
+      an ARIA menu: Tab and the arrow keys walk it, Escape and a press outside close it,
+      and opening it focuses the language in force. **No `dir` on a row's name**: an
+      Arabic name tagged `dir="rtl"` inside a left-to-right row sat flush right; the bidi
+      algorithm draws it correctly untagged. The box itself did not change: 28px with a
+      mouse, 36 on touch, `--text` at 700. `paintLangControls()` owns the face, the rows
+      (`offeredLangs()`) and the `aria-label`, "EN – Language".
       **The name STARTS with the visible code** (2026-09-23, from the review of
       #98-#102): WCAG 2.5.3 needs the accessible name to contain the visible label, or
       a voice-control user's "click EN" matches nothing.
-      **A known side effect, left as is:** with the `<select>` in the header, Chrome draws
-      the session back button's label with sub-pixel instead of greyscale smoothing. Same
-      font, size and position; hiding the language control in both builds makes them
-      identical. Invisible at 1x.
     - **THE SCHEME HAS THREE MODES NOW — light / system / dark.** `system` follows
       `prefers-color-scheme` and keeps following it: the OS can flip while the tab is
       open, so `_schemeMql` is LISTENED to and not just read, and the listener acts only
@@ -2070,11 +2074,12 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     every other language is `i18n/<code>.json` (`ui`, `categories`, `states`, `glossary`,
     `questions`), fetched by `loadLang()` only when picked and merged into `I18N[key][code]`,
     `CATEGORIES` and `LANG_DATA`. `t()` falls back to English for a missing key.
-  - **A language is offered only once `released: true`**, which means a native speaker has
-    reviewed it (`i18n/README.md` records the date). An unreleased one is reachable through
-    **`?lang=<code>`**: it unlocks that language for ONE tab via `sessionStorage`
-    (`eib_lang_preview`) and is never written to `eib_lang`. That is how reviewers use the
-    live site. Arabic, Turkish and Russian are in the repo, unreleased, since 2026-10-11.
+  - **A language is offered only once `released: true`**, which was meant to follow a
+    native speaker's review (`i18n/README.md` records the date). An unreleased one is
+    reachable through **`?lang=<code>`**: it unlocks that language for ONE tab via
+    `sessionStorage` (`eib_lang_preview`) and is never written to `eib_lang`. That is how
+    reviewers use the live site. **Arabic, Turkish and Russian were released UNREVIEWED on
+    2026-10-12, on request**: AI translations, live for everyone, with the review still owed.
   - **One setting drives menus and translations.** `trLang()` is the menu language, except that
     German menus keep English, as before. `translationOf(q)` returns a question's translation
     in it, falling back to English for a whole question, so `lang`/`dir` always match the text.
@@ -2246,7 +2251,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 29 glyphs — 27 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 30 glyphs — 28 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in

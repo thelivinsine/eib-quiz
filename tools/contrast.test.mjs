@@ -138,6 +138,10 @@ const PAIRS = [
   ["sub-text", "tile", AA, "a mode card's description and its facts"],
   ["muted", "tile", AA, "the overview card's readout names and advice line"],
   ["faint", "tile", AA, "the /310 denominator on the overview card"],
+  // The language menu is a --tile; a hovered row is --hover, the one in force --surface2
+  // (whose text pairs are asserted further down).
+  ["text", "hover", AA, "a hovered language name in the language menu"],
+  ["muted", "hover", AA, "a hovered language's translated name in the language menu"],
   // The why band stopped being a panel on 2026-09-21, so its body copy sits on the
   // page. In light --surface IS --canvas so the surface pairs already covered it; in
   // dark they do not, because --surface is a rung above the canvas there.

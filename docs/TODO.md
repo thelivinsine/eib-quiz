@@ -86,20 +86,22 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
 
-### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`), languages unreleased_
+### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`); ar, ru, tr released unreviewed 2026-10-12_
 Plan: `docs/plans/2026-10-11-languages-plan.md` (design, task list, and the questions the
 unattended run answered without you).
 - **Built (2026-10-11, unattended run):** a language picker in place of the EN box,
   per-language files loaded on demand, right-to-left layout, and Arabic, Turkish and Russian
-  translations of every string and all 460 questions, **all three unreleased**. Also a
+  translations of every string and all 460 questions. **All three released UNREVIEWED on
+  2026-10-12, on request**, with the language box now opening a styled menu instead of the
+  system's list. Also a
   completeness check (`tools/i18n.test.mjs`) and review sheets (`docs/translations/*.csv`).
 - **Browser-checked 2026-10-11** (Playwright Chromium, user present): picker, preview link,
   offline, the five translation sites, Arabic right to left, and every language at
   320-1400px (task 10). Five problems found and fixed; English and German match the
   pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
-- **Task 12 done, live**: merged as `ffcc90b` (PR #109). The live picker offers only English
-  and Deutsch; `?lang=ar` / `tr` / `ru` previews a language for reviewers.
-- **Next:** native-speaker reviews (yours, task 13), then release one language at a time
+- **Task 12 done, live**: merged as `ffcc90b` (PR #109). Until 2026-10-12 the live picker
+  offered only English and Deutsch; since then it offers all five.
+- **Next:** native-speaker reviews (yours, task 13) of the three already live, then release one language at a time
   (task 14), then the other seven (tasks 15-17).
 
 ### 4. Done

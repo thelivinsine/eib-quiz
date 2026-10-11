@@ -740,8 +740,8 @@
            reference's ~0.46 of the box, scaled with it. */
         .header-controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: var(--space-ms); min-height: var(--ctl-sm); }
 
-        /* (2026-10-11: the box is now the face of a native language LIST, .lang-picker below,
-           because there are more than two languages. The rest of this note is the history
+        /* (2026-10-11: the box became the face of a language LIST, because there are more
+           than two languages; since 2026-10-12 it opens .lang-menu below. The rest of this note is the history
            of the box's look and the space it freed, which still holds.)
            THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
@@ -769,23 +769,44 @@
             font-weight: 700; color: var(--text);
             transition: border-color 0.18s var(--ease);
         }
-        .lang-picker:hover .lang-toggle { border-color: var(--border-hover); }
-        /* The box above is only the face. The real control is a native <select> laid over
-           it, invisible, as the state picker does: a keyboard, a screen reader and a
-           phone's own list all work, and the box keeps its measured size. --type-option is
-           16px, which stops iOS zooming the page when the list opens. */
+        .lang-toggle { cursor: pointer; }
+        .lang-toggle:hover, .lang-toggle[aria-expanded="true"] { border-color: var(--border-hover); }
+        /* THE BOX OPENS A MENU, NOT THE SYSTEM'S <select> LIST (2026-10-12, on request: the
+           native list "looks ugly and cheap"). One tile hanging from the box's end edge:
+           each language in its own name, its name in the interface language under it, and
+           a check on the one in force. A disclosure of buttons, not an ARIA menu: Tab,
+           the arrow keys and Escape all work (wired beside the scheme seg's listeners).
+           The panel floats over unrelated content, so it takes --shadow-lift.
+           Nested corners: a 16px tile with 6px of padding holds 10px rows. */
         .lang-picker { position: relative; display: inline-flex; }
-        .lang-picker select {
-            font: var(--type-option);
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            opacity: 0;
-            border: none;
-            cursor: pointer;
+        .lang-menu {
+            position: absolute; top: calc(100% + var(--space-sm)); inset-inline-end: 0;
+            min-width: calc(var(--ctl-lg) * 4);
+            padding: var(--space-xs);
+            background: var(--tile); border: 1px solid var(--tile-edge); border-radius: var(--radius);
+            box-shadow: var(--shadow-lift);
+            transform-origin: top right;
+            animation: langMenuIn 0.16s var(--ease-out);
         }
-        /* The <select> is invisible, so its own focus ring is too. The box wears it. */
-        .lang-picker:focus-within .lang-toggle { outline: 2px solid var(--accent-text); outline-offset: 3px; }
-        .lang-picker select:focus-visible { outline: none; }
+        [dir="rtl"] .lang-menu { transform-origin: top left; }
+        @keyframes langMenuIn { from { opacity: 0; transform: translateY(calc(-1 * var(--space-2xs))) scale(0.98); } }
+        .lang-menu-title { font: var(--type-label); color: var(--muted); margin: 0; padding: var(--space-xs) var(--space-sm) var(--space-2xs); }
+        .lang-menu ul { list-style: none; margin: 0; padding: 0; }
+        .lang-option {
+            font: var(--type-control-sm);
+            width: 100%; min-height: var(--ctl-md);
+            display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: var(--space-ms);
+            padding: var(--space-xs) var(--space-sm);
+            border: none; border-radius: var(--radius-sm); background: none;
+            color: var(--text); text-align: start; cursor: pointer;
+            transition: background-color 0.12s var(--ease);
+        }
+        .lang-option-sub { font: var(--type-caption); color: var(--muted); grid-column: 1; }
+        .lang-option svg { grid-column: 2; grid-row: 1 / span 2; width: var(--icon-sm); height: var(--icon-sm); }
+        /* --hover, not --tile-hover: inside a tile there is no edge to change, so the fill is
+           the whole state, as on the glossary rows. */
+        @media (hover: hover) { .lang-option:hover { background: var(--hover); } }
+        .lang-option[aria-current="true"] { background: var(--surface2); }
         .seg {
             display: inline-flex;
             padding: var(--space-3xs); gap: var(--space-2xs);
@@ -3152,10 +3173,13 @@
                      paintLangControls(), not by data-i18n: "EN"/"DE" is a language
                      CODE, identical in both languages, and the aria-label is what
                      changes with the switch. -->
-                <label class="lang-picker">
-                    <span class="lang-toggle" id="langToggle" aria-hidden="true">EN</span>
-                    <select id="langSelect" onchange="setLang(this.value)"></select>
-                </label>
+                <div class="lang-picker" id="langPicker">
+                    <button type="button" class="lang-toggle" id="langToggle" aria-expanded="false" aria-controls="langMenu">EN</button>
+                    <div class="lang-menu" id="langMenu" hidden>
+                        <p class="lang-menu-title" data-i18n="nav.language"></p>
+                        <ul id="langList"></ul>
+                    </div>
+                </div>
                 <!-- Three modes, and System is the new one: it follows
                      prefers-color-scheme live. Light is still the DEFAULT with nothing
                      saved, so a first visit is unchanged. Icon-only, so each button
@@ -3579,6 +3603,7 @@
             topic: _svg('<rect x="3.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="3.2" width="7.6" height="7.6" rx="2.2"/><rect x="3.2" y="13.2" width="7.6" height="7.6" rx="2.2"/><rect x="13.2" y="13.2" width="7.6" height="7.6" rx="2.2"/>'),
             // The overview card's readouts (answered, mastered; due is ICONS.clock).
             file: _svg('<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>'),
+            check: _svg('<path d="M9.5 18.6 3.9 13l1.6-1.6 4 4 9-9 1.6 1.6Z"/>'),
             checkCircle: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.6a7.4 7.4 0 1 0 0 14.8a7.4 7.4 0 1 0 0 -14.8Z"/><path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>'),
             /* The header's three scheme modes. `globe` stood here until 2026-09-22
                and went with the menu that was its only reader — ICONS.symbols is the
@@ -3690,14 +3715,15 @@
         const LANG_KEY = 'eib_lang';
         // Every language the app knows, and the one list that says so. A language other
         // than en/de has its strings in i18n/<code>.json, and the picker offers it only
-        // once `released` is true, i.e. once a native speaker has reviewed it.
+        // once `released` is true. That was meant to wait for a native speaker's review;
+        // ar, ru and tr were released UNREVIEWED on 2026-10-12, on request (i18n/README.md).
         // tools/i18n.test.mjs holds the files and this list to each other.
         const LANGS = [
             { code: 'en', name: 'English' },
             { code: 'de', name: 'Deutsch' },
-            { code: 'ar', name: 'العربية', dir: 'rtl', released: false },
-            { code: 'ru', name: 'Русский', released: false },
-            { code: 'tr', name: 'Türkçe', released: false },
+            { code: 'ar', name: 'العربية', dir: 'rtl', released: true },
+            { code: 'ru', name: 'Русский', released: true },
+            { code: 'tr', name: 'Türkçe', released: true },
         ];
         const langEntry = code => LANGS.find(l => l.code === code);
         const langDir = code => (langEntry(code) || {}).dir || 'ltr';
@@ -4052,17 +4078,40 @@
             document.documentElement.dir = langDir(lang);
             if (langDir(lang) === 'rtl') useArabicFont();
             const face = document.getElementById('langToggle');
-            const select = document.getElementById('langSelect');
-            if (!face || !select) return;
+            const list = document.getElementById('langList');
+            if (!face || !list) return;
             face.textContent = lang.toUpperCase();
             // Rebuilt on every paint: it is short, and a preview adds to it. Each name is
-            // written in its own language, so it is tagged with that language.
-            select.innerHTML = offeredLangs()
-                .map(l => `<option value="${l.code}" lang="${l.code}"${l.code === lang ? ' selected' : ''}>${l.name}</option>`)
-                .join('');
-            select.value = lang;
+            // written in its own language and tagged with it; the line under it is the same
+            // name in the interface language (Intl.DisplayNames), left out where they match.
+            let names = null;
+            try { names = new Intl.DisplayNames([lang], { type: 'language' }); } catch (e) {}
+            list.innerHTML = offeredLangs().map(l => {
+                let sub = '';
+                try { sub = names ? names.of(l.code) : ''; } catch (e) {}
+                if (!sub || sub.toLowerCase() === l.name.toLowerCase()) sub = '';
+                const on = l.code === lang;
+                return `<li><button type="button" class="lang-option" onclick="pickLang('${l.code}')"${on ? ' aria-current="true"' : ''}>`
+                    + `<span lang="${l.code}">${l.name}</span>`
+                    + (sub ? `<span class="lang-option-sub">${escapeHtml(sub)}</span>` : '')
+                    + (on ? ICONS.check : '') + '</button></li>';
+            }).join('');
             // The name STARTS with the visible code (WCAG 2.5.3): "click EN" has to work.
-            select.setAttribute('aria-label', lang.toUpperCase() + ' – ' + t('nav.language'));
+            face.setAttribute('aria-label', lang.toUpperCase() + ' – ' + t('nav.language'));
+        }
+
+        /** Open or close the language menu. Opening focuses the language in force. */
+        function setLangMenu(open, refocus) {
+            const menu = document.getElementById('langMenu'), face = document.getElementById('langToggle');
+            if (menu.hidden === !open) return;
+            menu.hidden = !open;
+            face.setAttribute('aria-expanded', String(open));
+            if (open) (menu.querySelector('[aria-current]') || menu.querySelector('button')).focus();
+            else if (refocus) face.focus();
+        }
+        function pickLang(code) {
+            setLangMenu(false, true);
+            if (code !== lang) setLang(code);
         }
 
         /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
@@ -5743,6 +5792,23 @@
         schemeSeg.addEventListener('mouseleave', () => schemeSeg.classList.remove('picked'));
         schemeSeg.addEventListener('focusout', () => schemeSeg.classList.remove('picked'));
         document.addEventListener('pointerdown', e => { if (!schemeSeg.contains(e.target)) schemeSeg.classList.remove('open'); });
+
+        // The language menu: the box toggles it, a press outside or Escape closes it, and
+        // the arrow keys walk its rows. Tabbing out of it closes it too.
+        const langPicker = document.getElementById('langPicker');
+        document.getElementById('langToggle').addEventListener('click', () =>
+            setLangMenu(document.getElementById('langMenu').hidden));
+        document.addEventListener('pointerdown', e => { if (!langPicker.contains(e.target)) setLangMenu(false); });
+        langPicker.addEventListener('focusout', e => { if (e.relatedTarget && !langPicker.contains(e.relatedTarget)) setLangMenu(false); });
+        langPicker.addEventListener('keydown', e => {
+            if (document.getElementById('langMenu').hidden) return;
+            if (e.key === 'Escape') { e.preventDefault(); setLangMenu(false, true); return; }
+            if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+            e.preventDefault();
+            const rows = [...langPicker.querySelectorAll('.lang-option')];
+            const i = rows.indexOf(document.activeElement);
+            rows[(i + (e.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length].focus();
+        });
 
         document.getElementById('nextBtn').addEventListener('click', () => {
             if (ttsSupported) window.speechSynthesis.cancel();
