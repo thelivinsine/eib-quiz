@@ -28,7 +28,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 3 | Terminology lists: ar, tr, ru | done | 2026-10-11 | Every rendering is AI-written and unreviewed: the lists are the first thing each reviewer should check. |
 | 4 | Generate Arabic | blocked by 2, 3 | — | — |
 | 5 | Generate Turkish | blocked by 2, 3 | — | — |
-| 6 | Generate Russian | blocked by 2, 3 | — | — |
+| 6 | Generate Russian | done | 2026-10-11 | Unreviewed translation. Spot-read by me (not a native speaker): 12 questions, every topic and two states. Nothing seen in the app yet (task 7 loads it). Q1, Q2 answered without you. |
 | 7 | Language list, loading and the picker | blocked by 4 | — | — |
 | 8 | Translations in the quiz, review and glossary | blocked by 5, 6, 7 | — | — |
 | 9 | Right to left and fonts | blocked by 1, 8 | — | — |
@@ -212,6 +212,11 @@ As task 4, for `ru` (`Русский`, left to right).
 **Done when** as task 4, for `ru`.
 
 **Blocked by** 2, 3.
+
+**Landed 2026-10-11**, ahead of 4 and 5 because its batches finished first. The questions came
+back in four batches of 115; the two state-question batches were built by script from the
+catalogue's fixed patterns, and read fine. The completeness check learned one rule here: a
+string identical in the German and the English is a name, not an untranslated sentence (Q2).
 
 ### 7. Language list, loading and the picker
 

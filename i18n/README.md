@@ -19,6 +19,7 @@ open. A language is released only when its **Reviewed** cell holds a date.
 
 | Code | Language | Generated | Reviewed | Notes |
 | --- | --- | --- | --- | --- |
+| ru | Русский | 2026-10-11 | — | Counts read "Вопросов: {n}" so plural endings never go wrong. Q449: "премьер-министр земли" (right) sits beside "премьер-министр" (wrong), distinct but close. "Landtag" is sometimes glossed "(парламент земли)", sometimes not. |
 
 ## Why the details are this way
 
