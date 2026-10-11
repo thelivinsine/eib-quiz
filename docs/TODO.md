@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-11 (live commit `1120e75`; the languages work sits on `plan/languages`)_
+_Last updated: 2026-10-11 (live commit `ffcc90b`)_
 
 ## Project status
 
@@ -86,7 +86,7 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
 
-### 3b. Ten more languages — _in progress on `plan/languages`, not on `main`_
+### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`), languages unreleased_
 Plan: `docs/plans/2026-10-11-languages-plan.md` (design, task list, and the questions the
 unattended run answered without you).
 - **Built (2026-10-11, unattended run):** a language picker in place of the EN box,
@@ -97,8 +97,8 @@ unattended run answered without you).
   offline, the five translation sites, Arabic right to left, and every language at
   320-1400px (task 10). Five problems found and fixed; English and German match the
   pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
-- **Task 12 done**: `CLAUDE.md` updated and the PR opened. Merging it ships the work with
-  all three languages still hidden.
+- **Task 12 done, live**: merged as `ffcc90b` (PR #109). The live picker offers only English
+  and Deutsch; `?lang=ar` / `tr` / `ru` previews a language for reviewers.
 - **Next:** native-speaker reviews (yours, task 13), then release one language at a time
   (task 14), then the other seven (tasks 15-17).
 

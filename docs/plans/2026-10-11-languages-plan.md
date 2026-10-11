@@ -7,8 +7,8 @@ _Written 2026-10-11. The argument for every choice below is in
 menus and the question translations, with each language hidden until a native speaker has
 reviewed it.
 
-**Summary.** Stage 1 is built, browser-checked and in a PR (2026-10-11): tasks 1-12 are done
-bar the post-merge live check. Next are the reviews (task 13, the user's). The rest of this
+**Summary.** Stage 1 is live (2026-10-11, `ffcc90b`), all three languages hidden: tasks 1-12
+are done. Next are the reviews (task 13, the user's). The rest of this
 paragraph is the plan as written: Tasks 1-12 are stage 1: the machinery plus Arabic, Turkish and
 Russian, merged to `main` with all three still hidden. Tasks 13-14 release them as reviews
 come back. Tasks 15-17 do the other seven.
@@ -36,7 +36,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
 | 10 | Measure every language at every width | done, 2026-10-11 (user present) | 2026-10-11 | Measured in Playwright Chromium only (not Safari or Firefox, not a real phone). en/de/ar/tr/ru all pass after two fixes, listed in the entry. |
 | 11 | Review sheets | done | 2026-10-11 | Not opened in Excel or Google Sheets: proved instead by parsing each sheet back (BOM present, 6 columns on every row, no empty translation). |
-| 12 | Docs, full validation, ship stage 1 | PR opened 2026-10-11, not merged | 2026-10-11 | Validation steps 2-8 run (Node, and Playwright Chromium for 5, 6, 8). The post-merge live check (picker shows only English/Deutsch, `?lang=ar` works on the live site) waits for the merge. Not checked: Safari, Firefox, a real phone. |
+| 12 | Docs, full validation, ship stage 1 | done, live 2026-10-11 | 2026-10-11 | Merged as `ffcc90b` (thelivinsine/eib-quiz#109). Live check (Playwright): Pages build `built`, origin and edge both serve the new page, the picker offers only English/Deutsch, `?lang=ar` works and saves nothing. Not checked: Safari, Firefox, a real phone, a returning visitor whose old service worker updates. |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
 | 14 | Apply corrections and release ar, tr, ru | blocked by 13 | — | — |
 | 15 | Terminology lists: the other seven | blocked by 12 | — | — |
