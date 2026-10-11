@@ -2,7 +2,8 @@
 
 **Purpose.** Each file here holds one language: its menus and buttons, topic and state names,
 glossary and the translation of every question. The app downloads a file only when someone
-picks that language, and offers a language only after a native speaker has reviewed it.
+picks that language, and offers a language only after a native speaker has reviewed it
+(Arabic, Turkish and Russian are the exception: released unreviewed, see Status).
 
 **Summary.**
 

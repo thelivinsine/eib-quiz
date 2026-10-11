@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `b9d08cf`: CI on every PR; the languages work `ffcc90b` and its review fixes `ec192bc`)_
+_Last updated: 2026-10-12 (live commit `ff5a937`: ar/ru/tr released, styled language menu; seven more languages waiting on `plan/languages`)_
 
 ## Project status
 
@@ -101,8 +101,18 @@ unattended run answered without you).
   pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
 - **Task 12 done, live**: merged as `ffcc90b` (PR #109). Until 2026-10-12 the live picker
   offered only English and Deutsch; since then it offers all five.
-- **Next:** native-speaker reviews (yours, task 13) of the three already live, then release one language at a time
-  (task 14), then the other seven (tasks 15-17).
+- **The other seven are generated, NOT live** (2026-10-12, second unattended run, tasks
+  15-16 on branch `plan/languages`, not merged to `main`): Persian, Ukrainian, Albanian,
+  Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish. Each has a terms list and a full
+  language file, all `released: false`. The completeness check passes with all ten files.
+  **Not checked: any of the seven in a browser, Persian right to left included**, and no
+  native speaker has read them. Questions 7-11 in the plan's questions file were answered
+  without you.
+- **Found in the source data**: the German explanations of Q281 and Q285 do not fit their
+  questions, so every language translates the error. Flagged as its own task; not fixed.
+- **Next:** task 17 for the seven (browser measurements, review sheets, PR to `main`, all
+  still hidden); native-speaker reviews (yours, task 13) of the three already live, then
+  their corrections (task 14).
 
 ### 4. Done
 - ~~CI~~ — done 2026-10-12 (`b9d08cf`, PR #111): GitHub Actions runs the contrast, scale
