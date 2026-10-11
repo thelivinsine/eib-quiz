@@ -74,3 +74,33 @@ The run may not open a browser, and task 10 consists only of on-screen measureme
 
 **Taken: leave it blocked.** The plan's own rule is that a string is shortened only when a
 measurement says so. Task 11 (review sheets) does not depend on it and was done.
+
+## 5. While only English and German are released, should the language box still open a list?
+
+**From the wrap-up review.**
+
+The EN box used to flip between English and German in one click. It now opens a list, which
+for two languages costs a second click. `CLAUDE.md` once argued against exactly that.
+
+- **Keep the list** *(Recommended)*: one control that already works for any number of
+  languages, and a preview link to show reviewers. The extra click lasts only until the
+  first language is released.
+- **Flip while only two are offered**: saves the click today, but adds a second behaviour to
+  build, test and later remove.
+
+**Taken: keep the list.** Nothing was changed for this; tell me if you want the flip back.
+
+## 6. Two small text changes reach English and German users. Keep them?
+
+**From the wrap-up review.**
+
+The plan promised no change for English and German users, and two texts did change:
+the translate button now says "Show translation" rather than "Show the English", and the
+"nothing to review yet" alert now speaks the menu language instead of always German.
+
+- **Keep both** *(Recommended)*: the first names what the button now does in every
+  language, and the second fixes a German-only message you asked to fold into task 7.
+- **Revert the button text for English and German**: keeps "Show the English" there, at the
+  cost of two different names for one button.
+
+**Taken: keep both.**

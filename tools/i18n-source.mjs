@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
-const HTML = readFileSync(here("../index.html"), "utf8");
+export const HTML = readFileSync(here("../index.html"), "utf8");
 
 /** Evaluate `const NAME = <literal>;` out of the app's script, or undefined if absent. */
 function literal(name) {
@@ -38,6 +38,6 @@ export const I18N = literal("I18N");
 export const CATEGORIES = literal("CATEGORIES");
 export const STATES = literal("STATES");
 export const GLOSSARY = literal("GLOSSARY");
-export const LANGS = literal("LANGS") ?? [{ code: "en" }, { code: "de" }];
+export const LANGS = literal("LANGS");
 export const QUESTIONS = JSON.parse(readFileSync(here("../questions.json"), "utf8"));
 export const I18N_DIR = here("../i18n");

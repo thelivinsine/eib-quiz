@@ -695,7 +695,7 @@
         [dir="rtl"] .session-back-icon svg { transform: none; }
         /* Forward arrows point the way the page reads. The flip is on the SVG, never on its
            disc or chip, which carry the hover lift's own transform. */
-        [dir="rtl"] .mode-go svg, [dir="rtl"] .topic-chip-go svg { transform: scaleX(-1); }
+        [dir="rtl"] .mode-go svg, [dir="rtl"] .topic-chip-go svg, [dir="rtl"] .btn-primary svg { transform: scaleX(-1); }
         body.in-session header { border-bottom: none; }
         body.in-session .brand { display: none; }
         body.in-session .session-back { display: inline-flex; }
@@ -737,7 +737,10 @@
            reference's ~0.46 of the box, scaled with it. */
         .header-controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: var(--space-ms); min-height: var(--ctl-sm); }
 
-        /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
+        /* (2026-10-11: the box is now the face of a native language LIST, .lang-picker below,
+           because there are more than two languages. The rest of this note is the history
+           of the box's look and the space it freed, which still holds.)
+           THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
            one pill that NAMES the current one and flips on a click; a disclosure spent
            a click choosing between two. That retired the whole .hmenu-* block - the
@@ -1691,7 +1694,7 @@
            the card's four blocks are ONE treatment: an --fs-md figure over an 11px
            name, four times. If either moves, move both. */
         .ds-num { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
-        /* margin-left on top of the string's own leading space: the mockup sets the
+        /* margin-inline-start on top of the string's own leading space: the mockup sets the
            total off the figure at ~9px and " /" alone buys 3. --fs-2xs came down from
            --fs-xs with the figure and then STAYED while the figure fell twice more
            (on request: "keep the size of 310 intact"). That is the point of it — the
@@ -3691,6 +3694,7 @@
             { code: 'tr', name: 'Türkçe', released: false },
         ];
         const langEntry = code => LANGS.find(l => l.code === code);
+        const langDir = code => (langEntry(code) || {}).dir || 'ltr';
         // A reviewer's ?lang=<code> unlocks ONE unreleased language for this tab: it is kept
         // in sessionStorage, never in eib_lang, so it cannot outlive the visit or reach
         // anyone else. An unknown or released code is not a preview.
@@ -3725,11 +3729,11 @@
         function loadLang(code) {
             if (code === 'en' || code === 'de') return Promise.resolve();
             if (!_langLoads[code]) {
-                _langLoads[code] = fetch('i18n/' + code + '.json')
+                _langLoads[code] = fetch('i18n/' + code + '.json', { cache: 'no-cache' })
                     .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
                     .then(data => {
-                        for (const key in data.ui) if (I18N[key]) I18N[key][code] = data.ui[key];
-                        for (const key in data.categories) if (CATEGORIES[key]) CATEGORIES[key][code] = data.categories[key];
+                        for (const key in data.ui) if (Object.prototype.hasOwnProperty.call(I18N, key)) I18N[key][code] = data.ui[key];
+                        for (const key in data.categories) if (Object.prototype.hasOwnProperty.call(CATEGORIES, key)) CATEGORIES[key][code] = data.categories[key];
                         LANG_DATA[code] = { states: data.states || {}, glossary: data.glossary || {}, questions: data.questions || {} };
                     })
                     .catch(e => { delete _langLoads[code]; throw e; });
@@ -3746,7 +3750,7 @@
         function translationOf(q) {
             const code = trLang();
             const tr = code !== 'en' && LANG_DATA[code] && LANG_DATA[code].questions[q.id];
-            if (tr) return { q: tr.q, options: tr.options, explanation: tr.explanation, lang: code, dir: (langEntry(code) || {}).dir || 'ltr' };
+            if (tr) return { q: tr.q, options: tr.options, explanation: tr.explanation, lang: code, dir: langDir(code) };
             return { q: q.en, options: q.options_en || [], explanation: q.explanation_en, lang: 'en', dir: 'ltr' };
         }
         /** The results review's translated explanation, as markup. */
@@ -3755,6 +3759,8 @@
             return `<div class="review-explanation-en" lang="${tr.lang}" dir="${tr.dir}">${escapeHtml(tr.explanation)}</div>`;
         }
         /** A state's name in the menu language, or the German name the app has always shown. */
+        /** The forward arrow written after a button's word: right to left, it points left. */
+        const fwdArrow = () => (langDir(lang) === 'rtl' ? '←' : '→');
         const stateName = code => (LANG_DATA[lang] && LANG_DATA[lang].states[code]) || STATES[code];
         /** Translated text goes into markup through this, never raw. */
         const escapeHtml = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -4026,7 +4032,7 @@
          */
         function paintLangControls() {
             document.documentElement.lang = lang;
-            document.documentElement.dir = (langEntry(lang) || {}).dir || 'ltr';
+            document.documentElement.dir = langDir(lang);
             const face = document.getElementById('langToggle');
             const select = document.getElementById('langSelect');
             if (!face || !select) return;
@@ -4543,7 +4549,7 @@
         /** A glossary entry's definition in trLang(), English where the file has none. */
         function glossTranslation(g) {
             const code = trLang(), own = code !== 'en' && LANG_DATA[code] && LANG_DATA[code].glossary[g.term];
-            const dir = own ? (langEntry(code) || {}).dir || 'ltr' : 'ltr';
+            const dir = own ? langDir(code) : 'ltr';
             return `<p class="gloss-en" lang="${own ? code : 'en'}" dir="${dir}">${escapeHtml(own || g.en)}</p>`;
         }
 
@@ -4635,7 +4641,7 @@
                             </div>
                         </div>
                         <div class="resume-actions">
-                            <button class="btn-primary" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
+                            <button class="btn-primary" onclick="resumeSession()">${t('dash.resumeGo')} ${fwdArrow()}</button>
                             <button class="btn-secondary" onclick="clearSession(); initHomeScreen();">${t('dash.resumeDrop')}</button>
                         </div>
                     </div>`;
@@ -5090,7 +5096,7 @@
             // look for, and the real test does not.
             document.getElementById('questionCategory').textContent =
                 state.currentMode === 'exam' ? ''
-                    : q.state ? ((LANG_DATA[lang] && LANG_DATA[lang].states[q.state]) || q.stateName || STATES[q.state] || t('mode.state.title'))
+                    : q.state ? (stateName(q.state) || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
             document.getElementById('questionText').textContent = q.de;
             // The translation of the question, in trLang(), written as text, not markup.
@@ -5199,7 +5205,7 @@
                 const nextBtn = document.getElementById('nextBtn');
                 nextBtn.disabled = false;
                 nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length
-                    ? t('quiz.finish') : t('quiz.next') + ' →';
+                    ? t('quiz.finish') : t('quiz.next') + ' ' + fwdArrow();
             } else {
                 if (optsEl) optsEl.classList.remove('answered');
                 document.getElementById('explanation').classList.remove('show');
@@ -5342,7 +5348,7 @@
             // Show next button and scroll it into view
             const nextBtn = document.getElementById('nextBtn');
             nextBtn.disabled = false;
-            nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' →';
+            nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' ' + fwdArrow();
             if (!isExamRound) setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
             setTimeout(() => nextBtn.focus(), 600);
 
