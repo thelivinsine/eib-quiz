@@ -304,7 +304,13 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     (`--font-body`) + **Caveat** (`--font-hand`, added 2026-09-21 for the landing page's three
     script margin-notes — read by `.script-note` alone and NEVER inherited by body copy); `--font-mono` is
     aliased to Inter (kept only so JS refs resolve). All three arrive in **one** Google Fonts
-    `<link>`; keep it one request when adding a face. Display
+    `<link>`; keep it one request when adding a face. **The one exception is Noto Sans
+    Arabic** (2026-10-11): its stylesheet is added only for a right-to-left language, by the
+    `<head>` script on first paint and by `useArabicFont()` on a switch. In the shared link,
+    Chrome fetched two of its files (37 KB) for EVERY reader, for symbols and accents Inter
+    already draws: measured, not assumed. Bricolage has no Cyrillic (Google Fonts metadata:
+    latin, latin-ext, vietnamese), so Inter is second in `--font-head` and draws Russian
+    headings. Display
     weights top out at 700. Micro-labels are SENTENCE CASE since 2026-09-23 (`--type-label`,
     no uppercase, no `--ls-caps`) and still share one rule (`.stat-label` and its list;
     `.eyebrow` is GONE — see the landing page + shared list). `--ls-caps` is GONE too
@@ -700,16 +706,22 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `.hmenu-*`, `#langBadge`, `#schemeLabel`, `syncThemeControlPlacement()`, the two
     listeners that closed it on an outside click or Escape, the app's one shadow, and the
     `nav.language` / `nav.preferences` strings.
-    - **A disclosure to choose between TWO things spends a click.** `#langToggle` shows
-      the current code and flips on press (`toggleLang()`); it is `--text` at 700 (the
-      accent until 2026-09-23), a readout of what you are reading IN, not an offer.
-      `paintLangControls()` still owns its face — a language CODE is identical in both
-      languages, so `applyStaticStrings()` must not — and it also writes the
-      `aria-label`, which DOES translate ("EN – Switch to German" / "DE – Auf Englisch
-      umschalten"): a box already showing "EN" has to say what pressing it does.
+    - **THE BOX IS NOW THE FACE OF A LANGUAGE LIST** (2026-10-11). It used to flip
+      between two languages on a click (`toggleLang()`, gone with `nav.switchToDe` /
+      `nav.switchToEn`); with more than two, it is `.lang-picker`: `#langToggle` is an
+      `aria-hidden` span showing the code, and a transparent native `<select id="langSelect">`
+      lies over it, as the state picker does. Same box, measured: 28px with a mouse, 36 on
+      touch, the same x as before. The `<select>` reads `--type-option` (16px) so iOS does
+      not zoom. It is `--text` at 700, a readout of what you are reading IN.
+      `paintLangControls()` owns the face, the option list (`offeredLangs()`, each name
+      tagged with its own `lang`) and the `aria-label`, "EN – Language".
       **The name STARTS with the visible code** (2026-09-23, from the review of
       #98-#102): WCAG 2.5.3 needs the accessible name to contain the visible label, or
       a voice-control user's "click EN" matches nothing.
+      **A known side effect, left as is:** with the `<select>` in the header, Chrome draws
+      the session back button's label with sub-pixel instead of greyscale smoothing. Same
+      font, size and position; hiding the language control in both builds makes them
+      identical. Invisible at 1x.
     - **THE SCHEME HAS THREE MODES NOW — light / system / dark.** `system` follows
       `prefers-color-scheme` and keeps following it: the OS can flip while the tab is
       open, so `_schemeMql` is LISTENED to and not just read, and the listener acts only
@@ -2049,12 +2061,37 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **In a session the header drops its bottom hairline** (`body.in-session header`). The page
     does not scroll there, so there is nothing to separate the header from — the rule was just
     a line drawn across a locked screen.
-- **UI language: English by default, German optional** (added 2026-09-19). The switch is the
-  left segmented control in the header (`#langEn` / `#langDe`), persisted under `localStorage`
-  key `eib_lang`, defaulting to `en`.
+- **UI language: English by default, German optional, more languages from files** (added
+  2026-09-19; ten more languages from 2026-10-11, plan `docs/plans/2026-10-11-languages-*`).
+  The switch is the header's language picker (see the header-controls notes), persisted under
+  `localStorage` key `eib_lang`, defaulting to `en`.
+  - **`LANGS` is the one list of languages.** English and German live inline in `I18N`;
+    every other language is `i18n/<code>.json` (`ui`, `categories`, `states`, `glossary`,
+    `questions`), fetched by `loadLang()` only when picked and merged into `I18N[key][code]`,
+    `CATEGORIES` and `LANG_DATA`. `t()` falls back to English for a missing key.
+  - **A language is offered only once `released: true`**, which means a native speaker has
+    reviewed it (`i18n/README.md` records the date). An unreleased one is reachable through
+    **`?lang=<code>`**: it unlocks that language for ONE tab via `sessionStorage`
+    (`eib_lang_preview`) and is never written to `eib_lang`. That is how reviewers use the
+    live site. Arabic, Turkish and Russian are in the repo, unreleased, since 2026-10-11.
+  - **One setting drives menus and translations.** `trLang()` is the menu language, except that
+    German menus keep English, as before. `translationOf(q)` returns a question's translation
+    in it, falling back to English for a whole question, so `lang`/`dir` always match the text.
+    `stateName()` gives state names in the menu language. Translations reach markup only through
+    `textContent` or `escapeHtml()`. `quiz.showEn`/`quiz.hideEn` say "translation" now; the
+    keys kept their names, as did `state.showEnglish`.
+  - **Right to left**: `LANGS` entries with `dir: 'rtl'` (Arabic, Persian) set `<html dir>`,
+    also in the pre-paint `<head>` script, whose own list `tools/i18n.test.mjs` holds to
+    `LANGS`. The stylesheet uses start/end properties throughout; the few physical ones are
+    commented. German exam content carries `dir="ltr"` beside its `lang="de"`; arrows, the
+    navigator caret and the progress tip flip; Arabic translations drop the italic.
+  - **`node --test tools/i18n.test.mjs`** holds every language file to the app's own strings,
+    topics, states, glossary and 460 questions: nothing missing, no placeholder, tag or straight
+    double quote added, text in its own script, and a string identical in German and English
+    accepted as a name. `tools/make-review-sheet.mjs <code>` writes the reviewer's CSV.
   - **Only the chrome is translated.** Question text, options and `explanation_de` stay German —
-    that is the exam. The per-question translate toggle (`#bilingualToggle`) still reveals each
-    question's `en` / `options_en` / `explanation_en`.
+    that is the exam. The per-question translate toggle (`#bilingualToggle`) reveals each
+    question's translation in `trLang()`, and its face shows that language's code.
   - Every chrome string lives in the `I18N` dictionary as `{ en, de }` and is read through
     `t(key, vars)`, which fills `{placeholders}`. Topic labels go through `catLabel(key)`, which
     reads `CATEGORIES[key][lang]`.
@@ -2285,7 +2322,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 - Google Fonts is the only intended external network dependency.
 - The colour scheme uses `localStorage` key `theme`, and it holds one of THREE values
   since 2026-09-22 — `light` | `system` | `dark`. Nothing stored still means light.
-  UI language uses `eib_lang` (default `en`).
+  UI language uses `eib_lang` (default `en`), and a reviewer's one-tab preview
+  `eib_lang_preview` in `sessionStorage`.
 - Learning progress IS persisted (reintroduced 2026-06-20): spaced-repetition records
   under `localStorage` key `eib_progress_v1`, a resumable in-progress session under
   `eib_session_v1`, and a results history under `eib_history_v1`. A "Fortschritt
@@ -2409,15 +2447,17 @@ Root holds exactly what GitHub Pages serves; everything else is foldered.
 /                 live site (served from main root)
   index.html      production app; loads questions.json at runtime
   questions.json  question data, source of truth
-  sw.js           service worker (offline; network-first for HTML/questions.json)
+  sw.js           service worker (offline; network-first for HTML/questions.json/i18n)
   manifest.json   PWA manifest (name, icons, theme); linked from index.html
   favicon.svg, og-image.png (+ og-image.svg source)
   .nojekyll       stops Pages running Jekyll
   .gitignore      ignores local/ scratch dir
   CLAUDE.md       this file
 img/              image-question assets, the hero photo, ATTRIBUTIONS.md, icons/, states/
+i18n/             one file per extra UI language (served, fetched on demand), README.md
 tools/            data-generation + validation scripts (not served)
 docs/             project notes (TODO.md, BUG_AUDIT_MEMORY.md), plans/, research/
+  translations/   per-language terminology lists and reviewers' CSV sheets
   Mockups/        design boards, generated illustrations, licensed photography
 legacy/           May 28 build; not production, do NOT publish from it
 claude-context-kit/  vendored method kit (skills + the theme/type references this
@@ -2476,6 +2516,12 @@ Nothing at root may move: `sw.js` precaches `./`, `./index.html`, `./questions.j
   11px) and both times FORMAT retired it — sentence case with no tracking is quieter and
   narrower than tracked capitals, on a scale step. An exemption is a selector rather than a
   budget number, so the sheet cannot drift into a second one unnoticed.
+- `i18n/<code>.json` + `i18n/README.md` - the extra UI languages, one file each, and their
+  generated / reviewed dates. Edit with Node, never PowerShell's `ConvertTo-Json`.
+- `tools/i18n.test.mjs` - the language files' completeness check (`node --test`); reads the
+  app's data through `tools/i18n-source.mjs`, which `tools/make-review-sheet.mjs` shares.
+- `docs/translations/` - `<code>-terms.md` (the fixed civic terms every translation batch
+  uses) and `<code>-review.csv` (the sheet a native speaker fills in before release).
 - `tools/import-states.js` - (re)generates the 15 non-Berlin state question sets from
   `tools/data/official-catalogue-bamf-2026-02.json` (BAMF catalogue; see img/ATTRIBUTIONS.md).
 - `tools/translate-states.js` - adds English `en`/`options_en` to the imported state questions
@@ -2583,9 +2629,13 @@ Before publishing any app change:
 4b. Run `node --test tools/scale.test.mjs` — the size-system ratchet. If a budget FALLS,
    lower it in the same commit; the test says so explicitly. If one RISES, that is a
    regression.
-5. Press the header's EN box, and again: no chrome string may stay in the other
-   language, the question text must stay German in both, and the pill's own face AND its
-   `aria-label` must follow the switch. Then walk the three scheme buttons — light,
+4c. Run `node --test tools/i18n.test.mjs` — every `i18n/*.json` complete, in its own script,
+   and in step with `LANGS`.
+5. Walk the header's language picker through English and German: no chrome string may stay
+   in the other language, the question text must stay German in both, and the box's face AND
+   its `aria-label` must follow the switch. Then open `?lang=ar`: the page runs right to left
+   with the German question, answers and explanation still left to right, and
+   `localStorage.eib_lang` is unchanged. Then walk the three scheme buttons — light,
    system, dark — and reload on each: the seg's `aria-pressed` and the painted theme must
    both come back, and `system` must match `prefers-color-scheme` with no flash.
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43

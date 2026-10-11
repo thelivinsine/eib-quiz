@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-10 (live commit `1120e75`)_
+_Last updated: 2026-10-11 (live commit `1120e75`; the languages work sits on `plan/languages`)_
 
 ## Project status
 
@@ -85,6 +85,22 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 ### 3. Deferred features (by choice, not blocked)
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
+
+### 3b. Ten more languages — _in progress on `plan/languages`, not on `main`_
+Plan: `docs/plans/2026-10-11-languages-plan.md` (design, task list, and the questions the
+unattended run answered without you).
+- **Built (2026-10-11, unattended run):** a language picker in place of the EN box,
+  per-language files loaded on demand, right-to-left layout, and Arabic, Turkish and Russian
+  translations of every string and all 460 questions, **all three unreleased**. Also a
+  completeness check (`tools/i18n.test.mjs`) and review sheets (`docs/translations/*.csv`).
+- **Browser-checked 2026-10-11** (Playwright Chromium, user present): picker, preview link,
+  offline, the five translation sites, Arabic right to left, and every language at
+  320-1400px (task 10). Five problems found and fixed; English and German match the
+  pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
+- **Task 12 done**: `CLAUDE.md` updated and the PR opened. Merging it ships the work with
+  all three languages still hidden.
+- **Next:** native-speaker reviews (yours, task 13), then release one language at a time
+  (task 14), then the other seven (tasks 15-17).
 
 ### 4. Done
 - ~~Service worker / offline PWA~~ — done 2026-06-20: real caching SW (network-first for

@@ -11,6 +11,14 @@
     <link rel="canonical" href="https://thelivinsine.github.io/eib-quiz/">
     <!-- Pre-paint theme guard: default = light "paper" (the signature bento look);
          only go dark (charcoal) when the user explicitly saved 'dark'. Prevents FOUC. -->
+    <!-- Right to left before the first paint, as the theme below is set, so an Arabic reader
+         never sees the layout flip after load. The ar/fa list repeats LANGS' dir: 'rtl'
+         entries (tools/i18n.test.mjs holds them together).
+         The Arabic font's stylesheet is added HERE, not in the fonts <link> below: in that
+         link, Chrome fetched two of its files (37 KB) for every English and German reader,
+         for symbols and accents Inter already draws. useArabicFont() adds the same link when
+         a reader switches to Arabic later; the URL is written in both places. -->
+    <script>try{var _l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('eib_lang');if(_l==='ar'||_l==='fa'){document.documentElement.dir='rtl';var _f=document.createElement('link');_f.id='fontArabic';_f.rel='stylesheet';_f.href='https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap';document.head.appendChild(_f);}}catch(e){}</script>
     <script>try{var _t=localStorage.getItem('theme');if(!(_t==='dark'||(_t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches)))document.documentElement.classList.add('light');}catch(e){document.documentElement.classList.add('light');}</script>
 
     <!-- Icons -->
@@ -339,8 +347,12 @@
             --ls-normal:   0;
             --ls-display: -0.02em;
 
-            --font-head: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
-            --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            /* A glyph a face lacks falls through to the next. Bricolage has Latin only (Google
+               Fonts' metadata: latin, latin-ext, vietnamese), so a Cyrillic heading is drawn by
+               Inter; neither has Arabic, so Arabic falls to Noto Sans Arabic, whose stylesheet
+               is loaded only for a right-to-left language (see the script in <head>). */
+            --font-head: 'Bricolage Grotesque', 'Inter', 'Noto Sans Arabic', system-ui, sans-serif;
+            --font-body: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             --font-mono: 'Inter', system-ui, sans-serif;   /* alias: JS reads var(--font-mono) */
             /* The mockup's margin-note script. Scoped to .script-note ONLY —
                it must never be inherited by body copy. */
@@ -672,7 +684,7 @@
             font: var(--type-control-sm);
             display: none;
             align-items: center; gap: var(--space-sm);
-            min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm);
+            min-height: var(--ctl-sm); padding-block: 0; padding-inline: var(--space-sm) var(--space-ms);
             background: var(--surface2); border: 1px solid var(--border);
             border-radius: var(--radius-ctl);
             color: var(--sub-text);
@@ -682,6 +694,11 @@
         .session-back-icon { display: grid; place-items: center; }
         /* The icon set has one arrow. This is the same one, mirrored. */
         .session-back-icon svg { width: var(--icon-md); height: var(--icon-md); transform: scaleX(-1); }
+        /* Right to left, "back" points right: the forward arrow, unflipped. */
+        [dir="rtl"] .session-back-icon svg { transform: none; }
+        /* Forward arrows point the way the page reads. The flip is on the SVG, never on its
+           disc or chip, which carry the hover lift's own transform. */
+        [dir="rtl"] .mode-go svg, [dir="rtl"] .topic-chip-go svg, [dir="rtl"] .btn-primary svg { transform: scaleX(-1); }
         body.in-session header { border-bottom: none; }
         body.in-session .brand { display: none; }
         body.in-session .session-back { display: inline-flex; }
@@ -723,7 +740,10 @@
            reference's ~0.46 of the box, scaled with it. */
         .header-controls { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: var(--space-ms); min-height: var(--ctl-sm); }
 
-        /* THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
+        /* (2026-10-11: the box is now the face of a native language LIST, .lang-picker below,
+           because there are more than two languages. The rest of this note is the history
+           of the box's look and the space it freed, which still holds.)
+           THE LANGUAGE IS A TOGGLE, NOT A MENU (2026-09-22, on request, against a
            reference UI: an EN pill beside a sun/monitor/moon seg). Two languages need
            one pill that NAMES the current one and flips on a click; a disclosure spent
            a click choosing between two. That retired the whole .hmenu-* block - the
@@ -749,7 +769,23 @@
             font-weight: 700; color: var(--text);
             transition: border-color 0.18s var(--ease);
         }
-        .lang-toggle:hover { border-color: var(--border-hover); }
+        .lang-picker:hover .lang-toggle { border-color: var(--border-hover); }
+        /* The box above is only the face. The real control is a native <select> laid over
+           it, invisible, as the state picker does: a keyboard, a screen reader and a
+           phone's own list all work, and the box keeps its measured size. --type-option is
+           16px, which stops iOS zooming the page when the list opens. */
+        .lang-picker { position: relative; display: inline-flex; }
+        .lang-picker select {
+            font: var(--type-option);
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            border: none;
+            cursor: pointer;
+        }
+        /* The <select> is invisible, so its own focus ring is too. The box wears it. */
+        .lang-picker:focus-within .lang-toggle { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+        .lang-picker select:focus-visible { outline: none; }
         .seg {
             display: inline-flex;
             padding: var(--space-3xs); gap: var(--space-2xs);
@@ -1161,7 +1197,7 @@
            note went rather than the crop. --font-hand still has two consumers (the
            numbers band's note and the CTA band's), so .script-note stays. */
 
-        .section-head--centred { margin-left: auto; margin-right: auto; text-align: center; }
+        .section-head--centred { margin-inline: auto; text-align: center; }
 
         /* THE TWO BANDS SWAPPED TREATMENTS ON 2026-09-22, on request, against a
            screenshot ("invert the ... formatting for the sections"). Read this before
@@ -1404,7 +1440,7 @@
             grid-template-columns: minmax(0, 1fr) repeat(3, 112px);
             align-items: center;
             gap: var(--space-xl);
-            padding-right: var(--space-lg);
+            padding-inline-end: var(--space-lg);
         }
         /* FOUR ACROSS IS A WIDE-SCREEN LAYOUT ONLY, and 1160 is the same width the
            mode grid breaks at. It was the LABEL that set this break: a ~150px column
@@ -1417,7 +1453,7 @@
            (244px each at a 900px viewport). Measured, both languages,
            1400 / 1200 / 1159 / 1024 / 900 / 760 / 640. */
         @media (max-width: 1160px) {
-            .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-right: 0; }
+            .dash-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-inline-end: 0; }
             /* Only grid-column here — the CENTRING lives in a second 1160 block
                BELOW the base .dash-summary rule, because that base sits after this one
                in the sheet and both are single-class selectors, so anything stated here
@@ -1434,7 +1470,7 @@
             display: grid; grid-template-columns: auto 1fr;
             align-items: center; gap: var(--space-md);
             /* Nudged in off the card's edge (2026-09-23, on request), four across only. */
-            padding-left: var(--space-xl);
+            padding-inline-start: var(--space-xl);
         }
         /* THE PAIR CENTRES ONCE THE SUMMARY OWNS THE ROW (2026-09-22, on request: "the
            ring graph and the text aren't centred at this screen width"). Below 1160 the
@@ -1449,7 +1485,7 @@
            phone's stacked-and-centred treatment is for a column too narrow to hold the
            two side by side, which this is not. */
         @media (max-width: 1160px) {
-            .dash-summary { grid-template-columns: auto auto; justify-content: center; padding-left: 0; }
+            .dash-summary { grid-template-columns: auto auto; justify-content: center; padding-inline-start: 0; }
         }
         /* NO RULE BETWEEN THE RING AND THE VERDICT (2026-09-22, on request). The
            mockup draws one; it was removed anyway, because the ring is already a shape
@@ -1505,7 +1541,7 @@
             min-width: 0; max-width: 100%;
             display: inline-flex; align-items: center; gap: var(--space-2xs);
             min-height: var(--ctl-sm);
-            padding: 0 calc(var(--space-md) + var(--space-sm)) 0 var(--space-sm);
+            padding-block: 0; padding-inline: var(--space-sm) calc(var(--space-md) + var(--space-sm));
             /* A FILLED pill on a faint rim, the mockup's (1.17 off its page; --band is
                1.15 in dark). It used to be a --surface pill on the heavy --border, which
                in dark drew the loudest outline in the section round a setting. */
@@ -1544,9 +1580,10 @@
             border: none;
             cursor: pointer;
         }
-        /* the caret, drawn once so the native arrow can stay hidden */
+        /* the caret, drawn once so the native arrow can stay hidden. Its borders stay
+           physical: they draw a down-pointing chevron, which reads the same either way. */
         .state-picker::after {
-            content: ''; position: absolute; right: var(--space-sm); top: 50%;
+            content: ''; position: absolute; inset-inline-end: var(--space-sm); top: 50%;
             width: 7px; height: 7px; margin-top: calc(var(--space-2xs) * -1);
             border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
             transform: rotate(45deg); pointer-events: none;
@@ -1660,13 +1697,13 @@
            the card's four blocks are ONE treatment: an --fs-md figure over an 11px
            name, four times. If either moves, move both. */
         .ds-num { font: var(--type-figure-sm); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text); }
-        /* margin-left on top of the string's own leading space: the mockup sets the
+        /* margin-inline-start on top of the string's own leading space: the mockup sets the
            total off the figure at ~9px and " /" alone buys 3. --fs-2xs came down from
            --fs-xs with the figure and then STAYED while the figure fell twice more
            (on request: "keep the size of 310 intact"). That is the point of it — the
            denominator is a SCALE, not part of the number, and at 12px under a 16px
            figure it reads one rung down rather than three. */
-        .ds-of { font: var(--type-caption); font-variant-numeric: tabular-nums; margin-left: var(--space-2xs); color: var(--faint); }
+        .ds-of { font: var(--type-caption); font-variant-numeric: tabular-nums; margin-inline-start: var(--space-2xs); color: var(--faint); }
 
         /* position + overflow are for .resume-art, which bleeds off the bottom edge. */
         /* NO HAIRLINE. The mockup draws this as a tint and nothing else — measured
@@ -1698,7 +1735,9 @@
            text, so it asserts nothing in contrast.test.mjs.
            It is sized FROM the banner, not in pixels: at a fixed 250px wide it stood
            83px tall in a 68px banner, so overflow: hidden cropped the peaks and the
-           flag with them — the ornament's whole point, invisible. */
+           flag with them — the ornament's whole point, invisible.
+           left + translateX stay physical: it is a picture, not reading order, and a
+           right-to-left page does not mirror it. */
         .resume-art {
             position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-35%);
             z-index: 0; pointer-events: none;
@@ -1731,7 +1770,7 @@
            44px band for something you press once a year cost more height than the
            numbers above it. It keeps its 44px touch target by being 44px square. */
         .progress-reset {
-            position: absolute; top: 6px; right: 6px;
+            position: absolute; top: 6px; inset-inline-end: 6px;
             display: inline-flex; align-items: center; justify-content: center;
             width: var(--ctl-md); height: var(--ctl-md);
             background: none; border: none; color: var(--muted);
@@ -1811,7 +1850,10 @@
         }
         @media (hover: hover) {
             .mode-card:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
+            /* Physical: the arrow nudges the way it points. A right-to-left page flips
+               the arrow, and must flip this nudge with it. */
             .mode-card:hover .mode-go { transform: translateX(3px); }
+            [dir="rtl"] .mode-card:hover .mode-go { transform: translateX(-3px); }
         }
         .mode-card:active { background: var(--surface3); }
 
@@ -1857,7 +1899,7 @@
         .mode-foot {
             display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm);
             margin-top: auto;
-            text-align: left;
+            text-align: start;
         }
         .mode-flag + .mode-foot { margin-top: 0; }
         /* --sub-text, not --muted: the mockup's facts measure as bright as its
@@ -1900,7 +1942,7 @@
             display: flex; align-items: center; gap: var(--space-ms);
             padding: var(--space-sm) var(--space-ms);
             min-height: var(--ctl-lg);
-            text-align: left;
+            text-align: start;
             border-radius: var(--radius);
             background: var(--tile);
             border: 1px solid var(--tile-edge);
@@ -1977,7 +2019,7 @@
         /* --hover, not --tile-hover: this row has no edge to change, so the fill is the
            whole state and needs dark's 1.20 step (--tile-hover is 1.105 on a tile). */
         .glossary-summary:hover { background: var(--hover); }
-        .glossary-summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: var(--fs-lg); line-height: 1; }
+        .glossary-summary::after { content: '+'; margin-inline-start: auto; color: var(--muted); font-size: var(--fs-lg); line-height: 1; }
         details.glossary-wrap[open] .glossary-summary::after, details.gloss-wrap[open] .glossary-summary::after { content: '−'; }
         .hist-body { padding: var(--space-md); border-top: 1px solid var(--border-soft); }
         .hist-body .hist-list { border: none; border-radius: 0; }
@@ -1992,7 +2034,10 @@
         @media (hover: hover) {
             .gloss-wrap > .glossary-summary:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
         }
-        .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+        /* min(300px, 100%): below ~330px the column is narrower than 300, and a fixed minimum
+           pushed every card 27px past it - into the gutter left to right, off the screen right
+           to left (found measuring Arabic at 320px, 2026-10-11). */
+        .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
         .gloss-card { padding: var(--space-md) var(--space-lg); display: flex; flex-direction: column; gap: var(--space-2xs); }
         .gloss-term { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
         .gloss-de { font: var(--type-small); color: var(--sub-text); }
@@ -2044,7 +2089,7 @@
         @media (pointer: coarse) {
             .btn-primary, .btn-secondary { position: relative; }
             .btn-primary::after, .btn-secondary::after {
-                content: ''; position: absolute; left: 0; right: 0;
+                content: ''; position: absolute; inset-inline: 0;
                 top: calc((var(--ctl-sm) - var(--ctl-md)) / 2); bottom: calc((var(--ctl-sm) - var(--ctl-md)) / 2);
             }
         }
@@ -2090,7 +2135,7 @@
            permanently-underlined lines read as a wall. */
         .footer-link {
             font: var(--type-label);
-            display: inline-block; text-align: left;
+            display: inline-block; text-align: start;
             padding: 0; border: 0; background: none;
             color: var(--sub-text); text-decoration: none; cursor: pointer;
             transition: color 0.16s var(--ease);
@@ -2208,13 +2253,16 @@
             border-radius: inherit; background: var(--accent-grad);
             transition: width 0.45s var(--ease-spring);
         }
-        /* The leading edge, lit from inside the fill so the pill's clip keeps it tidy. */
+        /* The leading edge, lit from inside the fill so the pill's clip keeps it tidy.
+           The gradient's 90deg is physical (CSS has no logical gradient direction), so a
+           right-to-left page must turn it round to keep the light on the leading edge. */
         .quiz-progress > span::after {
-            content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 12px;
+            content: ''; position: absolute; inset-inline-end: 0; top: 0; bottom: 0; width: 12px;
             border-radius: inherit;
             background: linear-gradient(90deg, transparent, var(--on-accent));
             opacity: 0.4;
         }
+        [dir="rtl"] .quiz-progress > span::after { background: linear-gradient(270deg, transparent, var(--on-accent)); }
         /* One continuous track. It used to carry quarter marks, which nothing on the
            screen explained — a bar cut into four reads as four somethings, and the
            readouts already state the count exactly. */
@@ -2241,7 +2289,7 @@
             min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .question-category:empty { display: none; }
-        .question-category::before { content: '·'; margin-right: var(--space-sm); color: var(--faint); }
+        .question-category::before { content: '·'; margin-inline-end: var(--space-sm); color: var(--faint); }
         .question-meta-actions { display: flex; gap: var(--space-sm); flex-shrink: 0; }
         /* These are buttons and have to look like buttons: an icon floating on the
            page is a decoration. They stay small and quiet — a hairline and the tile
@@ -2293,7 +2341,7 @@
         .option-btn {
             font: var(--type-option);
             display: flex; align-items: center; gap: var(--space-sm);
-            width: 100%; text-align: left;
+            width: 100%; text-align: start;
             min-height: var(--ctl-md);
             padding: var(--space-sm) var(--space-ms);
             /* concentric: a 16px card with 14px of padding holds a 10px option. */
@@ -2366,6 +2414,7 @@
             35%  { transform: scale(1.02); }
             100% { transform: scale(1);    box-shadow: 0 0 0 12px color-mix(in srgb, var(--green) 0%, transparent); }
         }
+        /* A shake is symmetric, so its physical translateX needs no right-to-left form. */
         @keyframes wrongShake { 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); } }
 
         /* margin-inline: auto — the grid is capped at 70% of the column, and without it
@@ -2432,7 +2481,7 @@
            the thing you opened it to look at. Clicking anywhere outside the frame closes
            it too — the backdrop fills the rest of the screen. */
         .img-zoom-close {
-            position: absolute; top: var(--space-md); right: var(--space-md);
+            position: absolute; top: var(--space-md); inset-inline-end: var(--space-md);
             width: var(--ctl-md); height: var(--ctl-md); z-index: 2;
             display: grid; place-items: center;
             background: none; border: none; color: var(--sub-text);
@@ -2455,11 +2504,11 @@
         .option-btn--image.img-missing .opt-img::after { font: var(--type-caption); content: attr(data-missing); color: var(--muted); }
         .option-btn--image.img-missing .opt-img img { display: none; }
 
-        .keyboard-hint { font: var(--type-caption); position: relative; padding: var(--space-2xs) var(--space-xs) var(--space-2xs) var(--space-ms); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
+        .keyboard-hint { font: var(--type-caption); position: relative; padding-block: var(--space-2xs); padding-inline: var(--space-ms) var(--space-xs); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--muted); display: flex; align-items: center; gap: var(--space-2xs); flex-wrap: wrap; }
         @media (hover: none) { .keyboard-hint { display: none; } }
         kbd { font: var(--type-chip); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); color: var(--sub-text); box-shadow: 0 1px 0 var(--border); }
         .keyboard-hint-close {
-            margin-left: var(--space-2xs); width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
+            margin-inline-start: var(--space-2xs); width: var(--icon-lg); height: var(--icon-lg); flex-shrink: 0;
             display: grid; place-items: center;
             background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-pill);
             color: var(--muted); font-size: var(--fs-base); line-height: 1;
@@ -2522,7 +2571,7 @@
                row gap swallowed. Extra room belongs at the bottom of the list. */
             align-content: start;
             flex: 1; min-height: 0; overflow: hidden auto; overscroll-behavior: contain;
-            padding-right: var(--space-sm); margin-right: calc(var(--space-sm) * -1);
+            padding-inline-end: var(--space-sm); margin-inline-end: calc(var(--space-sm) * -1);
         }
         /* Six across in the sidebar, many more across the full-width strip on a
            narrow screen. 34px clears the 24px AA target with room and still holds a
@@ -2542,15 +2591,19 @@
             color: var(--sub-text);
         }
         .qnav-group-head::-webkit-details-marker { display: none; }
-        /* One caret, drawn here, rotating on open. */
+        /* One caret, drawn here, rotating on open. Its borders stay physical: closed it
+           points right, so a right-to-left page must mirror it to point left. */
         .qnav-group-head::before {
             content: ''; flex-shrink: 0;
-            width: 6px; height: 6px; margin-left: var(--space-3xs);
+            width: 6px; height: 6px; margin-inline-start: var(--space-3xs);
             border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted);
             transform: rotate(-45deg);
             transition: transform 0.18s var(--ease);
         }
         .qnav-group[open] > .qnav-group-head::before { transform: rotate(45deg); }
+        /* Closed, the caret points the way the page reads. [open] above still wins: its
+           selector is the more specific of the two. */
+        [dir="rtl"] .qnav-group-head::before { transform: rotate(135deg); }
         .qnav-group-head:hover { color: var(--text); }
         .qnav-group-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .qnav-group-count { flex-shrink: 0; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
@@ -2632,7 +2685,7 @@
         .result-stat .rs-num { font: var(--type-figure-md); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; }
         .pass-threshold-note { font: var(--type-label); color: var(--muted); margin: 0; }
         .pass-threshold-note[hidden] { display: none; }
-        .review-section { margin-top: var(--space-xl); text-align: left; }
+        .review-section { margin-top: var(--space-xl); text-align: start; }
         .review-section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin-bottom: var(--space-lg); }
         /* The exam's header is the count alone — no heading beside it to sit opposite, and
            no button since Retry moved up to the action row — so it centres rather than
@@ -2653,6 +2706,10 @@
         .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
         .review-explanation { font: var(--type-small); color: var(--sub-text); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
         .review-explanation-en { color: var(--muted); font-style: italic; margin-top: var(--space-xs); }
+        /* Arabic script has no italic, and a browser fakes one by slanting the glyphs. The
+           translation lines keep their colour and size and drop only the slant. */
+        .option-en-text[dir="rtl"], .explanation-english[dir="rtl"], .review-explanation-en[dir="rtl"],
+        .gloss-en[dir="rtl"], .question-english[dir="rtl"] { font-style: normal; }
 
         /* ============================================================
            MOTION PREFERENCES
@@ -2893,7 +2950,7 @@
                arrow right, which is the end of a list row's diagonal. */
             .modes-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: var(--space-sm); }
             .modes-grid > .mode-card, .modes-grid > .mode-card:nth-child(3n + 1):nth-last-child(2) { grid-column: auto; }
-            .mode-card { text-align: left; }
+            .mode-card { text-align: start; }
             .mode-card .mode-head { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-sm); }
             .mode-card .mode-description { margin-bottom: var(--space-sm); }
             .mode-card .mode-flag { align-self: flex-start; }
@@ -2914,7 +2971,7 @@
                header strip; the one that is left is three ICONS wide, and shrinking it
                here would hand a phone three 28px targets (the nested 360px block is the
                one place that does, where the alternative is a clipped button). */
-            .session-back { min-height: var(--ctl-sm); padding: 0 var(--space-ms) 0 var(--space-sm); gap: var(--space-sm); }
+            .session-back { min-height: var(--ctl-sm); padding-block: 0; padding-inline: var(--space-sm) var(--space-ms); gap: var(--space-sm); }
             .session-back-icon svg { width: var(--icon-sm); height: var(--icon-sm); }
             .brand { min-height: var(--ctl-sm); gap: var(--space-sm); }
             /* BOTH PAGES ARE IN THE PHONE'S NAV (2026-09-22, on request: "in mobile
@@ -2981,7 +3038,7 @@
             body.in-session .quiz-progress,
             .quiz-nav,
             body.in-session .quiz-sidebar { margin-inline: var(--space-md); }
-            body.in-session main { padding-left: var(--space-md); padding-right: var(--space-md); }
+            body.in-session main { padding-inline: var(--space-md); }
             /* Same trade, against the phone's narrower gutter. */
             body.in-session #endScreen.active {
                 margin-inline: calc(-1 * var(--space-md));
@@ -3085,7 +3142,9 @@
                 <!-- Two controls, both in the ROW at every width, per the reference:
                      a square box that NAMES the language and flips on a click, and a
                      sun/monitor/moon segment for the scheme, collapsed to the chosen
-                     mode until it is hovered, tapped or focused. The globe <details> that
+                     mode until it is hovered, tapped or focused. (Since 2026-10-11 the
+                     box opens a native list of languages rather than flipping between
+                     two; see .lang-picker.) The globe <details> that
                      used to hold both is gone — a disclosure to choose between two
                      languages spent a click, and on a phone it was hiding the theme
                      seg to buy room the nav needed. Neither is text-heavy now, so both
@@ -3093,7 +3152,10 @@
                      paintLangControls(), not by data-i18n: "EN"/"DE" is a language
                      CODE, identical in both languages, and the aria-label is what
                      changes with the switch. -->
-                <button class="lang-toggle" id="langToggle" onclick="toggleLang()">EN</button>
+                <label class="lang-picker">
+                    <span class="lang-toggle" id="langToggle" aria-hidden="true">EN</span>
+                    <select id="langSelect" onchange="setLang(this.value)"></select>
+                </label>
                 <!-- Three modes, and System is the new one: it follows
                      prefers-color-scheme live. Light is still the DEFAULT with nothing
                      saved, so a first visit is unchanged. Icon-only, so each button
@@ -3297,17 +3359,17 @@
                                 <button class="bilingual-toggle" id="bilingualToggle"></button>
                             </div>
                         </div>
-                        <div class="question-text" id="questionText" tabindex="-1" lang="de"></div>
+                        <div class="question-text" id="questionText" tabindex="-1" lang="de" dir="ltr"></div>
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
                         <img id="questionImage" class="question-image" style="display: none;">
                         <div id="imageCredit" style="display: none;"></div>
 
-                        <div class="options" id="optionsContainer" lang="de"></div>
+                        <div class="options" id="optionsContainer" lang="de" dir="ltr"></div>
 
                         <div class="explanation" id="explanation" role="status" aria-live="polite">
                             <div class="explanation-header" id="explanationHeader"></div>
-                            <div class="explanation-text" id="explanationText" lang="de"></div>
+                            <div class="explanation-text" id="explanationText" lang="de" dir="ltr"></div>
                             <div class="explanation-english" id="explanationEnglish" lang="en"></div>
                         </div>
                         </div>
@@ -3608,7 +3670,7 @@
         function onStateChange(code) {
             setSelectedState(code);
             const shown = document.querySelector('.state-picker-value');
-            if (shown) shown.textContent = STATES[selectedState];
+            if (shown) shown.textContent = stateName(selectedState);
             renderModes();
             renderTopics();
             renderHomeStatus();
@@ -3626,10 +3688,95 @@
         const NAV_COLLAPSE_AT = 940;
 
         const LANG_KEY = 'eib_lang';
-        let lang = (() => {
-            try { return localStorage.getItem(LANG_KEY) === 'de' ? 'de' : 'en'; }
-            catch (e) { return 'en'; }
+        // Every language the app knows, and the one list that says so. A language other
+        // than en/de has its strings in i18n/<code>.json, and the picker offers it only
+        // once `released` is true, i.e. once a native speaker has reviewed it.
+        // tools/i18n.test.mjs holds the files and this list to each other.
+        const LANGS = [
+            { code: 'en', name: 'English' },
+            { code: 'de', name: 'Deutsch' },
+            { code: 'ar', name: 'العربية', dir: 'rtl', released: false },
+            { code: 'ru', name: 'Русский', released: false },
+            { code: 'tr', name: 'Türkçe', released: false },
+        ];
+        const langEntry = code => LANGS.find(l => l.code === code);
+        const langDir = code => (langEntry(code) || {}).dir || 'ltr';
+        // A reviewer's ?lang=<code> unlocks ONE unreleased language for this tab: it is kept
+        // in sessionStorage, never in eib_lang, so it cannot outlive the visit or reach
+        // anyone else. An unknown or released code is not a preview.
+        const LANG_PREVIEW_KEY = 'eib_lang_preview';
+        const langPreview = (() => {
+            let code = null;
+            try { code = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+            if (langEntry(code) && langEntry(code).released === false) {
+                try { sessionStorage.setItem(LANG_PREVIEW_KEY, code); } catch (e) {}
+                return code;
+            }
+            try { code = sessionStorage.getItem(LANG_PREVIEW_KEY); } catch (e) { return null; }
+            return langEntry(code) ? code : null;
         })();
+        /** What the picker offers: every released language, plus this tab's preview. */
+        const offeredLangs = () => LANGS.filter(l => l.released !== false || l.code === langPreview);
+        let lang = (() => {
+            let code = null;
+            try { code = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+            if (!code) try { code = localStorage.getItem(LANG_KEY); } catch (e) {}
+            return offeredLangs().some(l => l.code === code) ? code : 'en';
+        })();
+
+        /** Add the Arabic font's stylesheet once, for a right-to-left language. See <head>. */
+        function useArabicFont() {
+            if (document.getElementById('fontArabic')) return;
+            const l = Object.assign(document.createElement('link'), { id: 'fontArabic', rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap' });
+            document.head.appendChild(l);
+        }
+
+        /** What a language file adds beyond the menus: state names, glossary, questions. */
+        const LANG_DATA = {};
+        const _langLoads = {};
+        /**
+         * Fetch i18n/<code>.json once and merge it in. English and German live inline, so
+         * they resolve at once. A failed fetch is forgotten, so picking the language again
+         * tries again rather than replaying the failure.
+         */
+        function loadLang(code) {
+            if (code === 'en' || code === 'de') return Promise.resolve();
+            if (!_langLoads[code]) {
+                _langLoads[code] = fetch('i18n/' + code + '.json', { cache: 'no-cache' })
+                    .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+                    .then(data => {
+                        for (const key in data.ui) if (Object.prototype.hasOwnProperty.call(I18N, key)) I18N[key][code] = data.ui[key];
+                        for (const key in data.categories) if (Object.prototype.hasOwnProperty.call(CATEGORIES, key)) CATEGORIES[key][code] = data.categories[key];
+                        LANG_DATA[code] = { states: data.states || {}, glossary: data.glossary || {}, questions: data.questions || {} };
+                    })
+                    .catch(e => { delete _langLoads[code]; throw e; });
+            }
+            return _langLoads[code];
+        }
+
+        /**
+         * The language the translate toggle shows: the menu language, except that German
+         * menus keep English, exactly as before. A question with no entry in the file
+         * falls back to the English whole, so its lang/dir always match its text.
+         */
+        const trLang = () => (lang === 'de' ? 'en' : lang);
+        function translationOf(q) {
+            const code = trLang();
+            const tr = code !== 'en' && LANG_DATA[code] && LANG_DATA[code].questions[q.id];
+            if (tr) return { q: tr.q, options: tr.options, explanation: tr.explanation, lang: code, dir: langDir(code) };
+            return { q: q.en, options: q.options_en || [], explanation: q.explanation_en, lang: 'en', dir: 'ltr' };
+        }
+        /** The results review's translated explanation, as markup. */
+        function reviewTranslation(q) {
+            const tr = translationOf(q);
+            return `<div class="review-explanation-en" lang="${tr.lang}" dir="${tr.dir}">${escapeHtml(tr.explanation)}</div>`;
+        }
+        /** A state's name in the menu language, or the German name the app has always shown. */
+        /** The forward arrow written after a button's word: right to left, it points left. */
+        const fwdArrow = () => (langDir(lang) === 'rtl' ? '←' : '→');
+        const stateName = code => (LANG_DATA[lang] && LANG_DATA[lang].states[code]) || STATES[code];
+        /** Translated text goes into markup through this, never raw. */
+        const escapeHtml = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
         const I18N = {
             // header
@@ -3647,8 +3794,7 @@
             'nav.dark':            { en: 'Dark',                    de: 'Dunkel' },
             'nav.light':           { en: 'Light',                   de: 'Hell' },
             'nav.system':          { en: 'Match system',            de: 'Wie das System' },
-            'nav.switchToDe':      { en: 'Switch to German',        de: 'Auf Deutsch umschalten' },
-            'nav.switchToEn':      { en: 'Switch to English',       de: 'Auf Englisch umschalten' },
+            'nav.language':        { en: 'Language',                de: 'Sprache' },
             'nav.sections':        { en: 'Sections',                de: 'Bereiche' },
             'nav.navPractise':     { en: 'Practise',                de: 'Üben' },
             'nav.navHome':         { en: 'Home',                    de: 'Start' },
@@ -3793,8 +3939,9 @@
             'quiz.stat.answered':  { en: 'Answered',                de: 'Beantwortet' },
             'quiz.time':           { en: 'Time',                    de: 'Zeit' },
             'quiz.speak':          { en: 'Read the question aloud', de: 'Frage vorlesen' },
-            'quiz.showEn':         { en: 'Show the English',        de: 'Auf Englisch anzeigen' },
-            'quiz.hideEn':         { en: 'Hide the English',        de: 'Englisch ausblenden' },
+            // "translation", not "English": the toggle shows the reader's own language.
+            'quiz.showEn':         { en: 'Show translation',        de: 'Übersetzung anzeigen' },
+            'quiz.hideEn':         { en: 'Hide translation',        de: 'Übersetzung ausblenden' },
             'quiz.prev':           { en: 'Previous',                de: 'Vorherige' },
             'quiz.next':           { en: 'Next',                    de: 'Weiter' },
             'quiz.finish':         { en: 'Finish',                  de: 'Abschließen' },
@@ -3858,6 +4005,10 @@
 
             // errors
             'err.load':            { en: 'Questions could not be loaded. Please reload the page.', de: 'Fragen konnten nicht geladen werden. Bitte lade die Seite neu.' },
+            'err.langLoad':        { en: 'This language could not be loaded. Please check your connection and try again.',
+                                     de: 'Diese Sprache konnte nicht geladen werden. Bitte prüfe deine Verbindung und versuche es erneut.' },
+            'err.reviewEmpty':     { en: 'Nothing to review yet — answer a few questions first.',
+                                     de: 'Noch nichts zu wiederholen — beantworte zuerst ein paar Fragen.' },
         };
 
         /** Mark one segment of a segmented switch as chosen — visually and for AT. */
@@ -3887,24 +4038,27 @@
         }
 
         /**
-         * The toggle's face and its accessible name. ONE site, because initLang() and
-         * setLang() both need it. The face is a language CODE, identical in both
-         * languages, so applyStaticStrings() must not own it — but the aria-label has
-         * to say what pressing does, and that string IS translated, so it is written
-         * here rather than through data-i18n-aria.
+         * The picker's face, its list and its accessible name, and the page's lang and dir.
+         * ONE site, because initLang() and setLang() both need it, and a failed switch
+         * calls it to put the picker back. The face is a language CODE, so
+         * applyStaticStrings() must not own it.
          */
         function paintLangControls() {
             document.documentElement.lang = lang;
-            const btn = document.getElementById('langToggle');
-            if (!btn) return;
-            btn.textContent = lang.toUpperCase();
+            document.documentElement.dir = langDir(lang);
+            if (langDir(lang) === 'rtl') useArabicFont();
+            const face = document.getElementById('langToggle');
+            const select = document.getElementById('langSelect');
+            if (!face || !select) return;
+            face.textContent = lang.toUpperCase();
+            // Rebuilt on every paint: it is short, and a preview adds to it. Each name is
+            // written in its own language, so it is tagged with that language.
+            select.innerHTML = offeredLangs()
+                .map(l => `<option value="${l.code}" lang="${l.code}"${l.code === lang ? ' selected' : ''}>${l.name}</option>`)
+                .join('');
+            select.value = lang;
             // The name STARTS with the visible code (WCAG 2.5.3): "click EN" has to work.
-            btn.setAttribute('aria-label', lang.toUpperCase() + ' – ' + t(lang === 'en' ? 'nav.switchToDe' : 'nav.switchToEn'));
-        }
-
-        /** Two languages, so the pill flips rather than opening a menu. */
-        function toggleLang() {
-            setLang(lang === 'en' ? 'de' : 'en');
+            select.setAttribute('aria-label', lang.toUpperCase() + ' – ' + t('nav.language'));
         }
 
         /** Paint the saved language on boot, without re-rendering screens that do not exist yet. */
@@ -3913,9 +4067,23 @@
             applyStaticStrings();
         }
 
-        function setLang(next) {
-            lang = next === 'de' ? 'de' : 'en';
-            try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+        let _langTicket = 0;
+        async function setLang(next) {
+            if (!offeredLangs().some(l => l.code === next)) next = 'en';
+            // Two quick picks race their downloads; only the last one may switch.
+            const ticket = ++_langTicket;
+            try { await loadLang(next); }
+            catch (e) {
+                console.error('Failed to load language', next, e);
+                if (ticket !== _langTicket) return;
+                paintLangControls();   // the picker shows the language still in force
+                alert(t('err.langLoad'));
+                return;
+            }
+            if (ticket !== _langTicket) return;
+            lang = next;
+            // Only a released language is remembered. A preview lasts as long as the tab.
+            if (langEntry(lang).released !== false) { try { localStorage.setItem(LANG_KEY, lang); } catch (e) {} }
             paintLangControls();
             applyStaticStrings();
             // Repaint whichever screen is on. Every renderer reads from `state`, so
@@ -4265,13 +4433,13 @@
         function renderStatePicker() {
             const el = document.getElementById('statePickerSlot');
             if (!el) return;
-            const opts = Object.entries(STATES)
-                .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`)
+            const opts = Object.keys(STATES)
+                .map(code => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${stateName(code)}</option>`)
                 .join('');
             el.innerHTML = `
                 <label class="state-picker">
                     ${ICONS.pin}
-                    <span class="state-picker-value">${STATES[selectedState]}</span>
+                    <span class="state-picker-value">${stateName(selectedState)}</span>
                     <select id="stateSelect" aria-label="${t('dash.statePick')}" onchange="onStateChange(this.value)">${opts}</select>
                 </label>`;
         }
@@ -4392,14 +4560,21 @@
             { term: 'Ministerpräsident/in', de: 'Regierungschef/in eines Bundeslandes (außer Stadtstaaten).', en: 'Head of government of a federal state (except city-states).' },
         ];
 
+        /** A glossary entry's definition in trLang(), English where the file has none. */
+        function glossTranslation(g) {
+            const code = trLang(), own = code !== 'en' && LANG_DATA[code] && LANG_DATA[code].glossary[g.term];
+            const dir = own ? langDir(code) : 'ltr';
+            return `<p class="gloss-en" lang="${own ? code : 'en'}" dir="${dir}">${escapeHtml(own || g.en)}</p>`;
+        }
+
         function renderGlossary() {
             const el = document.getElementById('glossarySection');
             if (!el) return;
             const items = GLOSSARY.map(g => `
                 <div class="gloss-card">
-                    <h3 class="gloss-term" lang="de">${g.term}</h3>
-                    <p class="gloss-de" lang="de">${g.de}</p>
-                    <p class="gloss-en" lang="en">${g.en}</p>
+                    <h3 class="gloss-term" lang="de" dir="ltr">${g.term}</h3>
+                    <p class="gloss-de" lang="de" dir="ltr">${g.de}</p>
+                    ${glossTranslation(g)}
                 </div>`).join('');
             el.innerHTML = `
                 <details class="gloss-wrap">
@@ -4467,7 +4642,7 @@
                     review: 'mode.review.title', topic: 'mode.topic.title' }[sess.mode] || 'hist.mode.' + sess.mode);
                 // A topic or state round keeps WHICH one beside the count.
                 const detail = sess.mode === 'topic' ? catLabel(sess.topic)
-                    : sess.mode === 'bundesland' ? STATES[sess.stateCode] : '';
+                    : sess.mode === 'bundesland' ? stateName(sess.stateCode) : '';
                 const answered = sess.answered ? Object.keys(sess.answered).length : 0;
                 resumeHtml = `
                     <div class="resume-banner">
@@ -4480,7 +4655,7 @@
                             </div>
                         </div>
                         <div class="resume-actions">
-                            <button class="btn-primary" onclick="resumeSession()">${t('dash.resumeGo')} →</button>
+                            <button class="btn-primary" onclick="resumeSession()">${t('dash.resumeGo')} ${fwdArrow()}</button>
                             <button class="btn-secondary" onclick="clearSession(); initHomeScreen();">${t('dash.resumeDrop')}</button>
                         </div>
                     </div>`;
@@ -4606,7 +4781,7 @@
         function renderModes() {
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
-            const st = STATES[selectedState];
+            const st = stateName(selectedState);
             // Five equal peers, the practise-mode mockup's card: disc, title, description,
             // then one foot row of facts beside a bare arrow disc. Smart Review with work
             // waiting shows the due chip on its own line and drops its count from the
@@ -4779,7 +4954,7 @@
         /** Which navigator group a question belongs to. */
         function navGroupKey(q) { return q.state ? 'state' : (q.category || 'other'); }
         function navGroupLabel(key) {
-            if (key === 'state') return STATES[state.stateCode] || t('mode.state.title');
+            if (key === 'state') return stateName(state.stateCode) || t('mode.state.title');
             return CATEGORIES[key] ? catLabel(key) : t('quiz.general');
         }
 
@@ -4847,7 +5022,7 @@
             // questions still in it is worse than not starting.
             const reviewQueue = mode === 'review' ? buildReviewQueue(25) : null;
             if (reviewQueue && !reviewQueue.length) {
-                alert('Noch nichts zu wiederholen — beantworte zuerst ein paar Fragen.');
+                alert(t('err.reviewEmpty'));
                 return;
             }
             state.currentMode = mode;
@@ -4935,11 +5110,15 @@
             // look for, and the real test does not.
             document.getElementById('questionCategory').textContent =
                 state.currentMode === 'exam' ? ''
-                    : q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
+                    : q.state ? (stateName(q.state) || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
             document.getElementById('questionText').textContent = q.de;
-            document.getElementById('questionEnglish').innerHTML = `<div>${q.en}</div>`;
-            document.getElementById('questionEnglish').classList.remove('show');
+            // The translation of the question, in trLang(), written as text, not markup.
+            const tr = translationOf(q);
+            const trBox = document.getElementById('questionEnglish');
+            trBox.lang = tr.lang; trBox.dir = tr.dir;
+            trBox.replaceChildren(Object.assign(document.createElement('div'), { textContent: tr.q }));
+            trBox.classList.remove('show');
 
             const imgCredit = document.getElementById('imageCredit');
             if (q.image) {
@@ -4972,11 +5151,11 @@
                     <span class="opt-num">${String.fromCharCode(65 + idx)} — ${opt}</span>
                 </button>`;
                 }
-                const enText = q.options_en && q.options_en[idx] ? q.options_en[idx] : '';
+                const enText = tr.options[idx] || '';
                 const enClass = enText && state.showEnglish ? ' show' : '';
                 return `
                 <button class="option-btn" onclick="selectAnswer(${idx})" id="option-${idx}">
-                    <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}" lang="en">${enText}</span>` : ''}</span>
+                    <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}" lang="${tr.lang}" dir="${tr.dir}">${escapeHtml(enText)}</span>` : ''}</span>
                 </button>`;
             }).join('');
             // Says the images can be opened, for the reader who has no hover to discover
@@ -5004,7 +5183,7 @@
 
             // Bilingual toggle state
             const toggle = document.getElementById('bilingualToggle');
-            toggle.innerHTML = ICONS.translate + '<span>EN</span>';
+            toggle.innerHTML = ICONS.translate + '<span>' + trLang().toUpperCase() + '</span>';
             toggle.title = state.showEnglish ? t('quiz.hideEn') : t('quiz.showEn');
             toggle.setAttribute('aria-pressed', String(!!state.showEnglish));
             const speakBtn = document.getElementById('speakBtn');
@@ -5040,7 +5219,7 @@
                 const nextBtn = document.getElementById('nextBtn');
                 nextBtn.disabled = false;
                 nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length
-                    ? t('quiz.finish') : t('quiz.next') + ' →';
+                    ? t('quiz.finish') : t('quiz.next') + ' ' + fwdArrow();
             } else {
                 if (optsEl) optsEl.classList.remove('answered');
                 document.getElementById('explanation').classList.remove('show');
@@ -5183,7 +5362,7 @@
             // Show next button and scroll it into view
             const nextBtn = document.getElementById('nextBtn');
             nextBtn.disabled = false;
-            nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' →';
+            nextBtn.textContent = state.currentQuestionIndex + 1 === state.currentQuestions.length ? t('quiz.finish') : t('quiz.next') + ' ' + fwdArrow();
             if (!isExamRound) setTimeout(() => document.getElementById('explanation').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
             setTimeout(() => nextBtn.focus(), 600);
 
@@ -5202,13 +5381,23 @@
             exp.classList.add(isCorrect ? 'correct' : 'incorrect');
             exp.classList.add('show');
 
-            document.getElementById('explanationHeader').textContent = isCorrect ? t('quiz.correct') : t('quiz.wrong');
+            const head = document.getElementById('explanationHeader');
+            head.textContent = isCorrect ? t('quiz.correct') : t('quiz.wrong');
             if (!isCorrect) {
-                document.getElementById('explanationHeader').textContent += t('quiz.rightAnswer') + q.options[q.correct];
+                // In a right-to-left page the German answer goes in a <bdi>, one left-to-right
+                // unit: as plain text, an answer ending in a full stop ("Schwerin.") shows the
+                // stop on the wrong side. Left to right it stays plain text, which renders
+                // exactly as before (a <bdi> there shifts the anti-aliasing by a few pixels).
+                const answer = q.options[q.correct];
+                head.append(t('quiz.rightAnswer'), langDir(lang) === 'rtl'
+                    ? Object.assign(document.createElement('bdi'), { textContent: answer, lang: 'de', dir: 'ltr' })
+                    : answer);
             }
 
             document.getElementById('explanationText').textContent = q.explanation_de;
-            document.getElementById('explanationEnglish').textContent = q.explanation_en;
+            const trExp = translationOf(q), expBox = document.getElementById('explanationEnglish');
+            expBox.lang = trExp.lang; expBox.dir = trExp.dir;
+            expBox.textContent = trExp.explanation;
             document.getElementById('explanationEnglish').classList.toggle('show', state.showEnglish);
         }
 
@@ -5414,7 +5603,7 @@
                 const elapsed = state.elapsedSecs || 0;
                 const elapsedStr = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
                 cells += stat(t('end.general', { n: EXAM_GENERAL }), state.generalCorrect, 'var(--gold)')
-                       + stat(t('end.stateOf3', { state: STATES[state.stateCode] || t('mode.state.title'), n: EXAM_STATE }), state.stateCorrect, 'var(--gold)')
+                       + stat(t('end.stateOf3', { state: stateName(state.stateCode) || t('mode.state.title'), n: EXAM_STATE }), state.stateCorrect, 'var(--gold)')
                        + stat(t('end.elapsed'), elapsedStr, 'var(--blue)');
                 threshold.textContent = t('end.threshold', { pass: EXAM_PASS, total: EXAM_SIZE, n: PASS_PCT });
                 threshold.hidden = false;
@@ -5451,15 +5640,15 @@
                         ${rows.map(({ q, given, right, blank }) => `
                             <div class="review-item${right ? ' review-item--right' : ''}">
                                 <div class="review-q-num">${t('end.reviewQ', { id: q.id })} · ${right ? t('end.aRight') : blank ? t('end.aBlank') : t('end.aWrong')}</div>
-                                <div class="review-q-text" lang="de">${q.de}</div>
-                                <div class="review-answers" lang="de">
+                                <div class="review-q-text" lang="de" dir="ltr">${q.de}</div>
+                                <div class="review-answers" lang="de" dir="ltr">
                                     ${blank ? `<div class="review-answer user-blank">— ${t('end.aBlank')}</div>`
                                             : `<div class="review-answer ${right ? 'user-right' : 'user-wrong'}">${right ? '✓' : '✗'} ${q.options[given]}</div>`}
                                     ${right ? '' : `<div class="review-answer correct-ans">✓ ${q.options[q.correct]}</div>`}
                                 </div>
-                                <div class="review-explanation" lang="de">
+                                <div class="review-explanation" lang="de" dir="ltr">
                                     ${q.explanation_de}
-                                    ${state.showEnglish ? `<div class="review-explanation-en" lang="en">${q.explanation_en}</div>` : ''}
+                                    ${state.showEnglish ? reviewTranslation(q) : ''}
                                 </div>
                             </div>`).join('')}
                     </div>`;
@@ -5483,14 +5672,14 @@
                         ${missed.map(({ q, userAnswerIdx }) => `
                             <div class="review-item">
                                 <div class="review-q-num">${t('end.reviewQ', { id: q.id })}</div>
-                                <div class="review-q-text" lang="de">${q.de}</div>
-                                <div class="review-answers" lang="de">
+                                <div class="review-q-text" lang="de" dir="ltr">${q.de}</div>
+                                <div class="review-answers" lang="de" dir="ltr">
                                     <div class="review-answer user-wrong">✗ ${q.options[userAnswerIdx]}</div>
                                     <div class="review-answer correct-ans">✓ ${q.options[q.correct]}</div>
                                 </div>
-                                <div class="review-explanation" lang="de">
+                                <div class="review-explanation" lang="de" dir="ltr">
                                     ${q.explanation_de}
-                                    ${state.showEnglish ? `<div class="review-explanation-en" lang="en">${q.explanation_en}</div>` : ''}
+                                    ${state.showEnglish ? reviewTranslation(q) : ''}
                                 </div>
                             </div>`).join('')}
                     </div>`;
@@ -5571,7 +5760,7 @@
         document.getElementById('bilingualToggle').addEventListener('click', () => {
             state.showEnglish = !state.showEnglish;
             const toggle = document.getElementById('bilingualToggle');
-            toggle.innerHTML = ICONS.translate + '<span>EN</span>';
+            toggle.innerHTML = ICONS.translate + '<span>' + trLang().toUpperCase() + '</span>';
             toggle.title = state.showEnglish ? t('quiz.hideEn') : t('quiz.showEn');
             toggle.setAttribute('aria-pressed', String(!!state.showEnglish));
             toggle.classList.toggle('active', state.showEnglish);
@@ -5706,7 +5895,11 @@
 
         loadProgress();
         loadHistory();
-        initLang();
+        // A saved language other than en/de needs its file first. Until it arrives the
+        // static strings stay empty rather than flashing English, and loadQuestions() waits
+        // on the same promise before it paints the home screen. A failure falls back to en.
+        const langReady = loadLang(lang).catch(e => { console.error('Failed to load language', lang, e); lang = 'en'; });
+        langReady.then(initLang);
         initReveal();
 
         async function loadQuestions() {
@@ -5717,9 +5910,11 @@
             } catch (e) {
                 console.error('Failed to load questions.json', e);
                 loadFailed = true;
+                await langReady;
                 initHomeScreen();
                 return;
             }
+            await langReady;
             initHomeScreen();
             // The home content renders here (async), making the page tall enough to
             // scroll. Reset to the top now so a pull-to-refresh can't leave the hero

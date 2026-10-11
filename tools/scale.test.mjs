@@ -203,8 +203,12 @@ const SPACING_PROPS = [
   "gap", "row-gap", "column-gap",
   "padding", "padding-top", "padding-right", "padding-bottom", "padding-left",
   "padding-block", "padding-inline",
+  "padding-block-start", "padding-block-end", "padding-inline-start", "padding-inline-end",
   "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
   "margin-block", "margin-inline",
+  // The start/end longhands arrived with the right-to-left work (2026-10-11); without
+  // them a literal written as padding-inline-end would pass unseen.
+  "margin-block-start", "margin-block-end", "margin-inline-start", "margin-inline-end",
 ];
 
 // --- the metrics ---------------------------------------------------------------------------
