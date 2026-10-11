@@ -104,7 +104,7 @@ unattended run answered without you).
 - **The other seven are in the repo, hidden** (2026-10-12, tasks 15-17): Persian, Ukrainian,
   Albanian, Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish. Each has a terms list, a
   full language file (`released: false`, reachable only through `?lang=<code>`) and a review
-  sheet. Measured at every width in Playwright Chromium (five strings shortened); Persian
+  sheet. Measured at every width in Playwright Chromium (seven strings shortened); Persian
   right to left looked at in screenshots; English and German identical to before. No native
   speaker has read any of them. Questions 7-11 in the plan's questions file were answered
   without you.
