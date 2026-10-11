@@ -2077,8 +2077,11 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **One setting drives menus and translations.** `trLang()` is the menu language, except that
     German menus keep English, as before. `translationOf(q)` returns a question's translation
     in it, falling back to English for a whole question, so `lang`/`dir` always match the text.
-    `stateName()` gives state names in the menu language. Translations reach markup only through
-    `textContent` or `escapeHtml()`. `quiz.showEn`/`quiz.hideEn` say "translation" now; the
+    `stateName()` gives state names in the menu language. Question and glossary translations
+    reach markup only through `textContent` or `escapeHtml()`; **UI strings (`t()`) and state
+    names go in RAW** — `footer.legal` needs its link — so `tools/i18n.test.mjs` is the only
+    guard: it fails any tag or straight double quote a translation adds. Run it before
+    shipping a language file. `quiz.showEn`/`quiz.hideEn` say "translation" now; the
     keys kept their names, as did `state.showEnglish`.
   - **Right to left**: `LANGS` entries with `dir: 'rtl'` (Arabic, Persian) set `<html dir>`,
     also in the pre-paint `<head>` script, whose own list `tools/i18n.test.mjs` holds to

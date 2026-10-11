@@ -3771,11 +3771,15 @@
             const tr = translationOf(q);
             return `<div class="review-explanation-en" lang="${tr.lang}" dir="${tr.dir}">${escapeHtml(tr.explanation)}</div>`;
         }
-        /** A state's name in the menu language, or the German name the app has always shown. */
         /** The forward arrow written after a button's word: right to left, it points left. */
         const fwdArrow = () => (langDir(lang) === 'rtl' ? '←' : '→');
+        /**
+         * A state's name in the menu language, or the German name the app has always shown.
+         * It goes into markup raw, like every t() string: tools/i18n.test.mjs is the guard,
+         * failing any state name that carries a tag or a straight double quote.
+         */
         const stateName = code => (LANG_DATA[lang] && LANG_DATA[lang].states[code]) || STATES[code];
-        /** Translated text goes into markup through this, never raw. */
+        /** Question and glossary translations go into markup through this, never raw. */
         const escapeHtml = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
         const I18N = {
