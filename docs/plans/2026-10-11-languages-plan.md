@@ -1,4 +1,4 @@
-# Ten more languages — task list
+| 9 | Right to left and fonts | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium in Arabic at 375 and 1280: layout mirrored, German blocks `ltr` with the chips on the left, translations `rtl` without italic, arrows and progress tip flipped, Noto Sans Arabic drawing the text, no sideways scroll; screenshots looked at by me. The Arabic font was costing en/de readers 37 KB: fixed. **Not checked**: Arabic line height judged by a native reader; Safari, Firefox. || 8 | Translations in the quiz, review and glossary | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium for `tr` and `ru`: all five sites show the file's text with matching `lang`; text, image (Q55) and state questions; practice and exam reviews; glossary; state names; a question removed from the file falls back to English alone. The button face said "EN" in every language: fixed. **Not checked**: Safari, Firefox. || 7 | Language list, loading and the picker | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium: the picker lists only English/Deutsch; `?lang=ar` switches one tab and leaves `eib_lang` alone; a fresh tab is back to the saved language; a blocked `ar.json` alerts and snaps back; Arabic works offline after one use (service worker, `caches` holds `/i18n/ar.json`); the box is 28px (mouse) / 36px (touch), the same as `main`. **Not checked**: Safari, Firefox, a real phone, a screen reader reading the picker. |# Ten more languages — task list
 
 _Written 2026-10-11. The argument for every choice below is in
 [2026-10-11-languages-design.md](2026-10-11-languages-design.md); nothing there is repeated here._
@@ -345,6 +345,26 @@ specificity), and the progress tip's gradient turns to `270deg`. Translation lin
 right-to-left script drop the italic, which Arabic does not have. **Bricolage Grotesque has no
 Cyrillic** (Google Fonts metadata: latin, latin-ext, vietnamese), so Inter draws Russian headings.
 
+### Browser checks of tasks 7-9 (2026-10-11, user present)
+
+Run in Playwright's Chromium against `plan/languages` on port 8778, with `main` on 8777 as the
+reference. Three things were found and fixed on `task/languages/browser-fixes`:
+
+- **The translate button's face said "EN" in every language.** It is `trLang()`'s code now.
+- **The Arabic font cost every English and German reader 37 KB.** In the shared fonts
+  `<link>`, Chrome fetched two of its files for symbols and accents Inter already draws. Its
+  stylesheet is now added only for a right-to-left language: by the `<head>` script on first
+  paint, and by `useArabicFont()` on a switch. Measured: en/de back to 3 font files, Arabic 6.
+- **A German answer inside the Arabic "wrong" header goes in a `<bdi>`**, so a trailing full
+  stop stays on its side. Plain text on left-to-right pages, which keeps them pixel-identical.
+
+**English and German against the pre-work baseline**: 40 screenshots, identical except (a) the
+known count-up noise and (b) the session back button's label, drawn with sub-pixel instead of
+greyscale smoothing. Same font, size and position; hiding the language control in both builds
+makes them identical, so it comes from how Chrome layers the header round the new `<select>`.
+Invisible at 1x and left as is. One German Q21 shot differs too, but it varies between two
+runs of `main` itself.
+
 ### 10. Measure every language at every width
 
 The design's "Layout checks", for `ar`, `tr` and `ru`.
@@ -363,7 +383,7 @@ task's progress row, with the strings that had to be shortened.
 
 **Blocked by** 5, 6, 9.
 
-**Blocked 2026-10-11** (unattended run, no browser allowed). Where to look first: short labels
+**Was blocked 2026-10-11** (unattended run, no browser allowed); run the same evening with the user present, see below. Where to look first: short labels
 whose translation is clearly longer than BOTH the English and the German, since the German is
 the version whose fit was measured. Characters are not pixels, so this is a pointer, not a result.
 

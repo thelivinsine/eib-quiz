@@ -13,8 +13,12 @@
          only go dark (charcoal) when the user explicitly saved 'dark'. Prevents FOUC. -->
     <!-- Right to left before the first paint, as the theme below is set, so an Arabic reader
          never sees the layout flip after load. The ar/fa list repeats LANGS' dir: 'rtl'
-         entries; change both together. -->
-    <script>try{var _l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('eib_lang');if(_l==='ar'||_l==='fa')document.documentElement.dir='rtl';}catch(e){}</script>
+         entries (tools/i18n.test.mjs holds them together).
+         The Arabic font's stylesheet is added HERE, not in the fonts <link> below: in that
+         link, Chrome fetched two of its files (37 KB) for every English and German reader,
+         for symbols and accents Inter already draws. useArabicFont() adds the same link when
+         a reader switches to Arabic later; the URL is written in both places. -->
+    <script>try{var _l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('eib_lang');if(_l==='ar'||_l==='fa'){document.documentElement.dir='rtl';var _f=document.createElement('link');_f.id='fontArabic';_f.rel='stylesheet';_f.href='https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap';document.head.appendChild(_f);}}catch(e){}</script>
     <script>try{var _t=localStorage.getItem('theme');if(!(_t==='dark'||(_t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches)))document.documentElement.classList.add('light');}catch(e){document.documentElement.classList.add('light');}</script>
 
     <!-- Icons -->
@@ -56,7 +60,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="questions.json" as="fetch">
     <style>
         /* ============================================================
@@ -345,9 +349,8 @@
 
             /* A glyph a face lacks falls through to the next. Bricolage has Latin only (Google
                Fonts' metadata: latin, latin-ext, vietnamese), so a Cyrillic heading is drawn by
-               Inter; neither has Arabic, so Arabic falls to Noto Sans Arabic. Google serves
-               that face split by character range, so its files download only once Arabic text
-               is on screen. */
+               Inter; neither has Arabic, so Arabic falls to Noto Sans Arabic, whose stylesheet
+               is loaded only for a right-to-left language (see the script in <head>). */
             --font-head: 'Bricolage Grotesque', 'Inter', 'Noto Sans Arabic', system-ui, sans-serif;
             --font-body: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             --font-mono: 'Inter', system-ui, sans-serif;   /* alias: JS reads var(--font-mono) */
@@ -3718,6 +3721,13 @@
             return offeredLangs().some(l => l.code === code) ? code : 'en';
         })();
 
+        /** Add the Arabic font's stylesheet once, for a right-to-left language. See <head>. */
+        function useArabicFont() {
+            if (document.getElementById('fontArabic')) return;
+            const l = Object.assign(document.createElement('link'), { id: 'fontArabic', rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap' });
+            document.head.appendChild(l);
+        }
+
         /** What a language file adds beyond the menus: state names, glossary, questions. */
         const LANG_DATA = {};
         const _langLoads = {};
@@ -4033,6 +4043,7 @@
         function paintLangControls() {
             document.documentElement.lang = lang;
             document.documentElement.dir = langDir(lang);
+            if (langDir(lang) === 'rtl') useArabicFont();
             const face = document.getElementById('langToggle');
             const select = document.getElementById('langSelect');
             if (!face || !select) return;
@@ -5169,7 +5180,7 @@
 
             // Bilingual toggle state
             const toggle = document.getElementById('bilingualToggle');
-            toggle.innerHTML = ICONS.translate + '<span>EN</span>';
+            toggle.innerHTML = ICONS.translate + '<span>' + trLang().toUpperCase() + '</span>';
             toggle.title = state.showEnglish ? t('quiz.hideEn') : t('quiz.showEn');
             toggle.setAttribute('aria-pressed', String(!!state.showEnglish));
             const speakBtn = document.getElementById('speakBtn');
@@ -5367,9 +5378,17 @@
             exp.classList.add(isCorrect ? 'correct' : 'incorrect');
             exp.classList.add('show');
 
-            document.getElementById('explanationHeader').textContent = isCorrect ? t('quiz.correct') : t('quiz.wrong');
+            const head = document.getElementById('explanationHeader');
+            head.textContent = isCorrect ? t('quiz.correct') : t('quiz.wrong');
             if (!isCorrect) {
-                document.getElementById('explanationHeader').textContent += t('quiz.rightAnswer') + q.options[q.correct];
+                // In a right-to-left page the German answer goes in a <bdi>, one left-to-right
+                // unit: as plain text, an answer ending in a full stop ("Schwerin.") shows the
+                // stop on the wrong side. Left to right it stays plain text, which renders
+                // exactly as before (a <bdi> there shifts the anti-aliasing by a few pixels).
+                const answer = q.options[q.correct];
+                head.append(t('quiz.rightAnswer'), langDir(lang) === 'rtl'
+                    ? Object.assign(document.createElement('bdi'), { textContent: answer, lang: 'de', dir: 'ltr' })
+                    : answer);
             }
 
             document.getElementById('explanationText').textContent = q.explanation_de;
@@ -5738,7 +5757,7 @@
         document.getElementById('bilingualToggle').addEventListener('click', () => {
             state.showEnglish = !state.showEnglish;
             const toggle = document.getElementById('bilingualToggle');
-            toggle.innerHTML = ICONS.translate + '<span>EN</span>';
+            toggle.innerHTML = ICONS.translate + '<span>' + trLang().toUpperCase() + '</span>';
             toggle.title = state.showEnglish ? t('quiz.hideEn') : t('quiz.showEn');
             toggle.setAttribute('aria-pressed', String(!!state.showEnglish));
             toggle.classList.toggle('active', state.showEnglish);
