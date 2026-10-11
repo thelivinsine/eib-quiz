@@ -3642,6 +3642,7 @@
         const LANGS = [
             { code: 'en', name: 'English' },
             { code: 'de', name: 'Deutsch' },
+            { code: 'ru', name: 'Русский', released: false },
         ];
         let lang = (() => {
             try { return localStorage.getItem(LANG_KEY) === 'de' ? 'de' : 'en'; }

@@ -76,27 +76,33 @@ export function problems(code, data) {
   const script = SCRIPT[code] ?? "Latin";
   const scriptRe = new RegExp(`\\p{Script=${script}}`, "u");
 
-  /** One translated string against its English source. */
-  const check = (where, src, tr) => {
+  /**
+   * One translated string against its English source. `de` is the German: a string identical
+   * to BOTH the English and the German is a name (a district, a person), not a sentence left
+   * untranslated. Without it a translator "fixed" Mecklenburgische Seenplatte into an invented
+   * Turkish name to pass this check (2026-10-11).
+   */
+  const check = (where, src, tr, de) => {
     if (typeof tr !== "string" || !tr.trim()) { out.push(`empty: ${where}`); return; }
     if (placeholders(src).join() !== placeholders(tr).join()) out.push(`placeholder: ${where}`);
     if (tags(src).join() !== tags(tr).join()) out.push(`tag: ${where}`);
     const ls = letters(tr.replace(/<[^>]*>/g, ""));
     if (ls.length >= 12 && script !== "Latin" && ls.filter((c) => scriptRe.test(c)).length / ls.length < 0.5)
       out.push(`script: ${where}`);
-    if (letters(src).length >= 20 && tr.trim() === String(src).trim()) out.push(`untranslated: ${where}`);
+    if (letters(src).length >= 20 && tr.trim() === String(src).trim() && tr.trim() !== String(de ?? "").trim())
+      out.push(`untranslated: ${where}`);
   };
 
   const ui = data.ui ?? {};
   for (const key of Object.keys(I18N)) {
     if (!(key in ui)) out.push(`missing ui key: ${key}`);
-    else check(`ui ${key}`, I18N[key].en, ui[key]);
+    else check(`ui ${key}`, I18N[key].en, ui[key], I18N[key].de);
   }
   for (const key of Object.keys(ui)) if (!(key in I18N)) out.push(`extra ui key: ${key}`);
 
   for (const key of Object.keys(CATEGORIES)) {
     if (!data.categories?.[key]) out.push(`missing category: ${key}`);
-    else check(`category ${key}`, CATEGORIES[key].en, data.categories[key]);
+    else check(`category ${key}`, CATEGORIES[key].en, data.categories[key], CATEGORIES[key].de);
   }
   for (const code2 of Object.keys(STATES)) {
     // A state name may legitimately stay as written (Berlin), so only emptiness and script count.
@@ -105,19 +111,19 @@ export function problems(code, data) {
   }
   for (const g of GLOSSARY) {
     if (!data.glossary?.[g.term]) out.push(`missing glossary: ${g.term}`);
-    else check(`glossary ${g.term}`, g.en, data.glossary[g.term]);
+    else check(`glossary ${g.term}`, g.en, data.glossary[g.term], g.de);
   }
 
   for (const q of QUESTIONS) {
     const t = data.questions?.[q.id];
     if (!t) { out.push(`missing question: ${q.id}`); continue; }
-    check(`question ${q.id} text`, q.en, t.q);
+    check(`question ${q.id} text`, q.en, t.q, q.de);
     if (!Array.isArray(t.options) || t.options.length !== q.options.length) {
       out.push(`options: question ${q.id} has ${t.options?.length ?? 0}, expected ${q.options.length}`);
     } else {
-      t.options.forEach((o, i) => check(`question ${q.id} option ${i + 1}`, q.options_en?.[i] ?? "", o));
+      t.options.forEach((o, i) => check(`question ${q.id} option ${i + 1}`, q.options_en?.[i] ?? "", o, q.options[i]));
     }
-    check(`question ${q.id} explanation`, q.explanation_en, t.explanation);
+    check(`question ${q.id} explanation`, q.explanation_en, t.explanation, q.explanation_de);
   }
   return out;
 }
