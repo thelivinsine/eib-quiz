@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `b9d08cf`: CI on every PR; the languages work `ffcc90b` and its review fixes `ec192bc`)_
+_Last updated: 2026-10-12 (live commit `ff5a937`: ar, ru and tr released unreviewed with a styled language menu; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
