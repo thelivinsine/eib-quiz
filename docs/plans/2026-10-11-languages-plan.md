@@ -34,7 +34,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 7 | Language list, loading and the picker | done | 2026-10-11 | **Not run in a browser at all (unattended run)**. Unverified: the picker lists only English/Deutsch; `?lang=ar` switches one tab without touching `eib_lang`; offline after one use; a blocked `i18n/ar.json` snaps the picker back with the alert; header row width at 320/375 in en/de/ar; picker box size against `main`; en/de screenshots against the baseline. Checked: all five node checks, and a read of the code. |
 | 8 | Translations in the quiz, review and glossary | done | 2026-10-11 | **Not run in a browser (unattended run)**: none of the five sites, the fallback for a missing question, or the en/de byte-identical claim was seen on screen. Checked: the node checks and a read of the code. Q3 answered without you. |
 | 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
-| 10 | Measure every language at every width | **blocked**: needs a browser, which the unattended run may not open (Q4). Tasks 12, 13-17 wait on it. | — | Nothing measured. A text-length proxy found 14 likely overflows, listed in the entry below. |
+| 10 | Measure every language at every width | done, 2026-10-11 (user present) | 2026-10-11 | Measured in Playwright Chromium only (not Safari or Firefox, not a real phone). en/de/ar/tr/ru all pass after two fixes, listed in the entry. |
 | 11 | Review sheets | done | 2026-10-11 | Not opened in Excel or Google Sheets: proved instead by parsing each sheet back (BOM present, 6 columns on every row, no empty translation). |
 | 12 | Docs, full validation, ship stage 1 | blocked by 10, 11 | — | — |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
@@ -496,3 +496,21 @@ language at a time.
 picker still lists only the released languages.
 
 **Blocked by** 16.
+
+**Measured 2026-10-11, user present** (`local/lang-shots/measure.js`, Playwright Chromium, en/de
+as the reference):
+
+- Home and Practise at 320 (mouse and touch), 360 (touch), 375 (mouse and touch) and 1280: no
+  element past either screen edge, no clipped text, no mode title overflowing, overview readouts
+  on one row from 342px up.
+- The header row fits everywhere. Tightest: Turkish and Russian at 320px, 10-11px between the
+  nav and the controls (English 25, German 38).
+- Quiz, results and exam lock to the screen (`scrollHeight === innerHeight`) at 375, 620, 940
+  and 1400, on Q21 with the explanation and translation open, with the phone navigator both
+  collapsed and expanded. The quiz readouts hold one line at 360 and 375.
+- **Two failures, both fixed**: (1) Arabic at 320px: the glossary cards stuck out 11px past
+  the left edge. The cause was older than this work: `minmax(300px, 1fr)` in a 273px column,
+  27px into the right gutter in English unnoticed. It is `minmax(min(300px, 100%), 1fr)` now.
+  (2) Turkish at 360 and 375px: the overview readouts wrapped. `dash.answered` "Toplam
+  yanıtlanan" became "Toplam yanıt", as Russian's "Всего ответов".
+- **None of the 14 shortlisted strings overflowed**: the text-length proxy over-warned.

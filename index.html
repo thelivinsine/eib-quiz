@@ -2034,7 +2034,10 @@
         @media (hover: hover) {
             .gloss-wrap > .glossary-summary:hover { background: var(--tile-hover); border-color: var(--tile-edge-hover); }
         }
-        .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+        /* min(300px, 100%): below ~330px the column is narrower than 300, and a fixed minimum
+           pushed every card 27px past it - into the gutter left to right, off the screen right
+           to left (found measuring Arabic at 320px, 2026-10-11). */
+        .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
         .gloss-card { padding: var(--space-md) var(--space-lg); display: flex; flex-direction: column; gap: var(--space-2xs); }
         .gloss-term { font: var(--type-title); letter-spacing: var(--ls-display); color: var(--text); }
         .gloss-de { font: var(--type-small); color: var(--sub-text); }
