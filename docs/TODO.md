@@ -103,6 +103,12 @@ unattended run answered without you).
   offered only English and Deutsch; since then it offers all five.
 - **Next:** native-speaker reviews (yours, task 13) of the three already live, then release one language at a time
   (task 14), then the other seven (tasks 15-17).
+- **Q281 and Q285 corrected 2026-10-12** (PR #113, in `questions.json`): both
+  explanations, German and English, and both English question texts. Q281 is about skin
+  colour, not nationality; Q285 asks what she does NOT pay from her salary, and the
+  explanation now says why VAT is the answer. `ar`, `tr` and `ru` still translate the
+  old explanations (their question texts were always right); the review sheets were
+  regenerated so the reviewer sees the new German and English beside them.
 
 ### 4. Done
 - ~~CI~~ — done 2026-10-12 (`b9d08cf`, PR #111): GitHub Actions runs the contrast, scale
