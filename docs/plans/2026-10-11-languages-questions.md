@@ -59,3 +59,18 @@ can use.
 
 **Taken: leave them.** When the first language is released (task 14), these four strings
 and the "2 languages" figure in the numbers band need rewording in every language file.
+
+## 4. Task 10 is all browser measurements. Mark it done, or leave it blocked?
+
+**From task 10** (measure every language at every width).
+
+The run may not open a browser, and task 10 consists only of on-screen measurements at
+320-1400px. Task 12 (ship stage 1) and everything after it depend on task 10.
+
+- **Leave it blocked, with a text-length list of where to look first** *(Recommended)*:
+  nothing is claimed that was not measured. Tasks 12-17 wait for you.
+- **Mark it done on the text-length list alone**: unblocks the rest, but it would record a
+  measurement nobody made, and a header that overflows at 320px could reach the live site.
+
+**Taken: leave it blocked.** The plan's own rule is that a string is shortened only when a
+measurement says so. Task 11 (review sheets) does not depend on it and was done.
