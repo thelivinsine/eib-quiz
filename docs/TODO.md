@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-11 (live commit `6b26c87`: the languages work `ffcc90b`, its review fixes `ec192bc`)_
+_Last updated: 2026-10-12 (live commit `b9d08cf`: CI on every PR; the languages work `ffcc90b` and its review fixes `ec192bc`)_
 
 ## Project status
 
@@ -103,6 +103,11 @@ unattended run answered without you).
   (task 14), then the other seven (tasks 15-17).
 
 ### 4. Done
+- ~~CI~~ — done 2026-10-12 (`b9d08cf`, PR #111): GitHub Actions runs the contrast, scale
+  and i18n tests, `validate.js` and `node --check sw.js` on every PR and every push to
+  `main`. This came out of the #109 security review: UI strings and state names go into
+  the page raw, so `i18n.test.mjs` is the only guard against markup in a language file
+  (note corrected in `ec192bc`, PR #110).
 - ~~Service worker / offline PWA~~ — done 2026-06-20: real caching SW (network-first for
   HTML/data) + installable manifest; cleans up old May-28 caches on activate.
 - ~~Rasterize the OG image~~ — done: `og-image.png` (1200×630) via resvg-js.

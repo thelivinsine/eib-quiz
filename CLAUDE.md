@@ -2457,6 +2457,7 @@ Root holds exactly what GitHub Pages serves; everything else is foldered.
   .nojekyll       stops Pages running Jekyll
   .gitignore      ignores local/ scratch dir
   CLAUDE.md       this file
+.github/workflows/tests.yml  CI: the test suite on every PR and every push to main
 img/              image-question assets, the hero photo, ATTRIBUTIONS.md, icons/, states/
 i18n/             one file per extra UI language (served, fetched on demand), README.md
 tools/            data-generation + validation scripts (not served)
@@ -2621,6 +2622,10 @@ Do not publish from `questions-final-extended.json` until it has been repaired a
 ## Validation Checklist
 
 Before publishing any app change:
+
+**CI runs steps 2, 4, 4b and 4c, plus `node --check sw.js`, on every PR and every push to
+`main`** (`.github/workflows/tests.yml`, added 2026-10-12). It does not run step 3 or any
+browser step. A red check means a test failed, so do not merge until it is green.
 
 1. Question data lives in `questions.json` (source of truth) — edit it directly.
    (`tools/extract-questions.js` was the one-time migration from index.html; it no-ops now.)
