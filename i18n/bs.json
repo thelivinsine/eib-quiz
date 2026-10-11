@@ -1,0 +1,4818 @@
+{
+ "ui": {
+  "nav.home": "Na početnu stranicu",
+  "nav.back": "Nazad",
+  "nav.backAria": "Nazad na početnu stranicu",
+  "nav.tagline": "Učite. Vježbajte. Položite.",
+  "nav.scheme": "Shema boja",
+  "nav.dark": "Tamno",
+  "nav.light": "Svijetlo",
+  "nav.system": "Prema sistemu",
+  "nav.language": "Jezik",
+  "nav.sections": "Odjeljci",
+  "nav.navPractise": "Vježbanje",
+  "nav.navHome": "Početna",
+  "hero.headline": "Njemački test za državljanstvo",
+  "hero.lead": "Vježbajte sa svih 300 službenih pitanja — za svih 16 saveznih pokrajina. Na njemačkom ili engleskom. Bilo kada, bilo gdje.",
+  "hero.cta": "Počnite sada",
+  "hero.cta2": "Saznajte više",
+  "hero.photoAlt": "Zapadna fasada Reichstaga u Berlinu s natpisom DEM DEUTSCHEN VOLKE, ispred koje se vijore njemačka i evropska zastava.",
+  "footer.blurb": "Besplatno vježbanje za test za državljanstvo — sva službena pitanja, svih 16 saveznih pokrajina, na njemačkom ili engleskom. Nakon učitavanja radi i bez interneta.",
+  "footer.practise": "Vježbanje",
+  "footer.sources": "Izvori",
+  "footer.catalogue": "Katalog pitanja (PDF)",
+  "footer.bamf": "BAMF o naturalizaciji",
+  "footer.photo": "Naslovna fotografija",
+  "footer.copyright": "© 2026 EIB Quiz. Sva prava zadržana.",
+  "footer.legal": "Pitanja su iz službenog kataloga BAMF-a. Fotografija: Dietmar Rabich, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" rel=\"noopener\" target=\"_blank\">CC BY-SA 4.0</a>. Ovo nije službena usluga BAMF-a.",
+  "why.title": "Jednostavno. Djelotvorno. Pouzdano.",
+  "why.1.title": "Službeni sadržaj",
+  "why.1.body": "Svih 300 pitanja iz službenog kataloga.",
+  "why.2.title": "Uvijek potpuno",
+  "why.2.body": "Svih 16 saveznih pokrajina, svaka sa svojih deset pitanja.",
+  "why.3.title": "Fleksibilno učenje",
+  "why.3.body": "Na njemačkom ili engleskom. Na svakom uređaju.",
+  "why.4.title": "Gradite svoju budućnost",
+  "why.4.body": "Više sigurnosti. Nove mogućnosti.",
+  "stats.1": "Službena pitanja",
+  "stats.2": "Savezne pokrajine",
+  "stats.3": "Jezici (njemački i engleski)",
+  "stats.4": "Minute (pravi test)",
+  "stats.annotation": "Državljanstvo otvara nove puteve.",
+  "cta.title": "Napravite sljedeći korak već danas.",
+  "cta.lead": "Vježbajte, steknite sigurnost i ostvarite svoj cilj.",
+  "cta.button": "Počnite vježbati",
+  "cta.annotation": "Mali korak. Veća budućnost.",
+  "home.progress.title": "Vaš napredak",
+  "home.progress.lead": "Vaša tačnost na svim pitanjima na koja ste dosad odgovorili.",
+  "home.practice.title": "Odaberite način vježbanja",
+  "home.more.title": "Ranije runde i pojmovnik",
+  "home.more.lead": "Ranije runde i pojmovi koje pitanja podrazumijevaju.",
+  "dash.accuracy": "Tačnost",
+  "dash.passMark": "Prag prolaza {n}%",
+  "dash.accuracyShort": "Tačnost",
+  "dash.note": "Ukupno iz svih vaših rundi, dok ne poništite napredak.",
+  "dash.answered": "Ukupno odgovoreno",
+  "dash.mastered": "Savladano",
+  "dash.due": "Za ponavljanje",
+  "dash.statePick": "Odaberite pokrajinu",
+  "dash.reset": "Poništite napredak",
+  "dash.resetConfirm": "Poništiti sav napredak u učenju?",
+  "dash.resumeMeta": "Odgovoreno: {n} od {total}",
+  "dash.resumeGo": "Nastavite",
+  "dash.resumeDrop": "Odbacite",
+  "dash.verdict.start": "Tek ste počeli",
+  "dash.verdict.startSub": "Odgovorite na više pitanja da biste vidjeli svoj napredak.",
+  "dash.verdict.building": "Samo nastavite",
+  "dash.verdict.buildingSub": "Još ste ispod praga prolaza: {pass} od {total}.",
+  "dash.verdict.onTrack": "Na dobrom ste putu",
+  "dash.verdict.onTrackSub": "Iznad praga prolaza. Samo tako nastavite.",
+  "dash.verdict.strong": "Skoro ste spremni",
+  "dash.verdict.strongSub": "Visoka tačnost — pokušajte simulaciju ispita.",
+  "mode.topic.title": "Po temi",
+  "mode.topic.desc": "Prava, politika, historija, društvo ili simboli — jedna po jedna tema.",
+  "mode.topic.badge": "Pet tema",
+  "mode.topic.time": "10–25 min",
+  "mode.exam.title": "Simulacija ispita",
+  "mode.exam.desc": "Nasumičan izbor: opća pitanja ({general}) i pitanja pokrajine {state} ({n}).",
+  "mode.exam.badge": "Pitanja: {n}",
+  "mode.exam.time": "60 min",
+  "mode.all.title": "Sva pitanja",
+  "mode.all.desc": "Cijeli opći katalog, redom.",
+  "mode.all.badge": "300 pitanja",
+  "mode.all.time": "60–90 min",
+  "mode.state.title": "Vaša pokrajina",
+  "mode.state.desc": "Samo pitanja pokrajine {state}.",
+  "mode.state.badge": "10 pitanja",
+  "mode.state.time": "5 min",
+  "mode.review.title": "Pametno ponavljanje",
+  "mode.review.desc": "Pitanja koja su na redu ili u kojima stalno griješite.",
+  "mode.review.badgeDue": "Na redu: {n}",
+  "mode.review.badge": "do 25",
+  "mode.review.time": "10–15 min",
+  "topic.meta": "Pitanja: {n} · savladano: {m}",
+  "hist.title": "Ranije runde ({n})",
+  "hist.passed": "Položeni ispiti: {n}/{total}",
+  "hist.best": "Najbolje {p}%",
+  "hist.pass": "Položeno",
+  "hist.fail": "Nije položeno",
+  "hist.mode.exam": "Ispit",
+  "hist.mode.allQuestions": "Sva pitanja",
+  "hist.mode.bundesland": "Pitanja pokrajine",
+  "hist.mode.review": "Pametno ponavljanje",
+  "hist.mode.topic": "Tema",
+  "hist.mode.mistakes": "Greške",
+  "gloss.title": "Pojmovnik — ključni pojmovi ({n})",
+  "quiz.question": "Pitanje {n}",
+  "quiz.questionOf": "Pitanje {n} / {total}",
+  "quiz.general": "Opće",
+  "quiz.stat.correct": "Tačno",
+  "quiz.stat.wrong": "Netačno",
+  "quiz.stat.score": "Rezultat",
+  "quiz.stat.answered": "Odgovoreno",
+  "quiz.time": "Vrijeme",
+  "quiz.speak": "Pročitajte pitanje naglas",
+  "quiz.showEn": "Prikažite prijevod",
+  "quiz.hideEn": "Sakrijte prijevod",
+  "quiz.prev": "Prethodno",
+  "quiz.next": "Dalje",
+  "quiz.finish": "Završite",
+  "quiz.correct": "✓ Tačno",
+  "quiz.wrong": "✗ Netačno",
+  "quiz.rightAnswer": " — tačan odgovor: ",
+  "quiz.imgMissing": "Nema slike",
+  "quiz.zoomOpen": "Uvećajte sliku",
+  "quiz.zoomHover": "Kliknite za uvećanje",
+  "quiz.zoomClose": "Zatvorite sliku",
+  "quiz.zoomHint": "Dodirnite sliku da biste je uvećali.",
+  "quiz.kbNav": "kretanje",
+  "quiz.kbPick": "odabir",
+  "quiz.kbNext": "dalje",
+  "quiz.kbClose": "Sakrijte savjete za tastaturu",
+  "qnav.overview": "Pregled pitanja",
+  "qnav.shuffle": "Nasumično",
+  "qnav.linear": "Redom",
+  "qnav.categories": "Teme",
+  "qnav.view": "Redoslijed pitanja",
+  "end.exam": "Simulacija ispita završena",
+  "end.allQuestions": "Runda završena",
+  "end.bundesland": "Runda za pokrajinu završena",
+  "end.mistakes": "Runda grešaka završena",
+  "end.review": "Pametno ponavljanje završeno",
+  "end.topic": "Tematska runda završena",
+  "end.done": "Gotovo",
+  "end.pass": "✓ Položeno",
+  "end.fail": "✗ Nije položeno",
+  "end.correctCount": "Tačno",
+  "end.wrongCount": "Netačno",
+  "end.threshold": "Prag prolaza: {pass} od {total} pitanja ({n}%)",
+  "end.general": "Opća (od {n})",
+  "end.stateOf3": "{state} (od {n})",
+  "end.elapsed": "Utrošeno vrijeme",
+  "end.retry": "Ponovite test",
+  "end.retryPractice": "Vježbajte ponovo",
+  "end.home": "Nazad",
+  "end.more": "Vaši odgovori",
+  "end.reviewTitle": "Pregledajte netačne odgovore",
+  "end.examReviewCount": "Pitanja: {n}",
+  "end.aRight": "Tačno",
+  "end.aWrong": "Netačno",
+  "end.aBlank": "Bez odgovora",
+  "end.reviewCount": "Pitanja: {n}",
+  "end.reviewCountPl": "Pitanja: {n}",
+  "end.retryWrong": "Ponovite netačne",
+  "end.reviewQ": "Pitanje {id}",
+  "quit.resumable": "Napustiti kviz i vratiti se na početnu? Ovu sesiju možete nastaviti kasnije.",
+  "quit.lost": "Napustiti kviz i vratiti se na početnu? Vaš napredak u ovoj rundi bit će izgubljen.",
+  "err.load": "Pitanja nije bilo moguće učitati. Molimo ponovo učitajte stranicu.",
+  "err.langLoad": "Ovaj jezik nije bilo moguće učitati. Provjerite vezu i pokušajte ponovo.",
+  "err.reviewEmpty": "Još nema ničega za ponavljanje — prvo odgovorite na nekoliko pitanja."
+ },
+ "categories": {
+  "rights": "Osnovna prava i ustav",
+  "politics": "Demokratija, izbori i država",
+  "history": "Historija",
+  "society": "Društvo, socijalna pitanja i ekonomija",
+  "symbols": "Simboli, geografija i Evropa"
+ },
+ "states": {
+  "BW": "Baden-Württemberg",
+  "BY": "Bavarska",
+  "BE": "Berlin",
+  "BB": "Brandenburg",
+  "HB": "Bremen",
+  "HH": "Hamburg",
+  "HE": "Hessen",
+  "MV": "Mecklenburg-Vorpommern",
+  "NI": "Donja Saska",
+  "NW": "Sjeverna Rajna-Vestfalija",
+  "RP": "Porajnje-Falačka",
+  "SL": "Saarland",
+  "SN": "Saska",
+  "ST": "Saska-Anhalt",
+  "SH": "Schleswig-Holstein",
+  "TH": "Tiringija"
+ },
+ "glossary": {
+  "Grundgesetz": "Ustav Njemačke (od 1949.). Propisuje osnovna prava i uređenje države.",
+  "Grundrechte": "Prava zajamčena Osnovnim zakonom, npr. sloboda mišljenja i vjeroispovijesti.",
+  "Rechtsstaat": "Država u kojoj su svi – pa i sama država – vezani pravom i zakonom.",
+  "Sozialstaat": "Država koja brine o socijalnoj sigurnosti (npr. zdravstveno i penziono osiguranje).",
+  "Föderalismus": "Podjela vlasti između savezne države i 16 saveznih pokrajina.",
+  "Bundestag": "Izabrani parlament Njemačke; donosi zakone.",
+  "Bundesrat": "Predstavništvo 16 saveznih pokrajina na saveznom nivou.",
+  "Bundespräsident/in": "Šef države; bira ga Savezna skupština.",
+  "Bundeskanzler/in": "Šef vlade; vodi saveznu vladu.",
+  "Koalition": "Savez više stranaka radi zajedničkog vladanja.",
+  "Opposition": "Zastupnici koji nisu dio vlade.",
+  "Gewaltenteilung": "Podjela na zakonodavnu, izvršnu i sudsku vlast.",
+  "Volkssouveränität": "Sva državna vlast proizlazi iz naroda (čl. 20 Osnovnog zakona).",
+  "Meinungsfreiheit": "Pravo na slobodno izražavanje mišljenja (čl. 5 Osnovnog zakona).",
+  "Freizügigkeit": "Pravo na slobodan izbor mjesta stanovanja i boravka (čl. 11 Osnovnog zakona).",
+  "Asylrecht": "Zaštita za politički progonjene (čl. 16a Osnovnog zakona); vrijedi samo za strance.",
+  "Soziale Marktwirtschaft": "Ekonomski sistem koji spaja slobodno tržište sa socijalnom ravnotežom.",
+  "Ministerpräsident/in": "Šef vlade savezne pokrajine (osim gradova-država)."
+ },
+ "questions": {
+  "1": {
+   "q": "U Njemačkoj ljudi smiju otvoreno govoriti protiv vlade jer …",
+   "options": [
+    "ovdje vrijedi sloboda vjeroispovijesti",
+    "ljudi plaćaju porez",
+    "ljudi imaju pravo glasa",
+    "ovdje vrijedi sloboda mišljenja"
+   ],
+   "explanation": "Sloboda mišljenja zajamčena je u čl. 5 Osnovnog zakona i jedno je od ključnih prava demokratije."
+  },
+  "2": {
+   "q": "U Njemačkoj roditelji do 14. godine života svog djeteta mogu odlučiti hoće li ono u školi pohađati ...",
+   "options": [
+    "nastavu historije",
+    "vjeronauku",
+    "nastavu politike",
+    "nastavu jezika"
+   ],
+   "explanation": "Čl. 7 st. 2 Osnovnog zakona jamči roditeljima pravo da odlučuju o vjerskom odgoju djeteta."
+  },
+  "3": {
+   "q": "Njemačka je pravna država. Što se time misli?",
+   "options": [
+    "Svi stanovnici / stanovnice i država moraju se pridržavati zakona",
+    "Država se ne mora pridržavati zakona",
+    "Samo Nijemci moraju poštovati zakone",
+    "Sudovi donose zakone"
+   ],
+   "explanation": "Pravnu državu obilježava vezanost za zakon — svi, pa i država, podliježu zakonima."
+  },
+  "4": {
+   "q": "Koje pravo spada u osnovna prava u Njemačkoj?",
+   "options": [
+    "posjedovanje oružja",
+    "pravo jačeg",
+    "sloboda mišljenja",
+    "uzimanje pravde u svoje ruke"
+   ],
+   "explanation": "Sloboda mišljenja utvrđena je kao osnovno pravo u čl. 5 Osnovnog zakona."
+  },
+  "5": {
+   "q": "Izbori u Njemačkoj su slobodni. Što to znači?",
+   "options": [
+    "Smije se primiti novac ako se zauzvrat glasa za određenog kandidata / određenu kandidatkinju",
+    "Na birača se pri izborima ne smije utjecati niti ga se smije prisiliti da glasa na određeni način, a zbog izbora ne smije trpjeti nikakve štetne posljedice",
+    "Glasati smiju samo osobe koje nikada nisu bile u zatvoru",
+    "Sve osobe s pravom glasa moraju glasati"
+   ],
+   "explanation": "Slobodni izbori utvrđeni su u čl. 20 st. 2 Osnovnog zakona i znače slobodu izbora bez prisile ili utjecaja."
+  },
+  "6": {
+   "q": "Kako se zove njemački ustav?",
+   "options": [
+    "Narodni zakon",
+    "Savezni zakon",
+    "Njemački zakon",
+    "Osnovni zakon"
+   ],
+   "explanation": "Njemački ustav zove se Osnovni zakon (Grundgesetz, GG) i usvojen je 1949. godine."
+  },
+  "7": {
+   "q": "Koje pravo spada u osnovna prava zajamčena njemačkim ustavom?",
+   "options": [
+    "sloboda vjere i savjesti",
+    "zabava",
+    "rad",
+    "stan"
+   ],
+   "explanation": "Sloboda vjere i savjesti zajamčena je u čl. 4 Osnovnog zakona kao jedno od najvažnijih osnovnih prava."
+  },
+  "8": {
+   "q": "Što ne piše u njemačkom Osnovnom zakonu?",
+   "options": [
+    "Dostojanstvo čovjeka je nepovredivo",
+    "Svi trebaju imati jednako mnogo novca",
+    "Svaki čovjek smije reći svoje mišljenje",
+    "Svi su jednaki pred zakonom"
+   ],
+   "explanation": "Zahtjev za ekonomskom jednakošću ne nalazi se u Osnovnom zakonu; čl. 3 Osnovnog zakona jamči samo pravnu jednakost."
+  },
+  "9": {
+   "q": "Koje osnovno pravo u Njemačkoj vrijedi samo za strance / strankinje?",
+   "options": [
+    "zaštita porodice",
+    "ljudsko dostojanstvo",
+    "azil",
+    "sloboda mišljenja"
+   ],
+   "explanation": "Pravo na azil utvrđeno je u čl. 16a Osnovnog zakona i vrijedi samo za strance."
+  },
+  "10": {
+   "q": "Što je u skladu s njemačkim Osnovnim zakonom?",
+   "options": [
+    "kazna batinanjem",
+    "mučenje",
+    "smrtna kazna",
+    "novčana kazna"
+   ],
+   "explanation": "Čl. 102 Osnovnog zakona ukida smrtnu kaznu; mučenje i kazna batinanjem nisu dopušteni. Novčane kazne su zakonite."
+  },
+  "11": {
+   "q": "Kako se naziva ustav Savezne Republike Njemačke?",
+   "options": [
+    "Osnovni zakon",
+    "Savezni ustav",
+    "Zakonik",
+    "Ustavni ugovor"
+   ],
+   "explanation": "Njemački ustav od 1949. godine službeno se zove Osnovni zakon (GG)."
+  },
+  "12": {
+   "q": "Jedna stranka u njemačkom Bundestagu (saveznom parlamentu) želi ukinuti slobodu štampe. Je li to moguće?",
+   "options": [
+    "Da, ako je za to više od polovine zastupnika u Bundestagu",
+    "Da, ali za to moraju biti dvije trećine zastupnika u Bundestagu",
+    "Ne, jer je sloboda štampe osnovno pravo. Ona se ne može ukinuti",
+    "Ne, jer samo Bundesrat može ukinuti slobodu štampe"
+   ],
+   "explanation": "Čl. 5 Osnovnog zakona jamči slobodu štampe; osnovna prava ne mogu se ukinuti prostom većinom."
+  },
+  "13": {
+   "q": "U parlamentu pojam opozicija označava …",
+   "options": [
+    "stranke na vlasti",
+    "sve zastupnike koji ne pripadaju vladajućoj stranci / vladajućim strankama",
+    "frakciju s najviše zastupnika",
+    "sve stranke koje su na posljednjim izborima uspjele preći izborni prag od 5%"
+   ],
+   "explanation": "Opoziciju čine svi zastupnici koji ne pripadaju vladi."
+  },
+  "14": {
+   "q": "Sloboda mišljenja u Njemačkoj znači, na primjer, da ja …",
+   "options": [
+    "smijem vrijeđati prolaznike na ulici",
+    "mogu iznijeti svoje mišljenje na internetu",
+    "smijem javno nositi simbole nacista, Hamasa ili Islamske države",
+    "smijem iznijeti svoje mišljenje samo dok ne proturječim vladi"
+   ],
+   "explanation": "Sloboda mišljenja je zajamčena, ali ima granice kod uvrede i raspirivanja mržnje (Volksverhetzung)."
+  },
+  "15": {
+   "q": "Što zabranjuje njemački Osnovni zakon?",
+   "options": [
+    "vojnu službu",
+    "prisilni rad",
+    "slobodan izbor zanimanja",
+    "rad u inostranstvu"
+   ],
+   "explanation": "Čl. 12 Osnovnog zakona zabranjuje prisilni rad kao povredu ljudskog dostojanstva."
+  },
+  "16": {
+   "q": "Kada je sloboda mišljenja u Njemačkoj ograničena?",
+   "options": [
+    "kod javnog širenja neistinitih tvrdnji o pojedinim osobama",
+    "kod izražavanja mišljenja o saveznoj vladi",
+    "kod rasprava o religijama",
+    "kod kritike države"
+   ],
+   "explanation": "Slobodu mišljenja ograničavaju zakoni protiv uvrede i klevete."
+  },
+  "17": {
+   "q": "Njemački zakoni zabranjuju …",
+   "options": [
+    "slobodu mišljenja stanovnika i stanovnica",
+    "peticije građana i građanki",
+    "slobodu okupljanja stanovnika i stanovnica",
+    "nejednako postupanje države prema građanima i građankama"
+   ],
+   "explanation": "Čl. 3 Osnovnog zakona jamči jednakost i zabranjuje diskriminaciju od strane države."
+  },
+  "18": {
+   "q": "Koje je osnovno pravo zajamčeno u članu 1 Osnovnog zakona Savezne Republike Njemačke?",
+   "options": [
+    "nepovredivost ljudskog dostojanstva",
+    "pravo na život",
+    "sloboda vjeroispovijesti",
+    "sloboda mišljenja"
+   ],
+   "explanation": "Čl. 1 Osnovnog zakona štiti ljudsko dostojanstvo kao najviše i nepovredivo osnovno pravo."
+  },
+  "19": {
+   "q": "Što se u Njemačkoj podrazumijeva pod pravom na slobodu kretanja?",
+   "options": [
+    "Mjesto stanovanja smije se slobodno izabrati",
+    "Zanimanje se može promijeniti",
+    "Smije se odlučiti za drugu religiju",
+    "U javnosti se smije kretati samo oskudno odjeven"
+   ],
+   "explanation": "Sloboda kretanja (čl. 11 Osnovnog zakona) znači slobodan izbor mjesta stanovanja unutar Njemačke."
+  },
+  "20": {
+   "q": "Jedna stranka u Njemačkoj ima za cilj uspostaviti diktaturu. Ta stranka je tada …",
+   "options": [
+    "tolerantna",
+    "usmjerena na pravnu državu",
+    "odana zakonu",
+    "neustavna"
+   ],
+   "explanation": "Stranke koje žele uništiti demokratiju su neustavne i mogu biti zabranjene (čl. 21 Osnovnog zakona)."
+  },
+  "21": {
+   "q": "Koji je grb Savezne Republike Njemačke?",
+   "options": [
+    "savezni grb (Njemačka)",
+    "Kristov monogram (Chi-Rho)",
+    "križ Bundeswehra",
+    "amblem DDR-a"
+   ],
+   "explanation": "Savezni orao na zlatnoj podlozi službeni je grb Savezne Republike Njemačke."
+  },
+  "22": {
+   "q": "Koji oblik države ima Njemačka?",
+   "options": [
+    "monarhija",
+    "diktatura",
+    "republika",
+    "kneževina"
+   ],
+   "explanation": "Njemačka je demokratska republika od osnivanja Savezne Republike 1949. godine."
+  },
+  "23": {
+   "q": "U Njemačkoj je većina zaposlenih …",
+   "options": [
+    "zaposlena u nekoj firmi ili državnoj ustanovi",
+    "zaposlena u malim porodičnim poduzećima",
+    "volonterski angažovana za neku saveznu pokrajinu",
+    "samozaposlena s vlastitom firmom"
+   ],
+   "explanation": "Većina zaposlenih u Njemačkoj radi kao namještenici u poduzećima ili u javnoj službi."
+  },
+  "24": {
+   "q": "Koliko saveznih pokrajina ima Savezna Republika Njemačka?",
+   "options": [
+    "14",
+    "15",
+    "16",
+    "17"
+   ],
+   "explanation": "Njemačka ima 16 saveznih pokrajina od ponovnog ujedinjenja 3. oktobra 1990."
+  },
+  "25": {
+   "q": "Što nije savezna pokrajina Savezne Republike Njemačke?",
+   "options": [
+    "Sjeverna Rajna-Vestfalija",
+    "Alzas-Lorena",
+    "Mecklenburg-Vorpommern",
+    "Saska-Anhalt"
+   ],
+   "explanation": "Alzas-Lorena pripada Francuskoj i nikada nije bila njemačka savezna pokrajina."
+  },
+  "26": {
+   "q": "Njemačka je …",
+   "options": [
+    "komunistička republika",
+    "demokratska i socijalna savezna država",
+    "kapitalistička i socijalna monarhija",
+    "socijalna i socijalistička savezna država"
+   ],
+   "explanation": "Čl. 20 Osnovnog zakona određuje Njemačku kao demokratsku i socijalnu saveznu državu."
+  },
+  "27": {
+   "q": "Njemačka je …",
+   "options": [
+    "socijalistička država",
+    "savezna država",
+    "diktatura",
+    "monarhija"
+   ],
+   "explanation": "Njemačka je savezna država sa 16 saveznih pokrajina i federalnim uređenjem."
+  },
+  "28": {
+   "q": "Ko u Njemačkoj bira zastupnike Bundestaga (saveznog parlamenta)?",
+   "options": [
+    "vojska",
+    "privreda",
+    "narod s pravom glasa",
+    "uprava"
+   ],
+   "explanation": "Prema čl. 38 Osnovnog zakona zastupnike Bundestaga biraju građani s pravom glasa."
+  },
+  "29": {
+   "q": "Koja je životinja na grbu Savezne Republike Njemačke?",
+   "options": [
+    "lav",
+    "orao",
+    "medvjed",
+    "konj"
+   ],
+   "explanation": "Savezni orao je životinja na državnom grbu Njemačke."
+  },
+  "30": {
+   "q": "Što nije obilježje naše demokratije?",
+   "options": [
+    "redovni izbori",
+    "cenzura štampe",
+    "sloboda mišljenja",
+    "različite stranke"
+   ],
+   "explanation": "Cenzura štampe nespojiva je s demokratijom; sloboda štampe zajamčena je u čl. 5 Osnovnog zakona."
+  },
+  "31": {
+   "q": "Saradnja stranaka radi formiranja vlade u Njemačkoj naziva se …",
+   "options": [
+    "jedinstvo.",
+    "koalicija.",
+    "ministarstvo.",
+    "frakcija."
+   ],
+   "explanation": "Kada više stranaka zajedno formira vladu, to se naziva koalicija."
+  },
+  "32": {
+   "q": "Što u Njemačkoj nije državna vlast?",
+   "options": [
+    "zakonodavstvo",
+    "vlada",
+    "štampa",
+    "sudstvo"
+   ],
+   "explanation": "Tri državne vlasti su zakonodavna, izvršna i sudska vlast. Štampa nije državna vlast."
+  },
+  "33": {
+   "q": "Koja je izjava tačna? U Njemačkoj …",
+   "options": [
+    "su država i vjerske zajednice međusobno odvojene.",
+    "vjerske zajednice čine državu.",
+    "je država ovisna o vjerskim zajednicama.",
+    "država i vjerske zajednice čine jedinstvo."
+   ],
+   "explanation": "U Njemačkoj vrijedi načelo odvojenosti države i crkve; država je svjetonazorski neutralna."
+  },
+  "34": {
+   "q": "Što Njemačka nije?",
+   "options": [
+    "demokratija",
+    "pravna država",
+    "monarhija",
+    "socijalna država"
+   ],
+   "explanation": "Njemačka je demokratija, pravna država i socijalna država, ali nije monarhija – njome upravljaju izabrani predstavnici."
+  },
+  "35": {
+   "q": "Čime njemačka država finansira socijalno osiguranje?",
+   "options": [
+    "crkvenim porezom",
+    "socijalnim doprinosima",
+    "donacijama",
+    "članarinama udruženja"
+   ],
+   "explanation": "Socijalno osiguranje finansira se doprinosima zaposlenika i poslodavaca (socijalni doprinosi)."
+  },
+  "36": {
+   "q": "Koja mjera u Njemačkoj stvara socijalnu sigurnost?",
+   "options": [
+    "zdravstveno osiguranje",
+    "osiguranje automobila",
+    "osiguranje zgrade",
+    "osiguranje od odgovornosti"
+   ],
+   "explanation": "Zakonsko zdravstveno osiguranje dio je sistema socijalnog osiguranja i štiti ljude u slučaju bolesti."
+  },
+  "37": {
+   "q": "Kako se nazivaju šefovi / šefice vlada većine saveznih pokrajina u Njemačkoj?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "senator / senatorka",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šefovi vlada većine saveznih pokrajina zovu se premijeri pokrajina. Izuzetak su gradovi-države Berlin, Hamburg i Bremen."
+  },
+  "38": {
+   "q": "Savezna Republika Njemačka je demokratska i socijalna …",
+   "options": [
+    "zajednica država.",
+    "savezna država.",
+    "konfederacija.",
+    "centralistička država."
+   ],
+   "explanation": "Prema Osnovnom zakonu (čl. 20) Njemačka je demokratska i socijalna savezna država u kojoj je vlast podijeljena između saveza i pokrajina."
+  },
+  "39": {
+   "q": "Što ima svaka njemačka savezna pokrajina?",
+   "options": [
+    "vlastitog ministra / vlastitu ministricu vanjskih poslova",
+    "vlastitu valutu",
+    "vlastitu vojsku",
+    "vlastitu vladu"
+   ],
+   "explanation": "Svaka od 16 njemačkih saveznih pokrajina ima vlastitu pokrajinsku vladu i vlastiti pokrajinski parlament (Landtag)."
+  },
+  "40": {
+   "q": "Kojim riječima počinje njemačka državna himna?",
+   "options": [
+    "Narodi, čujte signale …",
+    "Jedinstvo i pravo i sloboda …",
+    "Radosti, lijepa iskro božanska …",
+    "Njemačka, ujedinjena domovino …"
+   ],
+   "explanation": "Državna himna počinje riječima „Einigkeit und Recht und Freiheit“ („Jedinstvo i pravo i sloboda“) – to je treća strofa Pjesme o Njemačkoj (Deutschlandlied) Hoffmanna von Fallerslebena."
+  },
+  "41": {
+   "q": "Zašto u demokratiji postoji više od jedne stranke?",
+   "options": [
+    "zato što se tako zastupaju različita mišljenja građana i građanki",
+    "da bi se ograničilo podmićivanje u politici",
+    "da bi se spriječile političke demonstracije",
+    "da bi se podstakla ekonomska konkurencija"
+   ],
+   "explanation": "U demokratiji različite stranke trebaju zastupati različita politička mišljenja stanovništva."
+  },
+  "42": {
+   "q": "Ko u Njemačkoj donosi novi zakon?",
+   "options": [
+    "vlada",
+    "parlament",
+    "sudovi",
+    "policija"
+   ],
+   "explanation": "Nove zakone donosi parlament (Bundestag). Vlada može predlagati zakone, ali ih donosi samo parlament."
+  },
+  "43": {
+   "q": "Kada se u Njemačkoj stranka može zabraniti?",
+   "options": [
+    "ako joj je izborna kampanja preskupa",
+    "ako se bori protiv ustava",
+    "ako kritizira šefa države",
+    "ako njen program predlaže novi smjer"
+   ],
+   "explanation": "Stranka može biti zabranjena ako se bori protiv slobodnog demokratskog ustavnog poretka. O tome odlučuje Savezni ustavni sud."
+  },
+  "44": {
+   "q": "Koga kao građanin / građanka u Njemačkoj ne možete direktno birati?",
+   "options": [
+    "zastupnike u Evropskom parlamentu",
+    "saveznog predsjednika / saveznu predsjednicu",
+    "zastupnike u pokrajinskom parlamentu (Landtag)",
+    "zastupnike u Bundestagu"
+   ],
+   "explanation": "Saveznog predsjednika ne bira direktno narod, nego Savezna skupština, koju čine zastupnici Bundestaga i predstavnici pokrajina."
+  },
+  "45": {
+   "q": "Kojoj vrsti osiguranja pripada osiguranje za njegu?",
+   "options": [
+    "socijalno osiguranje",
+    "osiguranje od nezgode",
+    "osiguranje kućnih stvari",
+    "osiguranje od odgovornosti i požara"
+   ],
+   "explanation": "Osiguranje za njegu dio je zakonskog socijalnog osiguranja i uvedeno je 1995. godine."
+  },
+  "46": {
+   "q": "Njemačka država ima mnogo zadataka. Koji zadatak spada među njih?",
+   "options": [
+    "Gradi ceste i škole.",
+    "Prodaje hranu i odjeću.",
+    "Svim stanovnicima i stanovnicama besplatno osigurava novine.",
+    "Proizvodi automobile i autobuse."
+   ],
+   "explanation": "Država je odgovorna za javnu infrastrukturu kao što su ceste i škole. Privredne djelatnosti zadatak su privatnih poduzeća."
+  },
+  "47": {
+   "q": "Njemačka država ima mnogo zadataka. Koji zadatak ne spada među njih?",
+   "options": [
+    "Plaća putovanja na odmor za sve državljane.",
+    "Isplaćuje dječji doplatak.",
+    "Podržava muzeje.",
+    "Podstiče sportiste i sportistkinje."
+   ],
+   "explanation": "Finansiranje putovanja na odmor za sve građane nije zadatak države. Dječji doplatak, podrška muzejima i podsticanje sporta su, naprotiv, zadaci države."
+  },
+  "48": {
+   "q": "Koji organ ne spada u ustavne organe Njemačke?",
+   "options": [
+    "Bundesrat",
+    "savezni predsjednik / savezna predsjednica",
+    "zbor građana",
+    "vlada"
+   ],
+   "explanation": "Ustavni organi su Bundestag, Bundesrat, Savezna skupština, savezni predsjednik, savezna vlada i Savezni ustavni sud. Zbor građana ne spada među njih."
+  },
+  "49": {
+   "q": "Ko u Njemačkoj određuje školsku politiku?",
+   "options": [
+    "nastavnici i nastavnice",
+    "savezne pokrajine",
+    "ministarstvo za porodicu",
+    "univerziteti"
+   ],
+   "explanation": "Obrazovanje je u Njemačkoj stvar pokrajina (kulturna nadležnost pokrajina). Svaka savezna pokrajina oblikuje vlastitu školsku politiku."
+  },
+  "50": {
+   "q": "Ekonomski sistem u Njemačkoj naziva se …",
+   "options": [
+    "slobodna centralna ekonomija.",
+    "socijalna tržišna ekonomija.",
+    "usmjeravana centralna ekonomija.",
+    "planska ekonomija."
+   ],
+   "explanation": "Njemačka ima socijalnu tržišnu ekonomiju, koja spaja slobodno tržište sa socijalnom zaštitom. Ovaj pojam nastao je nakon Drugog svjetskog rata."
+  },
+  "51": {
+   "q": "U demokratsku pravnu državu ne spada to da …",
+   "options": [
+    "ljudi mogu kritički govoriti o vladi.",
+    "građani smiju mirno demonstrirati.",
+    "ljude bez razloga hapsi privatna policija.",
+    "neko počini zločin i zbog toga bude uhapšen."
+   ],
+   "explanation": "U pravnoj državi ljude smiju hapsiti samo državni organi na osnovu zakona. Samovoljna hapšenja od strane privatnih osoba su protivpravna."
+  },
+  "52": {
+   "q": "Što znači „narodni suverenitet“? Sva državna vlast proizlazi iz …",
+   "options": [
+    "naroda.",
+    "Bundestaga.",
+    "pruskog kralja.",
+    "Saveznog ustavnog suda."
+   ],
+   "explanation": "Narodni suverenitet znači da sva državna vlast proizlazi iz naroda (Osnovni zakon, čl. 20). Narod tu vlast ostvaruje putem izbora."
+  },
+  "53": {
+   "q": "Što znači „pravna država“ u Njemačkoj?",
+   "options": [
+    "Država je uvijek u pravu.",
+    "Postoje samo desne stranke.",
+    "Građani i građanke odlučuju o zakonima.",
+    "Država se mora pridržavati zakona."
+   ],
+   "explanation": "Pravna država znači da je i sama država vezana pravom i zakonima i mora ih poštovati."
+  },
+  "54": {
+   "q": "Što u Njemačkoj nije državna vlast?",
+   "options": [
+    "zakonodavna vlast",
+    "sudska vlast",
+    "izvršna vlast",
+    "direktivna vlast"
+   ],
+   "explanation": "Tri državne vlasti su zakonodavna, izvršna i sudska vlast. „Direktivna vlast“ nije državna vlast."
+  },
+  "55": {
+   "q": "Što prikazuje ova slika?",
+   "options": [
+    "sjedište Bundestaga u Berlinu",
+    "Savezni ustavni sud u Karlsruheu",
+    "zgradu Bundesrata u Berlinu",
+    "Ured saveznog kancelara u Berlinu"
+   ],
+   "explanation": "Zgrada Reichstaga u Berlinu sjedište je njemačkog Bundestaga i poznat simbol Njemačke."
+  },
+  "56": {
+   "q": "Koji ured u Njemačkoj spada u općinsku upravu?",
+   "options": [
+    "župni ured (Pfarramt)",
+    "ured za javni red (Ordnungsamt)",
+    "porezna uprava (Finanzamt)",
+    "Ministarstvo vanjskih poslova (Auswärtiges Amt)"
+   ],
+   "explanation": "Ured za javni red (Ordnungsamt) je općinski organ. Porezna uprava (pokrajina/savez) i Ministarstvo vanjskih poslova (savez) nisu općinski uredi."
+  },
+  "57": {
+   "q": "Ko se najčešće bira za predsjednika / predsjednicu njemačkog Bundestaga?",
+   "options": [
+    "najstariji zastupnik / najstarija zastupnica u parlamentu",
+    "premijer pokrajine / premijerka pokrajine iz najveće savezne pokrajine",
+    "zastupnik / zastupnica najjače frakcije",
+    "bivši savezni kancelar / bivša savezna kancelarka"
+   ],
+   "explanation": "Tradicionalno se za predsjednika Bundestaga bira član najjače frakcije. Ta osoba vodi plenarne sjednice."
+  },
+  "58": {
+   "q": "Ko u Njemačkoj imenuje ministre / ministrice savezne vlade?",
+   "options": [
+    "predsjednik / predsjednica Saveznog ustavnog suda",
+    "savezni predsjednik / savezna predsjednica",
+    "predsjednik / predsjednica Bundesrata",
+    "predsjednik / predsjednica Bundestaga"
+   ],
+   "explanation": "Savezni predsjednik imenuje savezne ministre na prijedlog saveznog kancelara. Formalno je za imenovanje nadležan savezni predsjednik."
+  },
+  "59": {
+   "q": "Prije koliko godina je na području današnje Njemačke prvi put postojala jevrejska zajednica?",
+   "options": [
+    "prije otprilike 300 godina",
+    "prije otprilike 700 godina",
+    "prije otprilike 1150 godina",
+    "prije otprilike 1700 godina"
+   ],
+   "explanation": "Jevrejska historija u Njemačkoj seže oko 1700 godina unazad. Prva poznata jevrejska zajednica dokumentirana je u 4. stoljeću u Kölnu."
+  },
+  "60": {
+   "q": "U Njemačkoj Bundestag i Bundesrat pripadaju …",
+   "options": [
+    "izvršnoj vlasti.",
+    "zakonodavnoj vlasti.",
+    "direktivnoj vlasti.",
+    "sudskoj vlasti."
+   ],
+   "explanation": "Bundestag i Bundesrat su zakonodavna tijela Njemačke i stoga pripadaju zakonodavnoj vlasti."
+  },
+  "61": {
+   "q": "Što znači „narodni suverenitet“?",
+   "options": [
+    "Kralj / kraljica vlada narodom.",
+    "Savezni ustavni sud stoji iznad ustava.",
+    "Interesna udruženja vrše suverenitet zajedno s vladom.",
+    "Državna vlast proizlazi iz naroda."
+   ],
+   "explanation": "Narodni suverenitet znači da sva državna vlast proizlazi iz naroda – osnovno načelo demokratije prema čl. 20 Osnovnog zakona."
+  },
+  "62": {
+   "q": "Kada se bira parlament neke njemačke savezne pokrajine, to se naziva …",
+   "options": [
+    "lokalni izbori.",
+    "pokrajinski izbori.",
+    "izbori za Evropski parlament.",
+    "izbori za Bundestag."
+   ],
+   "explanation": "Izbori za pokrajinski parlament (Landtag) neke savezne pokrajine nazivaju se pokrajinski izbori."
+  },
+  "63": {
+   "q": "Što u Njemačkoj ne pripada izvršnoj vlasti?",
+   "options": [
+    "policija",
+    "sudovi",
+    "porezna uprava",
+    "ministarstva"
+   ],
+   "explanation": "Sudovi pripadaju sudskoj, a ne izvršnoj vlasti. Policija, porezna uprava i ministarstva dio su izvršne vlasti."
+  },
+  "64": {
+   "q": "Savezna Republika Njemačka danas je podijeljena na …",
+   "options": [
+    "četiri okupacione zone.",
+    "jednu istočnu i jednu zapadnu državu.",
+    "16 kantona.",
+    "savez, pokrajine i općine."
+   ],
+   "explanation": "Njemačka je podijeljena na savez, 16 saveznih pokrajina i općine – upravno uređenje na tri nivoa."
+  },
+  "65": {
+   "q": "Zadatak njemačkog Bundestaga nije …",
+   "options": [
+    "izrađivati zakone.",
+    "nadzirati saveznu vladu.",
+    "birati saveznog kancelara / saveznu kancelarku.",
+    "sastavljati savezni kabinet."
+   ],
+   "explanation": "Savezni kabinet sastavlja savezni kancelar, a ne Bundestag. Zakoni, nadzor nad vladom i izbor kancelara zadaci su Bundestaga."
+  },
+  "66": {
+   "q": "Koji gradovi imaju najveće jevrejske zajednice u Njemačkoj?",
+   "options": [
+    "Berlin i München",
+    "Hamburg i Essen",
+    "Nürnberg i Stuttgart",
+    "Worms i Speyer"
+   ],
+   "explanation": "Berlin i München imaju najveće jevrejske zajednice u Njemačkoj."
+  },
+  "67": {
+   "q": "Što je u Njemačkoj prije svega zadatak saveznih pokrajina?",
+   "options": [
+    "odbrambena politika",
+    "vanjska politika",
+    "ekonomska politika",
+    "školska politika"
+   ],
+   "explanation": "Školska politika i obrazovanje su u Njemačkoj stvar pokrajina (kulturna nadležnost pokrajina). Vanjska i odbrambena politika stvar su saveza."
+  },
+  "68": {
+   "q": "Zašto država u Njemačkoj nadzire školstvo?",
+   "options": [
+    "zato što u Njemačkoj postoje samo državne škole",
+    "zato što svi učenici i učenice moraju imati završenu školu",
+    "zato što u saveznim pokrajinama postoje različite škole",
+    "zato što je to prema Osnovnom zakonu njen zadatak"
+   ],
+   "explanation": "Prema čl. 7 Osnovnog zakona država ima nadzor nad školstvom, čime se osiguravaju jedinstveni obrazovni standardi."
+  },
+  "69": {
+   "q": "Savezna Republika Njemačka ima upravno uređenje na tri nivoa. Kako se zove najniži politički nivo?",
+   "options": [
+    "gradska vijeća",
+    "landrati (Landräte)",
+    "općine i komune",
+    "uredi gradskih četvrti (Bezirksämter)"
+   ],
+   "explanation": "Najniži nivo njemačkog upravnog uređenja čine općine i komune."
+  },
+  "70": {
+   "q": "Njemački savezni predsjednik Gustav Heinemann uručuje 1974. godine Helmutu Schmidtu ispravu o imenovanju za njemačkog saveznog kancelara. Što spada u zadatke njemačkog saveznog predsjednika / njemačke savezne predsjednice?",
+   "options": [
+    "On / Ona vodi poslove vlade.",
+    "On / Ona nadzire vladajuću stranku.",
+    "On / Ona bira ministre / ministrice.",
+    "On / Ona predlaže kancelara / kancelarku za izbor."
+   ],
+   "explanation": "Savezni predsjednik predlaže Bundestagu kandidata za funkciju saveznog kancelara i ima pretežno reprezentativnu ulogu."
+  },
+  "71": {
+   "q": "Gdje njemački savezni kancelar / njemačka savezna kancelarka najčešće boravi? Najčešće je …",
+   "options": [
+    "u Bonnu, jer se tamo nalaze Ured saveznog kancelara i Bundestag.",
+    "u Berlinu, jer se tamo nalaze Ured saveznog kancelara i Bundestag.",
+    "u dvorcu Meseberg, gostinskoj kući savezne vlade, kako bi primao / primala državne goste.",
+    "u dvorcu Bellevue, službenom sjedištu saveznog predsjednika / savezne predsjednice, kako bi primao / primala državne goste."
+   ],
+   "explanation": "Ured saveznog kancelara i Bundestag nalaze se u Berlinu, gdje savezni kancelar provodi najviše vremena."
+  },
+  "72": {
+   "q": "Kako se zove sadašnji savezni kancelar / sadašnja savezna kancelarka Njemačke?",
+   "options": [
+    "Gerhard Schröder",
+    "Jürgen Rüttgers",
+    "Klaus Wowereit",
+    "Olaf Scholz"
+   ],
+   "explanation": "Olaf Scholz (SPD) je od decembra 2021. savezni kancelar Njemačke."
+  },
+  "73": {
+   "q": "Dvije najveće frakcije u njemačkom Bundestagu trenutno su …",
+   "options": [
+    "CDU/CSU i SPD.",
+    "Die Linke i Bündnis 90/Die Grünen.",
+    "FDP i SPD.",
+    "Die Linke i FDP."
+   ],
+   "explanation": "CDU/CSU i SPD su dvije najveće frakcije u njemačkom Bundestagu."
+  },
+  "74": {
+   "q": "Kako se zove parlament za cijelu Njemačku?",
+   "options": [
+    "Savezna skupština",
+    "Narodna skupština (Volkskammer)",
+    "Bundestag",
+    "Savezni sud (Bundesgerichtshof)"
+   ],
+   "explanation": "Bundestag je nacionalni parlament Njemačke i bira ga direktno narod."
+  },
+  "75": {
+   "q": "Kako se zove sadašnji šef države Njemačke?",
+   "options": [
+    "Frank-Walter Steinmeier",
+    "Norbert Lammert",
+    "Wolfgang Thierse",
+    "Edmund Stoiber"
+   ],
+   "explanation": "Frank-Walter Steinmeier je od 2017. savezni predsjednik Savezne Republike Njemačke."
+  },
+  "76": {
+   "q": "Što znači skraćenica CDU u Njemačkoj?",
+   "options": [
+    "Christliche Deutsche Union (Kršćanska njemačka unija)",
+    "Club Deutscher Unternehmer (Klub njemačkih poduzetnika)",
+    "Christlicher Deutscher Umweltschutz (Kršćanska njemačka zaštita okoliša)",
+    "Christlich Demokratische Union (Kršćansko-demokratska unija)"
+   ],
+   "explanation": "CDU znači Christlich Demokratische Union (Kršćansko-demokratska unija), jedna od velikih narodnih stranaka Njemačke."
+  },
+  "77": {
+   "q": "Što je Bundeswehr?",
+   "options": [
+    "njemačka policija",
+    "njemačka luka",
+    "njemačka građanska inicijativa",
+    "njemačka vojska"
+   ],
+   "explanation": "Bundeswehr su oružane snage Savezne Republike Njemačke, osnovane 1955. godine."
+  },
+  "78": {
+   "q": "Što znači skraćenica SPD?",
+   "options": [
+    "Sozialistische Partei Deutschlands (Socijalistička stranka Njemačke)",
+    "Sozialpolitische Partei Deutschlands (Socijalnopolitička stranka Njemačke)",
+    "Sozialdemokratische Partei Deutschlands (Socijaldemokratska stranka Njemačke)",
+    "Sozialgerechte Partei Deutschlands (Stranka socijalne pravednosti Njemačke)"
+   ],
+   "explanation": "SPD znači Sozialdemokratische Partei Deutschlands (Socijaldemokratska stranka Njemačke), jedna od najstarijih političkih stranaka Njemačke."
+  },
+  "79": {
+   "q": "Što znači skraćenica FDP u Njemačkoj?",
+   "options": [
+    "Friedliche Demonstrative Partei (Mirna demonstrativna stranka)",
+    "Freie Deutschland Partei (Stranka slobodne Njemačke)",
+    "Führende Demokratische Partei (Vodeća demokratska stranka)",
+    "Freie Demokratische Partei (Slobodna demokratska stranka)"
+   ],
+   "explanation": "FDP znači Freie Demokratische Partei (Slobodna demokratska stranka), liberalna stranka u Njemačkoj."
+  },
+  "80": {
+   "q": "Koji je sud u Njemačkoj nadležan za tumačenje Osnovnog zakona?",
+   "options": [
+    "viši pokrajinski sud (Oberlandesgericht)",
+    "općinski sud (Amtsgericht)",
+    "Savezni ustavni sud",
+    "upravni sud"
+   ],
+   "explanation": "Savezni ustavni sud u Karlsruheu najviši je sud Njemačke i nadležan je za tumačenje Osnovnog zakona."
+  },
+  "81": {
+   "q": "Ko u Njemačkoj bira saveznog kancelara / saveznu kancelarku?",
+   "options": [
+    "Bundesrat",
+    "Savezna skupština",
+    "narod",
+    "Bundestag"
+   ],
+   "explanation": "Saveznog kancelara bira Bundestag, nakon što savezni predsjednik predloži kandidata."
+  },
+  "82": {
+   "q": "Ko vodi njemački savezni kabinet?",
+   "options": [
+    "predsjednik / predsjednica Bundestaga",
+    "savezni predsjednik / savezna predsjednica",
+    "savezni kancelar / savezna kancelarka",
+    "predsjednik / predsjednica Bundesrata"
+   ],
+   "explanation": "Savezni kancelar vodi savezni kabinet i određuje smjernice politike vlade."
+  },
+  "83": {
+   "q": "Ko bira njemačkog saveznog kancelara / njemačku saveznu kancelarku?",
+   "options": [
+    "narod",
+    "Savezna skupština",
+    "Bundestag",
+    "savezna vlada"
+   ],
+   "explanation": "Saveznog kancelara bira njemački Bundestag, po pravilu na prijedlog saveznog predsjednika."
+  },
+  "84": {
+   "q": "Koji je glavni zadatak njemačkog saveznog predsjednika / njemačke savezne predsjednice? On / Ona …",
+   "options": [
+    "vlada zemljom.",
+    "izrađuje zakone.",
+    "predstavlja zemlju.",
+    "nadzire poštovanje zakona."
+   ],
+   "explanation": "Savezni predsjednik ima uglavnom reprezentativnu ulogu; on predstavlja Njemačku u zemlji i inostranstvu."
+  },
+  "85": {
+   "q": "Ko čini njemački Bundesrat (vijeće saveznih pokrajina)?",
+   "options": [
+    "zastupnici Bundestaga",
+    "ministri i ministrice savezne vlade",
+    "predstavnici vlada saveznih pokrajina",
+    "članovi stranaka"
+   ],
+   "explanation": "Bundesrat čine predstavnici pokrajinskih vlada. On sudjeluje u saveznom zakonodavstvu."
+  },
+  "86": {
+   "q": "Ko u Njemačkoj bira saveznog predsjednika / saveznu predsjednicu?",
+   "options": [
+    "Savezna skupština",
+    "Bundesrat",
+    "savezni parlament",
+    "Savezni ustavni sud"
+   ],
+   "explanation": "Saveznog predsjednika bira Savezna skupština, koju čine zastupnici Bundestaga i predstavnici pokrajina."
+  },
+  "87": {
+   "q": "Ko je šef države Savezne Republike Njemačke?",
+   "options": [
+    "savezni kancelar / savezna kancelarka",
+    "savezni predsjednik / savezna predsjednica",
+    "predsjednik / predsjednica Bundesrata",
+    "predsjednik / predsjednica Bundestaga"
+   ],
+   "explanation": "Savezni predsjednik je šef države Savezne Republike Njemačke, iako vladu vodi savezni kancelar."
+  },
+  "88": {
+   "q": "Parlamentarna opozicija u njemačkom Bundestagu …",
+   "options": [
+    "nadzire vladu.",
+    "odlučuje ko postaje savezni ministar / savezna ministrica.",
+    "određuje ko sjedi u Bundesratu.",
+    "predlaže šefove / šefice vlada pokrajina."
+   ],
+   "explanation": "Zadatak parlamentarne opozicije je da nadzire i kritizira vladu."
+  },
+  "89": {
+   "q": "Kako se u Njemačkoj naziva udruženje zastupnika jedne stranke u parlamentu?",
+   "options": [
+    "savez",
+    "vijeće starješina",
+    "frakcija",
+    "opozicija"
+   ],
+   "explanation": "Frakcija je udruženje zastupnika jedne stranke u parlamentu, koji zajedno glasaju."
+  },
+  "90": {
+   "q": "Njemačke savezne pokrajine sudjeluju u saveznom zakonodavstvu putem …",
+   "options": [
+    "Bundesrata.",
+    "Savezne skupštine.",
+    "Bundestaga.",
+    "savezne vlade."
+   ],
+   "explanation": "Bundesrat je organ putem kojeg savezne pokrajine sudjeluju u saveznom zakonodavstvu."
+  },
+  "91": {
+   "q": "U Njemačkoj promjena vlasti u nekoj saveznoj pokrajini može utjecati na saveznu politiku. Upravljanje postaje …",
+   "options": [
+    "teže ako se time promijeni većina u Bundestagu.",
+    "lakše ako time nove stranke uđu u Bundesrat.",
+    "teže ako se time promijeni većina u Bundesratu.",
+    "lakše ako je riječ o bogatoj saveznoj pokrajini."
+   ],
+   "explanation": "Bundesrat odražava odnose većine u pokrajinama. Ako se promijeni većina u Bundesratu, savezno zakonodavstvo može postati teže."
+  },
+  "92": {
+   "q": "Što znači skraćenica CSU u Njemačkoj?",
+   "options": [
+    "Christlich Sichere Union (Kršćanska sigurna unija)",
+    "Christlich Süddeutsche Union (Kršćanska južnonjemačka unija)",
+    "Christlich Sozialer Unternehmerverband (Kršćanski socijalni savez poduzetnika)",
+    "Christlich Soziale Union (Kršćansko-socijalna unija)"
+   ],
+   "explanation": "CSU znači Christlich Soziale Union (Kršćansko-socijalna unija), bavarska sestrinska stranka CDU-a."
+  },
+  "93": {
+   "q": "Što više „drugih glasova“ (Zweitstimmen) neka stranka dobije na izborima za Bundestag, to …",
+   "options": [
+    "više mjesta stranka dobija u parlamentu.",
+    "manje prvih glasova može imati.",
+    "više direktnih kandidata stranke ulazi u parlament.",
+    "veći je rizik da mora formirati koaliciju."
+   ],
+   "explanation": "Drugi glas određuje broj mjesta neke stranke u Bundestagu. Više drugih glasova znači više mjesta u parlamentu."
+  },
+  "94": {
+   "q": "Od koje dobi se u Njemačkoj smije učestvovati na izborima za njemački Bundestag?",
+   "options": [
+    "16",
+    "18",
+    "21",
+    "23"
+   ],
+   "explanation": "Aktivno biračko pravo na izborima za Bundestag stiče se s 18 godina. Na nekim lokalnim izborima vrijedi već od 16 godina."
+  },
+  "95": {
+   "q": "Što vrijedi za većinu djece u Njemačkoj?",
+   "options": [
+    "obaveza glasanja",
+    "obaveza školovanja",
+    "obaveza čuvanja tajne",
+    "obaveza vjeroispovijesti"
+   ],
+   "explanation": "U Njemačkoj postoji opća obaveza školovanja. Djeca moraju pohađati školu, u pravilu od 6. godine života."
+  },
+  "96": {
+   "q": "Kako može biti kažnjen neko ko poriče holokaust?",
+   "options": [
+    "smanjenjem socijalnih davanja",
+    "s do 100 sati društveno korisnog rada",
+    "nikako, poricanje holokausta je dozvoljeno",
+    "kaznom zatvora do pet godina ili novčanom kaznom"
+   ],
+   "explanation": "Poricanje holokausta je u Njemačkoj krivično djelo (§130 StGB) i može se kazniti kaznom zatvora do pet godina ili novčanom kaznom."
+  },
+  "97": {
+   "q": "Što se u Njemačkoj automatski plaća kada je osoba stalno zaposlena?",
+   "options": [
+    "socijalno osiguranje",
+    "socijalna pomoć",
+    "dječji doplatak",
+    "doplatak za stanovanje"
+   ],
+   "explanation": "Stalno zaposleni radnici automatski plaćaju doprinose za socijalno osiguranje (zdravstveno i penzijsko osiguranje, osiguranje za njegu i osiguranje za slučaj nezaposlenosti)."
+  },
+  "98": {
+   "q": "Ako zastupnici u njemačkom Bundestagu promijene frakciju, ...",
+   "options": [
+    "vlada može izgubiti većinu.",
+    "više ne smiju učestvovati na sjednicama parlamenta.",
+    "savezni predsjednik / savezna predsjednica mora prethodno dati svoju saglasnost.",
+    "birači / biračice tih zastupnika smiju ponovo glasati."
+   ],
+   "explanation": "Kada zastupnici promijene frakciju, mogu se promijeniti odnosi većine u Bundestagu i vlada može izgubiti većinu."
+  },
+  "99": {
+   "q": "Ko u Njemačkoj plaća socijalna osiguranja?",
+   "options": [
+    "poslodavci / poslodavke i zaposlenici / zaposlenice",
+    "samo zaposlenici / zaposlenice",
+    "svi državljani",
+    "samo poslodavci / poslodavke"
+   ],
+   "explanation": "Doprinose za socijalno osiguranje u Njemačkoj plaćaju napola poslodavci, a napola zaposlenici."
+  },
+  "100": {
+   "q": "Što ne spada u zakonsko socijalno osiguranje?",
+   "options": [
+    "zakonsko penzijsko osiguranje",
+    "životno osiguranje",
+    "osiguranje za slučaj nezaposlenosti",
+    "osiguranje za njegu"
+   ],
+   "explanation": "Zakonsko socijalno osiguranje obuhvata zdravstveno, penzijsko, osiguranje za njegu i osiguranje za slučaj nezaposlenosti. Životno osiguranje je privatno."
+  },
+  "101": {
+   "q": "Sindikati su interesna udruženja …",
+   "options": [
+    "mladih.",
+    "zaposlenika i zaposlenica.",
+    "penzionera i penzionerki.",
+    "poslodavaca i poslodavki."
+   ],
+   "explanation": "Sindikati zastupaju interese zaposlenika, na primjer u kolektivnim pregovorima."
+  },
+  "102": {
+   "q": "Čime se u Saveznoj Republici Njemačkoj može odlikovati osoba koja je postigla poseban uspjeh u političkoj, ekonomskoj, kulturnoj, duhovnoj ili socijalnoj oblasti? Može dobiti …",
+   "options": [
+    "Saveznog orla",
+    "Savezni krst za zasluge",
+    "Otadžbinski orden za zasluge",
+    "počasnu titulu „Heroj Njemačke Demokratske Republike“"
+   ],
+   "explanation": "Savezni krst za zasluge (Bundesverdienstkreuz) najviše je državno odlikovanje Njemačke za posebne zasluge za opće dobro."
+  },
+  "103": {
+   "q": "Šta se u Njemačkoj naziva „semaforskom koalicijom“ (Ampelkoalition)? Saradnja …",
+   "options": [
+    "klubova zastupnika CDU i CSU u Bundestagu",
+    "stranaka SPD, FDP i Bündnis 90/Die Grünen u vladi",
+    "stranaka CSU, Die LINKE i Bündnis 90/Die Grünen u vladi",
+    "klubova zastupnika CDU i SPD u Bundestagu"
+   ],
+   "explanation": "Semaforska koalicija označava saradnju stranaka SPD (crvena), FDP (žuta) i Zeleni (zelena) – prema bojama semafora."
+  },
+  "104": {
+   "q": "Žena u Njemačkoj gubi posao. Šta ne smije biti razlog za ovaj otkaz?",
+   "options": [
+    "Žena je dugo bolesna i nesposobna za rad.",
+    "Žena je često kasnila na posao.",
+    "Žena tokom radnog vremena obavlja privatne stvari.",
+    "Žena čeka dijete i njen šef to zna."
+   ],
+   "explanation": "Otkaz trudnici u Njemačkoj je zakonom zabranjen (Zakon o zaštiti majčinstva – Mutterschutzgesetz). Trudnoća ne smije biti razlog za otkaz."
+  },
+  "105": {
+   "q": "Koji je jedan od zadataka izbornih pomagača / pomagačica (Wahlhelfer) u Njemačkoj?",
+   "options": [
+    "Pomažu starijim osobama pri glasanju u glasačkoj kabini.",
+    "Pišu obavijesti o izborima prije izbora.",
+    "Prosljeđuju međurezultate medijima.",
+    "Broje glasove nakon završetka izbora."
+   ],
+   "explanation": "Izborni pomagači nakon zatvaranja biračkih mjesta prebrojavaju predate glasove."
+  },
+  "106": {
+   "q": "U Njemačkoj izborni pomagači i pomagačice volonterski pomažu na izborima. Koji je jedan od zadataka izbornih pomagača / pomagačica?",
+   "options": [
+    "Pomažu djeci i starijim osobama pri glasanju.",
+    "Pišu kartice i pisma s navedenim biračkim mjestom.",
+    "Prosljeđuju međurezultate novinarima.",
+    "Broje glasove nakon završetka izbora."
+   ],
+   "explanation": "Izborni pomagači volonteri nakon zatvaranja biračkih mjesta preuzimaju prebrojavanje glasova."
+  },
+  "107": {
+   "q": "Na koliko se godina u Njemačkoj bira Bundestag (savezni parlament)?",
+   "options": [
+    "2 godine",
+    "4 godine",
+    "6 godina",
+    "8 godina"
+   ],
+   "explanation": "Redovni mandat njemačkog Bundestaga traje četiri godine."
+  },
+  "108": {
+   "q": "Na izborima za Bundestag u Njemačkoj smije glasati svako ko …",
+   "options": [
+    "živi u Saveznoj Republici Njemačkoj i želi glasati.",
+    "je građanin / građanka Savezne Republike Njemačke i ima najmanje 18 godina.",
+    "najmanje 3 godine živi u Saveznoj Republici Njemačkoj.",
+    "je građanin / građanka Savezne Republike Njemačke i ima najmanje 21 godinu."
+   ],
+   "explanation": "Pravo glasa imaju njemački državljani koji imaju najmanje 18 godina i koji su najmanje 3 mjeseca prijavljeni u Njemačkoj."
+  },
+  "109": {
+   "q": "Koliko se često obično održavaju izbori za Bundestag u Njemačkoj?",
+   "options": [
+    "svake tri godine",
+    "svake četiri godine",
+    "svakih pet godina",
+    "svakih šest godina"
+   ],
+   "explanation": "Izbori za Bundestag obično se održavaju svake četiri godine, osim u slučaju prijevremenog raspuštanja Bundestaga."
+  },
+  "110": {
+   "q": "Na koliko se godina u Njemačkoj bira Bundestag (savezni parlament)?",
+   "options": [
+    "2 godine",
+    "3 godine",
+    "4 godine",
+    "5 godina"
+   ],
+   "explanation": "Izborni period njemačkog Bundestaga traje četiri godine."
+  },
+  "111": {
+   "q": "Koja je radnja u vezi s Državom Izrael zabranjena u Njemačkoj?",
+   "options": [
+    "Javno kritikovati politiku Izraela.",
+    "Kačenje izraelske zastave na privatnom posjedu.",
+    "Diskusija o politici Izraela.",
+    "Javni poziv na uništenje Izraela."
+   ],
+   "explanation": "Javni poziv na uništenje Izraela u Njemačkoj je krivično djelo. Kritika izraelske politike je, nasuprot tome, dozvoljena."
+  },
+  "112": {
+   "q": "Izbori u Njemačkoj su …",
+   "options": [
+    "posebni.",
+    "tajni.",
+    "vezani za zanimanje.",
+    "zavisni od spola."
+   ],
+   "explanation": "Tajnost glasanja osnovno je načelo njemačke demokratije: niko ne smije saznati za koga je neko glasao."
+  },
+  "113": {
+   "q": "Na izborima u Njemačkoj pobjeđuje stranka koja …",
+   "options": [
+    "dobije najviše glasova.",
+    "je izabrala većina muškaraca.",
+    "je dobila najviše glasova među radnicima / radnicama.",
+    "je dobila najviše prvih glasova za svog kandidata / svoju kandidatkinju za kancelara."
+   ],
+   "explanation": "U Njemačkoj pobjeđuje stranka s najviše glasova. Raspodjela mandata prvenstveno zavisi od drugih glasova."
+  },
+  "114": {
+   "q": "Učestvovanje na demokratskim izborima u Njemačkoj je …",
+   "options": [
+    "dužnost.",
+    "pravo.",
+    "prisila.",
+    "teret."
+   ],
+   "explanation": "U Njemačkoj ne postoji obavezno glasanje – glasanje je pravo, a ne prisila."
+  },
+  "115": {
+   "q": "Šta u Njemačkoj znači „aktivno biračko pravo“?",
+   "options": [
+    "Osoba može biti birana.",
+    "Osoba mora ići na glasanje.",
+    "Osoba može glasati.",
+    "Osoba mora prisustvovati prebrojavanju glasova."
+   ],
+   "explanation": "Aktivno biračko pravo označava pravo da se glasa. Pasivno biračko pravo označava pravo da se bude biran."
+  },
+  "116": {
+   "q": "Ako smijete glasati na izborima za Bundestag u Njemačkoj, to se zove …",
+   "options": [
+    "aktivna izborna kampanja.",
+    "aktivni izborni postupak.",
+    "aktivna predizborna borba.",
+    "aktivno biračko pravo."
+   ],
+   "explanation": "Aktivno biračko pravo je pravo da se učestvuje na izborima i preda glas."
+  },
+  "117": {
+   "q": "Koliko procenata drugih glasova stranke moraju najmanje dobiti da bi ušle u njemački Bundestag?",
+   "options": [
+    "3 %",
+    "4 %",
+    "5 %",
+    "6 %"
+   ],
+   "explanation": "Izborni prag od pet posto sprječava da previše vrlo malih stranaka uđe u parlament i učini ga nesposobnim za djelovanje."
+  },
+  "118": {
+   "q": "Ko smije postati član nekog od oko 40 jevrejskih sportskih klubova Makkabi?",
+   "options": [
+    "samo Nijemci",
+    "samo Izraelci",
+    "samo religiozni ljudi",
+    "svi ljudi"
+   ],
+   "explanation": "Jevrejski sportski klubovi Makkabi otvoreni su za sve ljude, bez obzira na vjeru ili nacionalnost."
+  },
+  "119": {
+   "q": "Izbori u Njemačkoj su slobodni. Šta to znači?",
+   "options": [
+    "Svi osuđeni počinioci / počiniteljke krivičnih djela ne smiju glasati.",
+    "Ako želim ići na glasanje, moj poslodavac / moja poslodavka mora mi dati slobodno.",
+    "Svaka osoba može bez prisile odlučiti želi li glasati i za koga želi glasati.",
+    "Mogu slobodno odlučiti gdje želim ići na glasanje."
+   ],
+   "explanation": "Slobodni izbori znače da niko ne smije biti prisiljen da glasa ili da ne glasa."
+  },
+  "120": {
+   "q": "Izborni sistem u Njemačkoj je …",
+   "options": [
+    "cenzusno biračko pravo.",
+    "biračko pravo triju klasa.",
+    "većinsko i proporcionalno biračko pravo.",
+    "opće biračko pravo muškaraca."
+   ],
+   "explanation": "Njemačka ima personalizirani proporcionalni izborni sistem: prvim glasom biraju se direktni kandidati, a drugi glas određuje raspodjelu mandata."
+  },
+  "121": {
+   "q": "Jedna stranka želi ući u njemački Bundestag. Ali mora imati minimalni udio glasova birača. To se zove …",
+   "options": [
+    "prag od 5 %.",
+    "granica za prijem.",
+    "osnovna vrijednost.",
+    "smjernica."
+   ],
+   "explanation": "Prag od 5 % sprječava da stranke s vrlo malo glasova uđu u parlament i otežaju formiranje vlade."
+  },
+  "122": {
+   "q": "Kojem načelu podliježu izbori u Njemačkoj? Izbori u Njemačkoj su …",
+   "options": [
+    "slobodni, jednaki, tajni.",
+    "otvoreni, sigurni, slobodni.",
+    "zatvoreni, jednaki, sigurni.",
+    "sigurni, otvoreni, dobrovoljni."
+   ],
+   "explanation": "Njemačka izborna načela su: izbori su opći, neposredni, slobodni, jednaki i tajni."
+  },
+  "123": {
+   "q": "Šta je u Njemačkoj „prag od 5 %“?",
+   "options": [
+    "pravilo glasanja u Bundestagu za male stranke",
+    "kontrola prisutnosti u Bundestagu za glasanja",
+    "minimalni udio glasova birača potreban za ulazak u parlament",
+    "kontrola prisutnosti u Bundesratu za glasanja"
+   ],
+   "explanation": "Prag od 5 % je minimalni udio drugih glasova koji stranka mora dobiti da bi ušla u Bundestag."
+  },
+  "124": {
+   "q": "Izbori za Bundestag u Njemačkoj su izbori …",
+   "options": [
+    "saveznog kancelara / savezne kancelarke.",
+    "parlamenata pokrajina.",
+    "parlamenta za Njemačku.",
+    "saveznog predsjednika / savezne predsjednice."
+   ],
+   "explanation": "Na izborima za Bundestag građani biraju nacionalni parlament Njemačke."
+  },
+  "125": {
+   "q": "U demokratiji je jedna od funkcija redovnih izbora …",
+   "options": [
+    "da prisili građane i građanke da glasaju.",
+    "da omogući promjenu vlade prema volji većine birača.",
+    "da se zadrže zakoni koji postoje u zemlji.",
+    "da siromašnima da više moći."
+   ],
+   "explanation": "Redovni izbori omogućavaju građanima da promijene vladu ako njome nisu zadovoljni."
+  },
+  "126": {
+   "q": "Šta građani i građanke s pravom glasa u Njemačkoj dobijaju prije izbora?",
+   "options": [
+    "obavijest o izborima od općine",
+    "dozvolu za glasanje od saveznog predsjednika / savezne predsjednice",
+    "obavijest od Savezne skupštine",
+    "obavijest od župnog ureda"
+   ],
+   "explanation": "Prije svakih izbora birači od svoje općine dobijaju obavijest o izborima u kojoj je navedeno njihovo biračko mjesto."
+  },
+  "127": {
+   "q": "Zašto u izbornom zakonu Savezne Republike Njemačke postoji prag od 5 %? Postoji zato što …",
+   "options": [
+    "programi mnogih malih stranaka imaju mnogo zajedničkog.",
+    "se građani i građanke mogu izgubiti među mnogo malih stranaka.",
+    "mnogo malih stranaka otežava formiranje vlade.",
+    "male stranke nemaju dovoljno novca da plate političare i političarke."
+   ],
+   "explanation": "Mnogo malih stranaka otežalo bi stvaranje stabilnih većina. Prag od 5 % treba omogućiti stabilne vlade."
+  },
+  "128": {
+   "q": "Članovi parlamenta koje biraju građani i građanke nazivaju se …",
+   "options": [
+    "zastupnici.",
+    "kancelari / kancelarke.",
+    "ambasadori / ambasadorke.",
+    "premijeri pokrajina / premijerke pokrajina."
+   ],
+   "explanation": "Izabrani članovi Bundestaga ili nekog pokrajinskog parlamenta nazivaju se zastupnicima."
+  },
+  "129": {
+   "q": "U Njemačkoj narod bira …",
+   "options": [
+    "saveznog kancelara / saveznu kancelarku.",
+    "premijera pokrajine / premijerku pokrajine neke savezne pokrajine.",
+    "Bundestag.",
+    "saveznog predsjednika / saveznu predsjednicu."
+   ],
+   "explanation": "Bundestag direktno bira narod. Saveznog predsjednika bira Savezna skupština."
+  },
+  "130": {
+   "q": "Koji bi glasački listić bio važeći na izborima za Bundestag?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Važeći glasački listić mora biti jasno popunjen: po jedan križić za prvi i za drugi glas, bez dodatnih oznaka."
+  },
+  "131": {
+   "q": "U Njemačkoj je gradonačelnik / gradonačelnica (Bürgermeister) …",
+   "options": [
+    "direktor / direktorica škole.",
+    "šef / šefica banke.",
+    "čelna osoba općine.",
+    "predsjednik / predsjednica stranke."
+   ],
+   "explanation": "Gradonačelnik ili gradonačelnica čelna je osoba općine i rukovodi općinskom upravom."
+  },
+  "132": {
+   "q": "Mnogi ljudi u Njemačkoj u slobodno vrijeme rade volonterski. Šta to znači?",
+   "options": [
+    "Rade kao vojnici / vojnikinje.",
+    "Rade dobrovoljno i bez naknade u udruženjima i savezima.",
+    "Rade u saveznoj vladi.",
+    "Rade u bolnici i pritom zarađuju novac."
+   ],
+   "explanation": "Volonterski rad (Ehrenamt) dobrovoljna je, neplaćena djelatnost za dobrobit zajednice."
+  },
+  "133": {
+   "q": "Šta je dozvoljeno na izborima za Bundestag i za pokrajinski parlament u Njemačkoj?",
+   "options": [
+    "Muž glasa i umjesto svoje žene.",
+    "Glas se može predati glasanjem putem pošte.",
+    "Na dan izbora glas se može predati telefonom.",
+    "Djeca od 14 godina smiju glasati."
+   ],
+   "explanation": "Glasanje putem pošte omogućava biračima da svoj glas predaju poštom ako ne mogu lično doći na biračko mjesto."
+  },
+  "134": {
+   "q": "Žele ukinuti autobusku liniju kojom uvijek idete na posao. Šta možete učiniti da se autobuska linija zadrži?",
+   "options": [
+    "Učestvujem u građanskoj inicijativi za očuvanje autobuske linije ili lično osnujem inicijativu.",
+    "Učlanjujem se u sportski klub i treniram vožnju bicikla.",
+    "Obraćam se poreznoj upravi jer kao porezni obveznik / porezna obveznica imam pravo na autobusku liniju.",
+    "Pišem pismo općinskoj šumskoj upravi."
+   ],
+   "explanation": "Građanske inicijative su instrument direktne demokratije kojim se građani mogu zalagati za lokalna pitanja."
+  },
+  "135": {
+   "q": "Koga zastupaju sindikati u Njemačkoj?",
+   "options": [
+    "velike firme",
+    "male firme",
+    "samozaposlene",
+    "zaposlenike i zaposlenice"
+   ],
+   "explanation": "Sindikati zastupaju interese zaposlenika, npr. u kolektivnim pregovorima o platama i uslovima rada."
+  },
+  "136": {
+   "q": "U Njemačkoj idete na radni sud u slučaju …",
+   "options": [
+    "pogrešnog obračuna režijskih troškova.",
+    "neopravdanog otkaza od strane vašeg šefa / vaše šefice.",
+    "problema sa susjedima / susjedama.",
+    "poteškoća nakon saobraćajne nesreće."
+   ],
+   "explanation": "Radni sud je nadležan za sporove između poslodavaca i zaposlenika, npr. u slučaju neopravdanog otkaza."
+  },
+  "137": {
+   "q": "Koji je sud u Njemačkoj nadležan za sukobe u svijetu rada?",
+   "options": [
+    "porodični sud",
+    "krivični sud",
+    "radni sud",
+    "općinski sud"
+   ],
+   "explanation": "Radni sud je nadležna instanca za radnopravne sporove."
+  },
+  "138": {
+   "q": "Šta mogu učiniti u Njemačkoj ako me poslodavac / poslodavka neopravdano otpusti?",
+   "options": [
+    "nastaviti raditi i biti ljubazan / ljubazna prema šefu / šefici",
+    "pokrenuti postupak opomene protiv poslodavca / poslodavke",
+    "podnijeti tužbu za zaštitu od otkaza",
+    "prijaviti poslodavca / poslodavku policiji"
+   ],
+   "explanation": "Tužba za zaštitu od otkaza pred radnim sudom pravni je put za borbu protiv neopravdanog otkaza."
+  },
+  "139": {
+   "q": "Kada u Njemačkoj dolazi do sudskog procesa? Kada neko …",
+   "options": [
+    "pređe u drugu vjeru.",
+    "je počinio krivično djelo i optužen je.",
+    "zastupa mišljenje drugačije od mišljenja vlade.",
+    "je pogrešno parkirao automobil i automobil je odvučen."
+   ],
+   "explanation": "Krivični postupak se vodi kada je neko optužen za krivično djelo. Razlike u mišljenju ili prekršaji ne vode automatski do sudskog procesa."
+  },
+  "140": {
+   "q": "Šta u Njemačkoj radi Schöffe / Schöffin? On / Ona …",
+   "options": [
+    "zajedno sa sudijama / sutkinjama odlučuje o krivici i kazni.",
+    "daje građanima / građankama pravne savjete.",
+    "izdaje isprave.",
+    "brani optuženog / optuženu."
+   ],
+   "explanation": "Schöffen su počasni sudije laici koji zajedno s profesionalnim sudijama odlučuju o krivici i kazni."
+  },
+  "141": {
+   "q": "Ko u Njemačkoj savjetuje osobe o pravnim pitanjima i zastupa ih pred sudom?",
+   "options": [
+    "advokat / advokatica",
+    "sudija / sutkinja",
+    "Schöffe / Schöffin",
+    "državni tužilac / državna tužiteljica"
+   ],
+   "explanation": "Advokati savjetuju klijente o pravnim pitanjima i zastupaju ih pred sudom."
+  },
+  "142": {
+   "q": "Koji je glavni zadatak sudije / sutkinje u Njemačkoj? Sudija / sutkinja …",
+   "options": [
+    "zastupa građane i građanke pred sudom.",
+    "radi na sudu i donosi presude.",
+    "mijenja zakone.",
+    "brine o mladima pred sudom."
+   ],
+   "explanation": "Sudije rade na sudovima, vode postupke i donose presude – nezavisno od vlade i parlamenta."
+  },
+  "143": {
+   "q": "Sudija / sutkinja u Njemačkoj pripada …",
+   "options": [
+    "sudskoj vlasti.",
+    "izvršnoj vlasti.",
+    "operativnoj vlasti.",
+    "zakonodavnoj vlasti."
+   ],
+   "explanation": "Sudije pripadaju sudskoj vlasti, jednoj od tri grane državne vlasti."
+  },
+  "144": {
+   "q": "Sudija / sutkinja u Njemačkoj pripada …",
+   "options": [
+    "izvršnoj vlasti.",
+    "sudskoj vlasti.",
+    "planskoj vlasti.",
+    "zakonodavnoj vlasti."
+   ],
+   "explanation": "Sudska vlast jedna je od tri grane državne vlasti i vrše je sudije."
+  },
+  "145": {
+   "q": "U Njemačkoj je državna vlast podijeljena. Za koju granu državne vlasti radi sudija / sutkinja? Za …",
+   "options": [
+    "sudsku vlast.",
+    "izvršnu vlast.",
+    "štampu.",
+    "zakonodavnu vlast."
+   ],
+   "explanation": "Sudije su dio sudske vlasti, koja radi nezavisno od izvršne i zakonodavne vlasti."
+  },
+  "146": {
+   "q": "Kako se u Njemačkoj naziva postupak pred sudom?",
+   "options": [
+    "program",
+    "procedura",
+    "protokol",
+    "proces"
+   ],
+   "explanation": "Postupak pred njemačkim sudom naziva se proces (Prozess)."
+  },
+  "147": {
+   "q": "Kakav je posao sudije / sutkinje u Njemačkoj?",
+   "options": [
+    "upravljati Njemačkom",
+    "suditi",
+    "praviti planove",
+    "donositi zakone"
+   ],
+   "explanation": "Zadatak sudija je suđenje: vode sudske postupke i donose presude."
+  },
+  "148": {
+   "q": "Koji je jedan od zadataka policije u Njemačkoj?",
+   "options": [
+    "braniti zemlju",
+    "prisluškivati građanke i građane",
+    "donositi zakone",
+    "nadzirati poštovanje zakona"
+   ],
+   "explanation": "Policija pripada izvršnoj vlasti i ima zadatak da nadzire poštovanje zakona i goni krivična djela."
+  },
+  "149": {
+   "q": "Šta je primjer antisemitskog ponašanja?",
+   "options": [
+    "posjetiti jevrejski praznik",
+    "kritikovati izraelsku vladu",
+    "poricati Holokaust",
+    "igrati fudbal protiv Jevreja"
+   ],
+   "explanation": "Poricanje Holokausta oblik je antisemitizma i u Njemačkoj je krivično djelo."
+  },
+  "150": {
+   "q": "Gerichtsschöffe / Gerichtsschöffin u Njemačkoj je …",
+   "options": [
+    "zamjenik / zamjenica gradonačelnika.",
+    "počasni sudija / počasna sutkinja.",
+    "član općinskog vijeća.",
+    "osoba koja je studirala pravo."
+   ],
+   "explanation": "Gerichtsschöffen su počasni sudije koji bez pravnog obrazovanja učestvuju u sudskim postupcima."
+  },
+  "151": {
+   "q": "Ko je izgradio zid u Berlinu?",
+   "options": [
+    "Velika Britanija",
+    "Savezna Republika Njemačka",
+    "Njemačka Demokratska Republika",
+    "SAD"
+   ],
+   "explanation": "Njemačka Demokratska Republika (Istočna Njemačka) izgradila je 1961. Berlinski zid kako bi zaustavila masovno bježanje svojih građana na Zapad."
+  },
+  "152": {
+   "q": "Kada su nacionalsocijalisti s Adolfom Hitlerom bili na vlasti u Njemačkoj?",
+   "options": [
+    "1918. do 1923.",
+    "1932. do 1950.",
+    "1933. do 1945.",
+    "1945. do 1989."
+   ],
+   "explanation": "Nacionalsocijalisti pod Hitlerom vladali su Njemačkom od 1933. do 1945., do kraja Drugog svjetskog rata."
+  },
+  "153": {
+   "q": "Šta se desilo 8. maja 1945.?",
+   "options": [
+    "smrt Adolfa Hitlera",
+    "početak gradnje Berlinskog zida",
+    "izbor Konrada Adenauera za saveznog kancelara",
+    "kraj Drugog svjetskog rata u Evropi"
+   ],
+   "explanation": "Njemačka je 8. maja 1945. bezuslovno kapitulirala, čime je završen Drugi svjetski rat u Evropi."
+  },
+  "154": {
+   "q": "Kada je završio Drugi svjetski rat?",
+   "options": [
+    "1933",
+    "1945",
+    "1949",
+    "1961"
+   ],
+   "explanation": "Drugi svjetski rat završio je 1945. bezuslovnom kapitulacijom Njemačke 8. maja."
+  },
+  "155": {
+   "q": "Kada su nacionalsocijalisti bili na vlasti u Njemačkoj?",
+   "options": [
+    "1888. do 1918.",
+    "1921. do 1934.",
+    "1933. do 1945.",
+    "1949. do 1963."
+   ],
+   "explanation": "Nacistički režim počeo je 1933. Hitlerovim imenovanjem za kancelara Rajha (Reichskanzler), a završio 1945. njemačkom kapitulacijom."
+  },
+  "156": {
+   "q": "Koje je godine Hitler postao kancelar Rajha (Reichskanzler)?",
+   "options": [
+    "1923",
+    "1927",
+    "1933",
+    "1936"
+   ],
+   "explanation": "Predsjednik Rajha Paul von Hindenburg imenovao je Adolfa Hitlera 30. januara 1933. za kancelara Rajha."
+  },
+  "157": {
+   "q": "Nacionalsocijalisti s Adolfom Hitlerom uspostavili su 1933. u Njemačkoj …",
+   "options": [
+    "diktaturu.",
+    "demokratsku državu.",
+    "monarhiju.",
+    "kneževinu."
+   ],
+   "explanation": "Nakon preuzimanja vlasti 1933. nacionalsocijalisti su uspostavili diktaturu, eliminisali sve druge stranke i ugušili demokratiju."
+  },
+  "158": {
+   "q": "„Treći Rajh“ bio je …",
+   "options": [
+    "diktatura.",
+    "demokratija.",
+    "monarhija.",
+    "republika vijeća."
+   ],
+   "explanation": "Treći Rajh (1933–1945) bio je nacionalsocijalistička diktatura bez demokratskih institucija."
+  },
+  "159": {
+   "q": "Šta u Njemačkoj nije postojalo u vrijeme nacionalsocijalizma?",
+   "options": [
+    "slobodni izbori",
+    "cenzura štampe",
+    "proizvoljna hapšenja",
+    "progon Jevreja"
+   ],
+   "explanation": "U nacističkoj državi nije bilo slobodnih izbora. Umjesto toga postojali su cenzura štampe, proizvoljna hapšenja i sistematski progon Jevreja."
+  },
+  "160": {
+   "q": "Koji je rat trajao od 1939. do 1945.?",
+   "options": [
+    "Prvi svjetski rat",
+    "Drugi svjetski rat",
+    "Vijetnamski rat",
+    "Zaljevski rat"
+   ],
+   "explanation": "Drugi svjetski rat počeo je 1. septembra 1939. njemačkim napadom na Poljsku i završio 8. maja 1945."
+  },
+  "161": {
+   "q": "Šta je obilježavalo nacističku državu? Politika …",
+   "options": [
+    "državnog rasizma",
+    "slobode mišljenja",
+    "opće slobode vjeroispovijesti",
+    "razvoja demokratije"
+   ],
+   "explanation": "Nacističku državu obilježio je državni rasizam, koji je kulminirao sistematskim progonom i ubijanjem Jevreja i drugih grupa."
+  },
+  "162": {
+   "q": "Claus Schenk Graf von Stauffenberg postao je poznat po …",
+   "options": [
+    "zlatnoj medalji na Olimpijskim igrama 1936.",
+    "izgradnji zgrade Reichstaga.",
+    "stvaranju Wehrmachta.",
+    "atentatu na Hitlera 20. jula 1944."
+   ],
+   "explanation": "Stauffenberg je bio glavni organizator atentata na Hitlera 20. jula 1944., koji, međutim, nije uspio. Nakon toga je pogubljen."
+  },
+  "163": {
+   "q": "Koje su godine nacionalsocijalisti razarali sinagoge i jevrejske radnje u Njemačkoj?",
+   "options": [
+    "1925",
+    "1930",
+    "1938",
+    "1945"
+   ],
+   "explanation": "U Kristalnoj noći (Reichspogromnacht) s 9. na 10. novembar 1938. uništene su jevrejske radnje i sinagoge, a Jevreji su zlostavljani."
+  },
+  "164": {
+   "q": "Šta se desilo 9. novembra 1938. u Njemačkoj?",
+   "options": [
+    "Napadom na Poljsku počinje Drugi svjetski rat.",
+    "Nacionalsocijalisti gube izbore i raspuštaju Reichstag.",
+    "Nacionalsocijalisti i njihove pristalice uništavaju jevrejske radnje i sinagoge.",
+    "Hitler postaje predsjednik Rajha i zabranjuje sve stranke."
+   ],
+   "explanation": "Kristalna noć (9./10. novembra 1938.) bila je pogrom protiv jevrejskih građana koji su organizovali nacisti i u kojem su uništene sinagoge i radnje."
+  },
+  "165": {
+   "q": "Kako se zvao prvi savezni kancelar Savezne Republike Njemačke?",
+   "options": [
+    "Konrad Adenauer",
+    "Kurt Georg Kiesinger",
+    "Helmut Schmidt",
+    "Willy Brandt"
+   ],
+   "explanation": "Konrad Adenauer (CDU) bio je od 1949. do 1963. prvi savezni kancelar Savezne Republike Njemačke."
+  },
+  "166": {
+   "q": "Na kojim su demonstracijama u Njemačkoj ljudi uzvikivali „Mi smo narod“?",
+   "options": [
+    "na ponedjeljačkim demonstracijama 1989. u Njemačkoj Demokratskoj Republici",
+    "na ustanku radnika 1953. u Njemačkoj Demokratskoj Republici",
+    "na demonstracijama 1968. u Saveznoj Republici Njemačkoj",
+    "na demonstracijama protiv nuklearne energije 1985. u Saveznoj Republici Njemačkoj"
+   ],
+   "explanation": "Poklič „Mi smo narod“ bio je simbol mirne revolucije 1989. u Njemačkoj Demokratskoj Republici, koja je dovela do pada Berlinskog zida."
+  },
+  "167": {
+   "q": "Koje su se zemlje u Njemačkoj nakon Drugog svjetskog rata nazivale „savezničkim okupacionim silama“?",
+   "options": [
+    "Sovjetski Savez, Velika Britanija, Poljska, Švedska",
+    "Francuska, Sovjetski Savez, Italija, Japan",
+    "SAD, Sovjetski Savez, Španija, Portugal",
+    "SAD, Sovjetski Savez, Velika Britanija, Francuska"
+   ],
+   "explanation": "Četiri savezničke sile pobjednice – SAD, Sovjetski Savez, Velika Britanija i Francuska – podijelile su Njemačku nakon 1945. na četiri okupacione zone."
+  },
+  "168": {
+   "q": "Koja zemlja nije bila „saveznička okupaciona sila“ u Njemačkoj?",
+   "options": [
+    "SAD",
+    "Sovjetski Savez",
+    "Francuska",
+    "Japan"
+   ],
+   "explanation": "Četiri okupacione sile u Njemačkoj nakon 1945. bile su SAD, Sovjetski Savez, Velika Britanija i Francuska. Japan nije bio među njima."
+  },
+  "169": {
+   "q": "Kada je osnovana Savezna Republika Njemačka?",
+   "options": [
+    "1939",
+    "1945",
+    "1949",
+    "1951"
+   ],
+   "explanation": "Savezna Republika Njemačka osnovana je 23. maja 1949., kada je stupio na snagu Osnovni zakon (ustav)."
+  },
+  "170": {
+   "q": "Šta je u Njemačkoj postojalo u vrijeme nacionalsocijalizma?",
+   "options": [
+    "pravo na slobodan razvoj ličnosti",
+    "sloboda štampe",
+    "zabrana stranaka",
+    "zaštita ljudskog dostojanstva"
+   ],
+   "explanation": "U nacističkoj državi sve druge stranke bile su zabranjene. Osnovna prava poput slobode štampe i ljudskog dostojanstva bila su ukinuta."
+  },
+  "171": {
+   "q": "Socijalna tržišna ekonomija znači: privreda …",
+   "options": [
+    "se sama usmjerava isključivo prema ponudi i potražnji.",
+    "je planira i usmjerava država, a ponuda i potražnja se ne uzimaju u obzir.",
+    "se ravna prema potražnji u inostranstvu.",
+    "se ravna prema ponudi i potražnji, ali država brine o socijalnom izjednačavanju."
+   ],
+   "explanation": "Socijalna tržišna ekonomija spaja slobodne tržišne snage s državnom socijalnom politikom kako bi se ublažile ekonomske nejednakosti."
+  },
+  "172": {
+   "q": "U kojoj je okupacionoj zoni osnovana Njemačka Demokratska Republika (Istočna Njemačka)? U …",
+   "options": [
+    "američkoj okupacionoj zoni.",
+    "francuskoj okupacionoj zoni.",
+    "britanskoj okupacionoj zoni.",
+    "sovjetskoj okupacionoj zoni."
+   ],
+   "explanation": "Njemačka Demokratska Republika osnovana je 1949. u sovjetskoj okupacionoj zoni, dok je Savezna Republika Njemačka nastala iz zapadnih okupacionih zona."
+  },
+  "173": {
+   "q": "Savezna Republika Njemačka je članica osnivačica …",
+   "options": [
+    "Sjevernoatlantskog saveza (NATO).",
+    "Ujedinjenih nacija (UN).",
+    "Evropske unije (EU).",
+    "Varšavskog pakta."
+   ],
+   "explanation": "Savezna Republika Njemačka članica je osnivačica EU (1957, Rimski ugovori). NATO-u je pristupila 1955."
+  },
+  "174": {
+   "q": "Kada je osnovana Njemačka Demokratska Republika (Istočna Njemačka)?",
+   "options": [
+    "1947",
+    "1949",
+    "1953",
+    "1956"
+   ],
+   "explanation": "Njemačka Demokratska Republika osnovana je 7. oktobra 1949. u sovjetskoj okupacionoj zoni."
+  },
+  "175": {
+   "q": "Koliko je okupacionih zona bilo u Njemačkoj nakon Drugog svjetskog rata?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Njemačka je nakon Drugog svjetskog rata podijeljena na četiri okupacione zone: američku, sovjetsku, britansku i francusku."
+  },
+  "176": {
+   "q": "Kako su bile raspoređene okupacione zone Njemačke nakon 1945.?",
+   "options": [
+    "1=Velika Britanija, 2=Sovjetski Savez, 3=Francuska, 4=SAD",
+    "1=Sovjetski Savez, 2=Velika Britanija, 3=SAD, 4=Francuska",
+    "1=Velika Britanija, 2=Sovjetski Savez, 3=SAD, 4=Francuska",
+    "1=Velika Britanija, 2=SAD, 3=Sovjetski Savez, 4=Francuska"
+   ],
+   "explanation": "Četiri savezničke okupacione zone bile su geografski raspoređene: britanska na sjeverozapadu, sovjetska na istoku, američka na jugu i francuska na jugozapadu."
+  },
+  "177": {
+   "q": "Koji je njemački grad nakon Drugog svjetskog rata podijeljen na četiri sektora?",
+   "options": [
+    "München",
+    "Berlin",
+    "Dresden",
+    "Frankfurt/Oder"
+   ],
+   "explanation": "Berlin, glavni grad Njemačkog Rajha, nakon Drugog svjetskog rata podijeljen je na četiri sektora (američki, sovjetski, britanski, francuski)."
+  },
+  "178": {
+   "q": "Od juna 1948. do maja 1949. građani i građanke Zapadnog Berlina snabdijevani su zračnim mostom. Koja je okolnost bila razlog za to?",
+   "options": [
+    "Za Francusku je snabdijevanje stanovništva Zapadnog Berlina avionom bilo jeftinije.",
+    "Američki vojnici / američke vojnikinje bojali su se napada tokom kopnenog prevoza.",
+    "Za Veliku Britaniju je snabdijevanje zračnim mostom bilo brže.",
+    "Sovjetski Savez je prekinuo cjelokupni saobraćaj kopnenim putem."
+   ],
+   "explanation": "Sovjetski Savez je 1948/49. blokirao sve kopnene puteve prema Zapadnom Berlinu, nakon čega su zapadni saveznici uspostavili berlinski zračni most."
+  },
+  "179": {
+   "q": "Kako je Drugi svjetski rat u Evropi službeno završio?",
+   "options": [
+    "smrću Adolfa Hitlera",
+    "bezuslovnom kapitulacijom Njemačke",
+    "povlačenjem Nijemaca s okupiranih područja",
+    "revolucijom u Njemačkoj"
+   ],
+   "explanation": "Drugi svjetski rat u Evropi završio je 8. maja 1945. bezuslovnom kapitulacijom Njemačke pred saveznicima."
+  },
+  "180": {
+   "q": "Prvi savezni kancelar Savezne Republike Njemačke bio je …",
+   "options": [
+    "Ludwig Erhard.",
+    "Willy Brandt.",
+    "Konrad Adenauer.",
+    "Gerhard Schröder."
+   ],
+   "explanation": "Konrad Adenauer (CDU) bio je od 1949. do 1963. prvi savezni kancelar i presudno je oblikovao ranu Saveznu Republiku."
+  },
+  "181": {
+   "q": "Šta je Willy Brandt htio izraziti svojim klečanjem 1970. u bivšem jevrejskom getu u Varšavi?",
+   "options": [
+    "Pokorio se bivšim saveznicima.",
+    "Zamolio je Poljsku i poljske Jevreje za oprost.",
+    "Pokazao je svoju poniznost pred Varšavskim paktom.",
+    "Izgovorio je molitvu na grobu Neznanog vojnika."
+   ],
+   "explanation": "Klečanje Willyja Brandta u Varšavi 1970. bilo je gest poniznosti i pokajanja za nacističke zločine nad poljskim Jevrejima."
+  },
+  "182": {
+   "q": "Kako se zove jevrejska bogomolja?",
+   "options": [
+    "bazilika",
+    "džamija",
+    "sinagoga",
+    "crkva"
+   ],
+   "explanation": "Sinagoga je jevrejska bogomolja u kojoj se održavaju bogosluženja i čita Tora."
+  },
+  "183": {
+   "q": "Kada je u Saveznoj Republici Njemačkoj bilo „privredno čudo“?",
+   "options": [
+    "40-ih godina",
+    "50-ih godina",
+    "70-ih godina",
+    "80-ih godina"
+   ],
+   "explanation": "„Privredno čudo“ (Wirtschaftswunder) označava brzi privredni uspon Zapadne Njemačke 1950-ih godina nakon Drugog svjetskog rata."
+  },
+  "184": {
+   "q": "Na kojoj je pravnoj osnovi osnovana Država Izrael?",
+   "options": [
+    "rezolucija Ujedinjenih nacija",
+    "odluka Cionističkog kongresa",
+    "prijedlog savezne vlade",
+    "prijedlog SSSR-a"
+   ],
+   "explanation": "Država Izrael osnovana je 1948. na osnovu Rezolucije UN-a 181 iz 1947. (plan podjele Palestine)."
+  },
+  "185": {
+   "q": "Šta je označavao izraz „željezna zavjesa“? Izolaciju …",
+   "options": [
+    "Varšavskog pakta od Zapada.",
+    "sjeverne Njemačke od južne Njemačke.",
+    "nacističke Njemačke od saveznika.",
+    "Evrope od SAD-a."
+   ],
+   "explanation": "„Željezna zavjesa“ označavala je granicu između zapadnog i istočnog bloka u Hladnom ratu, koja je dijelila Evropu."
+  },
+  "186": {
+   "q": "Godine 1953. u Njemačkoj Demokratskoj Republici izbio je ustanak, na koji je u Saveznoj Republici Njemačkoj dugo podsjećao jedan praznik. Kada je to bilo?",
+   "options": [
+    "1. maja",
+    "17. juna",
+    "20. jula",
+    "9. novembra"
+   ],
+   "explanation": "Narodni ustanak od 17. juna 1953. u Njemačkoj Demokratskoj Republici obilježavan je u Saveznoj Republici kao „Dan njemačkog jedinstva“, sve dok ga 1990. nije zamijenio 3. oktobar."
+  },
+  "187": {
+   "q": "Koja je njemačka država imala crno-crveno-zlatnu zastavu sa čekićem, šestarom i vijencem od klasja?",
+   "options": [
+    "Pruska",
+    "Savezna Republika Njemačka",
+    "Njemačka Demokratska Republika",
+    "„Treći Rajh“"
+   ],
+   "explanation": "Njemačka Demokratska Republika imala je crno-crveno-zlatnu zastavu s državnim grbom: čekić, šestar i vijenac od klasja kao simboli radnika, inteligencije i seljaka."
+  },
+  "188": {
+   "q": "Koje je godine izgrađen zid u Berlinu?",
+   "options": [
+    "1953",
+    "1956",
+    "1959",
+    "1961"
+   ],
+   "explanation": "Njemačka Demokratska Republika počela je 13. augusta 1961. graditi Berlinski zid kako bi zaustavila masovno bježanje na Zapad."
+  },
+  "189": {
+   "q": "Kada je Njemačka Demokratska Republika (Istočna Njemačka) izgradila zid u Berlinu?",
+   "options": [
+    "1919",
+    "1933",
+    "1961",
+    "1990"
+   ],
+   "explanation": "Gradnja zida počela je 13. augusta 1961. Zid je stajao 28 godina i pao je 9. novembra 1989."
+  },
+  "190": {
+   "q": "Šta znači skraćenica DDR?",
+   "options": [
+    "Treći njemački radio (Dritter Deutscher Rundfunk)",
+    "Njemačka Republika (Die Deutsche Republik)",
+    "Treća njemačka republika (Dritte Deutsche Republik)",
+    "Njemačka Demokratska Republika (Deutsche Demokratische Republik)"
+   ],
+   "explanation": "DDR je skraćenica za Deutsche Demokratische Republik (Njemačka Demokratska Republika), bivšu socijalističku državu u istočnoj Njemačkoj (1949–1990)."
+  },
+  "191": {
+   "q": "Kada je zid u Berlinu otvoren za sve?",
+   "options": [
+    "1987",
+    "1989",
+    "1992",
+    "1995"
+   ],
+   "explanation": "Njemačka Demokratska Republika otvorila je Berlinski zid 9. novembra 1989. To je bio početak ponovnog ujedinjenja Njemačke."
+  },
+  "192": {
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "options": [
+    "Brandenburg",
+    "Bavarska",
+    "Saarland",
+    "Hessen"
+   ],
+   "explanation": "Brandenburg je jedna od pet novih saveznih pokrajina koje su nakon ponovnog ujedinjenja 1990. nastale na području bivše Njemačke Demokratske Republike."
+  },
+  "193": {
+   "q": "Od 1961. do 1989. Berlin je bio …",
+   "options": [
+    "bez gradonačelnika.",
+    "zasebna država.",
+    "podijeljen zidom.",
+    "dostupan samo avionom."
+   ],
+   "explanation": "Berlinski zid dijelio je Berlin od 1961. do 1989. Istočni i Zapadni Berlin bili su međusobno odvojeni zidom i graničnim postrojenjima."
+  },
+  "194": {
+   "q": "Dana 3. oktobra u Njemačkoj se slavi Dan njemačkog …",
+   "options": [
+    "jedinstva.",
+    "naroda.",
+    "saveznih pokrajina.",
+    "gradova."
+   ],
+   "explanation": "Njemačka Demokratska Republika pristupila je 3. oktobra 1990. Saveznoj Republici Njemačkoj. Od tada je Dan njemačkog jedinstva državni praznik."
+  },
+  "195": {
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "options": [
+    "Hessen",
+    "Saska-Anhalt",
+    "Sjeverna Rajna-Vestfalija",
+    "Saarland"
+   ],
+   "explanation": "Saska-Anhalt je jedna od pet novih saveznih pokrajina s područja bivše Njemačke Demokratske Republike."
+  },
+  "196": {
+   "q": "Zašto se period u jesen 1989. u Njemačkoj Demokratskoj Republici naziva „Die Wende“ (preokret)? U tom periodu Njemačka Demokratska Republika se politički promijenila …",
+   "options": [
+    "iz diktature u demokratiju.",
+    "iz liberalne tržišne ekonomije u socijalizam.",
+    "iz monarhije u socijaldemokratiju.",
+    "iz vjerske države u komunističku državu."
+   ],
+   "explanation": "Die Wende 1989. opisuje mirni prelazak Njemačke Demokratske Republike iz socijalističke diktature u demokratiju, koji je doveo do ponovnog ujedinjenja."
+  },
+  "197": {
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "options": [
+    "Tiringija",
+    "Hessen",
+    "Bavarska",
+    "Bremen"
+   ],
+   "explanation": "Tiringija je jedna od pet novih saveznih pokrajina s područja bivše Njemačke Demokratske Republike."
+  },
+  "198": {
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "options": [
+    "Bavarska",
+    "Donja Saska",
+    "Saska",
+    "Baden-Württemberg"
+   ],
+   "explanation": "Saska je jedna od pet novih saveznih pokrajina koje su 1990. nastale na području bivše Njemačke Demokratske Republike."
+  },
+  "199": {
+   "q": "Skraćenicom „Stasi“ u Njemačkoj Demokratskoj Republici označavalo se …",
+   "options": [
+    "parlament.",
+    "Ministarstvo državne sigurnosti.",
+    "vladajuća stranka.",
+    "Ministarstvo narodnog obrazovanja."
+   ],
+   "explanation": "Stasi (Ministarstvo državne sigurnosti) bila je unutrašnja tajna služba Njemačke Demokratske Republike koja je nadzirala stanovništvo."
+  },
+  "200": {
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "options": [
+    "Hessen",
+    "Schleswig-Holstein",
+    "Mecklenburg-Vorpommern",
+    "Saarland"
+   ],
+   "explanation": "Mecklenburg-Vorpommern je jedna od pet novih saveznih pokrajina s područja bivše Njemačke Demokratske Republike."
+  },
+  "201": {
+   "q": "Koja od sljedećih lista sadrži samo savezne pokrajine koje su pripadale području bivše Njemačke Demokratske Republike (Istočne Njemačke)?",
+   "options": [
+    "Donja Saska, Sjeverna Rajna-Vestfalija, Hesen, Schleswig-Holstein, Brandenburg",
+    "Mecklenburg-Vorpommern, Brandenburg, Saska, Saska-Anhalt, Tiringija",
+    "Bavarska, Baden-Württemberg, Porajnje-Falačka, Tiringija, Saska",
+    "Saska, Tiringija, Hesen, Donja Saska, Brandenburg"
+   ],
+   "explanation": "Pet novih saveznih pokrajina s područja Njemačke Demokratske Republike (Istočne Njemačke) su: Mecklenburg-Vorpommern, Brandenburg, Saska, Saska-Anhalt i Tiringija."
+  },
+  "202": {
+   "q": "Kome je pripadala Njemačka Demokratska Republika (Istočna Njemačka) u „Hladnom ratu“?",
+   "options": [
+    "zapadnim silama",
+    "Varšavskom paktu",
+    "NATO-u",
+    "nesvrstanim državama"
+   ],
+   "explanation": "Njemačka Demokratska Republika bila je članica Varšavskog pakta, vojnog saveza socijalističkih država pod vodstvom Sovjetskog Saveza."
+  },
+  "203": {
+   "q": "Kako se zvao ekonomski sistem Njemačke Demokratske Republike (Istočne Njemačke)?",
+   "options": [
+    "tržišna ekonomija",
+    "planska ekonomija",
+    "ponuda i potražnja",
+    "kapitalizam"
+   ],
+   "explanation": "Njemačka Demokratska Republika imala je plansku ekonomiju, u kojoj je država centralno planirala i usmjeravala sve ekonomske odluke."
+  },
+  "204": {
+   "q": "Kako su Savezna Republika Njemačka i Njemačka Demokratska Republika (Istočna Njemačka) postale jedna država?",
+   "options": [
+    "Savezna Republika Njemačka okupirala je Njemačku Demokratsku Republiku.",
+    "Današnjih pet istočnih saveznih pokrajina pristupilo je Saveznoj Republici Njemačkoj.",
+    "Zapadne savezne pokrajine pristupile su Njemačkoj Demokratskoj Republici.",
+    "Njemačka Demokratska Republika okupirala je Saveznu Republiku Njemačku."
+   ],
+   "explanation": "Pet istočnih saveznih pokrajina pristupilo je 3. oktobra 1990. Saveznoj Republici Njemačkoj (ponovno ujedinjenje)."
+  },
+  "205": {
+   "q": "Pristupanjem Njemačke Demokratske Republike (Istočne Njemačke) Saveznoj Republici Njemačkoj nove savezne pokrajine sada pripadaju i …",
+   "options": [
+    "Evropskoj uniji.",
+    "Varšavskom paktu.",
+    "OPEC-u.",
+    "Evropskoj odbrambenoj zajednici."
+   ],
+   "explanation": "Ponovnim ujedinjenjem 1990. nove savezne pokrajine automatski su postale dio Evropske unije."
+  },
+  "206": {
+   "q": "Na šta podsjećaju takozvani „Stolpersteine“ (kamenovi spoticanja) u Njemačkoj?",
+   "options": [
+    "na poznate njemačke političarke i političare",
+    "na žrtve nacionalsocijalizma",
+    "na poginule u saobraćaju",
+    "na poznate jevrejske muzičare"
+   ],
+   "explanation": "Stolpersteine su male spomen-ploče u tlu koje podsjećaju na ljude koji su postali žrtve nacionalsocijalističkog režima."
+  },
+  "207": {
+   "q": "U kojem je vojnom savezu bila članica Njemačka Demokratska Republika (Istočna Njemačka)?",
+   "options": [
+    "u NATO-u",
+    "u Rajnskom savezu",
+    "u Varšavskom paktu",
+    "u Evropskom savezu"
+   ],
+   "explanation": "Njemačka Demokratska Republika bila je članica Varšavskog pakta (1955–1991), vojnog saveza država Istočnog bloka."
+  },
+  "208": {
+   "q": "Šta je bila „Stasi“?",
+   "options": [
+    "tajna služba u „Trećem Reichu“",
+    "poznato njemačko spomen-mjesto",
+    "tajna služba Njemačke Demokratske Republike",
+    "njemački sportski klub tokom Drugog svjetskog rata"
+   ],
+   "explanation": "Stasi je naziv za Ministarstvo državne sigurnosti Njemačke Demokratske Republike (Istočne Njemačke) – opsežan aparat za nadzor koji je progonio disidente."
+  },
+  "209": {
+   "q": "Koji je bio grb Njemačke Demokratske Republike?",
+   "options": [
+    "savezni grb (Njemačka)",
+    "Kristov monogram (Chi-Rho)",
+    "krst Bundeswehra",
+    "amblem Njemačke Demokratske Republike"
+   ],
+   "explanation": "Grb Njemačke Demokratske Republike (Istočne Njemačke) prikazivao je čekić i šestar (za radnike i inteligenciju) na vijencu od klasja u crno-crveno-zlatnim bojama."
+  },
+  "210": {
+   "q": "Šta se dogodilo 17. juna 1953. u Njemačkoj Demokratskoj Republici (Istočnoj Njemačkoj)?",
+   "options": [
+    "svečano pristupanje Varšavskom paktu",
+    "štrajkovi širom zemlje i narodni ustanak",
+    "1. kongres stranke SED",
+    "prva posjeta Fidela Castra"
+   ],
+   "explanation": "Dana 17. juna 1953. u Njemačkoj Demokratskoj Republici izbio je narodni ustanak sa štrajkovima širom zemlje, koji su ugušile sovjetske trupe."
+  },
+  "211": {
+   "q": "Koji političar simbolizira „Istočne ugovore“ (Ostverträge)?",
+   "options": [
+    "Helmut Kohl",
+    "Willy Brandt",
+    "Mihail Gorbačov",
+    "Ludwig Erhard"
+   ],
+   "explanation": "Willy Brandt (SPD) kao savezni kancelar zaključio je Istočne ugovore s istočnim susjednim zemljama i vodio politiku približavanja (Ostpolitik)."
+  },
+  "212": {
+   "q": "Kako glasi puni naziv Njemačke?",
+   "options": [
+    "Savezna Država Njemačka",
+    "Savezne Pokrajine Njemačka",
+    "Savezna Republika Njemačka",
+    "Savezni Okrug Njemačka"
+   ],
+   "explanation": "Puni službeni naziv je Savezna Republika Njemačka (BRD), osnovana 1949. godine."
+  },
+  "213": {
+   "q": "Koliko stanovnika ima Njemačka?",
+   "options": [
+    "70 miliona",
+    "78 miliona",
+    "80 miliona",
+    "90 miliona"
+   ],
+   "explanation": "Njemačka ima oko 80 miliona stanovnika i time je zemlja s najviše stanovnika u EU."
+  },
+  "214": {
+   "q": "Koje boje ima njemačka zastava?",
+   "options": [
+    "crno-crveno-zlatna",
+    "crveno-bijelo-crna",
+    "crno-crveno-zelena",
+    "crno-žuto-crvena"
+   ],
+   "explanation": "Njemačka zastava je crno-crveno-zlatna. Te boje predstavljaju demokratski pokret 19. stoljeća."
+  },
+  "215": {
+   "q": "Koga nazivaju „kancelarom njemačkog jedinstva“?",
+   "options": [
+    "Gerhard Schröder",
+    "Helmut Kohl",
+    "Konrad Adenauer",
+    "Helmut Schmidt"
+   ],
+   "explanation": "Helmut Kohl (CDU) naziva se „kancelarom njemačkog jedinstva“ jer je presudno doprinio ponovnom ujedinjenju 1990. godine."
+  },
+  "216": {
+   "q": "Koji se simbol vidi u plenarnoj sali njemačkog Bundestaga (saveznog parlamenta)?",
+   "options": [
+    "zastava grada Berlina.",
+    "savezni orao.",
+    "carski orao.",
+    "carska kruna."
+   ],
+   "explanation": "Savezni orao (zvan i „debela kokoš“, Fette Henne) heraldička je životinja Savezne Republike Njemačke i visi u Bundestagu."
+  },
+  "217": {
+   "q": "U kojem je razdoblju postojala Njemačka Demokratska Republika (Istočna Njemačka)?",
+   "options": [
+    "1919. do 1927.",
+    "1933. do 1945.",
+    "1949. do 1990.",
+    "1945. do 1961."
+   ],
+   "explanation": "Njemačka Demokratska Republika postojala je od osnivanja 7. oktobra 1949. do ponovnog ujedinjenja Njemačke 3. oktobra 1990."
+  },
+  "218": {
+   "q": "Koliko je saveznih pokrajina pristupilo Saveznoj Republici Njemačkoj pri ponovnom ujedinjenju 1990. godine?",
+   "options": [
+    "4",
+    "5",
+    "6",
+    "7"
+   ],
+   "explanation": "Pri ponovnom ujedinjenju 1990. pristupilo je pet novih saveznih pokrajina: Brandenburg, Mecklenburg-Vorpommern, Saska, Saska-Anhalt i Tiringija."
+  },
+  "219": {
+   "q": "Savezna Republika Njemačka ima današnje granice od …",
+   "options": [
+    "1933.",
+    "1949.",
+    "1971.",
+    "1990."
+   ],
+   "explanation": "Današnje granice Njemačke postoje od ponovnog ujedinjenja 3. oktobra 1990., kada je Njemačka Demokratska Republika (Istočna Njemačka) pristupila Saveznoj Republici."
+  },
+  "220": {
+   "q": "27. januar je u Njemačkoj službeni dan sjećanja. Na šta podsjeća taj dan?",
+   "options": [
+    "na kraj Drugog svjetskog rata",
+    "na usvajanje Osnovnog zakona (ustava)",
+    "na ponovno ujedinjenje Njemačke",
+    "na žrtve nacionalsocijalizma (dan oslobođenja logora smrti Auschwitz)"
+   ],
+   "explanation": "Koncentracioni logor Auschwitz oslobođen je 27. januara 1945. Od 1996. taj je dan u Njemačkoj službeni dan sjećanja na žrtve nacionalsocijalizma."
+  },
+  "221": {
+   "q": "Njemačka je članica Šengenskog sporazuma. Šta to znači?",
+   "options": [
+    "Nijemci mogu putovati u mnoge zemlje Evrope bez pasoške kontrole.",
+    "Svi ljudi mogu ući u Njemačku bez kontrole osoba.",
+    "Nijemci mogu bez pasoške kontrole putovati u svaku zemlju.",
+    "Nijemci mogu u svakoj zemlji plaćati eurom."
+   ],
+   "explanation": "Šengenski sporazum omogućava putovanje bez pasoških kontrola unutar šengenskih zemalja u Evropi."
+  },
+  "222": {
+   "q": "Koja je zemlja susjed Njemačke?",
+   "options": [
+    "Mađarska",
+    "Portugal",
+    "Španija",
+    "Švicarska"
+   ],
+   "explanation": "Švicarska je jedna od devet susjednih zemalja Njemačke. Njemačka graniči s DK, NL, BE, LU, FR, CH, AT, CZ i PL."
+  },
+  "223": {
+   "q": "Koja je zemlja susjed Njemačke?",
+   "options": [
+    "Rumunija",
+    "Bugarska",
+    "Poljska",
+    "Grčka"
+   ],
+   "explanation": "Poljska je susjedna zemlja Njemačke na istoku. Granica prati rijeke Odru i Nisu."
+  },
+  "224": {
+   "q": "Šta znači skraćenica EU?",
+   "options": [
+    "Evropska preduzeća",
+    "Evropska unija",
+    "Jedinstvena unija",
+    "Euro unija"
+   ],
+   "explanation": "EU znači Evropska unija, politička i ekonomska zajednica evropskih država."
+  },
+  "225": {
+   "q": "U kojoj drugoj zemlji živi brojno stanovništvo koje govori njemački?",
+   "options": [
+    "Češka",
+    "Norveška",
+    "Španija",
+    "Austrija"
+   ],
+   "explanation": "Austrija je zemlja njemačkog govornog područja. Osim Njemačke i Austrije, i Švicarska je djelimično njemačkog govornog područja."
+  },
+  "226": {
+   "q": "Koja je zastava Evropske unije?",
+   "options": [
+    "Zastava SAD-a",
+    "Zastava Evropske unije",
+    "Zastava Ujedinjenih nacija",
+    "drugi amblem"
+   ],
+   "explanation": "Zastava EU prikazuje dvanaest zlatnih zvijezda na plavoj podlozi. Broj 12 simbolizira savršenstvo, a ne broj članica."
+  },
+  "227": {
+   "q": "Koja je zemlja susjed Njemačke?",
+   "options": [
+    "Finska",
+    "Danska",
+    "Norveška",
+    "Švedska"
+   ],
+   "explanation": "Danska je najsjevernija susjedna zemlja Njemačke. Granica između dviju zemalja nalazi se u Schleswig-Holsteinu."
+  },
+  "228": {
+   "q": "Kako se općenito naziva pristupanje Njemačke Demokratske Republike (Istočne Njemačke) Saveznoj Republici Njemačkoj 1990. godine?",
+   "options": [
+    "proširenje NATO-a na istok",
+    "proširenje EU na istok",
+    "Evropska zajednica",
+    "ponovno ujedinjenje Njemačke"
+   ],
+   "explanation": "Pristupanje Njemačke Demokratske Republike Saveznoj Republici 3. oktobra 1990. naziva se ponovnim ujedinjenjem Njemačke."
+  },
+  "229": {
+   "q": "Koja je zemlja susjed Njemačke?",
+   "options": [
+    "Španija",
+    "Bugarska",
+    "Norveška",
+    "Luksemburg"
+   ],
+   "explanation": "Luksemburg je jedna od devet susjednih zemalja Njemačke i nalazi se na jugozapadu."
+  },
+  "230": {
+   "q": "Evropski parlament bira se redovno, i to svakih …",
+   "options": [
+    "5 godina.",
+    "6 godina.",
+    "7 godina.",
+    "8 godina."
+   ],
+   "explanation": "Evropski parlament svakih pet godina neposredno biraju građani država članica EU koji imaju pravo glasa."
+  },
+  "231": {
+   "q": "Šta znači pojam „evropska integracija“?",
+   "options": [
+    "Time se misli na američke useljenike u Evropi.",
+    "Pojam označava zabranu useljavanja u Evropu.",
+    "Time se misli na evropske iseljenike u SAD-u.",
+    "Pojam označava udruživanje evropskih država u EU."
+   ],
+   "explanation": "Evropska integracija označava proces političkog, ekonomskog i pravnog udruživanja evropskih država."
+  },
+  "232": {
+   "q": "Ko se bira na evropskim izborima?",
+   "options": [
+    "Evropska komisija",
+    "zemlje koje smiju ući u EU",
+    "evropski ustav",
+    "zastupnici Evropskog parlamenta"
+   ],
+   "explanation": "Na evropskim izborima građani EU biraju zastupnike Evropskog parlamenta."
+  },
+  "233": {
+   "q": "Koja je zemlja susjed Njemačke?",
+   "options": [
+    "Češka",
+    "Bugarska",
+    "Grčka",
+    "Portugal"
+   ],
+   "explanation": "Češka Republika (Češka) susjedna je zemlja Njemačke na istoku i jugoistoku."
+  },
+  "234": {
+   "q": "Gdje je sjedište Evropskog parlamenta?",
+   "options": [
+    "London",
+    "Pariz",
+    "Berlin",
+    "Strasbourg"
+   ],
+   "explanation": "Evropski parlament ima službeno sjedište u Strasbourgu. Sastaje se i u Briselu, a generalni sekretarijat mu je u Luksemburgu."
+  },
+  "235": {
+   "q": "Francuski predsjednik François Mitterrand i njemački savezni kancelar Helmut Kohl zajedno u Verdunu odaju počast poginulima u oba svjetska rata. Koji cilj Evropske unije postaje jasan na tom susretu?",
+   "options": [
+    "prijateljstvo između Engleske i Njemačke",
+    "sloboda putovanja u sve zemlje EU",
+    "mir i sigurnost u zemljama EU",
+    "jedinstveni praznici u zemljama EU"
+   ],
+   "explanation": "Simbolično držanje za ruke Mitterranda i Kohla u Verdunu 1984. predstavljalo je pomirenje Francuske i Njemačke te mir u Evropi."
+  },
+  "236": {
+   "q": "Koliko država članica danas ima EU?",
+   "options": [
+    "21",
+    "23",
+    "25",
+    "27"
+   ],
+   "explanation": "Evropska unija trenutno ima 27 država članica (nakon izlaska Velike Britanije 2020.)."
+  },
+  "237": {
+   "q": "2007. godine obilježena je 50. godišnjica „Rimskih ugovora“. Šta je bio sadržaj tih ugovora?",
+   "options": [
+    "pristupanje Njemačke NATO-u",
+    "osnivanje Evropske ekonomske zajednice (EEZ)",
+    "obaveza Njemačke na plaćanje reparacija",
+    "utvrđivanje linije Odra–Nisa kao istočne granice"
+   ],
+   "explanation": "Rimskim ugovorima iz 1957. osnovana je Evropska ekonomska zajednica (EEZ), preteča današnje EU."
+  },
+  "238": {
+   "q": "Na kojim mjestima radi Evropski parlament?",
+   "options": [
+    "Pariz, London i Haag",
+    "Strasbourg, Luksemburg i Brisel",
+    "Rim, Bern i Beč",
+    "Bonn, Zürich i Milano"
+   ],
+   "explanation": "Evropski parlament radi uglavnom u Strasbourgu, Briselu i Luksemburgu."
+  },
+  "239": {
+   "q": "Kojim se ugovorima Savezna Republika Njemačka udružila s drugim državama u Evropsku ekonomsku zajednicu?",
+   "options": [
+    "„Hamburškim ugovorima“",
+    "„Rimskim ugovorima“",
+    "„Pariškim ugovorima“",
+    "„Londonskim ugovorima“"
+   ],
+   "explanation": "Rimskim ugovorima iz 1957. Savezna Republika Njemačka udružila se s drugim evropskim državama u EEZ."
+  },
+  "240": {
+   "q": "Od kada se u Njemačkoj plaća gotovinom u eurima?",
+   "options": [
+    "1995",
+    "1998",
+    "2002",
+    "2005"
+   ],
+   "explanation": "Novčanice i kovanice eura uvedene su kao gotovina u Njemačkoj (i drugim zemljama EU) 1. januara 2002."
+  },
+  "241": {
+   "q": "Gospođa Seger dobija dijete. Šta mora uraditi da bi dobila roditeljski dodatak (Elterngeld)?",
+   "options": [
+    "Mora pisati svom zdravstvenom osiguranju.",
+    "Ne mora ništa uraditi jer roditeljski dodatak dobija automatski.",
+    "Mora podnijeti zahtjev uredu za roditeljski dodatak.",
+    "Mora tražiti dozvolu od biroa za zapošljavanje."
+   ],
+   "explanation": "Za roditeljski dodatak mora se podnijeti zahtjev. Zahtjev se podnosi nadležnom uredu za roditeljski dodatak."
+  },
+  "242": {
+   "q": "Ko u Njemačkoj odlučuje da li dijete ide u vrtić?",
+   "options": [
+    "država",
+    "savezne pokrajine",
+    "roditelji / staratelji",
+    "škole"
+   ],
+   "explanation": "U Njemačkoj roditelji ili staratelji odlučuju da li će njihovo dijete ići u vrtić."
+  },
+  "243": {
+   "q": "Maik i Sybille žele s prijateljima održati demonstracije na ulici u svom mjestu stanovanja u Njemačkoj. Šta moraju prethodno uraditi?",
+   "options": [
+    "Ne moraju ništa uraditi. U Njemačkoj se smije demonstrirati bilo kada i bilo gdje.",
+    "Moraju prijaviti demonstracije.",
+    "Ne mogu ništa uraditi jer su demonstracije u Njemačkoj načelno zabranjene.",
+    "Maik i Sybille moraju osnovati novo udruženje jer samo udruženja smiju demonstrirati."
+   ],
+   "explanation": "U Njemačkoj se demonstracije moraju prijaviti nadležnom organu. Neprijavljene demonstracije mogu se raspustiti."
+  },
+  "244": {
+   "q": "Koja je školska kvalifikacija obično potrebna da biste u Njemačkoj započeli studij na univerzitetu?",
+   "options": [
+    "Abitur",
+    "diploma",
+    "prokura",
+    "kalfenski ispit"
+   ],
+   "explanation": "Abitur (opća zrelost za visoko obrazovanje) uslov je za studij na njemačkom univerzitetu."
+  },
+  "245": {
+   "q": "Ko u Njemačkoj ne smije živjeti zajedno kao par?",
+   "options": [
+    "Hans (20 godina) i Marie (19 godina)",
+    "Tom (20 godina) i Klaus (45 godina)",
+    "Sofie (35 godina) i Lisa (40 godina)",
+    "Anne (13 godina) i Tim (25 godina)"
+   ],
+   "explanation": "U Njemačkoj je dob zaštite 14 godina; mlađi od 14 godina ne smiju imati romantične odnose s odraslima. Djevojčica od 13 godina ne smije živjeti zajedno s muškarcem od 25 godina."
+  },
+  "246": {
+   "q": "Od koje se dobi u Njemačkoj postaje punoljetan?",
+   "options": [
+    "16",
+    "18",
+    "19",
+    "21"
+   ],
+   "explanation": "U Njemačkoj se punoljetnost stječe s 18 godina. Od tada osoba ima sva građanska prava i obaveze."
+  },
+  "247": {
+   "q": "Žena je trudna. Neposredno prije i poslije rođenja djeteta posebno je zaštićena zakonom. Kako se zove ta zaštita?",
+   "options": [
+    "roditeljsko odsustvo",
+    "priprema za porod",
+    "zaštita majčinstva",
+    "babinje"
+   ],
+   "explanation": "Zaštita majčinstva (6 sedmica prije i 8 sedmica poslije poroda) štiti trudnice od otkaza i osigurava plaćeno odsustvo."
+  },
+  "248": {
+   "q": "Odgoj djece u Njemačkoj prije svega je zadatak …",
+   "options": [
+    "države.",
+    "roditelja.",
+    "baka i djedova.",
+    "škola."
+   ],
+   "explanation": "Primarna odgovornost za odgoj leži na roditeljima. Država pomaže, ali intervenira samo kada je ugrožena dobrobit djeteta."
+  },
+  "249": {
+   "q": "Ko je u Njemačkoj prvenstveno odgovoran za odgoj djece?",
+   "options": [
+    "država",
+    "roditelji",
+    "rođaci",
+    "škole"
+   ],
+   "explanation": "Roditelji su u Njemačkoj glavni odgojitelji djece. Osnovni zakon (ustav) štiti pravo roditelja na odgoj."
+  },
+  "250": {
+   "q": "U Njemačkoj imate najbolje šanse za dobro plaćeno radno mjesto ako …",
+   "options": [
+    "ste katolik.",
+    "ste dobro obrazovani.",
+    "ste žena.",
+    "ste član neke stranke."
+   ],
+   "explanation": "Dobro stručno obrazovanje ili studij znatno povećavaju šanse za dobro plaćen posao u Njemačkoj."
+  },
+  "251": {
+   "q": "Ako u Njemačkoj udarite dijete, …",
+   "options": [
+    "to se nikoga ne tiče.",
+    "to se tiče samo porodice.",
+    "za to ne možete biti kažnjeni.",
+    "za to možete biti kažnjeni."
+   ],
+   "explanation": "Tjelesno kažnjavanje djece u Njemačkoj je zabranjeno (§1631 BGB). Djeca imaju pravo na odgoj bez nasilja."
+  },
+  "252": {
+   "q": "U Njemačkoj …",
+   "options": [
+    "smijete u isto vrijeme biti u braku samo s jednim partnerom / jednom partnericom.",
+    "možete istovremeno imati više bračnih partnera / bračnih partnerica.",
+    "se ne smijete ponovo vjenčati ako ste jednom već bili u braku.",
+    "se žena ne smije ponovo udati ako joj je muž umro."
+   ],
+   "explanation": "Poligamija je u Njemačkoj zabranjena. Dozvoljen je samo jedan brak u isto vrijeme."
+  },
+  "253": {
+   "q": "Gdje se morate prijaviti kada se u Njemačkoj preselite?",
+   "options": [
+    "u uredu za prijavu boravka (Einwohnermeldeamt)",
+    "u matičnom uredu (Standesamt)",
+    "u uredu za javni red (Ordnungsamt)",
+    "u uredu za privredne djelatnosti (Gewerbeamt)"
+   ],
+   "explanation": "U Njemačkoj postoji obaveza prijave. Ko se preseli, mora se u roku od 2 sedmice prijaviti u uredu za prijavu boravka."
+  },
+  "254": {
+   "q": "U Njemačkoj se bračni parovi smiju razvesti. Za to uglavnom moraju poštovati „godinu odvojenog života“ (Trennungsjahr). Šta to znači?",
+   "options": [
+    "Brakorazvodni postupak traje godinu dana.",
+    "Muž i žena su godinu dana u braku, a onda je razvod moguć.",
+    "Pravo na viđanje djece važi godinu dana.",
+    "Muž i žena najmanje godinu dana žive odvojeno, svako svojim životom. Nakon toga je razvod moguć."
+   ],
+   "explanation": "U Njemačkoj je godina odvojenog života (najmanje godinu dana odvojenog života) uslov za razvod braka."
+  },
+  "255": {
+   "q": "Kod problema s odgojem roditelji u Njemačkoj mogu dobiti pomoć od …",
+   "options": [
+    "ureda za javni red (Ordnungsamt).",
+    "školskog ureda (Schulamt).",
+    "ureda za mlade (Jugendamt).",
+    "zavoda za javno zdravstvo (Gesundheitsamt)."
+   ],
+   "explanation": "Ured za mlade (Jugendamt) pruža savjetovanje i podršku kod problema s odgojem i štiti dobrobit djece."
+  },
+  "256": {
+   "q": "Bračni par želi otvoriti restoran u Njemačkoj. Šta im je za to neophodno?",
+   "options": [
+    "dozvola policije",
+    "odobrenje neke stranke",
+    "odobrenje ureda za prijavu boravka",
+    "dozvola za ugostiteljsku djelatnost od nadležnog organa"
+   ],
+   "explanation": "Za vođenje ugostiteljskog objekta u Njemačkoj potrebna je službena dozvola za ugostiteljsku djelatnost."
+  },
+  "257": {
+   "q": "Odrasla žena u Njemačkoj želi naknadno steći Abitur. To može uraditi u …",
+   "options": [
+    "visokoj školi.",
+    "večernjoj gimnaziji.",
+    "nižoj srednjoj školi (Hauptschule).",
+    "privatnom univerzitetu."
+   ],
+   "explanation": "Večernja gimnazija omogućava odraslima da naknadno steknu Abitur dok danju rade."
+  },
+  "258": {
+   "q": "Šta smije ured za mlade (Jugendamt) u Njemačkoj?",
+   "options": [
+    "Odlučuje koju će školu dijete pohađati.",
+    "Može izdvojiti iz porodice dijete koje biju ili koje mora gladovati.",
+    "Isplaćuje roditeljima dječiji doplatak.",
+    "Kontroliše da li dijete ide u vrtić."
+   ],
+   "explanation": "Ured za mlade može, kada je ugrožena dobrobit djeteta, privremeno izdvojiti dijete iz porodice kako bi ga zaštitio."
+  },
+  "259": {
+   "q": "Centar za informisanje o zanimanjima BIZ pri Saveznoj agenciji za rad u Njemačkoj pomaže pri …",
+   "options": [
+    "izračunu penzije.",
+    "traženju mjesta za stručnu obuku.",
+    "poreskoj prijavi.",
+    "zdravstvenom osiguranju."
+   ],
+   "explanation": "BIZ pruža opsežne informacije o zanimanjima koja se uče kroz stručnu obuku i pomaže pri traženju mjesta za stručnu obuku."
+  },
+  "260": {
+   "q": "U Njemačkoj dijete u školi ima …",
+   "options": [
+    "pravo na neograničeno slobodno vrijeme.",
+    "slobodu izbora svih predmeta.",
+    "pravo na novac za školovanje.",
+    "obavezu prisustva."
+   ],
+   "explanation": "U Njemačkoj postoji obavezno školovanje, što znači da djeca moraju redovno pohađati školu."
+  },
+  "261": {
+   "q": "Muškarac od 30 godina želi u Njemačkoj naknadno steći Abitur. Gdje to može uraditi? U …",
+   "options": [
+    "visokoj školi",
+    "večernjoj gimnaziji",
+    "nižoj srednjoj školi (Hauptschule)",
+    "privatnom univerzitetu"
+   ],
+   "explanation": "Večernja gimnazija namijenjena je odraslima koji žele naknadno steći Abitur dok rade."
+  },
+  "262": {
+   "q": "Šta u Njemačkoj znači načelo jednakog postupanja?",
+   "options": [
+    "Niko ne smije biti zapostavljen npr. zbog invaliditeta.",
+    "Druge osobe smijete zapostavljati ako za to postoje dovoljni lični razlozi.",
+    "Niko ne smije tužiti druge osobe ako je bio zapostavljen.",
+    "Za sve je zakonska obaveza da svake godine doniraju novac zapostavljenim grupama."
+   ],
+   "explanation": "Načelo jednakog postupanja (član 3. Osnovnog zakona) zabranjuje diskriminaciju na osnovu spola, porijekla, vjere, invaliditeta itd."
+  },
+  "263": {
+   "q": "U Njemačkoj su mladi od 14 godina krivično odgovorni. To znači: mladi koji imaju 14 i više godina i krše krivične zakone …",
+   "options": [
+    "budu kažnjeni.",
+    "tretiraju se kao odrasli.",
+    "dijele kaznu sa svojim roditeljima.",
+    "ne budu kažnjeni."
+   ],
+   "explanation": "Od 14. godine mladi su u Njemačkoj krivično odgovorni i mogu biti kažnjeni prema krivičnom pravu za maloljetnike."
+  },
+  "264": {
+   "q": "Na koji praznik ljudi u Njemačkoj nose šarene kostime i maske?",
+   "options": [
+    "na Ružičasti ponedjeljak (Rosenmontag)",
+    "na Prvi maj",
+    "na Oktoberfestu",
+    "na Duhove"
+   ],
+   "explanation": "Ružičasti ponedjeljak (Rosenmontag) vrhunac je karnevala (Karneval/Fastnacht). Ljudi se maskiraju i učestvuju u povorkama."
+  },
+  "265": {
+   "q": "Kuda u Njemačkoj morate prvo otići ako se želite vjenčati?",
+   "options": [
+    "u ured za prijavu boravka (Einwohnermeldeamt)",
+    "u ured za javni red (Ordnungsamt)",
+    "u Agenciju za rad",
+    "u matični ured (Standesamt)"
+   ],
+   "explanation": "U Njemačkoj je pravno valjano samo vjenčanje u matičnom uredu. Crkvena vjenčanja nemaju pravno dejstvo."
+  },
+  "266": {
+   "q": "Kada u Njemačkoj počinje zakonski noćni mir?",
+   "options": [
+    "kada sunce zađe",
+    "u 22 sata",
+    "kada susjedi odu na spavanje",
+    "u 0 sati, u ponoć"
+   ],
+   "explanation": "Zakonski noćni mir u Njemačkoj počinje u 22 sata i završava u 6 sati ujutro."
+  },
+  "267": {
+   "q": "Mlada žena u Njemačkoj, stara 22 godine, živi sa svojim momkom. Roditeljima to nije drago jer im se momak ne sviđa. Šta roditelji mogu uraditi?",
+   "options": [
+    "Moraju poštovati odluku svoje punoljetne kćerke.",
+    "Imaju pravo vratiti kćerku u roditeljski stan.",
+    "Mogu otići u policiju i prijaviti kćerku.",
+    "Traže drugog muškarca za kćerku."
+   ],
+   "explanation": "S 18 godina se u Njemačkoj postaje punoljetan i može se samostalno odlučiti s kim i gdje živjeti. Roditelji moraju poštovati tu odluku."
+  },
+  "268": {
+   "q": "Mlada žena želi položiti vozački ispit. Boji se ispita jer joj maternji jezik nije njemački. Šta je tačno?",
+   "options": [
+    "Mora živjeti u Njemačkoj najmanje deset godina prije nego što može položiti vozački ispit.",
+    "Teorijski ispit možda može polagati na svom maternjem jeziku. Na izbor je više od deset jezika.",
+    "Ako ne zna njemački, ne smije imati vozačku dozvolu.",
+    "Vozački ispit mora polagati u zemlji u kojoj se govori njen jezik."
+   ],
+   "explanation": "U Njemačkoj se teorijski dio vozačkog ispita može polagati na različitim jezicima."
+  },
+  "269": {
+   "q": "U Njemačkoj djeca od navršene treće godine do polaska u školu imaju pravo na …",
+   "options": [
+    "mjesečni džeparac.",
+    "mjesto u vrtiću.",
+    "mjesto u sportskom klubu.",
+    "propusnicu za raspust."
+   ],
+   "explanation": "Od 2013. sva djeca od navršene prve godine života imaju zakonsko pravo na mjesto u vrtiću."
+  },
+  "270": {
+   "q": "Volkshochschule (narodni univerzitet) u Njemačkoj je ustanova …",
+   "options": [
+    "za vjeronauku.",
+    "samo za mlade.",
+    "za dodatno obrazovanje.",
+    "samo za penzionere i penzionerke."
+   ],
+   "explanation": "Volkshochschule (VHS) je javna ustanova za obrazovanje odraslih i dodatno obrazovanje, otvorena za sve."
+  },
+  "271": {
+   "q": "Koji je običaj u Njemačkoj za Božić?",
+   "options": [
+    "skrivanje šarenih jaja",
+    "kićenje jelke",
+    "prerušavanje u maske i kostime",
+    "stavljanje bundeva ispred vrata"
+   ],
+   "explanation": "Kićenje božićnog drvca (jelke) središnji je božićni običaj u Njemačkoj."
+  },
+  "272": {
+   "q": "Koji oblik života nije dozvoljen u Njemačkoj?",
+   "options": [
+    "Muž i žena su razvedeni i žive s novim partnerima.",
+    "Dvije žene žive zajedno.",
+    "Otac koji sam odgaja djecu živi sa svoje dvoje djece.",
+    "Muškarac je istovremeno oženjen s dvije žene."
+   ],
+   "explanation": "Poligamija (istovremeni brak s više bračnih partnera) u Njemačkoj je zabranjena."
+  },
+  "273": {
+   "q": "Kod problema s odgojem u Njemačkoj idete …",
+   "options": [
+    "ljekaru / ljekarki.",
+    "u zavod za javno zdravstvo (Gesundheitsamt).",
+    "u ured za prijavu boravka (Einwohnermeldeamt).",
+    "u ured za mlade (Jugendamt)."
+   ],
+   "explanation": "Ured za mlade (Jugendamt) pruža savjetovanje i podršku kod problema s odgojem i porodičnih poteškoća."
+  },
+  "274": {
+   "q": "U Njemačkoj ste namjerno otvorili pismo adresirano na drugu osobu. Šta niste poštovali?",
+   "options": [
+    "pravo na šutnju",
+    "tajnost pisama",
+    "obavezu čuvanja tajne",
+    "slobodu mišljenja"
+   ],
+   "explanation": "Tajnost pisama (član 10. Osnovnog zakona) štiti povjerljivost pisane komunikacije. Otvaranje tuđih pisama je kažnjivo."
+  },
+  "275": {
+   "q": "Šta je u Njemačkoj potrebno za razvod braka?",
+   "options": [
+    "pristanak roditelja",
+    "potvrda ljekara / ljekarke",
+    "pristanak djece",
+    "podrška advokata / advokatice"
+   ],
+   "explanation": "Za razvod braka u Njemačkoj propisana je pravna podrška advokata ili advokatice."
+  },
+  "276": {
+   "q": "Šta biste trebali uraditi ako se vaša kontakt-osoba u nekom njemačkom uredu prema vama loše ponaša?",
+   "options": [
+    "Ne mogu ništa uraditi.",
+    "Moram trpjeti takav postupak.",
+    "Prijetim toj osobi.",
+    "Mogu se žaliti šefu / šefici ureda."
+   ],
+   "explanation": "Kod neprimjerenog ponašanja u uredu možete se žaliti šefu ureda ili podnijeti pritužbu nadzornom organu (Dienstaufsichtsbeschwerde)."
+  },
+  "277": {
+   "q": "Žena koja ima dvogodišnje dijete prijavljuje se u Njemačkoj za posao. Šta je primjer diskriminacije? Ne dobija posao samo zato što …",
+   "options": [
+    "ne govori engleski.",
+    "ima previsoka očekivanja u pogledu plate.",
+    "nema iskustva u tom zanimanju.",
+    "je majka."
+   ],
+   "explanation": "Odbijanje zbog majčinstva krši Opći zakon o jednakom postupanju (AGG) i Zakon o zaštiti majčinstva."
+  },
+  "278": {
+   "q": "Muškarac u invalidskim kolicima prijavio se za posao knjigovođe. Šta je primjer diskriminacije? Ne dobija posao samo zato što …",
+   "options": [
+    "sjedi u invalidskim kolicima.",
+    "nema iskustva.",
+    "ima previsoka očekivanja u pogledu plate.",
+    "ne govori engleski."
+   ],
+   "explanation": "Diskriminacija zbog invaliditeta u Njemačkoj je zabranjena (AGG, član 3. Osnovnog zakona). Invalidska kolica ne smiju biti razlog za odbijanje."
+  },
+  "279": {
+   "q": "U većini stambenih zgrada u Njemačkoj postoji „kućni red“ (Hausordnung). Šta piše u takvom „kućnom redu“? On navodi …",
+   "options": [
+    "pravila za korištenje javnog prevoza.",
+    "sve zakupce i zakupkinje stanova u zgradi.",
+    "pravila kojih se moraju pridržavati svi stanari i stanarke.",
+    "adresu najbližeg ureda za javni red (Ordnungsamt)."
+   ],
+   "explanation": "Kućni red sadrži pravila za zajednički život u zgradi, npr. o vremenu mira, odlaganju otpada i čišćenju stepeništa."
+  },
+  "280": {
+   "q": "Ako se u Njemačkoj želite usprotiviti pogrešnom poreskom rješenju, morate …",
+   "options": [
+    "ne raditi ništa.",
+    "baciti rješenje.",
+    "uložiti prigovor.",
+    "čekati dok ne stigne drugo rješenje."
+   ],
+   "explanation": "Protiv poreskog rješenja možete u roku od mjesec dana uložiti prigovor poreskoj upravi (Finanzamt)."
+  },
+  "281": {
+   "q": "Dva prijatelja žele ući na javni bazen u Njemačkoj. Obojica imaju tamnu boju kože i zbog toga ih ne puštaju unutra. Koje je pravo u ovoj situaciji povrijeđeno? Pravo na …",
+   "options": [
+    "slobodu mišljenja",
+    "jednako postupanje",
+    "slobodu okupljanja",
+    "slobodu kretanja"
+   ],
+   "explanation": "Zabrana diskriminacije (jednako postupanje, član 3. Osnovnog zakona i AGG) štiti ljude od nejednakog postupanja zbog njihove nacionalnosti."
+  },
+  "282": {
+   "q": "Koju počasnu dužnost moraju preuzeti njemački državljani / državljanke kada se to od njih zatraži?",
+   "options": [
+    "trener / trenerica u klubu",
+    "nadzor u biblioteci",
+    "pomoćnik / pomoćnica na izborima",
+    "nastavnik / nastavnica"
+   ],
+   "explanation": "Pomoć na izborima građanska je počasna dužnost u Njemačkoj. Njemački državljani mogu biti obavezani na nju."
+  },
+  "283": {
+   "q": "Šta radite ako od njemačkog ureda dobijete pogrešan račun?",
+   "options": [
+    "Ostavljam račun da leži.",
+    "Ulažem prigovor uredu.",
+    "Vraćam račun uredu.",
+    "Idem s računom u poresku upravu."
+   ],
+   "explanation": "Protiv pogrešnih rješenja ili računa ureda može se uložiti prigovor."
+  },
+  "284": {
+   "q": "Ono što se mora znati za posao u budućnosti će se vrlo brzo mijenjati. Šta se može uraditi?",
+   "options": [
+    "Svejedno je šta se uči.",
+    "Djeca u školi nauče sve što je važno za posao. Nakon škole ne treba dalje učiti.",
+    "Odrasli moraju i nakon stručnog obrazovanja stalno učiti dalje.",
+    "Svi moraju ranije prestati raditi jer se sve mijenja."
+   ],
+   "explanation": "Cjeloživotno učenje je u savremenom svijetu rada neophodno jer se zahtjevi stalno mijenjaju."
+  },
+  "285": {
+   "q": "Gospođa Frost radi kao stalno zaposlena službenica u jednoj kancelariji. Šta ne mora plaćati iz svoje plate?",
+   "options": [
+    "porez na promet",
+    "porez na platu",
+    "doprinose za osiguranje za slučaj nezaposlenosti",
+    "doprinose za penzijsko i zdravstveno osiguranje"
+   ],
+   "explanation": "Poslodavac uplaćuje porez na platu direktno poreskoj upravi – on se zadržava od plate zaposlenog."
+  },
+  "286": {
+   "q": "Koje tijelo u firmi pomaže zaposlenima kod problema s poslodavcem / poslodavkom?",
+   "options": [
+    "radničko vijeće",
+    "revizor / revizorica preduzeća",
+    "grupa u preduzeću",
+    "menadžment preduzeća"
+   ],
+   "explanation": "Radničko vijeće (Betriebsrat) demokratski je izabrano predstavničko tijelo zaposlenih u preduzeću."
+  },
+  "287": {
+   "q": "Želite raskinuti radni odnos u jednoj firmi u Njemačkoj. Na šta morate paziti?",
+   "options": [
+    "isplate plate",
+    "radno vrijeme",
+    "otkazni rok",
+    "obavezu osiguranja"
+   ],
+   "explanation": "Kod otkaza se mora poštovati zakonski ili ugovorom dogovoreni otkazni rok."
+  },
+  "288": {
+   "q": "Na čemu se zasniva posebna odgovornost Njemačke prema Izraelu?",
+   "options": [
+    "na članstvu u Evropskoj uniji (EU)",
+    "na nacionalsocijalističkim zločinima nad Jevrejima",
+    "na Osnovnom zakonu (ustavu) Savezne Republike Njemačke",
+    "na kršćanskoj tradiciji"
+   ],
+   "explanation": "Zbog zločina Holokausta Njemačka snosi posebnu historijsku odgovornost prema državi Izrael i jevrejskom narodu."
+  },
+  "289": {
+   "q": "Muškarac tamne boje kože prijavljuje se za posao konobara u jednom restoranu u Njemačkoj. Šta je primjer diskriminacije? Ne dobija posao samo zato što …",
+   "options": [
+    "njegovo znanje njemačkog nije dovoljno.",
+    "ima previsoka očekivanja u pogledu plate.",
+    "ima tamnu kožu.",
+    "nema iskustva u tom zanimanju."
+   ],
+   "explanation": "Diskriminacija zbog boje kože krši Opći zakon o jednakom postupanju (AGG)."
+  },
+  "290": {
+   "q": "Kupili ste televizor u Njemačkoj. Kod kuće ga raspakujete, ali ne radi. Televizor je pokvaren. Šta možete uraditi?",
+   "options": [
+    "podnijeti prijavu",
+    "reklamirati televizor",
+    "zamijeniti uređaj bez pitanja",
+    "produžiti garanciju"
+   ],
+   "explanation": "Kod neispravnog uređaja imate pravo na reklamaciju (zakonsku garanciju). Prodavač mora uređaj popraviti, zamijeniti ili sniziti cijenu."
+  },
+  "291": {
+   "q": "Zašto u Njemačkoj u poreskoj prijavi morate navesti da li pripadate nekoj crkvi ili ne? Zato što …",
+   "options": [
+    "je to važno za statistiku u Njemačkoj.",
+    "postoji crkveni porez koji je vezan za porez na dohodak i porez na platu.",
+    "morate plaćati veći porez ako ne pripadate nekoj crkvi.",
+    "je crkva odgovorna za poresku prijavu."
+   ],
+   "explanation": "U Njemačkoj se crkveni porez ubire zajedno s porezom na dohodak. Članovi crkve plaćaju dodatni postotak."
+  },
+  "292": {
+   "q": "Ljudi u Njemačkoj žive po načelu vjerske tolerancije. Šta to znači?",
+   "options": [
+    "Ne smiju se graditi džamije.",
+    "Svi ljudi vjeruju u Boga.",
+    "Svako može vjerovati u šta želi.",
+    "Država odlučuje u kojeg Boga ljudi vjeruju."
+   ],
+   "explanation": "Sloboda vjeroispovijesti (član 4. Osnovnog zakona) svakome garantuje pravo da izabere vjeru ili da ne pripada nijednoj. Država je vjerski neutralna."
+  },
+  "293": {
+   "q": "Koji je običaj u Njemačkoj za Uskrs?",
+   "options": [
+    "stavljanje bundeva ispred vrata",
+    "kićenje jelke",
+    "bojenje jaja",
+    "ispaljivanje raketa u zrak"
+   ],
+   "explanation": "Bojenje i skrivanje uskršnjih jaja tradicionalni je uskršnji običaj u Njemačkoj."
+  },
+  "294": {
+   "q": "Duhovi su …",
+   "options": [
+    "kršćanski praznik.",
+    "njemački dan sjećanja.",
+    "međunarodni dan žalosti.",
+    "bavarski običaj."
+   ],
+   "explanation": "Duhovi su kršćanski praznik koji se slavi 50 dana nakon Uskrsa i obilježava silazak Svetog Duha."
+  },
+  "295": {
+   "q": "Koja je religija oblikovala evropsku i njemačku kulturu?",
+   "options": [
+    "hinduizam",
+    "kršćanstvo",
+    "budizam",
+    "islam"
+   ],
+   "explanation": "Kršćanstvo je presudno oblikovalo evropsku i njemačku kulturu, historiju, umjetnost i pravni sistem."
+  },
+  "296": {
+   "q": "U Njemačkoj se posljednje četiri sedmice prije Božića nazivaju …",
+   "options": [
+    "Dan pokajanja i molitve.",
+    "Praznik zahvalnosti za žetvu.",
+    "adventsko vrijeme.",
+    "Svi sveti."
+   ],
+   "explanation": "Adventsko vrijeme čine četiri sedmice prije Božića. Počinje 1. adventom i završava na Badnju večer."
+  },
+  "297": {
+   "q": "Iz koje je zemlje u Njemačku došlo najviše migranata / migrantkinja?",
+   "options": [
+    "Italija",
+    "Poljska",
+    "Maroko",
+    "Turska"
+   ],
+   "explanation": "Najviše migranata u Njemačkoj dolazi iz Turske. Tursko useljavanje počelo je uglavnom 1960-ih godina s programom zapošljavanja gastarbajtera."
+  },
+  "298": {
+   "q": "U Njemačkoj Demokratskoj Republici (Istočnoj Njemačkoj) živjeli su prije svega migranti iz …",
+   "options": [
+    "Vijetnama, Poljske, Mozambika.",
+    "Francuske, Rumunije, Somalije.",
+    "Čilea, Mađarske, Zimbabvea.",
+    "Sjeverne Koreje, Meksika, Egipta."
+   ],
+   "explanation": "Njemačka Demokratska Republika dovodila je ugovorne radnike uglavnom iz Vijetnama, Poljske i Mozambika – socijalističkih bratskih država."
+  },
+  "299": {
+   "q": "Strani radnici i radnice koje je Savezna Republika Njemačka vrbovala 50-ih i 60-ih godina zvali su se …",
+   "options": [
+    "radnici / radnice na crno",
+    "gastarbajteri / gastarbajterke",
+    "privremeni radnici / privremene radnice",
+    "radnici / radnice u smjenama"
+   ],
+   "explanation": "Gastarbajteri su bili strani radnici koje je Njemačka od 1950-ih do 1970-ih godina vrbovala za obnovu."
+  },
+  "300": {
+   "q": "Iz koje su zemlje došli prvi gastarbajteri / gastarbajterke u Saveznu Republiku Njemačku?",
+   "options": [
+    "Italija",
+    "Španija",
+    "Portugal",
+    "Turska"
+   ],
+   "explanation": "Savezna Republika zaključila je prvi sporazum o vrbovanju radne snage 1955. s Italijom. Uslijedili su sporazumi s drugim zemljama."
+  },
+  "301": {
+   "q": "Koji grb pripada saveznoj pokrajini Berlinu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Grb Berlina prikazuje crnog medvjeda na bijeloj podlozi – berlinski medvjed je simbol grada."
+  },
+  "302": {
+   "q": "Koji od ovih je gradski okrug (Bezirk) Berlina?",
+   "options": [
+    "Altona",
+    "Prignitz",
+    "Pankow",
+    "Demmin"
+   ],
+   "explanation": "Pankow je jedan od 12 berlinskih gradskih okruga. Altona se nalazi u Hamburgu, a Prignitz i Demmin su okruzi u Brandenburgu/Mecklenburgu."
+  },
+  "303": {
+   "q": "Na koliko se godina bira pokrajinski parlament u Berlinu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Berlinski Zastupnički dom (Abgeordnetenhaus) bira se svakih pet godina."
+  },
+  "304": {
+   "q": "Od koje dobi se u Berlinu smije glasati na lokalnim izborima (izbor skupštine gradskog okruga)?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Berlinu (izbor skupštine gradskog okruga) smije se glasati od 16 godina."
+  },
+  "305": {
+   "q": "Koje boje ima zastava pokrajine Berlina?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "bijelo-crvena",
+    "zeleno-bijelo-crvena",
+    "crno-zlatna"
+   ],
+   "explanation": "Zastava Berlina je bijelo-crvena, u bojama historijskog Brandenburga-Pruske."
+  },
+  "306": {
+   "q": "Gdje se u Berlinu možete informisati o političkim temama?",
+   "options": [
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u crkvama",
+    "u savjetovalištu za potrošače",
+    "u pokrajinskom centru za političko obrazovanje"
+   ],
+   "explanation": "Pokrajinski centar za političko obrazovanje informiše građane o politici i potiče demokratski angažman."
+  },
+  "307": {
+   "q": "Koja savezna pokrajina je grad-država?",
+   "options": [
+    "Berlin",
+    "Saarland",
+    "Brandenburg",
+    "Hessen"
+   ],
+   "explanation": "Berlin je, uz Hamburg i Bremen, jedan od tri njemačka grada-države – savezne pokrajine koje su istovremeno i gradovi."
+  },
+  "308": {
+   "q": "Koja je od ovih saveznih pokrajina Berlin?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Berlin se nalazi na sjeveroistoku Njemačke i okružen je saveznom pokrajinom Brandenburg."
+  },
+  "309": {
+   "q": "Kako se naziva šef / šefica vlade grada-države Berlina?",
+   "options": [
+    "premijer pokrajine / premijerka pokrajine",
+    "glavni gradonačelnik / glavna gradonačelnica",
+    "predsjednik / predsjednica Senata",
+    "vladajući gradonačelnik / vladajuća gradonačelnica"
+   ],
+   "explanation": "Šef vlade Berlina nosi titulu „vladajući gradonačelnik“ (Regierender Bürgermeister) i vodi berlinski Senat."
+  },
+  "310": {
+   "q": "Kojeg senatora / koje senatorice nema u Berlinu?",
+   "options": [
+    "senator / senatorica za finansije",
+    "senator / senatorica za unutrašnje poslove",
+    "senator / senatorica za vanjske odnose",
+    "senator / senatorica za pravosuđe"
+   ],
+   "explanation": "Vanjska politika je u Njemačkoj u nadležnosti savezne države. Zato Berlin nema senatora za vanjske odnose."
+  },
+  "311": {
+   "q": "Koji grb pripada saveznoj pokrajini Baden-Württembergu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Baden-Württemberga."
+  },
+  "312": {
+   "q": "Koji od ovih je okrug (Landkreis) u Baden-Württembergu?",
+   "options": [
+    "Mecklenburgische Seenplatte",
+    "Neckar-Odenwald-Kreis",
+    "Nordfriesland",
+    "Altötting"
+   ],
+   "explanation": "Neckar-Odenwald-Kreis je okrug u Baden-Württembergu."
+  },
+  "313": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Baden-Württembergu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Baden-Württemberga bira se na 5 godina."
+  },
+  "314": {
+   "q": "Od koje dobi se u Baden-Württembergu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Baden-Württembergu najniža dob za glasanje je 16 godina."
+  },
+  "315": {
+   "q": "Koje boje ima zastava pokrajine Baden-Württemberga?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "crno-zlatna",
+    "bijelo-plava",
+    "zeleno-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Baden-Württemberga je crno-zlatna."
+  },
+  "316": {
+   "q": "Gdje se u Baden-Württembergu možete informisati o političkim temama?",
+   "options": [
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u savjetovalištu za potrošače",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u crkvama"
+   ],
+   "explanation": "U Baden-Württembergu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "317": {
+   "q": "Glavni grad pokrajine Baden-Württemberga je ...",
+   "options": [
+    "Heidelberg.",
+    "Stuttgart.",
+    "Karlsruhe.",
+    "Mannheim."
+   ],
+   "explanation": "Glavni grad pokrajine Baden-Württemberga je Stuttgart."
+  },
+  "318": {
+   "q": "Koja je od ovih saveznih pokrajina Baden-Württemberg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Baden-Württemberg."
+  },
+  "319": {
+   "q": "Kako se naziva šef / šefica vlade u Baden-Württembergu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Baden-Württembergu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "320": {
+   "q": "Kojeg ministra / koje ministrice nema u Baden-Württembergu?",
+   "options": [
+    "ministar / ministrica finansija",
+    "ministar / ministrica pravde",
+    "ministar / ministrica unutrašnjih poslova",
+    "ministar / ministrica vanjskih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Baden-Württemberg nema ministra / ministricu vanjskih poslova."
+  },
+  "321": {
+   "q": "Koji grb pripada Slobodnoj Državi Bavarskoj?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Bavarske."
+  },
+  "322": {
+   "q": "Koji od ovih je okrug (Landkreis) u Bavarskoj?",
+   "options": [
+    "Prignitz",
+    "Rhein-Sieg-Kreis",
+    "Nordfriesland",
+    "Altötting"
+   ],
+   "explanation": "Altötting je okrug u Bavarskoj."
+  },
+  "323": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Bavarskoj?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Bavarske bira se na 5 godina."
+  },
+  "324": {
+   "q": "Od koje dobi se u Bavarskoj smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Bavarskoj najniža dob za glasanje je 18 godina."
+  },
+  "325": {
+   "q": "Koje boje ima zastava pokrajine Bavarske?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "bijelo-plava",
+    "zeleno-bijelo-crvena",
+    "crno-žuta"
+   ],
+   "explanation": "Zastava pokrajine Bavarske je bijelo-plava."
+  },
+  "326": {
+   "q": "Gdje se u Bavarskoj možete informisati o političkim temama?",
+   "options": [
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u savjetovalištu za potrošače",
+    "u crkvama"
+   ],
+   "explanation": "U Bavarskoj se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "327": {
+   "q": "Glavni grad pokrajine Bavarske je ...",
+   "options": [
+    "Ingolstadt.",
+    "Regensburg.",
+    "Nürnberg.",
+    "München."
+   ],
+   "explanation": "Glavni grad pokrajine Bavarske je München."
+  },
+  "328": {
+   "q": "Koja je od ovih saveznih pokrajina Bavarska?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Bavarska."
+  },
+  "329": {
+   "q": "Kako se naziva šef / šefica vlade u Bavarskoj?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Bavarskoj nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "330": {
+   "q": "Kojeg ministra / koje ministrice nema u Bavarskoj?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Bavarska nema ministra / ministricu vanjskih poslova."
+  },
+  "331": {
+   "q": "Koji grb pripada saveznoj pokrajini Brandenburgu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Brandenburga."
+  },
+  "332": {
+   "q": "Koji od ovih je okrug (Landkreis) u Brandenburgu?",
+   "options": [
+    "Prignitz",
+    "Rhein-Sieg-Kreis",
+    "Vogtlandkreis",
+    "Amberg-Sulzbach"
+   ],
+   "explanation": "Prignitz je okrug u Brandenburgu."
+  },
+  "333": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Brandenburgu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Brandenburga bira se na 5 godina."
+  },
+  "334": {
+   "q": "Od koje dobi se u Brandenburgu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Brandenburgu najniža dob za glasanje je 16 godina."
+  },
+  "335": {
+   "q": "Koje boje ima zastava pokrajine Brandenburga?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "crveno-bijela",
+    "zeleno-bijelo-crvena",
+    "crno-žuta"
+   ],
+   "explanation": "Zastava pokrajine Brandenburga je crveno-bijela."
+  },
+  "336": {
+   "q": "Gdje se u Brandenburgu možete informisati o političkim temama?",
+   "options": [
+    "u crkvama",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u savjetovalištu za potrošače"
+   ],
+   "explanation": "U Brandenburgu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "337": {
+   "q": "Glavni grad pokrajine Brandenburga je ...",
+   "options": [
+    "Potsdam.",
+    "Cottbus.",
+    "Brandenburg.",
+    "Frankfurt/Oder."
+   ],
+   "explanation": "Glavni grad pokrajine Brandenburga je Potsdam."
+  },
+  "338": {
+   "q": "Koja je od ovih saveznih pokrajina Brandenburg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Brandenburg."
+  },
+  "339": {
+   "q": "Kako se naziva šef / šefica vlade u Brandenburgu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Brandenburgu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "340": {
+   "q": "Kojeg ministra / koje ministrice nema u Brandenburgu?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Brandenburg nema ministra / ministricu vanjskih poslova."
+  },
+  "341": {
+   "q": "Koji grb pripada Slobodnom hanzeatskom gradu Bremenu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Bremena."
+  },
+  "342": {
+   "q": "Koja od ovih je gradska četvrt (Stadtteil) Bremena?",
+   "options": [
+    "Altona",
+    "Hemelingen",
+    "Pankow",
+    "Babelsberg"
+   ],
+   "explanation": "Hemelingen je gradska četvrt Bremena."
+  },
+  "343": {
+   "q": "Na koliko se godina bira pokrajinski parlament u Bremenu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Bremena bira se na 4 godine."
+  },
+  "344": {
+   "q": "Od koje dobi se u Bremenu smije glasati na izborima za Bürgerschaft (pokrajinski parlament)?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na izborima za Bürgerschaft (pokrajinski parlament) u Bremenu najniža dob za glasanje je 16 godina."
+  },
+  "345": {
+   "q": "Koje boje ima zastava pokrajine Bremena?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "crveno-bijela",
+    "zeleno-bijelo-crvena",
+    "crno-zlatna"
+   ],
+   "explanation": "Zastava pokrajine Bremena je crveno-bijela."
+  },
+  "346": {
+   "q": "Gdje se u Bremenu možete informisati o političkim temama?",
+   "options": [
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u crkvama",
+    "u savjetovalištu za potrošače"
+   ],
+   "explanation": "U Bremenu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "347": {
+   "q": "Koji je od ovih gradova njemački grad-država?",
+   "options": [
+    "Bremen",
+    "München",
+    "Frankfurt",
+    "Erfurt"
+   ],
+   "explanation": "Tri njemačka grada-države su Berlin, Hamburg i Bremen; Bremen je jedan od njih."
+  },
+  "348": {
+   "q": "Koja je od ovih saveznih pokrajina Bremen?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Bremen."
+  },
+  "349": {
+   "q": "Kako se naziva šef / šefica vlade grada-države Bremena?",
+   "options": [
+    "premijer pokrajine / premijerka pokrajine",
+    "prvi gradonačelnik / prva gradonačelnica",
+    "predsjednik / predsjednica Senata",
+    "vladajući gradonačelnik / vladajuća gradonačelnica"
+   ],
+   "explanation": "Šef / šefica vlade Bremena nosi titulu „predsjednik / predsjednica Senata“."
+  },
+  "350": {
+   "q": "Kojeg senatora / koje senatorice nema u Bremenu?",
+   "options": [
+    "senator / senatorica za vanjske odnose",
+    "senator / senatorica za finansije",
+    "senator / senatorica za pravosuđe",
+    "senator / senatorica za unutrašnje poslove"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Bremen nema senatora / senatoricu za vanjske odnose."
+  },
+  "351": {
+   "q": "Koji grb pripada Slobodnom i hanzeatskom gradu Hamburgu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Hamburga."
+  },
+  "352": {
+   "q": "Koji od ovih je gradski okrug (Bezirk) Hamburga?",
+   "options": [
+    "Altona",
+    "Hemelingen",
+    "Pankow",
+    "Mecklenburgische Seenplatte"
+   ],
+   "explanation": "Altona je gradski okrug Hamburga."
+  },
+  "353": {
+   "q": "Na koliko se godina bira pokrajinski parlament u Hamburgu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Hamburga bira se na 5 godina."
+  },
+  "354": {
+   "q": "Od koje dobi se u Hamburgu smije glasati na lokalnim izborima (izbor skupština gradskih okruga)?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Hamburgu najniža dob za glasanje je 16 godina."
+  },
+  "355": {
+   "q": "Koje boje ima zastava pokrajine Hamburga?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "bijelo-crvena",
+    "zeleno-bijelo-crvena",
+    "crno-žuta"
+   ],
+   "explanation": "Zastava pokrajine Hamburga je bijelo-crvena."
+  },
+  "356": {
+   "q": "Gdje se u Hamburgu možete informisati o političkim temama?",
+   "options": [
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u savjetovalištu za potrošače",
+    "u crkvama",
+    "u pokrajinskom centru za političko obrazovanje"
+   ],
+   "explanation": "U Hamburgu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "357": {
+   "q": "Koja savezna pokrajina je grad-država?",
+   "options": [
+    "Hamburg",
+    "Saska",
+    "Bavarska",
+    "Tiringija"
+   ],
+   "explanation": "Tri njemačka grada-države su Berlin, Hamburg i Bremen; Hamburg je jedan od njih."
+  },
+  "358": {
+   "q": "Koja je od ovih saveznih pokrajina Hamburg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Hamburg."
+  },
+  "359": {
+   "q": "Kako se naziva šef / šefica vlade grada-države Hamburga?",
+   "options": [
+    "premijer pokrajine / premijerka pokrajine",
+    "prvi gradonačelnik / prva gradonačelnica",
+    "vladajući senator / vladajuća senatorica",
+    "glavni gradonačelnik / glavna gradonačelnica"
+   ],
+   "explanation": "Šef / šefica vlade Hamburga nosi titulu „prvi gradonačelnik / prva gradonačelnica“."
+  },
+  "360": {
+   "q": "Kojeg senatora / koje senatorice nema u Hamburgu?",
+   "options": [
+    "senator / senatorica za pravosuđe",
+    "senator / senatorica za vanjske odnose",
+    "senator / senatorica za finansije",
+    "senator / senatorica za unutrašnje poslove"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Hamburg nema senatora / senatoricu za vanjske odnose."
+  },
+  "361": {
+   "q": "Koji grb pripada saveznoj pokrajini Hessenu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Hessena."
+  },
+  "362": {
+   "q": "Koji od ovih je okrug (Landkreis) u Hessenu?",
+   "options": [
+    "Ammerland",
+    "Altötting",
+    "Prignitz",
+    "Main-Taunus-Kreis"
+   ],
+   "explanation": "Main-Taunus-Kreis je okrug u Hessenu."
+  },
+  "363": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Hessenu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Hessena bira se na 5 godina."
+  },
+  "364": {
+   "q": "Od koje dobi se u Hessenu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Hessenu najniža dob za glasanje je 18 godina."
+  },
+  "365": {
+   "q": "Koje boje ima zastava pokrajine Hessena?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "crveno-bijela",
+    "crno-zlatna",
+    "zeleno-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Hessena je crveno-bijela."
+  },
+  "366": {
+   "q": "Gdje se u Hessenu možete informisati o političkim temama?",
+   "options": [
+    "u pokrajinskom centru za političko obrazovanje",
+    "u savjetovalištu za potrošače",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u crkvama"
+   ],
+   "explanation": "U Hessenu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "367": {
+   "q": "Glavni grad pokrajine Hessena je ...",
+   "options": [
+    "Kassel.",
+    "Darmstadt.",
+    "Frankfurt.",
+    "Wiesbaden."
+   ],
+   "explanation": "Glavni grad pokrajine Hessena je Wiesbaden."
+  },
+  "368": {
+   "q": "Koja je od ovih saveznih pokrajina Hessen?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Hessen."
+  },
+  "369": {
+   "q": "Kako se naziva šef / šefica vlade u Hessenu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Hessenu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "370": {
+   "q": "Kojeg ministra / koje ministrice nema u Hessenu?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Hessen nema ministra / ministricu vanjskih poslova."
+  },
+  "371": {
+   "q": "Koji grb pripada saveznoj pokrajini Mecklenburg-Vorpommernu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Mecklenburg-Vorpommerna."
+  },
+  "372": {
+   "q": "Koji od ovih je okrug (Landkreis) u Mecklenburg-Vorpommernu?",
+   "options": [
+    "Prignitz",
+    "Mecklenburgische Seenplatte",
+    "Vogtlandkreis",
+    "Rhein-Sieg-Kreis"
+   ],
+   "explanation": "Mecklenburgische Seenplatte je okrug u Mecklenburg-Vorpommernu."
+  },
+  "373": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Mecklenburg-Vorpommernu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Mecklenburg-Vorpommerna bira se na 5 godina."
+  },
+  "374": {
+   "q": "Od koje dobi se u Mecklenburg-Vorpommernu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Mecklenburg-Vorpommernu najniža dob za glasanje je 16 godina."
+  },
+  "375": {
+   "q": "Koje boje ima zastava pokrajine Mecklenburg-Vorpommerna?",
+   "options": [
+    "crno-crveno-zlatna",
+    "plavo-bijelo-žuto-crvena",
+    "zeleno-bijelo-crvena",
+    "crno-žuta"
+   ],
+   "explanation": "Zastava pokrajine Mecklenburg-Vorpommerna je plavo-bijelo-žuto-crvena."
+  },
+  "376": {
+   "q": "Gdje se u Mecklenburg-Vorpommernu možete informisati o političkim temama?",
+   "options": [
+    "u pokrajinskom centru za političko obrazovanje",
+    "u crkvama",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u savjetovalištu za potrošače"
+   ],
+   "explanation": "U Mecklenburg-Vorpommernu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "377": {
+   "q": "Glavni grad pokrajine Mecklenburg-Vorpommerna je ...",
+   "options": [
+    "Greifswald.",
+    "Schwerin.",
+    "Rostock.",
+    "Wismar."
+   ],
+   "explanation": "Glavni grad pokrajine Mecklenburg-Vorpommerna je Schwerin."
+  },
+  "378": {
+   "q": "Koja je od ovih saveznih pokrajina Mecklenburg-Vorpommern?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Mecklenburg-Vorpommern."
+  },
+  "379": {
+   "q": "Kako se naziva šef / šefica vlade u Mecklenburg-Vorpommernu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Mecklenburg-Vorpommernu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "380": {
+   "q": "Kojeg ministra / koje ministrice nema u Mecklenburg-Vorpommernu?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Mecklenburg-Vorpommern nema ministra / ministricu vanjskih poslova."
+  },
+  "381": {
+   "q": "Koji grb pripada saveznoj pokrajini Donjoj Saskoj?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Donje Saske."
+  },
+  "382": {
+   "q": "Koji od ovih je okrug (Landkreis) u Donjoj Saskoj?",
+   "options": [
+    "Ammerland",
+    "Rhein-Sieg-Kreis",
+    "Nordfriesland",
+    "Vogtlandkreis"
+   ],
+   "explanation": "Ammerland je okrug u Donjoj Saskoj."
+  },
+  "383": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Donjoj Saskoj?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Donje Saske bira se na 5 godina."
+  },
+  "384": {
+   "q": "Od koje dobi se u Donjoj Saskoj smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Donjoj Saskoj najniža dob za glasanje je 16 godina."
+  },
+  "385": {
+   "q": "Koje boje ima zastava pokrajine Donje Saske?",
+   "options": [
+    "bijelo-plava",
+    "crno-crveno-zlatna",
+    "crno-žuta",
+    "plavo-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Donje Saske je crno-crveno-zlatna."
+  },
+  "386": {
+   "q": "Gdje se u Donjoj Saskoj možete informisati o političkim temama?",
+   "options": [
+    "u pokrajinskom centru za političko obrazovanje",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u savjetovalištu za potrošače",
+    "u crkvama"
+   ],
+   "explanation": "U Donjoj Saskoj se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "387": {
+   "q": "Glavni grad pokrajine Donje Saske je ...",
+   "options": [
+    "Hannover.",
+    "Braunschweig.",
+    "Wolfsburg.",
+    "Osnabrück."
+   ],
+   "explanation": "Glavni grad pokrajine Donje Saske je Hannover."
+  },
+  "388": {
+   "q": "Koja je od ovih saveznih pokrajina Donja Saska?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Donja Saska."
+  },
+  "389": {
+   "q": "Kako se naziva šef / šefica vlade u Donjoj Saskoj?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Donjoj Saskoj nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "390": {
+   "q": "Kojeg ministra / koje ministrice nema u Donjoj Saskoj?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Donja Saska nema ministra / ministricu vanjskih poslova."
+  },
+  "391": {
+   "q": "Koji grb pripada saveznoj pokrajini Sjevernoj Rajni-Vestfaliji?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Sjeverne Rajne-Vestfalije."
+  },
+  "392": {
+   "q": "Koji od ovih je okrug (Landkreis) u Sjevernoj Rajni-Vestfaliji?",
+   "options": [
+    "Ammerland",
+    "Rhein-Sieg-Kreis",
+    "Nordfriesland",
+    "Vogtlandkreis"
+   ],
+   "explanation": "Rhein-Sieg-Kreis je okrug u Sjevernoj Rajni-Vestfaliji."
+  },
+  "393": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Sjevernoj Rajni-Vestfaliji?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Sjeverne Rajne-Vestfalije bira se na 5 godina."
+  },
+  "394": {
+   "q": "Od koje dobi se u Sjevernoj Rajni-Vestfaliji smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Sjevernoj Rajni-Vestfaliji najniža dob za glasanje je 16 godina."
+  },
+  "395": {
+   "q": "Koje boje ima zastava pokrajine Sjeverne Rajne-Vestfalije?",
+   "options": [
+    "crveno-bijela",
+    "zeleno-bijelo-crvena",
+    "crno-zlatna",
+    "plavo-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Sjeverne Rajne-Vestfalije je zeleno-bijelo-crvena."
+  },
+  "396": {
+   "q": "Gdje se u Sjevernoj Rajni-Vestfaliji možete informisati o političkim temama?",
+   "options": [
+    "u crkvama",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u savjetovalištu za potrošače",
+    "u pokrajinskom centru za političko obrazovanje"
+   ],
+   "explanation": "U Sjevernoj Rajni-Vestfaliji se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "397": {
+   "q": "Glavni grad pokrajine Sjeverne Rajne-Vestfalije je ...",
+   "options": [
+    "Köln.",
+    "Bonn.",
+    "Düsseldorf.",
+    "Dortmund."
+   ],
+   "explanation": "Glavni grad pokrajine Sjeverne Rajne-Vestfalije je Düsseldorf."
+  },
+  "398": {
+   "q": "Koja je od ovih saveznih pokrajina Sjeverna Rajna-Vestfalija?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Sjeverna Rajna-Vestfalija."
+  },
+  "399": {
+   "q": "Kako se naziva šef / šefica vlade u Sjevernoj Rajni-Vestfaliji?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Sjevernoj Rajni-Vestfaliji nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "400": {
+   "q": "Kojeg ministra / koje ministrice nema u Sjevernoj Rajni-Vestfaliji?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Sjeverna Rajna-Vestfalija nema ministra / ministricu vanjskih poslova."
+  },
+  "401": {
+   "q": "Koji grb pripada saveznoj pokrajini Porajnju-Falačkoj?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Porajnja-Falačke."
+  },
+  "402": {
+   "q": "Koji od ovih je okrug (Landkreis) u Porajnju-Falačkoj?",
+   "options": [
+    "Westerwaldkreis",
+    "Altötting",
+    "Emsland",
+    "Prignitz"
+   ],
+   "explanation": "Westerwaldkreis je okrug u Porajnju-Falačkoj."
+  },
+  "403": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Porajnju-Falačkoj?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Porajnja-Falačke bira se na 5 godina."
+  },
+  "404": {
+   "q": "Od koje dobi se u Porajnju-Falačkoj smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Porajnju-Falačkoj najniža dob za glasanje je 18 godina."
+  },
+  "405": {
+   "q": "Koje boje ima zastava pokrajine Porajnja-Falačke?",
+   "options": [
+    "bijelo-crvena",
+    "crno-crveno-zlatna",
+    "crno-žuta",
+    "zeleno-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Porajnja-Falačke je crno-crveno-zlatna."
+  },
+  "406": {
+   "q": "Gdje se u Porajnju-Falačkoj možete informisati o političkim temama?",
+   "options": [
+    "u crkvama",
+    "u savjetovalištu za potrošače",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u pokrajinskom centru za političko obrazovanje"
+   ],
+   "explanation": "U Porajnju-Falačkoj se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "407": {
+   "q": "Glavni grad pokrajine Porajnja-Falačke je ...",
+   "options": [
+    "Mainz.",
+    "Kaiserslautern.",
+    "Ludwigshafen.",
+    "Koblenz."
+   ],
+   "explanation": "Glavni grad pokrajine Porajnja-Falačke je Mainz."
+  },
+  "408": {
+   "q": "Koja je od ovih saveznih pokrajina Porajnje-Falačka?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Porajnje-Falačka."
+  },
+  "409": {
+   "q": "Kako se naziva šef / šefica vlade u Porajnju-Falačkoj?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Porajnju-Falačkoj nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "410": {
+   "q": "Kojeg ministra / koje ministrice nema u Porajnju-Falačkoj?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Porajnje-Falačka nema ministra / ministricu vanjskih poslova."
+  },
+  "411": {
+   "q": "Koji grb pripada saveznoj pokrajini Saarlandu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Saarlanda."
+  },
+  "412": {
+   "q": "Koji od ovih je okrug (Landkreis) u Saarlandu?",
+   "options": [
+    "Mecklenburgische Seenplatte",
+    "Altötting",
+    "Neunkirchen",
+    "Rhein-Sieg-Kreis"
+   ],
+   "explanation": "Neunkirchen je okrug u Saarlandu."
+  },
+  "413": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) Saarlanda?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Saarlanda bira se na 5 godina."
+  },
+  "414": {
+   "q": "Od koje dobi se u Saarlandu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Saarlandu najniža dob za glasanje je 18 godina."
+  },
+  "415": {
+   "q": "Koje boje ima zastava pokrajine Saarlanda?",
+   "options": [
+    "bijelo-plava",
+    "crno-crveno-zlatna",
+    "crno-žuta",
+    "zeleno-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Saarlanda je crno-crveno-zlatna."
+  },
+  "416": {
+   "q": "Gdje se u Saarlandu možete informisati o političkim temama?",
+   "options": [
+    "u crkvama",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u savjetovalištu za potrošače",
+    "u općinskom uredu za javni red (Ordnungsamt)"
+   ],
+   "explanation": "U Saarlandu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "417": {
+   "q": "Glavni grad pokrajine Saarlanda je ...",
+   "options": [
+    "Neunkirchen.",
+    "Homburg.",
+    "Saarbrücken.",
+    "Völklingen."
+   ],
+   "explanation": "Glavni grad pokrajine Saarlanda je Saarbrücken."
+  },
+  "418": {
+   "q": "Koja je od ovih saveznih pokrajina Saarland?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Saarland."
+  },
+  "419": {
+   "q": "Kako se naziva šef / šefica vlade u Saarlandu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Saarlandu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "420": {
+   "q": "Kojeg ministra / koje ministrice nema u Saarlandu?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Saarland nema ministra / ministricu vanjskih poslova."
+  },
+  "421": {
+   "q": "Koji grb pripada Slobodnoj Državi Saskoj?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Saske."
+  },
+  "422": {
+   "q": "Koji od ovih je okrug (Landkreis) u Saskoj?",
+   "options": [
+    "Vogtlandkreis",
+    "Altötting",
+    "Uckermark",
+    "Nordfriesland"
+   ],
+   "explanation": "Vogtlandkreis je okrug u Saskoj."
+  },
+  "423": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Saskoj?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Saske bira se na 5 godina."
+  },
+  "424": {
+   "q": "Od koje dobi se u Saskoj smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Saskoj najniža dob za glasanje je 18 godina."
+  },
+  "425": {
+   "q": "Koje boje ima zastava pokrajine Saske?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "bijelo-zelena",
+    "zeleno-bijelo-crvena",
+    "crno-žuta"
+   ],
+   "explanation": "Zastava pokrajine Saske je bijelo-zelena."
+  },
+  "426": {
+   "q": "Gdje se u Saskoj možete informisati o političkim temama?",
+   "options": [
+    "u pokrajinskom centru za političko obrazovanje",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u crkvama",
+    "u savjetovalištu za potrošače"
+   ],
+   "explanation": "U Saskoj se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "427": {
+   "q": "Glavni grad pokrajine Saske je ...",
+   "options": [
+    "Leipzig.",
+    "Dresden.",
+    "Chemnitz.",
+    "Zwickau."
+   ],
+   "explanation": "Glavni grad pokrajine Saske je Dresden."
+  },
+  "428": {
+   "q": "Koja je od ovih saveznih pokrajina Saska?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Saska."
+  },
+  "429": {
+   "q": "Kako se naziva šef / šefica vlade u Saskoj?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Saskoj nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "430": {
+   "q": "Kojeg ministra / koje ministrice nema u Saskoj?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Saska nema ministra / ministricu vanjskih poslova."
+  },
+  "431": {
+   "q": "Koji grb pripada saveznoj pokrajini Saskoj-Anhaltu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Saske-Anhalta."
+  },
+  "432": {
+   "q": "Koji od ovih je okrug (Landkreis) u Saskoj-Anhaltu?",
+   "options": [
+    "Ammerland",
+    "Altötting",
+    "Uckermark",
+    "Börde"
+   ],
+   "explanation": "Börde je okrug u Saskoj-Anhaltu."
+  },
+  "433": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Saskoj-Anhaltu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Saske-Anhalta bira se na 5 godina."
+  },
+  "434": {
+   "q": "Od koje dobi se u Saskoj-Anhaltu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Saskoj-Anhaltu najniža dob za glasanje je 16 godina."
+  },
+  "435": {
+   "q": "Koje boje ima zastava pokrajine Saske-Anhalta?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "žuto-crna",
+    "zeleno-bijelo-crvena",
+    "bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Saske-Anhalta je žuto-crna."
+  },
+  "436": {
+   "q": "Gdje se u Saskoj-Anhaltu možete informisati o političkim temama?",
+   "options": [
+    "u crkvama",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "u savjetovalištu za potrošače"
+   ],
+   "explanation": "U Saskoj-Anhaltu se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "437": {
+   "q": "Glavni grad pokrajine Saske-Anhalta je ...",
+   "options": [
+    "Halle.",
+    "Dessau.",
+    "Magdeburg.",
+    "Wittenberg."
+   ],
+   "explanation": "Glavni grad pokrajine Saske-Anhalta je Magdeburg."
+  },
+  "438": {
+   "q": "Koja je od ovih saveznih pokrajina Saska-Anhalt?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Saska-Anhalt."
+  },
+  "439": {
+   "q": "Kako se naziva šef / šefica vlade u Saskoj-Anhaltu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Saskoj-Anhaltu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "440": {
+   "q": "Kojeg ministra / koje ministrice nema u Saskoj-Anhaltu?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Saska-Anhalt nema ministra / ministricu vanjskih poslova."
+  },
+  "441": {
+   "q": "Koji grb pripada saveznoj pokrajini Schleswig-Holsteinu?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Schleswig-Holsteina."
+  },
+  "442": {
+   "q": "Koji od ovih je okrug (Landkreis) u Schleswig-Holsteinu?",
+   "options": [
+    "Ammerland",
+    "Mecklenburgische Seenplatte",
+    "Nordfriesland",
+    "Rhein-Sieg-Kreis"
+   ],
+   "explanation": "Nordfriesland je okrug u Schleswig-Holsteinu."
+  },
+  "443": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Schleswig-Holsteinu?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Schleswig-Holsteina bira se na 5 godina."
+  },
+  "444": {
+   "q": "Od koje dobi se u Schleswig-Holsteinu smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Schleswig-Holsteinu najniža dob za glasanje je 16 godina."
+  },
+  "445": {
+   "q": "Koje boje ima zastava pokrajine Schleswig-Holsteina?",
+   "options": [
+    "bijelo-plava",
+    "plavo-bijelo-crvena",
+    "bijelo-crvena",
+    "zeleno-bijelo-crvena"
+   ],
+   "explanation": "Zastava pokrajine Schleswig-Holsteina je plavo-bijelo-crvena."
+  },
+  "446": {
+   "q": "Gdje se u Schleswig-Holsteinu možete informisati o političkim temama?",
+   "options": [
+    "u savjetovalištu za potrošače",
+    "u općinskom uredu za javni red (Ordnungsamt)",
+    "kod pokrajinskog povjerenika za političko obrazovanje",
+    "u crkvama"
+   ],
+   "explanation": "U Schleswig-Holsteinu se o političkim temama možete informisati kod pokrajinskog povjerenika za političko obrazovanje."
+  },
+  "447": {
+   "q": "Glavni grad pokrajine Schleswig-Holsteina je ...",
+   "options": [
+    "Husum.",
+    "Flensburg.",
+    "Lübeck.",
+    "Kiel."
+   ],
+   "explanation": "Glavni grad pokrajine Schleswig-Holsteina je Kiel."
+  },
+  "448": {
+   "q": "Koja je od ovih saveznih pokrajina Schleswig-Holstein?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Schleswig-Holstein."
+  },
+  "449": {
+   "q": "Kako se naziva šef / šefica vlade u Schleswig-Holsteinu?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Schleswig-Holsteinu nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "450": {
+   "q": "Kojeg ministra / koje ministrice nema u Schleswig-Holsteinu?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Schleswig-Holstein nema ministra / ministricu vanjskih poslova."
+  },
+  "451": {
+   "q": "Koji grb pripada Slobodnoj Državi Tiringiji?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Prikazani grb je službeni grb pokrajine Tiringije."
+  },
+  "452": {
+   "q": "Koji od ovih je okrug (Landkreis) u Tiringiji?",
+   "options": [
+    "Ammerland",
+    "Altötting",
+    "Nordfriesland",
+    "Wartburgkreis"
+   ],
+   "explanation": "Wartburgkreis je okrug u Tiringiji."
+  },
+  "453": {
+   "q": "Na koliko se godina bira pokrajinski parlament (Landtag) u Tiringiji?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Landtag (pokrajinski parlament) Tiringije bira se na 5 godina."
+  },
+  "454": {
+   "q": "Od koje dobi se u Tiringiji smije glasati na lokalnim izborima?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Na lokalnim izborima u Tiringiji najniža dob za glasanje je 16 godina."
+  },
+  "455": {
+   "q": "Koje boje ima zastava pokrajine Tiringije?",
+   "options": [
+    "plavo-bijelo-crvena",
+    "bijelo-crvena",
+    "zeleno-bijelo-crvena",
+    "crno-zlatna"
+   ],
+   "explanation": "Zastava pokrajine Tiringije je bijelo-crvena."
+  },
+  "456": {
+   "q": "Gdje se u Tiringiji možete informisati o političkim temama?",
+   "options": [
+    "u crkvama",
+    "u savjetovalištu za potrošače",
+    "u pokrajinskom centru za političko obrazovanje",
+    "u općinskom uredu za javni red (Ordnungsamt)"
+   ],
+   "explanation": "U Tiringiji se o političkim temama možete informisati u pokrajinskom centru za političko obrazovanje."
+  },
+  "457": {
+   "q": "Glavni grad pokrajine Tiringije je ...",
+   "options": [
+    "Eisenach.",
+    "Erfurt.",
+    "Gera.",
+    "Jena."
+   ],
+   "explanation": "Glavni grad pokrajine Tiringije je Erfurt."
+  },
+  "458": {
+   "q": "Koja je od ovih saveznih pokrajina Tiringija?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Savezna pokrajina istaknuta na karti je Tiringija."
+  },
+  "459": {
+   "q": "Kako se naziva šef / šefica vlade u Tiringiji?",
+   "options": [
+    "prvi ministar / prva ministrica",
+    "premijer / premijerka",
+    "gradonačelnik / gradonačelnica",
+    "premijer pokrajine / premijerka pokrajine"
+   ],
+   "explanation": "Šef / šefica vlade u Tiringiji nosi titulu „premijer pokrajine / premijerka pokrajine“."
+  },
+  "460": {
+   "q": "Kojeg ministra / koje ministrice nema u Tiringiji?",
+   "options": [
+    "ministar / ministrica pravde",
+    "ministar / ministrica vanjskih poslova",
+    "ministar / ministrica finansija",
+    "ministar / ministrica unutrašnjih poslova"
+   ],
+   "explanation": "Vanjska i odbrambena politika su u nadležnosti savezne države — savezna pokrajina kao što je Tiringija nema ministra / ministricu vanjskih poslova."
+  }
+ }
+}

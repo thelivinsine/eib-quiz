@@ -24,6 +24,13 @@ Reviewed cells stay empty until a native speaker's review comes back.
 | ar | العربية | 2026-10-11 | — | Modern Standard Arabic, names transliterated, Western digits. Q329/Q449: "رئيس وزراء الولاية" (right) beside "رئيس الوزراء" (wrong), distinct but close. |
 | tr | Türkçe | 2026-10-11 | — | "siz" forms. Bundeskanzler is Şansölye, Premierminister Başbakan. Q140/141/150 keep "Schöffe" in German: a Turkish gloss gives the answer away. Q190/Q224 (what DDR and EU stand for) keep the German expansion with the Turkish in brackets. Q185 reorders the sentence round the "…", as Turkish word order needs. `dash.answered` shortened to "Toplam yanıt" (was "Toplam yanıtlanan"): the overview row wrapped at 360-375px (task 10). |
 | ru | Русский | 2026-10-11 | — | Counts read "Вопросов: {n}" so plural endings never go wrong. Q449: "премьер-министр земли" (right) sits beside "премьер-министр" (wrong), distinct but close. "Landtag" is sometimes glossed "(парламент земли)", sometimes not. |
+| fa | فارسی | 2026-10-12 | — | Iranian Persian, "شما", Western digits, zero-width non-joiners. Names in Persian script as Arabic does; state names follow the German (بایرن, نیدرزاکسن). Schöffe stays German. Nine strings rewritten by hand to pass the script check (questions file, Q10). |
+| uk | Українська | 2026-10-12 | — | "ви". Counts read "Питань: {n}". Place names in Cyrillic, spelled after Russian (Q10). Q37/Q449: "прем’єр-міністр землі" (right) beside "прем’єр-міністр" (wrong), distinct but close. |
+| sq | Shqip | 2026-10-12 | — | "ju". Bundesland is "land federal"; Gemeinde "komunë" (Kosovo) rather than "bashki" (Albania). State names are never declined: sentences read "në landin Bavaria". |
+| bs | Bosanski / Hrvatski / Srpski | 2026-10-12 | — | One Latin, ijekavian text with Bosnian words where the three differ (Q8): historija, tačno, porodica. Hessen, Saarland, Mecklenburg-Vorpommern and Schleswig-Holstein keep their German names. Ministerpräsident "premijer pokrajine" sits close to Premierminister "premijer". The language menu's second line will say "Bosnian". |
+| ro | Română | 2026-10-12 | — | "dumneavoastră", ș ț with the comma below. Counts rewritten as "Întrebări: {n}" after generation: Romanian needs "de" from 20 up, which a placeholder cannot switch. |
+| ku | Kurdî (Kurmancî) | 2026-10-12 | — | Hawar alphabet, "hûn". The least settled: Ordnungsamt and the city-state titles are coined. State names take no case endings; Hessen, Thüringen and Nordrhein-Westfalen stay German. |
+| pl | Polski | 2026-10-12 | — | "ty" or no direct address (Q7). Saarland is "Kraj Saary". General questions use Polish city names (Monachium), while the state questions keep the German ones (München): a reviewer should pick one. |
 
 ## Why the details are this way
 
