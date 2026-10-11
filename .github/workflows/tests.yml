@@ -1,0 +1,21 @@
+# The validation checklist's automated steps, on every pull request, so a check that only
+# runs when someone remembers it cannot be skipped. tools/i18n.test.mjs is the only guard
+# against markup in a language file (UI strings go into the page raw; see CLAUDE.md).
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test tools/*.test.mjs
+      - run: node tools/validate.js
+      - run: node --check sw.js
