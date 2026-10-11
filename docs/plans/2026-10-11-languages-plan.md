@@ -32,7 +32,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 7 | Language list, loading and the picker | done | 2026-10-11 | **Not run in a browser at all (unattended run)**. Unverified: the picker lists only English/Deutsch; `?lang=ar` switches one tab without touching `eib_lang`; offline after one use; a blocked `i18n/ar.json` snaps the picker back with the alert; header row width at 320/375 in en/de/ar; picker box size against `main`; en/de screenshots against the baseline. Checked: all five node checks, and a read of the code. |
 | 8 | Translations in the quiz, review and glossary | done | 2026-10-11 | **Not run in a browser (unattended run)**: none of the five sites, the fallback for a missing question, or the en/de byte-identical claim was seen on screen. Checked: the node checks and a read of the code. Q3 answered without you. |
 | 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
-| 10 | Measure every language at every width | blocked by 5, 6, 9 | — | — |
+| 10 | Measure every language at every width | **blocked**: needs a browser, which the unattended run may not open (Q4). Tasks 12, 13-17 wait on it. | — | Nothing measured. A text-length proxy found 14 likely overflows, listed in the entry below. |
 | 11 | Review sheets | blocked by 4, 5, 6 | — | — |
 | 12 | Docs, full validation, ship stage 1 | blocked by 10, 11 | — | — |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
@@ -360,6 +360,30 @@ The design's "Layout checks", for `ar`, `tr` and `ru`.
 task's progress row, with the strings that had to be shortened.
 
 **Blocked by** 5, 6, 9.
+
+**Blocked 2026-10-11** (unattended run, no browser allowed). Where to look first: short labels
+whose translation is clearly longer than BOTH the English and the German, since the German is
+the version whose fit was measured. Characters are not pixels, so this is a pointer, not a result.
+
+| Lang | Key | German | Translation | Chars vs longer of en/de |
+| --- | --- | --- | --- | --- |
+| ru | `nav.tagline` | Lernen. Üben. Bestehen. | Учитесь. Тренируйтесь. Сдавайте. | 32 vs 23 |
+| tr | `end.stateOf3` | {state} (von {n}) | {state} ({n} üzerinden) | 23 vs 17 |
+| ru | `quiz.zoomOpen` | Bild vergrößern | Увеличить изображение | 21 vs 15 |
+| ar | `dash.verdict.onTrack` | Du bist auf Kurs | أنت على الطريق الصحيح | 21 vs 16 |
+| ru | `why.1.title` | Amtliche Inhalte | Официальные материалы | 21 vs 16 |
+| ru | `quiz.zoomClose` | Bild schließen | Закрыть изображение | 19 vs 14 |
+| ar | `end.elapsed` | Zeit | الوقت المستغرق | 14 vs 10 |
+| tr | `nav.navHome` | Start | Ana sayfa | 9 vs 5 |
+| ru | `stats.2` | Bundesländer | Федеральных земель | 18 vs 14 |
+| ru | `mode.review.badgeDue` | {n} fällig | К повтору: {n} | 14 vs 10 |
+| ru | `qnav.linear` | Linear | По порядку | 10 vs 6 |
+| ar | `nav.navHome` | Start | الرئيسية | 8 vs 5 |
+| tr | `hero.cta2` | Mehr erfahren | Daha fazla bilgi | 16 vs 13 |
+| ru | `qnav.shuffle` | Mischen | Перемешать | 10 vs 7 |
+
+**`nav.navHome` is the one to measure first**: the header row has about 15px of slack at 375px
+and needs three trims to fit 320, so a longer Home link is the likeliest overflow on the page.
 
 ### 11. Review sheets
 
