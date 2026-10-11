@@ -24,7 +24,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | # | Task | Status | Landed | Not verified |
 | --- | --- | --- | --- | --- |
 | 1 | RTL-ready stylesheet | done | 2026-10-11 | Screens never shot: the image lightbox, the navigator's Topics view, hover and press states, a coarse pointer, and widths other than 375 and 1280. Their changes are the same one-for-one swaps, which are identical in left-to-right, but no screenshot proves it. Checked in Playwright's Chromium only. |
-| 2 | The completeness check | not started | — | — |
+| 2 | The completeness check | done | 2026-10-11 | Nothing on screen to check. Proved against the deliberately broken fixture and a fake `LANGS` entry with no file (fails as it should). Not yet run against a real translation, so false alarms on real text are untested until task 4. |
 | 3 | Terminology lists: ar, tr, ru | not started | — | — |
 | 4 | Generate Arabic | blocked by 2, 3 | — | — |
 | 5 | Generate Turkish | blocked by 2, 3 | — | — |

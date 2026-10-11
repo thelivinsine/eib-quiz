@@ -3635,6 +3635,14 @@
         const NAV_COLLAPSE_AT = 940;
 
         const LANG_KEY = 'eib_lang';
+        // Every language the app knows, and the one list that says so. A language other
+        // than en/de has its strings in i18n/<code>.json, and the picker offers it only
+        // once `released` is true, i.e. once a native speaker has reviewed it.
+        // tools/i18n.test.mjs holds the files and this list to each other.
+        const LANGS = [
+            { code: 'en', name: 'English' },
+            { code: 'de', name: 'Deutsch' },
+        ];
         let lang = (() => {
             try { return localStorage.getItem(LANG_KEY) === 'de' ? 'de' : 'en'; }
             catch (e) { return 'en'; }
