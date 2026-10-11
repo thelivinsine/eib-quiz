@@ -8,8 +8,6 @@
   "nav.dark": "Koyu",
   "nav.light": "Açık",
   "nav.system": "Sisteme uy",
-  "nav.switchToDe": "Almancaya geç",
-  "nav.switchToEn": "İngilizceye geç",
   "nav.sections": "Bölümler",
   "nav.navPractise": "Alıştırma",
   "nav.navHome": "Ana sayfa",
@@ -165,7 +163,10 @@
   "end.reviewQ": "Soru {id}",
   "quit.resumable": "Testten çıkıp ana sayfaya dönmek istiyor musunuz? Bu oturuma daha sonra devam edebilirsiniz.",
   "quit.lost": "Testten çıkıp ana sayfaya dönmek istiyor musunuz? Bu turdaki ilerlemeniz kaybolacak.",
-  "err.load": "Sorular yüklenemedi. Lütfen sayfayı yeniden yükleyin."
+  "err.load": "Sorular yüklenemedi. Lütfen sayfayı yeniden yükleyin.",
+  "nav.language": "Dil",
+  "err.langLoad": "Bu dil yüklenemedi. Lütfen bağlantınızı kontrol edip tekrar deneyin.",
+  "err.reviewEmpty": "Henüz tekrar edilecek bir şey yok — önce birkaç soruyu yanıtlayın."
  },
  "categories": {
   "rights": "Temel Haklar ve Anayasa",

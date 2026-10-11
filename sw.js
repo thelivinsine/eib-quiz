@@ -8,7 +8,7 @@
 //    old `eib-quiz*` caches from the May-28 PWA), then claims clients.
 //  Bump CACHE when shipping changes that must invalidate cached static assets.
 
-const CACHE = 'eib-cache-2026-09-23-logo-kit';
+const CACHE = 'eib-cache-2026-10-11-languages';
 
 const PRECACHE = [
   './',
@@ -75,7 +75,10 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-  const networkFirst = isHTML(req) || url.pathname.endsWith('/questions.json');
+  // A language file is data like questions.json: a corrected translation must reach
+  // readers at once, and a language someone has used must still work offline.
+  const isLangFile = /\/i18n\/[a-z]+\.json$/.test(url.pathname);
+  const networkFirst = isHTML(req) || url.pathname.endsWith('/questions.json') || isLangFile;
 
   if (networkFirst) {
     // Network-first: fresh content wins online; cache is the offline fallback.
@@ -102,6 +105,8 @@ self.addEventListener('fetch', event => {
         return res;
       } catch (e) {
         const cached = await safeMatch(req);
+        // Never answer a language file with the page: the app would try to parse HTML.
+        if (isLangFile) return cached || Response.error();
         return cached || (await safeMatch('./index.html')) || Response.error();
       }
     })());

@@ -29,7 +29,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 4 | Generate Arabic | done | 2026-10-11 | Unreviewed translation. I am not a native speaker; I spot-read 12 general and 10 state questions. Nothing seen in the app yet, and right-to-left rendering waits for task 9. Q1 answered without you. |
 | 5 | Generate Turkish | done | 2026-10-11 | Unreviewed translation. I am not a native speaker; I spot-read 12 questions, every topic and two states. Nothing seen in the app yet. Q1, Q2 answered without you. |
 | 6 | Generate Russian | done | 2026-10-11 | Unreviewed translation. Spot-read by me (not a native speaker): 12 questions, every topic and two states. Nothing seen in the app yet (task 7 loads it). Q1, Q2 answered without you. |
-| 7 | Language list, loading and the picker | blocked by 4 | — | — |
+| 7 | Language list, loading and the picker | done | 2026-10-11 | **Not run in a browser at all (unattended run)**. Unverified: the picker lists only English/Deutsch; `?lang=ar` switches one tab without touching `eib_lang`; offline after one use; a blocked `i18n/ar.json` snaps the picker back with the alert; header row width at 320/375 in en/de/ar; picker box size against `main`; en/de screenshots against the baseline. Checked: all five node checks, and a read of the code. |
 | 8 | Translations in the quiz, review and glossary | blocked by 5, 6, 7 | — | — |
 | 9 | Right to left and fonts | blocked by 1, 8 | — | — |
 | 10 | Measure every language at every width | blocked by 5, 6, 9 | — | — |
@@ -242,6 +242,9 @@ The machinery from the design's "Architecture" and "The language picker" section
   `err.langLoad` (en/de).
 - **`sw.js`**: `i18n/*.json` joins the network-first branch. When offline with no cached
   copy it returns `Response.error()`, never `index.html`. Bump `CACHE`.
+- **The Smart Review alert** (added 2026-10-11, on request): `startMode()` alerted a
+  hard-coded German "Noch nichts zu wiederholen…" whatever the menu language. It becomes
+  `t('err.reviewEmpty')`, translated like every other string.
 
 **Done when**
 - with `ar` unreleased, the picker lists only English and Deutsch, and `?lang=ar` makes
@@ -257,6 +260,14 @@ The machinery from the design's "Architecture" and "The language picker" section
 - `node --check sw.js` passes.
 
 **Blocked by** 4. Tasks 5 and 6 can land before or after this one.
+
+**Landed 2026-10-11.** `paintLangControls()` also sets `<html dir>` from `LANGS` here rather
+in task 9: without it, switching away from a previewed Arabic left the page right to left until
+a reload. The `<select>` reads `--type-option` (16px) instead of a literal `font-size`, so it
+needs no exemption in the size test. `setLang()` is async and keeps only the last of two quick
+picks. New strings: `nav.language`, `err.langLoad`, `err.reviewEmpty`, written into all three
+language files by hand; `nav.switchToDe` / `nav.switchToEn` are gone from the app and the files.
+`CACHE` is `eib-cache-2026-10-11-languages`.
 
 ### 8. Translations in the quiz, review and glossary
 
