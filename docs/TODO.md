@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `ff5a937`: ar/ru/tr released, styled language menu; seven more languages waiting on `plan/languages`)_
+_Last updated: 2026-10-12 (live commit `ff5a937`: ar, ru and tr released unreviewed with a styled language menu; CI on every PR since `b9d08cf`; seven more languages waiting on `plan/languages`)_
 
 ## Project status
 
