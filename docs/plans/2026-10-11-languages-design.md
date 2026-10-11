@@ -310,7 +310,9 @@ then checked by a native speaker before release.
 These are unsettled. They stay unsettled here until the work answers them.
 
 - **Who reviews each language.** Nothing ships without a reviewer, and none is lined up yet.
-- **Whether Bricolage Grotesque has Cyrillic.** Task 9 checks it in a browser.
+- ~~**Whether Bricolage Grotesque has Cyrillic.**~~ **Answered 2026-10-11: it does not.** Google
+  Fonts' metadata for the family lists coverage for `latin`, `latin-ext` and `vietnamese` only,
+  so Cyrillic headings fall to Inter, second in `--font-head`, as assumed.
 - **Whether one `bs` text really serves Croatian and Serbian readers**, or reads as Bosnian
   to them. A reviewer from each would settle it; the plan has only one.
 - **Whether Kurmanji alone is enough.** Kurds from Iraq mostly write Sorani, in Arabic
