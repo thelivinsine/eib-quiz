@@ -28,7 +28,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { I18N, CATEGORIES, STATES, GLOSSARY, LANGS, QUESTIONS } from "./i18n-source.mjs";
+import { I18N, CATEGORIES, STATES, GLOSSARY, LANGS, QUESTIONS, I18N_DIR, HTML } from "./i18n-source.mjs";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 
@@ -37,6 +37,9 @@ const SCRIPT = { ar: "Arabic", fa: "Arabic", ru: "Cyrillic", uk: "Cyrillic" };
 
 const placeholders = (s) => [...String(s).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
 const tags = (s) => [...String(s).matchAll(/<[^>]*>/g)].map((m) => m[0]).sort();
+/** Straight double quotes outside tags. Strings are put inside "..." attributes, so an extra
+ *  one would end the attribute early. Typographic quotes (“” «» „“) are fine. */
+const quotes = (s) => (String(s).replace(/<[^>]*>/g, "").match(/"/g) || []).length;
 const letters = (s) => [...String(s).matchAll(/\p{L}/gu)].map((m) => m[0]);
 
 /**
@@ -58,6 +61,7 @@ export function problems(code, data) {
     if (typeof tr !== "string" || !tr.trim()) { out.push(`empty: ${where}`); return; }
     if (placeholders(src).join() !== placeholders(tr).join()) out.push(`placeholder: ${where}`);
     if (tags(src).join() !== tags(tr).join()) out.push(`tag: ${where}`);
+    if (quotes(tr) > quotes(src)) out.push(`quote: ${where}`);
     const ls = letters(tr.replace(/<[^>]*>/g, ""));
     if (ls.length >= 12 && script !== "Latin" && ls.filter((c) => scriptRe.test(c)).length / ls.length < 0.5)
       out.push(`script: ${where}`);
@@ -67,10 +71,10 @@ export function problems(code, data) {
 
   const ui = data.ui ?? {};
   for (const key of Object.keys(I18N)) {
-    if (!(key in ui)) out.push(`missing ui key: ${key}`);
+    if (!Object.hasOwn(ui, key)) out.push(`missing ui key: ${key}`);
     else check(`ui ${key}`, I18N[key].en, ui[key], I18N[key].de);
   }
-  for (const key of Object.keys(ui)) if (!(key in I18N)) out.push(`extra ui key: ${key}`);
+  for (const key of Object.keys(ui)) if (!Object.hasOwn(I18N, key)) out.push(`extra ui key: ${key}`);
 
   for (const key of Object.keys(CATEGORIES)) {
     if (!data.categories?.[key]) out.push(`missing category: ${key}`);
@@ -100,7 +104,7 @@ export function problems(code, data) {
   return out;
 }
 
-const FILES = readdirSync(here("../i18n")).filter((f) => f.endsWith(".json"));
+const FILES = readdirSync(I18N_DIR).filter((f) => f.endsWith(".json"));
 
 test("every language in LANGS other than en/de has a file, and every file is in LANGS", () => {
   const listed = LANGS.map((l) => l.code).filter((c) => c !== "en" && c !== "de").sort();
@@ -116,11 +120,19 @@ for (const file of FILES) {
   });
 }
 
+test("the pre-paint script turns every right-to-left language in LANGS right to left", () => {
+  // It runs before LANGS exists, so it carries its own list. This holds the two together.
+  const prepaint = HTML.match(/<script>try\{var _l=[^<]*<\/script>/)?.[0] ?? "";
+  for (const l of LANGS.filter((l) => l.dir === "rtl")) {
+    assert.ok(prepaint.includes(`'${l.code}'`), `${l.code} is right to left in LANGS but not in the pre-paint script`);
+  }
+});
+
 test("the check catches each kind of fault (fixture)", () => {
   const broken = JSON.parse(readFileSync(here("fixtures/i18n-broken.json"), "utf8"));
   const found = problems("ar", broken);
   for (const kind of ["missing ui key", "placeholder: ui gloss.title", "options: question 1",
-                      "script: question 2 text", "tag: ui nav.back"]) {
+                      "script: question 2 text", "tag: ui nav.back", "quote: ui dash.reset"]) {
     assert.ok(found.some((p) => p.startsWith(kind)), `the fixture's fault "${kind}" was not reported`);
   }
 });
