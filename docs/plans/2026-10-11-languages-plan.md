@@ -1,4 +1,4 @@
-| 9 | Right to left and fonts | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium in Arabic at 375 and 1280: layout mirrored, German blocks `ltr` with the chips on the left, translations `rtl` without italic, arrows and progress tip flipped, Noto Sans Arabic drawing the text, no sideways scroll; screenshots looked at by me. The Arabic font was costing en/de readers 37 KB: fixed. **Not checked**: Arabic line height judged by a native reader; Safari, Firefox. || 8 | Translations in the quiz, review and glossary | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium for `tr` and `ru`: all five sites show the file's text with matching `lang`; text, image (Q55) and state questions; practice and exam reviews; glossary; state names; a question removed from the file falls back to English alone. The button face said "EN" in every language: fixed. **Not checked**: Safari, Firefox. || 7 | Language list, loading and the picker | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium: the picker lists only English/Deutsch; `?lang=ar` switches one tab and leaves `eib_lang` alone; a fresh tab is back to the saved language; a blocked `ar.json` alerts and snaps back; Arabic works offline after one use (service worker, `caches` holds `/i18n/ar.json`); the box is 28px (mouse) / 36px (touch), the same as `main`. **Not checked**: Safari, Firefox, a real phone, a screen reader reading the picker. |# Ten more languages — task list
+# Ten more languages — task list
 
 _Written 2026-10-11. The argument for every choice below is in
 [2026-10-11-languages-design.md](2026-10-11-languages-design.md); nothing there is repeated here._
@@ -8,7 +8,10 @@ menus and the question translations, with each language hidden until a native sp
 reviewed it.
 
 **Summary.** Stage 1 is live (2026-10-11, `ffcc90b`), all three languages hidden: tasks 1-12
-are done. Next are the reviews (task 13, the user's). The rest of this
+are done. Arabic, Turkish and Russian were then released unreviewed, on request
+(2026-10-12, #112). Tasks 15-16, the other seven languages, landed on `plan/languages` the
+same day, unreleased, and task 17 shipped them to `main` still hidden. Next are the reviews
+(task 13, the user's) for all ten. The rest of this
 paragraph is the plan as written: Tasks 1-12 are stage 1: the machinery plus Arabic, Turkish and
 Russian, merged to `main` with all three still hidden. Tasks 13-14 release them as reviews
 come back. Tasks 15-17 do the other seven.
@@ -31,17 +34,17 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 4 | Generate Arabic | done | 2026-10-11 | Unreviewed translation. I am not a native speaker; I spot-read 12 general and 10 state questions. Nothing seen in the app yet, and right-to-left rendering waits for task 9. Q1 answered without you. |
 | 5 | Generate Turkish | done | 2026-10-11 | Unreviewed translation. I am not a native speaker; I spot-read 12 questions, every topic and two states. Nothing seen in the app yet. Q1, Q2 answered without you. |
 | 6 | Generate Russian | done | 2026-10-11 | Unreviewed translation. Spot-read by me (not a native speaker): 12 questions, every topic and two states. Nothing seen in the app yet (task 7 loads it). Q1, Q2 answered without you. |
-| 7 | Language list, loading and the picker | done | 2026-10-11 | **Not run in a browser at all (unattended run)**. Unverified: the picker lists only English/Deutsch; `?lang=ar` switches one tab without touching `eib_lang`; offline after one use; a blocked `i18n/ar.json` snaps the picker back with the alert; header row width at 320/375 in en/de/ar; picker box size against `main`; en/de screenshots against the baseline. Checked: all five node checks, and a read of the code. |
-| 8 | Translations in the quiz, review and glossary | done | 2026-10-11 | **Not run in a browser (unattended run)**: none of the five sites, the fallback for a missing question, or the en/de byte-identical claim was seen on screen. Checked: the node checks and a read of the code. Q3 answered without you. |
-| 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
+| 7 | Language list, loading and the picker | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium: the picker lists only English/Deutsch; `?lang=ar` switches one tab and leaves `eib_lang` alone; a fresh tab is back to the saved language; a blocked `ar.json` alerts and snaps back; Arabic works offline after one use (service worker, `caches` holds `/i18n/ar.json`); the box is 28px (mouse) / 36px (touch), the same as `main`. **Not checked**: Safari, Firefox, a real phone, a screen reader reading the picker. |
+| 8 | Translations in the quiz, review and glossary | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium for `tr` and `ru`: all five sites show the file's text with matching `lang`; text, image (Q55) and state questions; practice and exam reviews; glossary; state names; a question removed from the file falls back to English alone. The button face said "EN" in every language: fixed. **Not checked**: Safari, Firefox. |
+| 9 | Right to left and fonts | done, browser-checked 2026-10-11 | 2026-10-11 | Checked in Playwright Chromium in Arabic at 375 and 1280: layout mirrored, German blocks `ltr` with the chips on the left, translations `rtl` without italic, arrows and progress tip flipped, Noto Sans Arabic drawing the text, no sideways scroll; screenshots looked at by me. The Arabic font was costing en/de readers 37 KB: fixed. **Not checked**: Arabic line height judged by a native reader; Safari, Firefox. |
 | 10 | Measure every language at every width | done, 2026-10-11 (user present) | 2026-10-11 | Measured in Playwright Chromium only (not Safari or Firefox, not a real phone). en/de/ar/tr/ru all pass after two fixes, listed in the entry. |
 | 11 | Review sheets | done | 2026-10-11 | Not opened in Excel or Google Sheets: proved instead by parsing each sheet back (BOM present, 6 columns on every row, no empty translation). |
 | 12 | Docs, full validation, ship stage 1 | done, live 2026-10-11 | 2026-10-11 | Merged as `ffcc90b` (thelivinsine/eib-quiz#109). Live check (Playwright): Pages build `built`, origin and edge both serve the new page, the picker offers only English/Deutsch, `?lang=ar` works and saves nothing. Not checked: Safari, Firefox, a real phone, a returning visitor whose old service worker updates. |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
-| 14 | Apply corrections and release ar, tr, ru | blocked by 13 | — | — |
-| 15 | Terminology lists: the other seven | blocked by 12 | — | — |
-| 16 | Generate the other seven | blocked by 15 | — | — |
-| 17 | Measure, sheets and ship the seven hidden | blocked by 16 | — | — |
+| 14 | Apply corrections and release ar, tr, ru | released unreviewed 2026-10-12 (#112, on request); corrections blocked by 13 | — | The release is done. What is left is applying each review's corrections when it comes back. |
+| 15 | Terminology lists: the other seven | done | 2026-10-12 | Every rendering is AI-written and unreviewed (unattended run). Checked by script: 58 rows each, German and English columns identical to the Turkish list, every glossary term present. Least settled: Kurmanji (several coined terms, e.g. Ordnungsamt), Albanian and `bs` (regional forms mixed by design). Q7, Q8, Q9 answered without you. |
+| 16 | Generate the other seven | done | 2026-10-12 | Unreviewed translation, and **not run in a browser at all (unattended run)**: no language seen on screen, Persian right to left included. I read none of the seven natively. Checked by script: the completeness check passes with all ten files, and five core terms match each terms list in every question that uses them. English and German unchanged by reading the code only: the change appends seven `LANGS` entries and touches nothing else; the before/after screenshots the global constraints ask for wait for task 17. Q10, Q11 answered without you. |
+| 17 | Measure, sheets and ship the seven hidden | done, 2026-10-12 (user present) | 2026-10-12 | Measured in Playwright Chromium only (not Safari or Firefox, not a real phone). All seven pass after five strings were shortened. Persian right to left looked at by me in screenshots, not by a Persian reader. English and German screenshots identical to `main`. The live check is recorded in the entry once the merge is live. |
 
 ## Global constraints
 
@@ -52,7 +55,9 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 - **English and German behave exactly as today** for anyone who never picks a new language.
   Each task that touches shared code proves this with a before/after comparison.
 - **No unreviewed language is ever `released: true`.** Only tasks 14 and the release step
-  after 17 flip that flag, and only for a language whose review has come back.
+  after 17 flip that flag, and only for a language whose review has come back. **Broken once,
+  on request**: Arabic, Turkish and Russian were released unreviewed on 2026-10-12
+  (thelivinsine/eib-quiz#112). The seven of tasks 15-17 stay unreleased.
 - **Translations are text, never markup.** A translation may contain only the HTML tags its
   English string contains (the hero headline's `<span>`), and the check in task 2 enforces
   it. Everywhere else a translation is written with `textContent` or escaped.
@@ -476,6 +481,8 @@ As task 3, for `fa`, `uk`, `sq`, `bs`, `ro`, `ku`, `pl`.
 
 **Blocked by** 12.
 
+**Landed 2026-10-12** (unattended). Seven lists, 58 terms each, the same rows as the Turkish one, so the frequent-noun scan of task 3 holds unchanged. Each adds a register rule (Q7) and a script rule: Persian's zero-width non-joiner and Western digits, Ukrainian's apostrophe, Albanian ë/ç, `bs` č ć đ š ž, Romanian ș/ț with the comma below, Kurmanji's Hawar letters. `bs` notes the Croatian or Serbian word beside a term where the three differ, for the reviewer only (Q8). In `bs`, Ministerpräsident ("premijer pokrajine") is one word away from Premierminister ("premijer"), the same closeness Arabic and Russian already carry.
+
 ### 16. Generate the other seven
 
 As task 4, for each language, Persian first because it exercises right to left a second
@@ -485,6 +492,8 @@ time. `LANGS` names: `فارسی` (`dir: 'rtl'`), `Українська`, `Shqip
 **Done when** the check passes with all ten files present.
 
 **Blocked by** 15.
+
+**Landed 2026-10-12** (unattended). 35 batches, written by separate agents into the scratchpad and merged by a Node script: the interface, three blocks of 100 general questions, and the state list with its 160 state questions. The seven `LANGS` entries are `released: false`. Fixes after generation, all recorded in `i18n/README.md`: Ukrainian and Persian place names rewritten in their own script (Q10), German state names in the general questions replaced by each language's own list (Q11, with the Q25 giveaway it exposed), and Romanian counts rewritten. **Found in the source, not fixed here**: the German explanations of Q281 (says nationality, the question is about skin colour) and Q285 (explains wage tax, the answer is VAT) are wrong, so every language translates the error; it is flagged as a separate task.
 
 ### 17. Measure, sheets and ship the seven hidden
 
@@ -496,6 +505,8 @@ language at a time.
 picker still lists only the released languages.
 
 **Blocked by** 16.
+
+**Landed 2026-10-12** (user present). Task 10's script (`local/lang-shots/measure.js`) run for all seven at the same widths. **Five failures, all fixed with shorter strings**: `dash.answered` wrapped the overview row in Ukrainian, Albanian, `bs` and Polish (at 1280 its 112px column, on phones the row), and the Ukrainian quiz readouts took two lines at 360px. Header slack at 320px is tightest in Ukrainian and `bs` (11-12px). **English and German**: 40 screenshots against `main`, identical except the results ring's count-up and one German set whose `main` shot differed from a second shot of `main` itself; a repeat matched this branch to the pixel. **Persian**: Home, Practise, a text question, Q21 and the results at 375 and 1280, mirrored, German text left to right. Sheets: seven, 2,966 rows each, generated after the Q281/Q285 fix reached `main`. The review then caught that the Polish and Albanian labels had lost "overall", which is what keeps that count apart from the resume banner's; they read "Łącznie" and "Gjithsej" ("in total").
 
 **Measured 2026-10-11, user present** (`local/lang-shots/measure.js`, Playwright Chromium, en/de
 as the reference):

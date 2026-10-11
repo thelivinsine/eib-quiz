@@ -1,0 +1,4818 @@
+{
+ "ui": {
+  "nav.home": "Te faqja kryesore",
+  "nav.back": "Kthehu",
+  "nav.backAria": "Kthehu te faqja kryesore",
+  "nav.tagline": "Mësoni. Ushtrohuni. Kaloni.",
+  "nav.scheme": "Skema e ngjyrave",
+  "nav.dark": "E errët",
+  "nav.light": "E çelët",
+  "nav.system": "Si sistemi",
+  "nav.language": "Gjuha",
+  "nav.sections": "Seksionet",
+  "nav.navPractise": "Ushtrime",
+  "nav.navHome": "Fillimi",
+  "hero.headline": "Testi gjerman i natyralizimit",
+  "hero.lead": "Ushtrohuni me të 300 pyetjet zyrtare — për të 16 landet federale. Në gjermanisht ose anglisht. Kurdo, kudo.",
+  "hero.cta": "Filloni tani",
+  "hero.cta2": "Mësoni më shumë",
+  "hero.photoAlt": "Fasada perëndimore e Reichstagut në Berlin me mbishkrimin DEM DEUTSCHEN VOLKE, me flamurin gjerman dhe atë evropian përpara saj.",
+  "footer.blurb": "Ushtrim falas për testin gjerman të natyralizimit — të gjitha pyetjet zyrtare, të 16 landet federale, në gjermanisht ose anglisht. Funksionon edhe offline pasi të ngarkohet.",
+  "footer.practise": "Ushtrime",
+  "footer.sources": "Burimet",
+  "footer.catalogue": "Katalogu i pyetjeve (PDF)",
+  "footer.bamf": "BAMF për natyralizimin",
+  "footer.photo": "Fotografia kryesore",
+  "footer.copyright": "© 2026 EIB Quiz. Të gjitha të drejtat të rezervuara.",
+  "footer.legal": "Pyetjet vijnë nga katalogu zyrtar i BAMF. Foto nga Dietmar Rabich, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" rel=\"noopener\" target=\"_blank\">CC BY-SA 4.0</a>. Nuk është shërbim zyrtar i BAMF.",
+  "why.title": "E thjeshtë. E efektshme. E besueshme.",
+  "why.1.title": "Përmbajtje zyrtare",
+  "why.1.body": "Të 300 pyetjet nga katalogu zyrtar i pyetjeve.",
+  "why.2.title": "Gjithmonë e plotë",
+  "why.2.body": "Të 16 landet federale, secili me dhjetë pyetjet e veta.",
+  "why.3.title": "Mësim fleksibël",
+  "why.3.body": "Në gjermanisht ose anglisht. Në çdo pajisje.",
+  "why.4.title": "Ndërtoni të ardhmen",
+  "why.4.body": "Më shumë siguri. Mundësi të reja.",
+  "stats.1": "Pyetje zyrtare",
+  "stats.2": "Lande federale",
+  "stats.3": "Gjuhë (gjermanisht & anglisht)",
+  "stats.4": "Minuta (testi i vërtetë)",
+  "stats.annotation": "Shtetësia hap rrugë të reja.",
+  "cta.title": "Hidhni hapin tjetër sot.",
+  "cta.lead": "Ushtrohuni, fitoni siguri dhe arrini qëllimin tuaj.",
+  "cta.button": "Ushtrohuni tani",
+  "cta.annotation": "Një hap i vogël. Një e ardhme e madhe.",
+  "home.progress.title": "Ku jeni",
+  "home.progress.lead": "Saktësia juaj në të gjitha pyetjet që keni përgjigjur deri tani.",
+  "home.practice.title": "Zgjidhni mënyrën e ushtrimit",
+  "home.more.title": "Raundet e kaluara & fjalorthi",
+  "home.more.lead": "Raundet e kaluara dhe termat që pyetjet i marrin si të njohura.",
+  "dash.accuracy": "Saktësia",
+  "dash.passMark": "Pragu i kalimit {n}%",
+  "dash.accuracyShort": "Saktësia",
+  "dash.note": "Totalet nga të gjitha raundet tuaja, derisa t’i rivendosni.",
+  "dash.answered": "Gjithsej",
+  "dash.mastered": "Të zotëruara",
+  "dash.due": "Për përsëritje",
+  "dash.statePick": "Zgjidhni landin tuaj",
+  "dash.reset": "Rivendos progresin",
+  "dash.resetConfirm": "Të rivendoset i gjithë progresi i mësimit?",
+  "dash.resumeMeta": "{n} nga {total} të përgjigjura",
+  "dash.resumeGo": "Vazhdo",
+  "dash.resumeDrop": "Fshi",
+  "dash.verdict.start": "Sapo keni filluar",
+  "dash.verdict.startSub": "Përgjigjuni më shumë pyetjeve për të parë progresin tuaj.",
+  "dash.verdict.building": "Vazhdoni kështu",
+  "dash.verdict.buildingSub": "Jeni ende nën pragun e kalimit prej {pass} nga {total}.",
+  "dash.verdict.onTrack": "Jeni në rrugë të mbarë",
+  "dash.verdict.onTrackSub": "Mbi pragun e kalimit. Vazhdoni kështu.",
+  "dash.verdict.strong": "Jeni pothuajse gati",
+  "dash.verdict.strongSub": "Saktësi e lartë — provoni një simulim provimi.",
+  "mode.topic.title": "Sipas temës",
+  "mode.topic.desc": "Të drejtat, politika, historia, shoqëria ose simbolet — një temë njëherësh.",
+  "mode.topic.badge": "Pesë tema",
+  "mode.topic.time": "10–25 min",
+  "mode.exam.title": "Simulim provimi",
+  "mode.exam.desc": "{general} pyetje të përgjithshme plus {n} për {state}, të zgjedhura rastësisht.",
+  "mode.exam.badge": "{n} pyetje",
+  "mode.exam.time": "60 min",
+  "mode.all.title": "Të gjitha pyetjet",
+  "mode.all.desc": "I gjithë katalogu i përgjithshëm, me radhë.",
+  "mode.all.badge": "300 pyetje",
+  "mode.all.time": "60–90 min",
+  "mode.state.title": "Landi juaj",
+  "mode.state.desc": "Vetëm ato që pyet {state}.",
+  "mode.state.badge": "10 pyetje",
+  "mode.state.time": "5 min",
+  "mode.review.title": "Përsëritje e zgjuar",
+  "mode.review.desc": "Pyetje për përsëritje dhe pyetje të dobëta, të zgjedhura automatikisht.",
+  "mode.review.badgeDue": "{n} për përsëritje",
+  "mode.review.badge": "deri në 25",
+  "mode.review.time": "10–15 min",
+  "topic.meta": "{n} pyetje · {m} të zotëruara",
+  "hist.title": "Raundet e kaluara ({n})",
+  "hist.passed": "{n}/{total} provime të kaluara",
+  "hist.best": "Më i miri {p}%",
+  "hist.pass": "Kaloi",
+  "hist.fail": "Nuk kaloi",
+  "hist.mode.exam": "Provim",
+  "hist.mode.allQuestions": "Të gjitha pyetjet",
+  "hist.mode.bundesland": "Pyetjet e landit",
+  "hist.mode.review": "Përsëritje e zgjuar",
+  "hist.mode.topic": "Tema",
+  "hist.mode.mistakes": "Gabimet",
+  "gloss.title": "Fjalorthi — termat kryesorë ({n})",
+  "quiz.question": "Pyetja {n}",
+  "quiz.questionOf": "Pyetja {n} / {total}",
+  "quiz.general": "E përgjithshme",
+  "quiz.stat.correct": "Saktë",
+  "quiz.stat.wrong": "Gabim",
+  "quiz.stat.score": "Rezultati",
+  "quiz.stat.answered": "Të përgjigjura",
+  "quiz.time": "Koha",
+  "quiz.speak": "Lexo pyetjen me zë",
+  "quiz.showEn": "Shfaq përkthimin",
+  "quiz.hideEn": "Fshih përkthimin",
+  "quiz.prev": "E mëparshmja",
+  "quiz.next": "Tjetra",
+  "quiz.finish": "Përfundo",
+  "quiz.correct": "✓ Saktë",
+  "quiz.wrong": "✗ Gabim",
+  "quiz.rightAnswer": " — përgjigjja e saktë: ",
+  "quiz.imgMissing": "Imazhi mungon",
+  "quiz.zoomOpen": "Zmadho imazhin",
+  "quiz.zoomHover": "Klikoni për ta zmadhuar",
+  "quiz.zoomClose": "Mbyll imazhin",
+  "quiz.zoomHint": "Prekni një imazh për ta parë më të madh.",
+  "quiz.kbNav": "lundro",
+  "quiz.kbPick": "zgjidh",
+  "quiz.kbNext": "tjetra",
+  "quiz.kbClose": "Fshih udhëzimet e tastierës",
+  "qnav.overview": "Pasqyra e pyetjeve",
+  "qnav.shuffle": "Përziej",
+  "qnav.linear": "Me radhë",
+  "qnav.categories": "Temat",
+  "qnav.view": "Renditja e pyetjeve",
+  "end.exam": "Simulimi i provimit përfundoi",
+  "end.allQuestions": "Raundi përfundoi",
+  "end.bundesland": "Raundi i landit përfundoi",
+  "end.mistakes": "Raundi i gabimeve përfundoi",
+  "end.review": "Përsëritja e zgjuar përfundoi",
+  "end.topic": "Raundi i temës përfundoi",
+  "end.done": "Gati",
+  "end.pass": "✓ Kaloi",
+  "end.fail": "✗ Nuk kaloi",
+  "end.correctCount": "Saktë",
+  "end.wrongCount": "Gabim",
+  "end.threshold": "Pragu i kalimit: {pass} nga {total} pyetje ({n}%)",
+  "end.general": "E përgjithshme (nga {n})",
+  "end.stateOf3": "{state} (nga {n})",
+  "end.elapsed": "Koha e përdorur",
+  "end.retry": "Ribëni testin",
+  "end.retryPractice": "Ushtrohuni përsëri",
+  "end.home": "Kthehu",
+  "end.more": "Përgjigjet tuaja",
+  "end.reviewTitle": "Rishikoni përgjigjet e gabuara",
+  "end.examReviewCount": "{n} pyetje",
+  "end.aRight": "Saktë",
+  "end.aWrong": "Gabim",
+  "end.aBlank": "Pa përgjigje",
+  "end.reviewCount": "{n} pyetje",
+  "end.reviewCountPl": "{n} pyetje",
+  "end.retryWrong": "Përsërit të gabuarat",
+  "end.reviewQ": "Pyetja {id}",
+  "quit.resumable": "Të dilet nga kuizi dhe të shkohet te faqja kryesore? Mund ta vazhdoni këtë seancë më vonë.",
+  "quit.lost": "Të dilet nga kuizi dhe të shkohet te faqja kryesore? Progresi juaj në këtë raund do të humbasë.",
+  "err.load": "Pyetjet nuk u ngarkuan dot. Ju lutemi ringarkoni faqen.",
+  "err.langLoad": "Kjo gjuhë nuk u ngarkua dot. Ju lutemi kontrolloni lidhjen dhe provoni përsëri.",
+  "err.reviewEmpty": "Ende s’ka asgjë për të përsëritur — përgjigjuni fillimisht disa pyetjeve."
+ },
+ "categories": {
+  "rights": "Të drejtat themelore & Kushtetuta",
+  "politics": "Demokracia, zgjedhjet & shteti",
+  "history": "Historia",
+  "society": "Shoqëria, çështjet sociale & ekonomia",
+  "symbols": "Simbolet, gjeografia & Evropa"
+ },
+ "states": {
+  "BW": "Baden-Vyrtemberg",
+  "BY": "Bavaria",
+  "BE": "Berlin",
+  "BB": "Brandenburg",
+  "HB": "Bremen",
+  "HH": "Hamburg",
+  "HE": "Hesen",
+  "MV": "Meklenburg-Pomerania Perëndimore",
+  "NI": "Saksonia e Poshtme",
+  "NW": "Renania e Veriut-Vestfalia",
+  "RP": "Renania-Palatinat",
+  "SL": "Saarland",
+  "SN": "Saksonia",
+  "ST": "Saksonia-Anhalt",
+  "SH": "Schleswig-Holstein",
+  "TH": "Turingia"
+ },
+ "glossary": {
+  "Grundgesetz": "Kushtetuta e Gjermanisë (që nga viti 1949). Rregullon të drejtat themelore dhe ndërtimin e shtetit.",
+  "Grundrechte": "Të drejta të garantuara në Ligjin Themelor, p.sh. liria e mendimit dhe e fesë.",
+  "Rechtsstaat": "Shtet në të cilin të gjithë – edhe vetë shteti – janë të lidhur me të drejtën dhe ligjin.",
+  "Sozialstaat": "Shtet që kujdeset për sigurinë sociale (p.sh. sigurimi shëndetësor dhe ai i pensionit).",
+  "Föderalismus": "Ndarja e pushtetit midis federatës dhe 16 landeve federale.",
+  "Bundestag": "Parlamenti i zgjedhur i Gjermanisë; miraton ligjet.",
+  "Bundesrat": "Përfaqësimi i 16 landeve federale në nivelin federal.",
+  "Bundespräsident/in": "Kreu i shtetit; zgjidhet nga Asambleja Federale.",
+  "Bundeskanzler/in": "Kreu i qeverisë; drejton qeverinë federale.",
+  "Koalition": "Bashkimi i disa partive për të qeverisur së bashku.",
+  "Opposition": "Deputetët që nuk bëjnë pjesë në qeveri.",
+  "Gewaltenteilung": "Ndarja në pushtet legjislativ, ekzekutiv dhe gjyqësor.",
+  "Volkssouveränität": "I gjithë pushteti shtetëror buron nga populli (neni 20 i Ligjit Themelor).",
+  "Meinungsfreiheit": "E drejta për të shprehur lirisht mendimin (neni 5 i Ligjit Themelor).",
+  "Freizügigkeit": "E drejta për të zgjedhur lirisht vendbanimin dhe vendqëndrimin (neni 11 i Ligjit Themelor).",
+  "Asylrecht": "Mbrojtje për të përndjekurit politikë (neni 16a i Ligjit Themelor); vlen vetëm për të huajt.",
+  "Soziale Marktwirtschaft": "Rend ekonomik që e lidh tregun e lirë me barazpeshën sociale.",
+  "Ministerpräsident/in": "Kreu i qeverisë së një landi federal (përveç qyteteve-shtete)."
+ },
+ "questions": {
+  "1": {
+   "q": "Në Gjermani njerëzit mund të flasin hapur kundër qeverisë, sepse …",
+   "options": [
+    "këtu vlen liria e fesë",
+    "njerëzit paguajnë taksa",
+    "njerëzit kanë të drejtën e votës",
+    "këtu vlen liria e mendimit"
+   ],
+   "explanation": "Liria e mendimit garantohet në nenin 5 të Ligjit Themelor dhe është një e drejtë thelbësore e demokracisë."
+  },
+  "2": {
+   "q": "Në Gjermani prindërit mund të vendosin, deri në moshën 14 vjeç të fëmijës, nëse ai merr pjesë në shkollë në ... .",
+   "options": [
+    "mësimin e historisë",
+    "mësimin e fesë",
+    "mësimin e edukimit politik",
+    "mësimin e gjuhës"
+   ],
+   "explanation": "Neni 7, paragrafi 2 i Ligjit Themelor u garanton prindërve të drejtën të vendosin për edukimin fetar."
+  },
+  "3": {
+   "q": "Gjermania është shtet i së drejtës. Çfarë nënkuptohet me këtë?",
+   "options": [
+    "Të gjithë banorët / banoret dhe shteti duhet t'u përmbahen ligjeve",
+    "Shteti nuk ka nevojë t'u përmbahet ligjeve",
+    "Vetëm gjermanët duhet t'i zbatojnë ligjet",
+    "Gjykatat i bëjnë ligjet"
+   ],
+   "explanation": "Shteti i së drejtës karakterizohet nga lidhja me ligjin — të gjithë, përfshirë shtetin, u nënshtrohen ligjeve."
+  },
+  "4": {
+   "q": "Cila e drejtë bën pjesë në të drejtat themelore në Gjermani?",
+   "options": [
+    "Posedimi i armëve",
+    "E drejta e grushtit",
+    "Liria e mendimit",
+    "Vetëgjyqësia"
+   ],
+   "explanation": "Liria e mendimit është e sanksionuar si e drejtë themelore në nenin 5 të Ligjit Themelor."
+  },
+  "5": {
+   "q": "Zgjedhjet në Gjermani janë të lira. Çfarë do të thotë kjo?",
+   "options": [
+    "Lejohet të pranohen para, nëse votohet për një kandidat / një kandidate të caktuar",
+    "Votuesi gjatë zgjedhjeve nuk lejohet as të ndikohet, as të detyrohet të votojë në një mënyrë të caktuar, dhe nuk duhet të pësojë asnjë dëm për shkak të votimit",
+    "Vetëm personat që nuk kanë qenë kurrë në burg lejohen të votojnë",
+    "Të gjithë personat me të drejtë vote duhet të votojnë"
+   ],
+   "explanation": "Zgjedhjet e lira janë të sanksionuara në nenin 20, paragrafi 2 i Ligjit Themelor dhe nënkuptojnë lirinë e votimit pa detyrim ose ndikim."
+  },
+  "6": {
+   "q": "Si quhet kushtetuta gjermane?",
+   "options": [
+    "Ligji i Popullit",
+    "Ligji Federal",
+    "Ligji Gjerman",
+    "Ligji Themelor"
+   ],
+   "explanation": "Kushtetuta gjermane quhet Ligji Themelor (Grundgesetz, GG) dhe u miratua në vitin 1949."
+  },
+  "7": {
+   "q": "Cila e drejtë bën pjesë në të drejtat themelore që garantohen nga kushtetuta gjermane?",
+   "options": [
+    "Liria e besimit dhe e ndërgjegjes",
+    "Argëtimi",
+    "Puna",
+    "Banesa"
+   ],
+   "explanation": "Liria e besimit dhe e ndërgjegjes garantohet si e drejtë themelore në nenin 4 të Ligjit Themelor."
+  },
+  "8": {
+   "q": "Çfarë nuk shkruhet në Ligjin Themelor të Gjermanisë?",
+   "options": [
+    "Dinjiteti i njeriut është i paprekshëm",
+    "Të gjithë duhet të kenë po aq para",
+    "Çdo njeri lejohet të shprehë mendimin e tij",
+    "Të gjithë janë të barabartë para ligjit"
+   ],
+   "explanation": "Kërkesa për barazi ekonomike nuk gjendet në Ligjin Themelor; neni 3 i Ligjit Themelor garanton vetëm barazinë juridike."
+  },
+  "9": {
+   "q": "Cila e drejtë themelore vlen në Gjermani vetëm për të huajt?",
+   "options": [
+    "Mbrojtja e familjes",
+    "Dinjiteti njerëzor",
+    "Azili",
+    "Liria e mendimit"
+   ],
+   "explanation": "E drejta e azilit është e sanksionuar në nenin 16a të Ligjit Themelor dhe vlen vetëm për të huajt."
+  },
+  "10": {
+   "q": "Çfarë është në përputhje me Ligjin Themelor gjerman?",
+   "options": [
+    "dënimi me rrahje",
+    "tortura",
+    "dënimi me vdekje",
+    "gjoba"
+   ],
+   "explanation": "Neni 102 i Ligjit Themelor e shfuqizon dënimin me vdekje; tortura dhe dënimi me rrahje janë të ndaluara. Gjobat janë të ligjshme."
+  },
+  "11": {
+   "q": "Si quhet kushtetuta e Republikës Federale të Gjermanisë?",
+   "options": [
+    "Ligji Themelor",
+    "Kushtetuta Federale",
+    "Kodi i ligjeve",
+    "Traktati kushtetues"
+   ],
+   "explanation": "Kushtetuta gjermane quhet zyrtarisht Ligji Themelor (GG) që nga viti 1949."
+  },
+  "12": {
+   "q": "Një parti në Bundestagun gjerman dëshiron të shfuqizojë lirinë e shtypit. A është e mundur kjo?",
+   "options": [
+    "Po, nëse më shumë se gjysma e deputetëve në Bundestag janë pro",
+    "Po, por për këtë duhet të jenë pro dy të tretat e deputetëve në Bundestag",
+    "Jo, sepse liria e shtypit është e drejtë themelore. Ajo nuk mund të shfuqizohet",
+    "Jo, sepse vetëm Bundesrati mund ta shfuqizojë lirinë e shtypit"
+   ],
+   "explanation": "Neni 5 i Ligjit Themelor garanton lirinë e shtypit; të drejtat themelore nuk mund të shfuqizohen me shumicë të thjeshtë."
+  },
+  "13": {
+   "q": "Në parlament termi opozitë nënkupton …",
+   "options": [
+    "partitë qeverisëse",
+    "të gjithë deputetët që nuk i përkasin partisë qeverisëse / partive qeverisëse",
+    "grupin parlamentar me më shumë deputetë",
+    "të gjitha partitë që në zgjedhjet e fundit arritën të kalonin pragun prej 5%"
+   ],
+   "explanation": "Opozita janë të gjithë deputetët që nuk i përkasin qeverisë."
+  },
+  "14": {
+   "q": "Liria e mendimit në Gjermani do të thotë, për shembull, që unë …",
+   "options": [
+    "lejohem të fyej kalimtarët në rrugë",
+    "mund ta shpreh mendimin tim në internet",
+    "lejohem të mbaj publikisht simbole naziste, të Hamasit ose të Shtetit Islamik",
+    "lejohem ta shpreh mendimin tim vetëm për sa kohë nuk kundërshtoj qeverinë"
+   ],
+   "explanation": "Liria e mendimit është e garantuar, por ka kufij te fyerja dhe nxitja e urrejtjes kundër grupeve të popullsisë."
+  },
+  "15": {
+   "q": "Çfarë ndalon Ligji Themelor gjerman?",
+   "options": [
+    "Shërbimin ushtarak",
+    "Punën e detyruar",
+    "Zgjedhjen e lirë të profesionit",
+    "Punën jashtë vendit"
+   ],
+   "explanation": "Neni 12 i Ligjit Themelor e ndalon punën e detyruar si shkelje të dinjitetit njerëzor."
+  },
+  "16": {
+   "q": "Kur kufizohet liria e mendimit në Gjermani?",
+   "options": [
+    "kur përhapen publikisht pohime të rreme për persona të caktuar",
+    "kur shprehen mendime për qeverinë federale",
+    "në diskutime për fetë",
+    "në kritikën ndaj shtetit"
+   ],
+   "explanation": "Liria e mendimit kufizohet nga ligjet kundër fyerjes dhe shpifjes."
+  },
+  "17": {
+   "q": "Ligjet gjermane ndalojnë …",
+   "options": [
+    "lirinë e mendimit të banorëve dhe banoreve",
+    "peticionet e qytetarëve dhe qytetareve",
+    "lirinë e tubimit të banorëve dhe banoreve",
+    "trajtimin e pabarabartë të qytetarëve dhe qytetareve nga shteti"
+   ],
+   "explanation": "Neni 3 i Ligjit Themelor garanton barazinë dhe ndalon diskriminimin nga shteti."
+  },
+  "18": {
+   "q": "Cila e drejtë themelore garantohet në nenin 1 të Ligjit Themelor të Republikës Federale të Gjermanisë?",
+   "options": [
+    "paprekshmëria e dinjitetit njerëzor",
+    "e drejta për jetë",
+    "liria e fesë",
+    "liria e mendimit"
+   ],
+   "explanation": "Neni 1 i Ligjit Themelor e mbron dinjitetin njerëzor si të drejtën themelore më të lartë dhe të paprekshme."
+  },
+  "19": {
+   "q": "Çfarë kuptohet me të drejtën e lirisë së lëvizjes në Gjermani?",
+   "options": [
+    "Çdokush mund ta zgjedhë vetë vendbanimin",
+    "Çdokush mund ta ndërrojë profesionin",
+    "Çdokush mund të zgjedhë një fe tjetër",
+    "Çdokush mund të lëvizë në publik vetëm i veshur lehtë"
+   ],
+   "explanation": "Liria e lëvizjes (neni 11 i Ligjit Themelor) do të thotë zgjedhje e lirë e vendbanimit brenda Gjermanisë."
+  },
+  "20": {
+   "q": "Një parti në Gjermani synon të vendosë një diktaturë. Atëherë ajo është …",
+   "options": [
+    "tolerante",
+    "e orientuar drejt shtetit të së drejtës",
+    "e bindur ndaj ligjit",
+    "antikushtetuese"
+   ],
+   "explanation": "Partitë që duan të shkatërrojnë demokracinë janë antikushtetuese dhe mund të ndalohen (neni 21 i Ligjit Themelor)."
+  },
+  "21": {
+   "q": "Cila është stema e Republikës Federale të Gjermanisë?",
+   "options": [
+    "Stema federale (Gjermani)",
+    "Monogrami i Krishtit (Chi-Rho)",
+    "Kryqi i Bundeswehr-it",
+    "Emblema e RDGJ-së"
+   ],
+   "explanation": "Shqiponja federale mbi sfond të artë është stema zyrtare e Republikës Federale të Gjermanisë."
+  },
+  "22": {
+   "q": "Çfarë forme shtetërore ka Gjermania?",
+   "options": [
+    "Monarki",
+    "Diktaturë",
+    "Republikë",
+    "Principatë"
+   ],
+   "explanation": "Gjermania është republikë demokratike që nga themelimi i Republikës Federale në vitin 1949."
+  },
+  "23": {
+   "q": "Në Gjermani shumica e të punësuarve …",
+   "options": [
+    "janë të punësuar në një firmë ose në një institucion publik",
+    "janë të punësuar në biznese të vogla familjare",
+    "punojnë vullnetarisht për një land federal",
+    "punojnë në mënyrë të pavarur me firmën e tyre"
+   ],
+   "explanation": "Shumica e të punësuarve në Gjermani punojnë si nëpunës në ndërmarrje ose në shërbimin publik."
+  },
+  "24": {
+   "q": "Sa lande federale ka Republika Federale e Gjermanisë?",
+   "options": [
+    "14",
+    "15",
+    "16",
+    "17"
+   ],
+   "explanation": "Gjermania ka 16 lande federale që nga ribashkimi më 3 tetor 1990."
+  },
+  "25": {
+   "q": "Cili nuk është land federal i Republikës Federale të Gjermanisë?",
+   "options": [
+    "Renania e Veriut-Vestfalia",
+    "Alsaca-Lorena",
+    "Meklenburg-Pomerania Perëndimore",
+    "Saksonia-Anhalt"
+   ],
+   "explanation": "Alsaca-Lorena (Alsaca dhe Lorena) i përket Francës dhe nuk ka qenë kurrë land federal gjerman."
+  },
+  "26": {
+   "q": "Gjermania është …",
+   "options": [
+    "një republikë komuniste",
+    "një shtet federal demokratik dhe social",
+    "një monarki kapitaliste dhe sociale",
+    "një shtet federal social dhe socialist"
+   ],
+   "explanation": "Neni 20 i Ligjit Themelor e përcakton Gjermaninë si shtet federal demokratik dhe social."
+  },
+  "27": {
+   "q": "Gjermania është …",
+   "options": [
+    "një shtet socialist",
+    "një shtet federal",
+    "një diktaturë",
+    "një monarki"
+   ],
+   "explanation": "Gjermania është shtet federal me 16 lande federale dhe strukturë federaliste."
+  },
+  "28": {
+   "q": "Kush i zgjedh në Gjermani deputetët e Bundestagut?",
+   "options": [
+    "ushtria",
+    "ekonomia",
+    "populli me të drejtë vote",
+    "administrata"
+   ],
+   "explanation": "Sipas nenit 38 të Ligjit Themelor, qytetarët me të drejtë vote zgjedhin deputetët e Bundestagut."
+  },
+  "29": {
+   "q": "Cila kafshë është kafsha e stemës së Republikës Federale të Gjermanisë?",
+   "options": [
+    "Luani",
+    "Shqiponja",
+    "Ariu",
+    "Kali"
+   ],
+   "explanation": "Shqiponja federale është kafsha kombëtare e stemës së Gjermanisë."
+  },
+  "30": {
+   "q": "Cila nuk është veçori e demokracisë sonë?",
+   "options": [
+    "zgjedhjet e rregullta",
+    "censura e shtypit",
+    "liria e mendimit",
+    "partitë e ndryshme"
+   ],
+   "explanation": "Censura e shtypit është e papajtueshme me demokracinë; liria e shtypit garantohet në nenin 5 të Ligjit Themelor."
+  },
+  "31": {
+   "q": "Bashkëpunimi i partive për formimin e një qeverie në Gjermani quhet …",
+   "options": [
+    "unitet.",
+    "koalicion.",
+    "ministri.",
+    "grup parlamentar."
+   ],
+   "explanation": "Kur disa parti formojnë së bashku një qeveri, kjo quhet koalicion."
+  },
+  "32": {
+   "q": "Çfarë nuk është pushtet shtetëror në Gjermani?",
+   "options": [
+    "Ligjvënia",
+    "Qeveria",
+    "Shtypi",
+    "Dhënia e drejtësisë"
+   ],
+   "explanation": "Tri pushtetet shtetërore janë pushteti legjislativ, ekzekutiv dhe gjyqësor. Shtypi nuk është pushtet shtetëror."
+  },
+  "33": {
+   "q": "Cili pohim është i saktë? Në Gjermani …",
+   "options": [
+    "shteti dhe bashkësitë fetare janë të ndara nga njëri-tjetri.",
+    "bashkësitë fetare e përbëjnë shtetin.",
+    "shteti varet nga bashkësitë fetare.",
+    "shteti dhe bashkësitë fetare përbëjnë një tërësi."
+   ],
+   "explanation": "Në Gjermani vlen parimi i ndarjes së shtetit nga kisha; shteti është asnjanës në çështjet e botëkuptimit."
+  },
+  "34": {
+   "q": "Çfarë nuk është Gjermania?",
+   "options": [
+    "një demokraci",
+    "një shtet i së drejtës",
+    "një monarki",
+    "një shtet social"
+   ],
+   "explanation": "Gjermania është demokraci, shtet i së drejtës dhe shtet social, por jo monarki – ajo qeveriset nga përfaqësues të zgjedhur."
+  },
+  "35": {
+   "q": "Me çfarë e financon shteti gjerman sigurimin shoqëror?",
+   "options": [
+    "me taksat e kishës",
+    "me kontributet shoqërore",
+    "me para nga dhurimet",
+    "me kuotat e anëtarësisë në shoqata"
+   ],
+   "explanation": "Sigurimi shoqëror financohet nga kontributet e punëmarrësve dhe punëdhënësve (kontributet shoqërore)."
+  },
+  "36": {
+   "q": "Cila masë krijon siguri sociale në Gjermani?",
+   "options": [
+    "sigurimi shëndetësor",
+    "sigurimi i makinës",
+    "sigurimi i ndërtesës",
+    "sigurimi i përgjegjësisë civile"
+   ],
+   "explanation": "Sigurimi shëndetësor ligjor është pjesë e sistemit të sigurimeve shoqërore dhe i mbron njerëzit në rast sëmundjeje."
+  },
+  "37": {
+   "q": "Si quhen krerët e qeverisë së shumicës së landeve federale në Gjermani?",
+   "options": [
+    "Ministri i parë / Ministrja e parë",
+    "Kryeministri / Kryeministrja",
+    "Senatori / Senatorja",
+    "Kryeministri i landit / Kryeministrja e landit"
+   ],
+   "explanation": "Krerët e qeverisë së shumicës së landeve federale quhen kryeministra të landit. Përjashtim bëjnë qytetet-shtete Berlin, Hamburg dhe Bremen."
+  },
+  "38": {
+   "q": "Republika Federale e Gjermanisë është një … demokratik dhe social.",
+   "options": [
+    "bashkim shtetesh",
+    "shtet federal",
+    "bashkim konfederal shtetesh",
+    "shtet i centralizuar"
+   ],
+   "explanation": "Sipas Ligjit Themelor (neni 20), Gjermania është shtet federal demokratik dhe social, në të cilin pushteti ndahet midis federatës dhe landeve."
+  },
+  "39": {
+   "q": "Çfarë ka çdo land federal gjerman?",
+   "options": [
+    "një ministër / një ministre të vet të Punëve të Jashtme",
+    "një monedhë të vetën",
+    "një ushtri të vetën",
+    "një qeveri të vetën"
+   ],
+   "explanation": "Secili nga 16 landet federale gjermane ka qeverinë e vet të landit dhe parlamentin e vet (Landtag)."
+  },
+  "40": {
+   "q": "Me cilat fjalë fillon himni kombëtar gjerman?",
+   "options": [
+    "Popuj, dëgjoni sinjalet …",
+    "Unitet dhe e drejtë dhe liri …",
+    "Gëzim, shkëndijë e bukur hyjnore …",
+    "Gjermani, atdhe i bashkuar …"
+   ],
+   "explanation": "Himni kombëtar fillon me „Einigkeit und Recht und Freiheit“ (Unitet dhe e drejtë dhe liri) – kjo është strofa e tretë e „Deutschlandlied“ nga Hoffmann von Fallersleben."
+  },
+  "41": {
+   "q": "Pse në një demokraci ka më shumë se një parti?",
+   "options": [
+    "sepse në këtë mënyrë përfaqësohen mendimet e ndryshme të qytetarëve dhe qytetareve",
+    "që të kufizohet korrupsioni në politikë",
+    "për të parandaluar demonstratat politike",
+    "për të nxitur konkurrencën ekonomike"
+   ],
+   "explanation": "Në një demokraci, mendimet e ndryshme politike të popullsisë duhet të përfaqësohen nga parti të ndryshme."
+  },
+  "42": {
+   "q": "Kush e miraton një ligj të ri në Gjermani?",
+   "options": [
+    "qeveria",
+    "parlamenti",
+    "gjykatat",
+    "policia"
+   ],
+   "explanation": "Ligjet e reja miratohen nga parlamenti (Bundestagu). Qeveria mund të propozojë ligje, por vetëm parlamenti i miraton."
+  },
+  "43": {
+   "q": "Kur mund të ndalohet një parti në Gjermani?",
+   "options": [
+    "kur fushata e saj zgjedhore është shumë e shtrenjtë",
+    "kur lufton kundër kushtetutës",
+    "kur kritikon kreun e shtetit",
+    "kur programi i saj propozon një drejtim të ri"
+   ],
+   "explanation": "Një parti mund të ndalohet kur lufton kundër rendit themelor liberal-demokratik. Për këtë vendos Gjykata Kushtetuese Federale."
+  },
+  "44": {
+   "q": "Kë nuk mund ta zgjidhni drejtpërdrejt si qytetar / qytetare në Gjermani?",
+   "options": [
+    "deputetët e Parlamentit Evropian",
+    "presidentin federal / presidenten federale",
+    "deputetët e parlamentit të landit",
+    "deputetët e Bundestagut"
+   ],
+   "explanation": "Presidenti federal nuk zgjidhet drejtpërdrejt nga populli, por nga Asambleja Federale, e cila përbëhet nga deputetët e Bundestagut dhe nga përfaqësues të landeve."
+  },
+  "45": {
+   "q": "Në cilin sigurim bën pjesë sigurimi i kujdesit afatgjatë?",
+   "options": [
+    "Sigurimi shoqëror",
+    "Sigurimi nga aksidentet",
+    "Sigurimi i sendeve shtëpiake",
+    "Sigurimi i përgjegjësisë civile dhe nga zjarri"
+   ],
+   "explanation": "Sigurimi i kujdesit afatgjatë është pjesë e sigurimeve shoqërore ligjore dhe u fut në vitin 1995."
+  },
+  "46": {
+   "q": "Shteti gjerman ka shumë detyra. Cila detyrë bën pjesë në to?",
+   "options": [
+    "Ndërton rrugë dhe shkolla.",
+    "Shet ushqime dhe veshje.",
+    "U siguron të gjithë banorëve dhe banoreve gazeta falas.",
+    "Prodhon makina dhe autobusë."
+   ],
+   "explanation": "Shteti është përgjegjës për infrastrukturën publike si rrugët dhe shkollat. Veprimtaritë ekonomike janë detyrë e ndërmarrjeve private."
+  },
+  "47": {
+   "q": "Shteti gjerman ka shumë detyra. Cila detyrë nuk bën pjesë në to?",
+   "options": [
+    "U paguan të gjithë shtetasve udhëtimet e pushimeve.",
+    "Paguan shtesën për fëmijë.",
+    "Mbështet muzetë.",
+    "Nxit sportistët dhe sportistet."
+   ],
+   "explanation": "Financimi i udhëtimeve të pushimeve për të gjithë qytetarët nuk është detyrë e shtetit. Shtesa për fëmijë, mbështetja e muzeve dhe nxitja e sportit janë, përkundrazi, detyra të shtetit."
+  },
+  "48": {
+   "q": "Cili organ nuk bën pjesë në organet kushtetuese të Gjermanisë?",
+   "options": [
+    "Bundesrati",
+    "presidenti federal / presidentja federale",
+    "kuvendi i qytetarëve",
+    "qeveria"
+   ],
+   "explanation": "Organet kushtetuese janë Bundestagu, Bundesrati, Asambleja Federale, presidenti federal, qeveria federale dhe Gjykata Kushtetuese Federale. Kuvendi i qytetarëve nuk bën pjesë në to."
+  },
+  "49": {
+   "q": "Kush e përcakton politikën shkollore në Gjermani?",
+   "options": [
+    "mësuesit dhe mësueset",
+    "landet federale",
+    "Ministria e Familjes",
+    "universitetet"
+   ],
+   "explanation": "Arsimi në Gjermani është kompetencë e landeve (sovraniteti kulturor i landeve). Çdo land federal e harton politikën e vet shkollore."
+  },
+  "50": {
+   "q": "Forma ekonomike në Gjermani quhet …",
+   "options": [
+    "ekonomi e lirë e centralizuar.",
+    "ekonomi sociale e tregut.",
+    "ekonomi e centralizuar e drejtuar.",
+    "ekonomi e planifikuar."
+   ],
+   "explanation": "Gjermania ka ekonomi sociale të tregut, e cila e lidh tregun e lirë me mbrojtjen sociale. Ky term u krijua pas Luftës së Dytë Botërore."
+  },
+  "51": {
+   "q": "Një shteti demokratik të së drejtës nuk i përket që …",
+   "options": [
+    "njerëzit mund të shprehen në mënyrë kritike për qeverinë.",
+    "qytetarët lejohen të demonstrojnë në mënyrë paqësore.",
+    "njerëzit arrestohen pa arsye nga një polici private.",
+    "dikush kryen një krim dhe për këtë arsye arrestohet."
+   ],
+   "explanation": "Në një shtet të së drejtës, njerëzit mund të arrestohen vetëm nga autoritetet shtetërore mbi bazë ligjore. Arrestimet arbitrare nga persona privatë janë të paligjshme."
+  },
+  "52": {
+   "q": "Çfarë do të thotë „sovraniteti i popullit“? I gjithë pushteti shtetëror buron nga …",
+   "options": [
+    "populli.",
+    "Bundestagu.",
+    "mbreti prusian.",
+    "Gjykata Kushtetuese Federale."
+   ],
+   "explanation": "Sovraniteti i popullit do të thotë se i gjithë pushteti shtetëror buron nga populli (Ligji Themelor, neni 20). Populli e ushtron këtë pushtet përmes zgjedhjeve."
+  },
+  "53": {
+   "q": "Çfarë do të thotë „shtet i së drejtës“ në Gjermani?",
+   "options": [
+    "Shteti ka të drejtë.",
+    "Ka vetëm parti të djathta.",
+    "Qytetarët dhe qytetaret vendosin për ligjet.",
+    "Shteti duhet t'u përmbahet ligjeve."
+   ],
+   "explanation": "Shteti i së drejtës do të thotë se edhe vetë shteti është i lidhur me të drejtën dhe ligjet dhe duhet t'u përmbahet atyre."
+  },
+  "54": {
+   "q": "Çfarë nuk është pushtet shtetëror në Gjermani?",
+   "options": [
+    "Pushteti legjislativ",
+    "Pushteti gjyqësor",
+    "Pushteti ekzekutiv",
+    "Pushteti direktiv"
+   ],
+   "explanation": "Tri pushtetet shtetërore janë pushteti legjislativ, ekzekutiv dhe gjyqësor. „Pushteti direktiv“ nuk është pushtet shtetëror."
+  },
+  "55": {
+   "q": "Çfarë tregon kjo fotografi?",
+   "options": [
+    "selinë e Bundestagut në Berlin",
+    "Gjykatën Kushtetuese Federale në Karlsruhe",
+    "ndërtesën e Bundesratit në Berlin",
+    "Zyrën e Kancelarit Federal në Berlin"
+   ],
+   "explanation": "Ndërtesa e Reichstagut në Berlin është selia e Bundestagut gjerman dhe një simbol i njohur i Gjermanisë."
+  },
+  "56": {
+   "q": "Cila zyrë në Gjermani bën pjesë në administratën e komunës?",
+   "options": [
+    "Zyra famullitare (Pfarramt)",
+    "Zyra e rendit publik (Ordnungsamt)",
+    "Zyra e tatimeve (Finanzamt)",
+    "Ministria e Punëve të Jashtme (Auswärtiges Amt)"
+   ],
+   "explanation": "Zyra e rendit publik (Ordnungsamt) është autoritet komunal. Zyra e tatimeve (land/federatë) dhe Ministria e Punëve të Jashtme (federatë) nuk janë zyra komunale."
+  },
+  "57": {
+   "q": "Kush zgjidhet zakonisht në detyrën e presidentit / presidentes së Bundestagut gjerman?",
+   "options": [
+    "deputeti më i moshuar / deputetja më e moshuar në parlament",
+    "kryeministri i landit / kryeministrja e landit për landin federal më të madh",
+    "një deputet / një deputete nga grupi parlamentar më i fortë",
+    "një ish-kancelar federal / një ish-kancelare federale"
+   ],
+   "explanation": "Tradicionalisht, president i Bundestagut zgjidhet një anëtar i grupit parlamentar më të fortë. Ky person drejton seancat plenare."
+  },
+  "58": {
+   "q": "Kush i emëron në Gjermani ministrat / ministret e qeverisë federale?",
+   "options": [
+    "presidenti / presidentja e Gjykatës Kushtetuese Federale",
+    "presidenti federal / presidentja federale",
+    "presidenti / presidentja e Bundesratit",
+    "presidenti / presidentja e Bundestagut"
+   ],
+   "explanation": "Presidenti federal i emëron ministrat federalë me propozimin e kancelarit federal. Formalisht, presidenti federal është përgjegjës për emërimin."
+  },
+  "59": {
+   "q": "Para sa vitesh ka pasur për herë të parë një bashkësi hebraike në territorin e Gjermanisë së sotme?",
+   "options": [
+    "para rreth 300 vitesh",
+    "para rreth 700 vitesh",
+    "para rreth 1150 vitesh",
+    "para rreth 1700 vitesh"
+   ],
+   "explanation": "Historia hebraike në Gjermani shkon rreth 1700 vjet pas. Bashkësia e parë e njohur hebraike është e dokumentuar në Köln në shekullin e 4-t."
+  },
+  "60": {
+   "q": "Në Gjermani Bundestagu dhe Bundesrati i përkasin …",
+   "options": [
+    "pushtetit ekzekutiv.",
+    "pushtetit legjislativ.",
+    "pushtetit direktiv.",
+    "pushtetit gjyqësor."
+   ],
+   "explanation": "Bundestagu dhe Bundesrati janë organet ligjvënëse të Gjermanisë dhe për këtë arsye i përkasin pushtetit legjislativ."
+  },
+  "61": {
+   "q": "Çfarë do të thotë „sovraniteti i popullit“?",
+   "options": [
+    "Mbreti / mbretëresha sundon mbi popullin.",
+    "Gjykata Kushtetuese Federale qëndron mbi kushtetutën.",
+    "Grupet e interesit e ushtrojnë sovranitetin së bashku me qeverinë.",
+    "Pushteti shtetëror buron nga populli."
+   ],
+   "explanation": "Sovraniteti i popullit do të thotë se i gjithë pushteti shtetëror buron nga populli – një parim themelor i demokracisë sipas nenit 20 të Ligjit Themelor."
+  },
+  "62": {
+   "q": "Kur zgjidhet parlamenti i një landi federal gjerman, kjo quhet …",
+   "options": [
+    "zgjedhje lokale.",
+    "zgjedhje për parlamentin e landit.",
+    "zgjedhje evropiane.",
+    "zgjedhje për Bundestagun."
+   ],
+   "explanation": "Zgjedhja e parlamentit të një landi federal quhet zgjedhje për parlamentin e landit (Landtagswahl)."
+  },
+  "63": {
+   "q": "Çfarë nuk bën pjesë në pushtetin ekzekutiv në Gjermani?",
+   "options": [
+    "policia",
+    "gjykatat",
+    "zyra e tatimeve",
+    "ministritë"
+   ],
+   "explanation": "Gjykatat i përkasin pushtetit gjyqësor, jo pushtetit ekzekutiv. Policia, zyra e tatimeve dhe ministritë janë pjesë e pushtetit ekzekutiv."
+  },
+  "64": {
+   "q": "Republika Federale e Gjermanisë sot ndahet në …",
+   "options": [
+    "katër zona pushtimi.",
+    "një shtet lindor dhe një shtet perëndimor.",
+    "16 kantone.",
+    "federatë, lande dhe komuna."
+   ],
+   "explanation": "Gjermania ndahet në federatë, 16 lande federale dhe komuna – një strukturë administrative me tri nivele."
+  },
+  "65": {
+   "q": "Nuk është detyrë e Bundestagut gjerman …",
+   "options": [
+    "të hartojë ligje.",
+    "të kontrollojë qeverinë federale.",
+    "të zgjedhë kancelarin federal / kancelaren federale.",
+    "të formojë kabinetin federal."
+   ],
+   "explanation": "Kabineti federal formohet nga kancelari federal, jo nga Bundestagu. Ligjet, kontrolli i qeverisë dhe zgjedhja e kancelarit janë detyra të Bundestagut."
+  },
+  "66": {
+   "q": "Cilat qytete kanë bashkësitë më të mëdha hebraike në Gjermani?",
+   "options": [
+    "Berlin dhe München",
+    "Hamburg dhe Essen",
+    "Nürnberg dhe Stuttgart",
+    "Worms dhe Speyer"
+   ],
+   "explanation": "Berlin dhe München kanë bashkësitë më të mëdha hebraike në Gjermani."
+  },
+  "67": {
+   "q": "Çfarë është në Gjermani kryesisht detyrë e landeve federale?",
+   "options": [
+    "Politika e mbrojtjes",
+    "Politika e jashtme",
+    "Politika ekonomike",
+    "Politika shkollore"
+   ],
+   "explanation": "Politika shkollore dhe arsimi në Gjermani janë kompetencë e landeve (sovraniteti kulturor i landeve). Politika e jashtme dhe politika e mbrojtjes janë çështje federale."
+  },
+  "68": {
+   "q": "Pse shteti në Gjermani e kontrollon sistemin shkollor?",
+   "options": [
+    "sepse në Gjermani ka vetëm shkolla shtetërore",
+    "sepse të gjithë nxënësit dhe nxënëset duhet të kenë një diplomë shkollore",
+    "sepse në landet federale ka shkolla të ndryshme",
+    "sepse sipas Ligjit Themelor kjo është detyra e tij"
+   ],
+   "explanation": "Sipas nenit 7 të Ligjit Themelor, shteti ka mbikëqyrjen e sistemit shkollor, gjë që siguron standarde të njëtrajtshme arsimore."
+  },
+  "69": {
+   "q": "Republika Federale e Gjermanisë ka një strukturë administrative me tri nivele. Si quhet niveli politik më i ulët?",
+   "options": [
+    "Këshillat e qytetit",
+    "Kryetarët e rretheve",
+    "Komunat dhe bashkitë",
+    "Zyrat e lagjeve"
+   ],
+   "explanation": "Niveli më i ulët i strukturës administrative gjermane janë komunat dhe bashkitë."
+  },
+  "70": {
+   "q": "Presidenti federal gjerman Gustav Heinemann i dorëzon Helmut Schmidt-it në vitin 1974 dekretin e emërimit si kancelar federal gjerman. Çfarë bën pjesë në detyrat e presidentit federal / presidentes federale të Gjermanisë?",
+   "options": [
+    "Ai / Ajo drejton punët e qeverisë.",
+    "Ai / Ajo kontrollon partinë qeverisëse.",
+    "Ai / Ajo i zgjedh ministrat / ministret.",
+    "Ai / Ajo propozon kancelarin / kancelaren për zgjedhje."
+   ],
+   "explanation": "Presidenti federal i propozon Bundestagut një kandidat për detyrën e kancelarit federal dhe ka kryesisht një funksion përfaqësues."
+  },
+  "71": {
+   "q": "Ku qëndron më shpesh kancelari federal / kancelarja federale e Gjermanisë? Më shpesh ai / ajo është …",
+   "options": [
+    "në Bonn, sepse atje ndodhen Zyra e Kancelarit Federal dhe Bundestagu.",
+    "në Berlin, sepse atje ndodhen Zyra e Kancelarit Federal dhe Bundestagu.",
+    "në Kështjellën Meseberg, shtëpinë e mysafirëve të qeverisë federale, për të pritur mysafirë shtetërorë.",
+    "në Kështjellën Bellevue, selinë zyrtare të presidentit federal / presidentes federale, për të pritur mysafirë shtetërorë."
+   ],
+   "explanation": "Zyra e Kancelarit Federal dhe Bundestagu ndodhen në Berlin, ku kancelari federal kalon pjesën më të madhe të kohës."
+  },
+  "72": {
+   "q": "Si quhet kancelari federal aktual / kancelarja federale aktuale e Gjermanisë?",
+   "options": [
+    "Gerhard Schröder",
+    "Jürgen Rüttgers",
+    "Klaus Wowereit",
+    "Olaf Scholz"
+   ],
+   "explanation": "Olaf Scholz (SPD) është kancelar federal i Gjermanisë që nga dhjetori 2021."
+  },
+  "73": {
+   "q": "Dy grupet parlamentare më të mëdha në Bundestagun gjerman aktualisht janë …",
+   "options": [
+    "CDU/CSU dhe SPD.",
+    "Die Linke dhe Bündnis 90/Die Grünen.",
+    "FDP dhe SPD.",
+    "Die Linke dhe FDP."
+   ],
+   "explanation": "CDU/CSU dhe SPD janë dy grupet parlamentare më të mëdha në Bundestagun gjerman."
+  },
+  "74": {
+   "q": "Si quhet parlamenti për gjithë Gjermaninë?",
+   "options": [
+    "Asambleja Federale",
+    "Dhoma e Popullit",
+    "Bundestagu",
+    "Gjykata Federale e Drejtësisë"
+   ],
+   "explanation": "Bundestagu është parlamenti kombëtar i Gjermanisë dhe zgjidhet drejtpërdrejt nga populli."
+  },
+  "75": {
+   "q": "Si quhet kreu i sotëm i shtetit të Gjermanisë?",
+   "options": [
+    "Frank-Walter Steinmeier",
+    "Norbert Lammert",
+    "Wolfgang Thierse",
+    "Edmund Stoiber"
+   ],
+   "explanation": "Frank-Walter Steinmeier është president federal i Republikës Federale të Gjermanisë që nga viti 2017."
+  },
+  "76": {
+   "q": "Çfarë do të thotë shkurtesa CDU në Gjermani?",
+   "options": [
+    "Christliche Deutsche Union (Unioni Kristian Gjerman)",
+    "Club Deutscher Unternehmer (Klubi i Sipërmarrësve Gjermanë)",
+    "Christlicher Deutscher Umweltschutz (Mbrojtja Kristiane Gjermane e Mjedisit)",
+    "Christlich Demokratische Union (Unioni Kristian Demokrat)"
+   ],
+   "explanation": "CDU do të thotë Christlich Demokratische Union (Unioni Kristian Demokrat), një nga partitë e mëdha popullore të Gjermanisë."
+  },
+  "77": {
+   "q": "Çfarë është Bundeswehr-i?",
+   "options": [
+    "policia gjermane",
+    "një port gjerman",
+    "një nismë qytetare gjermane",
+    "ushtria gjermane"
+   ],
+   "explanation": "Bundeswehr-i janë forcat e armatosura të Republikës Federale të Gjermanisë, të themeluara në vitin 1955."
+  },
+  "78": {
+   "q": "Çfarë do të thotë shkurtesa SPD?",
+   "options": [
+    "Sozialistische Partei Deutschlands (Partia Socialiste e Gjermanisë)",
+    "Sozialpolitische Partei Deutschlands (Partia e Politikës Sociale e Gjermanisë)",
+    "Sozialdemokratische Partei Deutschlands (Partia Socialdemokrate e Gjermanisë)",
+    "Sozialgerechte Partei Deutschlands (Partia e Drejtësisë Sociale e Gjermanisë)"
+   ],
+   "explanation": "SPD do të thotë Sozialdemokratische Partei Deutschlands (Partia Socialdemokrate e Gjermanisë), një nga partitë politike më të vjetra të Gjermanisë."
+  },
+  "79": {
+   "q": "Çfarë do të thotë shkurtesa FDP në Gjermani?",
+   "options": [
+    "Friedliche Demonstrative Partei (Partia Demonstrative Paqësore)",
+    "Freie Deutschland Partei (Partia Gjermania e Lirë)",
+    "Führende Demokratische Partei (Partia Demokratike Udhëheqëse)",
+    "Freie Demokratische Partei (Partia e Lirë Demokratike)"
+   ],
+   "explanation": "FDP do të thotë Freie Demokratische Partei (Partia e Lirë Demokratike), një parti liberale në Gjermani."
+  },
+  "80": {
+   "q": "Cila gjykatë në Gjermani është kompetente për interpretimin e Ligjit Themelor?",
+   "options": [
+    "Gjykata e Lartë e Landit",
+    "Gjykata vendore",
+    "Gjykata Kushtetuese Federale",
+    "Gjykata Administrative"
+   ],
+   "explanation": "Gjykata Kushtetuese Federale në Karlsruhe është gjykata më e lartë e Gjermanisë dhe është kompetente për interpretimin e Ligjit Themelor."
+  },
+  "81": {
+   "q": "Kush e zgjedh kancelarin federal / kancelaren federale në Gjermani?",
+   "options": [
+    "Bundesrati",
+    "Asambleja Federale",
+    "populli",
+    "Bundestagu"
+   ],
+   "explanation": "Kancelari federal zgjidhet nga Bundestagu, pasi presidenti federal ka propozuar një kandidat."
+  },
+  "82": {
+   "q": "Kush e drejton kabinetin federal gjerman?",
+   "options": [
+    "presidenti / presidentja e Bundestagut",
+    "presidenti federal / presidentja federale",
+    "kancelari federal / kancelarja federale",
+    "presidenti / presidentja e Bundesratit"
+   ],
+   "explanation": "Kancelari federal drejton kabinetin federal dhe përcakton drejtimet kryesore të politikës së qeverisë."
+  },
+  "83": {
+   "q": "Kush e zgjedh kancelarin federal / kancelaren federale të Gjermanisë?",
+   "options": [
+    "populli",
+    "Asambleja Federale",
+    "Bundestagu",
+    "qeveria federale"
+   ],
+   "explanation": "Kancelari federal zgjidhet nga Bundestagu gjerman, zakonisht me propozimin e presidentit federal."
+  },
+  "84": {
+   "q": "Cila është detyra kryesore e presidentit federal / presidentes federale të Gjermanisë? Ai / Ajo …",
+   "options": [
+    "qeveris vendin.",
+    "harton ligjet.",
+    "përfaqëson vendin.",
+    "mbikëqyr zbatimin e ligjeve."
+   ],
+   "explanation": "Presidenti federal ka kryesisht një funksion përfaqësues; ai e përfaqëson Gjermaninë brenda dhe jashtë vendit."
+  },
+  "85": {
+   "q": "Kush e përbën Bundesratin gjerman?",
+   "options": [
+    "deputetët e Bundestagut",
+    "ministrat dhe ministret e qeverisë federale",
+    "përfaqësuesit e qeverive të landeve federale",
+    "anëtarët e partive"
+   ],
+   "explanation": "Bundesrati përbëhet nga përfaqësues të qeverive të landeve. Ai merr pjesë në ligjvënien federale."
+  },
+  "86": {
+   "q": "Kush e zgjedh në Gjermani presidentin federal / presidenten federale?",
+   "options": [
+    "Asambleja Federale",
+    "Bundesrati",
+    "parlamenti federal",
+    "Gjykata Kushtetuese Federale"
+   ],
+   "explanation": "Presidenti federal zgjidhet nga Asambleja Federale, e cila përbëhet nga deputetët e Bundestagut dhe nga përfaqësues të landeve."
+  },
+  "87": {
+   "q": "Kush është kreu i shtetit i Republikës Federale të Gjermanisë?",
+   "options": [
+    "kancelari federal / kancelarja federale",
+    "presidenti federal / presidentja federale",
+    "presidenti / presidentja e Bundesratit",
+    "presidenti / presidentja e Bundestagut"
+   ],
+   "explanation": "Presidenti federal është kreu i shtetit i Republikës Federale të Gjermanisë, megjithëse qeveria drejtohet nga kancelari federal."
+  },
+  "88": {
+   "q": "Opozita parlamentare në Bundestagun gjerman …",
+   "options": [
+    "kontrollon qeverinë.",
+    "vendos se kush bëhet ministër federal / ministre federale.",
+    "përcakton se kush ulet në Bundesrat.",
+    "propozon krerët e qeverive të landeve."
+   ],
+   "explanation": "Opozita parlamentare ka për detyrë ta kontrollojë dhe ta kritikojë qeverinë."
+  },
+  "89": {
+   "q": "Si quhet në Gjermani bashkimi i deputetëve të një partie në parlament?",
+   "options": [
+    "Shoqatë",
+    "Këshill i pleqve",
+    "Grup parlamentar",
+    "Opozitë"
+   ],
+   "explanation": "Grupi parlamentar (Fraktion) është bashkimi i deputetëve të një partie në parlament, të cilët votojnë së bashku."
+  },
+  "90": {
+   "q": "Landet federale gjermane marrin pjesë në ligjvënien e federatës përmes …",
+   "options": [
+    "Bundesratit.",
+    "Asamblesë Federale.",
+    "Bundestagut.",
+    "qeverisë federale."
+   ],
+   "explanation": "Bundesrati është organi përmes të cilit landet federale marrin pjesë në ligjvënien e federatës."
+  },
+  "91": {
+   "q": "Në Gjermani, një ndryshim qeverie në një land federal mund të ketë pasoja për politikën federale. Qeverisja bëhet …",
+   "options": [
+    "më e vështirë, nëse për këtë arsye ndryshon shumica në Bundestag.",
+    "më e lehtë, nëse për këtë arsye hyjnë parti të reja në Bundesrat.",
+    "më e vështirë, nëse për këtë arsye ndryshon shumica në Bundesrat.",
+    "më e lehtë, nëse bëhet fjalë për një land federal të pasur."
+   ],
+   "explanation": "Bundesrati pasqyron raportet e shumicës në lande. Nëse ndryshon shumica në Bundesrat, ligjvënia federale mund të bëhet më e vështirë."
+  },
+  "92": {
+   "q": "Çfarë do të thotë shkurtesa CSU në Gjermani?",
+   "options": [
+    "Christlich Sichere Union (Unioni Kristian i Sigurt)",
+    "Christlich Süddeutsche Union (Unioni Kristian i Gjermanisë së Jugut)",
+    "Christlich Sozialer Unternehmerverband (Shoqata Kristiane Sociale e Sipërmarrësve)",
+    "Christlich Soziale Union (Unioni Kristian Social)"
+   ],
+   "explanation": "CSU do të thotë Christlich Soziale Union (Unioni Kristian Social), partia motër bavareze e CDU-së."
+  },
+  "93": {
+   "q": "Sa më shumë „vota të dyta“ të marrë një parti në zgjedhjet për Bundestagun, aq …",
+   "options": [
+    "më shumë vende merr partia në parlament.",
+    "më pak vota të para mund të ketë.",
+    "më shumë kandidatë të drejtpërdrejtë të partisë hyjnë në parlament.",
+    "më i madh është rreziku që të duhet të formojë një koalicion."
+   ],
+   "explanation": "Vota e dytë përcakton numrin e vendeve të një partie në Bundestag. Më shumë vota të dyta do të thotë më shumë vende në parlament."
+  },
+  "94": {
+   "q": "Nga cila moshë lejohet dikush në Gjermani të marrë pjesë në zgjedhjet për Bundestagun gjerman?",
+   "options": [
+    "16",
+    "18",
+    "21",
+    "23"
+   ],
+   "explanation": "E drejta për të votuar në zgjedhjet për Bundestagun vlen nga mosha 18 vjeç. Në disa zgjedhje lokale ajo vlen që nga mosha 16 vjeç."
+  },
+  "95": {
+   "q": "Çfarë vlen për shumicën e fëmijëve në Gjermani?",
+   "options": [
+    "Detyrimi për të votuar",
+    "Detyrimi shkollor",
+    "Detyrimi për ruajtjen e sekretit",
+    "Detyrimi fetar"
+   ],
+   "explanation": "Në Gjermani vlen detyrimi i përgjithshëm shkollor. Fëmijët duhet ta ndjekin shkollën, zakonisht nga mosha 6 vjeç."
+  },
+  "96": {
+   "q": "Si mund të dënohet dikush që e mohon Holokaustin?",
+   "options": [
+    "me shkurtim të përfitimeve sociale",
+    "me deri në 100 orë punë në dobi të komunitetit",
+    "aspak, mohimi i Holokaustit lejohet",
+    "me burgim deri në pesë vjet ose me gjobë"
+   ],
+   "explanation": "Mohimi i Holokaustit në Gjermani është vepër penale (§130 i Kodit Penal) dhe mund të dënohet me burgim deri në pesë vjet ose me gjobë."
+  },
+  "97": {
+   "q": "Çfarë paguani automatikisht në Gjermani kur jeni i punësuar me kontratë të përhershme?",
+   "options": [
+    "Sigurimin shoqëror",
+    "Ndihmën sociale",
+    "Shtesën për fëmijë",
+    "Ndihmën për banim"
+   ],
+   "explanation": "Punëmarrësit me kontratë të përhershme paguajnë automatikisht kontributet e sigurimeve shoqërore (sigurimi shëndetësor, pensional, i kujdesit afatgjatë dhe i papunësisë)."
+  },
+  "98": {
+   "q": "Kur deputetët në Bundestagun gjerman ndërrojnë grupin e tyre parlamentar, ...",
+   "options": [
+    "qeveria mund ta humbasë shumicën e saj.",
+    "ata nuk lejohen më të marrin pjesë në seancat e parlamentit.",
+    "presidenti federal / presidentja federale duhet të japë më parë pëlqimin e tij / saj.",
+    "zgjedhësit / zgjedhëset e këtyre deputetëve lejohen të votojnë edhe një herë."
+   ],
+   "explanation": "Kur deputetët ndërrojnë grupin e tyre parlamentar, raportet e shumicës në Bundestag mund të ndryshojnë dhe qeveria mund ta humbasë shumicën e saj."
+  },
+  "99": {
+   "q": "Kush i paguan sigurimet shoqërore në Gjermani?",
+   "options": [
+    "punëdhënësit / punëdhëneset dhe punëmarrësit / punëmarrëset",
+    "vetëm punëmarrësit / punëmarrëset",
+    "të gjithë shtetasit",
+    "vetëm punëdhënësit / punëdhëneset"
+   ],
+   "explanation": "Kontributet e sigurimeve shoqërore në Gjermani paguhen gjysmë për gjysmë nga punëdhënësit dhe punëmarrësit."
+  },
+  "100": {
+   "q": "Çfarë nuk bën pjesë në sigurimet shoqërore ligjore?",
+   "options": [
+    "sigurimi pensional ligjor",
+    "sigurimi i jetës",
+    "sigurimi i papunësisë",
+    "sigurimi i kujdesit afatgjatë"
+   ],
+   "explanation": "Sigurimet shoqërore ligjore përfshijnë sigurimin shëndetësor, pensional, të kujdesit afatgjatë dhe të papunësisë. Sigurimi i jetës është privat."
+  },
+  "101": {
+   "q": "Sindikatat janë organizata që përfaqësojnë interesat e …",
+   "options": [
+    "të rinjve.",
+    "punëmarrësve.",
+    "pensionistëve.",
+    "punëdhënësve."
+   ],
+   "explanation": "Sindikatat përfaqësojnë interesat e punëmarrësve, për shembull në negociatat për kontratat kolektive."
+  },
+  "102": {
+   "q": "Me çfarë mund të nderohet dikush në Republikën Federale të Gjermanisë, kur ka arritur një rezultat të veçantë në fushën politike, ekonomike, kulturore, intelektuale ose sociale? Me …",
+   "options": [
+    "Shqiponjën Federale",
+    "Kryqin Federal të Meritës",
+    "Urdhrin Atdhetar të Meritës",
+    "titullin e nderit „Hero i Republikës Demokratike Gjermane“"
+   ],
+   "explanation": "Kryqi Federal i Meritës është dekorata më e lartë shtetërore e Gjermanisë për merita të veçanta ndaj së mirës së përbashkët."
+  },
+  "103": {
+   "q": "Çfarë quhet në Gjermani „koalicioni i semaforit“ (Ampelkoalition)? Bashkëpunimi …",
+   "options": [
+    "i grupeve parlamentare të CDU dhe CSU në Bundestag",
+    "i SPD, FDP dhe Bündnis 90/Die Grünen në një qeveri",
+    "i CSU, Die LINKE dhe Bündnis 90/Die Grünen në një qeveri",
+    "i grupeve parlamentare të CDU dhe SPD në Bundestag"
+   ],
+   "explanation": "Koalicioni i semaforit quhet bashkëpunimi i SPD (e kuqe), FDP (e verdhë) dhe të Gjelbërve (jeshile) – sipas ngjyrave të një semafori."
+  },
+  "104": {
+   "q": "Një grua në Gjermani humbet punën. Cila nuk lejohet të jetë arsyeja e pushimit të saj nga puna?",
+   "options": [
+    "Gruaja është prej kohësh e sëmurë dhe e paaftë për punë.",
+    "Gruaja vinte shpesh me vonesë në punë.",
+    "Gruaja kryen punë private gjatë orarit të punës.",
+    "Gruaja pret një fëmijë dhe shefi i saj e di këtë."
+   ],
+   "explanation": "Pushimi nga puna i një gruaje shtatzënë është i ndaluar me ligj në Gjermani (Ligji për mbrojtjen e nënave, Mutterschutzgesetz). Shtatzënia nuk mund të jetë arsye për pushim nga puna."
+  },
+  "105": {
+   "q": "Cila është një detyrë e ndihmësve zgjedhorë në Gjermani?",
+   "options": [
+    "Ndihmojnë të moshuarit të votojnë në kabinën e votimit.",
+    "Shkruajnë njoftimet zgjedhore para zgjedhjeve.",
+    "U japin mediave rezultatet e ndërmjetme.",
+    "Numërojnë votat pas përfundimit të zgjedhjeve."
+   ],
+   "explanation": "Pas mbylljes së vendvotimeve, ndihmësit zgjedhorë numërojnë votat e hedhura."
+  },
+  "106": {
+   "q": "Në Gjermani, ndihmës zgjedhorë vullnetarë ndihmojnë në zgjedhje. Cila është një detyrë e ndihmësve zgjedhorë?",
+   "options": [
+    "Ndihmojnë fëmijët dhe të moshuarit të votojnë.",
+    "Shkruajnë karta dhe letra me adresën e vendvotimit.",
+    "U japin gazetarëve rezultatet e ndërmjetme.",
+    "Numërojnë votat pas përfundimit të zgjedhjeve."
+   ],
+   "explanation": "Pas mbylljes së vendvotimeve, ndihmësit zgjedhorë vullnetarë marrin përsipër numërimin e votave."
+  },
+  "107": {
+   "q": "Për sa vjet zgjidhet Bundestagu (parlamenti federal) në Gjermani?",
+   "options": [
+    "2 vjet",
+    "4 vjet",
+    "6 vjet",
+    "8 vjet"
+   ],
+   "explanation": "Mandati i rregullt i Bundestagut gjerman zgjat katër vjet."
+  },
+  "108": {
+   "q": "Në zgjedhjet për Bundestagun (parlamenti federal) në Gjermani mund të votojë çdokush që …",
+   "options": [
+    "jeton në Republikën Federale të Gjermanisë dhe dëshiron të votojë.",
+    "është qytetar i Republikës Federale të Gjermanisë dhe është të paktën 18 vjeç.",
+    "jeton prej të paktën 3 vjetësh në Republikën Federale të Gjermanisë.",
+    "është qytetar i Republikës Federale të Gjermanisë dhe është të paktën 21 vjeç."
+   ],
+   "explanation": "Të drejtë vote kanë shtetasit gjermanë që janë të paktën 18 vjeç dhe janë të regjistruar në Gjermani prej të paktën 3 muajsh."
+  },
+  "109": {
+   "q": "Sa shpesh mbahen zakonisht zgjedhjet për Bundestagun (parlamenti federal) në Gjermani?",
+   "options": [
+    "çdo tre vjet",
+    "çdo katër vjet",
+    "çdo pesë vjet",
+    "çdo gjashtë vjet"
+   ],
+   "explanation": "Zgjedhjet për Bundestagun mbahen zakonisht çdo katër vjet, përveç rastit kur Bundestagu shpërndahet para kohe."
+  },
+  "110": {
+   "q": "Për sa vjet zgjidhet Bundestagu (parlamenti federal) në Gjermani?",
+   "options": [
+    "2 vjet",
+    "3 vjet",
+    "4 vjet",
+    "5 vjet"
+   ],
+   "explanation": "Periudha zgjedhore e Bundestagut gjerman është katër vjet."
+  },
+  "111": {
+   "q": "Cili veprim në lidhje me shtetin e Izraelit është i ndaluar në Gjermani?",
+   "options": [
+    "Kritikimi publik i politikës së Izraelit.",
+    "Varja e një flamuri izraelit në pronën private.",
+    "Një diskutim për politikën e Izraelit.",
+    "Thirrja publike për shkatërrimin e Izraelit."
+   ],
+   "explanation": "Thirrja publike për shkatërrimin e Izraelit është vepër penale në Gjermani. Kritika ndaj politikës izraelite, përkundrazi, lejohet."
+  },
+  "112": {
+   "q": "Zgjedhjet në Gjermani janë …",
+   "options": [
+    "të veçanta.",
+    "të fshehta.",
+    "të lidhura me profesionin.",
+    "të varura nga gjinia."
+   ],
+   "explanation": "Fshehtësia e votës është parim themelor i demokracisë gjermane: askush nuk duhet të mësojë për kë ka votuar dikush."
+  },
+  "113": {
+   "q": "Zgjedhjet në Gjermani i fiton partia që …",
+   "options": [
+    "merr më shumë vota.",
+    "e kanë votuar shumica e burrave.",
+    "ka marrë më shumë vota nga punëtorët.",
+    "ka marrë më shumë vota të para (Erststimmen) për kandidatin ose kandidaten e saj për kancelar."
+   ],
+   "explanation": "Në Gjermani fiton partia me më shumë vota. Ndarja e vendeve varet kryesisht nga votat e dyta (Zweitstimmen)."
+  },
+  "114": {
+   "q": "Pjesëmarrja në zgjedhjet demokratike në Gjermani është …",
+   "options": [
+    "një detyrë.",
+    "një e drejtë.",
+    "një detyrim.",
+    "një barrë."
+   ],
+   "explanation": "Në Gjermani nuk ka detyrim për të votuar – votimi është një e drejtë, jo një detyrim."
+  },
+  "115": {
+   "q": "Çfarë do të thotë „e drejta aktive e votës“ në Gjermani?",
+   "options": [
+    "Personi mund të zgjidhet.",
+    "Personi duhet të shkojë të votojë.",
+    "Personi mund të votojë.",
+    "Personi duhet të shkojë në numërimin e votave."
+   ],
+   "explanation": "E drejta aktive e votës është e drejta për të votuar. E drejta pasive e votës është e drejta për t'u zgjedhur."
+  },
+  "116": {
+   "q": "Nëse ju lejohet të votoni në zgjedhjet për Bundestagun (parlamenti federal) në Gjermani, kjo quhet …",
+   "options": [
+    "kampanjë aktive zgjedhore.",
+    "procedurë aktive zgjedhore.",
+    "fushatë aktive zgjedhore.",
+    "e drejtë aktive e votës."
+   ],
+   "explanation": "E drejta aktive e votës është e drejta për të marrë pjesë në zgjedhje dhe për të hedhur votën."
+  },
+  "117": {
+   "q": "Sa përqind të votave të dyta duhet të marrin të paktën partitë, që të zgjidhen në Bundestagun gjerman (parlamenti federal)?",
+   "options": [
+    "3 %",
+    "4 %",
+    "5 %",
+    "6 %"
+   ],
+   "explanation": "Pragu prej pesë përqind parandalon që shumë parti shumë të vogla të hyjnë në parlament dhe ta bëjnë atë të paaftë për të vepruar."
+  },
+  "118": {
+   "q": "Kush mund të bëhet anëtar i rreth 40 klubeve sportive hebraike Makkabi?",
+   "options": [
+    "vetëm gjermanët",
+    "vetëm izraelitët",
+    "vetëm njerëzit fetarë",
+    "të gjithë njerëzit"
+   ],
+   "explanation": "Klubet sportive hebraike Makkabi janë të hapura për të gjithë njerëzit, pavarësisht nga feja apo kombësia."
+  },
+  "119": {
+   "q": "Zgjedhjet në Gjermani janë të lira. Çfarë do të thotë kjo?",
+   "options": [
+    "Të gjithë autorët e dënuar të veprave penale nuk lejohen të votojnë.",
+    "Nëse dua të shkoj të votoj, punëdhënësi im duhet të më japë leje.",
+    "Çdo person mund të vendosë pa shtrëngim nëse dëshiron të votojë dhe për kë dëshiron të votojë.",
+    "Mund të vendos lirisht ku dua të shkoj të votoj."
+   ],
+   "explanation": "Zgjedhjet e lira do të thotë që askush nuk mund të detyrohet të votojë ose të mos votojë."
+  },
+  "120": {
+   "q": "Sistemi zgjedhor në Gjermani është …",
+   "options": [
+    "votim censitar.",
+    "votim me tri klasa.",
+    "votim mazhoritar dhe proporcional.",
+    "votim i përgjithshëm i burrave."
+   ],
+   "explanation": "Gjermania ka një sistem zgjedhor proporcional të personalizuar: vota e parë zgjedh kandidatët e drejtpërdrejtë, vota e dytë përcakton ndarjen e vendeve."
+  },
+  "121": {
+   "q": "Një parti dëshiron të hyjë në Bundestagun gjerman (parlamenti federal). Por ajo duhet të ketë një përqindje minimale të votave. Kjo quhet …",
+   "options": [
+    "pragu 5 %.",
+    "kufiri i pranimit.",
+    "vlera bazë.",
+    "udhëzimi."
+   ],
+   "explanation": "Pragu 5% parandalon që partitë me shumë pak vota të hyjnë në parlament dhe ta vështirësojnë formimin e qeverisë."
+  },
+  "122": {
+   "q": "Cilit parim u nënshtrohen zgjedhjet në Gjermani? Zgjedhjet në Gjermani janë …",
+   "options": [
+    "të lira, të barabarta, të fshehta.",
+    "të hapura, të sigurta, të lira.",
+    "të mbyllura, të barabarta, të sigurta.",
+    "të sigurta, të hapura, vullnetare."
+   ],
+   "explanation": "Parimet zgjedhore gjermane janë: zgjedhje të përgjithshme, të drejtpërdrejta, të lira, të barabarta dhe të fshehta."
+  },
+  "123": {
+   "q": "Çfarë është në Gjermani „pragu 5 %“?",
+   "options": [
+    "rregull votimi në Bundestag për partitë e vogla",
+    "kontroll i pranisë në Bundestag për votimet",
+    "përqindja minimale e votave për të hyrë në parlament",
+    "kontroll i pranisë në Bundesrat për votimet"
+   ],
+   "explanation": "Pragu 5% është përqindja minimale e votave të dyta që duhet të marrë një parti për të hyrë në Bundestag."
+  },
+  "124": {
+   "q": "Zgjedhjet për Bundestagun (parlamenti federal) në Gjermani janë zgjedhjet e …",
+   "options": [
+    "kancelarit federal / kancelares federale.",
+    "parlamenteve të landeve.",
+    "parlamentit për Gjermaninë.",
+    "presidentit federal / presidentes federale."
+   ],
+   "explanation": "Në zgjedhjet për Bundestagun, qytetarët zgjedhin parlamentin kombëtar të Gjermanisë."
+  },
+  "125": {
+   "q": "Në një demokraci, një funksion i zgjedhjeve të rregullta është …",
+   "options": [
+    "t'i detyrojë qytetarët të hedhin votën.",
+    "të mundësojë ndërrimin e qeverisë sipas vullnetit të shumicës së votuesve.",
+    "të ruajë ligjet ekzistuese në vend.",
+    "t'u japë më shumë pushtet të varfërve."
+   ],
+   "explanation": "Zgjedhjet e rregullta u mundësojnë qytetarëve ta ndërrojnë qeverinë, nëse nuk janë të kënaqur me të."
+  },
+  "126": {
+   "q": "Çfarë marrin qytetarët me të drejtë vote në Gjermani para zgjedhjeve?",
+   "options": [
+    "një njoftim zgjedhor nga komuna",
+    "një leje votimi nga presidenti federal / presidentja federale",
+    "një njoftim nga Asambleja Federale",
+    "një njoftim nga zyra e famullisë"
+   ],
+   "explanation": "Para çdo zgjedhjeje, votuesit me të drejtë vote marrin nga komuna e tyre një kartë njoftimi zgjedhor me adresën e vendvotimit."
+  },
+  "127": {
+   "q": "Pse ekziston pragu 5 % në ligjin zgjedhor të Republikës Federale të Gjermanisë? Ekziston, sepse …",
+   "options": [
+    "programet e shumë partive të vogla kanë shumë ngjashmëri.",
+    "qytetarët mund ta humbasin orientimin kur ka shumë parti të vogla.",
+    "shumë parti të vogla e vështirësojnë formimin e qeverisë.",
+    "partitë e vogla nuk kanë aq shumë para për të paguar politikanët."
+   ],
+   "explanation": "Shumë parti të vogla do ta vështirësonin formimin e shumicave të qëndrueshme. Pragu 5% synon të mundësojë qeveri të qëndrueshme."
+  },
+  "128": {
+   "q": "Anëtarët e parlamentit që zgjidhen nga qytetarët quhen …",
+   "options": [
+    "deputetë.",
+    "kancelarë.",
+    "ambasadorë.",
+    "kryeministra të landeve."
+   ],
+   "explanation": "Anëtarët e zgjedhur të Bundestagut ose të një parlamenti landi quhen deputetë."
+  },
+  "129": {
+   "q": "Në Gjermani, populli zgjedh …",
+   "options": [
+    "kancelarin federal / kancelaren federale.",
+    "kryeministrin e landit / kryeministren e landit në një land federal.",
+    "Bundestagun.",
+    "presidentin federal / presidenten federale."
+   ],
+   "explanation": "Bundestagu zgjidhet drejtpërdrejt nga populli. Presidenti federal zgjidhet nga Asambleja Federale."
+  },
+  "130": {
+   "q": "Cila fletë votimi do të ishte e vlefshme në zgjedhjet për Bundestagun (parlamenti federal)?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Një fletë votimi e vlefshme duhet të plotësohet qartë: nga një kryq për votën e parë dhe për votën e dytë, pa shenja shtesë."
+  },
+  "131": {
+   "q": "Në Gjermani, kryetari i komunës (kryetari i bashkisë) është …",
+   "options": [
+    "drejtuesi / drejtuesja e një shkolle.",
+    "shefi / shefja e një banke.",
+    "kreu i një komune.",
+    "kryetari / kryetarja e një partie."
+   ],
+   "explanation": "Kryetari ose kryetarja e komunës është kreu i një komune dhe drejton administratën komunale."
+  },
+  "132": {
+   "q": "Shumë njerëz në Gjermani kryejnë në kohën e lirë veprimtari nderi (ehrenamtlich). Çfarë do të thotë kjo?",
+   "options": [
+    "Punojnë si ushtarë.",
+    "Punojnë vullnetarisht dhe pa pagesë në shoqata dhe organizata.",
+    "Punojnë në qeverinë federale.",
+    "Punojnë në një spital dhe fitojnë para me këtë."
+   ],
+   "explanation": "Puna me detyrë nderi (Ehrenamt) është veprimtari vullnetare, pa pagesë, për të mirën e komunitetit."
+  },
+  "133": {
+   "q": "Çfarë lejohet në Gjermani në zgjedhjet për Bundestagun (parlamenti federal) dhe për parlamentin e landit (Landtag)?",
+   "options": [
+    "Burri voton edhe për gruan e tij.",
+    "Vota mund të hidhet me postë.",
+    "Vota mund të hidhet me telefon ditën e zgjedhjeve.",
+    "Fëmijët nga mosha 14 vjeç lejohen të votojnë."
+   ],
+   "explanation": "Votimi me postë u mundëson votuesve me të drejtë vote ta hedhin votën me postë, nëse nuk mund të shkojnë personalisht në vendvotim."
+  },
+  "134": {
+   "q": "Duan ta heqin linjën e autobusit me të cilën ju shkoni gjithmonë në punë. Çfarë mund të bëni për ta ruajtur linjën e autobusit?",
+   "options": [
+    "Marr pjesë në një nismë qytetare për ruajtjen e linjës së autobusit ose themeloj vetë një nismë.",
+    "Bëhem anëtar i një klubi sportiv dhe stërvitem në çiklizëm.",
+    "I drejtohem zyrës së tatimeve, sepse si tatimpagues kam të drejtë për linjën e autobusit.",
+    "I shkruaj një letër zyrës së pyjeve të komunës."
+   ],
+   "explanation": "Nismat qytetare janë një mjet i demokracisë së drejtpërdrejtë, me të cilin qytetarët mund të angazhohen për çështje vendore."
+  },
+  "135": {
+   "q": "Kë përfaqësojnë sindikatat në Gjermani?",
+   "options": [
+    "ndërmarrjet e mëdha",
+    "ndërmarrjet e vogla",
+    "të vetëpunësuarit",
+    "punëmarrësit"
+   ],
+   "explanation": "Sindikatat përfaqësojnë interesat e punëmarrësve, p.sh. në negociatat kolektive për pagat dhe kushtet e punës."
+  },
+  "136": {
+   "q": "Në Gjermani ju shkoni në gjykatën e punës në rast …",
+   "options": [
+    "llogaritjeje të gabuar të shpenzimeve shtesë të banesës.",
+    "pushimi të pajustifikuar nga puna nga shefi ose shefja juaj.",
+    "problemesh me fqinjët.",
+    "vështirësish pas një aksidenti rrugor."
+   ],
+   "explanation": "Gjykata e punës merret me mosmarrëveshjet ndërmjet punëdhënësve dhe punëmarrësve, p.sh. në rastet e pushimit të pajustifikuar nga puna."
+  },
+  "137": {
+   "q": "Cila gjykatë në Gjermani është kompetente për konfliktet në botën e punës?",
+   "options": [
+    "gjykata e familjes",
+    "gjykata penale",
+    "gjykata e punës",
+    "gjykata vendore"
+   ],
+   "explanation": "Gjykata e punës është instanca kompetente për mosmarrëveshjet në fushën e së drejtës së punës."
+  },
+  "138": {
+   "q": "Çfarë mund të bëj në Gjermani, nëse punëdhënësi im më ka pushuar nga puna padrejtësisht?",
+   "options": [
+    "të vazhdoj të punoj dhe të jem i sjellshëm me shefin ose shefen",
+    "të nis një procedurë urdhërpagese kundër punëdhënësit",
+    "të ngre padi për mbrojtje nga pushimi nga puna",
+    "ta denoncoj punëdhënësin në polici"
+   ],
+   "explanation": "Padia për mbrojtje nga pushimi nga puna (Kündigungsschutzklage) para gjykatës së punës është rruga ligjore për të kundërshtuar një pushim të pajustifikuar nga puna."
+  },
+  "139": {
+   "q": "Kur zhvillohet në Gjermani një proces gjyqësor? Kur dikush …",
+   "options": [
+    "kalon në një fe tjetër.",
+    "ka kryer një vepër penale dhe akuzohet.",
+    "ka një mendim tjetër nga ai i qeverisë.",
+    "e ka parkuar makinën gabim dhe ajo tërhiqet nga autorimorkiatori."
+   ],
+   "explanation": "Një proces penal zhvillohet kur dikush akuzohet për një vepër penale. Mendimet e ndryshme ose kundërvajtjet nuk çojnë automatikisht në një proces gjyqësor."
+  },
+  "140": {
+   "q": "Çfarë bën një Schöffe / Schöffin në Gjermani? Ai / Ajo …",
+   "options": [
+    "vendos bashkë me gjyqtarët për fajin dhe dënimin.",
+    "u jep qytetarëve këshilla juridike.",
+    "lëshon dokumente zyrtare.",
+    "mbron të pandehurin / të pandehurën."
+   ],
+   "explanation": "Schöffen janë gjyqtarë laikë me detyrë nderi, që vendosin bashkë me gjyqtarët profesionistë për fajin dhe dënimin."
+  },
+  "141": {
+   "q": "Kush i këshillon njerëzit në Gjermani për çështje juridike dhe i përfaqëson në gjykatë?",
+   "options": [
+    "një avokat / avokate",
+    "një gjyqtar / gjyqtare",
+    "një Schöffe / Schöffin",
+    "një prokuror / prokurore"
+   ],
+   "explanation": "Avokatët i këshillojnë klientët e tyre për çështje juridike dhe i përfaqësojnë në gjykatë."
+  },
+  "142": {
+   "q": "Cila është detyra kryesore e një gjyqtari ose gjyqtareje në Gjermani? Një gjyqtar / gjyqtare …",
+   "options": [
+    "përfaqëson qytetarët para një gjykate.",
+    "punon në një gjykatë dhe shpall vendime.",
+    "ndryshon ligjet.",
+    "kujdeset për të rinjtë në gjykatë."
+   ],
+   "explanation": "Gjyqtarët punojnë në gjykata, drejtojnë proceset dhe shpallin vendime – në mënyrë të pavarur nga qeveria dhe parlamenti."
+  },
+  "143": {
+   "q": "Një gjyqtar / gjyqtare në Gjermani i përket …",
+   "options": [
+    "pushtetit gjyqësor.",
+    "pushtetit ekzekutiv.",
+    "pushtetit operativ.",
+    "pushtetit legjislativ."
+   ],
+   "explanation": "Gjyqtarët i përkasin pushtetit gjyqësor, njërit prej tri pushteteve të shtetit."
+  },
+  "144": {
+   "q": "Një gjyqtar / gjyqtare në Gjermani i përket …",
+   "options": [
+    "pushtetit që zbaton ligjet.",
+    "pushtetit që jep drejtësi.",
+    "pushtetit që planifikon.",
+    "pushtetit që bën ligjet."
+   ],
+   "explanation": "Pushteti gjyqësor (pushteti që jep drejtësi) është një nga tri pushtetet e shtetit dhe ushtrohet nga gjyqtarët."
+  },
+  "145": {
+   "q": "Në Gjermani pushteti shtetëror është i ndarë. Për cilin pushtet shtetëror punon një gjyqtar / gjyqtare? Për …",
+   "options": [
+    "pushtetin gjyqësor.",
+    "pushtetin ekzekutiv.",
+    "shtypin.",
+    "pushtetin legjislativ."
+   ],
+   "explanation": "Gjyqtarët janë pjesë e pushtetit gjyqësor, i cili punon në mënyrë të pavarur nga pushteti ekzekutiv dhe legjislativ."
+  },
+  "146": {
+   "q": "Si quhet në Gjermani shqyrtimi i një çështjeje para gjykatës?",
+   "options": [
+    "Program",
+    "Procedurë",
+    "Protokoll",
+    "Proces"
+   ],
+   "explanation": "Shqyrtimi i një çështjeje para një gjykate gjermane quhet proces (Prozess)."
+  },
+  "147": {
+   "q": "Cila është puna e një gjyqtari ose gjyqtareje në Gjermani?",
+   "options": [
+    "të qeverisë Gjermaninë",
+    "të japë drejtësi",
+    "të hartojë plane",
+    "të nxjerrë ligje"
+   ],
+   "explanation": "Detyra e gjyqtarëve është dhënia e drejtësisë: ata drejtojnë proceset gjyqësore dhe shpallin vendime."
+  },
+  "148": {
+   "q": "Cila është një detyrë e policisë në Gjermani?",
+   "options": [
+    "të mbrojë vendin",
+    "të përgjojë qytetarët",
+    "të miratojë ligjet",
+    "të mbikëqyrë zbatimin e ligjeve"
+   ],
+   "explanation": "Policia i përket pushtetit ekzekutiv dhe ka për detyrë të mbikëqyrë zbatimin e ligjeve dhe të ndjekë veprat penale."
+  },
+  "149": {
+   "q": "Cili është një shembull i sjelljes antisemite?",
+   "options": [
+    "vizita në një festë hebraike",
+    "kritikimi i qeverisë izraelite",
+    "mohimi i Holokaustit",
+    "loja e futbollit kundër hebrenjve"
+   ],
+   "explanation": "Mohimi i Holokaustit është një formë e antisemitizmit dhe në Gjermani është vepër penale."
+  },
+  "150": {
+   "q": "Një Gerichtsschöffe / Gerichtsschöffin në Gjermani është …",
+   "options": [
+    "zëvendësi / zëvendësja e kreut të qytetit.",
+    "një gjyqtar / gjyqtare me detyrë nderi.",
+    "një anëtar i një këshilli komunal.",
+    "një person që ka studiuar drejtësi."
+   ],
+   "explanation": "Gerichtsschöffen janë gjyqtarë me detyrë nderi, të cilët marrin pjesë në proceset gjyqësore pa formim juridik."
+  },
+  "151": {
+   "q": "Kush e ndërtoi Murin në Berlin?",
+   "options": [
+    "Britania e Madhe",
+    "Republika Federale e Gjermanisë",
+    "Republika Demokratike Gjermane",
+    "SHBA"
+   ],
+   "explanation": "Republika Demokratike Gjermane e ndërtoi Murin e Berlinit në vitin 1961, për të ndalur largimin masiv të qytetarëve të saj drejt Perëndimit."
+  },
+  "152": {
+   "q": "Kur ishin në pushtet në Gjermani nacionalsocialistët, me Adolf Hitler në krye?",
+   "options": [
+    "1918 deri në 1923",
+    "1932 deri në 1950",
+    "1933 deri në 1945",
+    "1945 deri në 1989"
+   ],
+   "explanation": "Nacionalsocialistët nën udhëheqjen e Hitlerit sunduan Gjermaninë nga 1933 deri në 1945, në fund të Luftës së Dytë Botërore."
+  },
+  "153": {
+   "q": "Çfarë ndodhi më 8 maj 1945?",
+   "options": [
+    "Vdekja e Adolf Hitlerit",
+    "Fillimi i ndërtimit të Murit të Berlinit",
+    "Zgjedhja e Konrad Adenauerit kancelar federal",
+    "Fundi i Luftës së Dytë Botërore në Evropë"
+   ],
+   "explanation": "Më 8 maj 1945 Gjermania kapitulloi pa kushte dhe me këtë mbaroi Lufta e Dytë Botërore në Evropë."
+  },
+  "154": {
+   "q": "Kur mbaroi Lufta e Dytë Botërore?",
+   "options": [
+    "1933",
+    "1945",
+    "1949",
+    "1961"
+   ],
+   "explanation": "Lufta e Dytë Botërore mbaroi në vitin 1945 me kapitullimin pa kushte të Gjermanisë më 8 maj."
+  },
+  "155": {
+   "q": "Kur ishin nacionalsocialistët në pushtet në Gjermani?",
+   "options": [
+    "1888 deri në 1918",
+    "1921 deri në 1934",
+    "1933 deri në 1945",
+    "1949 deri në 1963"
+   ],
+   "explanation": "Regjimi nazist filloi në vitin 1933 me emërimin e Hitlerit kancelar i Rajhut dhe mbaroi në vitin 1945 me kapitullimin e Gjermanisë."
+  },
+  "156": {
+   "q": "Në cilin vit u bë Hitleri kancelar i Rajhut?",
+   "options": [
+    "1923",
+    "1927",
+    "1933",
+    "1936"
+   ],
+   "explanation": "Adolf Hitler u emërua kancelar i Rajhut nga presidenti i Rajhut Paul von Hindenburg më 30 janar 1933."
+  },
+  "157": {
+   "q": "Nacionalsocialistët, me Adolf Hitler në krye, vendosën në Gjermani në vitin 1933 …",
+   "options": [
+    "një diktaturë.",
+    "një shtet demokratik.",
+    "një monarki.",
+    "një principatë."
+   ],
+   "explanation": "Pas marrjes së pushtetit në vitin 1933, nacionalsocialistët vendosën një diktaturë, eliminuan të gjitha partitë e tjera dhe shtypën demokracinë."
+  },
+  "158": {
+   "q": "„Rajhu i Tretë“ ishte një …",
+   "options": [
+    "diktaturë.",
+    "demokraci.",
+    "monarki.",
+    "republikë e këshillave."
+   ],
+   "explanation": "Rajhu i Tretë (1933–1945) ishte një diktaturë nacionalsocialiste pa institucione demokratike."
+  },
+  "159": {
+   "q": "Çfarë nuk ekzistonte në Gjermani gjatë kohës së nacionalsocializmit?",
+   "options": [
+    "zgjedhjet e lira",
+    "censura e shtypit",
+    "arrestimet arbitrare",
+    "persekutimi i hebrenjve"
+   ],
+   "explanation": "Në shtetin nazist nuk kishte zgjedhje të lira. Në vend të tyre kishte censurë të shtypit, arrestime arbitrare dhe persekutim sistematik të hebrenjve."
+  },
+  "160": {
+   "q": "Cila luftë zgjati nga 1939 deri në 1945?",
+   "options": [
+    "Lufta e Parë Botërore",
+    "Lufta e Dytë Botërore",
+    "Lufta e Vietnamit",
+    "Lufta e Gjirit"
+   ],
+   "explanation": "Lufta e Dytë Botërore filloi më 1 shtator 1939 me sulmin gjerman ndaj Polonisë dhe mbaroi më 8 maj 1945."
+  },
+  "161": {
+   "q": "Çfarë e karakterizonte shtetin nazist? Një politikë …",
+   "options": [
+    "e racizmit shtetëror",
+    "e lirisë së mendimit",
+    "e lirisë së përgjithshme fetare",
+    "e zhvillimit të demokracisë"
+   ],
+   "explanation": "Shteti nazist karakterizohej nga racizmi shtetëror, i cili kulmoi me persekutimin dhe vrasjen sistematike të hebrenjve dhe të grupeve të tjera."
+  },
+  "162": {
+   "q": "Claus Schenk Graf von Stauffenberg u bë i njohur për …",
+   "options": [
+    "një medalje ari në Lojërat Olimpike të vitit 1936.",
+    "ndërtimin e godinës së Rajhstagut.",
+    "ngritjen e Wehrmacht-it.",
+    "atentatin ndaj Hitlerit më 20 korrik 1944."
+   ],
+   "explanation": "Stauffenberg ishte organizatori kryesor i atentatit ndaj Hitlerit më 20 korrik 1944, i cili dështoi. Më pas ai u ekzekutua."
+  },
+  "163": {
+   "q": "Në cilin vit shkatërruan nacionalsocialistët sinagoga dhe dyqane hebraike në Gjermani?",
+   "options": [
+    "1925",
+    "1930",
+    "1938",
+    "1945"
+   ],
+   "explanation": "Në Natën e Pogromit (Reichspogromnacht), nga 9 deri më 10 nëntor 1938, u shkatërruan dyqane dhe sinagoga hebraike dhe hebrenjtë u keqtrajtuan."
+  },
+  "164": {
+   "q": "Çfarë ndodhi më 9 nëntor 1938 në Gjermani?",
+   "options": [
+    "Me sulmin ndaj Polonisë fillon Lufta e Dytë Botërore.",
+    "Nacionalsocialistët humbasin zgjedhjet dhe shpërndajnë Rajhstagun.",
+    "Dyqanet dhe sinagogat hebraike shkatërrohen nga nacionalsocialistët dhe ndjekësit e tyre.",
+    "Hitleri bëhet president i Rajhut dhe ndalon të gjitha partitë."
+   ],
+   "explanation": "Nata e Pogromit (Reichspogromnacht, 9/10 nëntor 1938) ishte një pogrom i organizuar nga nazistët kundër qytetarëve hebrenj, gjatë të cilit u shkatërruan sinagoga dhe dyqane."
+  },
+  "165": {
+   "q": "Si quhej kancelari i parë federal i Republikës Federale të Gjermanisë?",
+   "options": [
+    "Konrad Adenauer",
+    "Kurt Georg Kiesinger",
+    "Helmut Schmidt",
+    "Willy Brandt"
+   ],
+   "explanation": "Konrad Adenauer (CDU) ishte nga 1949 deri në 1963 kancelari i parë federal i Republikës Federale të Gjermanisë."
+  },
+  "166": {
+   "q": "Në cilat demonstrata në Gjermani njerëzit thërrisnin „Ne jemi populli“?",
+   "options": [
+    "në demonstratat e së hënës në vitin 1989 në Republikën Demokratike Gjermane",
+    "në kryengritjen e punëtorëve në vitin 1953 në Republikën Demokratike Gjermane",
+    "në demonstratat e vitit 1968 në Republikën Federale të Gjermanisë",
+    "në demonstratat kundër energjisë bërthamore në vitin 1985 në Republikën Federale të Gjermanisë"
+   ],
+   "explanation": "Thirrja „Ne jemi populli“ ishte simboli i revolucionit paqësor të vitit 1989 në Republikën Demokratike Gjermane, i cili çoi në rënien e Murit."
+  },
+  "167": {
+   "q": "Cilat vende u quajtën në Gjermani pas Luftës së Dytë Botërore „Fuqitë Pushtuese Aleate“?",
+   "options": [
+    "Bashkimi Sovjetik, Britania e Madhe, Polonia, Suedia",
+    "Franca, Bashkimi Sovjetik, Italia, Japonia",
+    "SHBA, Bashkimi Sovjetik, Spanja, Portugalia",
+    "SHBA, Bashkimi Sovjetik, Britania e Madhe, Franca"
+   ],
+   "explanation": "Katër fuqitë fitimtare aleate, SHBA, Bashkimi Sovjetik, Britania e Madhe dhe Franca, e ndanë Gjermaninë pas vitit 1945 në katër zona pushtimi."
+  },
+  "168": {
+   "q": "Cili vend nuk ishte „Fuqi Pushtuese Aleate“ në Gjermani?",
+   "options": [
+    "SHBA",
+    "Bashkimi Sovjetik",
+    "Franca",
+    "Japonia"
+   ],
+   "explanation": "Katër fuqitë pushtuese në Gjermani pas vitit 1945 ishin SHBA, Bashkimi Sovjetik, Britania e Madhe dhe Franca. Japonia nuk ishte ndër to."
+  },
+  "169": {
+   "q": "Kur u themelua Republika Federale e Gjermanisë?",
+   "options": [
+    "1939",
+    "1945",
+    "1949",
+    "1951"
+   ],
+   "explanation": "Republika Federale e Gjermanisë u themelua më 23 maj 1949, kur hyri në fuqi Ligji Themelor (Kushtetuta)."
+  },
+  "170": {
+   "q": "Çfarë ekzistonte në Gjermani gjatë kohës së nacionalsocializmit?",
+   "options": [
+    "e drejta për zhvillimin e lirë të personalitetit",
+    "liria e shtypit",
+    "ndalimi i partive",
+    "mbrojtja e dinjitetit njerëzor"
+   ],
+   "explanation": "Në shtetin nazist u ndaluan të gjitha partitë e tjera. Të drejtat themelore, si liria e shtypit dhe dinjiteti njerëzor, u shfuqizuan."
+  },
+  "171": {
+   "q": "Ekonomia sociale e tregut do të thotë që ekonomia …",
+   "options": [
+    "rregullohet vetëm sipas ofertës dhe kërkesës.",
+    "planifikohet dhe drejtohet nga shteti, oferta dhe kërkesa nuk merren parasysh.",
+    "orientohet sipas kërkesës jashtë vendit.",
+    "orientohet sipas ofertës dhe kërkesës, por shteti kujdeset për një balancim social."
+   ],
+   "explanation": "Ekonomia sociale e tregut bashkon forcat e lira të tregut me politikën sociale të shtetit, për të balancuar pabarazitë ekonomike."
+  },
+  "172": {
+   "q": "Në cilën zonë pushtimi u themelua Republika Demokratike Gjermane? Në …",
+   "options": [
+    "zonën amerikane të pushtimit.",
+    "zonën franceze të pushtimit.",
+    "zonën britanike të pushtimit.",
+    "zonën sovjetike të pushtimit."
+   ],
+   "explanation": "Republika Demokratike Gjermane u themelua në vitin 1949 në zonën sovjetike të pushtimit, ndërsa Republika Federale e Gjermanisë lindi nga zonat perëndimore të pushtimit."
+  },
+  "173": {
+   "q": "Republika Federale e Gjermanisë është anëtare themeluese e …",
+   "options": [
+    "Traktatit të Atlantikut të Veriut (NATO).",
+    "Kombeve të Bashkuara (OKB).",
+    "Bashkimit Evropian (BE).",
+    "Traktatit të Varshavës."
+   ],
+   "explanation": "Republika Federale e Gjermanisë është anëtare themeluese e Bashkimit Evropian (1957, Traktatet e Romës). Në NATO u anëtarësua në vitin 1955."
+  },
+  "174": {
+   "q": "Kur u themelua Republika Demokratike Gjermane?",
+   "options": [
+    "1947",
+    "1949",
+    "1953",
+    "1956"
+   ],
+   "explanation": "Republika Demokratike Gjermane (Gjermania Lindore) u themelua më 7 tetor 1949 në zonën sovjetike të pushtimit."
+  },
+  "175": {
+   "q": "Sa zona pushtimi kishte në Gjermani pas Luftës së Dytë Botërore?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Pas Luftës së Dytë Botërore, Gjermania u nda në katër zona pushtimi: amerikane, sovjetike, britanike dhe franceze."
+  },
+  "176": {
+   "q": "Si ishin ndarë zonat e pushtimit të Gjermanisë pas vitit 1945?",
+   "options": [
+    "1=Britania e Madhe, 2=Bashkimi Sovjetik, 3=Franca, 4=SHBA",
+    "1=Bashkimi Sovjetik, 2=Britania e Madhe, 3=SHBA, 4=Franca",
+    "1=Britania e Madhe, 2=Bashkimi Sovjetik, 3=SHBA, 4=Franca",
+    "1=Britania e Madhe, 2=SHBA, 3=Bashkimi Sovjetik, 4=Franca"
+   ],
+   "explanation": "Katër zonat aleate të pushtimit ishin të shpërndara gjeografikisht: ajo britanike në veriperëndim, ajo sovjetike në lindje, ajo amerikane në jug dhe ajo franceze në jugperëndim."
+  },
+  "177": {
+   "q": "Cili qytet gjerman u nda në katër sektorë pas Luftës së Dytë Botërore?",
+   "options": [
+    "Mynih",
+    "Berlin",
+    "Dresden",
+    "Frankfurt/Oder"
+   ],
+   "explanation": "Berlini, si kryeqytet i Rajhut Gjerman, u nda pas Luftës së Dytë Botërore në katër sektorë (amerikan, sovjetik, britanik, francez)."
+  },
+  "178": {
+   "q": "Nga qershori 1948 deri në maj 1949, qytetarët e Berlinit Perëndimor u furnizuan përmes një ure ajrore. Cila rrethanë ishte shkaku i kësaj?",
+   "options": [
+    "Për Francën, furnizimi i popullsisë së Berlinit Perëndimor me aeroplan ishte më i lirë.",
+    "Ushtarët amerikanë kishin frikë nga sulmet gjatë transportit tokësor.",
+    "Për Britaninë e Madhe, furnizimi përmes urës ajrore ishte më i shpejtë.",
+    "Bashkimi Sovjetik ndërpreu gjithë trafikun tokësor."
+   ],
+   "explanation": "Në vitet 1948/49 Bashkimi Sovjetik bllokoi të gjitha rrugët tokësore drejt Berlinit Perëndimor, prandaj Aleatët perëndimorë ngritën Urën Ajrore të Berlinit."
+  },
+  "179": {
+   "q": "Si mbaroi zyrtarisht Lufta e Dytë Botërore në Evropë?",
+   "options": [
+    "me vdekjen e Adolf Hitlerit",
+    "me kapitullimin pa kushte të Gjermanisë",
+    "me tërheqjen e gjermanëve nga territoret e pushtuara",
+    "me një revolucion në Gjermani"
+   ],
+   "explanation": "Lufta e Dytë Botërore në Evropë mbaroi më 8 maj 1945 me kapitullimin pa kushte të Gjermanisë para Aleatëve."
+  },
+  "180": {
+   "q": "Kancelari i parë federal i Republikës Federale të Gjermanisë ishte …",
+   "options": [
+    "Ludwig Erhard.",
+    "Willy Brandt.",
+    "Konrad Adenauer.",
+    "Gerhard Schröder."
+   ],
+   "explanation": "Konrad Adenauer (CDU) ishte nga 1949 deri në 1963 kancelari i parë federal dhe i dha formë në mënyrë vendimtare Republikës Federale në vitet e saj të para."
+  },
+  "181": {
+   "q": "Çfarë donte të shprehte Willy Brandt me gjunjëzimin e tij në vitin 1970 në ish-getonë hebraike të Varshavës?",
+   "options": [
+    "Ai iu nënshtrua ish-Aleatëve.",
+    "Ai u kërkoi falje Polonisë dhe hebrenjve polakë.",
+    "Ai tregoi përulësinë e tij para Traktatit të Varshavës.",
+    "Ai bëri një lutje te varri i Ushtarit të Panjohur."
+   ],
+   "explanation": "Gjunjëzimi i Willy Brandt në Varshavë në vitin 1970 ishte një gjest përulësie dhe pendese për krimet naziste ndaj hebrenjve polakë."
+  },
+  "182": {
+   "q": "Si quhet shtëpia hebraike e lutjes?",
+   "options": [
+    "Bazilikë",
+    "Xhami",
+    "Sinagogë",
+    "Kishë"
+   ],
+   "explanation": "Sinagoga është shtëpia hebraike e adhurimit, ku mbahen shërbesat fetare dhe lexohet Tora."
+  },
+  "183": {
+   "q": "Kur ndodhi në Republikën Federale të Gjermanisë „mrekullia ekonomike“?",
+   "options": [
+    "vitet 40",
+    "vitet 50",
+    "vitet 70",
+    "vitet 80"
+   ],
+   "explanation": "„Mrekullia ekonomike“ quhet rimëkëmbja e shpejtë ekonomike e Gjermanisë Perëndimore në vitet 1950, pas Luftës së Dytë Botërore."
+  },
+  "184": {
+   "q": "Mbi çfarë baze juridike u themelua shteti i Izraelit?",
+   "options": [
+    "një rezolutë e Kombeve të Bashkuara",
+    "një vendim i Kongresit Sionist",
+    "një propozim i qeverisë federale",
+    "një propozim i BRSS"
+   ],
+   "explanation": "Shteti i Izraelit u themelua në vitin 1948 mbi bazën e Rezolutës 181 të OKB-së të vitit 1947 (Plani i ndarjes së Palestinës)."
+  },
+  "185": {
+   "q": "Çfarë përfaqësonte shprehja „Perdja e Hekurt“? Izolimin …",
+   "options": [
+    "e Traktatit të Varshavës kundrejt Perëndimit.",
+    "e Gjermanisë Veriore kundrejt Gjermanisë Jugore.",
+    "e Gjermanisë naziste kundrejt Aleatëve.",
+    "e Evropës kundrejt SHBA-së."
+   ],
+   "explanation": "„Perdja e Hekurt“ quhej kufiri ndërmjet bllokut perëndimor dhe atij lindor gjatë Luftës së Ftohtë, i cili e ndante Evropën."
+  },
+  "186": {
+   "q": "Në vitin 1953 pati në Republikën Demokratike Gjermane një kryengritje, të cilën në Republikën Federale të Gjermanisë e përkujtonte për një kohë të gjatë një ditë feste. Kur ishte kjo?",
+   "options": [
+    "1 maj",
+    "17 qershor",
+    "20 korrik",
+    "9 nëntor"
+   ],
+   "explanation": "Kryengritja popullore e 17 qershorit 1953 në Republikën Demokratike Gjermane përkujtohej në Republikën Federale si „Dita e Unitetit Gjerman“, derisa në vitin 1990 u zëvendësua nga 3 tetori."
+  },
+  "187": {
+   "q": "Cili shtet gjerman kishte një flamur të zi-kuq-ar me çekan, kompas dhe kurorë kallinjsh?",
+   "options": [
+    "Prusia",
+    "Republika Federale e Gjermanisë",
+    "Republika Demokratike Gjermane",
+    "„Rajhu i Tretë“"
+   ],
+   "explanation": "Republika Demokratike Gjermane kishte një flamur të zi-kuq-ar me stemën shtetërore: çekani, kompasi dhe kurora e kallinjve si simbole të punëtorëve, inteligjencës dhe fshatarëve."
+  },
+  "188": {
+   "q": "Në cilin vit u ndërtua Muri në Berlin?",
+   "options": [
+    "1953",
+    "1956",
+    "1959",
+    "1961"
+   ],
+   "explanation": "Më 13 gusht 1961 Republika Demokratike Gjermane filloi ndërtimin e Murit të Berlinit, për të ndalur largimin masiv drejt Perëndimit."
+  },
+  "189": {
+   "q": "Kur e ndërtoi Republika Demokratike Gjermane Murin në Berlin?",
+   "options": [
+    "1919",
+    "1933",
+    "1961",
+    "1990"
+   ],
+   "explanation": "Ndërtimi i Murit filloi më 13 gusht 1961. Muri qëndroi 28 vjet dhe ra më 9 nëntor 1989."
+  },
+  "190": {
+   "q": "Çfarë do të thotë shkurtesa DDR?",
+   "options": [
+    "Radiodifuzioni i Tretë Gjerman",
+    "Republika Gjermane",
+    "Republika e Tretë Gjermane",
+    "Republika Demokratike Gjermane"
+   ],
+   "explanation": "DDR do të thotë Deutsche Demokratische Republik (Republika Demokratike Gjermane), ish-shteti socialist në Gjermaninë Lindore (1949–1990)."
+  },
+  "191": {
+   "q": "Kur u hap Muri në Berlin për të gjithë?",
+   "options": [
+    "1987",
+    "1989",
+    "1992",
+    "1995"
+   ],
+   "explanation": "Më 9 nëntor 1989 Republika Demokratike Gjermane hapi Murin e Berlinit. Ky ishte fillimi i ribashkimit gjerman."
+  },
+  "192": {
+   "q": "Cili land federal i sotëm gjerman bënte pjesë më parë në territorin e Republikës Demokratike Gjermane?",
+   "options": [
+    "Brandenburg",
+    "Bavaria",
+    "Saarland",
+    "Hesen"
+   ],
+   "explanation": "Brandenburg është një nga pesë landet e reja federale që lindën pas ribashkimit në vitin 1990 nga territori i ish-Republikës Demokratike Gjermane."
+  },
+  "193": {
+   "q": "Nga 1961 deri në 1989, Berlini ishte …",
+   "options": [
+    "pa kryetar komune.",
+    "një shtet më vete.",
+    "i ndarë nga një mur.",
+    "i arritshëm vetëm me aeroplan."
+   ],
+   "explanation": "Muri i Berlinit e ndau Berlinin nga 1961 deri në 1989. Berlini Lindor dhe Berlini Perëndimor ishin të ndarë nga njëri-tjetri nga Muri dhe instalimet kufitare."
+  },
+  "194": {
+   "q": "Më 3 tetor në Gjermani festohet Dita e …",
+   "options": [
+    "Unitetit Gjerman.",
+    "Kombit Gjerman.",
+    "Landeve Federale Gjermane.",
+    "Qyteteve Gjermane."
+   ],
+   "explanation": "Më 3 tetor 1990 Republika Demokratike Gjermane iu bashkua Republikës Federale të Gjermanisë. Që atëherë, Dita e Unitetit Gjerman është festë kombëtare."
+  },
+  "195": {
+   "q": "Cili land federal i sotëm gjerman bënte pjesë më parë në territorin e Republikës Demokratike Gjermane?",
+   "options": [
+    "Hesen",
+    "Saksonia-Anhalt",
+    "Renania e Veriut-Vestfalia",
+    "Saarland"
+   ],
+   "explanation": "Saksonia-Anhalt është një nga pesë landet e reja federale nga territori i ish-Republikës Demokratike Gjermane."
+  },
+  "196": {
+   "q": "Pse quhet koha e vjeshtës 1989 në Republikën Demokratike Gjermane „Die Wende“ (Kthesa)? Në këtë kohë Republika Demokratike Gjermane ndryshoi politikisht …",
+   "options": [
+    "nga një diktaturë në demokraci.",
+    "nga një ekonomi liberale tregu në socializëm.",
+    "nga një monarki në socialdemokraci.",
+    "nga një shtet fetar në një shtet komunist."
+   ],
+   "explanation": "Kthesa (Wende) e vitit 1989 përshkruan kalimin paqësor të Republikës Demokratike Gjermane nga një diktaturë socialiste në demokraci, i cili çoi në ribashkim."
+  },
+  "197": {
+   "q": "Cili land federal i sotëm gjerman bënte pjesë më parë në territorin e Republikës Demokratike Gjermane?",
+   "options": [
+    "Turingia",
+    "Hesen",
+    "Bavaria",
+    "Bremen"
+   ],
+   "explanation": "Turingia është një nga pesë landet e reja federale nga territori i ish-Republikës Demokratike Gjermane."
+  },
+  "198": {
+   "q": "Cili land federal i sotëm gjerman bënte pjesë më parë në territorin e Republikës Demokratike Gjermane?",
+   "options": [
+    "Bavaria",
+    "Saksonia e Poshtme",
+    "Saksonia",
+    "Baden-Vyrtemberg"
+   ],
+   "explanation": "Saksonia është një nga pesë landet e reja federale që lindën në vitin 1990 nga territori i ish-Republikës Demokratike Gjermane."
+  },
+  "199": {
+   "q": "Me shkurtesën „Stasi“ në Republikën Demokratike Gjermane nënkuptohej …",
+   "options": [
+    "parlamenti.",
+    "Ministria e Sigurimit të Shtetit.",
+    "një parti në pushtet.",
+    "Ministria e Arsimit Popullor."
+   ],
+   "explanation": "Stasi (Ministria e Sigurimit të Shtetit) ishte shërbimi sekret i brendshëm i Republikës Demokratike Gjermane, i cili mbikëqyrte popullsinë."
+  },
+  "200": {
+   "q": "Cili land federal i sotëm gjerman bënte pjesë më parë në territorin e Republikës Demokratike Gjermane?",
+   "options": [
+    "Hesen",
+    "Schleswig-Holstein",
+    "Meklenburg-Pomerania Perëndimore",
+    "Saarland"
+   ],
+   "explanation": "Meklenburg-Pomerania Perëndimore është një nga pesë landet e reja federale nga territori i ish-Republikës Demokratike Gjermane."
+  },
+  "201": {
+   "q": "Cila nga listat e mëposhtme përmban vetëm lande federale që i përkisnin territorit të ish-Republikës Demokratike Gjermane (Gjermania Lindore)?",
+   "options": [
+    "Saksonia e Poshtme, Renania e Veriut-Vestfalia, Hesen, Schleswig-Holstein, Brandenburg",
+    "Meklenburg-Pomerania Perëndimore, Brandenburg, Saksonia, Saksonia-Anhalt, Turingia",
+    "Bavaria, Baden-Vyrtemberg, Renania-Palatinat, Turingia, Saksonia",
+    "Saksonia, Turingia, Hesen, Saksonia e Poshtme, Brandenburg"
+   ],
+   "explanation": "Pesë landet e reja federale nga territori i RDGJ-së janë: Meklenburg-Pomerania Perëndimore, Brandenburg, Saksonia, Saksonia-Anhalt dhe Turingia."
+  },
+  "202": {
+   "q": "Kujt i përkiste Republika Demokratike Gjermane (Gjermania Lindore) gjatë „Luftës së Ftohtë“?",
+   "options": [
+    "fuqive perëndimore",
+    "Traktatit të Varshavës",
+    "NATO-s",
+    "shteteve të paangazhuara"
+   ],
+   "explanation": "RDGJ ishte anëtare e Traktatit të Varshavës, aleancës ushtarake të shteteve socialiste nën udhëheqjen e Bashkimit Sovjetik."
+  },
+  "203": {
+   "q": "Si quhej sistemi ekonomik i Republikës Demokratike Gjermane (Gjermania Lindore)?",
+   "options": [
+    "ekonomia e tregut",
+    "ekonomia e planifikuar",
+    "oferta dhe kërkesa",
+    "kapitalizmi"
+   ],
+   "explanation": "RDGJ kishte një ekonomi të planifikuar, në të cilën shteti i planifikonte dhe i drejtonte në mënyrë të centralizuar të gjitha vendimet ekonomike."
+  },
+  "204": {
+   "q": "Si u bënë Republika Federale e Gjermanisë dhe Republika Demokratike Gjermane (Gjermania Lindore) një shtet i vetëm?",
+   "options": [
+    "Republika Federale e Gjermanisë e pushtoi RDGJ-në.",
+    "Pesë landet e sotme federale lindore iu bashkuan Republikës Federale të Gjermanisë.",
+    "Landet federale perëndimore iu bashkuan RDGJ-së.",
+    "RDGJ e pushtoi Republikën Federale të Gjermanisë."
+   ],
+   "explanation": "Më 3 tetor 1990, pesë landet federale lindore iu bashkuan Republikës Federale të Gjermanisë (ribashkimi)."
+  },
+  "205": {
+   "q": "Me aderimin e Republikës Demokratike Gjermane (Gjermania Lindore) në Republikën Federale të Gjermanisë, landet e reja federale tani i përkasin edhe …",
+   "options": [
+    "Bashkimit Evropian.",
+    "Traktatit të Varshavës.",
+    "OPEC-ut.",
+    "Komunitetit Evropian të Mbrojtjes."
+   ],
+   "explanation": "Me ribashkimin e vitit 1990, landet e reja federale u bënë automatikisht pjesë e Bashkimit Evropian."
+  },
+  "206": {
+   "q": "Çfarë përkujtojnë të ashtuquajturat „Stolpersteine“ (gurët e pengesës) në Gjermani?",
+   "options": [
+    "politikanet dhe politikanët e famshëm gjermanë",
+    "viktimat e nacionalsocializmit",
+    "viktimat e aksidenteve rrugore",
+    "muzikantët e njohur hebrenj"
+   ],
+   "explanation": "Stolpersteine janë pllaka të vogla përkujtimore në tokë, që përkujtojnë njerëzit që u bënë viktima të regjimit nazist."
+  },
+  "207": {
+   "q": "Në cilën aleancë ushtarake ishte anëtare Republika Demokratike Gjermane (Gjermania Lindore)?",
+   "options": [
+    "në NATO",
+    "në Konfederatën e Rinit",
+    "në Traktatin e Varshavës",
+    "në Aleancën Evropiane"
+   ],
+   "explanation": "RDGJ ishte anëtare e Traktatit të Varshavës (1955–1991), aleancës ushtarake të shteteve të Bllokut Lindor."
+  },
+  "208": {
+   "q": "Çfarë ishte „Stasi“?",
+   "options": [
+    "shërbimi sekret në „Rajhun e Tretë“",
+    "një vend i famshëm përkujtimor gjerman",
+    "shërbimi sekret i RDGJ-së",
+    "një klub sportiv gjerman gjatë Luftës së Dytë Botërore"
+   ],
+   "explanation": "Stasi ishte Ministria e Sigurimit të Shtetit e RDGJ-së – një aparat i gjerë mbikëqyrjeje që përndiqte disidentët."
+  },
+  "209": {
+   "q": "Cila ishte stema e Republikës Demokratike Gjermane?",
+   "options": [
+    "Stema federale (Gjermania)",
+    "Monogrami i Krishtit (Chi-Rho)",
+    "Kryqi i Bundeswehr-it",
+    "Emblema e RDGJ-së"
+   ],
+   "explanation": "Stema e RDGJ-së tregonte çekiçin dhe kompasin (për punëtorët dhe inteligjencën) mbi një kurorë kallinjsh, në të zezë, të kuqe dhe të artë."
+  },
+  "210": {
+   "q": "Çfarë ndodhi më 17 qershor 1953 në Republikën Demokratike Gjermane (Gjermania Lindore)?",
+   "options": [
+    "aderimi solemn në Traktatin e Varshavës",
+    "greva në të gjithë vendin dhe një kryengritje popullore",
+    "kongresi i 1-rë i partisë SED",
+    "vizita e parë e Fidel Castros"
+   ],
+   "explanation": "Më 17 qershor 1953, në RDGJ shpërtheu një kryengritje popullore me greva në të gjithë vendin, e cila u shtyp nga trupat sovjetike."
+  },
+  "211": {
+   "q": "Cili politikan simbolizon „Traktatet e Lindjes“ (Ostverträge)?",
+   "options": [
+    "Helmut Kohl",
+    "Willy Brandt",
+    "Michail Gorbatschow",
+    "Ludwig Erhard"
+   ],
+   "explanation": "Willy Brandt (SPD), si kancelar federal, lidhi Traktatet e Lindjes me vendet fqinje lindore dhe ndoqi një politikë afrimi (Ostpolitik)."
+  },
+  "212": {
+   "q": "Si quhet Gjermania me emrin e plotë?",
+   "options": [
+    "Shteti Federal i Gjermanisë",
+    "Landet Federale të Gjermanisë",
+    "Republika Federale e Gjermanisë",
+    "Rrethi Federal i Gjermanisë"
+   ],
+   "explanation": "Emri i plotë zyrtar është Republika Federale e Gjermanisë, e themeluar në vitin 1949."
+  },
+  "213": {
+   "q": "Sa banorë ka Gjermania?",
+   "options": [
+    "70 milionë",
+    "78 milionë",
+    "80 milionë",
+    "90 milionë"
+   ],
+   "explanation": "Gjermania ka rreth 80 milionë banorë dhe kështu është vendi me më shumë popullsi në BE."
+  },
+  "214": {
+   "q": "Cilat ngjyra ka flamuri gjerman?",
+   "options": [
+    "e zezë-e kuqe-e artë",
+    "e kuqe-e bardhë-e zezë",
+    "e zezë-e kuqe-e gjelbër",
+    "e zezë-e verdhë-e kuqe"
+   ],
+   "explanation": "Flamuri gjerman është i zi, i kuq dhe i artë. Këto ngjyra përfaqësojnë lëvizjen demokratike të shekullit të 19-të."
+  },
+  "215": {
+   "q": "Kush quhet „kancelari i Unitetit Gjerman“?",
+   "options": [
+    "Gerhard Schröder",
+    "Helmut Kohl",
+    "Konrad Adenauer",
+    "Helmut Schmidt"
+   ],
+   "explanation": "Helmut Kohl (CDU) quhet „kancelari i Unitetit Gjerman“, sepse e shtyu përpara në mënyrë vendimtare ribashkimin e vitit 1990."
+  },
+  "216": {
+   "q": "Cili simbol shihet në sallën plenare të Bundestagut gjerman (parlamenti federal)?",
+   "options": [
+    "flamuri i qytetit të Berlinit.",
+    "shqiponja federale.",
+    "shqiponja perandorake.",
+    "kurora perandorake."
+   ],
+   "explanation": "Shqiponja federale (e quajtur edhe „Fette Henne“, „pula e majme“) është kafsha heraldike e Republikës Federale të Gjermanisë dhe varet në Bundestag."
+  },
+  "217": {
+   "q": "Në cilën periudhë ekzistoi Republika Demokratike Gjermane (RDGJ)?",
+   "options": [
+    "1919 deri në 1927",
+    "1933 deri në 1945",
+    "1949 deri në 1990",
+    "1945 deri në 1961"
+   ],
+   "explanation": "RDGJ ekzistoi nga themelimi i saj më 7 tetor 1949 deri në ribashkimin gjerman më 3 tetor 1990."
+  },
+  "218": {
+   "q": "Sa lande federale iu bashkuan Republikës Federale të Gjermanisë me ribashkimin në vitin 1990?",
+   "options": [
+    "4",
+    "5",
+    "6",
+    "7"
+   ],
+   "explanation": "Me ribashkimin e vitit 1990 u shtuan pesë lande të reja federale: Brandenburg, Meklenburg-Pomerania Perëndimore, Saksonia, Saksonia-Anhalt dhe Turingia."
+  },
+  "219": {
+   "q": "Republika Federale e Gjermanisë i ka kufijtë e sotëm që nga viti …",
+   "options": [
+    "1933.",
+    "1949.",
+    "1971.",
+    "1990."
+   ],
+   "explanation": "Kufijtë e sotëm të Gjermanisë ekzistojnë që nga ribashkimi më 3 tetor 1990, kur RDGJ iu bashkua Republikës Federale."
+  },
+  "220": {
+   "q": "27 janari është në Gjermani një ditë zyrtare përkujtimi. Çfarë përkujton kjo ditë?",
+   "options": [
+    "fundin e Luftës së Dytë Botërore",
+    "miratimin e Ligjit Themelor (Kushtetutës)",
+    "ribashkimin e Gjermanisë",
+    "viktimat e nacionalsocializmit (dita e çlirimit të kampit të shfarosjes Auschwitz)"
+   ],
+   "explanation": "Më 27 janar 1945 u çlirua kampi i përqendrimit Auschwitz. Që nga viti 1996, kjo ditë është në Gjermani dita zyrtare e përkujtimit të viktimave të nazizmit."
+  },
+  "221": {
+   "q": "Gjermania është anëtare e Marrëveshjes së Shengenit. Çfarë do të thotë kjo?",
+   "options": [
+    "Gjermanët mund të udhëtojnë në shumë vende të Evropës pa kontroll pasaportash.",
+    "Të gjithë njerëzit mund të hyjnë në Gjermani pa kontroll personal.",
+    "Gjermanët mund të udhëtojnë në çdo vend pa kontroll pasaportash.",
+    "Gjermanët mund të paguajnë me euro në çdo vend."
+   ],
+   "explanation": "Marrëveshja e Shengenit mundëson udhëtimin pa kontroll pasaportash brenda vendeve të Shengenit në Evropë."
+  },
+  "222": {
+   "q": "Cili vend është fqinj i Gjermanisë?",
+   "options": [
+    "Hungaria",
+    "Portugalia",
+    "Spanja",
+    "Zvicra"
+   ],
+   "explanation": "Zvicra është një nga nëntë vendet fqinje të Gjermanisë. Gjermania kufizohet me DK, NL, BE, LU, FR, CH, AT, CZ dhe PL."
+  },
+  "223": {
+   "q": "Cili vend është fqinj i Gjermanisë?",
+   "options": [
+    "Rumania",
+    "Bullgaria",
+    "Polonia",
+    "Greqia"
+   ],
+   "explanation": "Polonia është vend fqinj i Gjermanisë në lindje. Kufiri shtrihet përgjatë lumenjve Oder dhe Neisse."
+  },
+  "224": {
+   "q": "Çfarë do të thotë shkurtesa EU (në shqip BE)?",
+   "options": [
+    "Ndërmarrjet Evropiane",
+    "Bashkimi Evropian",
+    "Bashkimi i Njësuar",
+    "Bashkimi Euro"
+   ],
+   "explanation": "EU (në shqip BE) do të thotë Bashkimi Evropian, një bashkim politik dhe ekonomik i shteteve evropiane."
+  },
+  "225": {
+   "q": "Në cilin vend tjetër ka një popullsi të madhe gjermanishtfolëse?",
+   "options": [
+    "Çekia",
+    "Norvegjia",
+    "Spanja",
+    "Austria"
+   ],
+   "explanation": "Austria është një vend gjermanishtfolës. Përveç Gjermanisë dhe Austrisë, edhe Zvicra është pjesërisht gjermanishtfolëse."
+  },
+  "226": {
+   "q": "Cili është flamuri i Bashkimit Evropian?",
+   "options": [
+    "Flamuri i SHBA-së",
+    "Flamuri i Bashkimit Evropian",
+    "Flamuri i Kombeve të Bashkuara",
+    "emblemë tjetër"
+   ],
+   "explanation": "Flamuri i BE-së tregon dymbëdhjetë yje të artë në sfond blu. Numri 12 simbolizon përsosmërinë, jo numrin e anëtarëve."
+  },
+  "227": {
+   "q": "Cili vend është fqinj i Gjermanisë?",
+   "options": [
+    "Finlanda",
+    "Danimarka",
+    "Norvegjia",
+    "Suedia"
+   ],
+   "explanation": "Danimarka është vendi fqinj më verior i Gjermanisë. Kufiri midis dy vendeve ndodhet në Schleswig-Holstein."
+  },
+  "228": {
+   "q": "Si quhet zakonisht aderimi i Republikës Demokratike Gjermane (Gjermania Lindore) në Republikën Federale të Gjermanisë në vitin 1990?",
+   "options": [
+    "Zgjerimi i NATO-s në Lindje",
+    "Zgjerimi i BE-së në Lindje",
+    "Komuniteti Evropian",
+    "Ribashkimi gjerman"
+   ],
+   "explanation": "Aderimi i RDGJ-së në Republikën Federale më 3 tetor 1990 quhet Ribashkimi gjerman."
+  },
+  "229": {
+   "q": "Cili vend është fqinj i Gjermanisë?",
+   "options": [
+    "Spanja",
+    "Bullgaria",
+    "Norvegjia",
+    "Luksemburgu"
+   ],
+   "explanation": "Luksemburgu është një nga nëntë vendet fqinje të Gjermanisë dhe ndodhet në jugperëndim."
+  },
+  "230": {
+   "q": "Parlamenti Evropian zgjidhet rregullisht, përkatësisht çdo …",
+   "options": [
+    "5 vjet.",
+    "6 vjet.",
+    "7 vjet.",
+    "8 vjet."
+   ],
+   "explanation": "Parlamenti Evropian zgjidhet drejtpërdrejt çdo pesë vjet nga qytetarët me të drejtë vote të shteteve anëtare të BE-së."
+  },
+  "231": {
+   "q": "Çfarë do të thotë termi „integrim evropian“?",
+   "options": [
+    "Me këtë nënkuptohen emigrantët amerikanë në Evropë.",
+    "Termi nënkupton ndalimin e imigracionit në Evropë.",
+    "Me këtë nënkuptohen emigrantët evropianë në SHBA.",
+    "Termi nënkupton bashkimin e shteteve evropiane në BE."
+   ],
+   "explanation": "Integrimi evropian është procesi i bashkimit politik, ekonomik dhe juridik të shteteve evropiane."
+  },
+  "232": {
+   "q": "Kush zgjidhet në zgjedhjet evropiane?",
+   "options": [
+    "Komisioni Evropian",
+    "vendet që lejohen të hyjnë në BE",
+    "kushtetuta evropiane",
+    "deputetët e Parlamentit Evropian"
+   ],
+   "explanation": "Në zgjedhjet evropiane, qytetarët e BE-së zgjedhin deputetët e Parlamentit Evropian."
+  },
+  "233": {
+   "q": "Cili vend është fqinj i Gjermanisë?",
+   "options": [
+    "Çekia",
+    "Bullgaria",
+    "Greqia",
+    "Portugalia"
+   ],
+   "explanation": "Republika Çeke (Çekia) është vend fqinj i Gjermanisë në lindje/juglindje."
+  },
+  "234": {
+   "q": "Ku është selia e Parlamentit Evropian?",
+   "options": [
+    "Londër",
+    "Paris",
+    "Berlin",
+    "Strasburg"
+   ],
+   "explanation": "Parlamenti Evropian e ka selinë zyrtare në Strasburg. Ai mblidhet edhe në Bruksel dhe ka një Sekretariat të Përgjithshëm në Luksemburg."
+  },
+  "235": {
+   "q": "Presidenti francez François Mitterrand dhe kancelari federal gjerman Helmut Kohl përkujtojnë së bashku në Verdun të vdekurit e të dy luftërave botërore. Cili qëllim i Bashkimit Evropian bëhet i qartë në këtë takim?",
+   "options": [
+    "miqësia midis Anglisë dhe Gjermanisë",
+    "liria e udhëtimit në të gjitha vendet e BE-së",
+    "paqja dhe siguria në vendet e BE-së",
+    "festa zyrtare të njëjta në vendet e BE-së"
+   ],
+   "explanation": "Mbajtja simbolike e duarve nga Mitterrand dhe Kohl në Verdun në vitin 1984 përfaqësonte pajtimin midis Francës dhe Gjermanisë, si dhe paqen në Evropë."
+  },
+  "236": {
+   "q": "Sa shtete anëtare ka sot BE-ja?",
+   "options": [
+    "21",
+    "23",
+    "25",
+    "27"
+   ],
+   "explanation": "Bashkimi Evropian ka aktualisht 27 shtete anëtare (pas daljes së Britanisë së Madhe në vitin 2020)."
+  },
+  "237": {
+   "q": "Në vitin 2007 u festua përvjetori i 50-të i „Traktateve të Romës“. Cila ishte përmbajtja e traktateve?",
+   "options": [
+    "Anëtarësimi i Gjermanisë në NATO",
+    "Themelimi i Komunitetit Ekonomik Evropian (KEE)",
+    "Detyrimi i Gjermanisë për pagesa reparacionesh",
+    "Përcaktimi i vijës Oder-Neisse si kufi lindor"
+   ],
+   "explanation": "Traktatet e Romës të vitit 1957 themeluan Komunitetin Ekonomik Evropian (KEE), paraardhësin e BE-së së sotme."
+  },
+  "238": {
+   "q": "Në cilat vende punon Parlamenti Evropian?",
+   "options": [
+    "Paris, Londër dhe Hagë",
+    "Strasburg, Luksemburg dhe Bruksel",
+    "Romë, Bernë dhe Vjenë",
+    "Bon, Cyrih dhe Milano"
+   ],
+   "explanation": "Parlamenti Evropian punon kryesisht në Strasburg, Bruksel dhe Luksemburg."
+  },
+  "239": {
+   "q": "Me cilat traktate u bashkua Republika Federale e Gjermanisë me shtete të tjera në Komunitetin Ekonomik Evropian?",
+   "options": [
+    "me „Traktatet e Hamburgut“",
+    "me „Traktatet e Romës“",
+    "me „Traktatet e Parisit“",
+    "me „Traktatet e Londrës“"
+   ],
+   "explanation": "Me Traktatet e Romës të vitit 1957, Republika Federale e Gjermanisë u bashkua me shtete të tjera evropiane në KEE."
+  },
+  "240": {
+   "q": "Që kur paguhet në Gjermani me euro në para të gatshme?",
+   "options": [
+    "1995",
+    "1998",
+    "2002",
+    "2005"
+   ],
+   "explanation": "Më 1 janar 2002, kartëmonedhat dhe monedhat euro u futën si para të gatshme në Gjermani (dhe në vende të tjera të BE-së)."
+  },
+  "241": {
+   "q": "Zonja Seger pret një fëmijë. Çfarë duhet të bëjë ajo për të marrë shtesën prindërore (Elterngeld)?",
+   "options": [
+    "Ajo duhet t'i shkruajë arkës së saj të sigurimit shëndetësor.",
+    "Ajo nuk duhet të bëjë asgjë, sepse e merr automatikisht shtesën prindërore.",
+    "Ajo duhet të paraqesë një kërkesë në zyrën e shtesës prindërore.",
+    "Ajo duhet t'i kërkojë leje zyrës së punës."
+   ],
+   "explanation": "Shtesa prindërore duhet të kërkohet. Kërkesa paraqitet në zyrën përkatëse të shtesës prindërore."
+  },
+  "242": {
+   "q": "Kush vendos nëse një fëmijë në Gjermani shkon në kopsht?",
+   "options": [
+    "shteti",
+    "landet federale",
+    "prindërit / kujdestarët ligjorë",
+    "shkollat"
+   ],
+   "explanation": "Në Gjermani, prindërit ose kujdestarët ligjorë vendosin nëse fëmija i tyre shkon në kopsht."
+  },
+  "243": {
+   "q": "Maik dhe Sybille duan të organizojnë me miqtë një demonstratë në rrugë në vendbanimin e tyre në Gjermani. Çfarë duhet të bëjnë më parë?",
+   "options": [
+    "Nuk duhet të bëjnë asgjë. Në Gjermani mund të demonstrohet kudo dhe në çdo kohë.",
+    "Ata duhet ta njoftojnë demonstratën.",
+    "Ata nuk mund të bëjnë asgjë, sepse demonstratat në Gjermani janë në parim të ndaluara.",
+    "Maik dhe Sybille duhet të themelojnë një shoqatë të re, sepse vetëm shoqatat lejohen të demonstrojnë."
+   ],
+   "explanation": "Në Gjermani, demonstratat duhet të njoftohen pranë autoritetit. Demonstratat e panjoftuara mund të shpërndahen."
+  },
+  "244": {
+   "q": "Çfarë diplome shkollore ju duhet zakonisht për të filluar studimet në një universitet në Gjermani?",
+   "options": [
+    "Abitur-i (matura)",
+    "një diplomë",
+    "Prokura (prokura tregtare)",
+    "provimi i kalfës"
+   ],
+   "explanation": "Abitur-i (matura e përgjithshme për arsimin e lartë) është parakusht për studimet në një universitet gjerman."
+  },
+  "245": {
+   "q": "Kush nuk lejohet të jetojë së bashku si çift në Gjermani?",
+   "options": [
+    "Hans (20 vjeç) dhe Marie (19 vjeç)",
+    "Tom (20 vjeç) dhe Klaus (45 vjeç)",
+    "Sofie (35 vjeç) dhe Lisa (40 vjeç)",
+    "Anne (13 vjeç) dhe Tim (25 vjeç)"
+   ],
+   "explanation": "Në Gjermani mosha e mbrojtjes është 14 vjeç; personat nën 14 vjeç nuk lejohen të kenë marrëdhënie romantike me të rritur. Një vajzë 13-vjeçare nuk lejohet të jetojë së bashku me një burrë 25-vjeçar."
+  },
+  "246": {
+   "q": "Në cilën moshë bëhet njeriu madhor në Gjermani?",
+   "options": [
+    "16",
+    "18",
+    "19",
+    "21"
+   ],
+   "explanation": "Në Gjermani, mosha madhore arrihet në 18 vjeç. Që atëherë, personi ka të gjitha të drejtat dhe detyrimet civile."
+  },
+  "247": {
+   "q": "Një grua është shtatzënë. Pak para dhe pas lindjes së fëmijës, ajo mbrohet në mënyrë të veçantë nga ligji. Si quhet kjo mbrojtje?",
+   "options": [
+    "pushimi prindëror",
+    "përgatitja për lindjen",
+    "mbrojtja e amësisë",
+    "periudha pas lindjes"
+   ],
+   "explanation": "Mbrojtja e amësisë (6 javë para dhe 8 javë pas lindjes) i mbron gratë shtatzëna nga pushimi nga puna dhe u garanton pushim të paguar."
+  },
+  "248": {
+   "q": "Edukimi i fëmijëve në Gjermani është para së gjithash detyrë …",
+   "options": [
+    "e shtetit.",
+    "e prindërve.",
+    "e gjyshërve.",
+    "e shkollave."
+   ],
+   "explanation": "Përgjegjësia kryesore për edukimin u takon prindërve. Shteti mbështet, por ndërhyn vetëm kur rrezikohet mirëqenia e fëmijës."
+  },
+  "249": {
+   "q": "Kush është kryesisht përgjegjës për edukimin e fëmijëve në Gjermani?",
+   "options": [
+    "shteti",
+    "prindërit",
+    "të afërmit",
+    "shkollat"
+   ],
+   "explanation": "Në Gjermani, prindërit janë edukatorët kryesorë përgjegjës. Ligji Themelor (Kushtetuta) e mbron të drejtën e prindërve për edukimin e fëmijëve."
+  },
+  "250": {
+   "q": "Në Gjermani keni shanset më të mira për një vend pune të paguar mirë, nëse …",
+   "options": [
+    "jeni katolik.",
+    "jeni i arsimuar mirë.",
+    "jeni grua.",
+    "jeni anëtar i një partie."
+   ],
+   "explanation": "Një formim profesional i mirë ose studimet universitare i rrisin ndjeshëm shanset për një punë të paguar mirë në Gjermani."
+  },
+  "251": {
+   "q": "Nëse në Gjermani dikush godet një fëmijë, …",
+   "options": [
+    "kjo nuk i intereson askujt.",
+    "kjo i intereson vetëm familjes.",
+    "ai nuk mund të ndëshkohet për këtë.",
+    "ai mund të ndëshkohet për këtë."
+   ],
+   "explanation": "Ndëshkimi fizik i fëmijëve është i ndaluar në Gjermani (§1631 BGB). Fëmijët kanë të drejtë për një edukim pa dhunë."
+  },
+  "252": {
+   "q": "Në Gjermani …",
+   "options": [
+    "lejohet të jeni i martuar në të njëjtën kohë vetëm me një partner / një partnere.",
+    "mund të keni disa bashkëshortë / bashkëshorte njëkohësisht.",
+    "nuk lejohet të martoheni përsëri, nëse keni qenë njëherë i martuar.",
+    "një grua nuk lejohet të martohet përsëri, nëse burri i saj ka vdekur."
+   ],
+   "explanation": "Në Gjermani poligamia është e ndaluar. Lejohet vetëm një martesë në të njëjtën kohë."
+  },
+  "253": {
+   "q": "Ku duhet të regjistroheni kur ndërroni banesë në Gjermani?",
+   "options": [
+    "në zyrën e regjistrimit të banorëve (Einwohnermeldeamt)",
+    "në zyrën e gjendjes civile (Standesamt)",
+    "në zyrën e rendit publik (Ordnungsamt)",
+    "në zyrën e veprimtarive tregtare (Gewerbeamt)"
+   ],
+   "explanation": "Në Gjermani ekziston detyrimi për regjistrim. Kush ndërron banesë, duhet të regjistrohet brenda 2 javësh në zyrën e regjistrimit të banorëve."
+  },
+  "254": {
+   "q": "Në Gjermani, çiftet e martuara lejohen të divorcohen. Zakonisht, për këtë ata duhet të respektojnë „vitin e ndarjes“. Çfarë do të thotë kjo?",
+   "options": [
+    "Procesi i divorcit zgjat një vit.",
+    "Burri dhe gruaja janë të martuar një vit, pastaj divorci është i mundur.",
+    "E drejta e vizitës për fëmijët vlen një vit.",
+    "Burri dhe gruaja jetojnë të ndarë, secili jetën e vet, për të paktën një vit. Pas kësaj divorci është i mundur."
+   ],
+   "explanation": "Në Gjermani, viti i ndarjes (të paktën 1 vit jetesë e ndarë) është parakusht për divorcin."
+  },
+  "255": {
+   "q": "Për probleme në edukimin e fëmijëve, prindërit në Gjermani mund të marrin ndihmë nga …",
+   "options": [
+    "zyra e rendit publik (Ordnungsamt).",
+    "zyra arsimore (Schulamt).",
+    "zyra për të rinjtë (Jugendamt).",
+    "zyra e shëndetësisë (Gesundheitsamt)."
+   ],
+   "explanation": "Zyra për të rinjtë ofron këshillim dhe mbështetje për problemet e edukimit dhe mbron mirëqenien e fëmijëve."
+  },
+  "256": {
+   "q": "Një çift i martuar dëshiron të hapë një restorant në Gjermani. Çfarë i nevojitet patjetër për këtë?",
+   "options": [
+    "një leje nga policia",
+    "një miratim nga një parti",
+    "një miratim nga zyra e regjistrimit të banorëve",
+    "një licencë restoranti nga autoriteti kompetent"
+   ],
+   "explanation": "Për të drejtuar një lokal në Gjermani nevojitet një licencë zyrtare për veprimtari hotelierie (Gaststättenerlaubnis)."
+  },
+  "257": {
+   "q": "Një grua e rritur në Gjermani dëshiron ta marrë Abitur-in më vonë. Këtë mund ta bëjë në …",
+   "options": [
+    "një shkollë të lartë.",
+    "një gjimnaz mbrëmjeje (Abendgymnasium).",
+    "një Hauptschule (shkollë e mesme e ulët).",
+    "një universitet privat."
+   ],
+   "explanation": "Gjimnazi i mbrëmjes u mundëson të rriturve ta marrin Abitur-in më vonë, ndërsa gjatë ditës punojnë."
+  },
+  "258": {
+   "q": "Çfarë lejohet të bëjë zyra për të rinjtë (Jugendamt) në Gjermani?",
+   "options": [
+    "Ajo vendos se në cilën shkollë shkon fëmija.",
+    "Ajo mund ta largojë nga familja një fëmijë që rrihet ose që vuan nga uria.",
+    "Ajo u paguan prindërve shtesën për fëmijë.",
+    "Ajo kontrollon nëse fëmija shkon në kopsht."
+   ],
+   "explanation": "Kur rrezikohet mirëqenia e fëmijës, zyra për të rinjtë mund ta largojë përkohësisht fëmijën nga familja për ta mbrojtur."
+  },
+  "259": {
+   "q": "Qendra e Informimit për Profesionet BIZ pranë Agjencisë Federale të Punësimit në Gjermani ndihmon në …",
+   "options": [
+    "llogaritjen e pensionit.",
+    "kërkimin e një vendi për formim profesional.",
+    "deklaratën tatimore.",
+    "sigurimin shëndetësor."
+   ],
+   "explanation": "BIZ ofron informacion të gjerë për profesionet me formim profesional dhe ndihmon në kërkimin e një vendi për formim profesional."
+  },
+  "260": {
+   "q": "Në Gjermani, një fëmijë në shkollë ka …",
+   "options": [
+    "të drejtë për kohë të lirë të pakufizuar.",
+    "liri zgjedhjeje për të gjitha lëndët.",
+    "të drejtë për para shkollore.",
+    "detyrim pjesëmarrjeje."
+   ],
+   "explanation": "Në Gjermani ekziston detyrimi shkollor, që do të thotë se fëmijët duhet ta frekuentojnë shkollën rregullisht."
+  },
+  "261": {
+   "q": "Një burrë 30-vjeçar në Gjermani dëshiron ta marrë Abitur-in më vonë. Ku mund ta bëjë këtë? Në …",
+   "options": [
+    "një shkollë të lartë",
+    "një gjimnaz mbrëmjeje (Abendgymnasium)",
+    "një Hauptschule (shkollë e mesme e ulët)",
+    "një universitet privat"
+   ],
+   "explanation": "Gjimnazi i mbrëmjes është për të rriturit që duan ta marrin Abitur-in më vonë, ndërsa punojnë."
+  },
+  "262": {
+   "q": "Çfarë do të thotë në Gjermani parimi i trajtimit të barabartë?",
+   "options": [
+    "Askush nuk lejohet të diskriminohet, p.sh. për shkak të një aftësie të kufizuar.",
+    "Lejohet të diskriminohen persona të tjerë, nëse ka arsye të mjaftueshme personale për këtë.",
+    "Askush nuk lejohet të padisë persona të tjerë, nëse është diskriminuar.",
+    "Për të gjithë është ligj t'u dhurojnë çdo vit para grupeve të diskriminuara."
+   ],
+   "explanation": "Parimi i trajtimit të barabartë (neni 3 i Ligjit Themelor) ndalon diskriminimin për shkak të gjinisë, origjinës, fesë, aftësisë së kufizuar etj."
+  },
+  "263": {
+   "q": "Në Gjermani, të rinjtë nga mosha 14 vjeç kanë përgjegjësi penale. Kjo do të thotë: të rinjtë që janë 14 vjeç e lart dhe shkelin ligjet penale, …",
+   "options": [
+    "dënohen.",
+    "trajtohen si të rriturit.",
+    "e ndajnë dënimin me prindërit e tyre.",
+    "nuk dënohen."
+   ],
+   "explanation": "Që nga mosha 14 vjeç, të rinjtë në Gjermani kanë përgjegjësi penale dhe mund të dënohen sipas ligjit penal për të miturit."
+  },
+  "264": {
+   "q": "Në cilën festë njerëzit në Gjermani veshin kostume dhe maska shumëngjyrëshe?",
+   "options": [
+    "në Rosenmontag",
+    "në festën e 1 Majit",
+    "në Oktoberfest",
+    "në Rrëshajët"
+   ],
+   "explanation": "Rosenmontag është kulmi i karnavalit (Fastnacht). Njerëzit vishen me kostume dhe marrin pjesë në parada."
+  },
+  "265": {
+   "q": "Ku duhet të shkoni së pari në Gjermani, nëse doni të martoheni?",
+   "options": [
+    "në zyrën e regjistrimit të banorëve (Einwohnermeldeamt)",
+    "në zyrën e rendit publik (Ordnungsamt)",
+    "në Agjencinë e Punësimit",
+    "në zyrën e gjendjes civile (Standesamt)"
+   ],
+   "explanation": "Në Gjermani, vetëm martesa në zyrën e gjendjes civile është e vlefshme ligjërisht. Martesat fetare nuk kanë efekt ligjor."
+  },
+  "266": {
+   "q": "Kur fillon qetësia ligjore e natës në Gjermani?",
+   "options": [
+    "kur perëndon dielli",
+    "në orën 22",
+    "kur fqinjët shkojnë të flenë",
+    "në orën 0, mesnatë"
+   ],
+   "explanation": "Qetësia ligjore e natës në Gjermani fillon në orën 22 dhe mbaron në orën 6 të mëngjesit."
+  },
+  "267": {
+   "q": "Një grua e re në Gjermani, 22 vjeç, jeton së bashku me të dashurin e saj. Prindërve të gruas nuk u pëlqen kjo, sepse nuk u pëlqen i dashuri. Çfarë mund të bëjnë prindërit?",
+   "options": [
+    "Ata duhet ta respektojnë vendimin e vajzës madhore.",
+    "Ata kanë të drejtë ta kthejnë vajzën në banesën prindërore.",
+    "Ata mund të shkojnë në polici dhe ta denoncojnë vajzën.",
+    "Ata i kërkojnë vajzës një burrë tjetër."
+   ],
+   "explanation": "Në 18 vjeç njeriu në Gjermani bëhet madhor dhe mund të vendosë vetë me kë dhe ku jeton. Prindërit duhet ta respektojnë këtë vendim."
+  },
+  "268": {
+   "q": "Një grua e re dëshiron të marrë patentën e shoferit. Ajo ka frikë nga provimi, sepse gjuha e saj amtare nuk është gjermanishtja. Çfarë është e saktë?",
+   "options": [
+    "Ajo duhet të jetojë të paktën dhjetë vjet në Gjermani para se të mund të marrë patentën.",
+    "Ajo ndoshta mund ta japë provimin teorik në gjuhën e saj amtare. Ka më shumë se dhjetë gjuhë për të zgjedhur.",
+    "Nëse nuk di gjermanisht, ajo nuk lejohet të ketë patentë.",
+    "Ajo duhet ta marrë patentën në vendin ku flitet gjuha e saj."
+   ],
+   "explanation": "Në Gjermani, provimi teorik për patentën mund të jepet në gjuhë të ndryshme."
+  },
+  "269": {
+   "q": "Në Gjermani, fëmijët nga mosha tre vjeç deri në fillimin e shkollës kanë të drejtë për …",
+   "options": [
+    "para xhepi mujore.",
+    "një vend në kopsht.",
+    "një vend në një klub sportiv.",
+    "një pasaportë pushimesh."
+   ],
+   "explanation": "Që nga viti 2013, të gjithë fëmijët që kanë mbushur 1 vjeç kanë të drejtë ligjore për një vend në kopsht."
+  },
+  "270": {
+   "q": "Volkshochschule (shkolla popullore e lartë) në Gjermani është një institucion …",
+   "options": [
+    "për mësimin fetar.",
+    "vetëm për të rinjtë.",
+    "për arsimim të mëtejshëm.",
+    "vetëm për pensionistët dhe pensionistet."
+   ],
+   "explanation": "Volkshochschule (VHS) është një institucion publik për arsimimin e të rriturve dhe arsimimin e mëtejshëm për të gjithë."
+  },
+  "271": {
+   "q": "Cili është një zakon në Gjermani për Krishtlindje?",
+   "options": [
+    "fshehja e vezëve shumëngjyrëshe",
+    "stolisja e një bredhi",
+    "maskimi me maska dhe kostume",
+    "vendosja e kungujve para derës"
+   ],
+   "explanation": "Stolisja e pemës së Krishtlindjeve (bredhit) është një zakon kryesor në Gjermani për Krishtlindje."
+  },
+  "272": {
+   "q": "Cila formë jetese nuk lejohet në Gjermani?",
+   "options": [
+    "Një burrë dhe një grua janë të divorcuar dhe jetojnë me partnerë të rinj.",
+    "Dy gra jetojnë së bashku.",
+    "Një baba i vetëm jeton me dy fëmijët e tij.",
+    "Një burrë është i martuar me dy gra në të njëjtën kohë."
+   ],
+   "explanation": "Poligamia (të qenit i martuar njëkohësisht me disa bashkëshortë) është e ndaluar në Gjermani."
+  },
+  "273": {
+   "q": "Për probleme në edukimin e fëmijëve, në Gjermani ju shkoni …",
+   "options": [
+    "te mjeku / te mjekja.",
+    "në zyrën e shëndetësisë (Gesundheitsamt).",
+    "në zyrën e regjistrimit të banorëve (Einwohnermeldeamt).",
+    "në zyrën për të rinjtë (Jugendamt)."
+   ],
+   "explanation": "Zyra për të rinjtë ofron këshillim dhe mbështetje për problemet e edukimit dhe vështirësitë familjare."
+  },
+  "274": {
+   "q": "Në Gjermani keni hapur qëllimisht një letër që i drejtohet një personi tjetër. Çfarë nuk keni respektuar?",
+   "options": [
+    "të drejtën për të heshtur",
+    "fshehtësinë e korrespondencës",
+    "detyrimin e ruajtjes së sekretit",
+    "lirinë e mendimit"
+   ],
+   "explanation": "Fshehtësia e korrespondencës (neni 10 i Ligjit Themelor) mbron konfidencialitetin e komunikimit me shkrim. Hapja e letrave të të tjerëve është e dënueshme."
+  },
+  "275": {
+   "q": "Çfarë ju nevojitet në Gjermani për një divorc?",
+   "options": [
+    "pëlqimi i prindërve",
+    "një vërtetim nga një mjek / një mjeke",
+    "pëlqimi i fëmijëve",
+    "mbështetja e një avokati / një avokateje"
+   ],
+   "explanation": "Për një divorc në Gjermani është i detyrueshëm përfaqësimi ligjor nga një avokat ose avokate."
+  },
+  "276": {
+   "q": "Çfarë duhet të bëni nëse personi juaj i kontaktit në një autoritet gjerman ju trajton keq?",
+   "options": [
+    "Unë nuk mund të bëj asgjë.",
+    "Unë duhet ta duroj këtë trajtim.",
+    "Unë e kërcënoj personin.",
+    "Unë mund të ankohem te drejtuesi / drejtuesja e autoritetit."
+   ],
+   "explanation": "Në rast sjelljeje të papërshtatshme të një autoriteti, mund të ankoheni te drejtuesi i autoritetit ose të paraqisni një ankesë disiplinore (Dienstaufsichtsbeschwerde)."
+  },
+  "277": {
+   "q": "Një grua që ka një fëmijë dyvjeçar aplikon për një vend pune në Gjermani. Cili është një shembull diskriminimi? Ajo nuk e merr vendin e punës vetëm sepse …",
+   "options": [
+    "nuk flet anglisht.",
+    "ka pritshmëri shumë të larta për pagën.",
+    "nuk ka përvojë në këtë profesion.",
+    "është nënë."
+   ],
+   "explanation": "Refuzimi për shkak të amësisë shkel Ligjin e Përgjithshëm për Trajtimin e Barabartë (AGG) dhe Ligjin për Mbrojtjen e Amësisë."
+  },
+  "278": {
+   "q": "Një burrë në karrige me rrota ka aplikuar për një vend pune si kontabilist. Cili është një shembull diskriminimi? Ai nuk e merr vendin e punës vetëm sepse …",
+   "options": [
+    "është në karrige me rrota.",
+    "nuk ka përvojë.",
+    "ka pritshmëri shumë të larta për pagën.",
+    "nuk flet anglisht."
+   ],
+   "explanation": "Diskriminimi për shkak të aftësisë së kufizuar është i ndaluar në Gjermani (AGG, neni 3 i Ligjit Themelor). Karrigia me rrota nuk mund të jetë arsye refuzimi."
+  },
+  "279": {
+   "q": "Në shumicën e pallateve me qira në Gjermani ekziston një „rregullore e shtëpisë“ (Hausordnung). Çfarë shkruhet në një „rregullore të tillë të shtëpisë“? Ajo përmban …",
+   "options": [
+    "rregulla për përdorimin e transportit publik.",
+    "të gjithë qiramarrësit dhe qiramarrëset në pallat.",
+    "rregulla që duhet t'i respektojnë të gjithë banorët dhe banoret.",
+    "adresën e zyrës më të afërt të rendit publik."
+   ],
+   "explanation": "Rregullorja e shtëpisë përmban rregulla për bashkëjetesën në pallat, p.sh. për orët e qetësisë, hedhjen e mbeturinave dhe pastrimin e shkallëve."
+  },
+  "280": {
+   "q": "Nëse në Gjermani doni të kundërshtoni një vendim tatimor të gabuar, ju duhet …",
+   "options": [
+    "të mos bëni asgjë.",
+    "ta hidhni vendimin.",
+    "të paraqisni kundërshtim.",
+    "të prisni derisa të vijë një vendim tjetër."
+   ],
+   "explanation": "Kundër një vendimi tatimor mund të paraqitet kundërshtim brenda një muaji në zyrën e tatimeve (Finanzamt)."
+  },
+  "281": {
+   "q": "Dy miq duan të shkojnë në një pishinë publike në Gjermani. Të dy kanë ngjyrë të errët të lëkurës dhe për këtë arsye nuk lejohen të hyjnë. Cila e drejtë shkelet në këtë situatë? E drejta për …",
+   "options": [
+    "lirinë e mendimit",
+    "trajtim të barabartë",
+    "lirinë e tubimit",
+    "lirinë e lëvizjes"
+   ],
+   "explanation": "Ndalimi i diskriminimit (trajtimi i barabartë, neni 3 i Ligjit Themelor dhe AGG) i mbron njerëzit nga trajtimi i pabarabartë për shkak të kombësisë së tyre."
+  },
+  "282": {
+   "q": "Cilën detyrë nderi duhet të marrin përsipër shtetasit gjermanë / shtetaset gjermane, nëse u kërkohet?",
+   "options": [
+    "trajner / trajnere klubi",
+    "mbikëqyrës biblioteke",
+    "punonjës zgjedhor / punonjëse zgjedhore",
+    "mësues / mësuese"
+   ],
+   "explanation": "Puna si punonjës ose punonjëse zgjedhore është një detyrë nderi qytetare në Gjermani. Shtetasit gjermanë mund të detyrohen ta kryejnë atë."
+  },
+  "283": {
+   "q": "Çfarë bëni nëse merrni një faturë të gabuar nga një autoritet gjerman?",
+   "options": [
+    "E lë faturën mënjanë.",
+    "Paraqes kundërshtim pranë autoritetit.",
+    "Ia kthej faturën autoritetit.",
+    "Shkoj me faturën në zyrën e tatimeve."
+   ],
+   "explanation": "Kundër vendimeve ose faturave të gabuara të autoriteteve mund të paraqitet kundërshtim (Widerspruch)."
+  },
+  "284": {
+   "q": "Ajo që duhet të dini për punën ndryshon shumë shpejt në të ardhmen. Çfarë mund të bëhet?",
+   "options": [
+    "Nuk ka rëndësi se çfarë mëson njeriu.",
+    "Fëmijët mësojnë në shkollë gjithçka që është e rëndësishme për profesionin. Pas shkollës nuk ka nevojë të mësohet më tej.",
+    "Të rriturit duhet të vazhdojnë të mësojnë gjithmonë, edhe pas formimit profesional.",
+    "Të gjithë duhet të ndalojnë së punuari më herët, sepse gjithçka ndryshon."
+   ],
+   "explanation": "Të mësuarit gjatë gjithë jetës është i domosdoshëm në botën moderne të punës, sepse kërkesat ndryshojnë vazhdimisht."
+  },
+  "285": {
+   "q": "Zonja Frost punon në një zyrë si punonjëse me kontratë të përhershme. Çfarë nuk duhet të paguajë ajo nga paga e saj?",
+   "options": [
+    "tatimin mbi vlerën e shtuar (Umsatzsteuer)",
+    "tatimin mbi pagën (Lohnsteuer)",
+    "kontributet për sigurimin e papunësisë",
+    "kontributet për sigurimin pensional dhe shëndetësor"
+   ],
+   "explanation": "Punëdhënësi e paguan tatimin mbi pagën drejtpërdrejt në zyrën e tatimeve – ai mbahet nga paga e punëmarrësit."
+  },
+  "286": {
+   "q": "Cili organ në një firmë i ndihmon punëmarrësit dhe punëmarrëset në rast problemesh me punëdhënësin / punëdhënësen?",
+   "options": [
+    "këshilli i punëtorëve",
+    "revizori / revizorja i ndërmarrjes",
+    "grupi i ndërmarrjes",
+    "menaxhimi i ndërmarrjes"
+   ],
+   "explanation": "Këshilli i punëtorëve (Betriebsrat) është përfaqësia e zgjedhur në mënyrë demokratike e interesave të punëmarrësve në ndërmarrje."
+  },
+  "287": {
+   "q": "Ju dëshironi t'i jepni fund marrëdhënies suaj të punës në një firmë në Gjermani. Çfarë duhet të keni parasysh?",
+   "options": [
+    "pagesat e pagës",
+    "orarin e punës",
+    "afatin e njoftimit për largim",
+    "detyrimin e sigurimit"
+   ],
+   "explanation": "Në rast largimi nga puna duhet respektuar afati ligjor ose kontraktual i njoftimit."
+  },
+  "288": {
+   "q": "Mbi çfarë bazohet përgjegjësia e veçantë e Gjermanisë ndaj Izraelit?",
+   "options": [
+    "në anëtarësimin në Bashkimin Evropian (BE)",
+    "në krimet nacionalsocialiste kundër hebrenjve",
+    "në Ligjin Themelor të Republikës Federale të Gjermanisë",
+    "në traditën e krishterë"
+   ],
+   "explanation": "Për shkak të krimeve të Holokaustit, Gjermania mban një përgjegjësi të veçantë historike ndaj shtetit të Izraelit dhe popullit hebre."
+  },
+  "289": {
+   "q": "Një burrë me ngjyrë të errët të lëkurës aplikon për një vend pune si kamerier në një restorant në Gjermani. Cili është një shembull diskriminimi? Ai nuk e merr vendin e punës vetëm sepse …",
+   "options": [
+    "njohuritë e tij të gjermanishtes janë shumë të pakta.",
+    "ka pritshmëri shumë të larta për pagën.",
+    "ka lëkurë të errët.",
+    "nuk ka përvojë në profesion."
+   ],
+   "explanation": "Diskriminimi për shkak të ngjyrës së lëkurës shkel Ligjin e Përgjithshëm për Trajtimin e Barabartë (AGG)."
+  },
+  "290": {
+   "q": "Keni blerë një televizor në Gjermani. Në shtëpi e hapni televizorin, por ai nuk funksionon. Televizori është i prishur. Çfarë mund të bëni?",
+   "options": [
+    "të bëni një kallëzim",
+    "të paraqisni ankesë për televizorin",
+    "ta ndërroni pajisjen pa pyetur",
+    "ta zgjatni garancinë"
+   ],
+   "explanation": "Për një pajisje me defekt keni të drejtë për ankesë (garancia ligjore). Shitësi duhet ta riparojë pajisjen, ta zëvendësojë ose ta ulë çmimin."
+  },
+  "291": {
+   "q": "Pse në Gjermani duhet të shënoni në deklaratën tatimore nëse i përkisni një kishe apo jo? Sepse …",
+   "options": [
+    "kjo është e rëndësishme për statistikat në Gjermani.",
+    "ekziston një tatim kishtar, i cili është i lidhur me tatimin mbi të ardhurat dhe tatimin mbi pagën.",
+    "duhet të paguani më shumë tatime nëse nuk i përkisni një kishe.",
+    "kisha është përgjegjëse për deklaratën tatimore."
+   ],
+   "explanation": "Në Gjermani, tatimi kishtar mblidhet së bashku me tatimin mbi të ardhurat. Anëtarët e kishës paguajnë një përqindje shtesë."
+  },
+  "292": {
+   "q": "Njerëzit në Gjermani jetojnë sipas parimit të tolerancës fetare. Çfarë do të thotë kjo?",
+   "options": [
+    "Nuk lejohet të ndërtohen xhami.",
+    "Të gjithë njerëzit besojnë në Zot.",
+    "Secili mund të besojë atë që dëshiron.",
+    "Shteti vendos se në cilin Zot besojnë njerëzit."
+   ],
+   "explanation": "Liria e fesë (neni 4 i Ligjit Themelor) i garanton secilit të drejtën të zgjedhë një fe ose të mos ketë asnjë. Shteti është asnjanës në çështjet fetare."
+  },
+  "293": {
+   "q": "Cili është një zakon në Gjermani për Pashkë?",
+   "options": [
+    "vendosja e kungujve para derës",
+    "stolisja e një bredhi",
+    "ngjyrosja e vezëve",
+    "hedhja e raketave në ajër"
+   ],
+   "explanation": "Ngjyrosja dhe fshehja e vezëve të Pashkëve është një zakon tradicional në Gjermani për Pashkë."
+  },
+  "294": {
+   "q": "Rrëshajët (Pfingsten) janë …",
+   "options": [
+    "festë e krishterë.",
+    "ditë përkujtimi gjermane.",
+    "ditë ndërkombëtare zie.",
+    "zakon bavarez."
+   ],
+   "explanation": "Rrëshajët janë një festë e krishterë, që kremtohet 50 ditë pas Pashkëve dhe përkujton zbritjen e Shpirtit të Shenjtë."
+  },
+  "295": {
+   "q": "Cila fe e ka formësuar kulturën evropiane dhe gjermane?",
+   "options": [
+    "hinduizmi",
+    "krishterimi",
+    "budizmi",
+    "islami"
+   ],
+   "explanation": "Krishterimi ka formësuar në mënyrë vendimtare kulturën, historinë, artin dhe sistemin juridik evropian dhe gjerman."
+  },
+  "296": {
+   "q": "Në Gjermani, katër javët e fundit para Krishtlindjeve quhen …",
+   "options": [
+    "Dita e Pendesës dhe e Lutjes.",
+    "Festa e Falënderimit për të Korrat.",
+    "koha e Adventit.",
+    "Dita e të Gjithë Shenjtorëve."
+   ],
+   "explanation": "Koha e Adventit janë katër javët para Krishtlindjeve. Ajo fillon me Adventin e 1-rë dhe mbaron në prag të Krishtlindjeve."
+  },
+  "297": {
+   "q": "Nga cili vend kanë ardhur në Gjermani shumica e migrantëve / migranteve?",
+   "options": [
+    "Italia",
+    "Polonia",
+    "Maroku",
+    "Turqia"
+   ],
+   "explanation": "Shumica e migrantëve në Gjermani vijnë nga Turqia. Imigrimi turk filloi kryesisht në vitet 1960 me programin e punëtorëve mysafirë."
+  },
+  "298": {
+   "q": "Në Republikën Demokratike Gjermane (Gjermania Lindore) jetonin kryesisht migrantë nga …",
+   "options": [
+    "Vietnami, Polonia, Mozambiku.",
+    "Franca, Rumania, Somalia.",
+    "Kili, Hungaria, Zimbabveja.",
+    "Koreja e Veriut, Meksika, Egjipti."
+   ],
+   "explanation": "RDGJ solli punëtorë me kontratë kryesisht nga Vietnami, Polonia dhe Mozambiku – shtete vëllazërore socialiste."
+  },
+  "299": {
+   "q": "Punëtorët dhe punëtoret e huaj që u rekrutuan nga Republika Federale e Gjermanisë në vitet 50 dhe 60 quheshin …",
+   "options": [
+    "punëtorë / punëtore në të zezë",
+    "punëtorë mysafirë / punëtore mysafire",
+    "punëtorë / punëtore të përkohshëm",
+    "punëtorë / punëtore me turne"
+   ],
+   "explanation": "Punëtorët mysafirë (Gastarbeiter) ishin punëtorë të huaj që Gjermania i rekrutoi në vitet 1950–70 për rindërtimin."
+  },
+  "300": {
+   "q": "Nga cili vend erdhën punëtorët e parë mysafirë / punëtoret e para mysafire në Republikën Federale të Gjermanisë?",
+   "options": [
+    "Italia",
+    "Spanja",
+    "Portugalia",
+    "Turqia"
+   ],
+   "explanation": "Marrëveshjen e parë të rekrutimit Republika Federale e lidhi në vitin 1955 me Italinë. Pasuan marrëveshje të tjera me vende të tjera."
+  },
+  "301": {
+   "q": "Cila stemë i përket landit federal Berlin?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e landit Berlin tregon një ari të zi mbi sfond të bardhë – ariu berlinez është simboli i qytetit."
+  },
+  "302": {
+   "q": "Cili është një distrikt (Bezirk) në Berlin?",
+   "options": [
+    "Altona",
+    "Prignitz",
+    "Pankow",
+    "Demmin"
+   ],
+   "explanation": "Pankow është një nga 12 distriktet berlineze. Altona ndodhet në Hamburg, ndërsa Prignitz dhe Demmin janë rrethe (Landkreise) në Brandenburg/Mecklenburg."
+  },
+  "303": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit Berlin?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit Berlin, Dhoma e Deputetëve (Abgeordnetenhaus), zgjidhet çdo pesë vjet."
+  },
+  "304": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Berlin (zgjedhja e kuvendit të distriktit, Bezirksverordnetenversammlung)?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Berlin (zgjedhja e kuvendit të distriktit, Bezirksverordnetenversammlung) mund të votohet nga mosha 16 vjeç."
+  },
+  "305": {
+   "q": "Cilat ngjyra ka flamuri i landit Berlin?",
+   "options": [
+    "blu-bardhë-kuq",
+    "bardhë-kuq",
+    "gjelbër-bardhë-kuq",
+    "zi-artë"
+   ],
+   "explanation": "Flamuri i landit Berlin është bardhë-kuq, ngjyrat e Brandenburg-Prusisë historike."
+  },
+  "306": {
+   "q": "Ku mund të informoheni për çështje politike në landin Berlin?",
+   "options": [
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te kishat",
+    "te qendra e këshillimit për konsumatorët",
+    "te qendra e landit për edukim politik"
+   ],
+   "explanation": "Qendra e landit për edukim politik i informon qytetarët për politikën dhe nxit angazhimin demokratik."
+  },
+  "307": {
+   "q": "Cili land federal është qytet-shtet?",
+   "options": [
+    "Berlin",
+    "Saarland",
+    "Brandenburg",
+    "Hesen"
+   ],
+   "explanation": "Berlin, krahas Hamburg dhe Bremen, është një nga tre qytet-shtetet gjermane – landet federale që janë njëkohësisht qytete."
+  },
+  "308": {
+   "q": "Cili land federal është Berlin?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Berlin ndodhet në verilindje të Gjermanisë dhe është i rrethuar nga landi federal Brandenburg."
+  },
+  "309": {
+   "q": "Si quhet kreu i qeverisë së qytet-shtetit Berlin?",
+   "options": [
+    "kryeministri i landit / kryeministrja e landit",
+    "kryebashkiaku / kryebashkiakja",
+    "presidenti i Senatit / presidentja e Senatit",
+    "kryebashkiaku qeverisës / kryebashkiakja qeverisëse"
+   ],
+   "explanation": "Kreu i qeverisë së landit Berlin mban titullin „kryebashkiaku qeverisës“ (Regierender Bürgermeister) dhe drejton Senatin berlinez."
+  },
+  "310": {
+   "q": "Cilin senator / cilën senatore nuk ka landi Berlin?",
+   "options": [
+    "senatori i Financave / senatorja e Financave",
+    "senatori i Punëve të Brendshme / senatorja e Punëve të Brendshme",
+    "senatori për Marrëdhëniet e Jashtme / senatorja për Marrëdhëniet e Jashtme",
+    "senatori i Drejtësisë / senatorja e Drejtësisë"
+   ],
+   "explanation": "Në Gjermani politika e jashtme është çështje e federatës. Prandaj landi Berlin nuk ka senator për Marrëdhëniet e Jashtme."
+  },
+  "311": {
+   "q": "Cila stemë i përket landit federal Baden-Vyrtemberg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Baden-Vyrtemberg."
+  },
+  "312": {
+   "q": "Cili është një rreth (Landkreis) në landin Baden-Vyrtemberg?",
+   "options": [
+    "Mecklenburgische Seenplatte",
+    "Neckar-Odenwald-Kreis",
+    "Nordfriesland",
+    "Altötting"
+   ],
+   "explanation": "Neckar-Odenwald-Kreis është një rreth (Landkreis) në landin Baden-Vyrtemberg."
+  },
+  "313": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Baden-Vyrtemberg?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Baden-Vyrtemberg zgjidhet për 5 vjet."
+  },
+  "314": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Baden-Vyrtemberg?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Baden-Vyrtemberg, mosha minimale e votimit është 16 vjeç."
+  },
+  "315": {
+   "q": "Cilat ngjyra ka flamuri i landit Baden-Vyrtemberg?",
+   "options": [
+    "blu-bardhë-kuq",
+    "zi-artë",
+    "bardhë-blu",
+    "gjelbër-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Baden-Vyrtemberg ka ngjyrat zi-artë."
+  },
+  "316": {
+   "q": "Ku mund të informoheni për çështje politike në landin Baden-Vyrtemberg?",
+   "options": [
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e këshillimit për konsumatorët",
+    "te qendra e landit për edukim politik",
+    "te kishat"
+   ],
+   "explanation": "Në landin Baden-Vyrtemberg mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "317": {
+   "q": "Kryeqyteti i landit Baden-Vyrtemberg quhet ...",
+   "options": [
+    "Heidelberg.",
+    "Stuttgart.",
+    "Karlsruhe.",
+    "Mannheim."
+   ],
+   "explanation": "Kryeqyteti i landit Baden-Vyrtemberg është Stuttgart."
+  },
+  "318": {
+   "q": "Cili land federal është Baden-Vyrtemberg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Baden-Vyrtemberg."
+  },
+  "319": {
+   "q": "Si quhet kreu i qeverisë në landin Baden-Vyrtemberg?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Baden-Vyrtemberg mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "320": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Baden-Vyrtemberg?",
+   "options": [
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Baden-Vyrtemberg nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "321": {
+   "q": "Cila stemë i përket Shtetit të Lirë Bavaria?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Bavaria."
+  },
+  "322": {
+   "q": "Cili është një rreth (Landkreis) në landin Bavaria?",
+   "options": [
+    "Prignitz",
+    "Rhein-Sieg-Kreis",
+    "Nordfriesland",
+    "Altötting"
+   ],
+   "explanation": "Altötting është një rreth (Landkreis) në landin Bavaria."
+  },
+  "323": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Bavaria?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Bavaria zgjidhet për 5 vjet."
+  },
+  "324": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Bavaria?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Bavaria, mosha minimale e votimit është 18 vjeç."
+  },
+  "325": {
+   "q": "Cilat ngjyra ka flamuri i landit Bavaria?",
+   "options": [
+    "blu-bardhë-kuq",
+    "bardhë-blu",
+    "gjelbër-bardhë-kuq",
+    "zi-verdhë"
+   ],
+   "explanation": "Flamuri i landit Bavaria ka ngjyrat bardhë-blu."
+  },
+  "326": {
+   "q": "Ku mund të informoheni për çështje politike në landin Bavaria?",
+   "options": [
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e landit për edukim politik",
+    "te qendra e këshillimit për konsumatorët",
+    "te kishat"
+   ],
+   "explanation": "Në landin Bavaria mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "327": {
+   "q": "Kryeqyteti i landit Bavaria quhet ...",
+   "options": [
+    "Ingolstadt.",
+    "Regensburg.",
+    "Nürnberg.",
+    "München."
+   ],
+   "explanation": "Kryeqyteti i landit Bavaria është München."
+  },
+  "328": {
+   "q": "Cili land federal është Bavaria?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Bavaria."
+  },
+  "329": {
+   "q": "Si quhet kreu i qeverisë në landin Bavaria?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Bavaria mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "330": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Bavaria?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Bavaria nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "331": {
+   "q": "Cila stemë i përket landit federal Brandenburg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Brandenburg."
+  },
+  "332": {
+   "q": "Cili është një rreth (Landkreis) në landin Brandenburg?",
+   "options": [
+    "Prignitz",
+    "Rhein-Sieg-Kreis",
+    "Vogtlandkreis",
+    "Amberg-Sulzbach"
+   ],
+   "explanation": "Prignitz është një rreth (Landkreis) në landin Brandenburg."
+  },
+  "333": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Brandenburg?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Brandenburg zgjidhet për 5 vjet."
+  },
+  "334": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Brandenburg?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Brandenburg, mosha minimale e votimit është 16 vjeç."
+  },
+  "335": {
+   "q": "Cilat ngjyra ka flamuri i landit Brandenburg?",
+   "options": [
+    "blu-bardhë-kuq",
+    "kuq-bardhë",
+    "gjelbër-bardhë-kuq",
+    "zi-verdhë"
+   ],
+   "explanation": "Flamuri i landit Brandenburg ka ngjyrat kuq-bardhë."
+  },
+  "336": {
+   "q": "Ku mund të informoheni për çështje politike në landin Brandenburg?",
+   "options": [
+    "te kishat",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e landit për edukim politik",
+    "te qendra e këshillimit për konsumatorët"
+   ],
+   "explanation": "Në landin Brandenburg mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "337": {
+   "q": "Kryeqyteti i landit Brandenburg quhet ...",
+   "options": [
+    "Potsdam.",
+    "Cottbus.",
+    "Brandenburg.",
+    "Frankfurt/Oder."
+   ],
+   "explanation": "Kryeqyteti i landit Brandenburg është Potsdam."
+  },
+  "338": {
+   "q": "Cili land federal është Brandenburg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Brandenburg."
+  },
+  "339": {
+   "q": "Si quhet kreu i qeverisë në landin Brandenburg?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Brandenburg mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "340": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Brandenburg?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Brandenburg nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "341": {
+   "q": "Cila stemë i përket Qytetit të Lirë Hanseatik Bremen?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Bremen."
+  },
+  "342": {
+   "q": "Cila është një lagje e qytetit Bremen?",
+   "options": [
+    "Altona",
+    "Hemelingen",
+    "Pankow",
+    "Babelsberg"
+   ],
+   "explanation": "Hemelingen është një lagje e qytetit Bremen."
+  },
+  "343": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit Bremen?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Bremen zgjidhet për 4 vjet."
+  },
+  "344": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet për parlamentin e landit (Bürgerschaft) në landin Bremen?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet për parlamentin e landit (Bürgerschaft) në landin Bremen, mosha minimale e votimit është 16 vjeç."
+  },
+  "345": {
+   "q": "Cilat ngjyra ka flamuri i landit Bremen?",
+   "options": [
+    "blu-bardhë-kuq",
+    "kuq-bardhë",
+    "gjelbër-bardhë-kuq",
+    "zi-artë"
+   ],
+   "explanation": "Flamuri i landit Bremen ka ngjyrat kuq-bardhë."
+  },
+  "346": {
+   "q": "Ku mund të informoheni për çështje politike në landin Bremen?",
+   "options": [
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e landit për edukim politik",
+    "te kishat",
+    "te qendra e këshillimit për konsumatorët"
+   ],
+   "explanation": "Në landin Bremen mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "347": {
+   "q": "Cili është një qytet-shtet gjerman?",
+   "options": [
+    "Bremen",
+    "München",
+    "Frankfurt",
+    "Erfurt"
+   ],
+   "explanation": "Tre qytet-shtetet gjermane janë Berlin, Hamburg dhe Bremen; Bremen është një prej tyre."
+  },
+  "348": {
+   "q": "Cili land federal është Bremen?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Bremen."
+  },
+  "349": {
+   "q": "Si quhet kreu i qeverisë së qytet-shtetit Bremen?",
+   "options": [
+    "kryeministri i landit / kryeministrja e landit",
+    "kryebashkiaku i parë / kryebashkiakja e parë",
+    "presidenti i Senatit / presidentja e Senatit",
+    "kryebashkiaku qeverisës / kryebashkiakja qeverisëse"
+   ],
+   "explanation": "Kreu i qeverisë në landin Bremen mban titullin presidenti i Senatit / presidentja e Senatit (Präsident des Senats)."
+  },
+  "350": {
+   "q": "Cilin senator / cilën senatore nuk ka landi Bremen?",
+   "options": [
+    "senatori për Marrëdhëniet e Jashtme / senatorja për Marrëdhëniet e Jashtme",
+    "senatori i Financave / senatorja e Financave",
+    "senatori i Drejtësisë / senatorja e Drejtësisë",
+    "senatori i Punëve të Brendshme / senatorja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Bremen nuk ka senator / senatore për Marrëdhëniet e Jashtme."
+  },
+  "351": {
+   "q": "Cila stemë i përket Qytetit të Lirë dhe Hanseatik Hamburg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Hamburg."
+  },
+  "352": {
+   "q": "Cili është një distrikt (Bezirk) në Hamburg?",
+   "options": [
+    "Altona",
+    "Hemelingen",
+    "Pankow",
+    "Mecklenburgische Seenplatte"
+   ],
+   "explanation": "Altona është një distrikt (Bezirk) në Hamburg."
+  },
+  "353": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit Hamburg?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Hamburg zgjidhet për 5 vjet."
+  },
+  "354": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Hamburg (zgjedhja e kuvendeve të distrikteve, Bezirksversammlungen)?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Hamburg, mosha minimale e votimit është 16 vjeç."
+  },
+  "355": {
+   "q": "Cilat ngjyra ka flamuri i landit Hamburg?",
+   "options": [
+    "blu-bardhë-kuq",
+    "bardhë-kuq",
+    "gjelbër-bardhë-kuq",
+    "zi-verdhë"
+   ],
+   "explanation": "Flamuri i landit Hamburg ka ngjyrat bardhë-kuq."
+  },
+  "356": {
+   "q": "Ku mund të informoheni për çështje politike në landin Hamburg?",
+   "options": [
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e këshillimit për konsumatorët",
+    "te kishat",
+    "te qendra e landit për edukim politik"
+   ],
+   "explanation": "Në landin Hamburg mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "357": {
+   "q": "Cili land federal është qytet-shtet?",
+   "options": [
+    "Hamburg",
+    "Saksonia",
+    "Bavaria",
+    "Turingia"
+   ],
+   "explanation": "Tre qytet-shtetet gjermane janë Berlin, Hamburg dhe Bremen; Hamburg është një prej tyre."
+  },
+  "358": {
+   "q": "Cili land federal është Hamburg?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Hamburg."
+  },
+  "359": {
+   "q": "Si quhet kreu i qeverisë së qytet-shtetit Hamburg?",
+   "options": [
+    "kryeministri i landit / kryeministrja e landit",
+    "kryebashkiaku i parë / kryebashkiakja e parë",
+    "senatori qeverisës / senatorja qeverisëse",
+    "kryebashkiaku / kryebashkiakja"
+   ],
+   "explanation": "Kreu i qeverisë në landin Hamburg mban titullin kryebashkiaku i parë / kryebashkiakja e parë (Erster Bürgermeister)."
+  },
+  "360": {
+   "q": "Cilin senator / cilën senatore nuk ka landi Hamburg?",
+   "options": [
+    "senatori i Drejtësisë / senatorja e Drejtësisë",
+    "senatori për Marrëdhëniet e Jashtme / senatorja për Marrëdhëniet e Jashtme",
+    "senatori i Financave / senatorja e Financave",
+    "senatori i Punëve të Brendshme / senatorja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Hamburg nuk ka senator / senatore për Marrëdhëniet e Jashtme."
+  },
+  "361": {
+   "q": "Cila stemë i përket landit federal Hesen?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Hesen."
+  },
+  "362": {
+   "q": "Cili është një rreth (Landkreis) në landin Hesen?",
+   "options": [
+    "Ammerland",
+    "Altötting",
+    "Prignitz",
+    "Main-Taunus-Kreis"
+   ],
+   "explanation": "Main-Taunus-Kreis është një rreth (Landkreis) në landin Hesen."
+  },
+  "363": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Hesen?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Hesen zgjidhet për 5 vjet."
+  },
+  "364": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Hesen?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Hesen, mosha minimale e votimit është 18 vjeç."
+  },
+  "365": {
+   "q": "Cilat ngjyra ka flamuri i landit Hesen?",
+   "options": [
+    "blu-bardhë-kuq",
+    "kuq-bardhë",
+    "zi-artë",
+    "gjelbër-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Hesen ka ngjyrat kuq-bardhë."
+  },
+  "366": {
+   "q": "Ku mund të informoheni për çështje politike në landin Hesen?",
+   "options": [
+    "te qendra e landit për edukim politik",
+    "te qendra e këshillimit për konsumatorët",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te kishat"
+   ],
+   "explanation": "Në landin Hesen mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "367": {
+   "q": "Kryeqyteti i landit Hesen quhet ...",
+   "options": [
+    "Kassel.",
+    "Darmstadt.",
+    "Frankfurt.",
+    "Wiesbaden."
+   ],
+   "explanation": "Kryeqyteti i landit Hesen është Wiesbaden."
+  },
+  "368": {
+   "q": "Cili land federal është Hesen?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Hesen."
+  },
+  "369": {
+   "q": "Si quhet kreu i qeverisë në landin Hesen?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Hesen mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "370": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Hesen?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Hesen nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "371": {
+   "q": "Cila stemë i përket landit federal Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Meklenburg-Pomerania Perëndimore."
+  },
+  "372": {
+   "q": "Cili është një rreth (Landkreis) në landin Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "Prignitz",
+    "Mecklenburgische Seenplatte",
+    "Vogtlandkreis",
+    "Rhein-Sieg-Kreis"
+   ],
+   "explanation": "Mecklenburgische Seenplatte është një rreth (Landkreis) në landin Meklenburg-Pomerania Perëndimore."
+  },
+  "373": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Meklenburg-Pomerania Perëndimore zgjidhet për 5 vjet."
+  },
+  "374": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Meklenburg-Pomerania Perëndimore, mosha minimale e votimit është 16 vjeç."
+  },
+  "375": {
+   "q": "Cilat ngjyra ka flamuri i landit Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "zi-kuq-artë",
+    "blu-bardhë-verdhë-kuq",
+    "gjelbër-bardhë-kuq",
+    "zi-verdhë"
+   ],
+   "explanation": "Flamuri i landit Meklenburg-Pomerania Perëndimore ka ngjyrat blu-bardhë-verdhë-kuq."
+  },
+  "376": {
+   "q": "Ku mund të informoheni për çështje politike në landin Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "te qendra e landit për edukim politik",
+    "te kishat",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e këshillimit për konsumatorët"
+   ],
+   "explanation": "Në landin Meklenburg-Pomerania Perëndimore mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "377": {
+   "q": "Kryeqyteti i landit Meklenburg-Pomerania Perëndimore quhet ...",
+   "options": [
+    "Greifswald.",
+    "Schwerin.",
+    "Rostock.",
+    "Wismar."
+   ],
+   "explanation": "Kryeqyteti i landit Meklenburg-Pomerania Perëndimore është Schwerin."
+  },
+  "378": {
+   "q": "Cili land federal është Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Meklenburg-Pomerania Perëndimore."
+  },
+  "379": {
+   "q": "Si quhet kreu i qeverisë në landin Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Meklenburg-Pomerania Perëndimore mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "380": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Meklenburg-Pomerania Perëndimore?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Meklenburg-Pomerania Perëndimore nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "381": {
+   "q": "Cila stemë i përket landit federal Saksonia e Poshtme?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Saksonia e Poshtme."
+  },
+  "382": {
+   "q": "Cili është një rreth (Landkreis) në landin Saksonia e Poshtme?",
+   "options": [
+    "Ammerland",
+    "Rhein-Sieg-Kreis",
+    "Nordfriesland",
+    "Vogtlandkreis"
+   ],
+   "explanation": "Ammerland është një rreth (Landkreis) në landin Saksonia e Poshtme."
+  },
+  "383": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Saksonia e Poshtme?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Saksonia e Poshtme zgjidhet për 5 vjet."
+  },
+  "384": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Saksonia e Poshtme?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Saksonia e Poshtme, mosha minimale e votimit është 16 vjeç."
+  },
+  "385": {
+   "q": "Cilat ngjyra ka flamuri i landit Saksonia e Poshtme?",
+   "options": [
+    "bardhë-blu",
+    "zi-kuq-artë",
+    "zi-verdhë",
+    "blu-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Saksonia e Poshtme ka ngjyrat zi-kuq-artë."
+  },
+  "386": {
+   "q": "Ku mund të informoheni për çështje politike në landin Saksonia e Poshtme?",
+   "options": [
+    "te qendra e landit për edukim politik",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e këshillimit për konsumatorët",
+    "te kishat"
+   ],
+   "explanation": "Në landin Saksonia e Poshtme mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "387": {
+   "q": "Kryeqyteti i landit Saksonia e Poshtme quhet ...",
+   "options": [
+    "Hannover.",
+    "Braunschweig.",
+    "Wolfsburg.",
+    "Osnabrück."
+   ],
+   "explanation": "Kryeqyteti i landit Saksonia e Poshtme është Hannover."
+  },
+  "388": {
+   "q": "Cili land federal është Saksonia e Poshtme?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Saksonia e Poshtme."
+  },
+  "389": {
+   "q": "Si quhet kreu i qeverisë në landin Saksonia e Poshtme?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Saksonia e Poshtme mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "390": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Saksonia e Poshtme?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Saksonia e Poshtme nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "391": {
+   "q": "Cila stemë i përket landit federal Renania e Veriut-Vestfalia?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Renania e Veriut-Vestfalia."
+  },
+  "392": {
+   "q": "Cili është një rreth (Landkreis) në landin Renania e Veriut-Vestfalia?",
+   "options": [
+    "Ammerland",
+    "Rhein-Sieg-Kreis",
+    "Nordfriesland",
+    "Vogtlandkreis"
+   ],
+   "explanation": "Rhein-Sieg-Kreis është një rreth (Landkreis) në landin Renania e Veriut-Vestfalia."
+  },
+  "393": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Renania e Veriut-Vestfalia?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Renania e Veriut-Vestfalia zgjidhet për 5 vjet."
+  },
+  "394": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Renania e Veriut-Vestfalia?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Renania e Veriut-Vestfalia, mosha minimale e votimit është 16 vjeç."
+  },
+  "395": {
+   "q": "Cilat ngjyra ka flamuri i landit Renania e Veriut-Vestfalia?",
+   "options": [
+    "kuq-bardhë",
+    "gjelbër-bardhë-kuq",
+    "zi-artë",
+    "blu-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Renania e Veriut-Vestfalia ka ngjyrat gjelbër-bardhë-kuq."
+  },
+  "396": {
+   "q": "Ku mund të informoheni për çështje politike në landin Renania e Veriut-Vestfalia?",
+   "options": [
+    "te kishat",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e këshillimit për konsumatorët",
+    "te qendra e landit për edukim politik"
+   ],
+   "explanation": "Në landin Renania e Veriut-Vestfalia mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "397": {
+   "q": "Kryeqyteti i landit Renania e Veriut-Vestfalia quhet ...",
+   "options": [
+    "Köln.",
+    "Bonn.",
+    "Düsseldorf.",
+    "Dortmund."
+   ],
+   "explanation": "Kryeqyteti i landit Renania e Veriut-Vestfalia është Düsseldorf."
+  },
+  "398": {
+   "q": "Cili land federal është Renania e Veriut-Vestfalia?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Renania e Veriut-Vestfalia."
+  },
+  "399": {
+   "q": "Si quhet kreu i qeverisë në landin Renania e Veriut-Vestfalia?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Renania e Veriut-Vestfalia mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "400": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Renania e Veriut-Vestfalia?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Renania e Veriut-Vestfalia nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "401": {
+   "q": "Cila stemë i përket landit federal Renania-Palatinat?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Renania-Palatinat."
+  },
+  "402": {
+   "q": "Cili është një rreth (Landkreis) në landin Renania-Palatinat?",
+   "options": [
+    "Westerwaldkreis",
+    "Altötting",
+    "Emsland",
+    "Prignitz"
+   ],
+   "explanation": "Westerwaldkreis është një rreth (Landkreis) në landin Renania-Palatinat."
+  },
+  "403": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Renania-Palatinat?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Renania-Palatinat zgjidhet për 5 vjet."
+  },
+  "404": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Renania-Palatinat?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Renania-Palatinat, mosha minimale e votimit është 18 vjeç."
+  },
+  "405": {
+   "q": "Cilat ngjyra ka flamuri i landit Renania-Palatinat?",
+   "options": [
+    "bardhë-kuq",
+    "zi-kuq-artë",
+    "zi-verdhë",
+    "gjelbër-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Renania-Palatinat ka ngjyrat zi-kuq-artë."
+  },
+  "406": {
+   "q": "Ku mund të informoheni për çështje politike në landin Renania-Palatinat?",
+   "options": [
+    "te kishat",
+    "te qendra e këshillimit për konsumatorët",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e landit për edukim politik"
+   ],
+   "explanation": "Në landin Renania-Palatinat mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "407": {
+   "q": "Kryeqyteti i landit Renania-Palatinat quhet ...",
+   "options": [
+    "Mainz.",
+    "Kaiserslautern.",
+    "Ludwigshafen.",
+    "Koblenz."
+   ],
+   "explanation": "Kryeqyteti i landit Renania-Palatinat është Mainz."
+  },
+  "408": {
+   "q": "Cili land federal është Renania-Palatinat?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Renania-Palatinat."
+  },
+  "409": {
+   "q": "Si quhet kreu i qeverisë në landin Renania-Palatinat?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Renania-Palatinat mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "410": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Renania-Palatinat?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Renania-Palatinat nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "411": {
+   "q": "Cila stemë i përket landit federal Saarland?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Saarland."
+  },
+  "412": {
+   "q": "Cili është një rreth (Landkreis) në landin Saarland?",
+   "options": [
+    "Mecklenburgische Seenplatte",
+    "Altötting",
+    "Neunkirchen",
+    "Rhein-Sieg-Kreis"
+   ],
+   "explanation": "Neunkirchen është një rreth (Landkreis) në landin Saarland."
+  },
+  "413": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Saarland?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Saarland zgjidhet për 5 vjet."
+  },
+  "414": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Saarland?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Saarland, mosha minimale e votimit është 18 vjeç."
+  },
+  "415": {
+   "q": "Cilat ngjyra ka flamuri i landit Saarland?",
+   "options": [
+    "bardhë-blu",
+    "zi-kuq-artë",
+    "zi-verdhë",
+    "gjelbër-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Saarland ka ngjyrat zi-kuq-artë."
+  },
+  "416": {
+   "q": "Ku mund të informoheni për çështje politike në landin Saarland?",
+   "options": [
+    "te kishat",
+    "te qendra e landit për edukim politik",
+    "te qendra e këshillimit për konsumatorët",
+    "te zyra e rendit publik (Ordnungsamt) e komunës"
+   ],
+   "explanation": "Në landin Saarland mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "417": {
+   "q": "Kryeqyteti i landit Saarland quhet ...",
+   "options": [
+    "Neunkirchen.",
+    "Homburg.",
+    "Saarbrücken.",
+    "Völklingen."
+   ],
+   "explanation": "Kryeqyteti i landit Saarland është Saarbrücken."
+  },
+  "418": {
+   "q": "Cili land federal është Saarland?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Saarland."
+  },
+  "419": {
+   "q": "Si quhet kreu i qeverisë në landin Saarland?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Saarland mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "420": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Saarland?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Saarland nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "421": {
+   "q": "Cila stemë i përket Shtetit të Lirë Saksonia?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Saksonia."
+  },
+  "422": {
+   "q": "Cili është një rreth (Landkreis) në landin Saksonia?",
+   "options": [
+    "Vogtlandkreis",
+    "Altötting",
+    "Uckermark",
+    "Nordfriesland"
+   ],
+   "explanation": "Vogtlandkreis është një rreth (Landkreis) në landin Saksonia."
+  },
+  "423": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Saksonia?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Saksonia zgjidhet për 5 vjet."
+  },
+  "424": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Saksonia?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Saksonia, mosha minimale e votimit është 18 vjeç."
+  },
+  "425": {
+   "q": "Cilat ngjyra ka flamuri i landit Saksonia?",
+   "options": [
+    "blu-bardhë-kuq",
+    "bardhë-gjelbër",
+    "gjelbër-bardhë-kuq",
+    "zi-verdhë"
+   ],
+   "explanation": "Flamuri i landit Saksonia ka ngjyrat bardhë-gjelbër."
+  },
+  "426": {
+   "q": "Ku mund të informoheni për çështje politike në landin Saksonia?",
+   "options": [
+    "te qendra e landit për edukim politik",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te kishat",
+    "te qendra e këshillimit për konsumatorët"
+   ],
+   "explanation": "Në landin Saksonia mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "427": {
+   "q": "Kryeqyteti i landit Saksonia quhet ...",
+   "options": [
+    "Leipzig.",
+    "Dresden.",
+    "Chemnitz.",
+    "Zwickau."
+   ],
+   "explanation": "Kryeqyteti i landit Saksonia është Dresden."
+  },
+  "428": {
+   "q": "Cili land federal është Saksonia?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Saksonia."
+  },
+  "429": {
+   "q": "Si quhet kreu i qeverisë në landin Saksonia?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Saksonia mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "430": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Saksonia?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Saksonia nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "431": {
+   "q": "Cila stemë i përket landit federal Saksonia-Anhalt?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Saksonia-Anhalt."
+  },
+  "432": {
+   "q": "Cili është një rreth (Landkreis) në landin Saksonia-Anhalt?",
+   "options": [
+    "Ammerland",
+    "Altötting",
+    "Uckermark",
+    "Börde"
+   ],
+   "explanation": "Börde është një rreth (Landkreis) në landin Saksonia-Anhalt."
+  },
+  "433": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Saksonia-Anhalt?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Saksonia-Anhalt zgjidhet për 5 vjet."
+  },
+  "434": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Saksonia-Anhalt?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Saksonia-Anhalt, mosha minimale e votimit është 16 vjeç."
+  },
+  "435": {
+   "q": "Cilat ngjyra ka flamuri i landit Saksonia-Anhalt?",
+   "options": [
+    "blu-bardhë-kuq",
+    "verdhë-zi",
+    "gjelbër-bardhë-kuq",
+    "bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Saksonia-Anhalt ka ngjyrat verdhë-zi."
+  },
+  "436": {
+   "q": "Ku mund të informoheni për çështje politike në landin Saksonia-Anhalt?",
+   "options": [
+    "te kishat",
+    "te qendra e landit për edukim politik",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te qendra e këshillimit për konsumatorët"
+   ],
+   "explanation": "Në landin Saksonia-Anhalt mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "437": {
+   "q": "Kryeqyteti i landit Saksonia-Anhalt quhet ...",
+   "options": [
+    "Halle.",
+    "Dessau.",
+    "Magdeburg.",
+    "Wittenberg."
+   ],
+   "explanation": "Kryeqyteti i landit Saksonia-Anhalt është Magdeburg."
+  },
+  "438": {
+   "q": "Cili land federal është Saksonia-Anhalt?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Saksonia-Anhalt."
+  },
+  "439": {
+   "q": "Si quhet kreu i qeverisë në landin Saksonia-Anhalt?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Saksonia-Anhalt mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "440": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Saksonia-Anhalt?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Saksonia-Anhalt nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "441": {
+   "q": "Cila stemë i përket landit federal Schleswig-Holstein?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Schleswig-Holstein."
+  },
+  "442": {
+   "q": "Cili është një rreth (Landkreis) në landin Schleswig-Holstein?",
+   "options": [
+    "Ammerland",
+    "Mecklenburgische Seenplatte",
+    "Nordfriesland",
+    "Rhein-Sieg-Kreis"
+   ],
+   "explanation": "Nordfriesland është një rreth (Landkreis) në landin Schleswig-Holstein."
+  },
+  "443": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Schleswig-Holstein?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Schleswig-Holstein zgjidhet për 5 vjet."
+  },
+  "444": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Schleswig-Holstein?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Schleswig-Holstein, mosha minimale e votimit është 16 vjeç."
+  },
+  "445": {
+   "q": "Cilat ngjyra ka flamuri i landit Schleswig-Holstein?",
+   "options": [
+    "bardhë-blu",
+    "blu-bardhë-kuq",
+    "bardhë-kuq",
+    "gjelbër-bardhë-kuq"
+   ],
+   "explanation": "Flamuri i landit Schleswig-Holstein ka ngjyrat blu-bardhë-kuq."
+  },
+  "446": {
+   "q": "Ku mund të informoheni për çështje politike në landin Schleswig-Holstein?",
+   "options": [
+    "te qendra e këshillimit për konsumatorët",
+    "te zyra e rendit publik (Ordnungsamt) e komunës",
+    "te i ngarkuari i landit për edukim politik",
+    "te kishat"
+   ],
+   "explanation": "Në landin Schleswig-Holstein mund të informoheni për çështje politike te i ngarkuari i landit për edukim politik."
+  },
+  "447": {
+   "q": "Kryeqyteti i landit Schleswig-Holstein quhet ...",
+   "options": [
+    "Husum.",
+    "Flensburg.",
+    "Lübeck.",
+    "Kiel."
+   ],
+   "explanation": "Kryeqyteti i landit Schleswig-Holstein është Kiel."
+  },
+  "448": {
+   "q": "Cili land federal është Schleswig-Holstein?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Schleswig-Holstein."
+  },
+  "449": {
+   "q": "Si quhet kreu i qeverisë në landin Schleswig-Holstein?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Schleswig-Holstein mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "450": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Schleswig-Holstein?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Schleswig-Holstein nuk ka ministër / ministre të Punëve të Jashtme."
+  },
+  "451": {
+   "q": "Cila stemë i përket Shtetit të Lirë Turingia?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Stema e paraqitur është stema zyrtare e landit Turingia."
+  },
+  "452": {
+   "q": "Cili është një rreth (Landkreis) në landin Turingia?",
+   "options": [
+    "Ammerland",
+    "Altötting",
+    "Nordfriesland",
+    "Wartburgkreis"
+   ],
+   "explanation": "Wartburgkreis është një rreth (Landkreis) në landin Turingia."
+  },
+  "453": {
+   "q": "Për sa vjet zgjidhet parlamenti i landit (Landtag) në landin Turingia?",
+   "options": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "explanation": "Parlamenti i landit (Landtag) në landin Turingia zgjidhet për 5 vjet."
+  },
+  "454": {
+   "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Turingia?",
+   "options": [
+    "14",
+    "16",
+    "18",
+    "20"
+   ],
+   "explanation": "Në zgjedhjet lokale në landin Turingia, mosha minimale e votimit është 16 vjeç."
+  },
+  "455": {
+   "q": "Cilat ngjyra ka flamuri i landit Turingia?",
+   "options": [
+    "blu-bardhë-kuq",
+    "bardhë-kuq",
+    "gjelbër-bardhë-kuq",
+    "zi-artë"
+   ],
+   "explanation": "Flamuri i landit Turingia ka ngjyrat bardhë-kuq."
+  },
+  "456": {
+   "q": "Ku mund të informoheni për çështje politike në landin Turingia?",
+   "options": [
+    "te kishat",
+    "te qendra e këshillimit për konsumatorët",
+    "te qendra e landit për edukim politik",
+    "te zyra e rendit publik (Ordnungsamt) e komunës"
+   ],
+   "explanation": "Në landin Turingia mund të informoheni për çështje politike te qendra e landit për edukim politik."
+  },
+  "457": {
+   "q": "Kryeqyteti i landit Turingia quhet ...",
+   "options": [
+    "Eisenach.",
+    "Erfurt.",
+    "Gera.",
+    "Jena."
+   ],
+   "explanation": "Kryeqyteti i landit Turingia është Erfurt."
+  },
+  "458": {
+   "q": "Cili land federal është Turingia?",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "explanation": "Landi federal i theksuar në hartë është Turingia."
+  },
+  "459": {
+   "q": "Si quhet kreu i qeverisë në landin Turingia?",
+   "options": [
+    "ministri i parë / ministrja e parë",
+    "kryeministri / kryeministrja",
+    "kryetari i komunës / kryetarja e komunës",
+    "kryeministri i landit / kryeministrja e landit"
+   ],
+   "explanation": "Kreu i qeverisë në landin Turingia mban titullin kryeministri i landit / kryeministrja e landit (Ministerpräsident)."
+  },
+  "460": {
+   "q": "Cilin ministër / cilën ministre nuk ka landi Turingia?",
+   "options": [
+    "ministri i Drejtësisë / ministrja e Drejtësisë",
+    "ministri i Punëve të Jashtme / ministrja e Punëve të Jashtme",
+    "ministri i Financave / ministrja e Financave",
+    "ministri i Punëve të Brendshme / ministrja e Punëve të Brendshme"
+   ],
+   "explanation": "Politika e jashtme dhe politika e mbrojtjes janë çështje e federatës — një land federal si Turingia nuk ka ministër / ministre të Punëve të Jashtme."
+  }
+ }
+}
