@@ -1,7 +1,9 @@
 # Ten more languages — design
 
 Status: **stage 1 shipped 2026-10-11** (`ffcc90b`, PR #109): the picker, the file loading, right
-to left, and Arabic, Turkish and Russian, all three unreleased pending review. The design below
+to left, and Arabic, Turkish and Russian, all three unreleased pending review. Arabic, Turkish
+and Russian were then released unreviewed on request (2026-10-12, PR #112), and **stage 3
+shipped hidden the same day** (`9ff32be`, PR #114): the other seven, `released: false`. The design below
 is the record and is left as written; where the build departed from it, the plan's task entries
 say so. The largest departure: **Noto Sans Arabic is NOT in the shared fonts `<link>`** (see
 "Fonts" below). In it, Chrome fetched two of its files (37 KB) for every English and German

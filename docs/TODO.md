@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `24cb5d3`: Q281 and Q285 explanations and English questions corrected, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`; seven more languages waiting on `plan/languages`)_
+_Last updated: 2026-10-12 (live commit `9ff32be`: seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
@@ -86,7 +86,7 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
 
-### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`); ar, ru, tr released unreviewed 2026-10-12_
+### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`); ar, ru, tr released unreviewed 2026-10-12; the other seven live but hidden 2026-10-12 (`9ff32be`)_
 Plan: `docs/plans/2026-10-11-languages-plan.md` (design, task list, and the questions the
 unattended run answered without you).
 - **Built (2026-10-11, unattended run):** a language picker in place of the EN box,

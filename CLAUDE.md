@@ -2649,7 +2649,8 @@ browser step. A red check means a test failed, so do not merge until it is green
    and in step with `LANGS`.
 5. Walk the header's language picker through English and German: no chrome string may stay
    in the other language, the question text must stay German in both, and the box's face AND
-   its `aria-label` must follow the switch. Then open `?lang=ar`: the page runs right to left
+   its `aria-label` must follow the switch. Then open `?lang=fa` (an unreleased right-to-left
+   language, so this also walks the preview link): the page runs right to left
    with the German question, answers and explanation still left to right, and
    `localStorage.eib_lang` is unchanged. Then walk the three scheme buttons — light,
    system, dark — and reload on each: the seg's `aria-pressed` and the painted theme must
