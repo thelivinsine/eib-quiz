@@ -51,7 +51,7 @@
 "ui.dash.passMark","Bestehensgrenze {n} %","Pass mark {n}%","Geçme notu %{n}","",""
 "ui.dash.accuracyShort","Quote","Accuracy","Başarı","",""
 "ui.dash.note","Gesamtwerte aus all deinen Runden, bis du zurücksetzt.","Totals across every round you've played, until you reset.","Sıfırlayana kadar oynadığınız tüm turların toplamı.","",""
-"ui.dash.answered","Fragen gesamt","Answered overall","Toplam yanıtlanan","",""
+"ui.dash.answered","Fragen gesamt","Answered overall","Toplam yanıt","",""
 "ui.dash.mastered","Gemeistert","Mastered","Öğrenilen","",""
 "ui.dash.due","Wiederholung","Due for review","Tekrar edilecek","",""
 "ui.dash.statePick","Bundesland wählen","Choose your state","Eyaletinizi seçin","",""
