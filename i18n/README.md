@@ -20,6 +20,7 @@ open. A language is released only when its **Reviewed** cell holds a date.
 | Code | Language | Generated | Reviewed | Notes |
 | --- | --- | --- | --- | --- |
 | ar | العربية | 2026-10-11 | — | Modern Standard Arabic, names transliterated, Western digits. Q329/Q449: "رئيس وزراء الولاية" (right) beside "رئيس الوزراء" (wrong), distinct but close. |
+| tr | Türkçe | 2026-10-11 | — | "siz" forms. Bundeskanzler is Şansölye, Premierminister Başbakan. Q140/141/150 keep "Schöffe" in German: a Turkish gloss gives the answer away. Q190/Q224 (what DDR and EU stand for) keep the German expansion with the Turkish in brackets. Q185 reorders the sentence round the "…", as Turkish word order needs. |
 | ru | Русский | 2026-10-11 | — | Counts read "Вопросов: {n}" so plural endings never go wrong. Q449: "премьер-министр земли" (right) sits beside "премьер-министр" (wrong), distinct but close. "Landtag" is sometimes glossed "(парламент земли)", sometimes not. |
 
 ## Why the details are this way
