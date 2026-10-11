@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-11 (live commit `ffcc90b`)_
+_Last updated: 2026-10-11 (live commit `6b26c87`: the languages work `ffcc90b`, its review fixes `ec192bc`)_
 
 ## Project status
 
