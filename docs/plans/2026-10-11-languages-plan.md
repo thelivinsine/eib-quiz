@@ -31,7 +31,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 6 | Generate Russian | done | 2026-10-11 | Unreviewed translation. Spot-read by me (not a native speaker): 12 questions, every topic and two states. Nothing seen in the app yet (task 7 loads it). Q1, Q2 answered without you. |
 | 7 | Language list, loading and the picker | done | 2026-10-11 | **Not run in a browser at all (unattended run)**. Unverified: the picker lists only English/Deutsch; `?lang=ar` switches one tab without touching `eib_lang`; offline after one use; a blocked `i18n/ar.json` snaps the picker back with the alert; header row width at 320/375 in en/de/ar; picker box size against `main`; en/de screenshots against the baseline. Checked: all five node checks, and a read of the code. |
 | 8 | Translations in the quiz, review and glossary | done | 2026-10-11 | **Not run in a browser (unattended run)**: none of the five sites, the fallback for a missing question, or the en/de byte-identical claim was seen on screen. Checked: the node checks and a read of the code. Q3 answered without you. |
-| 9 | Right to left and fonts | blocked by 1, 8 | — | — |
+| 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
 | 10 | Measure every language at every width | blocked by 5, 6, 9 | — | — |
 | 11 | Review sheets | blocked by 4, 5, 6 | — | — |
 | 12 | Docs, full validation, ship stage 1 | blocked by 10, 11 | — | — |
@@ -334,6 +334,14 @@ The design's "Right to left" and "Fonts" sections.
   allowed by the scale test's rules rather than exempted.
 
 **Blocked by** 1, 8.
+
+**Landed 2026-10-11.** `dir="ltr"` sits beside every `lang="de"` on exam content (question,
+options container, German explanation, glossary term and definition, both review lists). The
+back arrow un-flips, the forward arrows on mode cards and topic chips flip on their SVG only, the
+mode-card nudge reverses, the closed navigator caret points left (the `[open]` rule still wins on
+specificity), and the progress tip's gradient turns to `270deg`. Translation lines in a
+right-to-left script drop the italic, which Arabic does not have. **Bricolage Grotesque has no
+Cyrillic** (Google Fonts metadata: latin, latin-ext, vietnamese), so Inter draws Russian headings.
 
 ### 10. Measure every language at every width
 

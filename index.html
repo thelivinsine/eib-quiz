@@ -56,7 +56,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="preload" href="questions.json" as="fetch">
     <style>
         /* ============================================================
@@ -343,8 +343,13 @@
             --ls-normal:   0;
             --ls-display: -0.02em;
 
-            --font-head: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
-            --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            /* A glyph a face lacks falls through to the next. Bricolage has Latin only (Google
+               Fonts' metadata: latin, latin-ext, vietnamese), so a Cyrillic heading is drawn by
+               Inter; neither has Arabic, so Arabic falls to Noto Sans Arabic. Google serves
+               that face split by character range, so its files download only once Arabic text
+               is on screen. */
+            --font-head: 'Bricolage Grotesque', 'Inter', 'Noto Sans Arabic', system-ui, sans-serif;
+            --font-body: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             --font-mono: 'Inter', system-ui, sans-serif;   /* alias: JS reads var(--font-mono) */
             /* The mockup's margin-note script. Scoped to .script-note ONLY —
                it must never be inherited by body copy. */
@@ -686,6 +691,11 @@
         .session-back-icon { display: grid; place-items: center; }
         /* The icon set has one arrow. This is the same one, mirrored. */
         .session-back-icon svg { width: var(--icon-md); height: var(--icon-md); transform: scaleX(-1); }
+        /* Right to left, "back" points right: the forward arrow, unflipped. */
+        [dir="rtl"] .session-back-icon svg { transform: none; }
+        /* Forward arrows point the way the page reads. The flip is on the SVG, never on its
+           disc or chip, which carry the hover lift's own transform. */
+        [dir="rtl"] .mode-go svg, [dir="rtl"] .topic-chip-go svg { transform: scaleX(-1); }
         body.in-session header { border-bottom: none; }
         body.in-session .brand { display: none; }
         body.in-session .session-back { display: inline-flex; }
@@ -1837,6 +1847,7 @@
             /* Physical: the arrow nudges the way it points. A right-to-left page flips
                the arrow, and must flip this nudge with it. */
             .mode-card:hover .mode-go { transform: translateX(3px); }
+            [dir="rtl"] .mode-card:hover .mode-go { transform: translateX(-3px); }
         }
         .mode-card:active { background: var(--surface3); }
 
@@ -2242,6 +2253,7 @@
             background: linear-gradient(90deg, transparent, var(--on-accent));
             opacity: 0.4;
         }
+        [dir="rtl"] .quiz-progress > span::after { background: linear-gradient(270deg, transparent, var(--on-accent)); }
         /* One continuous track. It used to carry quarter marks, which nothing on the
            screen explained — a bar cut into four reads as four somethings, and the
            readouts already state the count exactly. */
@@ -2580,6 +2592,9 @@
             transition: transform 0.18s var(--ease);
         }
         .qnav-group[open] > .qnav-group-head::before { transform: rotate(45deg); }
+        /* Closed, the caret points the way the page reads. [open] above still wins: its
+           selector is the more specific of the two. */
+        [dir="rtl"] .qnav-group-head::before { transform: rotate(135deg); }
         .qnav-group-head:hover { color: var(--text); }
         .qnav-group-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .qnav-group-count { flex-shrink: 0; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
@@ -2682,6 +2697,10 @@
         .review-answer.user-blank { color: var(--muted); background: var(--surface2); }
         .review-explanation { font: var(--type-small); color: var(--sub-text); padding-top: var(--space-sm); border-top: 1px solid var(--border-soft); }
         .review-explanation-en { color: var(--muted); font-style: italic; margin-top: var(--space-xs); }
+        /* Arabic script has no italic, and a browser fakes one by slanting the glyphs. The
+           translation lines keep their colour and size and drop only the slant. */
+        .option-en-text[dir="rtl"], .explanation-english[dir="rtl"], .review-explanation-en[dir="rtl"],
+        .gloss-en[dir="rtl"], .question-english[dir="rtl"] { font-style: normal; }
 
         /* ============================================================
            MOTION PREFERENCES
@@ -3331,17 +3350,17 @@
                                 <button class="bilingual-toggle" id="bilingualToggle"></button>
                             </div>
                         </div>
-                        <div class="question-text" id="questionText" tabindex="-1" lang="de"></div>
+                        <div class="question-text" id="questionText" tabindex="-1" lang="de" dir="ltr"></div>
                         <div class="question-english" id="questionEnglish" lang="en"></div>
 
                         <img id="questionImage" class="question-image" style="display: none;">
                         <div id="imageCredit" style="display: none;"></div>
 
-                        <div class="options" id="optionsContainer" lang="de"></div>
+                        <div class="options" id="optionsContainer" lang="de" dir="ltr"></div>
 
                         <div class="explanation" id="explanation" role="status" aria-live="polite">
                             <div class="explanation-header" id="explanationHeader"></div>
-                            <div class="explanation-text" id="explanationText" lang="de"></div>
+                            <div class="explanation-text" id="explanationText" lang="de" dir="ltr"></div>
                             <div class="explanation-english" id="explanationEnglish" lang="en"></div>
                         </div>
                         </div>
@@ -4533,8 +4552,8 @@
             if (!el) return;
             const items = GLOSSARY.map(g => `
                 <div class="gloss-card">
-                    <h3 class="gloss-term" lang="de">${g.term}</h3>
-                    <p class="gloss-de" lang="de">${g.de}</p>
+                    <h3 class="gloss-term" lang="de" dir="ltr">${g.term}</h3>
+                    <p class="gloss-de" lang="de" dir="ltr">${g.de}</p>
                     ${glossTranslation(g)}
                 </div>`).join('');
             el.innerHTML = `
@@ -5593,13 +5612,13 @@
                         ${rows.map(({ q, given, right, blank }) => `
                             <div class="review-item${right ? ' review-item--right' : ''}">
                                 <div class="review-q-num">${t('end.reviewQ', { id: q.id })} · ${right ? t('end.aRight') : blank ? t('end.aBlank') : t('end.aWrong')}</div>
-                                <div class="review-q-text" lang="de">${q.de}</div>
-                                <div class="review-answers" lang="de">
+                                <div class="review-q-text" lang="de" dir="ltr">${q.de}</div>
+                                <div class="review-answers" lang="de" dir="ltr">
                                     ${blank ? `<div class="review-answer user-blank">— ${t('end.aBlank')}</div>`
                                             : `<div class="review-answer ${right ? 'user-right' : 'user-wrong'}">${right ? '✓' : '✗'} ${q.options[given]}</div>`}
                                     ${right ? '' : `<div class="review-answer correct-ans">✓ ${q.options[q.correct]}</div>`}
                                 </div>
-                                <div class="review-explanation" lang="de">
+                                <div class="review-explanation" lang="de" dir="ltr">
                                     ${q.explanation_de}
                                     ${state.showEnglish ? reviewTranslation(q) : ''}
                                 </div>
@@ -5625,12 +5644,12 @@
                         ${missed.map(({ q, userAnswerIdx }) => `
                             <div class="review-item">
                                 <div class="review-q-num">${t('end.reviewQ', { id: q.id })}</div>
-                                <div class="review-q-text" lang="de">${q.de}</div>
-                                <div class="review-answers" lang="de">
+                                <div class="review-q-text" lang="de" dir="ltr">${q.de}</div>
+                                <div class="review-answers" lang="de" dir="ltr">
                                     <div class="review-answer user-wrong">✗ ${q.options[userAnswerIdx]}</div>
                                     <div class="review-answer correct-ans">✓ ${q.options[q.correct]}</div>
                                 </div>
-                                <div class="review-explanation" lang="de">
+                                <div class="review-explanation" lang="de" dir="ltr">
                                     ${q.explanation_de}
                                     ${state.showEnglish ? reviewTranslation(q) : ''}
                                 </div>
