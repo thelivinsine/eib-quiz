@@ -101,22 +101,22 @@ unattended run answered without you).
   pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
 - **Task 12 done, live**: merged as `ffcc90b` (PR #109). Until 2026-10-12 the live picker
   offered only English and Deutsch; since then it offers all five.
-- **The other seven are generated, NOT live** (2026-10-12, second unattended run, tasks
-  15-16 on branch `plan/languages`, not merged to `main`): Persian, Ukrainian, Albanian,
-  Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish. Each has a terms list and a full
-  language file, all `released: false`. The completeness check passes with all ten files.
-  **Not checked: any of the seven in a browser, Persian right to left included**, and no
-  native speaker has read them. Questions 7-11 in the plan's questions file were answered
+- **The other seven are in the repo, hidden** (2026-10-12, tasks 15-17): Persian, Ukrainian,
+  Albanian, Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish. Each has a terms list, a
+  full language file (`released: false`, reachable only through `?lang=<code>`) and a review
+  sheet. Measured at every width in Playwright Chromium (seven strings shortened); Persian
+  right to left looked at in screenshots; English and German identical to before. No native
+  speaker has read any of them. Questions 7-11 in the plan's questions file were answered
   without you.
 - **Q281 and Q285 corrected 2026-10-12** (PR #113, in `questions.json`): both
   explanations, German and English, and both English question texts. Q281 is about skin
   colour, not nationality; Q285 asks what she does NOT pay from her salary, and the
-  explanation now says why VAT is the answer. `ar`, `tr` and `ru` still translate the
-  old explanations (their question texts were always right); the review sheets were
-  regenerated so the reviewer sees the new German and English beside them.
-- **Next:** task 17 for the seven (browser measurements, review sheets, PR to `main`, all
-  still hidden); native-speaker reviews (yours, task 13) of the three already live, then
-  their corrections (task 14).
+  explanation now says why VAT is the answer. `ar`, `tr`, `ru` and the seven new languages
+  still translate the old explanations (their question texts were always right); every
+  review sheet was regenerated afterwards, so the reviewer sees the new German and English
+  beside them.
+- **Next:** native-speaker reviews (yours, task 13) for all ten, then each language's
+  corrections (task 14), releasing the seven one at a time as their reviews come back.
 
 ### 4. Done
 - ~~CI~~ — done 2026-10-12 (`b9d08cf`, PR #111): GitHub Actions runs the contrast, scale

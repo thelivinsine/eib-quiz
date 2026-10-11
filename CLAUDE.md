@@ -2080,6 +2080,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     `sessionStorage` (`eib_lang_preview`) and is never written to `eib_lang`. That is how
     reviewers use the live site. **Arabic, Turkish and Russian were released UNREVIEWED on
     2026-10-12, on request**: AI translations, live for everyone, with the review still owed.
+    **Persian, Ukrainian, Albanian, Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish
+    are in the repo, unreleased** (2026-10-12): reachable only through `?lang=<code>`.
   - **One setting drives menus and translations.** `trLang()` is the menu language, except that
     German menus keep English, as before. `translationOf(q)` returns a question's translation
     in it, falling back to English for a whole question, so `lang`/`dir` always match the text.
