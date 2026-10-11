@@ -3642,7 +3642,7 @@
         function onStateChange(code) {
             setSelectedState(code);
             const shown = document.querySelector('.state-picker-value');
-            if (shown) shown.textContent = STATES[selectedState];
+            if (shown) shown.textContent = stateName(selectedState);
             renderModes();
             renderTopics();
             renderHomeStatus();
@@ -3717,6 +3717,28 @@
             }
             return _langLoads[code];
         }
+
+        /**
+         * The language the translate toggle shows: the menu language, except that German
+         * menus keep English, exactly as before. A question with no entry in the file
+         * falls back to the English whole, so its lang/dir always match its text.
+         */
+        const trLang = () => (lang === 'de' ? 'en' : lang);
+        function translationOf(q) {
+            const code = trLang();
+            const tr = code !== 'en' && LANG_DATA[code] && LANG_DATA[code].questions[q.id];
+            if (tr) return { q: tr.q, options: tr.options, explanation: tr.explanation, lang: code, dir: (langEntry(code) || {}).dir || 'ltr' };
+            return { q: q.en, options: q.options_en || [], explanation: q.explanation_en, lang: 'en', dir: 'ltr' };
+        }
+        /** The results review's translated explanation, as markup. */
+        function reviewTranslation(q) {
+            const tr = translationOf(q);
+            return `<div class="review-explanation-en" lang="${tr.lang}" dir="${tr.dir}">${escapeHtml(tr.explanation)}</div>`;
+        }
+        /** A state's name in the menu language, or the German name the app has always shown. */
+        const stateName = code => (LANG_DATA[lang] && LANG_DATA[lang].states[code]) || STATES[code];
+        /** Translated text goes into markup through this, never raw. */
+        const escapeHtml = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
         const I18N = {
             // header
@@ -3879,8 +3901,9 @@
             'quiz.stat.answered':  { en: 'Answered',                de: 'Beantwortet' },
             'quiz.time':           { en: 'Time',                    de: 'Zeit' },
             'quiz.speak':          { en: 'Read the question aloud', de: 'Frage vorlesen' },
-            'quiz.showEn':         { en: 'Show the English',        de: 'Auf Englisch anzeigen' },
-            'quiz.hideEn':         { en: 'Hide the English',        de: 'Englisch ausblenden' },
+            // "translation", not "English": the toggle shows the reader's own language.
+            'quiz.showEn':         { en: 'Show translation',        de: 'Übersetzung anzeigen' },
+            'quiz.hideEn':         { en: 'Hide translation',        de: 'Übersetzung ausblenden' },
             'quiz.prev':           { en: 'Previous',                de: 'Vorherige' },
             'quiz.next':           { en: 'Next',                    de: 'Weiter' },
             'quiz.finish':         { en: 'Finish',                  de: 'Abschließen' },
@@ -4371,13 +4394,13 @@
         function renderStatePicker() {
             const el = document.getElementById('statePickerSlot');
             if (!el) return;
-            const opts = Object.entries(STATES)
-                .map(([code, name]) => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${name}</option>`)
+            const opts = Object.keys(STATES)
+                .map(code => `<option value="${code}"${code === selectedState ? ' selected' : ''}>${stateName(code)}</option>`)
                 .join('');
             el.innerHTML = `
                 <label class="state-picker">
                     ${ICONS.pin}
-                    <span class="state-picker-value">${STATES[selectedState]}</span>
+                    <span class="state-picker-value">${stateName(selectedState)}</span>
                     <select id="stateSelect" aria-label="${t('dash.statePick')}" onchange="onStateChange(this.value)">${opts}</select>
                 </label>`;
         }
@@ -4498,6 +4521,13 @@
             { term: 'Ministerpräsident/in', de: 'Regierungschef/in eines Bundeslandes (außer Stadtstaaten).', en: 'Head of government of a federal state (except city-states).' },
         ];
 
+        /** A glossary entry's definition in trLang(), English where the file has none. */
+        function glossTranslation(g) {
+            const code = trLang(), own = code !== 'en' && LANG_DATA[code] && LANG_DATA[code].glossary[g.term];
+            const dir = own ? (langEntry(code) || {}).dir || 'ltr' : 'ltr';
+            return `<p class="gloss-en" lang="${own ? code : 'en'}" dir="${dir}">${escapeHtml(own || g.en)}</p>`;
+        }
+
         function renderGlossary() {
             const el = document.getElementById('glossarySection');
             if (!el) return;
@@ -4505,7 +4535,7 @@
                 <div class="gloss-card">
                     <h3 class="gloss-term" lang="de">${g.term}</h3>
                     <p class="gloss-de" lang="de">${g.de}</p>
-                    <p class="gloss-en" lang="en">${g.en}</p>
+                    ${glossTranslation(g)}
                 </div>`).join('');
             el.innerHTML = `
                 <details class="gloss-wrap">
@@ -4573,7 +4603,7 @@
                     review: 'mode.review.title', topic: 'mode.topic.title' }[sess.mode] || 'hist.mode.' + sess.mode);
                 // A topic or state round keeps WHICH one beside the count.
                 const detail = sess.mode === 'topic' ? catLabel(sess.topic)
-                    : sess.mode === 'bundesland' ? STATES[sess.stateCode] : '';
+                    : sess.mode === 'bundesland' ? stateName(sess.stateCode) : '';
                 const answered = sess.answered ? Object.keys(sess.answered).length : 0;
                 resumeHtml = `
                     <div class="resume-banner">
@@ -4712,7 +4742,7 @@
         function renderModes() {
             const grid = document.getElementById('modesGrid');
             const due = reviewDueCount();
-            const st = STATES[selectedState];
+            const st = stateName(selectedState);
             // Five equal peers, the practise-mode mockup's card: disc, title, description,
             // then one foot row of facts beside a bare arrow disc. Smart Review with work
             // waiting shows the due chip on its own line and drops its count from the
@@ -4885,7 +4915,7 @@
         /** Which navigator group a question belongs to. */
         function navGroupKey(q) { return q.state ? 'state' : (q.category || 'other'); }
         function navGroupLabel(key) {
-            if (key === 'state') return STATES[state.stateCode] || t('mode.state.title');
+            if (key === 'state') return stateName(state.stateCode) || t('mode.state.title');
             return CATEGORIES[key] ? catLabel(key) : t('quiz.general');
         }
 
@@ -5041,11 +5071,15 @@
             // look for, and the real test does not.
             document.getElementById('questionCategory').textContent =
                 state.currentMode === 'exam' ? ''
-                    : q.state ? (q.stateName || STATES[q.state] || t('mode.state.title'))
+                    : q.state ? ((LANG_DATA[lang] && LANG_DATA[lang].states[q.state]) || q.stateName || STATES[q.state] || t('mode.state.title'))
                     : (q.category ? catLabel(q.category) : t('quiz.general'));
             document.getElementById('questionText').textContent = q.de;
-            document.getElementById('questionEnglish').innerHTML = `<div>${q.en}</div>`;
-            document.getElementById('questionEnglish').classList.remove('show');
+            // The translation of the question, in trLang(), written as text, not markup.
+            const tr = translationOf(q);
+            const trBox = document.getElementById('questionEnglish');
+            trBox.lang = tr.lang; trBox.dir = tr.dir;
+            trBox.replaceChildren(Object.assign(document.createElement('div'), { textContent: tr.q }));
+            trBox.classList.remove('show');
 
             const imgCredit = document.getElementById('imageCredit');
             if (q.image) {
@@ -5078,11 +5112,11 @@
                     <span class="opt-num">${String.fromCharCode(65 + idx)} — ${opt}</span>
                 </button>`;
                 }
-                const enText = q.options_en && q.options_en[idx] ? q.options_en[idx] : '';
+                const enText = tr.options[idx] || '';
                 const enClass = enText && state.showEnglish ? ' show' : '';
                 return `
                 <button class="option-btn" onclick="selectAnswer(${idx})" id="option-${idx}">
-                    <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}" lang="en">${enText}</span>` : ''}</span>
+                    <span class="opt-letter">${String.fromCharCode(65 + idx)}</span><span class="opt-text-wrap">${opt}${enText ? `<span class="option-en-text${enClass}" lang="${tr.lang}" dir="${tr.dir}">${escapeHtml(enText)}</span>` : ''}</span>
                 </button>`;
             }).join('');
             // Says the images can be opened, for the reader who has no hover to discover
@@ -5314,7 +5348,9 @@
             }
 
             document.getElementById('explanationText').textContent = q.explanation_de;
-            document.getElementById('explanationEnglish').textContent = q.explanation_en;
+            const trExp = translationOf(q), expBox = document.getElementById('explanationEnglish');
+            expBox.lang = trExp.lang; expBox.dir = trExp.dir;
+            expBox.textContent = trExp.explanation;
             document.getElementById('explanationEnglish').classList.toggle('show', state.showEnglish);
         }
 
@@ -5520,7 +5556,7 @@
                 const elapsed = state.elapsedSecs || 0;
                 const elapsedStr = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
                 cells += stat(t('end.general', { n: EXAM_GENERAL }), state.generalCorrect, 'var(--gold)')
-                       + stat(t('end.stateOf3', { state: STATES[state.stateCode] || t('mode.state.title'), n: EXAM_STATE }), state.stateCorrect, 'var(--gold)')
+                       + stat(t('end.stateOf3', { state: stateName(state.stateCode) || t('mode.state.title'), n: EXAM_STATE }), state.stateCorrect, 'var(--gold)')
                        + stat(t('end.elapsed'), elapsedStr, 'var(--blue)');
                 threshold.textContent = t('end.threshold', { pass: EXAM_PASS, total: EXAM_SIZE, n: PASS_PCT });
                 threshold.hidden = false;
@@ -5565,7 +5601,7 @@
                                 </div>
                                 <div class="review-explanation" lang="de">
                                     ${q.explanation_de}
-                                    ${state.showEnglish ? `<div class="review-explanation-en" lang="en">${q.explanation_en}</div>` : ''}
+                                    ${state.showEnglish ? reviewTranslation(q) : ''}
                                 </div>
                             </div>`).join('')}
                     </div>`;
@@ -5596,7 +5632,7 @@
                                 </div>
                                 <div class="review-explanation" lang="de">
                                     ${q.explanation_de}
-                                    ${state.showEnglish ? `<div class="review-explanation-en" lang="en">${q.explanation_en}</div>` : ''}
+                                    ${state.showEnglish ? reviewTranslation(q) : ''}
                                 </div>
                             </div>`).join('')}
                     </div>`;

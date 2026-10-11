@@ -43,3 +43,19 @@ Turkish name for it to make the warning go away.
 **Taken: keep the German names, fix the check.** The check still catches a sentence left in
 English, because a sentence differs between the German and the English. The district name is
 back in German in the Turkish file.
+
+## 3. Should the landing page stop saying "In German or English" now?
+
+**From task 8** (translations in the quiz).
+
+Four landing-page lines (`hero.lead`, `footer.blurb`, `why.3.body`, `stats.3`) say the app is
+in German or English. With the new languages built but hidden, that is still what a visitor
+can use.
+
+- **Leave them until a language is released** *(Recommended)*: the claim stays true on the
+  live site, and the plan does not cover marketing copy.
+- **Rewrite them now** to mention more languages: the site would promise languages no
+  visitor can pick yet.
+
+**Taken: leave them.** When the first language is released (task 14), these four strings
+and the "2 languages" figure in the numbers band need rewording in every language file.
