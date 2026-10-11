@@ -36,7 +36,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 9 | Right to left and fonts | done | 2026-10-11 | **Not run in a browser (unattended run)**: nothing about the mirrored layout, the German blocks staying left to right, the flipped arrows, the Arabic font or the line height of Arabic text was seen on screen, and en/de were not compared against the baseline. Checked: node checks, a read of the CSS specificity, and Google Fonts' coverage data for Bricolage. |
 | 10 | Measure every language at every width | done, 2026-10-11 (user present) | 2026-10-11 | Measured in Playwright Chromium only (not Safari or Firefox, not a real phone). en/de/ar/tr/ru all pass after two fixes, listed in the entry. |
 | 11 | Review sheets | done | 2026-10-11 | Not opened in Excel or Google Sheets: proved instead by parsing each sheet back (BOM present, 6 columns on every row, no empty translation). |
-| 12 | Docs, full validation, ship stage 1 | blocked by 10, 11 | — | — |
+| 12 | Docs, full validation, ship stage 1 | PR opened 2026-10-11, not merged | 2026-10-11 | Validation steps 2-8 run (Node, and Playwright Chromium for 5, 6, 8). The post-merge live check (picker shows only English/Deutsch, `?lang=ar` works on the live site) waits for the merge. Not checked: Safari, Firefox, a real phone. |
 | 13 | Find reviewers and return the sheets | user's; blocked by 12 | — | — |
 | 14 | Apply corrections and release ar, tr, ru | blocked by 13 | — | — |
 | 15 | Terminology lists: the other seven | blocked by 12 | — | — |
