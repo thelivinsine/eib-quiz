@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `ff5a937`: ar, ru and tr released unreviewed with a styled language menu; CI on every PR since `b9d08cf`; seven more languages waiting on `plan/languages`)_
+_Last updated: 2026-10-12 (live commit `24cb5d3`: Q281 and Q285 explanations and English questions corrected, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`; seven more languages waiting on `plan/languages`)_
 
 ## Project status
 
@@ -108,8 +108,12 @@ unattended run answered without you).
   **Not checked: any of the seven in a browser, Persian right to left included**, and no
   native speaker has read them. Questions 7-11 in the plan's questions file were answered
   without you.
-- **Found in the source data**: the German explanations of Q281 and Q285 do not fit their
-  questions, so every language translates the error. Flagged as its own task; not fixed.
+- **Q281 and Q285 corrected 2026-10-12** (PR #113, in `questions.json`): both
+  explanations, German and English, and both English question texts. Q281 is about skin
+  colour, not nationality; Q285 asks what she does NOT pay from her salary, and the
+  explanation now says why VAT is the answer. `ar`, `tr` and `ru` still translate the
+  old explanations (their question texts were always right); the review sheets were
+  regenerated so the reviewer sees the new German and English beside them.
 - **Next:** task 17 for the seven (browser measurements, review sheets, PR to `main`, all
   still hidden); native-speaker reviews (yours, task 13) of the three already live, then
   their corrections (task 14).
