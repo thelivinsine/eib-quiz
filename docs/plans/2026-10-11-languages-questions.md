@@ -104,3 +104,54 @@ the translate button now says "Show translation" rather than "Show the English",
   cost of two different names for one button.
 
 **Taken: keep both.**
+
+## 7. How formally should the other seven languages address the reader?
+
+**From task 15** (terminology lists for the other seven), second unattended run, 2026-10-12.
+
+Question 1 settled this for Arabic, Turkish and Russian. The same choice comes up again for
+seven more languages.
+
+- **Each language's usual register for an official tool** *(Recommended)*: polite "شما"
+  (Persian), "ви" (Ukrainian), "ju" (Albanian), "vi" (Bosnian/Croatian/Serbian),
+  "dumneavoastră" (Romanian) and "hûn" (Kurmanji). Polish uses the informal "ty", or
+  no direct address where that reads naturally. Polish apps and gov.pl services do this.
+  The polite "Pan/Pani" is gendered and reads stiffly in buttons.
+- **Polite everywhere, Polish included**: one rule for every language, but Polish menus
+  would read like a formal letter.
+- **Informal everywhere**: matches the German "du", but reads as over-familiar in most of
+  these languages.
+
+**Taken: each language's usual register.** It follows the reasoning of question 1, and a
+reviewer can change it with a search-and-replace.
+
+## 8. Which form of Bosnian, Croatian and Serbian does the one `bs` text use?
+
+**From task 15.**
+
+The design settles on one Latin-script text for all three. The three standards differ in
+some words and in how a few vowels are written.
+
+- **Bosnian, ijekavian, with words that Croatian shares wherever possible** *(Recommended)*:
+  Bosnian sits between the other two. Serbian readers understand ijekavian, and Serbian's
+  Latin script is official.
+- **Croatian**: equally readable, but its purist vocabulary sounds foreign to many Bosnian
+  and Serbian readers.
+- **Serbian, ekavian**: its spelling differs most from the other two.
+
+**Taken: Bosnian, ijekavian.** The list notes the Croatian or Serbian word beside a key term
+where the three differ. The design's open question on whether one text serves all three
+readers stays open until the reviews come back.
+
+## 9. The plan's progress table had three rows pasted onto its first line. Repair it?
+
+**From task 15**, found while reading the plan.
+
+The newer, browser-checked versions of rows 7, 8 and 9 were on line 1, run together
+before the title. The older versions were still in the table.
+
+- **Move the three rows into the table, replacing their older versions** *(Recommended)*:
+  this keeps the newer "browser-checked" wording and restores the title to line 1.
+- **Leave it**: the plan opens with an unreadable line.
+
+**Taken: moved.** Nothing in the rows was reworded.
