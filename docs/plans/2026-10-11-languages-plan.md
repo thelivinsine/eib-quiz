@@ -25,7 +25,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | --- | --- | --- | --- | --- |
 | 1 | RTL-ready stylesheet | done | 2026-10-11 | Screens never shot: the image lightbox, the navigator's Topics view, hover and press states, a coarse pointer, and widths other than 375 and 1280. Their changes are the same one-for-one swaps, which are identical in left-to-right, but no screenshot proves it. Checked in Playwright's Chromium only. |
 | 2 | The completeness check | done | 2026-10-11 | Nothing on screen to check. Proved against the deliberately broken fixture and a fake `LANGS` entry with no file (fails as it should). Not yet run against a real translation, so false alarms on real text are untested until task 4. |
-| 3 | Terminology lists: ar, tr, ru | not started | — | — |
+| 3 | Terminology lists: ar, tr, ru | done | 2026-10-11 | Every rendering is AI-written and unreviewed: the lists are the first thing each reviewer should check. |
 | 4 | Generate Arabic | blocked by 2, 3 | — | — |
 | 5 | Generate Turkish | blocked by 2, 3 | — | — |
 | 6 | Generate Russian | blocked by 2, 3 | — | — |
@@ -169,6 +169,14 @@ original and the one translation every batch must use.
   missing that occurs in 5 or more questions.
 
 **Blocked by** nothing.
+
+**Landed 2026-10-11.** 58 terms per language, all 18 glossary terms included. Of the 40
+most frequent capitalised words found in 5+ questions, the 15 not listed are all generic:
+question words (Welche, Welches), years and age (Jahre, Alter), colours, ordinals, forms of
+Deutschland, and state names (which come from each language file's state list instead).
+One rule went beyond the plan: titles the catalogue sets side by side as wrong answers
+(Bundeskanzler, Premierminister, Ministerpräsident, Regierungschef) each get a distinct
+rendering, or two answer options would read the same.
 
 ### 4. Generate Arabic
 
