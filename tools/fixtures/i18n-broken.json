@@ -1,0 +1,11 @@
+{
+  "_why": "Deliberately broken, for tools/i18n.test.mjs. Each fault below must be reported: gloss.title drops {n}; nav.back adds a <b> tag; question 1 has three answers; question 2's text is English in an Arabic file; every other key is missing.",
+  "ui": {
+    "gloss.title": "مسرد المصطلحات",
+    "nav.back": "<b>رجوع</b>"
+  },
+  "questions": {
+    "1": { "q": "سؤال", "options": ["أ", "ب", "ج"], "explanation": "شرح" },
+    "2": { "q": "In Germany people may openly say something against the government because", "options": ["أ", "ب", "ج", "د"], "explanation": "شرح" }
+  }
+}
