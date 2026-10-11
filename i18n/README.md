@@ -15,7 +15,9 @@ picks that language, and offers a language only after a native speaker has revie
 ## Status
 
 One row per language: when it was generated, when its review came back, and anything still
-open. A language is released only when its **Reviewed** cell holds a date.
+open. A language is released only when its **Reviewed** cell holds a date, with one
+exception: **ar, tr and ru were released UNREVIEWED on 2026-10-12, on request.** Their
+Reviewed cells stay empty until a native speaker's review comes back.
 
 | Code | Language | Generated | Reviewed | Notes |
 | --- | --- | --- | --- | --- |

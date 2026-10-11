@@ -174,6 +174,9 @@ const solid = {
     // tick is the shield's, scaled to the smaller hole.
     file: '<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>',
     checkCircle: ev(donut(12, 12, 9.2, 7.4)) + '<path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>',
+    // The language menu's mark on the language in force (2026-10-12): checkCircle's
+    // tick at full size, with no ring.
+    check: '<path d="M9.5 18.6 3.9 13l1.6-1.6 4 4 9-9 1.6 1.6Z"/>',
     // (leaf went on 2026-09-23 with the overview card's closing line.)
     // index.html aliases these rather than redrawing them
     // (ICONS.community = ICONS.society, ICONS.clock = ICONS.history).
