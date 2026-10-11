@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `ff5a937`: ar, ru and tr released unreviewed with a styled language menu; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-12 (live commit `24cb5d3`: Q281 and Q285 explanations and English questions corrected, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
