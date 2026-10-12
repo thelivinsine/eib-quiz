@@ -802,7 +802,7 @@
     "około 1150 lat temu",
     "około 1700 lat temu"
    ],
-   "explanation": "Historia Żydów w Niemczech sięga około 1700 lat wstecz. Pierwsza znana gmina żydowska jest udokumentowana w IV wieku w Köln."
+   "explanation": "Historia Żydów w Niemczech sięga około 1700 lat wstecz. Pierwsza znana gmina żydowska jest udokumentowana w IV wieku w Kolonii."
   },
   "60": {
    "q": "W Niemczech Bundestag i Bundesrat należą do …",
@@ -867,12 +867,12 @@
   "66": {
    "q": "Które miasta mają największe gminy żydowskie w Niemczech?",
    "options": [
-    "Berlin i München",
+    "Berlin i Monachium",
     "Hamburg i Essen",
-    "Nürnberg i Stuttgart",
-    "Worms i Speyer"
+    "Norymberga i Stuttgart",
+    "Wormacja i Spira"
    ],
-   "explanation": "Berlin i München mają największe gminy żydowskie w Niemczech."
+   "explanation": "Berlin i Monachium mają największe gminy żydowskie w Niemczech."
   },
   "67": {
    "q": "Co jest w Niemczech przede wszystkim zadaniem krajów związkowych?",
@@ -3478,11 +3478,11 @@
    "q": "Stolica kraju związkowego Bawaria to ...",
    "options": [
     "Ingolstadt.",
-    "Regensburg.",
-    "Nürnberg.",
-    "München."
+    "Ratyzbona.",
+    "Norymberga.",
+    "Monachium."
    ],
-   "explanation": "Stolicą kraju związkowego Bawaria jest München."
+   "explanation": "Stolicą kraju związkowego Bawaria jest Monachium."
   },
   "328": {
    "q": "Który kraj związkowy to Bawaria?",
@@ -3577,12 +3577,12 @@
   "337": {
    "q": "Stolica kraju związkowego Brandenburgia to ...",
    "options": [
-    "Potsdam.",
-    "Cottbus.",
+    "Poczdam.",
+    "Chociebuż.",
     "Brandenburg.",
-    "Frankfurt/Oder."
+    "Frankfurt nad Odrą."
    ],
-   "explanation": "Stolicą kraju związkowego Brandenburgia jest Potsdam."
+   "explanation": "Stolicą kraju związkowego Brandenburgia jest Poczdam."
   },
   "338": {
    "q": "Który kraj związkowy to Brandenburgia?",
@@ -3677,9 +3677,9 @@
   "347": {
    "q": "Co jest niemieckim miastem-państwem?",
    "options": [
-    "Bremen",
-    "München",
-    "Frankfurt",
+    "Brema",
+    "Monachium",
+    "Frankfurt nad Menem",
     "Erfurt"
    ],
    "explanation": "Trzy niemieckie miasta-państwa to Berlin, Hamburg i Brema; Brema jest jednym z nich."
@@ -3879,7 +3879,7 @@
    "options": [
     "Kassel.",
     "Darmstadt.",
-    "Frankfurt.",
+    "Frankfurt nad Menem.",
     "Wiesbaden."
    ],
    "explanation": "Stolicą kraju związkowego Hesja jest Wiesbaden."
@@ -4077,12 +4077,12 @@
   "387": {
    "q": "Stolica kraju związkowego Dolna Saksonia to ...",
    "options": [
-    "Hannover.",
-    "Braunschweig.",
+    "Hanower.",
+    "Brunszwik.",
     "Wolfsburg.",
     "Osnabrück."
    ],
-   "explanation": "Stolicą kraju związkowego Dolna Saksonia jest Hannover."
+   "explanation": "Stolicą kraju związkowego Dolna Saksonia jest Hanower."
   },
   "388": {
    "q": "Który kraj związkowy to Dolna Saksonia?",
@@ -4177,7 +4177,7 @@
   "397": {
    "q": "Stolica kraju związkowego Nadrenia Północna-Westfalia to ...",
    "options": [
-    "Köln.",
+    "Kolonia.",
     "Bonn.",
     "Düsseldorf.",
     "Dortmund."
@@ -4277,12 +4277,12 @@
   "407": {
    "q": "Stolica kraju związkowego Nadrenia-Palatynat to ...",
    "options": [
-    "Mainz.",
+    "Moguncja.",
     "Kaiserslautern.",
     "Ludwigshafen.",
-    "Koblenz."
+    "Koblencja."
    ],
-   "explanation": "Stolicą kraju związkowego Nadrenia-Palatynat jest Mainz."
+   "explanation": "Stolicą kraju związkowego Nadrenia-Palatynat jest Moguncja."
   },
   "408": {
    "q": "Który kraj związkowy to Nadrenia-Palatynat?",
@@ -4477,12 +4477,12 @@
   "427": {
    "q": "Stolica kraju związkowego Saksonia to ...",
    "options": [
-    "Leipzig.",
-    "Dresden.",
+    "Lipsk.",
+    "Drezno.",
     "Chemnitz.",
     "Zwickau."
    ],
-   "explanation": "Stolicą kraju związkowego Saksonia jest Dresden."
+   "explanation": "Stolicą kraju związkowego Saksonia jest Drezno."
   },
   "428": {
    "q": "Który kraj związkowy to Saksonia?",
@@ -4580,7 +4580,7 @@
     "Halle.",
     "Dessau.",
     "Magdeburg.",
-    "Wittenberg."
+    "Wittenberga."
    ],
    "explanation": "Stolicą kraju związkowego Saksonia-Anhalt jest Magdeburg."
   },
@@ -4679,10 +4679,10 @@
    "options": [
     "Husum.",
     "Flensburg.",
-    "Lübeck.",
-    "Kiel."
+    "Lubeka.",
+    "Kilonia."
    ],
-   "explanation": "Stolicą kraju związkowego Szlezwik-Holsztyn jest Kiel."
+   "explanation": "Stolicą kraju związkowego Szlezwik-Holsztyn jest Kilonia."
   },
   "448": {
    "q": "Który kraj związkowy to Szlezwik-Holsztyn?",
