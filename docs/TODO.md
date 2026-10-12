@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-12 (live commit `9ff32be`: seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-12 (live commit `7b0b369`: Q281 and Q285 explanations retranslated in ar, tr and ru, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
