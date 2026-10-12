@@ -3022,7 +3022,7 @@
     "toplanma özgürlüğü",
     "serbest dolaşım"
    ],
-   "explanation": "Ayrımcılık yasağı (eşit muamele, Temel Yasa md. 3 ve AGG), insanları uyrukları nedeniyle eşit olmayan muameleye karşı korur."
+   "explanation": "Ayrımcılık yasağı (eşit muamele, Temel Yasa'nın 3. maddesinin 3. fıkrası ve AGG), insanları ten renkleri veya etnik kökenleri nedeniyle dezavantajlı duruma düşürülmeye karşı korur. Halka açık bir yüzme havuzu hiç kimseyi ten rengi nedeniyle geri çeviremez."
   },
   "282": {
    "q": "Alman vatandaşları, istendiğinde hangi fahri görevi üstlenmek zorundadır?",
@@ -3062,7 +3062,7 @@
     "işsizlik sigortası primleri",
     "emeklilik ve sağlık sigortası primleri"
    ],
-   "explanation": "İşveren ücret vergisini doğrudan vergi dairesine öder – bu vergi çalışanın maaşından kesilir."
+   "explanation": "Katma değer vergisi mal ve hizmet satın alınırken ödenir; maaştan kesilmez. Buna karşılık ücret vergisi ile işsizlik, emeklilik ve sağlık sigortası primleri maaştan kesilir."
   },
   "286": {
    "q": "Bir şirkette hangi kurum, çalışanlara işverenle yaşadıkları sorunlarda yardım eder?",
