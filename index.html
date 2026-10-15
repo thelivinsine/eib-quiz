@@ -2179,6 +2179,52 @@
             letter-spacing: var(--ls-display); color: var(--text);
         }
 
+        /* Feedback, after Genauly's: a quiet pill pinned bottom-right on a page, and one
+           native <dialog> that the pill and the footer link both open. The pill is not
+           drawn in a session (it would sit on Next) nor on a phone (it would float over
+           the cards); the footer link is the way in there. */
+        .fb-pill {
+            font: var(--type-label);
+            position: fixed; z-index: 90;
+            inset-inline-end: calc(var(--space-lg) + env(safe-area-inset-right));
+            bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+            display: inline-flex; align-items: center; gap: var(--space-2xs);
+            padding: var(--space-xs) var(--space-ms);
+            border: 1px solid var(--tile-edge); border-radius: var(--radius-pill);
+            background: var(--tile); color: var(--sub-text);
+            box-shadow: var(--shadow-rest); cursor: pointer;
+            transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+        }
+        .fb-pill svg { width: var(--icon-xs); height: var(--icon-xs); }
+        @media (hover: hover) {
+            .fb-pill:hover { color: var(--text); border-color: var(--tile-edge-hover); }
+        }
+        body.in-session .fb-pill { display: none; }
+        @media (max-width: 620px) { .fb-pill { display: none; } }
+        .fb-dialog {
+            width: min(calc(100% - 2 * var(--space-md)), 440px);
+            margin: auto; /* the reset zeroes it, and auto is what centres a modal */
+            padding: var(--space-xl);
+            border: 1px solid var(--tile-edge); border-radius: var(--radius);
+            background: var(--tile); color: var(--text);
+            box-shadow: var(--shadow-lift);
+        }
+        .fb-dialog::backdrop { background: rgba(9, 10, 13, 0.55); }
+        .fb-dialog h2 { font: var(--type-title); letter-spacing: var(--ls-display); }
+        .fb-dialog p { font: var(--type-small); color: var(--sub-text); margin-top: var(--space-xs); }
+        .fb-form { display: flex; flex-direction: column; gap: var(--space-ms); margin-top: var(--space-lg); }
+        .fb-form label { font: var(--type-label); color: var(--muted); display: flex; flex-direction: column; gap: var(--space-2xs); }
+        .fb-form textarea, .fb-form input {
+            font: var(--type-small); color: var(--text);
+            padding: var(--space-sm) var(--space-ms);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background: var(--surface);
+        }
+        .fb-form textarea { resize: vertical; }
+        .fb-form ::placeholder { color: var(--faint); }
+        .fb-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: var(--space-sm); }
+        .fb-dialog .fb-status { margin: 0; margin-inline-end: auto; }
+
         /* Visually hidden, still read out. */
         .sr-only {
             position: absolute; width: 1px; height: 1px;
@@ -3494,6 +3540,7 @@
                     </span>
                 </div>
                 <p class="footer-blurb" data-i18n="footer.blurb"></p>
+                <button type="button" class="footer-link" onclick="openFeedback()" data-i18n="fb.title"></button>
             </div>
             <!-- Real actions, not decoration: these are the same startMode() calls the
                  mode cards make. The footer is hidden in-session, so they can only ever
@@ -3527,6 +3574,21 @@
             <p class="footer-legal" data-i18n-html="footer.legal"></p>
         </div>
     </footer>
+
+    <button type="button" class="fb-pill" onclick="openFeedback()"><span data-icon="message"></span><span data-i18n="fb.button"></span></button>
+    <dialog class="fb-dialog" id="fbDialog" aria-labelledby="fbTitle">
+        <h2 id="fbTitle" data-i18n="fb.title"></h2>
+        <p data-i18n="fb.lead"></p>
+        <form class="fb-form" id="fbForm">
+            <textarea name="message" rows="5" minlength="2" maxlength="4000" required data-i18n-aria="fb.message" data-i18n-placeholder="fb.message"></textarea>
+            <label><span data-i18n="fb.email"></span><input type="email" name="email" maxlength="200" autocomplete="email"></label>
+            <div class="fb-actions">
+                <p class="fb-status" id="fbStatus" role="status"></p>
+                <button type="button" class="btn-secondary" onclick="this.closest('dialog').close()" data-i18n="fb.close"></button>
+                <button type="submit" class="btn-primary" id="fbSend" data-i18n="fb.send"></button>
+            </div>
+        </form>
+    </dialog>
 
     <!-- Image lightbox. One instance for the whole app; the prompt image and every
          option image open it. Hidden from the tree until it is open. -->
@@ -3604,6 +3666,7 @@
             // The overview card's readouts (answered, mastered; due is ICONS.clock).
             file: _svg('<path fill-rule="evenodd" d="M6.2 2.8h7.6l4.2 4.2v14.2H6.2ZM8.8 7.6h3.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Zm0 3.8h6.4v1.8H8.8Z"/>'),
             check: _svg('<path d="M9.5 18.6 3.9 13l1.6-1.6 4 4 9-9 1.6 1.6Z"/>'),
+            message: _svg('<path fill-rule="evenodd" d="M5 3.6h14a2.4 2.4 0 0 1 2.4 2.4v9.2a2.4 2.4 0 0 1-2.4 2.4h-9l-4.6 3.6v-3.6H5a2.4 2.4 0 0 1-2.4-2.4V6A2.4 2.4 0 0 1 5 3.6ZM7 8.1h10v1.8H7Zm0 3.5h7v1.8H7Z"/>'),
             checkCircle: _svg('<path fill-rule="evenodd" d="M12 2.8a9.2 9.2 0 1 0 0 18.4a9.2 9.2 0 1 0 0 -18.4ZM12 4.6a7.4 7.4 0 1 0 0 14.8a7.4 7.4 0 1 0 0 -14.8Z"/><path d="M11 15.4 7.7 12.1l1.5-1.5 1.8 1.8 3.8-3.8 1.5 1.5Z"/>'),
             /* The header's three scheme modes. `globe` stood here until 2026-09-22
                and went with the menu that was its only reader — ICONS.symbols is the
@@ -3852,6 +3915,16 @@
             'footer.catalogue':    { en: 'Question catalogue (PDF)', de: 'Fragenkatalog (PDF)' },
             'footer.bamf':         { en: 'BAMF on naturalisation',   de: 'BAMF zur Einbürgerung' },
             'footer.photo':        { en: 'Hero photograph',          de: 'Titelfoto' },
+            'fb.button':           { en: 'Feedback',                de: 'Feedback' },
+            'fb.title':            { en: 'Send feedback',           de: 'Feedback geben' },
+            'fb.lead':             { en: 'EIB Quiz is built with the help of AI. Spotted a wrong answer, a typo or a bug? Tell us, it helps make the app better.', de: 'EIB Quiz wird mit Hilfe von KI entwickelt. Eine falsche Antwort, ein Tippfehler oder ein Fehler? Schreib uns, das hilft, die App besser zu machen.' },
+            'fb.message':          { en: 'Your message, idea or a mistake you found', de: 'Deine Nachricht, Idee oder ein gefundener Fehler' },
+            'fb.email':            { en: 'Email (optional, if we may reply)', de: 'E-Mail (optional, falls wir antworten dürfen)' },
+            'fb.send':             { en: 'Send',                    de: 'Senden' },
+            'fb.close':            { en: 'Close',                   de: 'Schließen' },
+            'fb.sending':          { en: 'Sending…',                de: 'Wird gesendet …' },
+            'fb.thanks':           { en: 'Thanks for your feedback!', de: 'Danke für dein Feedback!' },
+            'fb.error':            { en: 'Could not send. Please try again later.', de: 'Konnte nicht gesendet werden. Bitte später erneut versuchen.' },
             'footer.copyright':    { en: '© 2026 EIB Quiz. All rights reserved.', de: '© 2026 EIB Quiz. Alle Rechte vorbehalten.' },
             'footer.legal':        { en: 'Questions are the official BAMF catalogue. Photo by Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>. Not an official BAMF service.', de: 'Die Fragen stammen aus dem amtlichen BAMF-Katalog. Foto von Dietmar Rabich, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a>. Kein offizielles Angebot des BAMF.' },
 
@@ -4072,6 +4145,7 @@
             document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
             document.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', t(el.dataset.i18nTitle)); });
             document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.setAttribute('alt', t(el.dataset.i18nAlt)); });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder)); });
         }
 
         /**
@@ -6058,6 +6132,41 @@
         document.getElementById('imgZoomClose').innerHTML = ICONS.close;
         document.getElementById('imgZoomClose').addEventListener('click', closeZoom);
         document.getElementById('imgZoomBackdrop').addEventListener('click', closeZoom);
+        // ---- Feedback ----
+        // Sent to Genauly's submit-feedback Edge Function, so it lands in the same
+        // inbox and admin list; `page` is what tells an EIB Quiz message apart. The
+        // function runs with verify_jwt = false and allows any *.github.io origin, so
+        // no key is needed. It rate-limits and stores the row server-side.
+        const FEEDBACK_URL = 'https://stkfdavpjflpqoxjunnj.supabase.co/functions/v1/submit-feedback';
+        function openFeedback() {
+            document.getElementById('fbStatus').textContent = '';
+            document.getElementById('fbDialog').showModal();
+        }
+        document.getElementById('fbForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const form = e.target, send = document.getElementById('fbSend'), status = document.getElementById('fbStatus');
+            send.disabled = true;
+            status.textContent = t('fb.sending');
+            try {
+                const res = await fetch(FEEDBACK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: form.message.value.trim(),
+                        email: form.email.value.trim() || undefined,
+                        page: `EIB Quiz · ${state.currentScreen} · ${lang}`,
+                    }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || data.ok === false) throw new Error(res.status);
+                form.reset();
+                status.textContent = t('fb.thanks');
+            } catch {
+                status.textContent = t('fb.error');
+            }
+            send.disabled = false;
+        });
+
         syncNavHeaderRole();
         window.addEventListener('resize', syncNavHeaderRole);
         document.getElementById('endScreen').addEventListener('scroll', syncEndScrollCue, { passive: true });

@@ -2253,7 +2253,7 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     the boot wiring ran against `null`, so Close and the backdrop silently did nothing.
     Its close button sits in the OVERLAY's corner, off the picture; Escape, the backdrop
     and the button all close it, and closing drops the `src` and restores focus.
-- **SVG icon system:** 30 glyphs — 28 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
+- **SVG icon system:** 31 glyphs — 29 drawings plus two aliases — every UI glyph is an inline SVG from the `ICONS` const + `_svg()`
   helper in the `<script>` block (not emoji, not an external SVG). Since 2026-09-20 the
   shipping set is **`tools/icon-packs.mjs`'s "solid" pack** — one-tone silhouettes with their
   detail knocked out by `fill-rule="evenodd"`, so `_svg()` wraps them in
@@ -2330,7 +2330,15 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
 
 - `index.html` loads question data at runtime from `questions.json` via `fetch`
   (so the app must be served over http/https, not opened via `file://`).
-- Google Fonts is the only intended external network dependency.
+- Google Fonts is the only intended external network dependency, bar ONE: **feedback**
+  (2026-10-15, on request, after genauly.de's). A quiet "Feedback" pill bottom-right on a
+  page (not in a session, not below 620px) and a footer link both open `#fbDialog`, a
+  native `<dialog>`. It POSTs to **Genauly's** `submit-feedback` Supabase Edge Function
+  (`FEEDBACK_URL`; source in `../b2furberufapp/supabase/functions/submit-feedback`), so it
+  lands in Genauly's inbox and admin list, told apart by `page: "EIB Quiz · <screen> · <lang>"`.
+  That function allows only its own domains and `*.github.io`: **from `localhost:8777` a
+  send is blocked by CORS and shows the error line — that is expected, not a bug.** Its
+  email subject still says "Neues Feedback aus Genauly".
 - The colour scheme uses `localStorage` key `theme`, and it holds one of THREE values
   since 2026-09-22 — `light` | `system` | `dark`. Nothing stored still means light.
   UI language uses `eib_lang` (default `en`), and a reviewer's one-tab preview

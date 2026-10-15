@@ -177,6 +177,7 @@ const solid = {
     // The language menu's mark on the language in force (2026-10-12): checkCircle's
     // tick at full size, with no ring.
     check: '<path d="M9.5 18.6 3.9 13l1.6-1.6 4 4 9-9 1.6 1.6Z"/>',
+    message: ev('M5 3.6h14a2.4 2.4 0 0 1 2.4 2.4v9.2a2.4 2.4 0 0 1-2.4 2.4h-9l-4.6 3.6v-3.6H5a2.4 2.4 0 0 1-2.4-2.4V6A2.4 2.4 0 0 1 5 3.6ZM7 8.1h10v1.8H7Zm0 3.5h7v1.8H7Z'),
     // (leaf went on 2026-09-23 with the overview card's closing line.)
     // index.html aliases these rather than redrawing them
     // (ICONS.community = ICONS.society, ICONS.clock = ICONS.history).
