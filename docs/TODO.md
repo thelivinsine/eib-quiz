@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-14 (live commit `f115a6a`: Q281 and Q285 explanations retranslated in the seven hidden languages, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-15 (live commit `1da3db0`: a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
@@ -32,6 +32,10 @@ home screen (`hasProgress()` + `data-tier`) is retired.
   touch — see Touch targets below).
 - Installable PWA with offline support (`manifest.json` + `sw.js`, network-first for
   HTML/data, PNG app icons in `img/icons/`).
+- Feedback (2026-10-15): a "Feedback" pill bottom-right on Home and Practise (desktop
+  only, never in a session) and a footer link open one dialog that posts to Genauly's
+  `submit-feedback` Edge Function, tagged "EIB Quiz". **A successful send is not yet
+  verified** — it only works from the live github.io origin (localhost is CORS-blocked).
 - Motion and depth (2026-09-23): soft per-theme tile shadows, a hover lift on cards and
   answer options, staggered card entrances, a landing scroll reveal with counting
   numbers, and a correct-answer glow / wrong-answer shake outside the exam. All of it
