@@ -265,14 +265,14 @@
    "explanation": "İfade özgürlüğü Temel Yasa'nın 5. maddesinde temel hak olarak yer alır."
   },
   "5": {
-   "q": "Almanya'da seçimler özgürdür. Bu ne anlama gelir?",
+   "q": "Almanya'da seçimler serbesttir. Bu ne anlama gelir?",
    "options": [
     "Belirli bir adaya oy vermek karşılığında para kabul edilebilir",
     "Seçmen seçimde etkilenemez, belirli bir şekilde oy kullanmaya zorlanamaz ve seçim nedeniyle zarar görmez",
     "Yalnızca hiç hapse girmemiş kişiler oy kullanabilir",
     "Oy kullanma hakkı olan herkes oy kullanmak zorundadır"
    ],
-   "explanation": "Özgür seçimler Temel Yasa'nın 20. maddesinin 2. fıkrasında yer alır ve baskı ya da etki olmadan seçme özgürlüğü anlamına gelir."
+   "explanation": "Serbest seçimler Temel Yasa'nın 20. maddesinin 2. fıkrasında yer alır ve baskı ya da etki olmadan seçme özgürlüğü anlamına gelir."
   },
   "6": {
    "q": "Alman anayasasının adı nedir?",
@@ -1049,7 +1049,7 @@
    "options": [
     "halk",
     "Federal Kurul",
-    "Federal Meclis (Bundestag)",
+    "Federal Meclis",
     "federal hükümet"
    ],
    "explanation": "Federal Şansölye, kural olarak Federal Cumhurbaşkanının önerisi üzerine Alman Federal Meclisi tarafından seçilir."
@@ -1085,7 +1085,7 @@
    "explanation": "Federal Cumhurbaşkanı, Federal Meclis milletvekilleri ile eyalet temsilcilerinden oluşan Federal Kurul tarafından seçilir."
   },
   "87": {
-   "q": "Almanya Federal Cumhuriyeti'nin devlet başkanı kimdir?",
+   "q": "Almanya'nın devlet başkanı kimdir?",
    "options": [
     "Federal Şansölye",
     "Federal Cumhurbaşkanı",
@@ -1375,7 +1375,7 @@
    "explanation": "Aktif seçme hakkı, oy kullanma hakkını ifade eder. Pasif seçme hakkı ise seçilme hakkını ifade eder."
   },
   "116": {
-   "q": "Almanya'da Federal Meclis (Bundestag) seçiminde oy kullanma hakkınız varsa, buna … denir.",
+   "q": "Almanya'da Federal Meclis (Bundestag) seçiminde oy kullanabiliyorsanız, buna … denir.",
    "options": [
     "aktif seçim kampanyası.",
     "aktif seçim usulü.",
@@ -1509,7 +1509,7 @@
    "options": [
     "Federal Şansölye.",
     "bir eyaletin eyalet başbakanı.",
-    "Federal Meclis (Bundestag).",
+    "Federal Meclis.",
     "Federal Cumhurbaşkanı."
    ],
    "explanation": "Federal Meclis (Bundestag) doğrudan halk tarafından seçilir. Federal Cumhurbaşkanı ise Federal Kurul tarafından seçilir."
@@ -1529,7 +1529,7 @@
    "options": [
     "bir okulun müdürüdür.",
     "bir bankanın şefidir.",
-    "bir belediyenin başıdır.",
+    "bir yerel yönetimin başıdır.",
     "bir partinin genel başkanıdır."
    ],
    "explanation": "Belediye başkanı bir belediyenin başıdır ve belediye yönetimini idare eder."
@@ -2535,7 +2535,7 @@
    "explanation": "Avrupa entegrasyonu, Avrupa devletlerinin siyasi, ekonomik ve hukuki olarak birleşme sürecini ifade eder."
   },
   "232": {
-   "q": "Avrupa Parlamentosu seçimlerinde kim seçilir?",
+   "q": "Avrupa seçimlerinde kim seçilir?",
    "options": [
     "Avrupa Komisyonu",
     "AB'ye katılmasına izin verilen ülkeler",
@@ -2545,7 +2545,7 @@
    "explanation": "Avrupa Parlamentosu seçimlerinde AB vatandaşları Avrupa Parlamentosu milletvekillerini seçer."
   },
   "233": {
-   "q": "Hangi ülke Almanya'nın komşu ülkesidir?",
+   "q": "Hangi ülke Almanya'nın komşusudur?",
    "options": [
     "Çekya",
     "Bulgaristan",
@@ -2748,7 +2748,7 @@
    "q": "Almanya'da taşındığınızda nereye kayıt yaptırmanız gerekir?",
    "options": [
     "nüfus kayıt dairesine (Einwohnermeldeamt)",
-    "evlendirme dairesine (Standesamt)",
+    "medeni hal dairesine (Standesamt)",
     "zabıta müdürlüğüne (Ordnungsamt)",
     "ticaret dairesine (Gewerbeamt)"
    ],
@@ -2768,7 +2768,7 @@
    "q": "Almanya'da ebeveynler çocuk yetiştirmeyle ilgili sorunlarda … yardım alabilir.",
    "options": [
     "zabıta müdürlüğünden (Ordnungsamt)",
-    "okul müdürlüğünden (Schulamt)",
+    "eğitim dairesinden (Schulamt)",
     "gençlik dairesinden (Jugendamt)",
     "sağlık dairesinden (Gesundheitsamt)"
    ],
@@ -2870,7 +2870,7 @@
     "nüfus kayıt dairesine (Einwohnermeldeamt)",
     "zabıta müdürlüğüne (Ordnungsamt)",
     "İş Ajansı'na (Agentur für Arbeit)",
-    "evlendirme dairesine (Standesamt)"
+    "medeni hal dairesine (Standesamt)"
    ],
    "explanation": "Almanya'da yalnızca evlendirme dairesinde kıyılan nikâh hukuken geçerlidir. Dini nikâhların hukuki bir etkisi yoktur."
   },
@@ -3035,7 +3035,7 @@
    "explanation": "Ayrımcılık yasağı (eşit muamele, Temel Yasa'nın 3. maddesinin 3. fıkrası ve AGG), insanları ten renkleri veya etnik kökenleri nedeniyle dezavantajlı duruma düşürülmeye karşı korur. Halka açık bir yüzme havuzu hiç kimseyi ten rengi nedeniyle geri çeviremez."
   },
   "282": {
-   "q": "Alman vatandaşları, istendiğinde hangi fahri görevi üstlenmek zorundadır?",
+   "q": "Alman vatandaşları, istendiğinde hangi fahri hizmeti üstlenmek zorundadır?",
    "options": [
     "kulüp antrenörü",
     "kütüphane gözetmeni",
@@ -3265,7 +3265,7 @@
    "explanation": "Berlin'deki yerel seçimlerde (semt meclisi seçimi) 16 yaşından itibaren oy kullanılabilir."
   },
   "305": {
-   "q": "Berlin eyalet bayrağı hangi renklerdedir?",
+   "q": "Berlin eyalet bayrağının renkleri nelerdir?",
    "options": [
     "mavi-beyaz-kırmızı",
     "beyaz-kırmızı",
@@ -3275,12 +3275,12 @@
    "explanation": "Berlin eyalet bayrağı beyaz-kırmızıdır; bunlar tarihi Brandenburg-Prusya'nın renkleridir."
   },
   "306": {
-   "q": "Berlin'de siyasi konular hakkında nereden bilgi alabilirsiniz?",
+   "q": "Berlin'de siyasi konular hakkında nerede bilgi edinebilirsiniz?",
    "options": [
-    "belediyenin zabıta müdürlüğünden (Ordnungsamt)",
-    "kiliselerden",
-    "tüketici danışma merkezinden",
-    "eyalet siyasi eğitim merkezinden"
+    "belediyenin zabıta müdürlüğünde (Ordnungsamt)",
+    "kiliselerde",
+    "tüketici danışma merkezinde",
+    "eyalet siyasi eğitim merkezinde"
    ],
    "explanation": "Eyalet siyasi eğitim merkezi, vatandaşları siyaset hakkında bilgilendirir ve demokratik katılımı teşvik eder."
   },
@@ -3307,10 +3307,10 @@
   "309": {
    "q": "Berlin şehir devletinin hükümet başkanına ne denir?",
    "options": [
-    "eyalet başbakanı",
-    "büyükşehir belediye başkanı",
+    "Eyalet başbakanı",
+    "Büyükşehir belediye başkanı",
     "Senato başkanı",
-    "yönetici belediye başkanı"
+    "Yönetici belediye başkanı"
    ],
    "explanation": "Berlin'in hükümet başkanı “yönetici belediye başkanı” (Regierender Bürgermeister) unvanını taşır ve Berlin Senatosu'na başkanlık eder."
   },
@@ -3335,14 +3335,14 @@
    "explanation": "Gösterilen arma, Baden-Württemberg'in resmi eyalet armasıdır."
   },
   "312": {
-   "q": "Hangisi Baden-Württemberg'de bir ilçedir (Landkreis)?",
+   "q": "Hangisi Baden-Württemberg'deki bir ilçedir (Landkreis)?",
    "options": [
     "Mecklenburgische Seenplatte",
     "Neckar-Odenwald-Kreis",
     "Nordfriesland",
     "Altötting"
    ],
-   "explanation": "Neckar-Odenwald-Kreis, Baden-Württemberg'de bir ilçedir."
+   "explanation": "Neckar-Odenwald-Kreis, Baden-Württemberg'deki bir ilçedir (Landkreis)."
   },
   "313": {
    "q": "Baden-Württemberg'de eyalet meclisi kaç yıllığına seçilir?",
@@ -3365,7 +3365,7 @@
    "explanation": "Baden-Württemberg'de yerel seçimlerde asgari seçmen yaşı 16'dır."
   },
   "315": {
-   "q": "Baden-Württemberg eyalet bayrağı hangi renklerdedir?",
+   "q": "Baden-Württemberg eyalet bayrağının renkleri nelerdir?",
    "options": [
     "mavi-beyaz-kırmızı",
     "siyah-altın",
@@ -3375,17 +3375,17 @@
    "explanation": "Baden-Württemberg eyalet bayrağının renkleri siyah-altındır."
   },
   "316": {
-   "q": "Baden-Württemberg'de siyasi konular hakkında nereden bilgi alabilirsiniz?",
+   "q": "Baden-Württemberg'de siyasi konular hakkında nerede bilgi edinebilirsiniz?",
    "options": [
-    "belediyenin zabıta müdürlüğünden (Ordnungsamt)",
-    "tüketici danışma merkezinden",
-    "eyalet siyasi eğitim merkezinden",
-    "kiliselerden"
+    "belediyenin zabıta müdürlüğünde (Ordnungsamt)",
+    "tüketici danışma merkezinde",
+    "eyalet siyasi eğitim merkezinde",
+    "kiliselerde"
    ],
-   "explanation": "Baden-Württemberg'de siyasi konular hakkında eyalet siyasi eğitim merkezinden bilgi alabilirsiniz."
+   "explanation": "Baden-Württemberg'de siyasi konular hakkında eyalet siyasi eğitim merkezinde bilgi edinebilirsiniz."
   },
   "317": {
-   "q": "Baden-Württemberg'in eyalet başkentinin adı …",
+   "q": "Baden-Württemberg'in eyalet başkenti ...",
    "options": [
     "Heidelberg.",
     "Stuttgart.",
@@ -3407,10 +3407,10 @@
   "319": {
    "q": "Baden-Württemberg'de hükümet başkanına ne denir?",
    "options": [
-    "birinci bakan",
-    "başbakan",
-    "belediye başkanı",
-    "eyalet başbakanı"
+    "Birinci bakan",
+    "Başbakan",
+    "Belediye başkanı",
+    "Eyalet başbakanı"
    ],
    "explanation": "Baden-Württemberg'in hükümet başkanı eyalet başbakanı (Ministerpräsident) unvanını taşır."
   },
@@ -3425,7 +3425,7 @@
    "explanation": "Dış politika ve savunma politikası federal devletin işidir — Baden-Württemberg gibi bir eyaletin Dışişleri Bakanı yoktur."
   },
   "321": {
-   "q": "Hangi arma Bavyera Özgür Devleti'ne aittir?",
+   "q": "Hangi arma Özgür Devlet Bavyera'ya aittir?",
    "options": [
     "1",
     "2",
@@ -3435,14 +3435,14 @@
    "explanation": "Gösterilen arma, Bavyera'nın resmi eyalet armasıdır."
   },
   "322": {
-   "q": "Hangisi Bavyera'da bir ilçedir (Landkreis)?",
+   "q": "Hangisi Bavyera'daki bir ilçedir (Landkreis)?",
    "options": [
     "Prignitz",
     "Rhein-Sieg-Kreis",
     "Nordfriesland",
     "Altötting"
    ],
-   "explanation": "Altötting, Bavyera'da bir ilçedir."
+   "explanation": "Altötting, Bavyera'daki bir ilçedir (Landkreis)."
   },
   "323": {
    "q": "Bavyera'da eyalet meclisi kaç yıllığına seçilir?",
@@ -3465,7 +3465,7 @@
    "explanation": "Bavyera'da yerel seçimlerde asgari seçmen yaşı 18'dir."
   },
   "325": {
-   "q": "Bavyera eyalet bayrağı hangi renklerdedir?",
+   "q": "Bavyera eyalet bayrağının renkleri nelerdir?",
    "options": [
     "mavi-beyaz-kırmızı",
     "beyaz-mavi",
@@ -3475,17 +3475,17 @@
    "explanation": "Bavyera eyalet bayrağının renkleri beyaz-mavidir."
   },
   "326": {
-   "q": "Bavyera'da siyasi konular hakkında nereden bilgi alabilirsiniz?",
+   "q": "Bavyera'da siyasi konular hakkında nerede bilgi edinebilirsiniz?",
    "options": [
-    "belediyenin zabıta müdürlüğünden (Ordnungsamt)",
-    "eyalet siyasi eğitim merkezinden",
-    "tüketici danışma merkezinden",
-    "kiliselerden"
+    "belediyenin zabıta müdürlüğünde (Ordnungsamt)",
+    "eyalet siyasi eğitim merkezinde",
+    "tüketici danışma merkezinde",
+    "kiliselerde"
    ],
-   "explanation": "Bavyera'da siyasi konular hakkında eyalet siyasi eğitim merkezinden bilgi alabilirsiniz."
+   "explanation": "Bavyera'da siyasi konular hakkında eyalet siyasi eğitim merkezinde bilgi edinebilirsiniz."
   },
   "327": {
-   "q": "Bavyera'nın eyalet başkentinin adı …",
+   "q": "Bavyera'nın eyalet başkenti ...",
    "options": [
     "Ingolstadt.",
     "Regensburg.",
@@ -3507,10 +3507,10 @@
   "329": {
    "q": "Bavyera'da hükümet başkanına ne denir?",
    "options": [
-    "birinci bakan",
-    "başbakan",
-    "belediye başkanı",
-    "eyalet başbakanı"
+    "Birinci bakan",
+    "Başbakan",
+    "Belediye başkanı",
+    "Eyalet başbakanı"
    ],
    "explanation": "Bavyera'nın hükümet başkanı eyalet başbakanı (Ministerpräsident) unvanını taşır."
   },
@@ -3535,14 +3535,14 @@
    "explanation": "Gösterilen arma, Brandenburg'un resmi eyalet armasıdır."
   },
   "332": {
-   "q": "Hangisi Brandenburg'da bir ilçedir (Landkreis)?",
+   "q": "Hangisi Brandenburg'daki bir ilçedir (Landkreis)?",
    "options": [
     "Prignitz",
     "Rhein-Sieg-Kreis",
     "Vogtlandkreis",
     "Amberg-Sulzbach"
    ],
-   "explanation": "Prignitz, Brandenburg'da bir ilçedir."
+   "explanation": "Prignitz, Brandenburg'daki bir ilçedir (Landkreis)."
   },
   "333": {
    "q": "Brandenburg'da eyalet meclisi kaç yıllığına seçilir?",
@@ -3565,7 +3565,7 @@
    "explanation": "Brandenburg'da yerel seçimlerde asgari seçmen yaşı 16'dır."
   },
   "335": {
-   "q": "Brandenburg eyalet bayrağı hangi renklerdedir?",
+   "q": "Brandenburg eyalet bayrağının renkleri nelerdir?",
    "options": [
     "mavi-beyaz-kırmızı",
     "kırmızı-beyaz",
@@ -3575,17 +3575,17 @@
    "explanation": "Brandenburg eyalet bayrağının renkleri kırmızı-beyazdır."
   },
   "336": {
-   "q": "Brandenburg'da siyasi konular hakkında nereden bilgi alabilirsiniz?",
+   "q": "Brandenburg'da siyasi konular hakkında nerede bilgi edinebilirsiniz?",
    "options": [
-    "kiliselerden",
-    "belediyenin zabıta müdürlüğünden (Ordnungsamt)",
-    "eyalet siyasi eğitim merkezinden",
-    "tüketici danışma merkezinden"
+    "kiliselerde",
+    "belediyenin zabıta müdürlüğünde (Ordnungsamt)",
+    "eyalet siyasi eğitim merkezinde",
+    "tüketici danışma merkezinde"
    ],
-   "explanation": "Brandenburg'da siyasi konular hakkında eyalet siyasi eğitim merkezinden bilgi alabilirsiniz."
+   "explanation": "Brandenburg'da siyasi konular hakkında eyalet siyasi eğitim merkezinde bilgi edinebilirsiniz."
   },
   "337": {
-   "q": "Brandenburg'un eyalet başkentinin adı …",
+   "q": "Brandenburg'un eyalet başkenti ...",
    "options": [
     "Potsdam.",
     "Cottbus.",
@@ -3607,10 +3607,10 @@
   "339": {
    "q": "Brandenburg'da hükümet başkanına ne denir?",
    "options": [
-    "birinci bakan",
-    "başbakan",
-    "belediye başkanı",
-    "eyalet başbakanı"
+    "Birinci bakan",
+    "Başbakan",
+    "Belediye başkanı",
+    "Eyalet başbakanı"
    ],
    "explanation": "Brandenburg'un hükümet başkanı eyalet başbakanı (Ministerpräsident) unvanını taşır."
   },
@@ -3665,7 +3665,7 @@
    "explanation": "Bremen'de Bürgerschaft (eyalet meclisi) seçimlerinde asgari seçmen yaşı 16'dır."
   },
   "345": {
-   "q": "Bremen eyalet bayrağı hangi renklerdedir?",
+   "q": "Bremen eyalet bayrağının renkleri nelerdir?",
    "options": [
     "mavi-beyaz-kırmızı",
     "kırmızı-beyaz",
