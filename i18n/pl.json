@@ -53,7 +53,7 @@
   "cta.lead": "Ćwicz, nabierz pewności i osiągnij swój cel.",
   "cta.button": "Zacznij ćwiczyć",
   "cta.annotation": "Mały krok. Większa przyszłość.",
-  "home.progress.title": "Twój stan",
+  "home.progress.title": "Twoje postępy",
   "home.progress.lead": "Twoja skuteczność we wszystkich dotychczasowych odpowiedziach.",
   "home.practice.title": "Wybierz tryb ćwiczeń",
   "home.more.title": "Poprzednie rundy i słowniczek",
@@ -103,12 +103,12 @@
   "topic.meta": "Pytania: {n} · opanowane: {m}",
   "hist.title": "Poprzednie rundy ({n})",
   "hist.passed": "Zdane egzaminy: {n}/{total}",
-  "hist.best": "Najlepszy {p}%",
+  "hist.best": "Najlepszy wynik {p}%",
   "hist.pass": "Zdany",
   "hist.fail": "Niezdany",
   "hist.mode.exam": "Egzamin",
   "hist.mode.allQuestions": "Wszystkie pytania",
-  "hist.mode.bundesland": "Pytania z kraju",
+  "hist.mode.bundesland": "Kraj związkowy",
   "hist.mode.review": "Inteligentna powtórka",
   "hist.mode.topic": "Temat",
   "hist.mode.mistakes": "Błędy",
@@ -585,7 +585,7 @@
    "explanation": "Ustawowe ubezpieczenie zdrowotne jest częścią systemu ubezpieczeń społecznych i chroni ludzi na wypadek choroby."
   },
   "37": {
-   "q": "Jak nazywa się szefów rządu / szefowe rządu większości krajów związkowych w Niemczech?",
+   "q": "Jak nazywają się szefowie / szefowe rządów większości krajów związkowych w Niemczech?",
    "options": [
     "Pierwszy minister / pierwsza ministra",
     "Premier / premierka",
@@ -838,11 +838,11 @@
    "q": "Wybory parlamentu niemieckiego kraju związkowego to …",
    "options": [
     "wybory samorządowe.",
-    "wybory do parlamentu krajowego.",
+    "wybory do Landtagu.",
     "wybory europejskie.",
     "wybory do Bundestagu."
    ],
-   "explanation": "Wybory do parlamentu krajowego (Landtag) kraju związkowego nazywają się wyborami do parlamentu krajowego (Landtagswahl)."
+   "explanation": "Wybory do parlamentu kraju związkowego (Landtagu) nazywają się wyborami do Landtagu (Landtagswahl)."
   },
   "63": {
    "q": "Co w Niemczech nie należy do władzy wykonawczej?",
@@ -2115,12 +2115,12 @@
    "explanation": "Budowa muru rozpoczęła się 13 sierpnia 1961 roku. Mur stał 28 lat i upadł 9 listopada 1989 roku."
   },
   "190": {
-   "q": "Co oznacza skrót DDR (po polsku NRD)?",
+   "q": "Co oznacza skrót DDR?",
    "options": [
-    "Trzecie Niemieckie Radio",
-    "Republika Niemiecka",
-    "Trzecia Republika Niemiecka",
-    "Niemiecka Republika Demokratyczna"
+    "Dritter Deutscher Rundfunk (Trzecie Niemieckie Radio)",
+    "Die Deutsche Republik (Republika Niemiecka)",
+    "Dritte Deutsche Republik (Trzecia Republika Niemiecka)",
+    "Deutsche Demokratische Republik (Niemiecka Republika Demokratyczna)"
    ],
    "explanation": "DDR to skrót od Deutsche Demokratische Republik (Niemiecka Republika Demokratyczna, NRD) – byłego socjalistycznego państwa we wschodnich Niemczech (1949–1990)."
   },
@@ -2672,7 +2672,7 @@
     "Sofie (35 lat) i Lisa (40 lat)",
     "Anne (13 lat) i Tim (25 lat)"
    ],
-   "explanation": "W Niemczech wiek ochrony wynosi 14 lat; osoby poniżej 14 roku życia nie mogą wchodzić w romantyczne relacje z dorosłymi. 13-latka nie może mieszkać razem z 25-latkiem."
+   "explanation": "W Niemczech wiek przyzwolenia (Schutzalter) wynosi 14 lat; osoby poniżej 14 roku życia nie mogą wchodzić w romantyczne relacje z dorosłymi. 13-latka nie może mieszkać razem z 25-latkiem."
   },
   "246": {
    "q": "Od jakiego wieku jest się w Niemczech pełnoletnim?",
@@ -2857,7 +2857,7 @@
   "264": {
    "q": "Na jakie święto ludzie w Niemczech zakładają kolorowe kostiumy i maski?",
    "options": [
-    "na Różany Poniedziałek (Rosenmontag)",
+    "na Różany Poniedziałek",
     "na święto 1 maja",
     "na Oktoberfest",
     "na Zielone Świątki"
@@ -2937,7 +2937,7 @@
   "272": {
    "q": "Która forma wspólnego życia jest w Niemczech niedozwolona?",
    "options": [
-    "Mąż i żona są rozwiedzeni i mieszkają z nowymi partnerami.",
+    "Mężczyzna i kobieta są rozwiedzeni i mieszkają z nowymi partnerami.",
     "Dwie kobiety mieszkają razem.",
     "Samotny ojciec mieszka ze swoją dwójką dzieci.",
     "Mężczyzna jest w tym samym czasie żonaty z dwiema kobietami."
@@ -2992,7 +2992,7 @@
     "nie ma doświadczenia w tym zawodzie.",
     "jest matką."
    ],
-   "explanation": "Odrzucenie kandydatki z powodu macierzyństwa narusza Powszechną ustawę o równym traktowaniu (AGG) i ustawę o ochronie macierzyństwa."
+   "explanation": "Odrzucenie kandydatki z powodu macierzyństwa narusza Ogólną ustawę o równym traktowaniu (AGG) i ustawę o ochronie macierzyństwa."
   },
   "278": {
    "q": "Mężczyzna na wózku inwalidzkim ubiegał się o pracę księgowego. Co jest przykładem dyskryminacji? Nie dostaje tej pracy tylko dlatego, że …",
@@ -3112,7 +3112,7 @@
     "ma ciemną skórę.",
     "nie ma doświadczenia w zawodzie."
    ],
-   "explanation": "Dyskryminacja ze względu na kolor skóry narusza Powszechną ustawę o równym traktowaniu (AGG)."
+   "explanation": "Dyskryminacja ze względu na kolor skóry narusza Ogólną ustawę o równym traktowaniu (AGG)."
   },
   "290": {
    "q": "Kupujesz w Niemczech telewizor. W domu go rozpakowujesz, ale nie działa. Telewizor jest zepsuty. Co możesz zrobić?",
@@ -3415,7 +3415,7 @@
    "explanation": "Szef / szefowa rządu w Badenii-Wirtembergii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "320": {
-   "q": "Którego ministra / której minister nie ma w Badenii-Wirtembergii?",
+   "q": "Którego ministra / której ministry nie ma w Badenii-Wirtembergii?",
    "options": [
     "minister / ministra finansów",
     "minister / ministra sprawiedliwości",
@@ -3515,7 +3515,7 @@
    "explanation": "Szef / szefowa rządu w Bawarii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "330": {
-   "q": "Którego ministra / której minister nie ma w Bawarii?",
+   "q": "Którego ministra / której ministry nie ma w Bawarii?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -3615,7 +3615,7 @@
    "explanation": "Szef / szefowa rządu w Brandenburgii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "340": {
-   "q": "Którego ministra / której minister nie ma w Brandenburgii?",
+   "q": "Którego ministra / której ministry nie ma w Brandenburgii?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -3915,7 +3915,7 @@
    "explanation": "Szef / szefowa rządu w Hesji nosi tytuł „premier / premierka kraju związkowego”."
   },
   "370": {
-   "q": "Którego ministra / której minister nie ma w Hesji?",
+   "q": "Którego ministra / której ministry nie ma w Hesji?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4015,7 +4015,7 @@
    "explanation": "Szef / szefowa rządu w Meklemburgii-Pomorzu Przednim nosi tytuł „premier / premierka kraju związkowego”."
   },
   "380": {
-   "q": "Którego ministra / której minister nie ma w Meklemburgii-Pomorzu Przednim?",
+   "q": "Którego ministra / której ministry nie ma w Meklemburgii-Pomorzu Przednim?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4115,7 +4115,7 @@
    "explanation": "Szef / szefowa rządu w Dolnej Saksonii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "390": {
-   "q": "Którego ministra / której minister nie ma w Dolnej Saksonii?",
+   "q": "Którego ministra / której ministry nie ma w Dolnej Saksonii?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4215,7 +4215,7 @@
    "explanation": "Szef / szefowa rządu w Nadrenii Północnej-Westfalii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "400": {
-   "q": "Którego ministra / której minister nie ma w Nadrenii Północnej-Westfalii?",
+   "q": "Którego ministra / której ministry nie ma w Nadrenii Północnej-Westfalii?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4315,7 +4315,7 @@
    "explanation": "Szef / szefowa rządu w Nadrenii-Palatynacie nosi tytuł „premier / premierka kraju związkowego”."
   },
   "410": {
-   "q": "Którego ministra / której minister nie ma w Nadrenii-Palatynacie?",
+   "q": "Którego ministra / której ministry nie ma w Nadrenii-Palatynacie?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4415,7 +4415,7 @@
    "explanation": "Szef / szefowa rządu w Kraju Saary nosi tytuł „premier / premierka kraju związkowego”."
   },
   "420": {
-   "q": "Którego ministra / której minister nie ma w Kraju Saary?",
+   "q": "Którego ministra / której ministry nie ma w Kraju Saary?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4515,7 +4515,7 @@
    "explanation": "Szef / szefowa rządu w Saksonii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "430": {
-   "q": "Którego ministra / której minister nie ma w Saksonii?",
+   "q": "Którego ministra / której ministry nie ma w Saksonii?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4615,7 +4615,7 @@
    "explanation": "Szef / szefowa rządu w Saksonii-Anhalt nosi tytuł „premier / premierka kraju związkowego”."
   },
   "440": {
-   "q": "Którego ministra / której minister nie ma w Saksonii-Anhalt?",
+   "q": "Którego ministra / której ministry nie ma w Saksonii-Anhalt?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4715,7 +4715,7 @@
    "explanation": "Szef / szefowa rządu w Szlezwiku-Holsztynie nosi tytuł „premier / premierka kraju związkowego”."
   },
   "450": {
-   "q": "Którego ministra / której minister nie ma w Szlezwiku-Holsztynie?",
+   "q": "Którego ministra / której ministry nie ma w Szlezwiku-Holsztynie?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",
@@ -4815,7 +4815,7 @@
    "explanation": "Szef / szefowa rządu w Turyngii nosi tytuł „premier / premierka kraju związkowego”."
   },
   "460": {
-   "q": "Którego ministra / której minister nie ma w Turyngii?",
+   "q": "Którego ministra / której ministry nie ma w Turyngii?",
    "options": [
     "minister / ministra sprawiedliwości",
     "minister / ministra spraw zagranicznych",

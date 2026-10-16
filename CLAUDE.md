@@ -2090,7 +2090,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     reviewers use the live site. **Arabic, Turkish and Russian were released UNREVIEWED on
     2026-10-12, on request**: AI translations, live for everyone, with the review still owed.
     **Persian, Ukrainian, Albanian, Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish
-    are in the repo, unreleased** (2026-10-12): reachable only through `?lang=<code>`.
+    followed on 2026-10-16**, also unreviewed, after an AI audit (`i18n/README.md`). No
+    language is unreleased now; the preview link stays for the next one.
   - **One setting drives menus and translations.** `trLang()` is the menu language, except that
     German menus keep English, as before. `translationOf(q)` returns a question's translation
     in it, falling back to English for a whole question, so `lang`/`dir` always match the text.
@@ -2666,10 +2667,9 @@ browser step. A red check means a test failed, so do not merge until it is green
    and in step with `LANGS`.
 5. Walk the header's language picker through English and German: no chrome string may stay
    in the other language, the question text must stay German in both, and the box's face AND
-   its `aria-label` must follow the switch. Then open `?lang=fa` (an unreleased right-to-left
-   language, so this also walks the preview link): the page runs right to left
-   with the German question, answers and explanation still left to right, and
-   `localStorage.eib_lang` is unchanged. Then walk the three scheme buttons — light,
+   its `aria-label` must follow the switch. Then open `?lang=fa` (a right-to-left
+   language): the page runs right to left with the German question, answers and
+   explanation still left to right. Then walk the three scheme buttons — light,
    system, dark — and reload on each: the seg's `aria-pressed` and the painted theme must
    both come back, and `system` must match `prefers-color-scheme` with no flash.
 6. Serve over http (`python3 -m http.server`) and confirm `questions.json` loads, the 43

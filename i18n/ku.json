@@ -16,7 +16,7 @@
   "hero.lead": "Bi hemû 300 pirsên fermî rahênanê bikin — ji bo hemû 16 eyaletên federal. Bi almanî an îngilîzî. Her dem, li her derê.",
   "hero.cta": "Niha dest pê bikin",
   "hero.cta2": "Bêtir bizanin",
-  "hero.photoAlt": "Rûyê rojava yê Reichstagê li Berlin, bi nivîsa DEM DEUTSCHEN VOLKE, û li ber wê ala Almanyayê û ala Ewropayê.",
+  "hero.photoAlt": "Rûyê rojava yê Reichstagê li Berlînê, bi nivîsa DEM DEUTSCHEN VOLKE, û li ber wê ala Almanyayê û ala Ewropayê.",
   "footer.blurb": "Rahênana belaş ji bo testa welatîbûnê ya Almanyayê — hemû pirsên fermî, hemû 16 eyaletên federal, bi almanî an îngilîzî. Piştî barkirinê bê înternet jî dixebite.",
   "footer.practise": "Rahênan",
   "footer.sources": "Çavkanî",
@@ -24,15 +24,15 @@
   "footer.bamf": "BAMF li ser welatîbûnê",
   "footer.photo": "Wêneyê sereke",
   "fb.button": "Nêrîn",
-  "fb.title": "Nêrîna xwe bişîne",
-  "fb.lead": "EIB Quiz bi alîkariya zekaya çêkirî tê çêkirin. Te bersiveke şaş, şaşiyeke nivîsînê an çewtiyek dît? Ji me re binivîse, ev alîkariya baştirkirina sepanê dike.",
-  "fb.message": "Peyama te, ramaneke te an şaşiyeke ku te dît",
+  "fb.title": "Nêrîna xwe bişînin",
+  "fb.lead": "EIB Quiz bi alîkariya zekaya çêkirî tê çêkirin. We bersiveke şaş, şaşiyeke nivîsînê an çewtiyek dît? Ji me re binivîsin, ev alîkariya baştirkirina sepanê dike.",
+  "fb.message": "Peyama we, ramaneke we an şaşiyeke ku we dît",
   "fb.email": "E-name (ne mecbûrî, eger em karibin bersiv bidin)",
-  "fb.send": "Bişîne",
-  "fb.close": "Bigire",
+  "fb.send": "Bişînin",
+  "fb.close": "Bigirin",
   "fb.sending": "Tê şandin…",
-  "fb.thanks": "Spas ji bo nêrîna te!",
-  "fb.error": "Nehat şandin. Ji kerema xwe paşê dîsa biceribîne.",
+  "fb.thanks": "Spas ji bo nêrîna we!",
+  "fb.error": "Nehat şandin. Ji kerema xwe paşê dîsa biceribînin.",
   "footer.copyright": "© 2026 EIB Quiz. Hemû maf parastî ne.",
   "footer.legal": "Pirs ji kataloga fermî ya BAMF in. Wêne ji aliyê Dietmar Rabich ve, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" rel=\"noopener\" target=\"_blank\">CC BY-SA 4.0</a>. Ne xizmeteke fermî ya BAMF e.",
   "why.title": "Hêsan. Bi bandor. Pêbawer.",
@@ -76,7 +76,7 @@
   "dash.verdict.building": "Berdewam bikin",
   "dash.verdict.buildingSub": "Hûn hîn di bin sînorê derbasbûnê yê {pass} ji {total} de ne.",
   "dash.verdict.onTrack": "Hûn li ser rêya rast in",
-  "dash.verdict.onTrackSub": "Li ser sînorê derbasbûnê. Wisa bidomînin.",
+  "dash.verdict.onTrackSub": "Li jor sînorê derbasbûnê. Wisa bidomînin.",
   "dash.verdict.strong": "Hûn hema amade ne",
   "dash.verdict.strongSub": "Rastbûneke xurt — simulasyoneke azmûnê biceribînin.",
   "mode.topic.title": "Li gorî mijarê",
@@ -204,7 +204,7 @@
   "TH": "Thüringen"
  },
  "glossary": {
-  "Grundgesetz": "Destûra Almanyayê (ji 1949-an ve). Mafên bingehîn û avahiya dewletê birêk dixe.",
+  "Grundgesetz": "Destûra Almanyayê (ji 1949-an ve). Mafên bingehîn û avahiya dewletê rêk dixe.",
   "Grundrechte": "Mafên ku Qanûna Bingehîn garantî dike, wek azadiya ramanê û azadiya olî.",
   "Rechtsstaat": "Dewleta ku tê de her kes – dewlet bi xwe jî – bi hiqûq û qanûnê ve girêdayî ye.",
   "Sozialstaat": "Dewleta ku ewlehiya civakî dabîn dike (wek sîgorteya nexweşiyê û ya teqawidiyê).",
@@ -462,7 +462,7 @@
     "16",
     "17"
    ],
-   "explanation": "Ji ji nû ve yekbûnê (3 Cotmeh 1990) ve 16 eyaletên Almanyayê hene."
+   "explanation": "Ji dema ji nû ve yekbûnê (3ê Cotmeha 1990an) û vir ve 16 eyaletên Almanyayê hene."
   },
   "25": {
    "q": "Kîjan ne eyaleteke Komara Federal a Almanyayê ye?",
@@ -838,7 +838,7 @@
    "q": "Dema ku parlamentoya eyaleteke Almanyayê tê hilbijartin, navê vê …",
    "options": [
     "hilbijartina herêmî ye.",
-    "hilbijartina parlamentoya eyaletê ye.",
+    "hilbijartina Landtagê ye.",
     "hilbijartina Ewropayê ye.",
     "hilbijartina Parlamentoya Federal e."
    ],
@@ -989,7 +989,7 @@
    "options": [
     "polîsê Almanyayê",
     "benderek Almanî",
-    "înîsiyatîfeke welatiyan a Almanî",
+    "însiyatîfeke welatiyan a Almanî",
     "artêşa Almanyayê"
    ],
    "explanation": "Bundeswehr hêzên çekdar ên Komara Federal a Almanyayê ye, ku di sala 1955an de hate damezrandin."
@@ -1145,14 +1145,14 @@
    "explanation": "CSU kurteya Christlich Soziale Union (Yekîtiya Civakî ya Xiristiyan) e, partiya xwişk a CDUyê li Bavyera."
   },
   "93": {
-   "q": "Partiyek di hilbijartina Parlamentoya Federal de çiqas zêdetir “dengên duyemîn” bistîne, …",
+   "q": "Partiyek di hilbijartina Parlamentoya Federal de çiqas zêdetir “dengên duyem” bistîne, …",
    "options": [
     "ewqas zêdetir kursî di parlamentoyê de distîne.",
-    "ewqas kêmtir dengên yekem dikare hebin.",
+    "ewqas kêmtir dengên yekem dikare bistîne.",
     "ewqas zêdetir namzedên rasterast ên partiyê dikevin parlamentoyê.",
     "ewqas mezintir e xetera ku neçar bimîne koalîsyonekê ava bike."
    ],
-   "explanation": "Dengê duyemîn hejmara kursiyên partiyekê di Parlamentoya Federal de diyar dike. Dengên duyemîn ên zêdetir tê wateya kursiyên zêdetir di parlamentoyê de."
+   "explanation": "Dengê duyem hejmara kursiyên partiyekê di Parlamentoya Federal de diyar dike. Dengên duyem ên zêdetir tê wateya kursiyên zêdetir di parlamentoyê de."
   },
   "94": {
    "q": "Li Almanyayê ji çend saliyê ve mirov dikare beşdarî hilbijartina Parlamentoya Federal (Bundestag) bibe?",
@@ -1235,9 +1235,9 @@
    "explanation": "Sendîka berjewendiyên karmendan diparêzin, wek nimûne di danûstandinên li ser peymanên mûçeyan de."
   },
   "102": {
-   "q": "Li Komara Federal a Almanyayê, kesê ku li qada siyasî, aborî, çandî, ramyarî an civakî karekî taybet kiribe, bi çi tê xelatkirin? Bi …",
+   "q": "Li Komara Federal a Almanyayê, kesê ku li qada siyasî, aborî, çandî, hizrî an civakî karekî taybet kiribe, bi çi tê xelatkirin? Bi …",
    "options": [
-    "Elihê Federal",
+    "Eyloyê Federal",
     "Xaça Xizmetê ya Federal",
     "Nîşana Xizmetê ya Welatparêzî",
     "sernavê rûmetê «Qehremanê Komara Demokratîk a Alman»"
@@ -1247,10 +1247,10 @@
   "103": {
    "q": "Li Almanyayê ji çi re «koalîsyona çirayên trafîkê» (Ampelkoalition) tê gotin? Hevkariya …",
    "options": [
-    "komên parlamentoyê yên CDU û CSU di Parlamentoya Federal (Bundestag) de",
+    "fraksiyonên CDU û CSU di Parlamentoya Federal (Bundestag) de",
     "SPD, FDP û Bündnis 90/Die Grünen di hikûmetekê de",
     "CSU, Die LINKE û Bündnis 90/Die Grünen di hikûmetekê de",
-    "komên parlamentoyê yên CDU û SPD di Parlamentoya Federal de"
+    "fraksiyonên CDU û SPD di Parlamentoya Federal de"
    ],
    "explanation": "Koalîsyona çirayên trafîkê hevkariya SPD (sor), FDP (zer) û Keskan (kesk) e – li gorî rengên çirayên trafîkê."
   },
@@ -1480,9 +1480,9 @@
     "agahdariya hilbijartinê ji şaredariyê",
     "destûra dengdanê ji Serokkomarê Federal",
     "agahdariyek ji Civata Federal",
-    "agahdariyek ji nivîsgeha dêrê"
+    "agahdariyek ji fermangeha dêrê"
    ],
-   "explanation": "Berî her hilbijartinê, xwedî mafên dengdanê ji şaredariya xwe karteke agahdariya hilbijartinê distînin ku navenda dengdanê li ser nivîsandî ye."
+   "explanation": "Berî her hilbijartinê, kesên xwedî mafê dengdanê ji şaredariya xwe karteke agahdariya hilbijartinê distînin ku navenda dengdanê li ser nivîsandî ye."
   },
   "127": {
    "q": "Çima di qanûna hilbijartinê ya Komara Federal a Almanyayê de bendava 5 % heye? Ji ber ku …",
@@ -1552,7 +1552,7 @@
     "Mirov dikare roja hilbijartinê bi telefonê dengê xwe bide.",
     "Zarokên ji 14 saliyê û pê ve dikarin deng bidin."
    ],
-   "explanation": "Dengdana bi postê (Briefwahl) rê dide xwedî mafên dengdanê ku dengê xwe bi postê bişînin, eger ew nikaribin bi xwe herin navenda dengdanê."
+   "explanation": "Dengdana bi postê (Briefwahl) rê dide kesên xwedî mafê dengdanê ku dengê xwe bi postê bişînin, eger ew nikaribin bi xwe herin navenda dengdanê."
   },
   "134": {
    "q": "Dixwazin xeta otobusê ya ku hûn her tim pê diçin kar rakin. Hûn dikarin çi bikin da ku xeta otobusê bimîne?",
@@ -1570,7 +1570,7 @@
     "şîrketên mezin",
     "şîrketên biçûk",
     "karsazên serbixwe",
-    "karmendan"
+    "karmend"
    ],
    "explanation": "Sendîka berjewendiyên karmendan diparêzin, wek nimûne di danûstandinên peymanên mûçeyan de li ser mûçe û şertên kar."
   },
@@ -1652,20 +1652,20 @@
     "operatîvê ye.",
     "yasadanînê ye."
    ],
-   "explanation": "Dadwer aîdî dadweriyê (Judikative) ne, ku yek ji sê hêzên dewletê ye."
+   "explanation": "Dadwer aîdî dadweriyê (Judikative) ne, ku yek ji sê desthilatên dewletê ye."
   },
   "144": {
    "q": "Li Almanyayê dadwer aîdî …",
    "options": [
-    "hêza bicîhanînê ye.",
-    "hêza dadweriyê ye.",
-    "hêza plansaziyê ye.",
-    "hêza yasadanînê ye."
+    "desthilata bicîhanînê ye.",
+    "desthilata dadweriyê ye.",
+    "desthilata plansaziyê ye.",
+    "desthilata yasadanînê ye."
    ],
-   "explanation": "Dadwerî (Judikative) yek ji sê hêzên dewletê ye û ji aliyê dadweran ve tê bikaranîn."
+   "explanation": "Dadwerî (Judikative) yek ji sê desthilatên dewletê ye û ji aliyê dadweran ve tê bikaranîn."
   },
   "145": {
-   "q": "Li Almanyayê hêza dewletê tê parvekirin. Dadwer ji bo kîjan hêza dewletê dixebite? Ji bo …",
+   "q": "Li Almanyayê desthilata dewletê tê parvekirin. Dadwer ji bo kîjan desthilata dewletê dixebite? Ji bo …",
    "options": [
     "dadweriyê.",
     "rêvebirinê.",
@@ -1725,14 +1725,14 @@
    "explanation": "Gerichtsschöffe dadwerên dilxwaz in ku bêyî perwerdeya hiqûqê beşdarî dozên dadgehê dibin."
   },
   "151": {
-   "q": "Kê dîwarê li Berlinê ava kir?",
+   "q": "Kê dîwarê li Berlînê ava kir?",
    "options": [
     "Brîtanyaya Mezin",
     "Komara Federal a Almanyayê",
     "Komara Demokratîk a Alman",
     "DYA"
    ],
-   "explanation": "Komara Demokratîk a Alman (Almanyaya Rojhilat) di sala 1961an de Dîwarê Berlinê ava kir, da ku revîna girseyî ya welatiyên xwe ber bi Rojava ve rawestîne."
+   "explanation": "Komara Demokratîk a Alman (Almanyaya Rojhilat) di sala 1961an de Dîwarê Berlînê ava kir, da ku revîna girseyî ya welatiyên xwe ber bi Rojava ve rawestîne."
   },
   "152": {
    "q": "Nasyonal-sosyalîst bi Adolf Hitler re kengê li Almanyayê li ser desthilatê bûn?",
@@ -1748,7 +1748,7 @@
    "q": "Di 8ê Gulana 1945an de çi bû?",
    "options": [
     "Mirina Adolf Hitler",
-    "Destpêka avakirina Dîwarê Berlinê",
+    "Destpêka avakirina Dîwarê Berlînê",
     "Hilbijartina Konrad Adenauer wek Şansolyeyê Federal",
     "Dawiya Şerê Cîhanê yê Duyemîn li Ewropayê"
    ],
@@ -1875,7 +1875,7 @@
    "explanation": "Konrad Adenauer (CDU) ji 1949 heta 1963an Şansolyeyê Federal ê yekem ê Komara Federal a Almanyayê bû."
   },
   "166": {
-   "q": "Li Almanyayê di kîjan xwepêşandanan de mirovan diqîriyan «Em gel in»?",
+   "q": "Li Almanyayê di kîjan xwepêşandanan de mirov diqîriyan «Em gel in»?",
    "options": [
     "di xwepêşandanên Duşemê yên 1989an de li Komara Demokratîk a Alman",
     "di serhildana karkeran a 1953an de li Komara Demokratîk a Alman",
@@ -1945,7 +1945,7 @@
    "explanation": "Komara Demokratîk a Alman di 1949an de di herêma dagirkirinê ya Sovyetî de hate damezrandin, lê Komara Federal a Almanyayê ji herêmên dagirkirinê yên rojavayî derket holê."
   },
   "173": {
-   "q": "Komara Federal a Almanyayê endameke damezrîner e ya …",
+   "q": "Komara Federal a Almanyayê yek ji endamên damezrîner ên vê rêxistinê ye: …",
    "options": [
     "Peymana Atlantîka Bakur (NATO).",
     "Neteweyên Yekbûyî (NY).",
@@ -1995,14 +1995,14 @@
    "explanation": "Berlîn, wek paytexta Împeratoriya Alman (Deutsches Reich), piştî Şerê Cîhanê yê Duyemîn bû çar sektor (Amerîkî, Sovyetî, Brîtanî, Fransî)."
   },
   "178": {
-   "q": "Ji Hezîrana 1948an heta Gulana 1949an, pêdiviyên welatiyên Berlina Rojava bi pira hewayî hatin dabînkirin. Kîjan rewş sedema vê bû?",
+   "q": "Ji Hezîrana 1948an heta Gulana 1949an, pêdiviyên welatiyên Berlîna Rojava bi pira hewayî hatin dabînkirin. Kîjan rewş sedema vê bû?",
    "options": [
-    "Ji bo Fransayê, dabînkirina pêdiviyên xelkê Berlina Rojava bi balafiran erzantir bû.",
+    "Ji bo Fransayê, dabînkirina pêdiviyên xelkê Berlîna Rojava bi balafiran erzantir bû.",
     "Leşkerên Amerîkî di veguhastina bejahiyê de ji êrîşan ditirsiyan.",
     "Ji bo Brîtanyaya Mezin, dabînkirina bi pira hewayî zûtir bû.",
     "Yekîtiya Sovyetê hemû hatûçûna li ser rêyên bejahiyê qut kir."
    ],
-   "explanation": "Yekîtiya Sovyetê di 1948/49an de hemû rêyên bejahiyê yên ber bi Berlina Rojava ve girtin, û li ser vê yekê Hevpeymanên Rojavayî Pira Hewayî ya Berlinê ava kirin."
+   "explanation": "Yekîtiya Sovyetê di 1948/49an de hemû rêyên bejahiyê yên ber bi Berlîna Rojava ve girtin, û li ser vê yekê Hevpeymanên Rojavayî Pira Hewayî ya Berlînê ava kirin."
   },
   "179": {
    "q": "Şerê Cîhanê yê Duyemîn li Ewropayê bi fermî çawa bi dawî bû?",
@@ -2028,7 +2028,7 @@
    "q": "Willy Brandt di 1970an de bi çokdanîna xwe li getoya berê ya Cihûyan li Varşovayê dixwest çi bîne ziman?",
    "options": [
     "Wî xwe radestî Hevpeymanên berê kir.",
-    "Wî ji Polonya û Cihûyên Polonî lêborîn xwest.",
+    "Wî ji Polonyayê û Cihûyên Polonî lêborîn xwest.",
     "Wî nefsbiçûkiya xwe li hember Peymana Varşovayê nîşan da.",
     "Wî li ser gora Leşkerê Nenas dua kir."
    ],
@@ -2095,17 +2095,17 @@
    "explanation": "Ala Komara Demokratîk a Alman reş-sor-zêrîn bû bi arma dewletê: çakûç, pergal û tacgula sinbilan wek sembolên karkeran, rewşenbîran û cotkaran."
   },
   "188": {
-   "q": "Dîwarê li Berlinê di kîjan salê de hate avakirin?",
+   "q": "Dîwarê li Berlînê di kîjan salê de hate avakirin?",
    "options": [
     "1953",
     "1956",
     "1959",
     "1961"
    ],
-   "explanation": "Komara Demokratîk a Alman (Almanyaya Rojhilat) di 13ê Tebaxa 1961an de dest bi avakirina Dîwarê Berlinê kir, da ku revîna girseyî ber bi Rojava ve rawestîne."
+   "explanation": "Komara Demokratîk a Alman (Almanyaya Rojhilat) di 13ê Tebaxa 1961an de dest bi avakirina Dîwarê Berlînê kir, da ku revîna girseyî ber bi Rojava ve rawestîne."
   },
   "189": {
-   "q": "Komara Demokratîk a Alman (Almanyaya Rojhilat) kengê dîwarê li Berlinê ava kir?",
+   "q": "Komara Demokratîk a Alman (Almanyaya Rojhilat) kengê dîwarê li Berlînê ava kir?",
    "options": [
     "1919",
     "1933",
@@ -2125,14 +2125,14 @@
    "explanation": "DDR kurtenivîsa Deutsche Demokratische Republik (Komara Demokratîk a Alman) e, dewleta sosyalîst a berê li Almanyaya Rojhilat (1949–1990)."
   },
   "191": {
-   "q": "Dîwarê li Berlinê kengê ji bo hemûyan hate vekirin?",
+   "q": "Dîwarê li Berlînê kengê ji bo hemûyan hate vekirin?",
    "options": [
     "1987",
     "1989",
     "1992",
     "1995"
    ],
-   "explanation": "Di 9ê Mijdara 1989an de Komara Demokratîk a Alman Dîwarê Berlinê vekir. Ev destpêka ji nû ve yekbûna Almanyayê bû."
+   "explanation": "Di 9ê Mijdara 1989an de Komara Demokratîk a Alman Dîwarê Berlînê vekir. Ev destpêka ji nû ve yekbûna Almanyayê bû."
   },
   "192": {
    "q": "Kîjan eyaleta îroyîn a Almanyayê berê aîdî axa Komara Demokratîk a Alman (Almanyaya Rojhilat) bû?",
@@ -2152,7 +2152,7 @@
     "bi dîwarekî parvekirî bû.",
     "tenê bi balafirê dihat gihîştin."
    ],
-   "explanation": "Dîwarê Berlinê ji 1961 heta 1989an Berlîn parve kir. Berlina Rojhilat û Berlina Rojava bi dîwar û sazgehên sînor ji hev hatibûn qetandin."
+   "explanation": "Dîwarê Berlînê ji 1961 heta 1989an Berlîn parve kir. Berlîna Rojhilat û Berlîna Rojava bi dîwar û sazgehên sînor ji hev hatibûn qetandin."
   },
   "194": {
    "q": "Di 3ê Cotmehê de li Almanyayê vê rojê pîroz dikin: Roja Alman a …",
@@ -2515,7 +2515,7 @@
    "explanation": "Luksembûrg yek ji neh welatên cîran ên Almanyayê ye û li başûrê rojavayê wê ye."
   },
   "230": {
-   "q": "Parlamentoya Ewropayê bi rêkûpêk tê hilbijartin, ango her carê piştî …",
+   "q": "Parlamentoya Ewropayê bi rêkûpêk tê hilbijartin, ango her …",
    "options": [
     "5 salan.",
     "6 salan.",
@@ -2842,7 +2842,7 @@
     "Tu kes nikare li dijî kesan doz veke, eger neheqî lê hatibe kirin.",
     "Ji bo her kesî qanûn e ku her sal pere bide komên ku neheqî li wan tê kirin."
    ],
-   "explanation": "Fermana muameleya wekhev (Xala 3 ya Qanûna Bingehîn) cudakariyê li ser bingeha zayend, eslê, ol, seqetî û hwd. qedexe dike."
+   "explanation": "Fermana muameleya wekhev (Xala 3 ya Qanûna Bingehîn) cudakariyê li ser bingeha zayend, esl, ol, seqetî û hwd. qedexe dike."
   },
   "263": {
    "q": "Li Almanyayê ciwan ji 14 saliyê ve ji aliyê cezayî ve berpirsiyar in. Ev tê wê wateyê: ciwanên ku 14 salî an mezintir in û qanûnên cezayê binpê dikin, …",
@@ -3049,7 +3049,7 @@
    "options": [
     "Ez fatureyê li wir dihêlim.",
     "Ez li cem dezgehê îtirazê dikim.",
-    "Ez fatureyê dişînim dezgehê.",
+    "Ez fatureyê paşde dişînim dezgehê.",
     "Ez bi fatureyê re diçim fermangeha bacê."
    ],
    "explanation": "Li dijî biryar an fatureyên şaş ên dezgehên fermî mirov dikare îtirazê bike."
@@ -3065,7 +3065,7 @@
    "explanation": "Fêrbûna heta dawiya jiyanê di cîhana karê nûjen de pêwîst e, ji ber ku pêdivî her dem diguherin."
   },
   "285": {
-   "q": "Xanim Frost wekî karmendeke daîmî li nivîsgehekê dixebite. Divê ew çi ji mûçeya xwe nedê?",
+   "q": "Xanim Frost wekî karmendeke daîmî li nivîsgehekê dixebite. Ew ne mecbûr e çi ji mûçeya xwe bide?",
    "options": [
     "baca firotinê (Umsatzsteuer)",
     "baca mûçeyê (Lohnsteuer)",
@@ -3182,7 +3182,7 @@
     "dema Adventê (Adventszeit).",
     "Allerheiligen (roja hemû pîrozan)."
    ],
-   "explanation": "Dema Adventê çar hefteyên berî Noelê ne. Ew bi Adventa 1ê dest pê dike û di şeva Noelê de diqede."
+   "explanation": "Dema Adventê çar hefteyên berî Noelê ne. Ew bi Adventa yekem dest pê dike û di şeva Noelê de diqede."
   },
   "297": {
    "q": "Piraniya koçberan ji kîjan welatî hatine Almanyayê?",

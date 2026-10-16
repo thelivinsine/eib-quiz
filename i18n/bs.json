@@ -24,12 +24,12 @@
   "footer.bamf": "BAMF o naturalizaciji",
   "footer.photo": "Naslovna fotografija",
   "fb.button": "Povratna informacija",
-  "fb.title": "Pošalji povratnu informaciju",
-  "fb.lead": "EIB Quiz se razvija uz pomoć umjetne inteligencije. Primijetili ste pogrešan odgovor, tipfeler ili grešku? Javite nam, to pomaže da aplikacija bude bolja.",
+  "fb.title": "Pošaljite povratnu informaciju",
+  "fb.lead": "EIB Quiz se razvija uz pomoć umjetne inteligencije. Primijetili ste pogrešan odgovor, slovnu grešku ili tehnički problem? Javite nam, to pomaže da aplikacija bude bolja.",
   "fb.message": "Vaša poruka, ideja ili pronađena greška",
   "fb.email": "E-mail (neobavezno, ako vam smijemo odgovoriti)",
-  "fb.send": "Pošalji",
-  "fb.close": "Zatvori",
+  "fb.send": "Pošaljite",
+  "fb.close": "Zatvorite",
   "fb.sending": "Šalje se…",
   "fb.thanks": "Hvala na povratnoj informaciji!",
   "fb.error": "Slanje nije uspjelo. Pokušajte ponovo kasnije.",
@@ -121,7 +121,7 @@
   "quiz.stat.score": "Rezultat",
   "quiz.stat.answered": "Odgovoreno",
   "quiz.time": "Vrijeme",
-  "quiz.speak": "Pročitajte pitanje naglas",
+  "quiz.speak": "Poslušajte pitanje",
   "quiz.showEn": "Prikažite prijevod",
   "quiz.hideEn": "Sakrijte prijevod",
   "quiz.prev": "Prethodno",
@@ -245,7 +245,7 @@
    "explanation": "Čl. 7 st. 2 Osnovnog zakona jamči roditeljima pravo da odlučuju o vjerskom odgoju djeteta."
   },
   "3": {
-   "q": "Njemačka je pravna država. Što se time misli?",
+   "q": "Njemačka je pravna država. Šta se time misli?",
    "options": [
     "Svi stanovnici / stanovnice i država moraju se pridržavati zakona",
     "Država se ne mora pridržavati zakona",
@@ -265,7 +265,7 @@
    "explanation": "Sloboda mišljenja utvrđena je kao osnovno pravo u čl. 5 Osnovnog zakona."
   },
   "5": {
-   "q": "Izbori u Njemačkoj su slobodni. Što to znači?",
+   "q": "Izbori u Njemačkoj su slobodni. Šta to znači?",
    "options": [
     "Smije se primiti novac ako se zauzvrat glasa za određenog kandidata / određenu kandidatkinju",
     "Na birača se pri izborima ne smije utjecati niti ga se smije prisiliti da glasa na određeni način, a zbog izbora ne smije trpjeti nikakve štetne posljedice",
@@ -295,7 +295,7 @@
    "explanation": "Sloboda vjere i savjesti zajamčena je u čl. 4 Osnovnog zakona kao jedno od najvažnijih osnovnih prava."
   },
   "8": {
-   "q": "Što ne piše u njemačkom Osnovnom zakonu?",
+   "q": "Šta ne piše u njemačkom Osnovnom zakonu?",
    "options": [
     "Dostojanstvo čovjeka je nepovredivo",
     "Svi trebaju imati jednako mnogo novca",
@@ -315,7 +315,7 @@
    "explanation": "Pravo na azil utvrđeno je u čl. 16a Osnovnog zakona i vrijedi samo za strance."
   },
   "10": {
-   "q": "Što je u skladu s njemačkim Osnovnim zakonom?",
+   "q": "Šta je u skladu s njemačkim Osnovnim zakonom?",
    "options": [
     "kazna batinanjem",
     "mučenje",
@@ -365,7 +365,7 @@
    "explanation": "Sloboda mišljenja je zajamčena, ali ima granice kod uvrede i raspirivanja mržnje (Volksverhetzung)."
   },
   "15": {
-   "q": "Što zabranjuje njemački Osnovni zakon?",
+   "q": "Šta zabranjuje njemački Osnovni zakon?",
    "options": [
     "vojnu službu",
     "prisilni rad",
@@ -405,7 +405,7 @@
    "explanation": "Čl. 1 Osnovnog zakona štiti ljudsko dostojanstvo kao najviše i nepovredivo osnovno pravo."
   },
   "19": {
-   "q": "Što se u Njemačkoj podrazumijeva pod pravom na slobodu kretanja?",
+   "q": "Šta se u Njemačkoj podrazumijeva pod pravom na slobodu kretanja?",
    "options": [
     "Mjesto stanovanja smije se slobodno izabrati",
     "Zanimanje se može promijeniti",
@@ -429,7 +429,7 @@
    "options": [
     "savezni grb (Njemačka)",
     "Kristov monogram (Chi-Rho)",
-    "križ Bundeswehra",
+    "krst Bundeswehra",
     "amblem DDR-a"
    ],
    "explanation": "Savezni orao na zlatnoj podlozi službeni je grb Savezne Republike Njemačke."
@@ -465,7 +465,7 @@
    "explanation": "Njemačka ima 16 saveznih pokrajina od ponovnog ujedinjenja 3. oktobra 1990."
   },
   "25": {
-   "q": "Što nije savezna pokrajina Savezne Republike Njemačke?",
+   "q": "Šta nije savezna pokrajina Savezne Republike Njemačke?",
    "options": [
     "Sjeverna Rajna-Vestfalija",
     "Alzas-Lorena",
@@ -515,7 +515,7 @@
    "explanation": "Savezni orao je životinja na državnom grbu Njemačke."
   },
   "30": {
-   "q": "Što nije obilježje naše demokratije?",
+   "q": "Šta nije obilježje naše demokratije?",
    "options": [
     "redovni izbori",
     "cenzura štampe",
@@ -535,7 +535,7 @@
    "explanation": "Kada više stranaka zajedno formira vladu, to se naziva koalicija."
   },
   "32": {
-   "q": "Što u Njemačkoj nije državna vlast?",
+   "q": "Šta u Njemačkoj nije državna vlast?",
    "options": [
     "zakonodavstvo",
     "vlada",
@@ -555,7 +555,7 @@
    "explanation": "U Njemačkoj vrijedi načelo odvojenosti države i crkve; država je svjetonazorski neutralna."
   },
   "34": {
-   "q": "Što Njemačka nije?",
+   "q": "Šta Njemačka nije?",
    "options": [
     "demokratija",
     "pravna država",
@@ -605,7 +605,7 @@
    "explanation": "Prema Osnovnom zakonu (čl. 20) Njemačka je demokratska i socijalna savezna država u kojoj je vlast podijeljena između saveza i pokrajina."
   },
   "39": {
-   "q": "Što ima svaka njemačka savezna pokrajina?",
+   "q": "Šta ima svaka njemačka savezna pokrajina?",
    "options": [
     "vlastitog ministra / vlastitu ministricu vanjskih poslova",
     "vlastitu valutu",
@@ -735,7 +735,7 @@
    "explanation": "U pravnoj državi ljude smiju hapsiti samo državni organi na osnovu zakona. Samovoljna hapšenja od strane privatnih osoba su protivpravna."
   },
   "52": {
-   "q": "Što znači „narodni suverenitet“? Sva državna vlast proizlazi iz …",
+   "q": "Šta znači „narodni suverenitet“? Sva državna vlast proizlazi iz …",
    "options": [
     "naroda.",
     "Bundestaga.",
@@ -745,9 +745,9 @@
    "explanation": "Narodni suverenitet znači da sva državna vlast proizlazi iz naroda (Osnovni zakon, čl. 20). Narod tu vlast ostvaruje putem izbora."
   },
   "53": {
-   "q": "Što znači „pravna država“ u Njemačkoj?",
+   "q": "Šta znači „pravna država“ u Njemačkoj?",
    "options": [
-    "Država je uvijek u pravu.",
+    "Država je u pravu.",
     "Postoje samo desne stranke.",
     "Građani i građanke odlučuju o zakonima.",
     "Država se mora pridržavati zakona."
@@ -755,7 +755,7 @@
    "explanation": "Pravna država znači da je i sama država vezana pravom i zakonima i mora ih poštovati."
   },
   "54": {
-   "q": "Što u Njemačkoj nije državna vlast?",
+   "q": "Šta u Njemačkoj nije državna vlast?",
    "options": [
     "zakonodavna vlast",
     "sudska vlast",
@@ -765,7 +765,7 @@
    "explanation": "Tri državne vlasti su zakonodavna, izvršna i sudska vlast. „Direktivna vlast“ nije državna vlast."
   },
   "55": {
-   "q": "Što prikazuje ova slika?",
+   "q": "Šta prikazuje ova slika?",
    "options": [
     "sjedište Bundestaga u Berlinu",
     "Savezni ustavni sud u Karlsruheu",
@@ -825,7 +825,7 @@
    "explanation": "Bundestag i Bundesrat su zakonodavna tijela Njemačke i stoga pripadaju zakonodavnoj vlasti."
   },
   "61": {
-   "q": "Što znači „narodni suverenitet“?",
+   "q": "Šta znači „narodni suverenitet“?",
    "options": [
     "Kralj / kraljica vlada narodom.",
     "Savezni ustavni sud stoji iznad ustava.",
@@ -845,7 +845,7 @@
    "explanation": "Izbori za pokrajinski parlament (Landtag) neke savezne pokrajine nazivaju se pokrajinski izbori."
   },
   "63": {
-   "q": "Što u Njemačkoj ne pripada izvršnoj vlasti?",
+   "q": "Šta u Njemačkoj ne pripada izvršnoj vlasti?",
    "options": [
     "policija",
     "sudovi",
@@ -885,7 +885,7 @@
    "explanation": "Berlin i München imaju najveće jevrejske zajednice u Njemačkoj."
   },
   "67": {
-   "q": "Što je u Njemačkoj prije svega zadatak saveznih pokrajina?",
+   "q": "Šta je u Njemačkoj prije svega zadatak saveznih pokrajina?",
    "options": [
     "odbrambena politika",
     "vanjska politika",
@@ -915,7 +915,7 @@
    "explanation": "Najniži nivo njemačkog upravnog uređenja čine općine i komune."
   },
   "70": {
-   "q": "Njemački savezni predsjednik Gustav Heinemann uručuje 1974. godine Helmutu Schmidtu ispravu o imenovanju za njemačkog saveznog kancelara. Što spada u zadatke njemačkog saveznog predsjednika / njemačke savezne predsjednice?",
+   "q": "Njemački savezni predsjednik Gustav Heinemann uručuje 1974. godine Helmutu Schmidtu ispravu o imenovanju za njemačkog saveznog kancelara. Šta spada u zadatke njemačkog saveznog predsjednika / njemačke savezne predsjednice?",
    "options": [
     "On / Ona vodi poslove vlade.",
     "On / Ona nadzire vladajuću stranku.",
@@ -975,7 +975,7 @@
    "explanation": "Frank-Walter Steinmeier je od 2017. savezni predsjednik Savezne Republike Njemačke."
   },
   "76": {
-   "q": "Što znači skraćenica CDU u Njemačkoj?",
+   "q": "Šta znači skraćenica CDU u Njemačkoj?",
    "options": [
     "Christliche Deutsche Union (Kršćanska njemačka unija)",
     "Club Deutscher Unternehmer (Klub njemačkih poduzetnika)",
@@ -985,7 +985,7 @@
    "explanation": "CDU znači Christlich Demokratische Union (Kršćansko-demokratska unija), jedna od velikih narodnih stranaka Njemačke."
   },
   "77": {
-   "q": "Što je Bundeswehr?",
+   "q": "Šta je Bundeswehr?",
    "options": [
     "njemačka policija",
     "njemačka luka",
@@ -995,7 +995,7 @@
    "explanation": "Bundeswehr su oružane snage Savezne Republike Njemačke, osnovane 1955. godine."
   },
   "78": {
-   "q": "Što znači skraćenica SPD?",
+   "q": "Šta znači skraćenica SPD?",
    "options": [
     "Sozialistische Partei Deutschlands (Socijalistička stranka Njemačke)",
     "Sozialpolitische Partei Deutschlands (Socijalnopolitička stranka Njemačke)",
@@ -1005,7 +1005,7 @@
    "explanation": "SPD znači Sozialdemokratische Partei Deutschlands (Socijaldemokratska stranka Njemačke), jedna od najstarijih političkih stranaka Njemačke."
   },
   "79": {
-   "q": "Što znači skraćenica FDP u Njemačkoj?",
+   "q": "Šta znači skraćenica FDP u Njemačkoj?",
    "options": [
     "Friedliche Demonstrative Partei (Mirna demonstrativna stranka)",
     "Freie Deutschland Partei (Stranka slobodne Njemačke)",
@@ -1135,7 +1135,7 @@
    "explanation": "Bundesrat odražava odnose većine u pokrajinama. Ako se promijeni većina u Bundesratu, savezno zakonodavstvo može postati teže."
   },
   "92": {
-   "q": "Što znači skraćenica CSU u Njemačkoj?",
+   "q": "Šta znači skraćenica CSU u Njemačkoj?",
    "options": [
     "Christlich Sichere Union (Kršćanska sigurna unija)",
     "Christlich Süddeutsche Union (Kršćanska južnonjemačka unija)",
@@ -1165,7 +1165,7 @@
    "explanation": "Aktivno biračko pravo na izborima za Bundestag stiče se s 18 godina. Na nekim lokalnim izborima vrijedi već od 16 godina."
   },
   "95": {
-   "q": "Što vrijedi za većinu djece u Njemačkoj?",
+   "q": "Šta vrijedi za većinu djece u Njemačkoj?",
    "options": [
     "obaveza glasanja",
     "obaveza školovanja",
@@ -1185,7 +1185,7 @@
    "explanation": "Poricanje holokausta je u Njemačkoj krivično djelo (§130 StGB) i može se kazniti kaznom zatvora do pet godina ili novčanom kaznom."
   },
   "97": {
-   "q": "Što se u Njemačkoj automatski plaća kada je osoba stalno zaposlena?",
+   "q": "Šta se u Njemačkoj automatski plaća kada je osoba stalno zaposlena?",
    "options": [
     "socijalno osiguranje",
     "socijalna pomoć",
@@ -1215,7 +1215,7 @@
    "explanation": "Doprinose za socijalno osiguranje u Njemačkoj plaćaju napola poslodavci, a napola zaposlenici."
   },
   "100": {
-   "q": "Što ne spada u zakonsko socijalno osiguranje?",
+   "q": "Šta ne spada u zakonsko socijalno osiguranje?",
    "options": [
     "zakonsko penzijsko osiguranje",
     "životno osiguranje",
@@ -1247,10 +1247,10 @@
   "103": {
    "q": "Šta se u Njemačkoj naziva „semaforskom koalicijom“ (Ampelkoalition)? Saradnja …",
    "options": [
-    "klubova zastupnika CDU i CSU u Bundestagu",
+    "frakcija CDU i CSU u Bundestagu",
     "stranaka SPD, FDP i Bündnis 90/Die Grünen u vladi",
     "stranaka CSU, Die LINKE i Bündnis 90/Die Grünen u vladi",
-    "klubova zastupnika CDU i SPD u Bundestagu"
+    "frakcija CDU i SPD u Bundestagu"
    ],
    "explanation": "Semaforska koalicija označava saradnju stranaka SPD (crvena), FDP (žuta) i Zeleni (zelena) – prema bojama semafora."
   },
@@ -1348,7 +1348,7 @@
    "q": "Na izborima u Njemačkoj pobjeđuje stranka koja …",
    "options": [
     "dobije najviše glasova.",
-    "je izabrala većina muškaraca.",
+    "je dobila glasove većine muškaraca.",
     "je dobila najviše glasova među radnicima / radnicama.",
     "je dobila najviše prvih glasova za svog kandidata / svoju kandidatkinju za kancelara."
    ],
@@ -1522,7 +1522,7 @@
     "3",
     "4"
    ],
-   "explanation": "Važeći glasački listić mora biti jasno popunjen: po jedan križić za prvi i za drugi glas, bez dodatnih oznaka."
+   "explanation": "Važeći glasački listić mora biti jasno popunjen: po jedan krstić za prvi i za drugi glas, bez dodatnih oznaka."
   },
   "131": {
    "q": "U Njemačkoj je gradonačelnik / gradonačelnica (Bürgermeister) …",
@@ -1709,10 +1709,10 @@
    "options": [
     "posjetiti jevrejski praznik",
     "kritikovati izraelsku vladu",
-    "poricati Holokaust",
+    "poricati holokaust",
     "igrati fudbal protiv Jevreja"
    ],
-   "explanation": "Poricanje Holokausta oblik je antisemitizma i u Njemačkoj je krivično djelo."
+   "explanation": "Poricanje holokausta oblik je antisemitizma i u Njemačkoj je krivično djelo."
   },
   "150": {
    "q": "Gerichtsschöffe / Gerichtsschöffin u Njemačkoj je …",
@@ -1928,7 +1928,7 @@
    "q": "Socijalna tržišna ekonomija znači: privreda …",
    "options": [
     "se sama usmjerava isključivo prema ponudi i potražnji.",
-    "je planira i usmjerava država, a ponuda i potražnja se ne uzimaju u obzir.",
+    "se planira i usmjerava od strane države, a ponuda i potražnja se ne uzimaju u obzir.",
     "se ravna prema potražnji u inostranstvu.",
     "se ravna prema ponudi i potražnji, ali država brine o socijalnom izjednačavanju."
    ],
@@ -2135,7 +2135,7 @@
    "explanation": "Njemačka Demokratska Republika otvorila je Berlinski zid 9. novembra 1989. To je bio početak ponovnog ujedinjenja Njemačke."
   },
   "192": {
-   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočne Njemačke)?",
    "options": [
     "Brandenburg",
     "Bavarska",
@@ -2155,17 +2155,17 @@
    "explanation": "Berlinski zid dijelio je Berlin od 1961. do 1989. Istočni i Zapadni Berlin bili su međusobno odvojeni zidom i graničnim postrojenjima."
   },
   "194": {
-   "q": "Dana 3. oktobra u Njemačkoj se slavi Dan njemačkog …",
+   "q": "Dana 3. oktobra u Njemačkoj se slavi Dan …",
    "options": [
-    "jedinstva.",
-    "naroda.",
-    "saveznih pokrajina.",
-    "gradova."
+    "njemačkog jedinstva.",
+    "njemačkog naroda.",
+    "njemačkih saveznih pokrajina.",
+    "njemačkih gradova."
    ],
    "explanation": "Njemačka Demokratska Republika pristupila je 3. oktobra 1990. Saveznoj Republici Njemačkoj. Od tada je Dan njemačkog jedinstva državni praznik."
   },
   "195": {
-   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočne Njemačke)?",
    "options": [
     "Hessen",
     "Saska-Anhalt",
@@ -2185,7 +2185,7 @@
    "explanation": "Die Wende 1989. opisuje mirni prelazak Njemačke Demokratske Republike iz socijalističke diktature u demokratiju, koji je doveo do ponovnog ujedinjenja."
   },
   "197": {
-   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočne Njemačke)?",
    "options": [
     "Tiringija",
     "Hessen",
@@ -2195,7 +2195,7 @@
    "explanation": "Tiringija je jedna od pet novih saveznih pokrajina s područja bivše Njemačke Demokratske Republike."
   },
   "198": {
-   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočne Njemačke)?",
    "options": [
     "Bavarska",
     "Donja Saska",
@@ -2215,7 +2215,7 @@
    "explanation": "Stasi (Ministarstvo državne sigurnosti) bila je unutrašnja tajna služba Njemačke Demokratske Republike koja je nadzirala stanovništvo."
   },
   "200": {
-   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočna Njemačka)?",
+   "q": "Koja je današnja njemačka savezna pokrajina ranije pripadala području Njemačke Demokratske Republike (Istočne Njemačke)?",
    "options": [
     "Hessen",
     "Schleswig-Holstein",
@@ -2227,10 +2227,10 @@
   "201": {
    "q": "Koja od sljedećih lista sadrži samo savezne pokrajine koje su pripadale području bivše Njemačke Demokratske Republike (Istočne Njemačke)?",
    "options": [
-    "Donja Saska, Sjeverna Rajna-Vestfalija, Hesen, Schleswig-Holstein, Brandenburg",
+    "Donja Saska, Sjeverna Rajna-Vestfalija, Hessen, Schleswig-Holstein, Brandenburg",
     "Mecklenburg-Vorpommern, Brandenburg, Saska, Saska-Anhalt, Tiringija",
     "Bavarska, Baden-Württemberg, Porajnje-Falačka, Tiringija, Saska",
-    "Saska, Tiringija, Hesen, Donja Saska, Brandenburg"
+    "Saska, Tiringija, Hessen, Donja Saska, Brandenburg"
    ],
    "explanation": "Pet novih saveznih pokrajina s područja Njemačke Demokratske Republike (Istočne Njemačke) su: Mecklenburg-Vorpommern, Brandenburg, Saska, Saska-Anhalt i Tiringija."
   },
@@ -2672,7 +2672,7 @@
     "Sofie (35 godina) i Lisa (40 godina)",
     "Anne (13 godina) i Tim (25 godina)"
    ],
-   "explanation": "U Njemačkoj je dob zaštite 14 godina; mlađi od 14 godina ne smiju imati romantične odnose s odraslima. Djevojčica od 13 godina ne smije živjeti zajedno s muškarcem od 25 godina."
+   "explanation": "U Njemačkoj je zakonska dob pristanka (Schutzalter) 14 godina; mlađi od 14 godina ne smiju imati romantične odnose s odraslima. Djevojčica od 13 godina ne smije živjeti zajedno s muškarcem od 25 godina."
   },
   "246": {
    "q": "Od koje se dobi u Njemačkoj postaje punoljetan?",
@@ -2857,7 +2857,7 @@
   "264": {
    "q": "Na koji praznik ljudi u Njemačkoj nose šarene kostime i maske?",
    "options": [
-    "na Ružičasti ponedjeljak (Rosenmontag)",
+    "na Ružičasti ponedjeljak",
     "na Prvi maj",
     "na Oktoberfestu",
     "na Duhove"
@@ -3072,7 +3072,7 @@
     "doprinose za osiguranje za slučaj nezaposlenosti",
     "doprinose za penzijsko i zdravstveno osiguranje"
    ],
-   "explanation": "Porez na promet plaća se pri kupovini robe i usluga; ne zadržava se od plate. Porez na platu i doprinosi za osiguranje za slučaj nezaposlenosti, penzijsko i zdravstveno osiguranje, naprotiv, zadržavaju se od plate."
+   "explanation": "Porez na promet (porez na dodanu vrijednost, PDV) plaća se pri kupovini robe i usluga; ne zadržava se od plate. Porez na platu i doprinosi za osiguranje za slučaj nezaposlenosti, penzijsko i zdravstveno osiguranje, naprotiv, zadržavaju se od plate."
   },
   "286": {
    "q": "Koje tijelo u firmi pomaže zaposlenima kod problema s poslodavcem / poslodavkom?",
