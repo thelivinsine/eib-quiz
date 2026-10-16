@@ -24,15 +24,15 @@
   "footer.bamf": "BAMF despre naturalizare",
   "footer.photo": "Fotografia principală",
   "fb.button": "Părere",
-  "fb.title": "Trimite o părere",
-  "fb.lead": "EIB Quiz este creat cu ajutorul inteligenței artificiale. Ai observat un răspuns greșit, o greșeală de scriere sau o eroare? Scrie-ne, ne ajută să îmbunătățim aplicația.",
-  "fb.message": "Mesajul tău, o idee sau o greșeală găsită",
-  "fb.email": "E-mail (opțional, dacă îți putem răspunde)",
-  "fb.send": "Trimite",
-  "fb.close": "Închide",
+  "fb.title": "Trimiteți o părere",
+  "fb.lead": "EIB Quiz este creat cu ajutorul inteligenței artificiale. Ați observat un răspuns greșit, o greșeală de scriere sau o eroare? Scrieți-ne, ne ajută să îmbunătățim aplicația.",
+  "fb.message": "Mesajul dvs., o idee sau o greșeală găsită",
+  "fb.email": "E-mail (opțional, dacă vă putem răspunde)",
+  "fb.send": "Trimiteți",
+  "fb.close": "Închideți",
   "fb.sending": "Se trimite…",
   "fb.thanks": "Mulțumim pentru părere!",
-  "fb.error": "Nu s-a putut trimite. Încearcă din nou mai târziu.",
+  "fb.error": "Nu s-a putut trimite. Încercați din nou mai târziu.",
   "footer.copyright": "© 2026 EIB Quiz. Toate drepturile rezervate.",
   "footer.legal": "Întrebările provin din catalogul oficial BAMF. Fotografie de Dietmar Rabich, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" rel=\"noopener\" target=\"_blank\">CC BY-SA 4.0</a>. Nu este un serviciu oficial al BAMF.",
   "why.title": "Simplu. Eficient. De încredere.",
@@ -121,7 +121,7 @@
   "quiz.stat.score": "Scor",
   "quiz.stat.answered": "Răspunse",
   "quiz.time": "Timp",
-  "quiz.speak": "Citiți întrebarea cu voce tare",
+  "quiz.speak": "Ascultați întrebarea",
   "quiz.showEn": "Afișați traducerea",
   "quiz.hideEn": "Ascundeți traducerea",
   "quiz.prev": "Anterioara",
@@ -212,7 +212,7 @@
   "Bundestag": "Parlamentul ales al Germaniei; adoptă legile.",
   "Bundesrat": "Reprezentarea celor 16 landuri la nivel federal.",
   "Bundespräsident/in": "Șeful statului; este ales de Adunarea Federală.",
-  "Bundeskanzler/in": "Șef al guvernului; conduce guvernul federal.",
+  "Bundeskanzler/in": "Șeful guvernului; conduce guvernul federal.",
   "Koalition": "Alianța mai multor partide pentru a guverna împreună.",
   "Opposition": "Deputații care nu fac parte din guvern.",
   "Gewaltenteilung": "Separarea în puterea legislativă, executivă și judecătorească.",
@@ -221,7 +221,7 @@
   "Freizügigkeit": "Dreptul de a-și alege liber domiciliul și reședința (art. 11 din Legea Fundamentală).",
   "Asylrecht": "Protecție pentru persoanele persecutate politic (art. 16a din Legea Fundamentală); se aplică doar străinilor.",
   "Soziale Marktwirtschaft": "Sistem economic care îmbină piața liberă cu echilibrul social.",
-  "Ministerpräsident/in": "Șef al guvernului unui land (cu excepția orașelor-stat)."
+  "Ministerpräsident/in": "Șeful guvernului unui land (cu excepția orașelor-stat)."
  },
  "questions": {
   "1": {
@@ -595,12 +595,12 @@
    "explanation": "Șefii guvernelor majorității landurilor se numesc miniștri-președinți. Excepție fac orașele-stat Berlin, Hamburg și Bremen."
   },
   "38": {
-   "q": "Republica Federală Germania este un … democratic și social.",
+   "q": "Republica Federală Germania este … cu caracter democratic și social.",
    "options": [
-    "ansamblu de state",
-    "stat federal",
-    "confederație de state",
-    "stat centralizat"
+    "un ansamblu de state",
+    "un stat federal",
+    "o confederație de state",
+    "un stat centralizat"
    ],
    "explanation": "Conform Legii Fundamentale (art. 20), Germania este un stat federal democratic și social, în care puterea este împărțită între federație și landuri."
   },
@@ -900,7 +900,7 @@
     "pentru că în Germania există doar școli de stat",
     "pentru că toți elevii trebuie să obțină o diplomă de absolvire",
     "pentru că în landuri există școli diferite",
-    "pentru că, potrivit Legii Fundamentale (Constituția), aceasta este sarcina sa"
+    "pentru că, potrivit Legii Fundamentale, aceasta este sarcina sa"
    ],
    "explanation": "Conform art. 7 GG, statul supraveghează sistemul școlar, ceea ce asigură standarde educaționale unitare."
   },
@@ -1145,14 +1145,14 @@
    "explanation": "CSU înseamnă Christlich Soziale Union (Uniunea Creștin-Socială), partidul-soră bavarez al CDU."
   },
   "93": {
-   "q": "Cu cât un partid primește mai multe „voturi secundare” (Zweitstimmen) la alegerile pentru Parlamentul Federal (Bundestag), cu atât …",
+   "q": "Cu cât un partid primește mai multe voturi la al doilea vot (Zweitstimmen) la alegerile pentru Parlamentul Federal (Bundestag), cu atât …",
    "options": [
     "mai multe locuri obține partidul în parlament.",
-    "mai puține voturi principale (Erststimmen) poate avea.",
+    "mai puține voturi la primul vot (Erststimmen) poate avea.",
     "mai mulți candidați direcți ai partidului intră în parlament.",
     "mai mare este riscul de a trebui să formeze o coaliție."
    ],
-   "explanation": "Votul secundar (Zweitstimme) determină numărul de locuri ale unui partid în Parlamentul Federal (Bundestag). Mai multe voturi secundare înseamnă mai multe locuri în parlament."
+   "explanation": "Al doilea vot (Zweitstimme) determină numărul de locuri ale unui partid în Parlamentul Federal (Bundestag). Mai multe voturi la al doilea vot înseamnă mai multe locuri în parlament."
   },
   "94": {
    "q": "De la ce vârstă puteți participa în Germania la alegerile pentru Parlamentul Federal (Bundestag)?",
@@ -1350,7 +1350,7 @@
     "obține cele mai multe voturi.",
     "a fost votat în majoritate de cei mai mulți bărbați.",
     "a obținut cele mai multe voturi din partea muncitorilor și muncitoarelor.",
-    "a obținut cele mai multe prime voturi pentru candidatul / candidata sa la funcția de cancelar."
+    "a obținut cele mai multe voturi la primul vot (Erststimmen) pentru candidatul / candidata sa la funcția de cancelar."
    ],
    "explanation": "În Germania câștigă partidul cu cele mai multe voturi. Repartizarea mandatelor se face în principal după al doilea vot (Zweitstimme)."
   },
@@ -2228,11 +2228,11 @@
    "q": "Care dintre următoarele liste conține numai landuri care au aparținut teritoriului fostei RDG?",
    "options": [
     "Saxonia Inferioară, Renania de Nord-Westfalia, Hessa, Schleswig-Holstein, Brandenburg",
-    "Mecklenburg-Pomerania Occidentală, Brandenburg, Saxonia, Saxonia-Anhalt, Turingia",
+    "Mecklenburg-Pomerania Inferioară, Brandenburg, Saxonia, Saxonia-Anhalt, Turingia",
     "Bavaria, Baden-Württemberg, Renania-Palatinat, Turingia, Saxonia",
     "Saxonia, Turingia, Hessa, Saxonia Inferioară, Brandenburg"
    ],
-   "explanation": "Cele cinci landuri noi de pe teritoriul RDG sunt: Mecklenburg-Pomerania Occidentală, Brandenburg, Saxonia, Saxonia-Anhalt și Turingia."
+   "explanation": "Cele cinci landuri noi de pe teritoriul RDG sunt: Mecklenburg-Pomerania Inferioară, Brandenburg, Saxonia, Saxonia-Anhalt și Turingia."
   },
   "202": {
    "q": "Cui îi aparținea RDG în „Războiul Rece”?",
@@ -2329,7 +2329,7 @@
    "options": [
     "Helmut Kohl",
     "Willy Brandt",
-    "Michail Gorbatschow",
+    "Mihail Gorbaciov",
     "Ludwig Erhard"
    ],
    "explanation": "Willy Brandt (SPD) a încheiat, în calitate de cancelar federal, Tratatele cu Estul cu țările vecine din est și a promovat o politică de apropiere (Ostpolitik)."
@@ -2362,7 +2362,7 @@
     "negru-roșu-verde",
     "negru-galben-roșu"
    ],
-   "explanation": "Drapelul Germaniei este negru-roșu-auriu. Aceste culori reprezintă mișcarea democratică din secolul al 19-lea."
+   "explanation": "Drapelul Germaniei este negru-roșu-auriu. Aceste culori reprezintă mișcarea democratică din secolul al XIX-lea."
   },
   "215": {
    "q": "Cine este numit „cancelarul unității germane”?",
@@ -2382,7 +2382,7 @@
     "vulturul imperial.",
     "coroana imperială."
    ],
-   "explanation": "Vulturul federal (supranumit și „Găina grasă”) este animalul heraldic al Republicii Federale Germania și este atârnat în sala Parlamentului Federal."
+   "explanation": "Vulturul federal (supranumit și „Găina grasă”) este animalul heraldic al Republicii Federale Germania și se află în sala de plen a Parlamentului Federal."
   },
   "217": {
    "q": "În ce perioadă a existat Republica Democrată Germană (RDG)?",
@@ -2402,7 +2402,7 @@
     "6",
     "7"
    ],
-   "explanation": "La reunificarea din 1990 s-au adăugat cinci landuri noi: Brandenburg, Mecklenburg-Pomerania Occidentală, Saxonia, Saxonia-Anhalt și Turingia."
+   "explanation": "La reunificarea din 1990 s-au adăugat cinci landuri noi: Brandenburg, Mecklenburg-Pomerania Inferioară, Saxonia, Saxonia-Anhalt și Turingia."
   },
   "219": {
    "q": "Republica Federală Germania are granițele de astăzi din …",
@@ -2727,7 +2727,7 @@
   "251": {
    "q": "Dacă cineva lovește un copil în Germania, …",
    "options": [
-    "aceasta nu privește pe nimeni.",
+    "aceasta nu-l privește pe nimeni.",
     "aceasta privește doar familia.",
     "nu poate fi pedepsit pentru asta.",
     "poate fi pedepsit pentru asta."

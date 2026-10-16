@@ -90,7 +90,7 @@ Closed by the UI refresh branch (`ui/modern-minimal`), which is what they were d
 - **Streaks / daily goal** (was point 4) — skipped on request.
 - **Shareable result card** (was point 8) — skipped on request.
 
-### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`); ar, ru, tr released unreviewed 2026-10-12; the other seven live but hidden 2026-10-12 (`9ff32be`)_
+### 3b. Ten more languages — _stage 1 live 2026-10-11 (`ffcc90b`); ar, ru, tr released unreviewed 2026-10-12; the other seven released unreviewed 2026-10-16 after an AI audit_
 Plan: `docs/plans/2026-10-11-languages-plan.md` (design, task list, and the questions the
 unattended run answered without you).
 - **Built (2026-10-11, unattended run):** a language picker in place of the EN box,
@@ -118,8 +118,19 @@ unattended run answered without you).
   explanation now says why VAT is the answer. All ten language files were
   retranslated to match: `ar`, `tr` and `ru` the same day (PR #115), the seven new
   languages on 2026-10-14 (PR #117). No native speaker has read any of the new strings.
+- **The seven released 2026-10-16, on request, unreviewed.** First an AI audit: two auditors
+  per language read every string against the German, then a script swept all ten files for
+  answer leaks. 278 strings changed; the worst were answer leaks in 8 questions, where the
+  translation gave the answer away. No right answer was found made wrong. Per-language counts are in `i18n/README.md`.
+- **Open from the audit:** (1) Ministerpräsident is "premier of the state" in every terms
+  list, so in Q37 and the 13 state head-of-government questions the right option echoes the
+  question; needs your decision. (2) Source errors in `questions.json` the auditors kept
+  hitting: Q287 "Gehaltzzahlungen", Q294 "commemoriert", Q216 "Fetter Henne", Saarland
+  grammar in Q411-419, Q269's explanation (age one, question says three), and English
+  that drifts from the German (Q201 says Bavaria for Brandenburg, Q108 says 16 for 21, Q178).
+  (3) Q72/Q73 are out of date after the 2025 election (catalogue text).
 - **Next:** native-speaker reviews (yours, task 13) for all ten, then each language's
-  corrections (task 14), releasing the seven one at a time as their reviews come back.
+  corrections (task 14).
 
 ### 4. Done
 - ~~CI~~ — done 2026-10-12 (`b9d08cf`, PR #111): GitHub Actions runs the contrast, scale

@@ -1,9 +1,9 @@
-# Language files
+# Language Audited 2026-10-16: 37 strings (0 critical, 6 major). Q183 writes the decades as 1940 etc., because "دهه 40" reads as the solar calendar. Schöffe is "شوفه (Schöffe)" where a German-only string fails the script check. Audited 2026-10-16: 55 strings (5 critical, 19 major). Brackets that explained the answer were removed from Q85, Q124, Q129, Q224 and Q56; Q327 is in Cyrillic like every other capital. Audited 2026-10-16: 23 strings (0 critical, 2 major): the Q224 "(BE)" gloss and the Q131 stem echo removed; feedback strings moved to "ju". Audited 2026-10-16: 56 strings (5 critical, all Q194, whose stem fitted only the right answer, 2 major). "Šta" throughout; "krst" for Kreuz. Audited 2026-10-16: 27 strings (0 critical, 10 major). Zweitstimme is "al doilea vot" everywhere (Q93 called it the minor vote); Q38's stem fits every option. Audited 2026-10-16: 51 strings (1 critical, Q62, 1 major). Berlin is "Berlîn" everywhere; feedback strings moved to "hûn". Audited 2026-10-16: 29 strings (1 critical, Q190, 6 major). Q190 keeps the German expansion with the Polish in brackets, as Turkish does. |||||||files
 
 **Purpose.** Each file here holds one language: its menus and buttons, topic and state names,
 glossary and the translation of every question. The app downloads a file only when someone
 picks that language, and offers a language only after a native speaker has reviewed it
-(Arabic, Turkish and Russian are the exception: released unreviewed, see Status).
+(all ten are the exception: released unreviewed, see Status).
 
 **Summary.**
 
@@ -16,9 +16,18 @@ picks that language, and offers a language only after a native speaker has revie
 ## Status
 
 One row per language: when it was generated, when its review came back, and anything still
-open. A language is released only when its **Reviewed** cell holds a date, with one
-exception: **ar, tr and ru were released UNREVIEWED on 2026-10-12, on request.** Their
-Reviewed cells stay empty until a native speaker's review comes back.
+open. A language is meant to be released only when its **Reviewed** cell holds a date, but
+**all ten were released UNREVIEWED, on request**: ar, tr and ru on 2026-10-12, the other
+seven on 2026-10-16. Their Reviewed cells stay empty until a native speaker's review comes
+back.
+
+**The seven were audited by AI before release (2026-10-16)**: two auditors per language read
+every string against the German and the right answer, then a script checked all ten files for
+answer leaks. Counts below are strings changed. No right answer was found made wrong; the
+critical fixes were all answer leaks, where the translation gave the answer away. One leak is
+left open, in every language, pending a decision: Ministerpräsident is rendered "premier of the
+state" (the terms lists), so in Q37 and the state questions the right option echoes the
+question. Changing it means changing ten terms lists.
 
 | Code | Language | Generated | Reviewed | Notes |
 | --- | --- | --- | --- | --- |

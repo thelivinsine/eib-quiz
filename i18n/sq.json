@@ -25,15 +25,15 @@
   "footer.photo": "Fotografia kryesore",
   "fb.button": "Koment",
   "fb.title": "Dërgo një koment",
-  "fb.lead": "EIB Quiz po ndërtohet me ndihmën e inteligjencës artificiale. Vute re një përgjigje të gabuar, një gabim shtypi apo një defekt? Na shkruaj, kjo na ndihmon ta përmirësojmë aplikacionin.",
-  "fb.message": "Mesazhi yt, një ide ose një gabim që gjete",
-  "fb.email": "Email (opsional, nëse mund të të përgjigjemi)",
+  "fb.lead": "EIB Quiz po ndërtohet me ndihmën e inteligjencës artificiale. Vutë re një përgjigje të gabuar, një gabim shtypi apo një defekt? Na shkruani, kjo na ndihmon ta përmirësojmë aplikacionin.",
+  "fb.message": "Mesazhi juaj, një ide ose një gabim që gjetët",
+  "fb.email": "Email (opsional, nëse mund t’ju përgjigjemi)",
   "fb.send": "Dërgo",
   "fb.close": "Mbyll",
   "fb.sending": "Po dërgohet…",
   "fb.thanks": "Faleminderit për komentin!",
-  "fb.error": "Nuk u dërgua dot. Provo përsëri më vonë.",
-  "footer.copyright": "© 2026 EIB Quiz. Të gjitha të drejtat të rezervuara.",
+  "fb.error": "Nuk u dërgua dot. Provoni përsëri më vonë.",
+  "footer.copyright": "© 2026 EIB Quiz. Të gjitha të drejtat e rezervuara.",
   "footer.legal": "Pyetjet vijnë nga katalogu zyrtar i BAMF. Foto nga Dietmar Rabich, <a href=\"https://creativecommons.org/licenses/by-sa/4.0\" rel=\"noopener\" target=\"_blank\">CC BY-SA 4.0</a>. Nuk është shërbim zyrtar i BAMF.",
   "why.title": "E thjeshtë. E efektshme. E besueshme.",
   "why.1.title": "Përmbajtje zyrtare",
@@ -54,7 +54,7 @@
   "cta.button": "Ushtrohuni tani",
   "cta.annotation": "Një hap i vogël. Një e ardhme e madhe.",
   "home.progress.title": "Ku jeni",
-  "home.progress.lead": "Saktësia juaj në të gjitha pyetjet që keni përgjigjur deri tani.",
+  "home.progress.lead": "Saktësia juaj në të gjitha pyetjet të cilave u jeni përgjigjur deri tani.",
   "home.practice.title": "Zgjidhni mënyrën e ushtrimit",
   "home.more.title": "Raundet e kaluara & fjalorthi",
   "home.more.lead": "Raundet e kaluara dhe termat që pyetjet i marrin si të njohura.",
@@ -96,7 +96,7 @@
   "mode.state.badge": "10 pyetje",
   "mode.state.time": "5 min",
   "mode.review.title": "Përsëritje e zgjuar",
-  "mode.review.desc": "Pyetje për përsëritje dhe pyetje të dobëta, të zgjedhura automatikisht.",
+  "mode.review.desc": "Pyetje për përsëritje, ose që i gaboni shpesh.",
   "mode.review.badgeDue": "{n} për përsëritje",
   "mode.review.badge": "deri në 25",
   "mode.review.time": "10–15 min",
@@ -298,7 +298,7 @@
    "q": "Çfarë nuk shkruhet në Ligjin Themelor të Gjermanisë?",
    "options": [
     "Dinjiteti i njeriut është i paprekshëm",
-    "Të gjithë duhet të kenë po aq para",
+    "Të gjithë duhet të kenë të njëjtën sasi parash",
     "Çdo njeri lejohet të shprehë mendimin e tij",
     "Të gjithë janë të barabartë para ligjit"
    ],
@@ -725,7 +725,7 @@
    "explanation": "Gjermania ka ekonomi sociale të tregut, e cila e lidh tregun e lirë me mbrojtjen sociale. Ky term u krijua pas Luftës së Dytë Botërore."
   },
   "51": {
-   "q": "Një shteti demokratik të së drejtës nuk i përket që …",
+   "q": "Nuk është pjesë e një shteti demokratik të së drejtës që …",
    "options": [
     "njerëzit mund të shprehen në mënyrë kritike për qeverinë.",
     "qytetarët lejohen të demonstrojnë në mënyrë paqësore.",
@@ -788,7 +788,7 @@
    "q": "Kush zgjidhet zakonisht në detyrën e presidentit / presidentes së Bundestagut gjerman?",
    "options": [
     "deputeti më i moshuar / deputetja më e moshuar në parlament",
-    "kryeministri i landit / kryeministrja e landit për landin federal më të madh",
+    "kryeministri / kryeministrja e landit federal më të madh",
     "një deputet / një deputete nga grupi parlamentar më i fortë",
     "një ish-kancelar federal / një ish-kancelare federale"
    ],
@@ -812,7 +812,7 @@
     "para rreth 1150 vitesh",
     "para rreth 1700 vitesh"
    ],
-   "explanation": "Historia hebraike në Gjermani shkon rreth 1700 vjet pas. Bashkësia e parë e njohur hebraike është e dokumentuar në Köln në shekullin e 4-t."
+   "explanation": "Historia hebraike në Gjermani shtrihet rreth 1700 vjet prapa në kohë. Bashkësia e parë e njohur hebraike është e dokumentuar në Köln në shekullin e 4-t."
   },
   "60": {
    "q": "Në Gjermani Bundestagu dhe Bundesrati i përkasin …",
@@ -992,7 +992,7 @@
     "një nismë qytetare gjermane",
     "ushtria gjermane"
    ],
-   "explanation": "Bundeswehr-i janë forcat e armatosura të Republikës Federale të Gjermanisë, të themeluara në vitin 1955."
+   "explanation": "Bundeswehr-i është ushtria (forcat e armatosura) e Republikës Federale të Gjermanisë, e themeluar në vitin 1955."
   },
   "78": {
    "q": "Çfarë do të thotë shkurtesa SPD?",
@@ -1508,7 +1508,7 @@
    "q": "Në Gjermani, populli zgjedh …",
    "options": [
     "kancelarin federal / kancelaren federale.",
-    "kryeministrin e landit / kryeministren e landit në një land federal.",
+    "kryeministrin / kryeministren e një landi federal.",
     "Bundestagun.",
     "presidentin federal / presidenten federale."
    ],
@@ -1525,7 +1525,7 @@
    "explanation": "Një fletë votimi e vlefshme duhet të plotësohet qartë: nga një kryq për votën e parë dhe për votën e dytë, pa shenja shtesë."
   },
   "131": {
-   "q": "Në Gjermani, kryetari i komunës (kryetari i bashkisë) është …",
+   "q": "Në Gjermani, një Bürgermeister / Bürgermeisterin është …",
    "options": [
     "drejtuesi / drejtuesja e një shkolle.",
     "shefi / shefja e një banke.",
@@ -1838,7 +1838,7 @@
    "q": "Claus Schenk Graf von Stauffenberg u bë i njohur për …",
    "options": [
     "një medalje ari në Lojërat Olimpike të vitit 1936.",
-    "ndërtimin e godinës së Rajhstagut.",
+    "ndërtimin e godinës së Reichstagut.",
     "ngritjen e Wehrmacht-it.",
     "atentatin ndaj Hitlerit më 20 korrik 1944."
    ],
@@ -1987,7 +1987,7 @@
   "177": {
    "q": "Cili qytet gjerman u nda në katër sektorë pas Luftës së Dytë Botërore?",
    "options": [
-    "Mynih",
+    "München",
     "Berlin",
     "Dresden",
     "Frankfurt/Oder"
@@ -2455,7 +2455,7 @@
    "explanation": "Polonia është vend fqinj i Gjermanisë në lindje. Kufiri shtrihet përgjatë lumenjve Oder dhe Neisse."
   },
   "224": {
-   "q": "Çfarë do të thotë shkurtesa EU (në shqip BE)?",
+   "q": "Çfarë do të thotë shkurtesa EU?",
    "options": [
     "Ndërmarrjet Evropiane",
     "Bashkimi Evropian",
@@ -2515,7 +2515,7 @@
    "explanation": "Luksemburgu është një nga nëntë vendet fqinje të Gjermanisë dhe ndodhet në jugperëndim."
   },
   "230": {
-   "q": "Parlamenti Evropian zgjidhet rregullisht, përkatësisht çdo …",
+   "q": "Parlamenti Evropian zgjidhet rregullisht, domethënë çdo …",
    "options": [
     "5 vjet.",
     "6 vjet.",
@@ -2527,7 +2527,7 @@
   "231": {
    "q": "Çfarë do të thotë termi „integrim evropian“?",
    "options": [
-    "Me këtë nënkuptohen emigrantët amerikanë në Evropë.",
+    "Me këtë nënkuptohen imigrantët amerikanë në Evropë.",
     "Termi nënkupton ndalimin e imigracionit në Evropë.",
     "Me këtë nënkuptohen emigrantët evropianë në SHBA.",
     "Termi nënkupton bashkimin e shteteve evropiane në BE."
@@ -2727,8 +2727,8 @@
   "251": {
    "q": "Nëse në Gjermani dikush godet një fëmijë, …",
    "options": [
-    "kjo nuk i intereson askujt.",
-    "kjo i intereson vetëm familjes.",
+    "kjo nuk është punë e askujt.",
+    "kjo është punë vetëm e familjes.",
     "ai nuk mund të ndëshkohet për këtë.",
     "ai mund të ndëshkohet për këtë."
    ],
@@ -3078,7 +3078,7 @@
    "q": "Cili organ në një firmë i ndihmon punëmarrësit dhe punëmarrëset në rast problemesh me punëdhënësin / punëdhënësen?",
    "options": [
     "këshilli i punëtorëve",
-    "revizori / revizorja i ndërmarrjes",
+    "revizori i ndërmarrjes / revizorja e ndërmarrjes",
     "grupi i ndërmarrjes",
     "menaxhimi i ndërmarrjes"
    ],
@@ -3087,7 +3087,7 @@
   "287": {
    "q": "Ju dëshironi t'i jepni fund marrëdhënies suaj të punës në një firmë në Gjermani. Çfarë duhet të keni parasysh?",
    "options": [
-    "pagesat e pagës",
+    "pagesat e rrogës",
     "orarin e punës",
     "afatin e njoftimit për largim",
     "detyrimin e sigurimit"
