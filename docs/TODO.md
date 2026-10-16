@@ -124,7 +124,7 @@ unattended run answered without you).
   translation gave the answer away. No right answer was found made wrong. Per-language counts are in `i18n/README.md`.
 - **Open from the audit:** (1) Ministerpräsident is "premier of the state" in every terms
   list, so in Q37 and the 13 state head-of-government questions the right option echoes the
-  question; needs your decision. (2) Source errors in `questions.json` the auditors kept
+  question; left as is, decided by the user on 2026-10-16. (2) Source errors in `questions.json` the auditors kept
   hitting, and (3) Q72/Q73 out of date after the 2025 election — both fixed 2026-10-16,
   see the next item.
 - **Source errors fixed 2026-10-16** (in `questions.json`, checked against the BAMF PDF
