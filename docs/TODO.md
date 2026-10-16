@@ -154,6 +154,12 @@ unattended run answered without you).
     is unaffected in all of them. Q72's question text also reads "die jetzige
     Bundeskanzlerin/der jetzige Bundeskanzler" in the PDF; it was left as is, as the 2026-02
     data file still has the old order.
+- **ar, tr and ru audited 2026-10-16** (after their release on 2026-10-12), the same way as
+  the seven: two AI auditors per language, every string against the German. 224 strings
+  changed (ar 49, ru 109, tr 66); 22 were critical, all answer leaks, among them tr Q83/Q129,
+  whose "(Bundestag)" on the right option only had been judged acceptable at release. No
+  right answer was found made wrong. The eight questions PR #120 retranslated were left out.
+  Per-language notes are in `i18n/README.md`. PR pending.
 - **Next:** native-speaker reviews (yours, task 13) for all ten, then each language's
   corrections (task 14).
 
