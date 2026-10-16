@@ -2088,7 +2088,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     reachable through **`?lang=<code>`**: it unlocks that language for ONE tab via
     `sessionStorage` (`eib_lang_preview`) and is never written to `eib_lang`. That is how
     reviewers use the live site. **Arabic, Turkish and Russian were released UNREVIEWED on
-    2026-10-12, on request**: AI translations, live for everyone, with the review still owed.
+    2026-10-12, on request**: AI translations, live for everyone, with the review still owed
+    (they got the seven's AI audit on 2026-10-16, #121).
     **Persian, Ukrainian, Albanian, Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish
     followed on 2026-10-16**, also unreviewed, after an AI audit (`i18n/README.md`). No
     language is unreleased now; the preview link stays for the next one.

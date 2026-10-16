@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-16 (live commit `0523874`; source errors in `questions.json` fixed against the BAMF catalogue — Q72, Q73 and Q213 had out-of-date right answers — and retranslated in all ten languages, PR pending; the seven hidden languages audited by AI and released unreviewed, PR #119; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-16 (live commit `fb94343`; ar, tr and ru audited by AI the way the seven were, PR #121; source errors in `questions.json` fixed against the BAMF catalogue — Q72, Q73 and Q213 had out-of-date right answers — and retranslated in all ten languages in `8614c17`, PR #120; the seven hidden languages audited by AI and released unreviewed, PR #119; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
@@ -159,7 +159,7 @@ unattended run answered without you).
   changed (ar 49, ru 109, tr 66); 22 were critical, all answer leaks, among them tr Q83/Q129,
   whose "(Bundestag)" on the right option only had been judged acceptable at release. No
   right answer was found made wrong. The eight questions PR #120 retranslated were left out.
-  Per-language notes are in `i18n/README.md`. PR pending.
+  Per-language notes are in `i18n/README.md`. Live in `fb94343` (PR #121).
 - **Next:** native-speaker reviews (yours, task 13) for all ten, then each language's
   corrections (task 14).
 
