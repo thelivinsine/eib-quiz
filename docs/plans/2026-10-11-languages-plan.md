@@ -10,7 +10,8 @@ reviewed it.
 **Summary.** Stage 1 is live (2026-10-11, `ffcc90b`), all three languages hidden: tasks 1-12
 are done. Arabic, Turkish and Russian were then released unreviewed, on request
 (2026-10-12, #112). Tasks 15-16, the other seven languages, landed on `plan/languages` the
-same day, unreleased, and task 17 shipped them to `main` still hidden. Next are the reviews
+same day, unreleased, and task 17 shipped them to `main` still hidden. Task 18 audited them
+by AI and released all seven unreviewed, on request (2026-10-16, #119). Next are the reviews
 (task 13, the user's) for all ten. The rest of this
 paragraph is the plan as written: Tasks 1-12 are stage 1: the machinery plus Arabic, Turkish and
 Russian, merged to `main` with all three still hidden. Tasks 13-14 release them as reviews
@@ -45,6 +46,7 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 | 15 | Terminology lists: the other seven | done | 2026-10-12 | Every rendering is AI-written and unreviewed (unattended run). Checked by script: 58 rows each, German and English columns identical to the Turkish list, every glossary term present. Least settled: Kurmanji (several coined terms, e.g. Ordnungsamt), Albanian and `bs` (regional forms mixed by design). Q7, Q8, Q9 answered without you. |
 | 16 | Generate the other seven | done | 2026-10-12 | Unreviewed translation, and **not run in a browser at all (unattended run)**: no language seen on screen, Persian right to left included. I read none of the seven natively. Checked by script: the completeness check passes with all ten files, and five core terms match each terms list in every question that uses them. English and German unchanged by reading the code only: the change appends seven `LANGS` entries and touches nothing else; the before/after screenshots the global constraints ask for wait for task 17. Q10, Q11 answered without you. |
 | 17 | Measure, sheets and ship the seven hidden | done, 2026-10-12 (user present) | 2026-10-12 | Measured in Playwright Chromium only (not Safari or Firefox, not a real phone). All seven pass after seven strings were shortened (five failures). Persian right to left looked at by me in screenshots, not by a Persian reader. English and German screenshots identical to `main`. Live 2026-10-12 as `9ff32be` (PR #114): checked in the browser pane, see the entry. |
+| 18 | AI audit and release of the seven | done, released unreviewed 2026-10-16 (on request) | 2026-10-16 | Two AI auditors per language plus a leak-scan script; 278 strings changed (`i18n/README.md` has the counts). No native speaker read any of it. Layout swept in Playwright Chromium at 320-1280 (not Safari, Firefox or a real phone). Merged as `0523874` (thelivinsine/eib-quiz#119); the live site not checked after the merge. |
 
 ## Global constraints
 
@@ -57,7 +59,8 @@ lines are all true. `plan/languages` reaches `main` through one PR at the end of
 - **No unreviewed language is ever `released: true`.** Only tasks 14 and the release step
   after 17 flip that flag, and only for a language whose review has come back. **Broken once,
   on request**: Arabic, Turkish and Russian were released unreviewed on 2026-10-12
-  (thelivinsine/eib-quiz#112). The seven of tasks 15-17 stay unreleased.
+  (thelivinsine/eib-quiz#112). **And again on 2026-10-16**: the seven of tasks 15-17, after an
+  AI audit (task 18, thelivinsine/eib-quiz#119).
 - **Translations are text, never markup.** A translation may contain only the HTML tags its
   English string contains (the hero headline's `<span>`), and the check in task 2 enforces
   it. Everywhere else a translation is written with `textContent` or escaped.

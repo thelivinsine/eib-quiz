@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-16 (live commit `1da3db0`; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-16 (live commit `0523874`; the seven hidden languages audited by AI and released unreviewed, PR #119; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
@@ -104,8 +104,8 @@ unattended run answered without you).
   320-1400px (task 10). Five problems found and fixed; English and German match the
   pre-work screenshots. Not checked: Safari, Firefox, a real phone, a screen reader.
 - **Task 12 done, live**: merged as `ffcc90b` (PR #109). Until 2026-10-12 the live picker
-  offered only English and Deutsch; since then it offers all five.
-- **The other seven are in the repo, hidden** (2026-10-12, tasks 15-17): Persian, Ukrainian,
+  offered only English and Deutsch; from 2026-10-12 all five, and since 2026-10-16 all twelve.
+- **The other seven were in the repo, hidden** (2026-10-12 to 2026-10-16, tasks 15-17): Persian, Ukrainian,
   Albanian, Bosnian/Croatian/Serbian, Romanian, Kurmanji and Polish. Each has a terms list, a
   full language file (`released: false`, reachable only through `?lang=<code>`) and a review
   sheet. Measured at every width in Playwright Chromium (seven strings shortened); Persian
