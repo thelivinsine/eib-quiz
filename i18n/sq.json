@@ -938,21 +938,21 @@
    "q": "Si quhet kancelari federal aktual / kancelarja federale aktuale e Gjermanisë?",
    "options": [
     "Gerhard Schröder",
-    "Jürgen Rüttgers",
-    "Klaus Wowereit",
-    "Olaf Scholz"
+    "Angela Merkel",
+    "Ursula von der Leyen",
+    "Friedrich Merz"
    ],
-   "explanation": "Olaf Scholz (SPD) është kancelar federal i Gjermanisë që nga dhjetori 2021."
+   "explanation": "Friedrich Merz (CDU) është kancelar federal i Gjermanisë që nga maji 2025."
   },
   "73": {
    "q": "Dy grupet parlamentare më të mëdha në Bundestagun gjerman aktualisht janë …",
    "options": [
-    "CDU/CSU dhe SPD.",
+    "CDU/CSU dhe AfD.",
     "Die Linke dhe Bündnis 90/Die Grünen.",
-    "FDP dhe SPD.",
-    "Die Linke dhe FDP."
+    "Bündnis 90/Die Grünen dhe SPD.",
+    "Die Linke dhe CDU/CSU."
    ],
-   "explanation": "CDU/CSU dhe SPD janë dy grupet parlamentare më të mëdha në Bundestagun gjerman."
+   "explanation": "Që nga zgjedhjet për Bundestagun e vitit 2025, CDU/CSU dhe AfD janë dy grupet parlamentare më të mëdha në Bundestagun gjerman."
   },
   "74": {
    "q": "Si quhet parlamenti për gjithë Gjermaninë?",
@@ -968,9 +968,9 @@
    "q": "Si quhet kreu i sotëm i shtetit të Gjermanisë?",
    "options": [
     "Frank-Walter Steinmeier",
-    "Norbert Lammert",
-    "Wolfgang Thierse",
-    "Edmund Stoiber"
+    "Bärbel Bas",
+    "Bodo Ramelow",
+    "Joachim Gauck"
    ],
    "explanation": "Frank-Walter Steinmeier është president federal i Republikës Federale të Gjermanisë që nga viti 2017."
   },
@@ -1952,7 +1952,7 @@
     "Bashkimit Evropian (BE).",
     "Traktatit të Varshavës."
    ],
-   "explanation": "Republika Federale e Gjermanisë është anëtare themeluese e Bashkimit Evropian (1957, Traktatet e Romës). Në NATO u anëtarësua në vitin 1955."
+   "explanation": "Në vitin 1957 Republika Federale e Gjermanisë ishte një nga gjashtë shtetet themeluese të Komunitetit Ekonomik Evropian (KEE, Traktatet e Romës), nga i cili lindi Bashkimi Evropian. Në NATO u anëtarësua në vitin 1955."
   },
   "174": {
    "q": "Kur u themelua Republika Demokratike Gjermane?",
@@ -2349,10 +2349,10 @@
    "options": [
     "70 milionë",
     "78 milionë",
-    "80 milionë",
+    "84 milionë",
     "90 milionë"
    ],
-   "explanation": "Gjermania ka rreth 80 milionë banorë dhe kështu është vendi me më shumë popullsi në BE."
+   "explanation": "Gjermania ka rreth 84 milionë banorë dhe kështu është vendi me më shumë popullsi në BE."
   },
   "214": {
    "q": "Cilat ngjyra ka flamuri gjerman?",
@@ -2912,7 +2912,7 @@
     "një vend në një klub sportiv.",
     "një pasaportë pushimesh."
    ],
-   "explanation": "Që nga viti 2013, të gjithë fëmijët që kanë mbushur 1 vjeç kanë të drejtë ligjore për një vend në kopsht."
+   "explanation": "Fëmijët që kanë mbushur 3 vjeç kanë të drejtë ligjore për një vend në kopsht deri në fillimin e shkollës (që nga viti 1996). Që nga viti 2013 ekziston gjithashtu e drejta për një vend në çerdhe që nga mosha 1 vjeç."
   },
   "270": {
    "q": "Volkshochschule (shkolla popullore e lartë) në Gjermani është një institucion …",
@@ -3652,7 +3652,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlamenti i landit (Landtag) në landin Bremen zgjidhet për 4 vjet."
+   "explanation": "Parlamenti i landit (Bürgerschaft) në landin Bremen zgjidhet për 4 vjet."
   },
   "344": {
    "q": "Nga cila moshë mund të votohet në zgjedhjet për parlamentin e landit (Bürgerschaft) në landin Bremen?",
@@ -3752,7 +3752,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlamenti i landit (Landtag) në landin Hamburg zgjidhet për 5 vjet."
+   "explanation": "Parlamenti i landit (Bürgerschaft) në landin Hamburg zgjidhet për 5 vjet."
   },
   "354": {
    "q": "Nga cila moshë mund të votohet në zgjedhjet lokale në landin Hamburg (zgjedhja e kuvendeve të distrikteve, Bezirksversammlungen)?",

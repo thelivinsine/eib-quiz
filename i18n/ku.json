@@ -938,21 +938,21 @@
    "q": "Navê Şansolyeyê Federal ê niha yê Almanyayê çi ye?",
    "options": [
     "Gerhard Schröder",
-    "Jürgen Rüttgers",
-    "Klaus Wowereit",
-    "Olaf Scholz"
+    "Angela Merkel",
+    "Ursula von der Leyen",
+    "Friedrich Merz"
    ],
-   "explanation": "Olaf Scholz (SPD) ji Kanûna Pêşîn a 2021an ve Şansolyeyê Federal ê Almanyayê ye."
+   "explanation": "Friedrich Merz (CDU) ji Gulana 2025an ve Şansolyeyê Federal ê Almanyayê ye."
   },
   "73": {
    "q": "Navê du fraksiyonên herî mezin ên Parlamentoya Federal (Bundestag) niha ev in: …",
    "options": [
-    "CDU/CSU û SPD.",
+    "CDU/CSU û AfD.",
     "Die Linke û Bündnis 90/Die Grünen.",
-    "FDP û SPD.",
-    "Die Linke û FDP."
+    "Bündnis 90/Die Grünen û SPD.",
+    "Die Linke û CDU/CSU."
    ],
-   "explanation": "CDU/CSU û SPD du fraksiyonên herî mezin ên Parlamentoya Federal in."
+   "explanation": "Ji hilbijartinên Parlamentoya Federal a 2025an ve CDU/CSU û AfD du fraksiyonên herî mezin ên Parlamentoya Federal in."
   },
   "74": {
    "q": "Navê parlamentoya tevahiya Almanyayê çi ye?",
@@ -968,9 +968,9 @@
    "q": "Navê serokê dewletê yê niha yê Almanyayê çi ye?",
    "options": [
     "Frank-Walter Steinmeier",
-    "Norbert Lammert",
-    "Wolfgang Thierse",
-    "Edmund Stoiber"
+    "Bärbel Bas",
+    "Bodo Ramelow",
+    "Joachim Gauck"
    ],
    "explanation": "Frank-Walter Steinmeier ji sala 2017an ve Serokkomarê Federal ê Komara Federal a Almanyayê ye."
   },
@@ -1952,7 +1952,7 @@
     "Yekîtiya Ewropayê (YE).",
     "Peymana Varşovayê."
    ],
-   "explanation": "Komara Federal a Almanyayê endameke damezrîner a YE-yê ye (1957, Peymanên Romayê). Ew di 1955an de tevlî NATO bû."
+   "explanation": "Komara Federal a Almanyayê di 1957an de yek ji şeş dewletên damezrîner ên Civata Aborî ya Ewropayê (Peymanên Romayê) bû, ku YE jê derket. Ew di 1955an de tevlî NATO bû."
   },
   "174": {
    "q": "Komara Demokratîk a Alman (Almanyaya Rojhilat) kengê hate damezrandin?",
@@ -2349,10 +2349,10 @@
    "options": [
     "70 milyon",
     "78 milyon",
-    "80 milyon",
+    "84 milyon",
     "90 milyon"
    ],
-   "explanation": "Li Almanyayê nêzîkî 80 milyon kes dijîn; bi vê yekê ew welatê herî qelebalix ê Yekîtiya Ewropayê ye."
+   "explanation": "Li Almanyayê nêzîkî 84 milyon kes dijîn; bi vê yekê ew welatê herî qelebalix ê Yekîtiya Ewropayê ye."
   },
   "214": {
    "q": "Rengên ala Almanyayê çi ne?",
@@ -2382,7 +2382,7 @@
     "Eyloyê Reîşê.",
     "Taca Reîşê."
    ],
-   "explanation": "Eyloyê Federal (bi nasnavê «Fetter Henne», ango «Mirîşka Qelew») sembola armayê ya Komara Federal a Almanyayê ye û di Parlamentoya Federal de daliqandî ye."
+   "explanation": "Eyloyê Federal (bi nasnavê «Fette Henne», ango «Mirîşka Qelew») sembola armayê ya Komara Federal a Almanyayê ye û di Parlamentoya Federal de daliqandî ye."
   },
   "217": {
    "q": "Komara Demokratîk a Alman (Almanyaya Rojhilat) di kîjan heyamê de hebû?",
@@ -2912,7 +2912,7 @@
     "cihekî li klûbeke werzîşê.",
     "pasaporteke betlaneyê."
    ],
-   "explanation": "Ji sala 2013an ve hemû zarok ji temamkirina saliya xwe ya yekem ve xwedî mafê qanûnî yê cihekî li baxçeyê zarokan in."
+   "explanation": "Zarokên ku sê saliya xwe temam kirine, heta dest bi dibistanê dikin, xwedî mafê qanûnî yê cihekî li baxçeyê zarokan in (ji sala 1996an ve). Ji sala 2013an ve herwiha ji yek saliyê ve mafê cihekî lênêrîna zarokan jî heye."
   },
   "270": {
    "q": "Volkshochschule (navenda perwerdeya mezinan) li Almanyayê saziyek e ji bo …",
@@ -3652,7 +3652,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlamentoya eyaletê (Landtag) ya Bremen ji bo 4 salan tê hilbijartin."
+   "explanation": "Parlamentoya eyaletê (Bürgerschaft) ya Bremen ji bo 4 salan tê hilbijartin."
   },
   "344": {
    "q": "Li Bremen di hilbijartinên Bürgerschaft (parlamentoya eyaletê) de mirov ji çend saliyê dikare deng bide?",
@@ -3752,7 +3752,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlamentoya eyaletê (Landtag) ya Hamburg ji bo 5 salan tê hilbijartin."
+   "explanation": "Parlamentoya eyaletê (Bürgerschaft) ya Hamburg ji bo 5 salan tê hilbijartin."
   },
   "354": {
    "q": "Li Hamburg di hilbijartinên herêmî de (hilbijartina meclîsên herêman – Bezirksversammlungen) mirov ji çend saliyê dikare deng bide?",

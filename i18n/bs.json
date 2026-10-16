@@ -938,21 +938,21 @@
    "q": "Kako se zove sadašnji savezni kancelar / sadašnja savezna kancelarka Njemačke?",
    "options": [
     "Gerhard Schröder",
-    "Jürgen Rüttgers",
-    "Klaus Wowereit",
-    "Olaf Scholz"
+    "Angela Merkel",
+    "Ursula von der Leyen",
+    "Friedrich Merz"
    ],
-   "explanation": "Olaf Scholz (SPD) je od decembra 2021. savezni kancelar Njemačke."
+   "explanation": "Friedrich Merz (CDU) je od maja 2025. savezni kancelar Njemačke."
   },
   "73": {
    "q": "Dvije najveće frakcije u njemačkom Bundestagu trenutno su …",
    "options": [
-    "CDU/CSU i SPD.",
+    "CDU/CSU i AfD.",
     "Die Linke i Bündnis 90/Die Grünen.",
-    "FDP i SPD.",
-    "Die Linke i FDP."
+    "Bündnis 90/Die Grünen i SPD.",
+    "Die Linke i CDU/CSU."
    ],
-   "explanation": "CDU/CSU i SPD su dvije najveće frakcije u njemačkom Bundestagu."
+   "explanation": "Od izbora za Bundestag 2025. CDU/CSU i AfD su dvije najveće frakcije u njemačkom Bundestagu."
   },
   "74": {
    "q": "Kako se zove parlament za cijelu Njemačku?",
@@ -968,9 +968,9 @@
    "q": "Kako se zove sadašnji šef države Njemačke?",
    "options": [
     "Frank-Walter Steinmeier",
-    "Norbert Lammert",
-    "Wolfgang Thierse",
-    "Edmund Stoiber"
+    "Bärbel Bas",
+    "Bodo Ramelow",
+    "Joachim Gauck"
    ],
    "explanation": "Frank-Walter Steinmeier je od 2017. savezni predsjednik Savezne Republike Njemačke."
   },
@@ -1952,7 +1952,7 @@
     "Evropske unije (EU).",
     "Varšavskog pakta."
    ],
-   "explanation": "Savezna Republika Njemačka članica je osnivačica EU (1957, Rimski ugovori). NATO-u je pristupila 1955."
+   "explanation": "Savezna Republika Njemačka je 1957. bila jedna od šest država osnivačica Evropske ekonomske zajednice (EEZ, Rimski ugovori), iz koje je nastala EU. NATO-u je pristupila 1955."
   },
   "174": {
    "q": "Kada je osnovana Njemačka Demokratska Republika (Istočna Njemačka)?",
@@ -2349,10 +2349,10 @@
    "options": [
     "70 miliona",
     "78 miliona",
-    "80 miliona",
+    "84 miliona",
     "90 miliona"
    ],
-   "explanation": "Njemačka ima oko 80 miliona stanovnika i time je zemlja s najviše stanovnika u EU."
+   "explanation": "Njemačka ima oko 84 miliona stanovnika i time je zemlja s najviše stanovnika u EU."
   },
   "214": {
    "q": "Koje boje ima njemačka zastava?",
@@ -2912,7 +2912,7 @@
     "mjesto u sportskom klubu.",
     "propusnicu za raspust."
    ],
-   "explanation": "Od 2013. sva djeca od navršene prve godine života imaju zakonsko pravo na mjesto u vrtiću."
+   "explanation": "Djeca od navršene treće godine života do polaska u školu imaju zakonsko pravo na mjesto u vrtiću (od 1996.). Od 2013. postoji i pravo na mjesto u ustanovi za čuvanje djece od navršene prve godine."
   },
   "270": {
    "q": "Volkshochschule (narodni univerzitet) u Njemačkoj je ustanova …",
@@ -3652,7 +3652,7 @@
     "5",
     "6"
    ],
-   "explanation": "Landtag (pokrajinski parlament) Bremena bira se na 4 godine."
+   "explanation": "Bürgerschaft (pokrajinski parlament) Bremena bira se na 4 godine."
   },
   "344": {
    "q": "Od koje dobi se u Bremenu smije glasati na izborima za Bürgerschaft (pokrajinski parlament)?",
@@ -3752,7 +3752,7 @@
     "5",
     "6"
    ],
-   "explanation": "Landtag (pokrajinski parlament) Hamburga bira se na 5 godina."
+   "explanation": "Bürgerschaft (pokrajinski parlament) Hamburga bira se na 5 godina."
   },
   "354": {
    "q": "Od koje dobi se u Hamburgu smije glasati na lokalnim izborima (izbor skupština gradskih okruga)?",

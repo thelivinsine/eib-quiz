@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-16 (live commit `0523874`; the seven hidden languages audited by AI and released unreviewed, PR #119; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-16 (live commit `0523874`; source errors in `questions.json` fixed against the BAMF catalogue — Q72, Q73 and Q213 had out-of-date right answers — and retranslated in all ten languages, PR pending; the seven hidden languages audited by AI and released unreviewed, PR #119; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
@@ -125,10 +125,35 @@ unattended run answered without you).
 - **Open from the audit:** (1) Ministerpräsident is "premier of the state" in every terms
   list, so in Q37 and the 13 state head-of-government questions the right option echoes the
   question; needs your decision. (2) Source errors in `questions.json` the auditors kept
-  hitting: Q287 "Gehaltzzahlungen", Q294 "commemoriert", Q216 "Fetter Henne", Saarland
-  grammar in Q411-419, Q269's explanation (age one, question says three), and English
-  that drifts from the German (Q201 says Bavaria for Brandenburg, Q108 says 16 for 21, Q178).
-  (3) Q72/Q73 are out of date after the 2025 election (catalogue text).
+  hitting, and (3) Q72/Q73 out of date after the 2025 election — both fixed 2026-10-16,
+  see the next item.
+- **Source errors fixed 2026-10-16** (in `questions.json`, checked against the BAMF PDF
+  "Stand: 07.05.2025" and `tools/data/official-catalogue-bamf-2026-02.json`):
+  - **The catalogue had moved on, and the app had not.** BAMF updated four questions:
+    Q72 (Friedrich Merz is right; Angela Merkel and Ursula von der Leyen are the new wrong
+    answers), Q73 (CDU/CSU und AfD is right), Q75 (new wrong answers: Bärbel Bas, Bodo
+    Ramelow, Joachim Gauck) and **Q213 (84 Millionen is right; the app marked 80)**. Three
+    of the four changed the right answer. Q287 "Gehaltzzahlungen" was our typo; the
+    catalogue has "Gehaltszahlungen".
+  - **Our explanations:** Q294 "commemoriert" → "erinnert", Q216 "Fette Henne", Q269 (the
+    age-three entitlement, since 1996; the age-one one since 2013), Q173 (in 1957 it was
+    the EEC, which became the EU), Q343/Q353 (Bremen and Hamburg have a Bürgerschaft, not a
+    Landtag), Q235's English (they held hands; it said handshake), and the Saarland's ten
+    German explanations ("des Saarlandes", "im Saarland"). The last two kinds come from
+    `tools/explain-states.js`, whose templates are fixed too.
+  - **Our English, back in line with the German:** Q201, Q108, Q178 options; Q91, Q235,
+    Q277, Q278, Q289 question texts; Q99 option 0.
+  - All ten language files retranslated where the meaning changed (Q72, Q73, Q75, Q173,
+    Q213, Q269, Q343, Q353 in every file; Q216 in `ku`; Q235 in `ru`, which had copied the
+    handshake). The translations of the drifted English already followed the German. The
+    review sheets were regenerated. No native speaker has read the new strings.
+  - **Still open:** the same comparison found smaller drift from the catalogue: Q13 ("fuer"
+    for "für", and the quotes round "Opposition"), Q69 ("Gemeinden und Kommunen", BAMF
+    now "Gemeinden"), Q234 ("der Sitz", BAMF "ein Sitz"), Q254 ("Mann und Frau", BAMF "Die
+    Ehegatten"), and stray full stops and quote marks on about 30 others. The right answer
+    is unaffected in all of them. Q72's question text also reads "die jetzige
+    Bundeskanzlerin/der jetzige Bundeskanzler" in the PDF; it was left as is, as the 2026-02
+    data file still has the old order.
 - **Next:** native-speaker reviews (yours, task 13) for all ten, then each language's
   corrections (task 14).
 

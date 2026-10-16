@@ -938,21 +938,21 @@
    "q": "Jak nazywa się obecny kanclerz federalny / obecna kanclerz federalna Niemiec?",
    "options": [
     "Gerhard Schröder",
-    "Jürgen Rüttgers",
-    "Klaus Wowereit",
-    "Olaf Scholz"
+    "Angela Merkel",
+    "Ursula von der Leyen",
+    "Friedrich Merz"
    ],
-   "explanation": "Olaf Scholz (SPD) jest kanclerzem federalnym Niemiec od grudnia 2021 roku."
+   "explanation": "Friedrich Merz (CDU) jest kanclerzem federalnym Niemiec od maja 2025 roku."
   },
   "73": {
    "q": "Dwie największe frakcje w niemieckim Bundestagu to obecnie …",
    "options": [
-    "CDU/CSU i SPD.",
+    "CDU/CSU i AfD.",
     "Die Linke i Bündnis 90/Die Grünen.",
-    "FDP i SPD.",
-    "Die Linke i FDP."
+    "Bündnis 90/Die Grünen i SPD.",
+    "Die Linke i CDU/CSU."
    ],
-   "explanation": "CDU/CSU i SPD to dwie największe frakcje w niemieckim Bundestagu."
+   "explanation": "Od wyborów do Bundestagu w 2025 roku CDU/CSU i AfD to dwie największe frakcje w niemieckim Bundestagu."
   },
   "74": {
    "q": "Jak nazywa się parlament całych Niemiec?",
@@ -968,9 +968,9 @@
    "q": "Kto jest obecnie głową państwa Niemiec?",
    "options": [
     "Frank-Walter Steinmeier",
-    "Norbert Lammert",
-    "Wolfgang Thierse",
-    "Edmund Stoiber"
+    "Bärbel Bas",
+    "Bodo Ramelow",
+    "Joachim Gauck"
    ],
    "explanation": "Frank-Walter Steinmeier jest od 2017 roku prezydentem federalnym Republiki Federalnej Niemiec."
   },
@@ -1952,7 +1952,7 @@
     "Unii Europejskiej (UE).",
     "Układu Warszawskiego."
    ],
-   "explanation": "Republika Federalna Niemiec jest członkiem założycielem UE (1957, traktaty rzymskie). Do NATO przystąpiła w 1955 roku."
+   "explanation": "W 1957 roku Republika Federalna Niemiec była jednym z sześciu państw założycielskich Europejskiej Wspólnoty Gospodarczej (EWG, traktaty rzymskie), z której wyrosła UE. Do NATO przystąpiła w 1955 roku."
   },
   "174": {
    "q": "Kiedy powstała NRD?",
@@ -2349,10 +2349,10 @@
    "options": [
     "70 milionów",
     "78 milionów",
-    "80 milionów",
+    "84 miliony",
     "90 milionów"
    ],
-   "explanation": "Niemcy mają około 80 milionów mieszkańców i są tym samym najludniejszym krajem UE."
+   "explanation": "Niemcy mają około 84 milionów mieszkańców i są tym samym najludniejszym krajem UE."
   },
   "214": {
    "q": "Jakie kolory ma flaga Niemiec?",
@@ -2912,7 +2912,7 @@
     "miejsca w klubie sportowym.",
     "karty wakacyjnej (Ferienpass)."
    ],
-   "explanation": "Od 2013 roku wszystkie dzieci po ukończeniu 1. roku życia mają ustawowe prawo do miejsca w przedszkolu."
+   "explanation": "Dzieci po ukończeniu 3. roku życia mają do rozpoczęcia nauki w szkole ustawowe prawo do miejsca w przedszkolu (od 1996 roku). Od 2013 roku obowiązuje ponadto prawo do miejsca w placówce opieki od ukończenia 1. roku życia."
   },
   "270": {
    "q": "Uniwersytet ludowy (Volkshochschule) w Niemczech to instytucja …",
@@ -3652,7 +3652,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlament krajowy (Landtag) w Bremie jest wybierany na 4 lata."
+   "explanation": "Parlament krajowy (Bürgerschaft) w Bremie jest wybierany na 4 lata."
   },
   "344": {
    "q": "Od jakiego wieku można głosować w Bremie w wyborach do Bürgerschaft (parlamentu krajowego)?",
@@ -3752,7 +3752,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlament krajowy (Landtag) w Hamburgu jest wybierany na 5 lat."
+   "explanation": "Parlament krajowy (Bürgerschaft) w Hamburgu jest wybierany na 5 lat."
   },
   "354": {
    "q": "Od jakiego wieku można głosować w Hamburgu w wyborach samorządowych (wybory do zgromadzeń dzielnic, Bezirksversammlungen)?",
