@@ -938,21 +938,21 @@
    "q": "Almanya'nın şu anki Federal Şansölyesinin adı nedir?",
    "options": [
     "Gerhard Schröder",
-    "Jürgen Rüttgers",
-    "Klaus Wowereit",
-    "Olaf Scholz"
+    "Angela Merkel",
+    "Ursula von der Leyen",
+    "Friedrich Merz"
    ],
-   "explanation": "Olaf Scholz (SPD) Aralık 2021'den beri Almanya'nın Federal Şansölyesidir."
+   "explanation": "Friedrich Merz (CDU) Mayıs 2025'ten beri Almanya'nın Federal Şansölyesidir."
   },
   "73": {
    "q": "Alman Federal Meclisi'ndeki (Bundestag) en büyük iki meclis grubu şu anda …",
    "options": [
-    "CDU/CSU ve SPD.",
+    "CDU/CSU ve AfD.",
     "Die Linke ve Bündnis 90/Die Grünen.",
-    "FDP ve SPD.",
-    "Die Linke ve FDP."
+    "Bündnis 90/Die Grünen ve SPD.",
+    "Die Linke ve CDU/CSU."
    ],
-   "explanation": "CDU/CSU ve SPD, Alman Federal Meclisi'ndeki en büyük iki meclis grubudur."
+   "explanation": "2025 Federal Meclis seçimlerinden bu yana CDU/CSU ve AfD, Alman Federal Meclisi'ndeki en büyük iki meclis grubudur."
   },
   "74": {
    "q": "Tüm Almanya'nın parlamentosunun adı nedir?",
@@ -968,9 +968,9 @@
    "q": "Almanya'nın bugünkü devlet başkanının adı nedir?",
    "options": [
     "Frank-Walter Steinmeier",
-    "Norbert Lammert",
-    "Wolfgang Thierse",
-    "Edmund Stoiber"
+    "Bärbel Bas",
+    "Bodo Ramelow",
+    "Joachim Gauck"
    ],
    "explanation": "Frank-Walter Steinmeier 2017'den beri Almanya Federal Cumhuriyeti'nin Federal Cumhurbaşkanıdır."
   },
@@ -1952,7 +1952,7 @@
     "Avrupa Birliği'nin (AB)",
     "Varşova Paktı'nın"
    ],
-   "explanation": "Almanya Federal Cumhuriyeti, AB'nin kurucu üyesidir (1957, Roma Antlaşmaları). NATO'ya 1955'te katıldı."
+   "explanation": "Almanya Federal Cumhuriyeti, 1957'de AB'nin öncüsü olan Avrupa Ekonomik Topluluğu'nun (AET, Roma Antlaşmaları) altı kurucu devletinden biriydi. NATO'ya 1955'te katıldı."
   },
   "174": {
    "q": "Demokratik Almanya Cumhuriyeti (Doğu Almanya) ne zaman kuruldu?",
@@ -2349,10 +2349,10 @@
    "options": [
     "70 milyon",
     "78 milyon",
-    "80 milyon",
+    "84 milyon",
     "90 milyon"
    ],
-   "explanation": "Almanya'nın yaklaşık 80 milyon nüfusu vardır; bu da onu AB'nin en kalabalık ülkesi yapar."
+   "explanation": "Almanya'nın yaklaşık 84 milyon nüfusu vardır; bu da onu AB'nin en kalabalık ülkesi yapar."
   },
   "214": {
    "q": "Alman bayrağı hangi renklerdedir?",
@@ -2912,7 +2912,7 @@
     "bir spor kulübünde yer",
     "bir tatil kartı"
    ],
-   "explanation": "2013'ten bu yana tüm çocukların 1 yaşını doldurduktan itibaren yasal olarak bir anaokulu yeri talep etme hakkı vardır."
+   "explanation": "Üç yaşını dolduran çocukların okula başlayana kadar yasal olarak bir anaokulu yeri talep etme hakkı vardır (1996'dan beri). 2013'ten bu yana ayrıca 1 yaşından itibaren bir çocuk bakım yeri hakkı da bulunmaktadır."
   },
   "270": {
    "q": "Almanya'da Halk Eğitim Merkezi (Volkshochschule) … bir kurumdur.",
@@ -3652,7 +3652,7 @@
     "5",
     "6"
    ],
-   "explanation": "Bremen eyalet meclisi (Landtag) 4 yıllığına seçilir."
+   "explanation": "Bremen eyalet meclisi (Bürgerschaft) 4 yıllığına seçilir."
   },
   "344": {
    "q": "Bremen'de Bürgerschaft (eyalet meclisi) seçimlerinde kaç yaşından itibaren oy kullanılabilir?",
@@ -3752,7 +3752,7 @@
     "5",
     "6"
    ],
-   "explanation": "Hamburg eyalet meclisi (Landtag) 5 yıllığına seçilir."
+   "explanation": "Hamburg eyalet meclisi (Bürgerschaft) 5 yıllığına seçilir."
   },
   "354": {
    "q": "Hamburg'da yerel seçimlerde (ilçe meclisleri seçimi) kaç yaşından itibaren oy kullanılabilir?",

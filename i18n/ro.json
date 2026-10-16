@@ -938,21 +938,21 @@
    "q": "Cum se numește actualul cancelar federal / actuala cancelară federală a Germaniei?",
    "options": [
     "Gerhard Schröder",
-    "Jürgen Rüttgers",
-    "Klaus Wowereit",
-    "Olaf Scholz"
+    "Angela Merkel",
+    "Ursula von der Leyen",
+    "Friedrich Merz"
    ],
-   "explanation": "Olaf Scholz (SPD) este cancelar federal al Germaniei din decembrie 2021."
+   "explanation": "Friedrich Merz (CDU) este cancelar federal al Germaniei din mai 2025."
   },
   "73": {
    "q": "Cele mai mari două grupuri parlamentare din Parlamentul Federal (Bundestag) german sunt în prezent …",
    "options": [
-    "CDU/CSU și SPD.",
+    "CDU/CSU și AfD.",
     "Die Linke și Bündnis 90/Die Grünen.",
-    "FDP și SPD.",
-    "Die Linke și FDP."
+    "Bündnis 90/Die Grünen și SPD.",
+    "Die Linke și CDU/CSU."
    ],
-   "explanation": "CDU/CSU și SPD sunt cele mai mari două grupuri parlamentare din Parlamentul Federal (Bundestag) german."
+   "explanation": "De la alegerile pentru Bundestag din 2025, CDU/CSU și AfD sunt cele mai mari două grupuri parlamentare din Parlamentul Federal (Bundestag) german."
   },
   "74": {
    "q": "Cum se numește parlamentul pentru întreaga Germanie?",
@@ -968,9 +968,9 @@
    "q": "Cum se numește actualul șef al statului german?",
    "options": [
     "Frank-Walter Steinmeier",
-    "Norbert Lammert",
-    "Wolfgang Thierse",
-    "Edmund Stoiber"
+    "Bärbel Bas",
+    "Bodo Ramelow",
+    "Joachim Gauck"
    ],
    "explanation": "Frank-Walter Steinmeier este din 2017 președintele federal al Republicii Federale Germania."
   },
@@ -1952,7 +1952,7 @@
     "Uniunii Europene (UE).",
     "Pactului de la Varșovia."
    ],
-   "explanation": "Republica Federală Germania este membru fondator al UE (1957, Tratatele de la Roma). La NATO a aderat în 1955."
+   "explanation": "În 1957, Republica Federală Germania a fost unul dintre cele șase state fondatoare ale Comunității Economice Europene (CEE, Tratatele de la Roma), din care s-a născut UE. La NATO a aderat în 1955."
   },
   "174": {
    "q": "Când a fost înființată RDG?",
@@ -2349,10 +2349,10 @@
    "options": [
     "70 de milioane",
     "78 de milioane",
-    "80 de milioane",
+    "84 de milioane",
     "90 de milioane"
    ],
-   "explanation": "Germania are aproximativ 80 de milioane de locuitori și este astfel cea mai populată țară din UE."
+   "explanation": "Germania are aproximativ 84 de milioane de locuitori și este astfel cea mai populată țară din UE."
   },
   "214": {
    "q": "Ce culori are drapelul Germaniei?",
@@ -2912,7 +2912,7 @@
     "un loc într-un club sportiv.",
     "un abonament de vacanță (Ferienpass)."
    ],
-   "explanation": "Din 2013, toți copiii au, de la împlinirea vârstei de 1 an, dreptul legal la un loc la grădiniță."
+   "explanation": "Copiii care au împlinit vârsta de 3 ani au, până la intrarea în școală, dreptul legal la un loc la grădiniță (din 1996). Din 2013 există, în plus, dreptul la un loc într-o instituție de îngrijire a copiilor de la vârsta de 1 an."
   },
   "270": {
    "q": "Volkshochschule (universitatea populară) din Germania este o instituție …",
@@ -3652,7 +3652,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlamentul landului (Landtag) din Bremen este ales pentru 4 ani."
+   "explanation": "Parlamentul landului (Bürgerschaft) din Bremen este ales pentru 4 ani."
   },
   "344": {
    "q": "De la ce vârstă se poate vota în Bremen la alegerile pentru Bürgerschaft (parlamentul landului)?",
@@ -3752,7 +3752,7 @@
     "5",
     "6"
    ],
-   "explanation": "Parlamentul landului (Landtag) din Hamburg este ales pentru 5 ani."
+   "explanation": "Parlamentul landului (Bürgerschaft) din Hamburg este ales pentru 5 ani."
   },
   "354": {
    "q": "De la ce vârstă se poate vota în Hamburg la alegerile locale (alegerea adunărilor de sector, Bezirksversammlungen)?",

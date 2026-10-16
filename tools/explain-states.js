@@ -31,6 +31,9 @@ const CAP_DE = 'Die Landeshauptstadt von {S} ist {A}.';
 const CAP_EN = 'The state capital of {Sen} is {A}.';
 const LANDTAG_DE = 'Der Landtag (das Landesparlament) von {S} wird für {A} Jahre gewählt.';
 const LANDTAG_EN = 'The state parliament (Landtag) of {Sen} is elected for {A} years.';
+// Bremen and Hamburg (the stem that says "Landesparlament") call theirs the Bürgerschaft.
+const BUERGERSCHAFT_DE = 'Die Bürgerschaft, das Landesparlament von {S}, wird für {A} Jahre gewählt.';
+const BUERGERSCHAFT_EN = 'The Bürgerschaft, the state parliament of {Sen}, is elected for {A} years.';
 const FLAG_DE = 'Die Landesflagge von {S} hat die Farben {A}.';
 const FLAG_EN = 'The state flag of {Sen} has the colours {Aen}.';
 const NICHT_DE = 'Außen- und Verteidigungspolitik sind Sache des Bundes — ein Bundesland wie {S} hat keinen {A}.';
@@ -57,7 +60,7 @@ const EXP = {
     en: 'In the elections to the Bürgerschaft (state parliament) in {Sen}, the minimum voting age is {A}.' },
   'Die Landeshauptstadt des {S}es heißt ...': { de: CAP_DE, en: CAP_EN },
   'Die Landeshauptstadt von {S} heißt ...': { de: CAP_DE, en: CAP_EN },
-  'Für wie viele Jahre wird das Landesparlament in {S} gewählt?': { de: LANDTAG_DE, en: LANDTAG_EN },
+  'Für wie viele Jahre wird das Landesparlament in {S} gewählt?': { de: BUERGERSCHAFT_DE, en: BUERGERSCHAFT_EN },
   'Für wie viele Jahre wird der Landtag des {S}es gewählt?': { de: LANDTAG_DE, en: LANDTAG_EN },
   'Für wie viele Jahre wird der Landtag in {S} gewählt?': { de: LANDTAG_DE, en: LANDTAG_EN },
   'Was ist ein deutscher Stadtstaat?': { de: CITYSTATE_DE, en: CITYSTATE_EN },
@@ -84,6 +87,13 @@ const EXP = {
   'Wo können Sie sich in {S} über politische Themen informieren?': { de: INFO_DE, en: INFO_EN },
 };
 
+// The templates assume a state name without an article. Saarland takes one ("das Saarland"),
+// so its sentences are put right after filling.
+const ARTICLE_FIX = {
+  SL: [['von Saarland', 'des Saarlandes'], ['In Saarland', 'Im Saarland'], ['in Saarland', 'im Saarland'],
+       ['wie Saarland', 'wie das Saarland'], ['ist Saarland', 'ist das Saarland']],
+};
+
 const strip = s => String(s).replace(/\.\s*$/, '').trim();
 
 const questions = JSON.parse(fs.readFileSync(path.join(ROOT, 'questions.json'), 'utf8'));
@@ -96,7 +106,7 @@ for (const q of questions) {
   const A = strip(q.options[q.correct]);
   const Aen = strip((q.options_en && q.options_en[q.correct]) || q.options[q.correct]);
   const fill = s => s.split('{S}').join(DE[q.state]).split('{Sen}').join(EN[q.state]).split('{Aen}').join(Aen).split('{A}').join(A);
-  q.explanation_de = fill(tpl.de);
+  q.explanation_de = (ARTICLE_FIX[q.state] || []).reduce((t, [a, b]) => t.split(a).join(b), fill(tpl.de));
   q.explanation_en = fill(tpl.en);
   n++;
 }
