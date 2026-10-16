@@ -1,6 +1,6 @@
 # EIB Quiz — Project Status & TODO
 
-_Last updated: 2026-10-15 (live commit `1da3db0`: a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
+_Last updated: 2026-10-16 (live commit `1da3db0`; the glossary as a grid of term cards shipped in `b7d9f8d` on 2026-10-09, direct to `main`; a feedback button after genauly.de's, sending to Genauly's `submit-feedback` function, PR #118; Q281 and Q285 explanations retranslated in the seven hidden languages in `f115a6a`, PR #117; Polish place names in `7fe16c8`, PR #116; Q281 and Q285 retranslated in ar, tr and ru in `7b0b369`, PR #115; seven more languages added, hidden, PR #114; Q281 and Q285 corrected in `24cb5d3`, PR #113; ar, ru and tr live unreviewed since `ff5a937`; CI on every PR since `b9d08cf`)_
 
 ## Project status
 
@@ -3309,3 +3309,21 @@ HTML carries the versioned `og:image`, and that image serves 1200x630 at 145,950
   first being reproduced.
 - The script was run on Windows only. The `as_uri()` fix for macOS/Linux is reasoned,
   not run there.
+
+## Session close (2026-10-09, the glossary as term cards)
+
+On request, from a reference screenshot: the glossary on the Practise page opens into a
+grid of cards, one per term, instead of a list of nested disclosures. Each card is a
+practise tile (`--tile` on `--tile-edge`, `--shadow-rest`) holding the term, the German
+definition and the English one in muted italics. Three across on desktop, one on a phone.
+The summary row is a tile of its own, so no card sits inside another; the disclosure was
+kept so the page does not grow ~1000px. Shipped as `b7d9f8d`, a direct commit to `main`
+(a minor change, offered and accepted).
+
+**Verified:** `scale.test.mjs` and `contrast.test.mjs` (28/28) and `node --check` on the
+script. Screenshots in dark and light at 1280x900 through Playwright: three columns, 18
+cards. At 375 one column, no horizontal overflow.
+
+**Not verified:**
+- German UI, and widths between 375 and 1280.
+- The live site after the deploy was not checked.

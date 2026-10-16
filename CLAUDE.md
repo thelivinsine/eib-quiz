@@ -228,7 +228,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     Anywhere."). This was deliberate, on request. Do not "fix" it by citing the
     reference; the user chose both themes over light-only.
     - **Who gets `--shadow-rest`**: one list in the TILE block — the mode cards, topic
-      chips, the overview card, the why and CTA panels, history, glossary, the quiz
+      chips, the overview card, the why and CTA panels, history, the glossary's summary
+      row and its term cards, the quiz
       sidebar and review items. It is not for wells inside a tile (`.hist-exam`,
       `.hist-list`, `.resume-banner`) and not for the footer band. `.hist-list` was on
       the list for one PR: it only ever renders inside the history tile.
@@ -1124,8 +1125,8 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
     - **Hover steps the fill a rung and the EDGE carries the state**: `--tile-hover`
       (`#282828` dark, `#EEF3FA` light) and `--tile-edge-hover` (`#505050` / `#C8D2E2`).
       `--hover` would have been a 1.6 slab on the new dark tile. `--surface3` is still the
-      press fill. **The glossary / history `<summary>` rows are the exception and keep
-      `--hover`**: they sit INSIDE a tile and have no edge to change, so the fill is the
+      press fill. **The history `<summary>` row is the exception and keeps
+      `--hover`**: it sits INSIDE a tile and have no edge to change, so the fill is the
       whole state, and `--tile-hover` is 1.105 on a dark tile — under dark's 1.20 floor.
     - **`.hist-exam` is the one exception**, a well inside the history tile: dark keeps its
       `--surface2`, and `html.light .hist-exam { background: var(--surface) }` keeps the
@@ -1629,13 +1630,21 @@ Vanilla HTML/CSS/JS quiz for the German citizenship test, all 16 Bundesländer.
   - **Past rounds is COLLAPSED behind a `<details>`** (2026-09-20). It was the single biggest
     block left on the home page (480px) and unlike the hero or the dash it is not padding —
     it is a real list that GROWS with every round played, so no amount of sizing shortens it.
-    `renderHistory()` reuses the glossary's exact structure (`details.glossary-wrap` +
-    `summary.glossary-summary`) rather than inventing a second collapsing idiom, and the
+    `renderHistory()` uses `details.glossary-wrap` + `summary.glossary-summary` (the
+    glossary's old structure) rather than inventing a second collapsing idiom, and the
     summary carries the count: `hist.title` is now `Past rounds ({n})` / `Frühere Runden ({n})`.
     That was also the "History" collision the section rename already worried about — History
     is one of the five TOPICS. Closed: 480px -> 46px, and the home page 2.06 -> **1.58
     screens** at the time. It lives on `#practiseScreen` now, which measures **1217px /
     1.35 screens** at 1280x900 with no progress recorded.
+  - **The glossary opens into a GRID OF TERM CARDS** (2026-10-09, on request, from a
+    reference screenshot). `renderGlossary()` writes `details.gloss-wrap`: its
+    `summary.glossary-summary` is a practise tile of its own (`--tile` on `--tile-edge`,
+    `--tile-hover` + `--tile-edge-hover` on hover, since it now HAS an edge), and below it
+    `.gloss-grid` holds one `.gloss-card` per term on the page — the term, the German
+    definition (`--sub-text`), the English in `--muted` italics. Three across on desktop
+    (`minmax(300px, 1fr)`), one on a phone. The disclosure stayed so the Practise page does
+    not grow ~1000px; the reference itself had none.
   - `initHomeScreen()` is the one door that repaints the Practise page. Callers do not call
     the individual renderers. (The name predates the screen split and is kept: a dozen call
     sites, one move.)
